@@ -42,145 +42,160 @@ export default async function apiGen(lookup: any) {
       exportsStr: string[];
     };
   } = {};
-  const writePromises = Object.entries(operations).map(async ([operationId, operation]) => {
-    if ('hidden' === (operation.specSection as any).tags[0]) {
-      return;
-    }
-    let template: string = await fsp.readFile('./src/template.ts.txt', 'utf8');
-    const path = operation.path;
-    const params = operation.specSection
-      .parameters as OpenAPIV3.ParameterObject[];
-    template = template.replaceAll(',', ',');
-    const inputTypes: string[] = [];
-    const inputParams: string[] = [];
-    let urlPathParams: string[] = path.split('/');
-    const urlQueryParams: string[] = [];
-    (params || []).forEach(({ name, in: _in }) => {
-      inputTypes.push(`${name}: string`);
-      if (!name) {
-        throw 'no name for param';
+  const writePromises = Object.entries(operations).map(
+    async ([operationId, operation]) => {
+      if ('hidden' === (operation.specSection as any).tags[0]) {
+        return;
       }
-      inputParams.push(name);
-      if (_in === 'path') {
-        urlPathParams = urlPathParams.map((p) => {
-          if (p === `{${name}}`) {
-            return `\${${name}}`;
-          }
-          return p;
-        });
+      let template: string = await fsp.readFile(
+        './src/template.ts.txt',
+        'utf8',
+      );
+      const path = operation.path;
+      const params = operation.specSection
+        .parameters as OpenAPIV3.ParameterObject[];
+      template = template.replaceAll(',', ',');
+      const inputTypes: string[] = [];
+      const inputParams: string[] = [];
+      let urlPathParams: string[] = path.split('/');
+      const urlQueryParams: string[] = [];
+      (params || []).forEach(({ name, in: _in }) => {
+        inputTypes.push(`${name}: string`);
+        if (!name) {
+          throw 'no name for param';
+        }
+        inputParams.push(name);
+        if (_in === 'path') {
+          urlPathParams = urlPathParams.map((p) => {
+            if (p === `{${name}}`) {
+              return `\${${name}}`;
+            }
+            return p;
+          });
+        } else {
+          urlQueryParams.push(`${name}=\${${name}}`);
+        }
+      });
+      const templateUrlPath = wrapInBacktics(
+        `${urlPathParams.join('/')}${
+          urlQueryParams.length ? `?${urlQueryParams.join('&')}` : ''
+        }`,
+      );
+      const requestBody = operation.specSection
+        ?.requestBody as OpenAPIV3.ResponseObject;
+
+      if (requestBody?.content?.['application/octet-stream']) {
+        const schema = requestBody.content['application/octet-stream']
+          .schema as OpenAPIV3.SchemaObject;
+        if (schema?.type !== 'string') {
+          throw 'requestBody type not implemented';
+        }
+        inputTypes.push('body: string');
+        inputParams.push('body');
+        template = template.replaceAll("body: 'BODY'", 'body');
       } else {
-        urlQueryParams.push(`${name}=\${${name}}`);
+        template = template.replaceAll(/body: 'BODY'.+/g, '');
       }
-    });
-    const templateUrlPath = wrapInBacktics(
-      `${urlPathParams.join('/')}${
-        urlQueryParams.length ? `?${urlQueryParams.join('&')}` : ''
-      }`,
-    );
-    const requestBody = operation.specSection
-      ?.requestBody as OpenAPIV3.ResponseObject;
 
-    if (requestBody?.content?.['application/octet-stream']) {
-      const schema = requestBody.content['application/octet-stream']
-        .schema as OpenAPIV3.SchemaObject;
-      if (schema?.type !== 'string') {
-        throw 'requestBody type not implemented';
+      if (!inputParams.length) {
+        template = replacer(template, [
+          [/interface FunctionNameParams(.|\n)+?}/g, ''],
+          [/functionNameParams: FunctionNameParams.+/g, ''],
+        ]);
       }
-      inputTypes.push('body: string');
-      inputParams.push('body');
-      template = template.replaceAll("body: 'BODY'", 'body');
-    } else {
-      template = template.replaceAll(/body: 'BODY'.+/g, '');
-    }
 
-    if (!inputParams.length) {
-      template = replacer(template, [
-        [/interface FunctionNameParams(.|\n)+?}/g, ''],
-        [/functionNameParams: FunctionNameParams.+/g, ''],
-      ]);
-    }
+      const importedTypes: string[] = [];
+      Object.values(operation.specSection?.responses).forEach((response) => {
+        const schema = (response as any)?.content?.['application/json']
+          ?.schema as OpenAPIV3.SchemaObject;
+        if (!schema) {
+          let ref = (response as any)?.$ref || '';
+          ref = ref.replace('responses', 'schemas');
+          const typeReference = lookup[ref];
 
-    const importedTypes: string[] = [];
-    Object.values(operation.specSection?.responses).forEach((response) => {
-      const schema = (response as any)?.content?.['application/json']
-        ?.schema as OpenAPIV3.SchemaObject;
-      if (!schema) {
-        let ref = (response as any)?.$ref || '';
-        ref = ref.replace('responses', 'schemas');
-        const typeReference = lookup[ref];
-
-        if (!importedTypes.includes(typeReference) && ref) {
-          importedTypes.push(typeReference);
-        }
-      } else if ((response as any)?.content['application/json']?.schema?.$ref) {
-        const ref = (response as any)?.content['application/json']?.schema
-          ?.$ref;
-        const typeReference = lookup[ref];
-        if (!importedTypes.includes(typeReference)) {
-          importedTypes.push(typeReference);
-        }
-      } else if (Object.keys(schema).length === 0) {
-        // do nothing
-      } else if (schema.type === 'array') {
-        const items = schema.items as OpenAPIV3.SchemaObject;
-        if ((items as any).$ref) {
-          const typeReference = lookup[(items as any).$ref];
-          if (!importedTypes.includes(typeReference + '[]')) {
-            importedTypes.push(typeReference + '[]');
+          if (!importedTypes.includes(typeReference) && ref) {
+            importedTypes.push(typeReference);
+          }
+        } else if (
+          (response as any)?.content['application/json']?.schema?.$ref
+        ) {
+          const ref = (response as any)?.content['application/json']?.schema
+            ?.$ref;
+          const typeReference = lookup[ref];
+          if (!importedTypes.includes(typeReference)) {
+            importedTypes.push(typeReference);
+          }
+        } else if (Object.keys(schema).length === 0) {
+          // do nothing
+        } else if (schema.type === 'array') {
+          const items = schema.items as OpenAPIV3.SchemaObject;
+          if ((items as any).$ref) {
+            const typeReference = lookup[(items as any).$ref];
+            if (!importedTypes.includes(typeReference + '[]')) {
+              importedTypes.push(typeReference + '[]');
+            }
+          } else {
+            throw 'not implemented';
           }
         } else {
+          console.log(schema);
           throw 'not implemented';
         }
-      } else {
-        console.log(schema);
-        throw 'not implemented';
+      });
+
+      const returnTyping = `type ${FC(operationId)}_return = ${
+        importedTypes.length ? importedTypes.join(' | ') : 'any'
+      }`;
+
+      template = replacer(template, [
+        [/interface FunctionNameReturn(.|\n)+?}/g, returnTyping],
+        [`'string' + functionNameParams.exampleParam`, templateUrlPath],
+        [
+          `functionNameParams:`,
+          `{${inputParams.filter((a) => a).join(', ')}}:`,
+        ],
+        [`exampleParam: string`, inputTypes.join('; ')],
+        ["method: 'METHOD'", `method: 'POST'`],
+        ['function functionName', `function ${operationId}`],
+        ['FunctionNameReturn', `${FC(operationId)}_return`],
+        ['FunctionNameParams', `${FC(operationId)}_params`],
+        [
+          "import * as types from './src/models.ts';",
+          `import {${importedTypes
+            .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
+            .join(', ')}} from '../../models.js';`,
+        ],
+      ]);
+
+      const tag = operation.specSection?.tags?.[0] || 'err';
+      const safeTag = tag.replaceAll('-', '_');
+      if (!indexFile[safeTag]) {
+        indexFile[safeTag] = {
+          importsStr: [],
+          exportsStr: [],
+        };
       }
-    });
-
-    const returnTyping = `type ${FC(operationId)}_return = ${
-      importedTypes.length ? importedTypes.join(' | ') : 'any'
-    }`;
-
-    template = replacer(template, [
-      [/interface FunctionNameReturn(.|\n)+?}/g, returnTyping],
-      [`'string' + functionNameParams.exampleParam`, templateUrlPath],
-      [`functionNameParams:`, `{${inputParams.filter((a) => a).join(', ')}}:`],
-      [`exampleParam: string`, inputTypes.join('; ')],
-      ["method: 'METHOD'", `method: 'POST'`],
-      ['function functionName', `function ${operationId}`],
-      ['FunctionNameReturn', `${FC(operationId)}_return`],
-      ['FunctionNameParams', `${FC(operationId)}_params`],
-      [
-        "import * as types from './src/models.ts';",
-        `import {${importedTypes
-          .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
-          .join(', ')}} from '../../models.js';`,
-      ],
-    ]);
-
-    const tag = operation.specSection?.tags?.[0] || 'err';
-    const safeTag = tag.replaceAll('-', '_');
-    if (!indexFile[safeTag]) {
-      indexFile[safeTag] = {
-        importsStr: [],
-        exportsStr: [],
-      };
-    }
-    indexFile[safeTag].importsStr.push(
-      `import ${operationId} from './api/${tag}/${operationId}.js';`,
+      indexFile[safeTag].importsStr.push(
+        `import ${operationId} from './api/${tag}/${operationId}.js';`,
       );
-    indexFile[safeTag].exportsStr.push(operationId)
-    return fsp.writeFile(`./src/api/${tag}/${operationId}.ts`, template, 'utf8');
-  });
+      indexFile[safeTag].exportsStr.push(operationId);
+      return fsp.writeFile(
+        `./src/api/${tag}/${operationId}.ts`,
+        template,
+        'utf8',
+      );
+    },
+  );
   await Promise.all(writePromises);
-  console.log('HEYY yo')
-  let indexFileString = ''
-  Object.entries(indexFile).forEach(([tag, { importsStr: imports, exportsStr: exports }]) => {
-    indexFileString += imports.join('\n') + '\n';
-    indexFileString += `export const ${tag} = { ${exports.join(', ')} };\n\n`;
-  })
-  console.log('hmm', indexFile, indexFileString);
-  await fsp.writeFile(`./src/main.ts`, indexFileString, 'utf8');
+  let indexFileString = '';
+  Object.entries(indexFile).forEach(
+    ([tag, { importsStr: imports, exportsStr: exports }]) => {
+      indexFileString += imports.join('\n') + '\n';
+      indexFileString += `export const ${tag} = { ${exports.join(', ')} };\n\n`;
+    },
+  );
+  indexFileString += `export * as Models from './models.js';\n`;
+  await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8');
 }
 
 function wrapInBacktics(str: string) {

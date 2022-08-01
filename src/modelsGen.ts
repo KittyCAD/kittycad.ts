@@ -1,6 +1,6 @@
-import fsp from 'node:fs/promises';
+import fsp from 'fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
-import apiGen from './apiGen.js';
+import apiGen from './apiGen';
 
 main();
 
@@ -62,7 +62,10 @@ async function main() {
             const items = subSchema.items;
             if ((items as any).$ref) {
               const ref = (items as any).$ref;
-              return addCommentInfo(subSchema, `${key}: ${typeNameReference[ref]}[]`);
+              return addCommentInfo(
+                subSchema,
+                `${key}: ${typeNameReference[ref]}[]`,
+              );
             }
             return `${makeTypeStringForNode(
               items as OpenAPIV3.SchemaObject,
@@ -74,7 +77,10 @@ async function main() {
           ) {
             if ((subSchema.additionalProperties as any).$ref) {
               const ref = (subSchema.additionalProperties as any).$ref;
-              return addCommentInfo(subSchema, `${key}: {[key: string] : ${typeNameReference[ref]}}`);
+              return addCommentInfo(
+                subSchema,
+                `${key}: {[key: string] : ${typeNameReference[ref]}}`,
+              );
             }
             return `${key}: {[key: string] : ${makeTypeStringForNode(
               subSchema.additionalProperties as any,
@@ -142,11 +148,20 @@ async function main() {
   // console.log(typeReference);
   // console.log(typeNameReference);
   await fsp.writeFile(`./src/models.ts`, template, 'utf8');
-  apiGen(typeNameReference)
+  apiGen(typeNameReference);
 }
 
 function addCommentInfo(schema: any, typeString: string) {
-  const { enum: _enum, type, allOf, items, properties, additionalProperties, description, ...newSchema } = schema;
+  const {
+    enum: _enum,
+    type,
+    allOf,
+    items,
+    properties,
+    additionalProperties,
+    description,
+    ...newSchema
+  } = schema;
   if (!Object.keys(newSchema).length && !description) {
     return typeString;
   } else if (!Object.keys(newSchema).length && description) {

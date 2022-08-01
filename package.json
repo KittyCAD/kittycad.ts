@@ -1,6 +1,6 @@
 {
   "name": "@kittycad/lib",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "ts lib",
   "exports": {
     ".": {
@@ -50,7 +50,8 @@
     "tsc": "tsc",
     "build2": "rimraf dist && npm run build:types && npm run build:js",
     "build:js": "rollup -c",
-    "build:types": "tsc --emitDeclarationOnly"
+    "build:types": "tsc --emitDeclarationOnly",
+    "modelsGen": "ts-node --project ./tsconfig.gen.json ./src/modelsGen.ts && prettier --config .prettierrc --write ./src"
   },
   "author": "Kurt Hutten <kurt@kittycad.io>",
   "license": "MIT",
