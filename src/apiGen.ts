@@ -188,13 +188,16 @@ export default async function apiGen(lookup: any) {
   );
   await Promise.all(writePromises);
   let indexFileString = '';
-  Object.entries(indexFile).forEach(
-    ([tag, { importsStr: imports, exportsStr: exports }]) => {
-      indexFileString += imports.join('\n') + '\n';
-      indexFileString += `export const ${tag} = { ${exports.join(', ')} };\n\n`;
-    },
-  );
-  indexFileString += `export * as Models from './models.js';\n`;
+  // sorts are added to keep a consistent order since awaiting the promises has non-deterministic order
+  Object.entries(indexFile)
+    .sort(([a], [b]) => (a > b ? 1 : -1))
+    .forEach(([tag, { importsStr: imports, exportsStr: exports }]) => {
+      indexFileString += imports.sort().join('\n') + '\n';
+      indexFileString += `export const ${tag} = { ${exports
+        .sort()
+        .join(', ')} };\n\n`;
+    });
+  indexFileString += `export type {Models} from './models.js';\n`;
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8');
 }
 

@@ -132,10 +132,12 @@ async function main() {
   for (const key of Object.keys(schemas)) {
     addTypeName(componentRef(key), key + '_type');
   }
+  const modelsExportParts = [];
   for (const [key, schema] of Object.entries(schemas)) {
     const typeBody = makeTypeStringForNode(schema, '', true);
     const typeName = typeNameReference[componentRef(key)];
     typeReference[componentRef(key)] = typeBody;
+    modelsExportParts.push(typeName);
     if (typeBody.includes('/* use-type */')) {
       template += `export type ${typeName} = ${typeBody.replaceAll(
         '/* use-type */',
@@ -145,8 +147,9 @@ async function main() {
       template += `export interface ${typeName} ${typeBody}\n\n`;
     }
   }
-  // console.log(typeReference);
-  // console.log(typeNameReference);
+  template += `export interface Models {\n${modelsExportParts
+    .map((name) => `${name}: ${name}`)
+    .join(';\n')}\n}\n\n`;
   await fsp.writeFile(`./src/models.ts`, template, 'utf8');
   apiGen(typeNameReference);
 }
