@@ -1,0 +1,51 @@
+{
+  "name": "@kittycad/lib",
+  "version": "0.0.4",
+  "description": "ts lib",
+  "main": "build/main.js",
+  "module": "build/main.es.js",
+  "files": [
+    "build"
+  ],
+  "types": "build/src/**/*",
+  "engines": {
+    "node": ">= 16.13 <17"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.18.9",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@types/jest": "~27.5",
+    "@types/node": "~16",
+    "@typescript-eslint/eslint-plugin": "~5.26",
+    "@typescript-eslint/parser": "~5.26",
+    "eslint": "~8.16",
+    "eslint-config-prettier": "~8.5",
+    "eslint-plugin-jest": "~26.2",
+    "jest": "~28.1",
+    "prettier": "~2.6",
+    "rimraf": "~3.0",
+    "rollup": "^2.77.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.32.1",
+    "ts-jest": "~28.0",
+    "tsutils": "~3.21",
+    "typescript": "~4.7"
+  },
+  "scripts": {
+    "clean": "rm -rf build",
+    "build": "yarn clean && rollup -c",
+    "tsc": "tsc"
+  },
+  "author": "Kurt Hutten <kurt@kittycad.io>",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "2.6.7",
+    "openapi-types": "^12.0.0",
+    "ts-node": "^10.9.1",
+    "tslib": "~2.4"
+  },
+  "volta": {
+    "node": "16.13.0"
+  }
+}

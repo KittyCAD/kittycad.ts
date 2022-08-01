@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022"],
+    "rootDir": ".",
+    "outDir": "build",
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "alwaysStrict": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "strictNullChecks": false,
+    "declaration": true,
+    "declarationDir": "./build/types",
+    "declarationMap": true
+  },
+  "include": ["src/**/*", "__tests__/**/*"],
+}
