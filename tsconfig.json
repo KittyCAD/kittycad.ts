@@ -3,6 +3,7 @@
     "esModuleInterop": true,
     "target": "ES2022",
     "module": "ESNext",
+    "moduleResolution": "node",
     "lib": ["ES2022"],
     "rootDir": ".",
     "outDir": "build",
@@ -19,8 +20,9 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "declaration": true,
-    "declarationDir": "./build/types",
+    "declarationDir": "dist/types",
     "declarationMap": true
   },
+  "exclude": ["node_modules", "dist"],
   "include": ["src/**/*", "__tests__/**/*"],
 }

@@ -1,19 +1,30 @@
 {
   "name": "@kittycad/lib",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "ts lib",
-  "main": "build/main.js",
-  "module": "build/main.es.js",
+  "exports": {
+    ".": {
+      "types": "./dist/types/src",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "browser": "./dist/index.umd.js",
+  "types": "./dist/types",
   "files": [
-    "build"
+    "dist"
   ],
-  "types": "build/src/**/*",
   "engines": {
     "node": ">= 16.13 <17"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.18.9",
+    "@babel/preset-typescript": "^7.18.6",
+    "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@types/jest": "~27.5",
     "@types/node": "~16",
@@ -27,6 +38,7 @@
     "rimraf": "~3.0",
     "rollup": "^2.77.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.32.1",
     "ts-jest": "~28.0",
     "tsutils": "~3.21",
@@ -35,7 +47,10 @@
   "scripts": {
     "clean": "rm -rf build",
     "build": "yarn clean && rollup -c",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "build2": "rimraf dist && npm run build:types && npm run build:js",
+    "build:js": "rollup -c",
+    "build:types": "tsc --emitDeclarationOnly"
   },
   "author": "Kurt Hutten <kurt@kittycad.io>",
   "license": "MIT",
@@ -45,7 +60,7 @@
     "ts-node": "^10.9.1",
     "tslib": "~2.4"
   },
-  "volta": {
-    "node": "16.13.0"
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -1,4 +1,4 @@
-import { file } from '../src/main.js';
+import { file } from '../src/index.js';
 import fsp from 'fs/promises';
 import { CodeOutput_type } from '../src/models.js';
 
