@@ -1,0 +1,61 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+
+jobs:
+  build:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3.4.0
+        with:
+            node-version: '16'
+            cache: 'yarn'
+      - run: yarn install
+      - run: yarn gen
+      - run: yarn build
+      - run: yarn test
+        env:
+          KITTYCAD_TOKEN: ${{ secrets.KITTYCAD_TOKEN }}
+      - name: check for changes
+        id: git-check
+        run: |
+          git add .
+          # git status
+          # git diff
+          # if git diff --exit-code; then
+          #   echo "::set-output name=modified::true"
+          # else
+          #   echo "::set-output name=modified::false"
+          # fi
+          if git status | grep -q "Changes to be committed"
+          then
+            echo "::set-output name=modified::true"
+          else
+            echo "::set-output name=modified::false"
+          fi
+      - name: Commit changes, if any
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git add .
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git commit -am "Generated new lib" || true
+          git fetch origin
+          git rebase origin/${{github.ref_name }} || true
+          git push origin ${{github.ref_name }}
+          # git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          # git config --local user.name "github-actions[bot]"
+          # git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          # git fetch origin
+          # git commit -am "Generated new lib"
+          # git push
+
