@@ -49,12 +49,14 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git fetch origin
-          git checkout ${{github.ref_name }}
+          # git checkout ${{github.ref_name }}
+          git checkout ${GITHUB_REF##*/}
           git commit -am "Generated new lib" || true
           # git rebase origin/${{github.ref_name }} || true
           git push
+          git push origin ${GITHUB_REF##*/}
           # git push origin ${{github.ref_name }}
-          
+
           # git config --local user.email "github-actions[bot]@users.noreply.github.com"
           # git config --local user.name "github-actions[bot]"
           # git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
