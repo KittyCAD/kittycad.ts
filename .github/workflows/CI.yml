@@ -50,6 +50,7 @@ jobs:
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git fetch origin
           # git checkout ${{github.ref_name }}
+          echo ${GITHUB_REF##*/}
           git checkout ${GITHUB_REF##*/}
           git commit -am "Generated new lib" || true
           # git rebase origin/${{github.ref_name }} || true
