@@ -1,7 +1,23 @@
 {
   "name": "@kittycad/lib",
   "version": "0.0.14",
-  "description": "ts lib",
+  "description": "Javascript library for KittyCAD API",
+  "keywords": [
+    "hardward",
+    "library",
+    "CAD",
+    "Computer aided design",
+    "mechanical engineering",
+    "typescript"
+  ],
+  "homepage": "https://github.com/KittyCAD/kittycad.ts#readme",
+  "bugs": {
+    "url": "https://github.com/KittyCAD/kittycad.ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KittyCAD/kittycad.ts.git"
+  },
   "exports": {
     ".": {
       "types": "./dist/types/src",

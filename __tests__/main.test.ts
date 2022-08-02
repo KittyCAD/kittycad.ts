@@ -22,3 +22,16 @@ describe('Testing create_file_execution', () => {
     expect(true).toBe(true);
   });
 });
+describe('Testing create_file_mass', () => {
+  it("shouldn't throw", async () => {
+    const { status, mass } = (await file.create_file_mass({
+      src_format: 'obj',
+      material_density: '0.007',
+      body: await fsp.readFile('./example.obj', 'base64'),
+    })) as Models['FileMass_type'];
+    expect(mass).toBe(0.7063786);
+    expect(status).toBe('Completed');
+
+    expect(true).toBe(true);
+  });
+});
