@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   testEnvironment: 'node',
   preset: 'ts-jest',
   globals: {
@@ -20,4 +20,5 @@ export default {
     '!src/**/*.d.ts',
     '!src/**/*.d.mts',
   ],
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };
