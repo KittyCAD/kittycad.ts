@@ -48,10 +48,13 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git commit -am "Generated new lib" || true
           git fetch origin
-          git rebase origin/${{github.ref_name }} || true
-          git push origin ${{github.ref_name }}
+          git checkout ${{github.ref_name }}
+          git commit -am "Generated new lib" || true
+          # git rebase origin/${{github.ref_name }} || true
+          git push
+          # git push origin ${{github.ref_name }}
+          
           # git config --local user.email "github-actions[bot]@users.noreply.github.com"
           # git config --local user.name "github-actions[bot]"
           # git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
