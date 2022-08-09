@@ -244,7 +244,14 @@ export default async function apiGen(lookup: any) {
         [/.+return response;\n/g, ''],
       ]);
       spec.paths[operation.path][operation.method]['x-typescript'] = {
-        example: format(exampleTemplate, { parser: 'babel' }),
+        example: format(exampleTemplate, {
+          parser: 'babel',
+          tabWidth: 4,
+          semi: false,
+          singleQuote: true,
+          arrowParens: 'avoid',
+          trailingComma: 'es5',
+        }),
         libDocsLink: '',
       };
 
