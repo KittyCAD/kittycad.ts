@@ -124,7 +124,10 @@ async function main() {
     if (schema.type === 'array') {
       return `${name}: ${makeTypeStringForNode(schema.items as any)}[]`;
     }
-    console.log(schema);
+    if (typeof schema.type === 'undefined') {
+      return `${name}: any`;
+    }
+    console.log('modelsGen', schema);
     throw 'not implemented';
   };
 

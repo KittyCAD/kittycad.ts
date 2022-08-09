@@ -31,6 +31,9 @@ export default async function apiGen(lookup: any) {
       if (!operationId) {
         throw `no operationId for ${path} ${method}`;
       }
+      if (methodValue.tags.includes('hidden')) {
+        return;
+      }
       operations[operationId] = {
         path,
         method,
@@ -175,7 +178,7 @@ export default async function apiGen(lookup: any) {
             throw 'not implemented';
           }
         } else {
-          console.log(schema);
+          console.log('apiGen', schema);
           throw 'not implemented';
         }
       });
