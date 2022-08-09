@@ -1,0 +1,65 @@
+on:
+  push:
+    tags:
+      - v*
+  pull_request:
+    paths:
+      - .github/workflows/update-spec-for-docs.yml
+  workflow_dispatch:
+name: update spec for docs
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  update-spec:
+    name: update-spec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.4.0
+        with:
+            node-version: '16'
+            cache: 'yarn'
+      - run: yarn install
+      - run: yarn gen
+      # Ensure no files changed.
+      - name: Ensure no files changed
+        shell: bash
+        run: |
+          if [[ `git status --porcelain` ]]; then
+            echo "Files changed, exiting";
+            exit 1;
+          else
+            # No changes
+            echo "No files changed, proceeding";
+          fi
+      # Checkout the docs repo since we will want to update the files there.
+      - uses: actions/checkout@v3
+        with:
+          repository: 'kittycad/website'
+          path: 'docs'
+          token: ${{secrets.PAT_GITHUB}}
+      - name: move spec to docs
+        shell: bash
+        run: |
+          rm docs/kittycad.ts.patch.json || true
+          cp kittycad.ts.patch.json docs/kittycad.ts.patch.json
+      - name: commit the changes in the docs repo
+        shell: bash
+        run: |
+          cd docs
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -am "YOYO NEW SPEC TYPESCRIPT DOCS!" || exit 0
+          git fetch origin
+          git rebase origin/main || exit 0
+          export NEW_BRANCH="update-spec-typescript"
+          git checkout -b "$NEW_BRANCH"
+          git push -f origin "$NEW_BRANCH"
+          gh pr create --title "Update lang spec docs for typescript" \
+              --body "Updating the generated docs for typescript" \
+              --head "$NEW_BRANCH" \
+              --base main || true
+        env:
+          GITHUB_TOKEN: ${{secrets.PAT_GITHUB}}
