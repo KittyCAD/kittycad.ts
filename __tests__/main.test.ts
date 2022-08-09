@@ -20,8 +20,6 @@ describe('Testing create_file_execution', () => {
       ].join('\n'),
     );
     expect(output_files[0].contents).toHaveLength(191308);
-
-    expect(true).toBe(true);
   });
 });
 describe('Testing create_file_mass', () => {
@@ -36,7 +34,5 @@ describe('Testing create_file_mass', () => {
     const { status, mass } = response;
     expect(mass).toBe(0.7063786);
     expect(status).toBe('Completed');
-
-    expect(true).toBe(true);
   });
 });
