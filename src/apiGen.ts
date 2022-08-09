@@ -1,10 +1,12 @@
 import fsp from 'node:fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
+import { observe, generate } from 'fast-json-patch';
 
 export default async function apiGen(lookup: any) {
   const spec: OpenAPIV3.Document = JSON.parse(
     await fsp.readFile('./spec.json', 'utf8'),
   );
+  const observer = observe(spec);
   const tags = spec.tags;
   await Promise.allSettled(
     tags.map(({ name }) => fsp.mkdir(`./src/api/${name}`)),
@@ -45,22 +47,53 @@ export default async function apiGen(lookup: any) {
   const writePromises = Object.entries(operations).map(
     async ([operationId, operation]) => {
       if ('hidden' === (operation.specSection as any).tags[0]) {
-        return;
+        return [];
       }
-      let template: string = await fsp.readFile(
-        './src/template.ts.txt',
-        'utf8',
-      );
+      let template: string = (await fsp.readFile('./src/template.md', 'utf8'))
+        .replaceAll('```typescript', '')
+        .replaceAll('```', '');
+      let exampleTemplate: string = (
+        await fsp.readFile('./src/exampleAndGenTestTemplate.md', 'utf8')
+      )
+        .replaceAll('```typescript', '')
+        .replaceAll('```', '');
+
+      const importedParamTypes: string[] = [];
       const path = operation.path;
       const params = operation.specSection
         .parameters as OpenAPIV3.ParameterObject[];
       template = template.replaceAll(',', ',');
       const inputTypes: string[] = [];
       const inputParams: string[] = [];
+      const inputParamsExamples: string[] = [];
       let urlPathParams: string[] = path.split('/');
       const urlQueryParams: string[] = [];
-      (params || []).forEach(({ name, in: _in }) => {
-        inputTypes.push(`${name}: string`);
+      (params || []).forEach(({ name, in: _in, schema }) => {
+        let _type = 'any';
+        if ('$ref' in schema) {
+          const ref = schema.$ref;
+          _type = lookup[ref];
+          importedParamTypes.push(_type);
+          const refName = ref.split('/').pop();
+          const reffedSchema = spec.components.schemas[refName];
+          if ('$ref' in reffedSchema) {
+            throw 'bad';
+          }
+          if (reffedSchema.type === 'string' && reffedSchema.enum) {
+            inputParamsExamples.push(`${name}: '${reffedSchema.enum[0]}'`);
+          }
+        } else {
+          if (schema.type === 'number' || schema.type === 'integer') {
+            _type = 'number';
+            inputParamsExamples.push(`${name}: ${7}`);
+          } else if (schema.type === 'string' || schema.type === 'boolean') {
+            inputParamsExamples.push(
+              `${name}: ${schema.type === 'string' ? "'string'" : 'true'}`,
+            );
+            _type = schema.type;
+          }
+        }
+        inputTypes.push(`${name}: ${_type}`);
         if (!name) {
           throw 'no name for param';
         }
@@ -92,6 +125,7 @@ export default async function apiGen(lookup: any) {
         }
         inputTypes.push('body: string');
         inputParams.push('body');
+        inputParamsExamples.push("body: 'base64 encoded string'");
         template = template.replaceAll("body: 'BODY'", 'body');
       } else {
         template = template.replaceAll(/body: 'BODY'.+/g, '');
@@ -102,8 +136,10 @@ export default async function apiGen(lookup: any) {
           [/interface FunctionNameParams(.|\n)+?}/g, ''],
           [/functionNameParams: FunctionNameParams.+/g, ''],
         ]);
+        exampleTemplate = replacer(exampleTemplate, [
+          [`{ param: 'param' }`, ''],
+        ]);
       }
-
       const importedTypes: string[] = [];
       Object.values(operation.specSection?.responses).forEach((response) => {
         const schema = (response as any)?.content?.['application/json']
@@ -161,7 +197,7 @@ export default async function apiGen(lookup: any) {
         ['FunctionNameParams', `${FC(operationId)}_params`],
         [
           "import * as types from './src/models.ts';",
-          `import {${importedTypes
+          `import {${[...new Set([...importedTypes, ...importedParamTypes])]
             .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
             .join(', ')}} from '../../models.js';`,
         ],
@@ -169,6 +205,48 @@ export default async function apiGen(lookup: any) {
 
       const tag = operation.specSection?.tags?.[0] || 'err';
       const safeTag = tag.replaceAll('-', '_');
+      exampleTemplate = replacer(exampleTemplate, [
+        [`param: 'param'`, inputParamsExamples.filter((a) => a).join(', ')],
+        ['{ api }', `{ ${safeTag} }`],
+        ['api.section', `${safeTag}.${operationId}`],
+      ]);
+      if (
+        [
+          'file.create_file_density',
+          'file.create_file_volume',
+          'file.create_file_mass',
+          'file.create_file_conversion',
+        ].includes(`${tag}.${operationId}`)
+      ) {
+        // these test are expected to fail
+        exampleTemplate = replacer(exampleTemplate, [
+          ['expect(await example()).toBeTruthy();', ''],
+        ]);
+      } else {
+        exampleTemplate = replacer(exampleTemplate, [
+          [/try {(.|\n)+?}(.|\n)+?}/g, ''],
+        ]);
+      }
+      let genTest = exampleTemplate;
+
+      genTest = replacer(genTest, [
+        ['console.log(JSON.stringify(response, null, 2));', ''],
+      ]);
+      const genTestsWritePromise = fsp.writeFile(
+        `./__tests__/gen/${tag}-${operationId}.test.ts`,
+        genTest,
+        'utf8',
+      );
+      exampleTemplate = replacer(exampleTemplate, [
+        ["from '../../src/index.js'", "from '@kittycad/lib'"],
+        [/describe\('Testing(.|\n)+?(}\);)(.|\n)+?(}\);)/g, ''],
+        [/.+return response;\n/g, ''],
+      ]);
+      spec.paths[operation.path][operation.method]['x-typescript'] = {
+        example: exampleTemplate,
+        libDocsLink: '',
+      };
+
       if (!indexFile[safeTag]) {
         indexFile[safeTag] = {
           importsStr: [],
@@ -179,14 +257,15 @@ export default async function apiGen(lookup: any) {
         `import ${operationId} from './api/${tag}/${operationId}.js';`,
       );
       indexFile[safeTag].exportsStr.push(operationId);
-      return fsp.writeFile(
+      const libWritePromise = fsp.writeFile(
         `./src/api/${tag}/${operationId}.ts`,
         template,
         'utf8',
       );
+      return Promise.all([genTestsWritePromise, libWritePromise]);
     },
   );
-  await Promise.all(writePromises);
+  await Promise.all(writePromises.flat());
   let indexFileString = '';
   // sorts are added to keep a consistent order since awaiting the promises has non-deterministic order
   Object.entries(indexFile)
@@ -199,6 +278,16 @@ export default async function apiGen(lookup: any) {
     });
   indexFileString += `export type {Models} from './models.js';\n`;
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8');
+  spec.info['x-typescript'] = {
+    client: '',
+    install: 'npm install @kittycad/lib\n# or \nyarn add @kittycad/lib',
+  };
+  const patch = generate(observer);
+  await fsp.writeFile(
+    `./kittycad.ts.patch.json`,
+    JSON.stringify(patch, null, 2),
+    'utf8',
+  );
 }
 
 function wrapInBacktics(str: string) {

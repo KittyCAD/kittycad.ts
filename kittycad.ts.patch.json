@@ -1,0 +1,386 @@
+[
+  {
+    "op": "add",
+    "path": "/paths/~1users~1{id}~1api-calls/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_calls } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_calls.list_api_calls_for_user({ id: 'string', limit: 7, page_token: 'string', sort_by: 'created-at-ascending' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users~1{id}/get/x-typescript",
+    "value": {
+      "example": "\nimport { users } from '@kittycad/lib';\n\nasync function example() {\n  const response = await users.get_user({ id: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users-extended~1{id}/get/x-typescript",
+    "value": {
+      "example": "\nimport { users } from '@kittycad/lib';\n\nasync function example() {\n  const response = await users.get_user_extended({ id: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users-extended/get/x-typescript",
+    "value": {
+      "example": "\nimport { users } from '@kittycad/lib';\n\nasync function example() {\n  const response = await users.list_users_extended({ limit: 7, page_token: 'string', sort_by: 'created-at-ascending' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users/get/x-typescript",
+    "value": {
+      "example": "\nimport { users } from '@kittycad/lib';\n\nasync function example() {\n  const response = await users.list_users({ limit: 7, page_token: 'string', sort_by: 'created-at-ascending' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1session~1{token}/get/x-typescript",
+    "value": {
+      "example": "\nimport { sessions } from '@kittycad/lib';\n\nasync function example() {\n  const response = await sessions.get_session_for_user({ token: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment~1methods~1{id}/delete/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.delete_payment_method_for_user({ id: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment~1methods/get/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.list_payment_methods_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment~1invoices/get/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.list_invoices_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment~1intent/post/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.create_payment_intent_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment~1balance/get/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.get_payment_balance_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment/put/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.update_payment_information_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment/post/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.create_payment_information_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment/get/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.get_payment_information_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1payment/delete/x-typescript",
+    "value": {
+      "example": "\nimport { payments } from '@kittycad/lib';\n\nasync function example() {\n  const response = await payments.delete_payment_information_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1file~1conversions~1{id}/get/x-typescript",
+    "value": {
+      "example": "\nimport { file } from '@kittycad/lib';\n\nasync function example() {\n  const response = await file.get_file_conversion_for_user({ id: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1extended/get/x-typescript",
+    "value": {
+      "example": "\nimport { users } from '@kittycad/lib';\n\nasync function example() {\n  const response = await users.get_user_self_extended();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1api-tokens~1{token}/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_tokens } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_tokens.get_api_token_for_user({ token: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1api-tokens~1{token}/delete/x-typescript",
+    "value": {
+      "example": "\nimport { api_tokens } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_tokens.delete_api_token_for_user({ token: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1api-tokens/post/x-typescript",
+    "value": {
+      "example": "\nimport { api_tokens } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_tokens.create_api_token_for_user();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1api-tokens/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_tokens } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_tokens.list_api_tokens_for_user({ limit: 7, page_token: 'string', sort_by: 'created-at-ascending' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1api-calls~1{id}/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_calls } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_calls.get_api_call_for_user({ id: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1api-calls/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_calls } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_calls.user_list_api_calls({ limit: 7, page_token: 'string', sort_by: 'created-at-ascending' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user/put/x-typescript",
+    "value": {
+      "example": "\nimport { users } from '@kittycad/lib';\n\nasync function example() {\n  const response = await users.update_user_self();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user/get/x-typescript",
+    "value": {
+      "example": "\nimport { users } from '@kittycad/lib';\n\nasync function example() {\n  const response = await users.get_user_self();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user/delete/x-typescript",
+    "value": {
+      "example": "\nimport { users } from '@kittycad/lib';\n\nasync function example() {\n  const response = await users.delete_user_self();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1unit~1conversion~1{src_format}~1{output_format}/post/x-typescript",
+    "value": {
+      "example": "\nimport { unit } from '@kittycad/lib';\n\nasync function example() {\n  const response = await unit.create_unit_conversion({ output_format: 'atto', src_format: 'atto', value: 7 });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ping/get/x-typescript",
+    "value": {
+      "example": "\nimport { meta } from '@kittycad/lib';\n\nasync function example() {\n  const response = await meta.ping();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1oauth2~1provider~1{provider}~1consent/get/x-typescript",
+    "value": {
+      "example": "\nimport { oauth2 } from '@kittycad/lib';\n\nasync function example() {\n  const response = await oauth2.listen_oauth2_provider_consent({ provider: 'google', callback_url: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1oauth2~1provider~1{provider}~1callback/get/x-typescript",
+    "value": {
+      "example": "\nimport { oauth2 } from '@kittycad/lib';\n\nasync function example() {\n  const response = await oauth2.listen_oauth2_provider_callback({ provider: 'google', code: 'string', state: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1oauth2~1device~1verify/get/x-typescript",
+    "value": {
+      "example": "\nimport { oauth2 } from '@kittycad/lib';\n\nasync function example() {\n  const response = await oauth2.device_auth_verify({ user_code: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1oauth2~1device~1token/post/x-typescript",
+    "value": {
+      "example": "\nimport { oauth2 } from '@kittycad/lib';\n\nasync function example() {\n  const response = await oauth2.device_access_token();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1oauth2~1device~1confirm/post/x-typescript",
+    "value": {
+      "example": "\nimport { oauth2 } from '@kittycad/lib';\n\nasync function example() {\n  const response = await oauth2.device_auth_confirm();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1oauth2~1device~1auth/post/x-typescript",
+    "value": {
+      "example": "\nimport { oauth2 } from '@kittycad/lib';\n\nasync function example() {\n  const response = await oauth2.device_auth_request();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~1volume/post/x-typescript",
+    "value": {
+      "example": "\nimport { file } from '@kittycad/lib';\n\nasync function example() {\n  const response = await file.create_file_volume({ src_format: 'stl', body: 'base64 encoded string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~1mass/post/x-typescript",
+    "value": {
+      "example": "\nimport { file } from '@kittycad/lib';\n\nasync function example() {\n  const response = await file.create_file_mass({ material_density: 7, src_format: 'stl', body: 'base64 encoded string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~1execute~1{lang}/post/x-typescript",
+    "value": {
+      "example": "\nimport { file } from '@kittycad/lib';\n\nasync function example() {\n  const response = await file.create_file_execution({ lang: 'go', output: 'string', body: 'base64 encoded string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~1density/post/x-typescript",
+    "value": {
+      "example": "\nimport { file } from '@kittycad/lib';\n\nasync function example() {\n  const response = await file.create_file_density({ material_mass: 7, src_format: 'stl', body: 'base64 encoded string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~1conversions~1{id}/get/x-typescript",
+    "value": {
+      "example": "\nimport { file } from '@kittycad/lib';\n\nasync function example() {\n  const response = await file.get_file_conversion({ id: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~1conversion~1{src_format}~1{output_format}/post/x-typescript",
+    "value": {
+      "example": "\nimport { file } from '@kittycad/lib';\n\nasync function example() {\n  const response = await file.create_file_conversion({ output_format: 'stl', src_format: 'stl', body: 'base64 encoded string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1async~1operations~1{id}/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_calls } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_calls.get_async_operation({ id: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1async~1operations/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_calls } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_calls.list_async_operations({ limit: 7, page_token: 'string', sort_by: 'created-at-ascending', status: 'Queued' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1api-calls~1{id}/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_calls } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_calls.get_api_call({ id: 'string' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1api-calls/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_calls } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_calls.list_api_calls({ limit: 7, page_token: 'string', sort_by: 'created-at-ascending' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1api-call-metrics/get/x-typescript",
+    "value": {
+      "example": "\nimport { api_calls } from '@kittycad/lib';\n\nasync function example() {\n  const response = await api_calls.get_api_call_metrics({ group_by: 'email' });\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1_meta~1info/get/x-typescript",
+    "value": {
+      "example": "\nimport { meta } from '@kittycad/lib';\n\nasync function example() {\n  const response = await meta.get_metadata();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1/get/x-typescript",
+    "value": {
+      "example": "\nimport { meta } from '@kittycad/lib';\n\nasync function example() {\n  const response = await meta.get_schema();\n  if ('error_code' in response) throw 'error';\n  console.log(JSON.stringify(response, null, 2));\n}\n\n\n\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/info/x-typescript",
+    "value": {
+      "client": "",
+      "install": "npm install @kittycad/lib\n# or \nyarn add @kittycad/lib"
+    }
+  }
+]
