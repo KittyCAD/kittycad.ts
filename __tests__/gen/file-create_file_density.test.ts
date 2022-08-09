@@ -14,8 +14,7 @@ async function example() {
 describe('Testing file.create_file_density', () => {
   it('should be truthy or throw', async () => {
     try {
-      const result = await example();
-      expect(result).toBeTruthy();
+      await example();
     } catch (err) {
       expect(err).toBe('error'); // eslint-disable-line jest/no-conditional-expect
     }
