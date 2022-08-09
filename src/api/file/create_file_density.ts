@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { FileDensity_type, Error_type } from '../../models.js';
 
 interface Create_file_density_params {
-  material_mass: string;
+  material_mass: number;
   src_format: string;
   body: string;
 }

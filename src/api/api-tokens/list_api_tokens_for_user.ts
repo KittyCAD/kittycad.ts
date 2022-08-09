@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { ApiTokenResultsPage_type, Error_type } from '../../models.js';
 
 interface List_api_tokens_for_user_params {
-  limit: string;
+  limit: number;
   page_token: string;
   sort_by: string;
 }

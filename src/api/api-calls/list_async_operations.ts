@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { AsyncApiCallResultsPage_type, Error_type } from '../../models.js';
 
 interface List_async_operations_params {
-  limit: string;
+  limit: number;
   page_token: string;
   sort_by: string;
   status: string;

@@ -1,3 +1,4 @@
+```typescript
 import fetch from 'node-fetch';
 import * as types from './src/models.ts';
 
@@ -27,3 +28,4 @@ export default async function functionName(
   const result = (await response.json()) as FunctionNameReturn;
   return result;
 }
+```

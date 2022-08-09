@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { UserResultsPage_type, Error_type } from '../../models.js';
 
 interface List_users_params {
-  limit: string;
+  limit: number;
   page_token: string;
   sort_by: string;
 }

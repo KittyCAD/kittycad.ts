@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { ExtendedUserResultsPage_type, Error_type } from '../../models.js';
 
 interface List_users_extended_params {
-  limit: string;
+  limit: number;
   page_token: string;
   sort_by: string;
 }

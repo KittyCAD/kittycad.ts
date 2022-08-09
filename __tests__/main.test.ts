@@ -1,14 +1,16 @@
 import { file } from '../src/index.js';
-import type { Models } from '../src/index.js';
 import fsp from 'fs/promises';
 
 describe('Testing create_file_execution', () => {
   it("shouldn't throw", async () => {
-    const { stderr, stdout, output_files } = (await file.create_file_execution({
+    const response = await file.create_file_execution({
       lang: 'go',
       output: 'output.stl',
       body: await fsp.readFile('./exampleGoScript.go', 'base64'),
-    })) as Models['CodeOutput_type'];
+    });
+    if ('error_code' in response) throw 'error';
+
+    const { stderr, stdout, output_files } = response;
     expect(stderr).toBe('');
     expect(stdout).toBe(
       [
@@ -24,11 +26,14 @@ describe('Testing create_file_execution', () => {
 });
 describe('Testing create_file_mass', () => {
   it("shouldn't throw", async () => {
-    const { status, mass } = (await file.create_file_mass({
+    const response = await file.create_file_mass({
       src_format: 'obj',
-      material_density: '0.007',
+      material_density: 0.007,
       body: await fsp.readFile('./example.obj', 'base64'),
-    })) as Models['FileMass_type'];
+    });
+    if ('error_code' in response) throw 'error';
+
+    const { status, mass } = response;
     expect(mass).toBe(0.7063786);
     expect(status).toBe('Completed');
 

@@ -4,7 +4,7 @@ import { UnitConversion_type, Error_type } from '../../models.js';
 interface Create_unit_conversion_params {
   output_format: string;
   src_format: string;
-  value: string;
+  value: number;
 }
 
 type Create_unit_conversion_return = UnitConversion_type | Error_type;
