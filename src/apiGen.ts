@@ -1,6 +1,7 @@
 import fsp from 'node:fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
 import { observe, generate } from 'fast-json-patch';
+import { format } from 'prettier'
 
 export default async function apiGen(lookup: any) {
   const spec: OpenAPIV3.Document = JSON.parse(
@@ -243,7 +244,7 @@ export default async function apiGen(lookup: any) {
         [/.+return response;\n/g, ''],
       ]);
       spec.paths[operation.path][operation.method]['x-typescript'] = {
-        example: exampleTemplate,
+        example: format(exampleTemplate, { parser: 'babel' }),
         libDocsLink: '',
       };
 
