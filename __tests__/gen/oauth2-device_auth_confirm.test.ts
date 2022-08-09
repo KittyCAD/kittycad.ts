@@ -3,7 +3,7 @@ import { oauth2 } from '../../src/index.js';
 async function example() {
   const response = await oauth2.device_auth_confirm();
   if ('error_code' in response) throw 'error';
-  console.log(JSON.stringify(response, null, 2));
+
   return response;
 }
 

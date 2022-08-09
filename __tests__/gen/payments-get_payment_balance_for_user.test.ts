@@ -3,7 +3,7 @@ import { payments } from '../../src/index.js';
 async function example() {
   const response = await payments.get_payment_balance_for_user();
   if ('error_code' in response) throw 'error';
-  console.log(JSON.stringify(response, null, 2));
+
   return response;
 }
 

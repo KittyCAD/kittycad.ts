@@ -3,7 +3,7 @@ import { api_tokens } from '../../src/index.js';
 async function example() {
   const response = await api_tokens.get_api_token_for_user({ token: 'string' });
   if ('error_code' in response) throw 'error';
-  console.log(JSON.stringify(response, null, 2));
+
   return response;
 }
 

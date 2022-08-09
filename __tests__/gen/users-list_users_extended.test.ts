@@ -7,7 +7,7 @@ async function example() {
     sort_by: 'created-at-ascending',
   });
   if ('error_code' in response) throw 'error';
-  console.log(JSON.stringify(response, null, 2));
+
   return response;
 }
 

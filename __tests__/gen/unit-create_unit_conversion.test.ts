@@ -7,7 +7,7 @@ async function example() {
     value: 7,
   });
   if ('error_code' in response) throw 'error';
-  console.log(JSON.stringify(response, null, 2));
+
   return response;
 }
 
