@@ -1,9 +1,13 @@
 import fetch from 'node-fetch';
-import { FileDensity_type, Error_type } from '../../models.js';
+import {
+  FileDensity_type,
+  Error_type,
+  FileSourceFormat_type,
+} from '../../models.js';
 
 interface Create_file_density_params {
   material_mass: number;
-  src_format: string;
+  src_format: FileSourceFormat_type;
   body: string;
 }
 

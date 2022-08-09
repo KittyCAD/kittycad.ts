@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
-import { Error_type } from '../../models.js';
+import { Error_type, AccountProvider_type } from '../../models.js';
 
 interface Listen_oauth2_provider_callback_params {
-  provider: string;
+  provider: AccountProvider_type;
   code: string;
   state: string;
 }

@@ -1,9 +1,13 @@
 import fetch from 'node-fetch';
-import { UnitConversion_type, Error_type } from '../../models.js';
+import {
+  UnitConversion_type,
+  Error_type,
+  UnitMetricFormat_type,
+} from '../../models.js';
 
 interface Create_unit_conversion_params {
-  output_format: string;
-  src_format: string;
+  output_format: UnitMetricFormat_type;
+  src_format: UnitMetricFormat_type;
   value: number;
 }
 

@@ -1,8 +1,12 @@
 import fetch from 'node-fetch';
-import { FileVolume_type, Error_type } from '../../models.js';
+import {
+  FileVolume_type,
+  Error_type,
+  FileSourceFormat_type,
+} from '../../models.js';
 
 interface Create_file_volume_params {
-  src_format: string;
+  src_format: FileSourceFormat_type;
   body: string;
 }
 

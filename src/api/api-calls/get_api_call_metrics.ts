@@ -1,8 +1,12 @@
 import fetch from 'node-fetch';
-import { ApiCallQueryGroup_type, Error_type } from '../../models.js';
+import {
+  ApiCallQueryGroup_type,
+  Error_type,
+  ApiCallQueryGroupBy_type,
+} from '../../models.js';
 
 interface Get_api_call_metrics_params {
-  group_by: string;
+  group_by: ApiCallQueryGroupBy_type;
 }
 
 type Get_api_call_metrics_return = ApiCallQueryGroup_type[] | Error_type;

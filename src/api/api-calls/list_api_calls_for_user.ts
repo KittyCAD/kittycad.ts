@@ -1,11 +1,15 @@
 import fetch from 'node-fetch';
-import { ApiCallWithPriceResultsPage_type, Error_type } from '../../models.js';
+import {
+  ApiCallWithPriceResultsPage_type,
+  Error_type,
+  CreatedAtSortMode_type,
+} from '../../models.js';
 
 interface List_api_calls_for_user_params {
   id: string;
   limit: number;
   page_token: string;
-  sort_by: string;
+  sort_by: CreatedAtSortMode_type;
 }
 
 type List_api_calls_for_user_return =

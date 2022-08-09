@@ -1,9 +1,14 @@
 import fetch from 'node-fetch';
-import { FileConversion_type, Error_type } from '../../models.js';
+import {
+  FileConversion_type,
+  Error_type,
+  FileOutputFormat_type,
+  FileSourceFormat_type,
+} from '../../models.js';
 
 interface Create_file_conversion_params {
-  output_format: string;
-  src_format: string;
+  output_format: FileOutputFormat_type;
+  src_format: FileSourceFormat_type;
   body: string;
 }
 

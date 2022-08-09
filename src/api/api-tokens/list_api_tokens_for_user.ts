@@ -1,10 +1,14 @@
 import fetch from 'node-fetch';
-import { ApiTokenResultsPage_type, Error_type } from '../../models.js';
+import {
+  ApiTokenResultsPage_type,
+  Error_type,
+  CreatedAtSortMode_type,
+} from '../../models.js';
 
 interface List_api_tokens_for_user_params {
   limit: number;
   page_token: string;
-  sort_by: string;
+  sort_by: CreatedAtSortMode_type;
 }
 
 type List_api_tokens_for_user_return = ApiTokenResultsPage_type | Error_type;

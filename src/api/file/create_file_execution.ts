@@ -1,8 +1,12 @@
 import fetch from 'node-fetch';
-import { CodeOutput_type, Error_type } from '../../models.js';
+import {
+  CodeOutput_type,
+  Error_type,
+  CodeLanguage_type,
+} from '../../models.js';
 
 interface Create_file_execution_params {
-  lang: string;
+  lang: CodeLanguage_type;
   output: string;
   body: string;
 }

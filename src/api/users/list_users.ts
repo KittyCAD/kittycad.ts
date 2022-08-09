@@ -1,10 +1,14 @@
 import fetch from 'node-fetch';
-import { UserResultsPage_type, Error_type } from '../../models.js';
+import {
+  UserResultsPage_type,
+  Error_type,
+  CreatedAtSortMode_type,
+} from '../../models.js';
 
 interface List_users_params {
   limit: number;
   page_token: string;
-  sort_by: string;
+  sort_by: CreatedAtSortMode_type;
 }
 
 type List_users_return = UserResultsPage_type | Error_type;
