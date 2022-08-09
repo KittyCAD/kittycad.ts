@@ -13,7 +13,7 @@ describe('Testing oauth2.listen_oauth2_provider_consent', () => {
       const result = await example();
       expect(result).toBeTruthy();
     } catch (err) {
-      expect(err).toBe(''); // eslint-disable-line jest/no-conditional-expect
+      expect(err).toBe('error'); // eslint-disable-line jest/no-conditional-expect
     }
   });
 });

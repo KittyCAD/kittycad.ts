@@ -13,7 +13,7 @@ describe('Testing api_calls.get_api_call_for_user', () => {
       const result = await example();
       expect(result).toBeTruthy();
     } catch (err) {
-      expect(err).toBe(''); // eslint-disable-line jest/no-conditional-expect
+      expect(err).toBe('error'); // eslint-disable-line jest/no-conditional-expect
     }
   });
 });
