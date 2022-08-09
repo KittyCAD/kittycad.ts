@@ -1,7 +1,11 @@
 import { api_tokens } from '../../src/index.js';
 
 async function example() {
-  const response = await api_tokens.list_api_tokens_for_user({ limit: 7, page_token: 'string', sort_by: 'created-at-ascending' });
+  const response = await api_tokens.list_api_tokens_for_user({
+    limit: 7,
+    page_token: 'string',
+    sort_by: 'created-at-ascending',
+  });
   if ('error_code' in response) throw 'error';
   console.log(JSON.stringify(response, null, 2));
   return response;

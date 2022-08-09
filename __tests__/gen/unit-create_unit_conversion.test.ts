@@ -1,7 +1,11 @@
 import { unit } from '../../src/index.js';
 
 async function example() {
-  const response = await unit.create_unit_conversion({ output_format: 'atto', src_format: 'atto', value: 7 });
+  const response = await unit.create_unit_conversion({
+    output_format: 'atto',
+    src_format: 'atto',
+    value: 7,
+  });
   if ('error_code' in response) throw 'error';
   console.log(JSON.stringify(response, null, 2));
   return response;

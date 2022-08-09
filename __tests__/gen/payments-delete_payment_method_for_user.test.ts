@@ -1,7 +1,9 @@
 import { payments } from '../../src/index.js';
 
 async function example() {
-  const response = await payments.delete_payment_method_for_user({ id: 'string' });
+  const response = await payments.delete_payment_method_for_user({
+    id: 'string',
+  });
   if ('error_code' in response) throw 'error';
   console.log(JSON.stringify(response, null, 2));
   return response;

@@ -1,7 +1,11 @@
 import { file } from '../../src/index.js';
 
 async function example() {
-  const response = await file.create_file_mass({ material_density: 7, src_format: 'stl', body: 'base64 encoded string' });
+  const response = await file.create_file_mass({
+    material_density: 7,
+    src_format: 'stl',
+    body: 'base64 encoded string',
+  });
   if ('error_code' in response) throw 'error';
   console.log(JSON.stringify(response, null, 2));
   return response;
