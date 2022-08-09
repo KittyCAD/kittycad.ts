@@ -1,7 +1,7 @@
 import fsp from 'node:fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
 import { observe, generate } from 'fast-json-patch';
-import { format } from 'prettier'
+import { format } from 'prettier';
 
 export default async function apiGen(lookup: any) {
   const spec: OpenAPIV3.Document = JSON.parse(
