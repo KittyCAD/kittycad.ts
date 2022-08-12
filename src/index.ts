@@ -21,6 +21,7 @@ export const api_tokens = {
 import get_physics_constant from './api/constant/get_physics_constant.js';
 export const constant = { get_physics_constant };
 
+import create_file_center_of_mass from './api/file/create_file_center_of_mass.js';
 import create_file_conversion from './api/file/create_file_conversion.js';
 import create_file_density from './api/file/create_file_density.js';
 import create_file_mass from './api/file/create_file_mass.js';
@@ -29,6 +30,7 @@ import create_file_volume from './api/file/create_file_volume.js';
 import get_file_conversion from './api/file/get_file_conversion.js';
 import get_file_conversion_for_user from './api/file/get_file_conversion_for_user.js';
 export const file = {
+  create_file_center_of_mass,
   create_file_conversion,
   create_file_density,
   create_file_mass,
