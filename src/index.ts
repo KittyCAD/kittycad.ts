@@ -24,6 +24,7 @@ export const constant = { get_physics_constant };
 import create_file_conversion from './api/file/create_file_conversion.js';
 import create_file_density from './api/file/create_file_density.js';
 import create_file_mass from './api/file/create_file_mass.js';
+import create_file_surface_area from './api/file/create_file_surface_area.js';
 import create_file_volume from './api/file/create_file_volume.js';
 import get_file_conversion from './api/file/get_file_conversion.js';
 import get_file_conversion_for_user from './api/file/get_file_conversion_for_user.js';
@@ -31,6 +32,7 @@ export const file = {
   create_file_conversion,
   create_file_density,
   create_file_mass,
+  create_file_surface_area,
   create_file_volume,
   get_file_conversion,
   get_file_conversion_for_user,
@@ -76,7 +78,9 @@ import get_length_unit_conversion from './api/unit/get_length_unit_conversion.js
 import get_magnetic_field_strength_unit_conversion from './api/unit/get_magnetic_field_strength_unit_conversion.js';
 import get_magnetic_flux_unit_conversion from './api/unit/get_magnetic_flux_unit_conversion.js';
 import get_mass_unit_conversion from './api/unit/get_mass_unit_conversion.js';
-import get_metric_unit_conversion from './api/unit/get_metric_unit_conversion.js';
+import get_metric_power_cubed_unit_conversion from './api/unit/get_metric_power_cubed_unit_conversion.js';
+import get_metric_power_squared_unit_conversion from './api/unit/get_metric_power_squared_unit_conversion.js';
+import get_metric_power_unit_conversion from './api/unit/get_metric_power_unit_conversion.js';
 import get_power_unit_conversion from './api/unit/get_power_unit_conversion.js';
 import get_pressure_unit_conversion from './api/unit/get_pressure_unit_conversion.js';
 import get_radiation_unit_conversion from './api/unit/get_radiation_unit_conversion.js';
@@ -103,7 +107,9 @@ export const unit = {
   get_magnetic_field_strength_unit_conversion,
   get_magnetic_flux_unit_conversion,
   get_mass_unit_conversion,
-  get_metric_unit_conversion,
+  get_metric_power_cubed_unit_conversion,
+  get_metric_power_squared_unit_conversion,
+  get_metric_power_unit_conversion,
   get_power_unit_conversion,
   get_pressure_unit_conversion,
   get_radiation_unit_conversion,

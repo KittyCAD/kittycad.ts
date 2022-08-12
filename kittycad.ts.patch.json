@@ -155,7 +155,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1volume~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        output_format: 'cubic_meter',\n        src_format: 'cubic_millimeter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        output_format: 'cubic_millimeter',\n        src_format: 'cubic_centimeter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -225,9 +225,25 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1unit~1conversion~1metric~1{src_format}~1{output_format}/get/x-typescript",
+    "path": "/paths/~1unit~1conversion~1metric~1squared~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_metric_unit_conversion({\n        output_format: 'atto',\n        src_format: 'femto',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_metric_power_squared_unit_conversion({\n        output_format: 'atto',\n        src_format: 'femto',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1unit~1conversion~1metric~1power~1{src_format}~1{output_format}/get/x-typescript",
+    "value": {
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_metric_power_unit_conversion({\n        output_format: 'atto',\n        src_format: 'femto',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1unit~1conversion~1metric~1cubed~1{src_format}~1{output_format}/get/x-typescript",
+    "value": {
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_metric_power_cubed_unit_conversion({\n        output_format: 'atto',\n        src_format: 'femto',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -235,7 +251,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1mass~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_mass_unit_conversion({\n        output_format: 'gram',\n        src_format: 'metric_ton',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_mass_unit_conversion({\n        output_format: 'gram',\n        src_format: 'kilogram',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -259,7 +275,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1length~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        output_format: 'meter',\n        src_format: 'foot',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        output_format: 'millimeter',\n        src_format: 'centimeter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -372,6 +388,14 @@
     "path": "/paths/~1file~1volume/post/x-typescript",
     "value": {
       "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~1surface-area/post/x-typescript",
+    "value": {
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_surface_area({\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
