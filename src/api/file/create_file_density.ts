@@ -4,8 +4,10 @@ import {
   Error_type,
   FileSourceFormat_type,
 } from '../../models.js';
+import { Client } from '../../client.js';
 
 interface Create_file_density_params {
+  client?: Client;
   material_mass: number;
   src_format: FileSourceFormat_type;
   body: string;
@@ -14,13 +16,16 @@ interface Create_file_density_params {
 type Create_file_density_return = FileDensity_type | Error_type;
 
 export default async function create_file_density({
+  client,
   material_mass,
   src_format,
   body,
 }: Create_file_density_params): Promise<Create_file_density_return> {
   const url = `/file/density?material_mass=${material_mass}&src_format=${src_format}`;
   const fullUrl = 'https://api.kittycad.io' + url;
-  const kittycadToken = process.env.KITTYCAD_TOKEN || '';
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };

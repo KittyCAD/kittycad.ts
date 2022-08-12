@@ -1,12 +1,21 @@
 import fetch from 'node-fetch';
 import { ExtendedUser_type, Error_type } from '../../models.js';
+import { Client } from '../../client.js';
+
+interface Get_user_self_extended_params {
+  client?: Client;
+}
 
 type Get_user_self_extended_return = ExtendedUser_type | Error_type;
 
-export default async function get_user_self_extended(): Promise<Get_user_self_extended_return> {
+export default async function get_user_self_extended({
+  client,
+}: Get_user_self_extended_params = {}): Promise<Get_user_self_extended_return> {
   const url = `/user/extended`;
   const fullUrl = 'https://api.kittycad.io' + url;
-  const kittycadToken = process.env.KITTYCAD_TOKEN || '';
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };

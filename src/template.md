@@ -1,6 +1,7 @@
 ```typescript
 import fetch from 'node-fetch';
 import * as types from './src/models.ts';
+import { Client } from '../../client.js';
 
 interface FunctionNameParams {
   exampleParam: string;
@@ -15,7 +16,9 @@ export default async function functionName(
 ): Promise<FunctionNameReturn> {
   const url = 'string' + functionNameParams.exampleParam;
   const fullUrl = 'https://api.kittycad.io' + url;
-  const kittycadToken = process.env.KITTYCAD_TOKEN || '';
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };

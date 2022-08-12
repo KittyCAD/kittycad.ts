@@ -4,8 +4,10 @@ import {
   Error_type,
   UnitEnergyFormat_type,
 } from '../../models.js';
+import { Client } from '../../client.js';
 
 interface Get_energy_unit_conversion_params {
+  client?: Client;
   output_format: UnitEnergyFormat_type;
   src_format: UnitEnergyFormat_type;
   value: number;
@@ -14,13 +16,16 @@ interface Get_energy_unit_conversion_params {
 type Get_energy_unit_conversion_return = UnitEnergyConversion_type | Error_type;
 
 export default async function get_energy_unit_conversion({
+  client,
   output_format,
   src_format,
   value,
 }: Get_energy_unit_conversion_params): Promise<Get_energy_unit_conversion_return> {
   const url = `/unit/conversion/energy/${src_format}/${output_format}?value=${value}`;
   const fullUrl = 'https://api.kittycad.io' + url;
-  const kittycadToken = process.env.KITTYCAD_TOKEN || '';
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };

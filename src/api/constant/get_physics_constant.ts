@@ -4,19 +4,24 @@ import {
   Error_type,
   PhysicsConstantName_type,
 } from '../../models.js';
+import { Client } from '../../client.js';
 
 interface Get_physics_constant_params {
+  client?: Client;
   constant: PhysicsConstantName_type;
 }
 
 type Get_physics_constant_return = PhysicsConstant_type | Error_type;
 
 export default async function get_physics_constant({
+  client,
   constant,
 }: Get_physics_constant_params): Promise<Get_physics_constant_return> {
   const url = `/constant/physics/${constant}`;
   const fullUrl = 'https://api.kittycad.io' + url;
-  const kittycadToken = process.env.KITTYCAD_TOKEN || '';
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };

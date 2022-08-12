@@ -1,18 +1,23 @@
 import fetch from 'node-fetch';
 import { Error_type } from '../../models.js';
+import { Client } from '../../client.js';
 
 interface Delete_api_token_for_user_params {
+  client?: Client;
   token: string;
 }
 
 type Delete_api_token_for_user_return = Error_type;
 
 export default async function delete_api_token_for_user({
+  client,
   token,
 }: Delete_api_token_for_user_params): Promise<Delete_api_token_for_user_return> {
   const url = `/user/api-tokens/${token}`;
   const fullUrl = 'https://api.kittycad.io' + url;
-  const kittycadToken = process.env.KITTYCAD_TOKEN || '';
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };

@@ -1,18 +1,23 @@
 import fetch from 'node-fetch';
 import { AsyncApiCallOutput_type, Error_type } from '../../models.js';
+import { Client } from '../../client.js';
 
 interface Get_file_conversion_params {
+  client?: Client;
   id: string;
 }
 
 type Get_file_conversion_return = AsyncApiCallOutput_type | Error_type;
 
 export default async function get_file_conversion({
+  client,
   id,
 }: Get_file_conversion_params): Promise<Get_file_conversion_return> {
   const url = `/file/conversions/${id}`;
   const fullUrl = 'https://api.kittycad.io' + url;
-  const kittycadToken = process.env.KITTYCAD_TOKEN || '';
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };

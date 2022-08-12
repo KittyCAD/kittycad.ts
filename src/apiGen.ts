@@ -67,8 +67,8 @@ export default async function apiGen(lookup: any) {
       const params = operation.specSection
         .parameters as OpenAPIV3.ParameterObject[];
       template = template.replaceAll(',', ',');
-      const inputTypes: string[] = [];
-      const inputParams: string[] = [];
+      const inputTypes: string[] = ['client?: Client'];
+      const inputParams: string[] = ['client'];
       const inputParamsExamples: string[] = [];
       let urlPathParams: string[] = path.split('/');
       const urlQueryParams: string[] = [];
@@ -135,10 +135,12 @@ export default async function apiGen(lookup: any) {
         template = template.replaceAll(/body: 'BODY'.+/g, '');
       }
 
-      if (!inputParams.length) {
+      if (inputParams.length === 1) {
         template = replacer(template, [
-          [/interface FunctionNameParams(.|\n)+?}/g, ''],
-          [/functionNameParams: FunctionNameParams.+/g, ''],
+          [
+            'functionNameParams: FunctionNameParams,',
+            'functionNameParams: FunctionNameParams = {},',
+          ],
         ]);
         exampleTemplate = replacer(exampleTemplate, [
           [`{ param: 'param' }`, ''],
@@ -273,7 +275,7 @@ export default async function apiGen(lookup: any) {
         template,
         'utf8',
       );
-      return Promise.all([genTestsWritePromise, libWritePromise]);
+      return [genTestsWritePromise, libWritePromise];
     },
   );
   await Promise.all(writePromises.flat());
@@ -287,7 +289,8 @@ export default async function apiGen(lookup: any) {
         .sort()
         .join(', ')} };\n\n`;
     });
-  indexFileString += `export type {Models} from './models.js';\n`;
+  indexFileString += `export type { Models } from './models.js';\n`;
+  indexFileString += `export { Client} from './client.js';\n`;
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8');
   spec.info['x-typescript'] = {
     client: '',
