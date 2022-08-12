@@ -1,27 +1,36 @@
 import fetch from 'node-fetch';
-import { ApiTokenResultsPage_type, Error_type } from '../../models.js';
+import {
+  ApiTokenResultsPage_type,
+  Error_type,
+  CreatedAtSortMode_type,
+} from '../../models.js';
+import { Client } from '../../client.js';
 
 interface List_api_tokens_for_user_params {
-  limit: string;
+  client?: Client;
+  limit: number;
   page_token: string;
-  sort_by: string;
+  sort_by: CreatedAtSortMode_type;
 }
 
 type List_api_tokens_for_user_return = ApiTokenResultsPage_type | Error_type;
 
 export default async function list_api_tokens_for_user({
+  client,
   limit,
   page_token,
   sort_by,
 }: List_api_tokens_for_user_params): Promise<List_api_tokens_for_user_return> {
   const url = `/user/api-tokens?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
   const fullUrl = 'https://api.kittycad.io' + url;
-  const kittycadToken = process.env.KITTYCAD_TOKEN || '';
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'POST',
+    method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);

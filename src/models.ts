@@ -2,21 +2,6 @@ export type AccountProvider_type =
   /* An account provider. */
   'google' | 'github';
 
-export interface Address_type {
-  city: string /* The city component. */;
-  country: string /* The country component. */;
-  /* format:date-time, title:DateTime, description:The time and date the address was created. */
-  created_at: string;
-  id: Uuid_type /* The unique identifier of the address. */;
-  state: string /* The state component. */;
-  street1: string /* The first street component. */;
-  street2: string /* The second street component. */;
-  /* format:date-time, title:DateTime, description:The time and date the address was last updated. */
-  updated_at: string;
-  user_id: string /* The user ID that this address belongs to. */;
-  zip: string /* The zip component. */;
-}
-
 export interface ApiCallQueryGroup_type {
   /*{
   "format": "int64"
@@ -61,6 +46,11 @@ export interface ApiCallWithPrice_type {
   "description": "The ip address of the origin."
 }*/
   ip_address: string;
+  /*{
+  "nullable": true,
+  "description": "If the API call was spawned from the litterbox or not."
+}*/
+  litterbox?: boolean;
   method: Method_type /* The HTTP method requsted by the API call. */;
   /*{
   "format": "int32",
@@ -135,6 +125,10 @@ export interface ApiTokenResultsPage_type {
   next_page?: string;
 }
 
+export interface AppClientInfo_type {
+  url: string /* The URL for consent. */;
+}
+
 export interface AsyncApiCall_type {
   /*{
   "format": "date-time",
@@ -151,7 +145,7 @@ export interface AsyncApiCall_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  input: string;
+  input: any;
   output?: string;
   /*{
   "format": "date-time",
@@ -318,6 +312,38 @@ This is the same as the API call ID. */
       /* format:date-time, title:DateTime, description:The time and date the density was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the density. */;
+    }
+  | {
+      /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the density was completed."
+}*/
+      completed_at?: string;
+      /* format:date-time, title:DateTime, description:The time and date the density was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* The unique identifier of the density request.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      src_format: FileSourceFormat_type /* The source format of the file. */;
+      /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the density was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the density. */;
+      /* format:double, nullable:true, description:The resulting surface area. */
+      surface_area?: number;
+      type: 'FileSurfaceArea';
+      /* format:date-time, title:DateTime, description:The time and date the density was last updated. */
+      updated_at: string;
+      user_id: string /* The user ID of the user who created the density. */;
     };
 
 export interface AsyncApiCallResultsPage_type {
@@ -331,11 +357,15 @@ export interface AsyncApiCallResultsPage_type {
 
 export type AsyncApiCallType_type =
   /* The type of async API call. */
-  'FileConversion' | 'FileVolume' | 'FileMass' | 'FileDensity';
+  | 'FileConversion'
+  | 'FileVolume'
+  | 'FileMass'
+  | 'FileDensity'
+  | 'FileSurfaceArea';
 
 export interface BillingInfo_type {
   /* nullable:true, description:The address of the customer. */
-  address: Address_type;
+  address: NewAddress_type;
   name: string /* The name of the customer. */;
   /*{
   "default": "",
@@ -668,7 +698,7 @@ For more details see <https://support.stripe.com/questions/which-currencies-does
 
 export interface Customer_type {
   /* nullable:true, description:The customer's address. */
-  address: Address_type;
+  address: NewAddress_type;
   /*{
   "default": 0,
   "format": "money-usd",
@@ -1210,6 +1240,38 @@ export type FileSourceFormat_type =
   /* The valid types of source file formats. */
   'stl' | 'obj' | 'dae' | 'step' | 'fbx';
 
+export interface FileSurfaceArea_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the density was completed."
+}*/
+  completed_at?: string;
+  /* format:date-time, title:DateTime, description:The time and date the density was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the density request.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  src_format: FileSourceFormat_type /* The source format of the file. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the density was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the density. */;
+  /* format:double, nullable:true, description:The resulting surface area. */
+  surface_area?: number;
+  /* format:date-time, title:DateTime, description:The time and date the density was last updated. */
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the density. */;
+}
+
 export interface FileSystemMetadata_type {
   ok: boolean /* If the file system passed a sanity check. */;
 }
@@ -1482,6 +1544,16 @@ Currently includes 8 variants representing the 8 methods defined in [RFC 7230](h
   | 'PATCH'
   | 'EXTENSION';
 
+export interface NewAddress_type {
+  city: string /* The city component. */;
+  country: string /* The country component. */;
+  state: string /* The state component. */;
+  street1: string /* The first street component. */;
+  street2: string /* The second street component. */;
+  user_id: string /* The user ID that this address belongs to. */;
+  zip: string /* The zip component. */;
+}
+
 export interface OAuth2ClientInfo_type {
   csrf_token: string /* Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */;
   /*{
@@ -1531,6 +1603,74 @@ export interface PaymentMethodCardChecks_type {
 
 export type PaymentMethodType_type =
   'card'; /* An enum representing the possible values of an `PaymentMethod`'s `type` field. */
+
+export interface PhysicsConstant_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the constant was completed."
+}*/
+  completed_at?: string;
+  constant: PhysicsConstantName_type /* The constant we are returning. */;
+  /* format:date-time, title:DateTime, description:The time and date the constant was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the constant request.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the constant was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the constant. */;
+  /* format:date-time, title:DateTime, description:The time and date the constant was last updated. */
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the constant. */;
+  /* format:double, nullable:true, description:The resulting value of the constant. */
+  value?: number;
+}
+
+export type PhysicsConstantName_type =
+  /* The valid types of phys constant names. */
+  | 'pi'
+  | 'c'
+  | 'speed_of_light'
+  | 'G'
+  | 'newtonian_graviation'
+  | 'h'
+  | 'plank_const'
+  | 'mu_0'
+  | 'vacuum_permeability'
+  | 'E_0'
+  | 'vacuum_permitivity'
+  | 'Z_0'
+  | 'vacuum_impedance'
+  | 'k_e'
+  | 'coulomb_const'
+  | 'e'
+  | 'elementary_charge'
+  | 'm_e'
+  | 'electron_mass'
+  | 'm_p'
+  | 'proton_mass'
+  | 'mu_B'
+  | 'bohr_magneton'
+  | 'NA'
+  | 'avogadro_num'
+  | 'R'
+  | 'molar_gas_const'
+  | 'K_B'
+  | 'boltzmann_const'
+  | 'F'
+  | 'faraday_const'
+  | 'sigma'
+  | 'stefan_boltzmann_const';
 
 export interface PluginsInfo_type {
   authorization: string[];
@@ -1593,7 +1733,7 @@ export type SystemInfoIsolationEnum_type =
   | 'hyperv'
   | 'process';
 
-export interface UnitConversion_type {
+export interface UnitAccelerationConversion_type {
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1617,8 +1757,8 @@ This is the same as the API call ID. */
   input: number;
   /* format:double, nullable:true, description:The resulting value. */
   output?: number;
-  output_format: UnitMetricFormat_type /* The output format of the unit conversion. */;
-  src_format: UnitMetricFormat_type /* The source format of the unit conversion. */;
+  output_format: UnitAccelerationFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitAccelerationFormat_type /* The source format of the unit conversion. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1636,7 +1776,773 @@ This is the same as the API call ID. */
   user_id: string /* The user ID of the user who created the unit conversion. */;
 }
 
-export type UnitMetricFormat_type =
+export type UnitAccelerationFormat_type =
+  /* The valid types of metric unit formats. */
+  'meters_per_second_squared' | 'feet_per_second_squared' | 'standard_gravity';
+
+export interface UnitAngleConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitAngleFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitAngleFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitAngleFormat_type =
+  /* The valid types of angle formats. */
+  | 'radian'
+  | 'degree'
+  | 'arcminute'
+  | 'arcsecond'
+  | 'milliarcsecond'
+  | 'turn'
+  | 'gradian';
+
+export interface UnitAngularVelocityConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitAngularVelocityFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitAngularVelocityFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitAngularVelocityFormat_type =
+  /* The valid types of angular velocity unit formats. */
+  | 'radians_per_second'
+  | 'degrees_per_second'
+  | 'revolutions_per_minute'
+  | 'milliarcseconds_per_year';
+
+export interface UnitAreaConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitAreaFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitAreaFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitAreaFormat_type =
+  /* The valid types of area unit formats. */
+  | 'square_meter'
+  | 'square_foot'
+  | 'square_inch'
+  | 'square_mile'
+  | 'square_kilometer'
+  | 'hectare'
+  | 'acre';
+
+export interface UnitChargeConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitChargeFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitChargeFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitChargeFormat_type =
+  /* The valid types of charge unit formats. */
+  'coulomb' | 'ampere_hour';
+
+export interface UnitConcentrationConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitConcentrationFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitConcentrationFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitConcentrationFormat_type =
+  /* The valid types of concentration unit formats. */
+  'parts_per_million' | 'parts_per_billion' | 'parts_per_trillion' | 'percent';
+
+export interface UnitDataConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitDataFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitDataFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitDataFormat_type =
+  /* The valid types of data unit formats. */
+  'byte' | 'exabyte' | 'bit' | 'exabit';
+
+export interface UnitDataTransferRateConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitDataTransferRateFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitDataTransferRateFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitDataTransferRateFormat_type =
+  /* The valid types of data transfer unit formats. */
+  | 'bytes_per_second'
+  | 'exabytes_per_second'
+  | 'bits_per_second'
+  | 'exabits_per_second';
+
+export interface UnitDensityConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitDensityFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitDensityFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitDensityFormat_type =
+  /* The valid types of density unit formats. */
+  | 'kilograms_per_cubic_meter'
+  | 'grams_per_milliliter'
+  | 'kilograms_per_liter'
+  | 'ounces_per_cubic_foot'
+  | 'ounces_per_cubic_inch'
+  | 'ounces_per_gallon'
+  | 'pounds_per_cubic_foot'
+  | 'pounds_per_cubic_inch'
+  | 'pounds_per_gallon'
+  | 'slugs_per_cubic_foot';
+
+export interface UnitEnergyConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitEnergyFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitEnergyFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitEnergyFormat_type =
+  /* The valid types of energy unit formats. */
+  | 'joule'
+  | 'calorie'
+  | 'british_thermal_unit'
+  | 'british_thermal_unit_iso'
+  | 'british_thermal_unit59'
+  | 'foot_pound';
+
+export interface UnitForceConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitForceFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitForceFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitForceFormat_type =
+  /* The valid types of force unit formats. */
+  'newton' | 'pound' | 'dyne' | 'kilopound' | 'poundal';
+
+export interface UnitIlluminanceConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitIlluminanceFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitIlluminanceFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitIlluminanceFormat_type =
+  /* The valid types of illuminance unit formats. */
+  'lux' | 'footcandle' | 'lumens_per_square_inch' | 'phot';
+
+export interface UnitLengthConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitLengthFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitLengthFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitLengthFormat_type =
+  /* The valid types of length unit formats. */
+  | 'millimeter'
+  | 'centimeter'
+  | 'meter'
+  | 'kilomter'
+  | 'foot'
+  | 'inch'
+  | 'mile'
+  | 'nautical_mile'
+  | 'astronomical_unit'
+  | 'cubit'
+  | 'fathom'
+  | 'chain'
+  | 'furlong'
+  | 'hand'
+  | 'league'
+  | 'nautical_league'
+  | 'yard';
+
+export interface UnitMagneticFieldStrengthConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitMagneticFieldStrengthFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitMagneticFieldStrengthFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitMagneticFieldStrengthFormat_type =
+  /* The valid types of magnetic field strength unit formats. */
+  'tesla' | 'gauss';
+
+export interface UnitMagneticFluxConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitMagneticFluxFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitMagneticFluxFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitMagneticFluxFormat_type =
+  /* The valid types of magnetic flux unit formats. */
+  'weber' | 'maxwell';
+
+export interface UnitMassConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitMassFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitMassFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitMassFormat_type =
+  /* The valid types of mass unit formats. */
+  | 'gram'
+  | 'kilogram'
+  | 'metric_ton'
+  | 'pound'
+  | 'long_ton'
+  | 'short_ton'
+  | 'stone'
+  | 'ounce'
+  | 'carat'
+  | 'slug';
+
+export type UnitMetricPower_type =
   /* The valid types of metric unit formats. */
   | 'atto'
   | 'femto'
@@ -1655,6 +2561,576 @@ export type UnitMetricFormat_type =
   | 'tera'
   | 'peta'
   | 'exa';
+
+export interface UnitMetricPowerConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitMetricPower_type /* The output format of the unit conversion. */;
+  src_format: UnitMetricPower_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export interface UnitMetricPowerCubedConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitMetricPower_type /* The output format of the unit conversion. */;
+  src_format: UnitMetricPower_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export interface UnitMetricPowerSquaredConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitMetricPower_type /* The output format of the unit conversion. */;
+  src_format: UnitMetricPower_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export interface UnitPowerConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitPowerFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitPowerFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitPowerFormat_type =
+  /* The valid types of power unit formats. */
+  'watt' | 'horsepower' | 'milliwatt';
+
+export interface UnitPressureConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitPressureFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitPressureFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitPressureFormat_type =
+  /* The valid types of pressure unit formats. */
+  'pascal' | 'bar' | 'mbar' | 'atmosphere' | 'pounds_per_square_inch';
+
+export interface UnitRadiationConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitRadiationFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitRadiationFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitRadiationFormat_type =
+  /* The valid types of radiation unit formats. */
+  'gray' | 'sievert' | 'rad';
+
+export interface UnitSolidAngleConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitSolidAngleFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitSolidAngleFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitSolidAngleFormat_type =
+  /* The valid types of solid angle unit formats. */
+  'steradian' | 'degree_squared' | 'spat';
+
+export interface UnitTemperatureConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitTemperatureFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitTemperatureFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitTemperatureFormat_type =
+  /* The valid types of temperature unit formats. */
+  'kelvin' | 'celsius' | 'fahrenheit' | 'reaumur' | 'rankine';
+
+export interface UnitTimeConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitTimeFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitTimeFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitTimeFormat_type =
+  /* The valid types of time unit formats. */
+  | 'second'
+  | 'minute'
+  | 'hour'
+  | 'day'
+  | 'week'
+  | 'year'
+  | 'julian_year'
+  | 'gregorian_year';
+
+export interface UnitVelocityConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitVelocityFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitVelocityFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitVelocityFormat_type =
+  /* The valid types of velocity unit formats. */
+  | 'meters_per_second'
+  | 'feet_per_second'
+  | 'miles_per_hour'
+  | 'kilometers_per_hour'
+  | 'knot';
+
+export interface UnitVoltageConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitVoltageFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitVoltageFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitVoltageFormat_type =
+  /* The valid types of voltage unit formats. */
+  'volt' | 'statvolt' | 'abvolt';
+
+export interface UnitVolumeConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was completed."
+}*/
+  completed_at?: string;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was created."
+}*/
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the unit conversion.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitVolumeFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitVolumeFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "title": "DateTime",
+  "description": "The time and date the unit conversion was last updated."
+}*/
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the unit conversion. */;
+}
+
+export type UnitVolumeFormat_type =
+  /* The valid types of volume unit formats. */
+  | 'cubic_millimeter'
+  | 'cubic_centimeter'
+  | 'cubic_meter'
+  | 'cubic_kilometer'
+  | 'liter'
+  | 'cubic_foot'
+  | 'cubic_yard'
+  | 'cubic_mile';
 
 export interface UpdateUser_type {
   company: string /* The user's company. */;
@@ -1740,7 +3216,6 @@ export interface VerificationToken_type {
 
 export interface Models {
   AccountProvider_type: AccountProvider_type;
-  Address_type: Address_type;
   ApiCallQueryGroup_type: ApiCallQueryGroup_type;
   ApiCallQueryGroupBy_type: ApiCallQueryGroupBy_type;
   ApiCallStatus_type: ApiCallStatus_type;
@@ -1748,6 +3223,7 @@ export interface Models {
   ApiCallWithPriceResultsPage_type: ApiCallWithPriceResultsPage_type;
   ApiToken_type: ApiToken_type;
   ApiTokenResultsPage_type: ApiTokenResultsPage_type;
+  AppClientInfo_type: AppClientInfo_type;
   AsyncApiCall_type: AsyncApiCall_type;
   AsyncApiCallOutput_type: AsyncApiCallOutput_type;
   AsyncApiCallResultsPage_type: AsyncApiCallResultsPage_type;
@@ -1780,6 +3256,7 @@ export interface Models {
   FileMass_type: FileMass_type;
   FileOutputFormat_type: FileOutputFormat_type;
   FileSourceFormat_type: FileSourceFormat_type;
+  FileSurfaceArea_type: FileSurfaceArea_type;
   FileSystemMetadata_type: FileSystemMetadata_type;
   FileVolume_type: FileVolume_type;
   Gateway_type: Gateway_type;
@@ -1795,6 +3272,7 @@ export interface Models {
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
   Method_type: Method_type;
+  NewAddress_type: NewAddress_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;
   OAuth2GrantType_type: OAuth2GrantType_type;
   OutputFile_type: OutputFile_type;
@@ -1802,6 +3280,8 @@ export interface Models {
   PaymentMethod_type: PaymentMethod_type;
   PaymentMethodCardChecks_type: PaymentMethodCardChecks_type;
   PaymentMethodType_type: PaymentMethodType_type;
+  PhysicsConstant_type: PhysicsConstant_type;
+  PhysicsConstantName_type: PhysicsConstantName_type;
   PluginsInfo_type: PluginsInfo_type;
   Pong_type: Pong_type;
   RegistryServiceConfig_type: RegistryServiceConfig_type;
@@ -1811,8 +3291,60 @@ export interface Models {
   SystemInfoCgroupVersionEnum_type: SystemInfoCgroupVersionEnum_type;
   SystemInfoDefaultAddressPools_type: SystemInfoDefaultAddressPools_type;
   SystemInfoIsolationEnum_type: SystemInfoIsolationEnum_type;
-  UnitConversion_type: UnitConversion_type;
-  UnitMetricFormat_type: UnitMetricFormat_type;
+  UnitAccelerationConversion_type: UnitAccelerationConversion_type;
+  UnitAccelerationFormat_type: UnitAccelerationFormat_type;
+  UnitAngleConversion_type: UnitAngleConversion_type;
+  UnitAngleFormat_type: UnitAngleFormat_type;
+  UnitAngularVelocityConversion_type: UnitAngularVelocityConversion_type;
+  UnitAngularVelocityFormat_type: UnitAngularVelocityFormat_type;
+  UnitAreaConversion_type: UnitAreaConversion_type;
+  UnitAreaFormat_type: UnitAreaFormat_type;
+  UnitChargeConversion_type: UnitChargeConversion_type;
+  UnitChargeFormat_type: UnitChargeFormat_type;
+  UnitConcentrationConversion_type: UnitConcentrationConversion_type;
+  UnitConcentrationFormat_type: UnitConcentrationFormat_type;
+  UnitDataConversion_type: UnitDataConversion_type;
+  UnitDataFormat_type: UnitDataFormat_type;
+  UnitDataTransferRateConversion_type: UnitDataTransferRateConversion_type;
+  UnitDataTransferRateFormat_type: UnitDataTransferRateFormat_type;
+  UnitDensityConversion_type: UnitDensityConversion_type;
+  UnitDensityFormat_type: UnitDensityFormat_type;
+  UnitEnergyConversion_type: UnitEnergyConversion_type;
+  UnitEnergyFormat_type: UnitEnergyFormat_type;
+  UnitForceConversion_type: UnitForceConversion_type;
+  UnitForceFormat_type: UnitForceFormat_type;
+  UnitIlluminanceConversion_type: UnitIlluminanceConversion_type;
+  UnitIlluminanceFormat_type: UnitIlluminanceFormat_type;
+  UnitLengthConversion_type: UnitLengthConversion_type;
+  UnitLengthFormat_type: UnitLengthFormat_type;
+  UnitMagneticFieldStrengthConversion_type: UnitMagneticFieldStrengthConversion_type;
+  UnitMagneticFieldStrengthFormat_type: UnitMagneticFieldStrengthFormat_type;
+  UnitMagneticFluxConversion_type: UnitMagneticFluxConversion_type;
+  UnitMagneticFluxFormat_type: UnitMagneticFluxFormat_type;
+  UnitMassConversion_type: UnitMassConversion_type;
+  UnitMassFormat_type: UnitMassFormat_type;
+  UnitMetricPower_type: UnitMetricPower_type;
+  UnitMetricPowerConversion_type: UnitMetricPowerConversion_type;
+  UnitMetricPowerCubedConversion_type: UnitMetricPowerCubedConversion_type;
+  UnitMetricPowerSquaredConversion_type: UnitMetricPowerSquaredConversion_type;
+  UnitPowerConversion_type: UnitPowerConversion_type;
+  UnitPowerFormat_type: UnitPowerFormat_type;
+  UnitPressureConversion_type: UnitPressureConversion_type;
+  UnitPressureFormat_type: UnitPressureFormat_type;
+  UnitRadiationConversion_type: UnitRadiationConversion_type;
+  UnitRadiationFormat_type: UnitRadiationFormat_type;
+  UnitSolidAngleConversion_type: UnitSolidAngleConversion_type;
+  UnitSolidAngleFormat_type: UnitSolidAngleFormat_type;
+  UnitTemperatureConversion_type: UnitTemperatureConversion_type;
+  UnitTemperatureFormat_type: UnitTemperatureFormat_type;
+  UnitTimeConversion_type: UnitTimeConversion_type;
+  UnitTimeFormat_type: UnitTimeFormat_type;
+  UnitVelocityConversion_type: UnitVelocityConversion_type;
+  UnitVelocityFormat_type: UnitVelocityFormat_type;
+  UnitVoltageConversion_type: UnitVoltageConversion_type;
+  UnitVoltageFormat_type: UnitVoltageFormat_type;
+  UnitVolumeConversion_type: UnitVolumeConversion_type;
+  UnitVolumeFormat_type: UnitVolumeFormat_type;
   UpdateUser_type: UpdateUser_type;
   User_type: User_type;
   UserResultsPage_type: UserResultsPage_type;
