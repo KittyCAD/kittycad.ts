@@ -215,6 +215,42 @@ This is the same as the API call ID. */
     }
   | {
       /*{
+  "format": "double"
+}*/
+      center_of_mass: number[];
+      /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the mass was completed."
+}*/
+      completed_at?: string;
+      /* format:date-time, title:DateTime, description:The time and date the mass was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* The unique identifier of the center of mass request.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      /* default:0, format:float, description:The material density as denoted by the user. */
+      material_density: number;
+      src_format: FileSourceFormat_type /* The source format of the file. */;
+      /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the mass was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the mass. */;
+      type: 'FileCenterOfMass';
+      /* format:date-time, title:DateTime, description:The time and date the mass was last updated. */
+      updated_at: string;
+      user_id: string /* The user ID of the user who created the mass. */;
+    }
+  | {
+      /*{
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
@@ -359,6 +395,7 @@ export type AsyncApiCallType_type =
   /* The type of async API call. */
   | 'FileConversion'
   | 'FileVolume'
+  | 'FileCenterOfMass'
   | 'FileMass'
   | 'FileDensity'
   | 'FileSurfaceArea';
@@ -1116,6 +1153,42 @@ export interface ExtendedUserResultsPage_type {
   "description": "token used to fetch the next page of results (if any)"
 }*/
   next_page?: string;
+}
+
+export interface FileCenterOfMass_type {
+  /*{
+  "format": "double"
+}*/
+  center_of_mass: number[];
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the mass was completed."
+}*/
+  completed_at?: string;
+  /* format:date-time, title:DateTime, description:The time and date the mass was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the center of mass request.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The material density as denoted by the user. */
+  material_density: number;
+  src_format: FileSourceFormat_type /* The source format of the file. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the mass was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the mass. */;
+  /* format:date-time, title:DateTime, description:The time and date the mass was last updated. */
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the mass. */;
 }
 
 export interface FileConversion_type {
@@ -3251,6 +3324,7 @@ export interface Models {
   ExecutorMetadata_type: ExecutorMetadata_type;
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
+  FileCenterOfMass_type: FileCenterOfMass_type;
   FileConversion_type: FileConversion_type;
   FileDensity_type: FileDensity_type;
   FileMass_type: FileMass_type;

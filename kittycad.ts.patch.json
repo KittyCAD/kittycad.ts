@@ -433,6 +433,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1file~1center-of-mass/post/x-typescript",
+    "value": {
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_center_of_mass({\n        material_density: 7,\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1constant~1physics~1{constant}/get/x-typescript",
     "value": {
       "example": "import { constant } from '@kittycad/lib'\n\nasync function example() {\n    const response = await constant.get_physics_constant({ constant: 'c' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
