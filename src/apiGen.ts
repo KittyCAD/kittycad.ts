@@ -9,6 +9,10 @@ export default async function apiGen(lookup: any) {
   );
   const observer = observe(spec);
   const tags = spec.tags;
+
+  await fsp.rmdir('./src/api', { recursive: true });
+  await fsp.rmdir('./__tests__/gen', { recursive: true });
+
   await fsp.mkdir(`./src/api`);
   await fsp.mkdir(`./__tests__/gen`);
   await Promise.allSettled(
