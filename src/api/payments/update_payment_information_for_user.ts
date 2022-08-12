@@ -20,7 +20,7 @@ export default async function update_payment_information_for_user({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'POST',
+    method: 'PUT',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);

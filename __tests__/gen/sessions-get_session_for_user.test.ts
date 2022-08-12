@@ -2,7 +2,7 @@ import { sessions } from '../../src/index.js';
 
 async function example() {
   const response = await sessions.get_session_for_user({ token: 'string' });
-  if ('error_code' in response) throw 'error';
+  if ('error_code' in response) throw response;
 
   return response;
 }

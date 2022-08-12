@@ -3,7 +3,7 @@
     "op": "add",
     "path": "/paths/~1user~1session~1{token}/get/x-typescript",
     "value": {
-      "example": "import { sessions } from '@kittycad/lib'\n\nasync function example() {\n    const response = await sessions.get_session_for_user({ token: 'string' })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { sessions } from '@kittycad/lib'\n\nasync function example() {\n    const response = await sessions.get_session_for_user({ token: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -11,7 +11,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1methods/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_payment_methods_for_user()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_payment_methods_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -19,7 +19,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1invoices/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_invoices_for_user()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_invoices_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -27,7 +27,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1balance/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_user()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -35,7 +35,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_user()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -43,7 +43,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_information_for_user()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -51,7 +51,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_information_for_user()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -59,7 +59,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/delete/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_information_for_user()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -67,7 +67,7 @@
     "op": "add",
     "path": "/paths/~1user~1file~1conversions~1{id}/get/x-typescript",
     "value": {
-      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.get_file_conversion_for_user({ id: 'string' })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.get_file_conversion_for_user({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -75,7 +75,7 @@
     "op": "add",
     "path": "/paths/~1user~1extended/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self_extended()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self_extended()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -83,7 +83,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens~1{token}/get/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.get_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.get_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -91,7 +91,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens~1{token}/delete/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -99,7 +99,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens/post/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.create_api_token_for_user()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.create_api_token_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -107,7 +107,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens/get/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.list_api_tokens_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created-at-ascending',\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.list_api_tokens_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created-at-descending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -115,7 +115,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-calls~1{id}/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_for_user({ id: 'string' })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_for_user({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -123,7 +123,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-calls/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.user_list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created-at-ascending',\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.user_list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created-at-descending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -131,7 +131,7 @@
     "op": "add",
     "path": "/paths/~1user/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -139,7 +139,7 @@
     "op": "add",
     "path": "/paths/~1user/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -147,7 +147,7 @@
     "op": "add",
     "path": "/paths/~1user/delete/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_self()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -155,7 +155,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1volume~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        output_format: 'cubic_meter',\n        src_format: 'cubic_meter',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        output_format: 'cubic_meter',\n        src_format: 'cubic_millimeter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -163,7 +163,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1voltage~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_voltage_unit_conversion({\n        output_format: 'volt',\n        src_format: 'volt',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_voltage_unit_conversion({\n        output_format: 'volt',\n        src_format: 'statvolt',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -171,7 +171,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1velocity~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_velocity_unit_conversion({\n        output_format: 'meters_per_second',\n        src_format: 'meters_per_second',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_velocity_unit_conversion({\n        output_format: 'meters_per_second',\n        src_format: 'feet_per_second',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -179,7 +179,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1time~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_time_unit_conversion({\n        output_format: 'second',\n        src_format: 'second',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_time_unit_conversion({\n        output_format: 'second',\n        src_format: 'minute',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -187,7 +187,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1temperature~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_temperature_unit_conversion({\n        output_format: 'kelvin',\n        src_format: 'kelvin',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_temperature_unit_conversion({\n        output_format: 'kelvin',\n        src_format: 'celsius',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -195,7 +195,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1solid-angle~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_solid_angle_unit_conversion({\n        output_format: 'steradian',\n        src_format: 'steradian',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_solid_angle_unit_conversion({\n        output_format: 'steradian',\n        src_format: 'degree_squared',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -203,7 +203,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1radiation~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_radiation_unit_conversion({\n        output_format: 'gray',\n        src_format: 'gray',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_radiation_unit_conversion({\n        output_format: 'gray',\n        src_format: 'sievert',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -211,7 +211,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1pressure~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_pressure_unit_conversion({\n        output_format: 'pascal',\n        src_format: 'pascal',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_pressure_unit_conversion({\n        output_format: 'pascal',\n        src_format: 'bar',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -219,7 +219,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1power~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_power_unit_conversion({\n        output_format: 'watt',\n        src_format: 'watt',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_power_unit_conversion({\n        output_format: 'watt',\n        src_format: 'horsepower',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -227,7 +227,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1metric~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_metric_unit_conversion({\n        output_format: 'atto',\n        src_format: 'atto',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_metric_unit_conversion({\n        output_format: 'atto',\n        src_format: 'femto',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -235,7 +235,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1mass~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_mass_unit_conversion({\n        output_format: 'gram',\n        src_format: 'gram',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_mass_unit_conversion({\n        output_format: 'gram',\n        src_format: 'metric_ton',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -243,7 +243,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1magnetic-flux~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_magnetic_flux_unit_conversion({\n        output_format: 'weber',\n        src_format: 'weber',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_magnetic_flux_unit_conversion({\n        output_format: 'weber',\n        src_format: 'maxwell',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -251,7 +251,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1magnetic-field-strength~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_magnetic_field_strength_unit_conversion({\n        output_format: 'tesla',\n        src_format: 'tesla',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_magnetic_field_strength_unit_conversion({\n        output_format: 'tesla',\n        src_format: 'gauss',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -259,7 +259,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1length~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        output_format: 'meter',\n        src_format: 'meter',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        output_format: 'meter',\n        src_format: 'foot',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -267,7 +267,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1illuminance~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_illuminance_unit_conversion({\n        output_format: 'lux',\n        src_format: 'lux',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_illuminance_unit_conversion({\n        output_format: 'lux',\n        src_format: 'footcandle',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -275,7 +275,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1force~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_force_unit_conversion({\n        output_format: 'newton',\n        src_format: 'newton',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_force_unit_conversion({\n        output_format: 'newton',\n        src_format: 'pound',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -283,7 +283,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1energy~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_energy_unit_conversion({\n        output_format: 'joule',\n        src_format: 'joule',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_energy_unit_conversion({\n        output_format: 'joule',\n        src_format: 'calorie',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -291,7 +291,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1density~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_density_unit_conversion({\n        output_format: 'kilograms_per_cubic_meter',\n        src_format: 'kilograms_per_cubic_meter',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_density_unit_conversion({\n        output_format: 'kilograms_per_cubic_meter',\n        src_format: 'grams_per_milliliter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -299,7 +299,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1data~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_data_unit_conversion({\n        output_format: 'byte',\n        src_format: 'byte',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_data_unit_conversion({\n        output_format: 'byte',\n        src_format: 'exabyte',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -307,7 +307,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1data-transfer-rate~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_data_transfer_rate_unit_conversion({\n        output_format: 'bytes_per_second',\n        src_format: 'bytes_per_second',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_data_transfer_rate_unit_conversion({\n        output_format: 'bytes_per_second',\n        src_format: 'exabytes_per_second',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -315,7 +315,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1concentration~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_concentration_unit_conversion({\n        output_format: 'parts_per_million',\n        src_format: 'parts_per_million',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_concentration_unit_conversion({\n        output_format: 'parts_per_million',\n        src_format: 'parts_per_billion',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -323,7 +323,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1charge~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_charge_unit_conversion({\n        output_format: 'coulomb',\n        src_format: 'coulomb',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_charge_unit_conversion({\n        output_format: 'coulomb',\n        src_format: 'ampere_hour',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -331,7 +331,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1area~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_area_unit_conversion({\n        output_format: 'square_meter',\n        src_format: 'square_meter',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_area_unit_conversion({\n        output_format: 'square_meter',\n        src_format: 'square_foot',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -339,7 +339,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1angular-velocity~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_angular_velocity_unit_conversion({\n        output_format: 'radians_per_second',\n        src_format: 'radians_per_second',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_angular_velocity_unit_conversion({\n        output_format: 'radians_per_second',\n        src_format: 'degrees_per_second',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -347,7 +347,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1angle~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_angle_unit_conversion({\n        output_format: 'radian',\n        src_format: 'radian',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_angle_unit_conversion({\n        output_format: 'radian',\n        src_format: 'degree',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -355,7 +355,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1acceleration~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_acceleration_unit_conversion({\n        output_format: 'meters_per_second_squared',\n        src_format: 'meters_per_second_squared',\n        value: 7,\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_acceleration_unit_conversion({\n        output_format: 'meters_per_second_squared',\n        src_format: 'feet_per_second_squared',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -363,7 +363,7 @@
     "op": "add",
     "path": "/paths/~1ping/get/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.ping()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.ping()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -371,7 +371,7 @@
     "op": "add",
     "path": "/paths/~1file~1volume/post/x-typescript",
     "value": {
-      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        src_format: 'stl',\n        body: 'base64 encoded string',\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -379,7 +379,7 @@
     "op": "add",
     "path": "/paths/~1file~1mass/post/x-typescript",
     "value": {
-      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_mass({\n        material_density: 7,\n        src_format: 'stl',\n        body: 'base64 encoded string',\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_mass({\n        material_density: 7,\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -387,7 +387,7 @@
     "op": "add",
     "path": "/paths/~1file~1density/post/x-typescript",
     "value": {
-      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_density({\n        material_mass: 7,\n        src_format: 'stl',\n        body: 'base64 encoded string',\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_density({\n        material_mass: 7,\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -395,7 +395,7 @@
     "op": "add",
     "path": "/paths/~1file~1conversions~1{id}/get/x-typescript",
     "value": {
-      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.get_file_conversion({ id: 'string' })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.get_file_conversion({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -403,7 +403,7 @@
     "op": "add",
     "path": "/paths/~1file~1conversion~1{src_format}~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        output_format: 'stl',\n        src_format: 'stl',\n        body: 'base64 encoded string',\n    })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        output_format: 'stl',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -411,7 +411,7 @@
     "op": "add",
     "path": "/paths/~1constant~1physics~1{constant}/get/x-typescript",
     "value": {
-      "example": "import { constant } from '@kittycad/lib'\n\nasync function example() {\n    const response = await constant.get_physics_constant({ constant: 'pi' })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { constant } from '@kittycad/lib'\n\nasync function example() {\n    const response = await constant.get_physics_constant({ constant: 'c' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -419,7 +419,7 @@
     "op": "add",
     "path": "/paths/~1async~1operations~1{id}/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_async_operation({ id: 'string' })\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_async_operation({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -427,7 +427,7 @@
     "op": "add",
     "path": "/paths/~1/get/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_schema()\n    if ('error_code' in response) throw 'error'\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_schema()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -435,8 +435,8 @@
     "op": "add",
     "path": "/info/x-typescript",
     "value": {
-      "client": "",
-      "install": "npm install @kittycad/lib\n# or \nyarn add @kittycad/lib"
+      "client": "// Create a client with your token.\nasync function ExampleWithClient() {\n  const client = new Client(process.env.KITTYCAD_TOKEN || '');\n  const response = await meta.ping({ client });\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}\n\n// - OR -\n\n// Your token will be parsed from the environment\n// variable: 'KITTYCAD_TOKEN'.\nasync function ExampleWithOutClient() {\n  const response = await meta.ping();\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}",
+      "install": "npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib"
     }
   }
 ]

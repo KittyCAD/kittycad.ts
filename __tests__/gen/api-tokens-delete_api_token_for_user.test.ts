@@ -4,7 +4,7 @@ async function example() {
   const response = await api_tokens.delete_api_token_for_user({
     token: 'string',
   });
-  if ('error_code' in response) throw 'error';
+  if ('error_code' in response) throw response;
 
   return response;
 }

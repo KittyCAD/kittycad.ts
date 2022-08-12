@@ -2,7 +2,7 @@ import { users } from '../../src/index.js';
 
 async function example() {
   const response = await users.get_user_self();
-  if ('error_code' in response) throw 'error';
+  if ('error_code' in response) throw response;
 
   return response;
 }

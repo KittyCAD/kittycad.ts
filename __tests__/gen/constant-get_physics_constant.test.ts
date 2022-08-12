@@ -1,8 +1,8 @@
 import { constant } from '../../src/index.js';
 
 async function example() {
-  const response = await constant.get_physics_constant({ constant: 'pi' });
-  if ('error_code' in response) throw 'error';
+  const response = await constant.get_physics_constant({ constant: 'c' });
+  if ('error_code' in response) throw response;
 
   return response;
 }

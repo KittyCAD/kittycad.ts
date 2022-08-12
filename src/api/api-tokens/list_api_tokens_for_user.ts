@@ -30,7 +30,7 @@ export default async function list_api_tokens_for_user({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'POST',
+    method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);

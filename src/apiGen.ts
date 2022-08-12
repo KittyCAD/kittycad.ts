@@ -84,7 +84,13 @@ export default async function apiGen(lookup: any) {
             throw 'bad';
           }
           if (reffedSchema.type === 'string' && reffedSchema.enum) {
-            inputParamsExamples.push(`${name}: '${reffedSchema.enum[0]}'`);
+            if (operationId.includes('file') && name === 'input_format') {
+              inputParamsExamples.push(`${name}: 'obj'`);
+            } else if (name === 'output_format') {
+              inputParamsExamples.push(`${name}: '${reffedSchema.enum[0]}'`);
+            } else {
+              inputParamsExamples.push(`${name}: '${reffedSchema.enum[1]}'`);
+            }
           }
         } else {
           if (schema.type === 'number' || schema.type === 'integer') {
@@ -129,7 +135,10 @@ export default async function apiGen(lookup: any) {
         }
         inputTypes.push('body: string');
         inputParams.push('body');
-        inputParamsExamples.push("body: 'base64 encoded string'");
+        inputParamsExamples.push(
+          "body: await fsp.readFile('./example.obj', 'base64')",
+        );
+        exampleTemplate = `import fsp from 'fs/promises';` + exampleTemplate;
         template = template.replaceAll("body: 'BODY'", 'body');
       } else {
         template = template.replaceAll(/body: 'BODY'.+/g, '');
@@ -197,7 +206,7 @@ export default async function apiGen(lookup: any) {
           `{${inputParams.filter((a) => a).join(', ')}}:`,
         ],
         [`exampleParam: string`, inputTypes.join('; ')],
-        ["method: 'METHOD'", `method: 'POST'`],
+        ["method: 'METHOD'", `method: '${operation.method.toUpperCase()}'`],
         ['function functionName', `function ${operationId}`],
         ['FunctionNameReturn', `${FC(operationId)}_return`],
         ['FunctionNameParams', `${FC(operationId)}_params`],
@@ -218,11 +227,13 @@ export default async function apiGen(lookup: any) {
       ]);
       if (
         [
-          'file.create_file_density',
-          'file.create_file_volume',
-          'file.create_file_mass',
-          'file.create_file_conversion',
-        ].includes(`${tag}.${operationId}`)
+          'payments.delete_payment_information_for_user',
+          'users.delete_user_self',
+          'file.get_file_conversion',
+          'file.get_file_conversion_for_user',
+          'api-calls.get_api_call_for_user',
+          'api-calls.get_async_operation',
+        ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail
         exampleTemplate = replacer(exampleTemplate, [
@@ -293,8 +304,26 @@ export default async function apiGen(lookup: any) {
   indexFileString += `export { Client} from './client.js';\n`;
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8');
   spec.info['x-typescript'] = {
-    client: '',
-    install: 'npm install @kittycad/lib\n# or \nyarn add @kittycad/lib',
+    client: [
+      `// Create a client with your token.`,
+      `async function ExampleWithClient() {`,
+      `  const client = new Client(process.env.KITTYCAD_TOKEN || '');`,
+      `  const response = await meta.ping({ client });`,
+      `  if ('error_code' in response) throw 'error';`,
+      `  console.log(response.message); // 'pong'`,
+      `}`,
+      ``,
+      `// - OR -`,
+      ``,
+      `// Your token will be parsed from the environment`,
+      `// variable: 'KITTYCAD_TOKEN'.`,
+      `async function ExampleWithOutClient() {`,
+      `  const response = await meta.ping();`,
+      `  if ('error_code' in response) throw 'error';`,
+      `  console.log(response.message); // 'pong'`,
+      `}`,
+    ].join('\n'),
+    install: 'npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib',
   };
   const patch = generate(observer);
   await fsp.writeFile(

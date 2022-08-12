@@ -26,7 +26,7 @@ export default async function get_physics_constant({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'POST',
+    method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);

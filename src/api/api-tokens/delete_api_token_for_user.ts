@@ -22,7 +22,7 @@ export default async function delete_api_token_for_user({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'POST',
+    method: 'DELETE',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);

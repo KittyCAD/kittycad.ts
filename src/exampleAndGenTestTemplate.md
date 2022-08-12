@@ -3,7 +3,7 @@ import { api } from '../../src/index.js';
 
 async function example() {
   const response = await api.section({ param: 'param' });
-  if ('error_code' in response) throw 'error';
+  if ('error_code' in response) throw response;
   console.log(JSON.stringify(response, null, 2));
   return response;
 }
@@ -14,7 +14,7 @@ describe('Testing api.section', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBe('error'); // eslint-disable-line jest/no-conditional-expect
+      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
     }
   });
 });

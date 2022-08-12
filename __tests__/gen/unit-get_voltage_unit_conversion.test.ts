@@ -3,10 +3,10 @@ import { unit } from '../../src/index.js';
 async function example() {
   const response = await unit.get_voltage_unit_conversion({
     output_format: 'volt',
-    src_format: 'volt',
+    src_format: 'statvolt',
     value: 7,
   });
-  if ('error_code' in response) throw 'error';
+  if ('error_code' in response) throw response;
 
   return response;
 }

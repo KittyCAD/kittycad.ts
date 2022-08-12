@@ -20,7 +20,7 @@ export default async function delete_user_self({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'POST',
+    method: 'DELETE',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);

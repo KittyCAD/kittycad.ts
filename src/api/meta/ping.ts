@@ -20,7 +20,7 @@ export default async function ping({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'POST',
+    method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
