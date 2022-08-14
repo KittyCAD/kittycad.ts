@@ -2,7 +2,7 @@ import { meta, Client } from '../src/index.js';
 
 // Create a client with your token.
 async function ExampleWithClient() {
-  const client = new Client(process.env.KITTYCAD_TOKEN || '');
+  const client = new Client(process.env.KITTYCAD_TOKEN);
   const response = await meta.ping({ client });
   if ('error_code' in response) throw 'error';
   // console.log(response.message); // 'pong'
