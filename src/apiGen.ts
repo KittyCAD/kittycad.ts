@@ -313,7 +313,7 @@ export default async function apiGen(lookup: any) {
     client: [
       `// Create a client with your token.`,
       `async function ExampleWithClient() {`,
-      `  const client = new Client(process.env.KITTYCAD_TOKEN || '');`,
+      `  const client = new Client('your-token');`,
       `  const response = await meta.ping({ client });`,
       `  if ('error_code' in response) throw 'error';`,
       `  console.log(response.message); // 'pong'`,

@@ -4,7 +4,11 @@
 
 `Socials::` - [blog](https://kittycad.io/blog) • [twitter](http://twitter.com/kittycadinc) • [linkedin](https://linkedin.com/company/kittycad) • [instagram](http://instagram.com/kittycadinc) • [youtube](https://www.youtube.com/channel/UCe_nbF3CBjbQRZoH_4xuNJA) • [discord](https://discord.com/invite/Bee65eqawJ) 
 
-## WIP, docs will be added to [kittycad.io/docs](https://kittycad.io/docs/api) soon
+Fully typed js library, compatible with js and ts.
+
+### [Full documentation here](https://kittycad.io/docs/api/authentication?lang=typescript)
+
+Simple example below.
 
 ### Install
 
@@ -20,16 +24,17 @@ export KITTYCAD_TOKEN=<your token>
 ### Basic example
 ```typescript
 import { file } from '@kittycad/lib';
-import type { Models } from '@kittycad/lib';
 import fsp from 'fs/promises';
 
 async function main() {
-    const { status, mass } = (await file.create_file_mass({
+    // kittycad.io/docs/api/get-cad-file-mass?lang=typescript
+    const response = await file.create_file_mass({
         src_format: 'obj',
         material_density: '0.007',
         body: await fsp.readFile('./example.obj', 'base64'),
-    })) as Models['FileMass_type'];
-
+    })
+    if ('error_code' in response) throw response
+    const { status, mass } = response
     console.log(status, mass);
 }
 
