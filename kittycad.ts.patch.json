@@ -467,7 +467,7 @@
     "op": "add",
     "path": "/info/x-typescript",
     "value": {
-      "client": "// Create a client with your token.\nasync function ExampleWithClient() {\n  const client = new Client(process.env.KITTYCAD_TOKEN || '');\n  const response = await meta.ping({ client });\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}\n\n// - OR -\n\n// Your token will be parsed from the environment\n// variable: 'KITTYCAD_TOKEN'.\nasync function ExampleWithOutClient() {\n  const response = await meta.ping();\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}",
+      "client": "// Create a client with your token.\nasync function ExampleWithClient() {\n  const client = new Client('your-token');\n  const response = await meta.ping({ client });\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}\n\n// - OR -\n\n// Your token will be parsed from the environment\n// variable: 'KITTYCAD_TOKEN'.\nasync function ExampleWithOutClient() {\n  const response = await meta.ping();\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}",
       "install": "npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib"
     }
   }
