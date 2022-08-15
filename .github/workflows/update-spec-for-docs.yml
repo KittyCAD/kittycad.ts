@@ -5,11 +5,6 @@ on:
   pull_request:
     paths:
       - .github/workflows/update-spec-for-docs.yml
-      - src/apiGen.ts
-      - src/modelsGen.ts
-      - src/exampleAndGenTestTemplate.md
-      - src/template.md
-      - src/client.ts
   workflow_dispatch:
 name: update spec for docs
 concurrency:
