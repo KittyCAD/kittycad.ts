@@ -172,18 +172,14 @@ export type AsyncApiCallOutput_type =
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the file conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the file conversion was created."
-}*/
+      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
-      /* The unique identifier of the file conversion.
+      /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
       id: Uuid_type;
@@ -200,18 +196,14 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the file conversion was started."
+  "description": "The time and date the API call was started."
 }*/
       started_at?: string;
-      status: ApiCallStatus_type /* The status of the file conversion. */;
+      status: ApiCallStatus_type /* The status of the API call. */;
       type: 'FileConversion';
-      /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the file conversion was last updated."
-}*/
+      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the file conversion. */;
+      user_id: string /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
@@ -222,14 +214,14 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the mass was completed."
+  "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the mass was created. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
-      /* The unique identifier of the center of mass request.
+      /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
       id: Uuid_type;
@@ -240,28 +232,28 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the mass was started."
+  "description": "The time and date the API call was started."
 }*/
       started_at?: string;
-      status: ApiCallStatus_type /* The status of the mass. */;
+      status: ApiCallStatus_type /* The status of the API call. */;
       type: 'FileCenterOfMass';
-      /* format:date-time, title:DateTime, description:The time and date the mass was last updated. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the mass. */;
+      user_id: string /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the mass was completed."
+  "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the mass was created. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
-      /* The unique identifier of the mass request.
+      /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
       id: Uuid_type;
@@ -274,28 +266,28 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the mass was started."
+  "description": "The time and date the API call was started."
 }*/
       started_at?: string;
-      status: ApiCallStatus_type /* The status of the mass. */;
+      status: ApiCallStatus_type /* The status of the API call. */;
       type: 'FileMass';
-      /* format:date-time, title:DateTime, description:The time and date the mass was last updated. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the mass. */;
+      user_id: string /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the volume was completed."
+  "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the volume was created. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
-      /* The unique identifier of the volume request.
+      /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
       id: Uuid_type;
@@ -304,14 +296,14 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the volume was started."
+  "description": "The time and date the API call was started."
 }*/
       started_at?: string;
-      status: ApiCallStatus_type /* The status of the volume. */;
+      status: ApiCallStatus_type /* The status of the API call. */;
       type: 'FileVolume';
-      /* format:date-time, title:DateTime, description:The time and date the volume was last updated. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the volume. */;
+      user_id: string /* The user ID of the user who created the API call. */;
       /* format:double, nullable:true, description:The resulting volume. */
       volume?: number;
     }
@@ -320,16 +312,16 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the density was completed."
+  "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the density was created. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
       created_at: string;
       /* format:double, nullable:true, description:The resulting density. */
       density?: number;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
-      /* The unique identifier of the density request.
+      /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
       id: Uuid_type;
@@ -340,28 +332,28 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the density was started."
+  "description": "The time and date the API call was started."
 }*/
       started_at?: string;
-      status: ApiCallStatus_type /* The status of the density. */;
+      status: ApiCallStatus_type /* The status of the API call. */;
       type: 'FileDensity';
-      /* format:date-time, title:DateTime, description:The time and date the density was last updated. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the density. */;
+      user_id: string /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the density was completed."
+  "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the density was created. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
-      /* The unique identifier of the density request.
+      /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
       id: Uuid_type;
@@ -370,16 +362,16 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the density was started."
+  "description": "The time and date the API call was started."
 }*/
       started_at?: string;
-      status: ApiCallStatus_type /* The status of the density. */;
+      status: ApiCallStatus_type /* The status of the API call. */;
       /* format:double, nullable:true, description:The resulting surface area. */
       surface_area?: number;
       type: 'FileSurfaceArea';
-      /* format:date-time, title:DateTime, description:The time and date the density was last updated. */
+      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the density. */;
+      user_id: string /* The user ID of the user who created the API call. */;
     };
 
 export interface AsyncApiCallResultsPage_type {
@@ -1164,14 +1156,14 @@ export interface FileCenterOfMass_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the mass was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the mass was created. */
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the center of mass request.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1182,13 +1174,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the mass was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the mass. */;
-  /* format:date-time, title:DateTime, description:The time and date the mass was last updated. */
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the mass. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface FileConversion_type {
@@ -1196,18 +1188,14 @@ export interface FileConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the file conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the file conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the file conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1224,17 +1212,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the file conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the file conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the file conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the file conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface FileDensity_type {
@@ -1242,16 +1226,16 @@ export interface FileDensity_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the density was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the density was created. */
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* format:double, nullable:true, description:The resulting density. */
   density?: number;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the density request.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1262,13 +1246,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the density was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the density. */;
-  /* format:date-time, title:DateTime, description:The time and date the density was last updated. */
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the density. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface FileMass_type {
@@ -1276,14 +1260,14 @@ export interface FileMass_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the mass was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the mass was created. */
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the mass request.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1296,13 +1280,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the mass was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the mass. */;
-  /* format:date-time, title:DateTime, description:The time and date the mass was last updated. */
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the mass. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type FileOutputFormat_type =
@@ -1318,14 +1302,14 @@ export interface FileSurfaceArea_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the density was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the density was created. */
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the density request.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1334,15 +1318,15 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the density was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the density. */;
+  status: ApiCallStatus_type /* The status of the API call. */;
   /* format:double, nullable:true, description:The resulting surface area. */
   surface_area?: number;
-  /* format:date-time, title:DateTime, description:The time and date the density was last updated. */
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the density. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface FileSystemMetadata_type {
@@ -1354,14 +1338,14 @@ export interface FileVolume_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the volume was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the volume was created. */
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the volume request.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1370,13 +1354,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the volume was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the volume. */;
-  /* format:date-time, title:DateTime, description:The time and date the volume was last updated. */
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the volume. */;
+  user_id: string /* The user ID of the user who created the API call. */;
   /* format:double, nullable:true, description:The resulting volume. */
   volume?: number;
 }
@@ -1682,15 +1666,15 @@ export interface PhysicsConstant_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the constant was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
   constant: PhysicsConstantName_type /* The constant we are returning. */;
-  /* format:date-time, title:DateTime, description:The time and date the constant was created. */
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the constant request.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1698,13 +1682,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the constant was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the constant. */;
-  /* format:date-time, title:DateTime, description:The time and date the constant was last updated. */
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the constant. */;
+  user_id: string /* The user ID of the user who created the API call. */;
   /* format:double, nullable:true, description:The resulting value of the constant. */
   value?: number;
 }
@@ -1811,18 +1795,14 @@ export interface UnitAccelerationConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1836,17 +1816,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitAccelerationFormat_type =
@@ -1858,18 +1834,14 @@ export interface UnitAngleConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1883,17 +1855,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitAngleFormat_type =
@@ -1911,18 +1879,14 @@ export interface UnitAngularVelocityConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1936,17 +1900,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitAngularVelocityFormat_type =
@@ -1961,18 +1921,14 @@ export interface UnitAreaConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -1986,17 +1942,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitAreaFormat_type =
@@ -2014,18 +1966,14 @@ export interface UnitChargeConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2039,17 +1987,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitChargeFormat_type =
@@ -2061,18 +2005,14 @@ export interface UnitConcentrationConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2086,17 +2026,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitConcentrationFormat_type =
@@ -2108,18 +2044,14 @@ export interface UnitDataConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2133,17 +2065,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitDataFormat_type =
@@ -2155,18 +2083,14 @@ export interface UnitDataTransferRateConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2180,17 +2104,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitDataTransferRateFormat_type =
@@ -2205,18 +2125,14 @@ export interface UnitDensityConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2230,17 +2146,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitDensityFormat_type =
@@ -2261,18 +2173,14 @@ export interface UnitEnergyConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2286,17 +2194,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitEnergyFormat_type =
@@ -2313,18 +2217,14 @@ export interface UnitForceConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2338,17 +2238,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitForceFormat_type =
@@ -2360,18 +2256,14 @@ export interface UnitIlluminanceConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2385,17 +2277,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitIlluminanceFormat_type =
@@ -2407,18 +2295,14 @@ export interface UnitLengthConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2432,17 +2316,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitLengthFormat_type =
@@ -2470,18 +2350,14 @@ export interface UnitMagneticFieldStrengthConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2495,17 +2371,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitMagneticFieldStrengthFormat_type =
@@ -2517,18 +2389,14 @@ export interface UnitMagneticFluxConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2542,17 +2410,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitMagneticFluxFormat_type =
@@ -2564,18 +2428,14 @@ export interface UnitMassConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2589,17 +2449,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitMassFormat_type =
@@ -2640,18 +2496,14 @@ export interface UnitMetricPowerConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2665,17 +2517,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface UnitMetricPowerCubedConversion_type {
@@ -2683,18 +2531,14 @@ export interface UnitMetricPowerCubedConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2708,17 +2552,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface UnitMetricPowerSquaredConversion_type {
@@ -2726,18 +2566,14 @@ export interface UnitMetricPowerSquaredConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2751,17 +2587,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface UnitPowerConversion_type {
@@ -2769,18 +2601,14 @@ export interface UnitPowerConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2794,17 +2622,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitPowerFormat_type =
@@ -2816,18 +2640,14 @@ export interface UnitPressureConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2841,17 +2661,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitPressureFormat_type =
@@ -2863,18 +2679,14 @@ export interface UnitRadiationConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2888,17 +2700,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitRadiationFormat_type =
@@ -2910,18 +2718,14 @@ export interface UnitSolidAngleConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2935,17 +2739,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitSolidAngleFormat_type =
@@ -2957,18 +2757,14 @@ export interface UnitTemperatureConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -2982,17 +2778,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitTemperatureFormat_type =
@@ -3004,18 +2796,14 @@ export interface UnitTimeConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -3029,17 +2817,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitTimeFormat_type =
@@ -3058,18 +2842,14 @@ export interface UnitVelocityConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -3083,17 +2863,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitVelocityFormat_type =
@@ -3109,18 +2885,14 @@ export interface UnitVoltageConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -3134,17 +2906,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitVoltageFormat_type =
@@ -3156,18 +2924,14 @@ export interface UnitVolumeConversion_type {
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was completed."
+  "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was created."
-}*/
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
-  /* The unique identifier of the unit conversion.
+  /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
   id: Uuid_type;
@@ -3181,17 +2945,13 @@ This is the same as the API call ID. */
   "format": "date-time",
   "nullable": true,
   "title": "DateTime",
-  "description": "The time and date the unit conversion was started."
+  "description": "The time and date the API call was started."
 }*/
   started_at?: string;
-  status: ApiCallStatus_type /* The status of the unit conversion. */;
-  /*{
-  "format": "date-time",
-  "title": "DateTime",
-  "description": "The time and date the unit conversion was last updated."
-}*/
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the unit conversion. */;
+  user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export type UnitVolumeFormat_type =
