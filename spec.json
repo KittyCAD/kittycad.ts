@@ -2301,7 +2301,7 @@
         "type": "object"
       },
       "ExtendedUser": {
-        "description": "Extended user information.\n\nThis is mostly used for internal purposes. It returns a mapping of the user's information, including that of our third party services we use for users: MailChimp, Stripe, and Zendesk.",
+        "description": "Extended user information.\n\nThis is mostly used for internal purposes. It returns a mapping of the user's information, including that of our third party services we use for users: MailChimp, Stripe, Front, and Zendesk.",
         "properties": {
           "company": {
             "description": "The user's company.",
@@ -2331,6 +2331,11 @@
           },
           "first_name": {
             "description": "The user's first name.",
+            "type": "string"
+          },
+          "front_id": {
+            "description": "The user's Front ID. This is mostly used for internal mapping.",
+            "nullable": true,
             "type": "string"
           },
           "github": {
