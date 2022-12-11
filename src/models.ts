@@ -190,8 +190,8 @@ This is the same as the API call ID. */
   "description": "The converted file, if completed, base64 encoded."
 }*/
       output?: string;
-      output_format: FileOutputFormat_type /* The output format of the file conversion. */;
-      src_format: FileSourceFormat_type /* The source format of the file conversion. */;
+      output_format: FileExportFormat_type /* The output format of the file conversion. */;
+      src_format: FileImportFormat_type /* The source format of the file conversion. */;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -201,6 +201,82 @@ This is the same as the API call ID. */
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
       type: 'FileConversion';
+      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+      updated_at: string;
+      user_id: string /* The user ID of the user who created the API call. */;
+    }
+  | {
+      /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was completed."
+}*/
+      completed_at?: string;
+      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      /*{
+  "format": "byte",
+  "nullable": true,
+  "title": "String",
+  "description": "The converted file, if completed, base64 encoded."
+}*/
+      output?: string;
+      output_format: File2DVectorExportFormat_type /* The output format of the file conversion. */;
+      src_format: File2DVectorImportFormat_type /* The source format of the file conversion. */;
+      /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the API call. */;
+      type: 'File2DVectorConversion';
+      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+      updated_at: string;
+      user_id: string /* The user ID of the user who created the API call. */;
+    }
+  | {
+      /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was completed."
+}*/
+      completed_at?: string;
+      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      /*{
+  "format": "byte",
+  "nullable": true,
+  "title": "String",
+  "description": "The converted file, if completed, base64 encoded."
+}*/
+      output?: string;
+      output_format: File3DExportFormat_type /* The output format of the file conversion. */;
+      src_format: File3DImportFormat_type /* The source format of the file conversion. */;
+      /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the API call. */;
+      type: 'File3DConversion';
       /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
@@ -227,7 +303,7 @@ This is the same as the API call ID. */
       id: Uuid_type;
       /* default:0, format:float, description:The material density as denoted by the user. */
       material_density: number;
-      src_format: FileSourceFormat_type /* The source format of the file. */;
+      src_format: File3DImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -261,7 +337,7 @@ This is the same as the API call ID. */
       mass?: number;
       /* default:0, format:float, description:The material density as denoted by the user. */
       material_density: number;
-      src_format: FileSourceFormat_type /* The source format of the file. */;
+      src_format: File3DImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -291,7 +367,7 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
-      src_format: FileSourceFormat_type /* The source format of the file. */;
+      src_format: File3DImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -327,7 +403,7 @@ This is the same as the API call ID. */
       id: Uuid_type;
       /* default:0, format:float, description:The material mass as denoted by the user. */
       material_mass: number;
-      src_format: FileSourceFormat_type /* The source format of the file. */;
+      src_format: File3DImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -357,7 +433,7 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
-      src_format: FileSourceFormat_type /* The source format of the file. */;
+      src_format: File3DImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -386,6 +462,8 @@ export interface AsyncApiCallResultsPage_type {
 export type AsyncApiCallType_type =
   /* The type of async API call. */
   | 'FileConversion'
+  | 'File2DVectorConversion'
+  | 'File3DConversion'
   | 'FileVolume'
   | 'FileCenterOfMass'
   | 'FileMass'
@@ -438,7 +516,7 @@ Can be `credit`, `debit`, `prepaid`, or `unknown`. */
 }
 
 export interface Cluster_type {
-  /* format:ip, nullable:true, description:The IP address of the cluster. */
+  /* nullable:true, description:The IP address of the cluster. */
   addr?: string;
   /* default:0, format:int64, description:The auth timeout of the cluster. */
   auth_timeout: number;
@@ -1106,6 +1184,11 @@ export interface ExtendedUser_type {
 }*/
   email_verified?: string;
   first_name: string /* The user's first name. */;
+  /*{
+  "nullable": true,
+  "description": "The user's Front ID. This is mostly used for internal mapping."
+}*/
+  front_id?: string;
   github: string /* The user's GitHub handle. */;
   id: string /* The unique identifier for the user. */;
   /* format:uri, title:String, description:The image avatar for the user. This is a URL. */
@@ -1147,6 +1230,98 @@ export interface ExtendedUserResultsPage_type {
   next_page?: string;
 }
 
+export interface File2DVectorConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was completed."
+}*/
+  completed_at?: string;
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /*{
+  "format": "byte",
+  "nullable": true,
+  "title": "String",
+  "description": "The converted file, if completed, base64 encoded."
+}*/
+  output?: string;
+  output_format: File2DVectorExportFormat_type /* The output format of the file conversion. */;
+  src_format: File2DVectorImportFormat_type /* The source format of the file conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the API call. */;
+}
+
+export type File2DVectorExportFormat_type =
+  /* The valid types of Vector output file formats. */
+  'dxf' | 'json' | 'svg';
+
+export type File2DVectorImportFormat_type =
+  /* The valid types of Vector source file formats. */
+  'dxf' | 'svg';
+
+export interface File3DConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was completed."
+}*/
+  completed_at?: string;
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /*{
+  "format": "byte",
+  "nullable": true,
+  "title": "String",
+  "description": "The converted file, if completed, base64 encoded."
+}*/
+  output?: string;
+  output_format: File3DExportFormat_type /* The output format of the file conversion. */;
+  src_format: File3DImportFormat_type /* The source format of the file conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the API call. */;
+}
+
+export type File3DExportFormat_type =
+  /* The valid types of 3d output file formats. */
+  'dae' | 'fbx' | 'fbxb' | 'obj' | 'obj_nomtl' | 'step' | 'stl';
+
+export type File3DImportFormat_type =
+  /* The valid types of 3d source file formats. */
+  'dae' | 'dxf' | 'fbx' | 'obj' | 'obj_nomtl' | 'step' | 'stl';
+
 export interface FileCenterOfMass_type {
   /*{
   "format": "double"
@@ -1169,7 +1344,7 @@ This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:float, description:The material density as denoted by the user. */
   material_density: number;
-  src_format: FileSourceFormat_type /* The source format of the file. */;
+  src_format: File3DImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1206,8 +1381,8 @@ This is the same as the API call ID. */
   "description": "The converted file, if completed, base64 encoded."
 }*/
   output?: string;
-  output_format: FileOutputFormat_type /* The output format of the file conversion. */;
-  src_format: FileSourceFormat_type /* The source format of the file conversion. */;
+  output_format: FileExportFormat_type /* The output format of the file conversion. */;
+  src_format: FileImportFormat_type /* The source format of the file conversion. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1241,7 +1416,7 @@ This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:float, description:The material mass as denoted by the user. */
   material_mass: number;
-  src_format: FileSourceFormat_type /* The source format of the file. */;
+  src_format: File3DImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1254,6 +1429,23 @@ This is the same as the API call ID. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
+
+export type FileExportFormat_type =
+  /* The valid types of output file formats. */
+  | 'dae'
+  | 'dxf'
+  | 'fbx'
+  | 'fbxb'
+  | 'json'
+  | 'obj'
+  | 'obj_nomtl'
+  | 'step'
+  | 'stl'
+  | 'svg';
+
+export type FileImportFormat_type =
+  /* The valid types of source file formats. */
+  'dae' | 'dxf' | 'fbx' | 'obj' | 'obj_nomtl' | 'step' | 'stl' | 'svg';
 
 export interface FileMass_type {
   /*{
@@ -1275,7 +1467,7 @@ This is the same as the API call ID. */
   mass?: number;
   /* default:0, format:float, description:The material density as denoted by the user. */
   material_density: number;
-  src_format: FileSourceFormat_type /* The source format of the file. */;
+  src_format: File3DImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1288,14 +1480,6 @@ This is the same as the API call ID. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
-
-export type FileOutputFormat_type =
-  /* The valid types of output file formats. */
-  'stl' | 'obj' | 'dae' | 'step' | 'fbx' | 'fbxb';
-
-export type FileSourceFormat_type =
-  /* The valid types of source file formats. */
-  'stl' | 'obj' | 'dae' | 'step' | 'fbx';
 
 export interface FileSurfaceArea_type {
   /*{
@@ -1313,7 +1497,7 @@ export interface FileSurfaceArea_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  src_format: FileSourceFormat_type /* The source format of the file. */;
+  src_format: File3DImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1349,7 +1533,7 @@ export interface FileVolume_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  src_format: FileSourceFormat_type /* The source format of the file. */;
+  src_format: File3DImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1624,6 +1808,12 @@ export interface OAuth2ClientInfo_type {
 export type OAuth2GrantType_type =
   'urn:ietf:params:oauth:grant-type:device_code'; /* An OAuth 2.0 Grant Type. These are documented here: <https://oauth.net/2/grant-types/>. */
 
+export interface Onboarding_type {
+  first_call_from_their_machine_date: string /* When the user first called an endpoint from their machine (i.e. not a litterbox execution) */;
+  first_litterbox_execute_date: string /* When the user first used the litterbox */;
+  first_token_date: string /* When the user created their first token */;
+}
+
 export interface OutputFile_type {
   /*{
   "nullable": true,
@@ -1699,9 +1889,9 @@ export type PhysicsConstantName_type =
   | 'c'
   | 'speed_of_light'
   | 'G'
-  | 'newtonian_graviation'
+  | 'newtonian_gravitation'
   | 'h'
-  | 'plank_const'
+  | 'planck_const'
   | 'mu_0'
   | 'vacuum_permeability'
   | 'E_0'
@@ -1826,7 +2016,7 @@ This is the same as the API call ID. */
 }
 
 export type UnitAccelerationFormat_type =
-  /* The valid types of metric unit formats. */
+  /* The valid types of acceleration unit formats. */
   'meters_per_second_squared' | 'feet_per_second_squared' | 'standard_gravity';
 
 export interface UnitAngleConversion_type {
@@ -2207,9 +2397,12 @@ export type UnitEnergyFormat_type =
   /* The valid types of energy unit formats. */
   | 'joule'
   | 'calorie'
+  | 'kilowatt_hour'
+  | 'watt_hour'
   | 'british_thermal_unit'
   | 'british_thermal_unit_iso'
   | 'british_thermal_unit59'
+  | 'therm'
   | 'foot_pound';
 
 export interface UnitForceConversion_type {
@@ -2249,7 +2442,7 @@ This is the same as the API call ID. */
 
 export type UnitForceFormat_type =
   /* The valid types of force unit formats. */
-  'newton' | 'pound' | 'dyne' | 'kilopound' | 'poundal';
+  'newton' | 'pound' | 'dyne' | 'kilopond' | 'poundal';
 
 export interface UnitIlluminanceConversion_type {
   /*{
@@ -2327,15 +2520,19 @@ This is the same as the API call ID. */
 
 export type UnitLengthFormat_type =
   /* The valid types of length unit formats. */
+  | 'meter'
   | 'millimeter'
   | 'centimeter'
-  | 'meter'
-  | 'kilomter'
+  | 'kilometer'
   | 'foot'
+  | 'mil'
   | 'inch'
   | 'mile'
   | 'nautical_mile'
   | 'astronomical_unit'
+  | 'lightyear'
+  | 'parsec'
+  | 'angstrom'
   | 'cubit'
   | 'fathom'
   | 'chain'
@@ -2481,7 +2678,7 @@ export type UnitMetricPower_type =
   | 'milli'
   | 'centi'
   | 'deci'
-  | 'metric_unit'
+  | 'unit'
   | 'deca'
   | 'hecto'
   | 'kilo'
@@ -2710,8 +2907,47 @@ This is the same as the API call ID. */
 }
 
 export type UnitRadiationFormat_type =
-  /* The valid types of radiation unit formats. */
+  /* The valid types of radiation unit formats. These describe the radiation energy absorbed by a mass or material and/or how it affects the relative damage to the human body. */
   'gray' | 'sievert' | 'rad';
+
+export interface UnitRadioactivityConversion_type {
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was completed."
+}*/
+  completed_at?: string;
+  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  /* default:0, format:float, description:The input value. */
+  input: number;
+  /* format:double, nullable:true, description:The resulting value. */
+  output?: number;
+  output_format: UnitRadioactivityFormat_type /* The output format of the unit conversion. */;
+  src_format: UnitRadioactivityFormat_type /* The source format of the unit conversion. */;
+  /*{
+  "format": "date-time",
+  "nullable": true,
+  "title": "DateTime",
+  "description": "The time and date the API call was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the API call. */;
+}
+
+export type UnitRadioactivityFormat_type =
+  /* The valid types of radioactivity unit formats. These describe the amount of radiation emitted by a radioactive material. */
+  'becquerel' | 'curie' | 'rutherford';
 
 export interface UnitSolidAngleConversion_type {
   /*{
@@ -2956,14 +3192,36 @@ This is the same as the API call ID. */
 
 export type UnitVolumeFormat_type =
   /* The valid types of volume unit formats. */
-  | 'cubic_millimeter'
-  | 'cubic_centimeter'
   | 'cubic_meter'
+  | 'cubic_centimeter'
+  | 'cubic_millimeter'
   | 'cubic_kilometer'
   | 'liter'
+  | 'cubic_inch'
   | 'cubic_foot'
   | 'cubic_yard'
-  | 'cubic_mile';
+  | 'cubic_mile'
+  | 'gallon'
+  | 'quart'
+  | 'pint'
+  | 'cup'
+  | 'fluid_ounce'
+  | 'barrel'
+  | 'bushel'
+  | 'cord'
+  | 'cubic_fathom'
+  | 'tablespoon'
+  | 'teaspoon'
+  | 'pinch'
+  | 'dash'
+  | 'drop'
+  | 'fifth'
+  | 'dram'
+  | 'gill'
+  | 'peck'
+  | 'sack'
+  | 'shot'
+  | 'strike';
 
 export interface UpdateUser_type {
   company: string /* The user's company. */;
@@ -3084,12 +3342,18 @@ export interface Models {
   ExecutorMetadata_type: ExecutorMetadata_type;
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
+  File2DVectorConversion_type: File2DVectorConversion_type;
+  File2DVectorExportFormat_type: File2DVectorExportFormat_type;
+  File2DVectorImportFormat_type: File2DVectorImportFormat_type;
+  File3DConversion_type: File3DConversion_type;
+  File3DExportFormat_type: File3DExportFormat_type;
+  File3DImportFormat_type: File3DImportFormat_type;
   FileCenterOfMass_type: FileCenterOfMass_type;
   FileConversion_type: FileConversion_type;
   FileDensity_type: FileDensity_type;
+  FileExportFormat_type: FileExportFormat_type;
+  FileImportFormat_type: FileImportFormat_type;
   FileMass_type: FileMass_type;
-  FileOutputFormat_type: FileOutputFormat_type;
-  FileSourceFormat_type: FileSourceFormat_type;
   FileSurfaceArea_type: FileSurfaceArea_type;
   FileSystemMetadata_type: FileSystemMetadata_type;
   FileVolume_type: FileVolume_type;
@@ -3109,6 +3373,7 @@ export interface Models {
   NewAddress_type: NewAddress_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;
   OAuth2GrantType_type: OAuth2GrantType_type;
+  Onboarding_type: Onboarding_type;
   OutputFile_type: OutputFile_type;
   PaymentIntent_type: PaymentIntent_type;
   PaymentMethod_type: PaymentMethod_type;
@@ -3167,6 +3432,8 @@ export interface Models {
   UnitPressureFormat_type: UnitPressureFormat_type;
   UnitRadiationConversion_type: UnitRadiationConversion_type;
   UnitRadiationFormat_type: UnitRadiationFormat_type;
+  UnitRadioactivityConversion_type: UnitRadioactivityConversion_type;
+  UnitRadioactivityFormat_type: UnitRadioactivityFormat_type;
   UnitSolidAngleConversion_type: UnitSolidAngleConversion_type;
   UnitSolidAngleFormat_type: UnitSolidAngleFormat_type;
   UnitTemperatureConversion_type: UnitTemperatureConversion_type;

@@ -21,6 +21,8 @@ export const api_tokens = {
 import get_physics_constant from './api/constant/get_physics_constant.js';
 export const constant = { get_physics_constant };
 
+import create_file_2d_vector_conversion from './api/file/create_file_2d_vector_conversion.js';
+import create_file_3d_conversion from './api/file/create_file_3d_conversion.js';
 import create_file_center_of_mass from './api/file/create_file_center_of_mass.js';
 import create_file_conversion from './api/file/create_file_conversion.js';
 import create_file_density from './api/file/create_file_density.js';
@@ -30,6 +32,8 @@ import create_file_volume from './api/file/create_file_volume.js';
 import get_file_conversion from './api/file/get_file_conversion.js';
 import get_file_conversion_for_user from './api/file/get_file_conversion_for_user.js';
 export const file = {
+  create_file_2d_vector_conversion,
+  create_file_3d_conversion,
   create_file_center_of_mass,
   create_file_conversion,
   create_file_density,
@@ -86,6 +90,7 @@ import get_metric_power_unit_conversion from './api/unit/get_metric_power_unit_c
 import get_power_unit_conversion from './api/unit/get_power_unit_conversion.js';
 import get_pressure_unit_conversion from './api/unit/get_pressure_unit_conversion.js';
 import get_radiation_unit_conversion from './api/unit/get_radiation_unit_conversion.js';
+import get_radioactivity_unit_conversion from './api/unit/get_radioactivity_unit_conversion.js';
 import get_solid_angle_unit_conversion from './api/unit/get_solid_angle_unit_conversion.js';
 import get_temperature_unit_conversion from './api/unit/get_temperature_unit_conversion.js';
 import get_time_unit_conversion from './api/unit/get_time_unit_conversion.js';
@@ -115,6 +120,7 @@ export const unit = {
   get_power_unit_conversion,
   get_pressure_unit_conversion,
   get_radiation_unit_conversion,
+  get_radioactivity_unit_conversion,
   get_solid_angle_unit_conversion,
   get_temperature_unit_conversion,
   get_time_unit_conversion,

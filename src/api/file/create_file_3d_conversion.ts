@@ -1,28 +1,28 @@
 import fetch from 'node-fetch';
 import {
-  FileConversion_type,
+  File3DConversion_type,
   Error_type,
-  FileExportFormat_type,
-  FileImportFormat_type,
+  File3DExportFormat_type,
+  File3DImportFormat_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Create_file_conversion_params {
+interface Create_file_3d_conversion_params {
   client?: Client;
-  output_format: FileExportFormat_type;
-  src_format: FileImportFormat_type;
+  output_format: File3DExportFormat_type;
+  src_format: File3DImportFormat_type;
   body: string;
 }
 
-type Create_file_conversion_return = FileConversion_type | Error_type;
+type Create_file_3d_conversion_return = File3DConversion_type | Error_type;
 
-export default async function create_file_conversion({
+export default async function create_file_3d_conversion({
   client,
   output_format,
   src_format,
   body,
-}: Create_file_conversion_params): Promise<Create_file_conversion_return> {
-  const url = `/file/conversion/${src_format}/${output_format}`;
+}: Create_file_3d_conversion_params): Promise<Create_file_3d_conversion_return> {
+  const url = `/file/3d/conversion/${src_format}/${output_format}`;
   const fullUrl = 'https://api.kittycad.io' + url;
   const kittycadToken = client
     ? client.token
@@ -36,6 +36,6 @@ export default async function create_file_conversion({
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_file_conversion_return;
+  const result = (await response.json()) as Create_file_3d_conversion_return;
   return result;
 }
