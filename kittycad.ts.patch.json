@@ -459,7 +459,7 @@
     "op": "add",
     "path": "/paths/~1file~12d~1vector~1conversion~1{src_format}~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_2d_vector_conversion({\n        output_format: 'dxf',\n        src_format: 'svg',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_2d_vector_conversion({\n        output_format: 'dxf',\n        src_format: 'svg',\n        body: await fsp.readFile('./example.svg', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

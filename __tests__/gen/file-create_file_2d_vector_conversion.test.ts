@@ -5,7 +5,7 @@ async function example() {
   const response = await file.create_file_2d_vector_conversion({
     output_format: 'dxf',
     src_format: 'svg',
-    body: await fsp.readFile('./example.obj', 'base64'),
+    body: await fsp.readFile('./example.svg', 'base64'),
   });
   if ('error_code' in response) throw response;
 
