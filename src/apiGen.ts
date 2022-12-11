@@ -144,8 +144,13 @@ export default async function apiGen(lookup: any) {
         }
         inputTypes.push('body: string');
         inputParams.push('body');
+        const exampleFile = inputParamsExamples
+          .find((str) => str.startsWith('src_format:'))
+          .includes('obj')
+          ? 'example.obj'
+          : 'example.svg';
         inputParamsExamples.push(
-          "body: await fsp.readFile('./example.obj', 'base64')",
+          `body: await fsp.readFile('./${exampleFile}', 'base64')`,
         );
         exampleTemplate = `import fsp from 'fs/promises';` + exampleTemplate;
         template = template.replaceAll("body: 'BODY'", 'body');
