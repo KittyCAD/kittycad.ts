@@ -90,8 +90,11 @@ export default async function apiGen(lookup: any) {
             throw 'bad';
           }
           if (reffedSchema.type === 'string' && reffedSchema.enum) {
-            if (operationId.includes('file') && name === 'input_format') {
-              inputParamsExamples.push(`${name}: 'obj'`);
+            if (operationId.includes('file') && name === 'src_format') {
+              const input =
+                reffedSchema.enum.find((fmt) => fmt === 'obj') ||
+                reffedSchema.enum.find((fmt) => fmt === 'svg');
+              inputParamsExamples.push(`${name}: '${input}'`);
             } else if (name === 'output_format') {
               inputParamsExamples.push(`${name}: '${reffedSchema.enum[0]}'`);
             } else {
@@ -141,8 +144,13 @@ export default async function apiGen(lookup: any) {
         }
         inputTypes.push('body: string');
         inputParams.push('body');
+        const exampleFile = inputParamsExamples
+          .find((str) => str.startsWith('src_format:'))
+          .includes('obj')
+          ? 'example.obj'
+          : 'example.svg';
         inputParamsExamples.push(
-          "body: await fsp.readFile('./example.obj', 'base64')",
+          `body: await fsp.readFile('./${exampleFile}', 'base64')`,
         );
         exampleTemplate = `import fsp from 'fs/promises';` + exampleTemplate;
         template = template.replaceAll("body: 'BODY'", 'body');

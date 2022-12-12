@@ -13,7 +13,7 @@ describe('Testing create_file_mass', () => {
     if ('error_code' in response) throw 'error';
 
     const { status, mass } = response;
-    expect(mass).toBe(0.7063786);
+    expect(mass).toBe(0.10375396);
     expect(status).toBe('Completed');
   });
   it("shouldn't throw when using a client", async () => {
@@ -26,7 +26,7 @@ describe('Testing create_file_mass', () => {
     if ('error_code' in response) throw 'error';
 
     const { status, mass } = response;
-    expect(mass).toBe(0.7063786);
+    expect(mass).toBe(0.10375396);
     expect(status).toBe('Completed');
   });
 });

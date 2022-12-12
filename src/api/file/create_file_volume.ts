@@ -2,13 +2,13 @@ import fetch from 'node-fetch';
 import {
   FileVolume_type,
   Error_type,
-  FileSourceFormat_type,
+  File3DImportFormat_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_file_volume_params {
   client?: Client;
-  src_format: FileSourceFormat_type;
+  src_format: File3DImportFormat_type;
   body: string;
 }
 

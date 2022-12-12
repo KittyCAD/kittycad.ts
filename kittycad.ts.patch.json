@@ -155,7 +155,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1volume~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        output_format: 'cubic_millimeter',\n        src_format: 'cubic_centimeter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        output_format: 'cubic_meter',\n        src_format: 'cubic_centimeter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -196,6 +196,14 @@
     "path": "/paths/~1unit~1conversion~1solid-angle~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
       "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_solid_angle_unit_conversion({\n        output_format: 'steradian',\n        src_format: 'degree_squared',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1unit~1conversion~1radioactivity~1{src_format}~1{output_format}/get/x-typescript",
+    "value": {
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_radioactivity_unit_conversion({\n        output_format: 'becquerel',\n        src_format: 'curie',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -275,7 +283,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1length~1{src_format}~1{output_format}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        output_format: 'millimeter',\n        src_format: 'centimeter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        output_format: 'meter',\n        src_format: 'millimeter',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -427,7 +435,7 @@
     "op": "add",
     "path": "/paths/~1file~1conversion~1{src_format}~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        output_format: 'stl',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        output_format: 'dae',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -436,6 +444,22 @@
     "path": "/paths/~1file~1center-of-mass/post/x-typescript",
     "value": {
       "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_center_of_mass({\n        material_density: 7,\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~13d~1conversion~1{src_format}~1{output_format}/post/x-typescript",
+    "value": {
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_3d_conversion({\n        output_format: 'dae',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~12d~1vector~1conversion~1{src_format}~1{output_format}/post/x-typescript",
+    "value": {
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_2d_vector_conversion({\n        output_format: 'dxf',\n        src_format: 'svg',\n        body: await fsp.readFile('./example.svg', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
