@@ -2,6 +2,7 @@
   "name": "@kittycad/lib",
   "version": "0.0.17",
   "description": "Javascript library for KittyCAD API",
+  "type": "module",
   "keywords": [
     "hardward",
     "library",
@@ -21,13 +22,13 @@
   "exports": {
     ".": {
       "types": "./dist/types/src",
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.js"
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.es.js",
-  "browser": "./dist/index.umd.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/mjs/index.js",
+  "browser": "./dist/umd/index.js",
   "types": "./dist/types/src",
   "files": [
     "dist"
