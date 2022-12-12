@@ -2,6 +2,7 @@
   "name": "@kittycad/lib",
   "version": "0.0.17",
   "description": "Javascript library for KittyCAD API",
+  "type": "module",
   "keywords": [
     "hardward",
     "library",
@@ -21,19 +22,19 @@
   "exports": {
     ".": {
       "types": "./dist/types/src",
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.js"
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.es.js",
-  "browser": "./dist/index.umd.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/mjs/index.js",
+  "browser": "./dist/umd/index.js",
   "types": "./dist/types/src",
   "files": [
     "dist"
   ],
   "engines": {
-    "node": ">= 16.13 <17"
+    "node": ">= 16.13 <19"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.18.9",
@@ -65,7 +66,7 @@
     "build:js": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "build": "rimraf dist && npm run build:types && npm run build:js",
-    "gen": "ts-node --project ./tsconfig.gen.json ./src/modelsGen.ts && prettier --config .prettierrc --write ./src && prettier --config .prettierrc --write ./__tests__ && prettier --config .prettierrc --write ./kittycad.ts.patch.json",
+    "gen": "ts-node ./src/modelsGen.ts && prettier --config .prettierrc --write ./src && prettier --config .prettierrc --write ./__tests__ && prettier --config .prettierrc --write ./kittycad.ts.patch.json",
     "test": "jest",
     "tsc": "tsc"
   },
