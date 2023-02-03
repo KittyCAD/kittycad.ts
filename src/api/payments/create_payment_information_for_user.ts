@@ -12,7 +12,8 @@ export default async function create_payment_information_for_user({
   client,
 }: Create_payment_information_for_user_params = {}): Promise<Create_payment_information_for_user_return> {
   const url = `/user/payment`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

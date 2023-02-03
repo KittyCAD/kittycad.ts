@@ -12,7 +12,8 @@ export default async function list_invoices_for_user({
   client,
 }: List_invoices_for_user_params = {}): Promise<List_invoices_for_user_return> {
   const url = `/user/payment/invoices`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

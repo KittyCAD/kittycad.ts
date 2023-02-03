@@ -15,7 +15,8 @@ export default async function functionName(
   functionNameParams: FunctionNameParams,
 ): Promise<FunctionNameReturn> {
   const url = 'string' + functionNameParams.exampleParam;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

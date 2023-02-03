@@ -301,8 +301,6 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
-      /* default:0, format:float, description:The material density as denoted by the user. */
-      material_density: number;
       src_format: File3DImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
@@ -1214,11 +1212,6 @@ export interface ExtendedUser_type {
   stripe_id?: string;
   /* format:date-time, title:DateTime, description:The date and time the user was last updated. */
   updated_at: string;
-  /*{
-  "nullable": true,
-  "description": "The user's Zendesk ID. This is mostly used for internal mapping."
-}*/
-  zendesk_id?: string;
 }
 
 export interface ExtendedUserResultsPage_type {
@@ -1270,7 +1263,7 @@ This is the same as the API call ID. */
 
 export type File2DVectorExportFormat_type =
   /* The valid types of Vector output file formats. */
-  'dxf' | 'json' | 'svg';
+  'dxf' | 'json' | 'png' | 'ps' | 'svg';
 
 export type File2DVectorImportFormat_type =
   /* The valid types of Vector source file formats. */
@@ -1315,12 +1308,20 @@ This is the same as the API call ID. */
 }
 
 export type File3DExportFormat_type =
-  /* The valid types of 3d output file formats. */
-  'dae' | 'fbx' | 'fbxb' | 'obj' | 'obj_nomtl' | 'step' | 'stl';
+  /* The valid types of 3d output file formats, can include formats that use suplimentary files. For example, the OBJ format can use a MTL file. */
+  'dae' | 'fbx' | 'fbxb' | 'obj' | 'obj_nomtl' | 'ply' | 'step' | 'stl';
 
 export type File3DImportFormat_type =
-  /* The valid types of 3d source file formats. */
-  'dae' | 'dxf' | 'fbx' | 'obj' | 'obj_nomtl' | 'step' | 'stl';
+  /* The valid types of 3d source file formats, can include formats that use suplimentary files. For example, the OBJ format can use a MTL file. */
+  | 'dae'
+  | 'dxf'
+  | 'fbx'
+  | 'obj_zip'
+  | 'obj'
+  | 'obj_nomtl'
+  | 'ply'
+  | 'step'
+  | 'stl';
 
 export interface FileCenterOfMass_type {
   /*{
@@ -1342,8 +1343,6 @@ export interface FileCenterOfMass_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  /* default:0, format:float, description:The material density as denoted by the user. */
-  material_density: number;
   src_format: File3DImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
@@ -1439,13 +1438,23 @@ export type FileExportFormat_type =
   | 'json'
   | 'obj'
   | 'obj_nomtl'
+  | 'ply'
   | 'step'
   | 'stl'
   | 'svg';
 
 export type FileImportFormat_type =
   /* The valid types of source file formats. */
-  'dae' | 'dxf' | 'fbx' | 'obj' | 'obj_nomtl' | 'step' | 'stl' | 'svg';
+  | 'dae'
+  | 'dxf'
+  | 'fbx'
+  | 'obj_zip'
+  | 'obj'
+  | 'obj_nomtl'
+  | 'ply'
+  | 'step'
+  | 'stl'
+  | 'svg';
 
 export interface FileMass_type {
   /*{
@@ -1561,6 +1570,10 @@ export interface Gateway_type {
   /* default:0, format:int64, description:The TLS timeout for the gateway. */
   tls_timeout: number;
 }
+
+export type ImageType_type =
+  /* An enumeration. */
+  'png' | 'jpg';
 
 export interface IndexInfo_type {
   mirrors: string[];
@@ -1749,6 +1762,10 @@ export interface LeafNode_type {
   tls_timeout: number;
 }
 
+export interface Mesh_type {
+  mesh: string;
+}
+
 export interface MetaClusterInfo_type {
   /* default:0, format:int64, description:The size of the cluster. */
   cluster_size: number;
@@ -1765,6 +1782,7 @@ export interface Metadata_type {
   executor: ExecutorMetadata_type /* Metadata about our executor API connection. */;
   fs: FileSystemMetadata_type /* Metadata about our file system. */;
   git_hash: string /* The git hash of the server. */;
+  point_e: PointEMetadata_type /* Metadata about our point-e instance. */;
   pubsub: Connection_type /* Metadata about our pub-sub connection. */;
 }
 
@@ -1924,6 +1942,10 @@ export interface PluginsInfo_type {
   log: string[];
   network: string[];
   volume: string[];
+}
+
+export interface PointEMetadata_type {
+  ok: boolean /* If the point-e service returned an ok response from ping. */;
 }
 
 export interface Pong_type {
@@ -3358,6 +3380,7 @@ export interface Models {
   FileSystemMetadata_type: FileSystemMetadata_type;
   FileVolume_type: FileVolume_type;
   Gateway_type: Gateway_type;
+  ImageType_type: ImageType_type;
   IndexInfo_type: IndexInfo_type;
   Invoice_type: Invoice_type;
   InvoiceLineItem_type: InvoiceLineItem_type;
@@ -3367,6 +3390,7 @@ export interface Models {
   JetstreamConfig_type: JetstreamConfig_type;
   JetstreamStats_type: JetstreamStats_type;
   LeafNode_type: LeafNode_type;
+  Mesh_type: Mesh_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
   Method_type: Method_type;
@@ -3382,6 +3406,7 @@ export interface Models {
   PhysicsConstant_type: PhysicsConstant_type;
   PhysicsConstantName_type: PhysicsConstantName_type;
   PluginsInfo_type: PluginsInfo_type;
+  PointEMetadata_type: PointEMetadata_type;
   Pong_type: Pong_type;
   RegistryServiceConfig_type: RegistryServiceConfig_type;
   Runtime_type: Runtime_type;

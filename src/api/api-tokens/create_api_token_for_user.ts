@@ -12,7 +12,8 @@ export default async function create_api_token_for_user({
   client,
 }: Create_api_token_for_user_params = {}): Promise<Create_api_token_for_user_return> {
   const url = `/user/api-tokens`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

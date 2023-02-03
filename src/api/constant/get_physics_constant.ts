@@ -18,7 +18,8 @@ export default async function get_physics_constant({
   constant,
 }: Get_physics_constant_params): Promise<Get_physics_constant_return> {
   const url = `/constant/physics/${constant}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

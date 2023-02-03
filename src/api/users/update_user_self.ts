@@ -12,7 +12,8 @@ export default async function update_user_self({
   client,
 }: Update_user_self_params = {}): Promise<Update_user_self_return> {
   const url = `/user`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

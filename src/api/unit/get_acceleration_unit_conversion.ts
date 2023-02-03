@@ -24,7 +24,8 @@ export default async function get_acceleration_unit_conversion({
   value,
 }: Get_acceleration_unit_conversion_params): Promise<Get_acceleration_unit_conversion_return> {
   const url = `/unit/conversion/acceleration/${src_format}/${output_format}?value=${value}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

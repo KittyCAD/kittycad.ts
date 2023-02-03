@@ -12,7 +12,8 @@ export default async function get_user_self_extended({
   client,
 }: Get_user_self_extended_params = {}): Promise<Get_user_self_extended_return> {
   const url = `/user/extended`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

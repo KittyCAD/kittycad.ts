@@ -20,7 +20,8 @@ export default async function create_file_volume({
   body,
 }: Create_file_volume_params): Promise<Create_file_volume_return> {
   const url = `/file/volume?src_format=${src_format}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';
