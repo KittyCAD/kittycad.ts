@@ -14,7 +14,8 @@ export default async function get_async_operation({
   id,
 }: Get_async_operation_params): Promise<Get_async_operation_return> {
   const url = `/async/operations/${id}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

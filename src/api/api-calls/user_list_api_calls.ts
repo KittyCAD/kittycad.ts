@@ -22,7 +22,8 @@ export default async function user_list_api_calls({
   sort_by,
 }: User_list_api_calls_params): Promise<User_list_api_calls_return> {
   const url = `/user/api-calls?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

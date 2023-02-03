@@ -22,7 +22,8 @@ export default async function create_file_density({
   body,
 }: Create_file_density_params): Promise<Create_file_density_return> {
   const url = `/file/density?material_mass=${material_mass}&src_format=${src_format}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

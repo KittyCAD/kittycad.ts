@@ -14,7 +14,8 @@ export default async function get_api_call_for_user({
   id,
 }: Get_api_call_for_user_params): Promise<Get_api_call_for_user_return> {
   const url = `/user/api-calls/${id}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

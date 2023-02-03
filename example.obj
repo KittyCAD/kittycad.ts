@@ -4,7 +4,6 @@
 o 
 
 # material
-mtllib ORIGINALVOXEL-3.mtl
 usemtl palette
 
 # normals

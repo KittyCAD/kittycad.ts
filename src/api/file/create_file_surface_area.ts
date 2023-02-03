@@ -20,7 +20,8 @@ export default async function create_file_surface_area({
   body,
 }: Create_file_surface_area_params): Promise<Create_file_surface_area_return> {
   const url = `/file/surface-area?src_format=${src_format}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

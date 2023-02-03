@@ -24,7 +24,8 @@ export default async function get_magnetic_field_strength_unit_conversion({
   value,
 }: Get_magnetic_field_strength_unit_conversion_params): Promise<Get_magnetic_field_strength_unit_conversion_return> {
   const url = `/unit/conversion/magnetic-field-strength/${src_format}/${output_format}?value=${value}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';

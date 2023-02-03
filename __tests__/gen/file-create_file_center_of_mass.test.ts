@@ -3,7 +3,6 @@ import { file } from '../../src/index.js';
 
 async function example() {
   const response = await file.create_file_center_of_mass({
-    material_density: 7,
     src_format: 'obj',
     body: await fsp.readFile('./example.obj', 'base64'),
   });

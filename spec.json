@@ -709,12 +709,6 @@
                 ],
                 "description": "The unique identifier of the API call.\n\nThis is the same as the API call ID."
               },
-              "material_density": {
-                "default": 0.0,
-                "description": "The material density as denoted by the user.",
-                "format": "float",
-                "type": "number"
-              },
               "src_format": {
                 "allOf": [
                   {
@@ -2492,7 +2486,7 @@
         "type": "object"
       },
       "ExtendedUser": {
-        "description": "Extended user information.\n\nThis is mostly used for internal purposes. It returns a mapping of the user's information, including that of our third party services we use for users: MailChimp, Stripe, Front, and Zendesk.",
+        "description": "Extended user information.\n\nThis is mostly used for internal purposes. It returns a mapping of the user's information, including that of our third party services we use for users: MailChimp, Stripe, and Front",
         "properties": {
           "company": {
             "description": "The user's company.",
@@ -2572,11 +2566,6 @@
             "description": "The date and time the user was last updated.",
             "format": "date-time",
             "title": "DateTime",
-            "type": "string"
-          },
-          "zendesk_id": {
-            "description": "The user's Zendesk ID. This is mostly used for internal mapping.",
-            "nullable": true,
             "type": "string"
           }
         },
@@ -2701,6 +2690,8 @@
         "enum": [
           "dxf",
           "json",
+          "png",
+          "ps",
           "svg"
         ],
         "type": "string"
@@ -2802,26 +2793,29 @@
         "type": "object"
       },
       "File3DExportFormat": {
-        "description": "The valid types of 3d output file formats.",
+        "description": "The valid types of 3d output file formats, can include formats that use suplimentary files. For example, the OBJ format can use a MTL file.",
         "enum": [
           "dae",
           "fbx",
           "fbxb",
           "obj",
           "obj_nomtl",
+          "ply",
           "step",
           "stl"
         ],
         "type": "string"
       },
       "File3DImportFormat": {
-        "description": "The valid types of 3d source file formats.",
+        "description": "The valid types of 3d source file formats, can include formats that use suplimentary files. For example, the OBJ format can use a MTL file.",
         "enum": [
           "dae",
           "dxf",
           "fbx",
+          "obj_zip",
           "obj",
           "obj_nomtl",
+          "ply",
           "step",
           "stl"
         ],
@@ -2864,12 +2858,6 @@
               }
             ],
             "description": "The unique identifier of the API call.\n\nThis is the same as the API call ID."
-          },
-          "material_density": {
-            "default": 0.0,
-            "description": "The material density as denoted by the user.",
-            "format": "float",
-            "type": "number"
           },
           "src_format": {
             "allOf": [
@@ -3096,6 +3084,7 @@
           "json",
           "obj",
           "obj_nomtl",
+          "ply",
           "step",
           "stl",
           "svg"
@@ -3108,8 +3097,10 @@
           "dae",
           "dxf",
           "fbx",
+          "obj_zip",
           "obj",
           "obj_nomtl",
+          "ply",
           "step",
           "stl",
           "svg"
@@ -3402,6 +3393,14 @@
           }
         },
         "type": "object"
+      },
+      "ImageType": {
+        "description": "An enumeration.",
+        "enum": [
+          "png",
+          "jpg"
+        ],
+        "type": "string"
       },
       "IndexInfo": {
         "description": "IndexInfo contains information about a registry.",
@@ -3828,6 +3827,17 @@
         },
         "type": "object"
       },
+      "Mesh": {
+        "properties": {
+          "mesh": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mesh"
+        ],
+        "type": "object"
+      },
       "MetaClusterInfo": {
         "description": "Jetstream statistics.",
         "properties": {
@@ -3897,6 +3907,14 @@
             "description": "The git hash of the server.",
             "type": "string"
           },
+          "point_e": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PointEMetadata"
+              }
+            ],
+            "description": "Metadata about our point-e instance."
+          },
           "pubsub": {
             "allOf": [
               {
@@ -3913,6 +3931,7 @@
           "executor",
           "fs",
           "git_hash",
+          "point_e",
           "pubsub"
         ],
         "type": "object"
@@ -4267,6 +4286,19 @@
             "type": "array"
           }
         },
+        "type": "object"
+      },
+      "PointEMetadata": {
+        "description": "Metadata about our point-e instance.\n\nThis is mostly used for internal purposes and debugging.",
+        "properties": {
+          "ok": {
+            "description": "If the point-e service returned an ok response from ping.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ],
         "type": "object"
       },
       "Pong": {
@@ -7777,6 +7809,187 @@
         ]
       }
     },
+    "/ai/image-to-3d/{input_format}/{output_format}": {
+      "post": {
+        "operationId": "create_image_to_3d",
+        "parameters": [
+          {
+            "description": "The format of the image being converted.",
+            "in": "path",
+            "name": "input_format",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ImageType"
+            },
+            "style": "simple"
+          },
+          {
+            "description": "The format the output file should be converted to.",
+            "in": "path",
+            "name": "output_format",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FileExportFormat"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "format": "binary",
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mesh"
+                }
+              }
+            },
+            "description": "successful operation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "style": "simple"
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "style": "simple"
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "style": "simple"
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "style": "simple"
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "summary": "Generate a 3D model from an image.",
+        "tags": [
+          "ai",
+          "beta",
+          "hidden"
+        ]
+      }
+    },
+    "/ai/text-to-3d/{output_format}": {
+      "post": {
+        "operationId": "create_text_to_3d",
+        "parameters": [
+          {
+            "description": "The format the output file should be converted to.",
+            "in": "path",
+            "name": "output_format",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FileExportFormat"
+            },
+            "style": "simple"
+          },
+          {
+            "description": "The prompt for the model.",
+            "in": "query",
+            "name": "prompt",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mesh"
+                }
+              }
+            },
+            "description": "successful operation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "style": "simple"
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "style": "simple"
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "style": "simple"
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "style": "simple"
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "summary": "Generate a 3D model from text.",
+        "tags": [
+          "ai",
+          "beta",
+          "hidden"
+        ]
+      }
+    },
     "/api-call-metrics": {
       "get": {
         "description": "This endpoint requires authentication by a KittyCAD employee. The API calls are grouped by the parameter passed.",
@@ -8888,17 +9101,6 @@
         "description": "Get the center of mass of an object in a CAD file. If the file is larger than 25MB, it will be performed asynchronously.\nIf the operation is performed asynchronously, the `id` of the operation will be returned. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.",
         "operationId": "create_file_center_of_mass",
         "parameters": [
-          {
-            "description": "The material density.",
-            "in": "query",
-            "name": "material_density",
-            "required": true,
-            "schema": {
-              "format": "float",
-              "type": "number"
-            },
-            "style": "form"
-          },
           {
             "description": "The format of the file.",
             "in": "query",
@@ -15199,6 +15401,13 @@
     }
   },
   "tags": [
+    {
+      "description": "AI uses machine learning to generate 3D meshes.",
+      "externalDocs": {
+        "url": "https://docs.kittycad.io/api/ai"
+      },
+      "name": "ai"
+    },
     {
       "description": "API calls that have been performed by users can be queried by the API. This is helpful for debugging as well as billing.",
       "externalDocs": {

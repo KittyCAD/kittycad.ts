@@ -14,7 +14,8 @@ export default async function get_session_for_user({
   token,
 }: Get_session_for_user_params): Promise<Get_session_for_user_return> {
   const url = `/user/session/${token}`;
-  const fullUrl = 'https://api.kittycad.io' + url;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
     : process.env.KITTYCAD_TOKEN || '';
