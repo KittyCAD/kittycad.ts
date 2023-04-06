@@ -44,9 +44,10 @@ export const file = {
   get_file_conversion_for_user,
 };
 
+import get_ai_plugin_manifest from './api/meta/get_ai_plugin_manifest.js';
 import get_schema from './api/meta/get_schema.js';
 import ping from './api/meta/ping.js';
-export const meta = { get_schema, ping };
+export const meta = { get_ai_plugin_manifest, get_schema, ping };
 
 import create_payment_information_for_user from './api/payments/create_payment_information_for_user.js';
 import delete_payment_information_for_user from './api/payments/delete_payment_information_for_user.js';
@@ -55,6 +56,7 @@ import get_payment_information_for_user from './api/payments/get_payment_informa
 import list_invoices_for_user from './api/payments/list_invoices_for_user.js';
 import list_payment_methods_for_user from './api/payments/list_payment_methods_for_user.js';
 import update_payment_information_for_user from './api/payments/update_payment_information_for_user.js';
+import validate_customer_tax_information_for_user from './api/payments/validate_customer_tax_information_for_user.js';
 export const payments = {
   create_payment_information_for_user,
   delete_payment_information_for_user,
@@ -63,6 +65,7 @@ export const payments = {
   list_invoices_for_user,
   list_payment_methods_for_user,
   update_payment_information_for_user,
+  validate_customer_tax_information_for_user,
 };
 
 import get_session_for_user from './api/sessions/get_session_for_user.js';

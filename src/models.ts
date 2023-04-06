@@ -2,6 +2,54 @@ export type AccountProvider_type =
   /* An account provider. */
   'google' | 'github';
 
+export interface AiPluginApi_type {
+  /* default:false, description:If the API is authenticated. */
+  is_user_authenticated: boolean;
+  /* default:openapi, description:The type of API. */
+  type: AiPluginApiType_type;
+  /* format:uri, description:The url to the API's schema. */
+  url: string;
+}
+
+export type AiPluginApiType_type = 'openapi'; /* AI plugin api type. */
+
+export interface AiPluginAuth_type {
+  /* nullable:true, description:The type of http authorization. */
+  authorization_type: AiPluginHttpAuthType_type;
+  /* default:none, description:The type of authentication. */
+  type: AiPluginAuthType_type;
+}
+
+export type AiPluginAuthType_type =
+  /* AI plugin auth type. */
+  'none' | 'user_http' | 'service_http' | 'oauth';
+
+export type AiPluginHttpAuthType_type =
+  /* AI plugin http auth type. */
+  'basic' | 'bearer';
+
+export interface AiPluginManifest_type {
+  api: AiPluginApi_type /* API specification. */;
+  auth: AiPluginAuth_type /* Authentication schema. */;
+  /*{
+  "format": "email",
+  "description": "Email contact for safety/moderation reachout, support, and deactivation."
+}*/
+  contact_email: string;
+  description_for_human: string /* Human-readable description of the plugin. */;
+  description_for_model: string /* Description better tailored to the model, such as token context length considerations or keyword usage for improved plugin prompting. */;
+  /*{
+  "format": "uri",
+  "description": "Redirect URL for users to view plugin information."
+}*/
+  legal_info_url: string;
+  /* format:uri, description:URL used to fetch the plugin's logo. */
+  logo_url: string;
+  name_for_human: string /* Human-readable name, such as the full company name. */;
+  name_for_model: string /* Name the model will used to target the plugin. */;
+  schema_version: string /* Manifest schema version. */;
+}
+
 export interface ApiCallQueryGroup_type {
   /*{
   "format": "int64"
@@ -651,6 +699,258 @@ export interface Connection_type {
   write_deadline: number;
 }
 
+export type CountryCode_type =
+  /* An enumeration of all ISO-3166 alpha-2 country codes. */
+  | 'AF'
+  | 'AX'
+  | 'AL'
+  | 'DZ'
+  | 'AS'
+  | 'AD'
+  | 'AO'
+  | 'AI'
+  | 'AQ'
+  | 'AG'
+  | 'AR'
+  | 'AM'
+  | 'AW'
+  | 'AU'
+  | 'AT'
+  | 'AZ'
+  | 'BS'
+  | 'BH'
+  | 'BD'
+  | 'BB'
+  | 'BY'
+  | 'BE'
+  | 'BZ'
+  | 'BJ'
+  | 'BM'
+  | 'BT'
+  | 'BO'
+  | 'BQ'
+  | 'BA'
+  | 'BW'
+  | 'BV'
+  | 'BR'
+  | 'IO'
+  | 'BN'
+  | 'BG'
+  | 'BF'
+  | 'BI'
+  | 'CV'
+  | 'KH'
+  | 'CM'
+  | 'CA'
+  | 'KY'
+  | 'CF'
+  | 'TD'
+  | 'CL'
+  | 'CN'
+  | 'CX'
+  | 'CC'
+  | 'CO'
+  | 'KM'
+  | 'CG'
+  | 'CD'
+  | 'CK'
+  | 'CR'
+  | 'CI'
+  | 'HR'
+  | 'CU'
+  | 'CW'
+  | 'CY'
+  | 'CZ'
+  | 'DK'
+  | 'DJ'
+  | 'DM'
+  | 'DO'
+  | 'EC'
+  | 'EG'
+  | 'SV'
+  | 'GQ'
+  | 'ER'
+  | 'EE'
+  | 'ET'
+  | 'FK'
+  | 'FO'
+  | 'FJ'
+  | 'FI'
+  | 'FR'
+  | 'GF'
+  | 'PF'
+  | 'TF'
+  | 'GA'
+  | 'GM'
+  | 'GE'
+  | 'DE'
+  | 'GH'
+  | 'GI'
+  | 'GR'
+  | 'GL'
+  | 'GD'
+  | 'GP'
+  | 'GU'
+  | 'GT'
+  | 'GG'
+  | 'GN'
+  | 'GW'
+  | 'GY'
+  | 'HT'
+  | 'HM'
+  | 'VA'
+  | 'HN'
+  | 'HK'
+  | 'HU'
+  | 'IS'
+  | 'IN'
+  | 'ID'
+  | 'IR'
+  | 'IQ'
+  | 'IE'
+  | 'IM'
+  | 'IL'
+  | 'IT'
+  | 'JM'
+  | 'JP'
+  | 'JE'
+  | 'JO'
+  | 'KZ'
+  | 'KE'
+  | 'KI'
+  | 'KP'
+  | 'KR'
+  | 'KW'
+  | 'KG'
+  | 'LA'
+  | 'LV'
+  | 'LB'
+  | 'LS'
+  | 'LR'
+  | 'LY'
+  | 'LI'
+  | 'LT'
+  | 'LU'
+  | 'MO'
+  | 'MK'
+  | 'MG'
+  | 'MW'
+  | 'MY'
+  | 'MV'
+  | 'ML'
+  | 'MT'
+  | 'MH'
+  | 'MQ'
+  | 'MR'
+  | 'MU'
+  | 'YT'
+  | 'MX'
+  | 'FM'
+  | 'MD'
+  | 'MC'
+  | 'MN'
+  | 'ME'
+  | 'MS'
+  | 'MA'
+  | 'MZ'
+  | 'MM'
+  | 'NA'
+  | 'NR'
+  | 'NP'
+  | 'NL'
+  | 'NC'
+  | 'NZ'
+  | 'NI'
+  | 'NE'
+  | 'NG'
+  | 'NU'
+  | 'NF'
+  | 'MP'
+  | 'NO'
+  | 'OM'
+  | 'PK'
+  | 'PW'
+  | 'PS'
+  | 'PA'
+  | 'PG'
+  | 'PY'
+  | 'PE'
+  | 'PH'
+  | 'PN'
+  | 'PL'
+  | 'PT'
+  | 'PR'
+  | 'QA'
+  | 'RE'
+  | 'RO'
+  | 'RU'
+  | 'RW'
+  | 'BL'
+  | 'SH'
+  | 'KN'
+  | 'LC'
+  | 'MF'
+  | 'PM'
+  | 'VC'
+  | 'WS'
+  | 'SM'
+  | 'ST'
+  | 'SA'
+  | 'SN'
+  | 'RS'
+  | 'SC'
+  | 'SL'
+  | 'SG'
+  | 'SX'
+  | 'SK'
+  | 'SI'
+  | 'SB'
+  | 'SO'
+  | 'ZA'
+  | 'GS'
+  | 'SS'
+  | 'ES'
+  | 'LK'
+  | 'SD'
+  | 'SR'
+  | 'SJ'
+  | 'SZ'
+  | 'SE'
+  | 'CH'
+  | 'SY'
+  | 'TW'
+  | 'TJ'
+  | 'TZ'
+  | 'TH'
+  | 'TL'
+  | 'TG'
+  | 'TK'
+  | 'TO'
+  | 'TT'
+  | 'TN'
+  | 'TR'
+  | 'TM'
+  | 'TC'
+  | 'TV'
+  | 'UG'
+  | 'UA'
+  | 'AE'
+  | 'GB'
+  | 'US'
+  | 'UM'
+  | 'UY'
+  | 'UZ'
+  | 'VU'
+  | 'VE'
+  | 'VN'
+  | 'VG'
+  | 'VI'
+  | 'WF'
+  | 'EH'
+  | 'YE'
+  | 'ZM'
+  | 'ZW';
+
 export type CreatedAtSortMode_type =
   /* Supported set of sort modes for scanning by created_at only.
 
@@ -660,7 +960,7 @@ Currently, we only support scanning in ascending order. */
 export type Currency_type =
   /* Currency is the list of supported currencies.
 
-For more details see <https://support.stripe.com/questions/which-currencies-does-stripe-support>. */
+This comes from the Stripe API docs: For more details see <https://support.stripe.com/questions/which-currencies-does-stripe-support>. */
   | 'aed'
   | 'afn'
   | 'all'
@@ -813,7 +1113,11 @@ export interface Customer_type {
   balance: number;
   /* format:date-time, description:Time at which the object was created. */
   created_at: string;
-  currency: Currency_type /* Three-letter ISO code for the currency the customer can be charged in for recurring billing purposes. */;
+  /*{
+  "default": "usd",
+  "description": "Three-letter ISO code for the currency the customer can be charged in for recurring billing purposes."
+}*/
+  currency: Currency_type;
   /*{
   "default": false,
   "description": "When the customer's latest invoice is billed by charging automatically, `delinquent` is `true` if the invoice's latest charge failed.\n\nWhen the customer's latest invoice is billed by sending an invoice, `delinquent` is `true` if the invoice isn't paid by its due date.  If an invoice is marked uncollectible by dunning, `delinquent` doesn't get reset to `false`."
@@ -1627,7 +1931,11 @@ export interface Invoice_type {
   attempted: boolean;
   /* format:date-time, description:Time at which the object was created. */
   created_at: string;
-  currency: Currency_type /* Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. */;
+  /*{
+  "default": "usd",
+  "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
+}*/
+  currency: Currency_type;
   /*{
   "format": "email",
   "description": "The email address for the customer. Until the invoice is finalized, this field will equal customer.email. Once the invoice is finalized, this field will no longer be updated."
@@ -1694,7 +2002,11 @@ export interface InvoiceLineItem_type {
   "description": "The amount, in USD."
 }*/
   amount: number;
-  currency: Currency_type /* Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. */;
+  /*{
+  "default": "usd",
+  "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
+}*/
+  currency: Currency_type;
   description: string /* The description. */;
   id: string /* Unique identifier for the object. */;
   invoice_item: string /* The ID of the invoice item associated with this line item if any. */;
@@ -1805,7 +2117,7 @@ Currently includes 8 variants representing the 8 methods defined in [RFC 7230](h
 
 export interface NewAddress_type {
   city: string /* The city component. */;
-  country: string /* The country component. */;
+  country: CountryCode_type /* The country component. This is a two-letter ISO country code. */;
   state: string /* The state component. */;
   street1: string /* The first street component. */;
   street2: string /* The second street component. */;
@@ -3329,6 +3641,12 @@ export interface VerificationToken_type {
 
 export interface Models {
   AccountProvider_type: AccountProvider_type;
+  AiPluginApi_type: AiPluginApi_type;
+  AiPluginApiType_type: AiPluginApiType_type;
+  AiPluginAuth_type: AiPluginAuth_type;
+  AiPluginAuthType_type: AiPluginAuthType_type;
+  AiPluginHttpAuthType_type: AiPluginHttpAuthType_type;
+  AiPluginManifest_type: AiPluginManifest_type;
   ApiCallQueryGroup_type: ApiCallQueryGroup_type;
   ApiCallQueryGroupBy_type: ApiCallQueryGroupBy_type;
   ApiCallStatus_type: ApiCallStatus_type;
@@ -3349,6 +3667,7 @@ export interface Models {
   CodeOutput_type: CodeOutput_type;
   Commit_type: Commit_type;
   Connection_type: Connection_type;
+  CountryCode_type: CountryCode_type;
   CreatedAtSortMode_type: CreatedAtSortMode_type;
   Currency_type: Currency_type;
   Customer_type: Customer_type;
