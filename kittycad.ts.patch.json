@@ -9,6 +9,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1payment~1tax/get/x-typescript",
+    "value": {
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.validate_customer_tax_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1payment~1methods/get/x-typescript",
     "value": {
       "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_payment_methods_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -476,6 +484,14 @@
     "path": "/paths/~1async~1operations~1{id}/get/x-typescript",
     "value": {
       "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_async_operation({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1.well-known~1ai-plugin.json/get/x-typescript",
+    "value": {
+      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_ai_plugin_manifest()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

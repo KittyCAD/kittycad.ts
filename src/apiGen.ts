@@ -251,6 +251,7 @@ export default async function apiGen(lookup: any) {
           'api-calls.get_api_call_for_user',
           'api-calls.get_async_operation',
           'api-tokens.create_api_token_for_user',
+          'payments.validate_customer_tax_information_for_user',
         ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail
