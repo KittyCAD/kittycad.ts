@@ -293,44 +293,6 @@ This is the same as the API call ID. */
     }
   | {
       /*{
-  "format": "date-time",
-  "nullable": true,
-  "title": "DateTime",
-  "description": "The time and date the API call was completed."
-}*/
-      completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
-      created_at: string;
-      /* nullable:true, description:The error the function returned, if any. */
-      error?: string;
-      /* The unique identifier of the API call.
-
-This is the same as the API call ID. */
-      id: Uuid_type;
-      /*{
-  "format": "byte",
-  "nullable": true,
-  "title": "String",
-  "description": "The converted file, if completed, base64 encoded."
-}*/
-      output?: string;
-      output_format: File3DExportFormat_type /* The output format of the file conversion. */;
-      src_format: File3DImportFormat_type /* The source format of the file conversion. */;
-      /*{
-  "format": "date-time",
-  "nullable": true,
-  "title": "DateTime",
-  "description": "The time and date the API call was started."
-}*/
-      started_at?: string;
-      status: ApiCallStatus_type /* The status of the API call. */;
-      type: 'File3DConversion';
-      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
-      updated_at: string;
-      user_id: string /* The user ID of the user who created the API call. */;
-    }
-  | {
-      /*{
   "format": "double"
 }*/
       center_of_mass: number[];
@@ -509,7 +471,6 @@ export type AsyncApiCallType_type =
   /* The type of async API call. */
   | 'FileConversion'
   | 'File2DVectorConversion'
-  | 'File3DConversion'
   | 'FileVolume'
   | 'FileCenterOfMass'
   | 'FileMass'
@@ -1572,48 +1533,6 @@ export type File2DVectorExportFormat_type =
 export type File2DVectorImportFormat_type =
   /* The valid types of Vector source file formats. */
   'dxf' | 'svg';
-
-export interface File3DConversion_type {
-  /*{
-  "format": "date-time",
-  "nullable": true,
-  "title": "DateTime",
-  "description": "The time and date the API call was completed."
-}*/
-  completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
-  created_at: string;
-  /* nullable:true, description:The error the function returned, if any. */
-  error?: string;
-  /* The unique identifier of the API call.
-
-This is the same as the API call ID. */
-  id: Uuid_type;
-  /*{
-  "format": "byte",
-  "nullable": true,
-  "title": "String",
-  "description": "The converted file, if completed, base64 encoded."
-}*/
-  output?: string;
-  output_format: File3DExportFormat_type /* The output format of the file conversion. */;
-  src_format: File3DImportFormat_type /* The source format of the file conversion. */;
-  /*{
-  "format": "date-time",
-  "nullable": true,
-  "title": "DateTime",
-  "description": "The time and date the API call was started."
-}*/
-  started_at?: string;
-  status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
-  updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
-}
-
-export type File3DExportFormat_type =
-  /* The valid types of 3d output file formats, can include formats that use suplimentary files. For example, the OBJ format can use a MTL file. */
-  'dae' | 'fbx' | 'fbxb' | 'obj' | 'obj_nomtl' | 'ply' | 'step' | 'stl';
 
 export type File3DImportFormat_type =
   /* The valid types of 3d source file formats, can include formats that use suplimentary files. For example, the OBJ format can use a MTL file. */
@@ -3686,8 +3605,6 @@ export interface Models {
   File2DVectorConversion_type: File2DVectorConversion_type;
   File2DVectorExportFormat_type: File2DVectorExportFormat_type;
   File2DVectorImportFormat_type: File2DVectorImportFormat_type;
-  File3DConversion_type: File3DConversion_type;
-  File3DExportFormat_type: File3DExportFormat_type;
   File3DImportFormat_type: File3DImportFormat_type;
   FileCenterOfMass_type: FileCenterOfMass_type;
   FileConversion_type: FileConversion_type;

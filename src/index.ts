@@ -18,36 +18,26 @@ export const api_tokens = {
   list_api_tokens_for_user,
 };
 
-import get_physics_constant from './api/constant/get_physics_constant.js';
-export const constant = { get_physics_constant };
-
 import create_file_2d_vector_conversion from './api/file/create_file_2d_vector_conversion.js';
-import create_file_3d_conversion from './api/file/create_file_3d_conversion.js';
 import create_file_center_of_mass from './api/file/create_file_center_of_mass.js';
 import create_file_conversion from './api/file/create_file_conversion.js';
 import create_file_density from './api/file/create_file_density.js';
 import create_file_mass from './api/file/create_file_mass.js';
 import create_file_surface_area from './api/file/create_file_surface_area.js';
 import create_file_volume from './api/file/create_file_volume.js';
-import get_file_conversion from './api/file/get_file_conversion.js';
-import get_file_conversion_for_user from './api/file/get_file_conversion_for_user.js';
 export const file = {
   create_file_2d_vector_conversion,
-  create_file_3d_conversion,
   create_file_center_of_mass,
   create_file_conversion,
   create_file_density,
   create_file_mass,
   create_file_surface_area,
   create_file_volume,
-  get_file_conversion,
-  get_file_conversion_for_user,
 };
 
-import get_ai_plugin_manifest from './api/meta/get_ai_plugin_manifest.js';
 import get_schema from './api/meta/get_schema.js';
 import ping from './api/meta/ping.js';
-export const meta = { get_ai_plugin_manifest, get_schema, ping };
+export const meta = { get_schema, ping };
 
 import create_payment_information_for_user from './api/payments/create_payment_information_for_user.js';
 import delete_payment_information_for_user from './api/payments/delete_payment_information_for_user.js';
@@ -56,7 +46,6 @@ import get_payment_information_for_user from './api/payments/get_payment_informa
 import list_invoices_for_user from './api/payments/list_invoices_for_user.js';
 import list_payment_methods_for_user from './api/payments/list_payment_methods_for_user.js';
 import update_payment_information_for_user from './api/payments/update_payment_information_for_user.js';
-import validate_customer_tax_information_for_user from './api/payments/validate_customer_tax_information_for_user.js';
 export const payments = {
   create_payment_information_for_user,
   delete_payment_information_for_user,
@@ -65,7 +54,6 @@ export const payments = {
   list_invoices_for_user,
   list_payment_methods_for_user,
   update_payment_information_for_user,
-  validate_customer_tax_information_for_user,
 };
 
 import get_session_for_user from './api/sessions/get_session_for_user.js';
