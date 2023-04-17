@@ -1528,7 +1528,7 @@ This is the same as the API call ID. */
 
 export type File2DVectorExportFormat_type =
   /* The valid types of Vector output file formats. */
-  'dxf' | 'json' | 'png' | 'ps' | 'svg';
+  'dxf' | 'png' | 'ps' | 'svg';
 
 export type File2DVectorImportFormat_type =
   /* The valid types of Vector source file formats. */
@@ -1536,15 +1536,7 @@ export type File2DVectorImportFormat_type =
 
 export type File3DImportFormat_type =
   /* The valid types of 3d source file formats, can include formats that use suplimentary files. For example, the OBJ format can use a MTL file. */
-  | 'dae'
-  | 'dxf'
-  | 'fbx'
-  | 'obj_zip'
-  | 'obj'
-  | 'obj_nomtl'
-  | 'ply'
-  | 'step'
-  | 'stl';
+  'dae' | 'dxf' | 'fbx' | 'obj_zip' | 'obj' | 'ply' | 'step' | 'stl';
 
 export interface FileCenterOfMass_type {
   /*{
@@ -1654,30 +1646,11 @@ This is the same as the API call ID. */
 
 export type FileExportFormat_type =
   /* The valid types of output file formats. */
-  | 'dae'
-  | 'dxf'
-  | 'fbx'
-  | 'fbxb'
-  | 'json'
-  | 'obj'
-  | 'obj_nomtl'
-  | 'ply'
-  | 'step'
-  | 'stl'
-  | 'svg';
+  'dae' | 'dxf' | 'fbx' | 'fbxb' | 'obj' | 'ply' | 'step' | 'stl' | 'svg';
 
 export type FileImportFormat_type =
   /* The valid types of source file formats. */
-  | 'dae'
-  | 'dxf'
-  | 'fbx'
-  | 'obj_zip'
-  | 'obj'
-  | 'obj_nomtl'
-  | 'ply'
-  | 'step'
-  | 'stl'
-  | 'svg';
+  'dae' | 'dxf' | 'fbx' | 'obj_zip' | 'obj' | 'ply' | 'step' | 'stl' | 'svg';
 
 export interface FileMass_type {
   /*{
