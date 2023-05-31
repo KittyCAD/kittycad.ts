@@ -102,10 +102,14 @@ export default async function apiGen(lookup: any) {
               inputParamsExamples.push(`${name}: '${reffedSchema.enum[1]}'`);
             }
           } else if ('oneOf' in reffedSchema) {
+            const isOutput = ['output_unit', 'output_format'].includes(name);
             const input = (reffedSchema.oneOf?.find(
               (_input: OpenAPIV3.SchemaObject) =>
-                _input?.enum[0] === 'obj' || _input?.enum[0] === 'svg',
-            ) || reffedSchema.oneOf?.[0]) as OpenAPIV3.SchemaObject;
+                (_input?.enum[0] === 'obj' && !isOutput) ||
+                _input?.enum[0] === 'svg' ||
+                _input?.enum[0] === 'stl',
+            ) ||
+              reffedSchema.oneOf?.[isOutput ? 1 : 0]) as OpenAPIV3.SchemaObject;
             inputParamsExamples.push(`${name}: '${input?.enum?.[0]}'`);
           }
         } else {
