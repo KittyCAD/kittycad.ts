@@ -145,9 +145,12 @@ export default async function apiGen(lookup: any) {
         }
         inputTypes.push('body: string');
         inputParams.push('body');
-        const exampleFile = inputParamsExamples
-          .find((str) => str.startsWith('src_format:'))
-          .includes('obj')
+        const srcFmts = inputParamsExamples.find((str) => {
+          return str.startsWith('src_format:');
+        });
+        const exampleFile = !srcFmts
+          ? 'example'
+          : srcFmts.includes('obj')
           ? 'example.obj'
           : 'example.svg';
         inputParamsExamples.push(

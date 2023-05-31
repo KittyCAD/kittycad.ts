@@ -86,6 +86,9 @@ async function main() {
               subSchema.additionalProperties as any,
             )}}`;
           }
+          if (subSchema.type === 'object' && (subSchema as any).properties) {
+            return `${key}: ${makeTypeStringForNode(subSchema, key)}`;
+          }
           console.log(subSchema, key);
           throw 'subSchema not implemented ' + subSchema.type;
         })
