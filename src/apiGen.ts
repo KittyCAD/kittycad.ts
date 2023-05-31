@@ -101,6 +101,12 @@ export default async function apiGen(lookup: any) {
             } else {
               inputParamsExamples.push(`${name}: '${reffedSchema.enum[1]}'`);
             }
+          } else if ('oneOf' in reffedSchema) {
+            const input = (reffedSchema.oneOf?.find(
+              (_input: OpenAPIV3.SchemaObject) =>
+                _input?.enum[0] === 'obj' || _input?.enum[0] === 'svg',
+            ) || reffedSchema.oneOf?.[0]) as OpenAPIV3.SchemaObject;
+            inputParamsExamples.push(`${name}: '${input?.enum?.[0]}'`);
           }
         } else {
           if (schema.type === 'number' || schema.type === 'integer') {
