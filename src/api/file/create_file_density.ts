@@ -2,14 +2,14 @@ import fetch from 'node-fetch';
 import {
   FileDensity_type,
   Error_type,
-  File3DImportFormat_type,
+  FileImportFormat_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_file_density_params {
   client?: Client;
   material_mass: number;
-  src_format: File3DImportFormat_type;
+  src_format: FileImportFormat_type;
   body: string;
 }
 

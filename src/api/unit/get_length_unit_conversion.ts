@@ -2,14 +2,14 @@ import fetch from 'node-fetch';
 import {
   UnitLengthConversion_type,
   Error_type,
-  UnitLengthFormat_type,
+  UnitLength_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Get_length_unit_conversion_params {
   client?: Client;
-  output_format: UnitLengthFormat_type;
-  src_format: UnitLengthFormat_type;
+  input_unit: UnitLength_type;
+  output_unit: UnitLength_type;
   value: number;
 }
 
@@ -17,11 +17,11 @@ type Get_length_unit_conversion_return = UnitLengthConversion_type | Error_type;
 
 export default async function get_length_unit_conversion({
   client,
-  output_format,
-  src_format,
+  input_unit,
+  output_unit,
   value,
 }: Get_length_unit_conversion_params): Promise<Get_length_unit_conversion_return> {
-  const url = `/unit/conversion/length/${src_format}/${output_format}?value=${value}`;
+  const url = `/unit/conversion/length/${input_unit}/${output_unit}?value=${value}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client

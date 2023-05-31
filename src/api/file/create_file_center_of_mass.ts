@@ -2,13 +2,13 @@ import fetch from 'node-fetch';
 import {
   FileCenterOfMass_type,
   Error_type,
-  File3DImportFormat_type,
+  FileImportFormat_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_file_center_of_mass_params {
   client?: Client;
-  src_format: File3DImportFormat_type;
+  src_format: FileImportFormat_type;
   body: string;
 }
 

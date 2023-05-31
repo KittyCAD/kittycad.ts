@@ -2,8 +2,8 @@ import { unit } from '../../src/index.js';
 
 async function example() {
   const response = await unit.get_power_unit_conversion({
-    output_format: 'watt',
-    src_format: 'horsepower',
+    input_unit: 'btu_per_minute',
+    output_unit: 'horsepower',
     value: 7,
   });
   if ('error_code' in response) throw response;

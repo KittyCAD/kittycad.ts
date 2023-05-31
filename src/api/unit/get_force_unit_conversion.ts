@@ -2,14 +2,14 @@ import fetch from 'node-fetch';
 import {
   UnitForceConversion_type,
   Error_type,
-  UnitForceFormat_type,
+  UnitForce_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Get_force_unit_conversion_params {
   client?: Client;
-  output_format: UnitForceFormat_type;
-  src_format: UnitForceFormat_type;
+  input_unit: UnitForce_type;
+  output_unit: UnitForce_type;
   value: number;
 }
 
@@ -17,11 +17,11 @@ type Get_force_unit_conversion_return = UnitForceConversion_type | Error_type;
 
 export default async function get_force_unit_conversion({
   client,
-  output_format,
-  src_format,
+  input_unit,
+  output_unit,
   value,
 }: Get_force_unit_conversion_params): Promise<Get_force_unit_conversion_return> {
-  const url = `/unit/conversion/force/${src_format}/${output_format}?value=${value}`;
+  const url = `/unit/conversion/force/${input_unit}/${output_unit}?value=${value}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client

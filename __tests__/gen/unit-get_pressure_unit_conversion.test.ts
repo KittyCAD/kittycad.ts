@@ -2,8 +2,8 @@ import { unit } from '../../src/index.js';
 
 async function example() {
   const response = await unit.get_pressure_unit_conversion({
-    output_format: 'pascal',
-    src_format: 'bar',
+    input_unit: 'atmospheres',
+    output_unit: 'bars',
     value: 7,
   });
   if ('error_code' in response) throw response;
