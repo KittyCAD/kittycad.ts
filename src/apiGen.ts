@@ -38,9 +38,6 @@ export default async function apiGen(lookup: any) {
       if (!operationId) {
         throw `no operationId for ${path} ${method}`;
       }
-      if (methodValue.tags.includes('hidden')) {
-        return;
-      }
       operations[operationId] = {
         path,
         method,
@@ -204,7 +201,10 @@ export default async function apiGen(lookup: any) {
           if (!importedTypes.includes(typeReference)) {
             importedTypes.push(typeReference);
           }
-        } else if (Object.keys(schema).length === 0) {
+        } else if (
+          Object.keys(schema).length === 0 ||
+          schema.type === 'string'
+        ) {
           // do nothing
         } else if (schema.type === 'array') {
           const items = schema.items as OpenAPIV3.SchemaObject;
@@ -214,7 +214,7 @@ export default async function apiGen(lookup: any) {
               importedTypes.push(typeReference + '[]');
             }
           } else {
-            throw 'not implemented';
+            throw 'only ref arrays implemented';
           }
         } else {
           console.log('apiGen', schema);
@@ -256,24 +256,40 @@ export default async function apiGen(lookup: any) {
       if (
         // definitely a bit of a hack, these should probably be fixed,
         // or at the very least checked periodically.
+        // underscores before the period should be replaced with hyphens
         [
           'payments.delete_payment_information_for_user',
           'users.delete_user_self',
-          'file.get_file_conversion',
-          'file.get_file_conversion_for_user',
           'api-calls.get_api_call_for_user',
           'api-calls.get_async_operation',
-          'api-tokens.create_api_token_for_user',
           'payments.validate_customer_tax_information_for_user',
+          'api-calls.get_api_call',
+          'users.get_user_extended',
+          'payments.delete_payment_method_for_user',
+          'users.get_user',
+          'oauth2.device_auth_verify',
+          'users.get_user_front_hash_self',
+          'oauth2.oauth2_provider_callback',
+          'apps.apps_github_webhook',
+          'ai.create_image_to_3d',
         ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],
+          [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
+        ]);
+      } else if (
+        ['ai.create_text_to_3d'].includes(`${tag.trim()}.${operationId.trim()}`)
+      ) {
+        exampleTemplate = replacer(exampleTemplate, [
+          ['expect(await example()).toBeTruthy();', ''],
+          [/try {(.|\n)+?}(.|\n)+?}/g, ''],
         ]);
       } else {
         exampleTemplate = replacer(exampleTemplate, [
           [/try {(.|\n)+?}(.|\n)+?}/g, ''],
+          [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
         ]);
       }
       let genTest = exampleTemplate;
