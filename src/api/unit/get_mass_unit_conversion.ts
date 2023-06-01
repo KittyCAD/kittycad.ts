@@ -2,14 +2,14 @@ import fetch from 'node-fetch';
 import {
   UnitMassConversion_type,
   Error_type,
-  UnitMassFormat_type,
+  UnitMass_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Get_mass_unit_conversion_params {
   client?: Client;
-  output_format: UnitMassFormat_type;
-  src_format: UnitMassFormat_type;
+  input_unit: UnitMass_type;
+  output_unit: UnitMass_type;
   value: number;
 }
 
@@ -17,11 +17,11 @@ type Get_mass_unit_conversion_return = UnitMassConversion_type | Error_type;
 
 export default async function get_mass_unit_conversion({
   client,
-  output_format,
-  src_format,
+  input_unit,
+  output_unit,
   value,
 }: Get_mass_unit_conversion_params): Promise<Get_mass_unit_conversion_return> {
-  const url = `/unit/conversion/mass/${src_format}/${output_format}?value=${value}`;
+  const url = `/unit/conversion/mass/${input_unit}/${output_unit}?value=${value}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client

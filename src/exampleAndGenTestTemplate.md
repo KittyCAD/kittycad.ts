@@ -16,6 +16,11 @@ describe('Testing api.section', () => {
     } catch (err) {
       expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
     }
+    const examplePromise = example();
+    const timeoutPromise = new Promise((r) =>
+      setTimeout(() => r('timeout'), 450),
+    );
+    expect(await Promise.any([examplePromise, timeoutPromise])).toBe('timeout');
   });
 });
 ```

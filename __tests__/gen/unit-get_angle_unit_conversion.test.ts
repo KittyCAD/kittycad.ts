@@ -2,8 +2,8 @@ import { unit } from '../../src/index.js';
 
 async function example() {
   const response = await unit.get_angle_unit_conversion({
-    output_format: 'radian',
-    src_format: 'degree',
+    input_unit: 'degrees',
+    output_unit: 'radians',
     value: 7,
   });
   if ('error_code' in response) throw response;

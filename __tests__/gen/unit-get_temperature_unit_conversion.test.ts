@@ -2,8 +2,8 @@ import { unit } from '../../src/index.js';
 
 async function example() {
   const response = await unit.get_temperature_unit_conversion({
-    output_format: 'kelvin',
-    src_format: 'celsius',
+    input_unit: 'celsius',
+    output_unit: 'fahrenheit',
     value: 7,
   });
   if ('error_code' in response) throw response;

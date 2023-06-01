@@ -86,6 +86,9 @@ async function main() {
               subSchema.additionalProperties as any,
             )}}`;
           }
+          if (subSchema.type === 'object' && (subSchema as any).properties) {
+            return `${key}: ${makeTypeStringForNode(subSchema, key)}`;
+          }
           console.log(subSchema, key);
           throw 'subSchema not implemented ' + subSchema.type;
         })
@@ -101,7 +104,12 @@ async function main() {
     if (schema.oneOf) {
       const unionParts = schema.oneOf.map(
         (subSchema: OpenAPIV3.SchemaObject) => {
-          if (!(subSchema.type === 'array') && !(subSchema.type === 'object')) {
+          if (subSchema.type === 'string') {
+            return `'${subSchema.enum?.[0]}'`;
+          } else if (
+            !(subSchema.type === 'array') &&
+            !(subSchema.type === 'object')
+          ) {
             if (subSchema.allOf) {
               const ref = (subSchema.allOf[0] as any).$ref;
               return typeReference[ref];

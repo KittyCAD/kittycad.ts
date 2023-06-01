@@ -2,14 +2,14 @@ import fetch from 'node-fetch';
 import {
   UnitPressureConversion_type,
   Error_type,
-  UnitPressureFormat_type,
+  UnitPressure_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Get_pressure_unit_conversion_params {
   client?: Client;
-  output_format: UnitPressureFormat_type;
-  src_format: UnitPressureFormat_type;
+  input_unit: UnitPressure_type;
+  output_unit: UnitPressure_type;
   value: number;
 }
 
@@ -19,11 +19,11 @@ type Get_pressure_unit_conversion_return =
 
 export default async function get_pressure_unit_conversion({
   client,
-  output_format,
-  src_format,
+  input_unit,
+  output_unit,
   value,
 }: Get_pressure_unit_conversion_params): Promise<Get_pressure_unit_conversion_return> {
-  const url = `/unit/conversion/pressure/${src_format}/${output_format}?value=${value}`;
+  const url = `/unit/conversion/pressure/${input_unit}/${output_unit}?value=${value}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client
