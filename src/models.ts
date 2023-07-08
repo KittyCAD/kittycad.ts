@@ -459,6 +459,8 @@ export interface CacheMetadata_type {
   ok: boolean /* If the cache returned an ok response from ping. */;
 }
 
+export type CameraDragInteractionType_type = 'pan' | 'rotate' | 'zoom';
+
 export interface CardDetails_type {
   /* Card brand.
 
@@ -874,6 +876,25 @@ export type CountryCode_type =
   | 'ZM'
   | 'ZW';
 
+export interface Coupon_type {
+  /*{
+  "format": "money-usd",
+  "nullable": true,
+  "title": "Number",
+  "description": "Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer."
+}*/
+  amount_off?: number;
+  /* default:false, description:Always true for a deleted object. */
+  deleted: boolean;
+  id: string /* Unique identifier for the object. */;
+  /*{
+  "format": "double",
+  "nullable": true,
+  "description": "Percent that will be taken off the subtotal of any invoices for this customer for the duration of the coupon.\n\nFor example, a coupon with percent_off of 50 will make a %s100 invoice %s50 instead."
+}*/
+  percent_off?: number;
+}
+
 export type CreatedAtSortMode_type =
   | 'created-at-ascending'
   | 'created-at-descending';
@@ -1103,6 +1124,10 @@ export interface DeviceAuthRequestForm_type {
 
 export interface DeviceAuthVerifyParams_type {
   user_code: string /* The user code. */;
+}
+
+export interface Discount_type {
+  coupon: Coupon_type /* The coupon that applied to create this discount. */;
 }
 
 export interface DockerSystemInfo_type {
@@ -1444,9 +1469,10 @@ export interface ExtendedUserResultsPage_type {
 }
 
 export interface Extrude_type {
+  cap: boolean /* Whether to cap the extrusion with a face, or not. If true, the resulting solid will be closed on all sides, like a dice. If false, it will be open on one side, like a drinking glass. */;
   /* format:double, description:How far off the plane to extrude */
   distance: number;
-  target: ModelingCmdId_type /* Which sketch to extrude */;
+  target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
 }
 
 export interface FileCenterOfMass_type {
@@ -1759,6 +1785,7 @@ export interface Invoice_type {
   customer_id: string /* Customer ID. The unique identifier for the customer this invoice belongs to. This is the customer ID in the payments service, not our database customer ID. */;
   default_payment_method: string /* Default payment method. */;
   description: string /* Description of the invoice. */;
+  discounts: Discount_type[] /* The discounts applied to the invoice. This is an array of discount objects. */;
   id: string /* Unique identifier for the object. */;
   /* The individual line items that make up the invoice.
 
@@ -1893,11 +1920,6 @@ export interface LeafNode_type {
   tls_timeout: number;
 }
 
-export interface Line3d_type {
-  from: Point3d_type /* Start of the line */;
-  to: Point3d_type /* End of the line */;
-}
-
 export interface Mesh_type {
   mesh: string;
 }
@@ -1935,11 +1957,49 @@ export type Method_type =
   | 'EXTENSION';
 
 export type ModelingCmd_type =
-  | { AddLine: any }
+  | 'StartPath'
+  | {
+      MovePathPen: {
+        path: ModelingCmdId_type /* The ID of the command which created the path. */;
+        to: Point3d_type /* Where the path's pen should be. */;
+      };
+    }
+  | {
+      ExtendPath: {
+        path: ModelingCmdId_type /* The ID of the command which created the path. */;
+        segment: PathSegment_type /* Segment to append to the path. This segment will implicitly begin at the current "pen" location. */;
+      };
+    }
   | { Extrude: any }
   | {
-      SelectionClick: {
-        at: Point2d_type /* Where the mouse was clicked. TODO engine#1035: Choose a coordinate system for this. */;
+      ClosePath: {
+        /* format:uuid, description:Which path to close. */
+        path_id: string;
+      };
+    }
+  | {
+      CameraDragStart: {
+        interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
+        window: Point2d_type /* The initial mouse position. */;
+      };
+    }
+  | {
+      CameraDragMove: {
+        interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
+        /*{
+  "format": "uint32",
+  "minimum": 0,
+  "nullable": true,
+  "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
+}*/
+        sequence?: number;
+        window: Point2d_type /* The current mouse position. */;
+      };
+    }
+  | {
+      CameraDragEnd: {
+        interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
+        window: Point2d_type /* The final mouse position. */;
       };
     };
 
@@ -2024,6 +2084,27 @@ export interface OutputFile_type {
   /* default:, description:The name of the file. */
   name: string;
 }
+
+export type PathSegment_type =
+  | { Line: { end: Point3d_type /* End point of the line. */ } }
+  | {
+      Arc: {
+        /* format:float, description:Start of the arc along circle's perimeter. */
+        angle_end: number;
+        /* format:float, description:Start of the arc along circle's perimeter. */
+        angle_start: number;
+        center: Point2d_type /* Center of the circle */;
+        /* format:float, description:Radius of the circle */
+        radius: number;
+      };
+    }
+  | {
+      Bezier: {
+        control1: Point3d_type /* First control point. */;
+        control2: Point3d_type /* Second control point. */;
+        end: Point3d_type /* Final control point. */;
+      };
+    };
 
 export interface PaymentIntent_type {
   client_secret: string /* The client secret is used for client-side retrieval using a publishable key. The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret. */;
@@ -2898,6 +2979,7 @@ export interface Models {
   AsyncApiCallType_type: AsyncApiCallType_type;
   BillingInfo_type: BillingInfo_type;
   CacheMetadata_type: CacheMetadata_type;
+  CameraDragInteractionType_type: CameraDragInteractionType_type;
   CardDetails_type: CardDetails_type;
   Cluster_type: Cluster_type;
   CodeLanguage_type: CodeLanguage_type;
@@ -2905,6 +2987,7 @@ export interface Models {
   Commit_type: Commit_type;
   Connection_type: Connection_type;
   CountryCode_type: CountryCode_type;
+  Coupon_type: Coupon_type;
   CreatedAtSortMode_type: CreatedAtSortMode_type;
   Currency_type: Currency_type;
   Customer_type: Customer_type;
@@ -2912,6 +2995,7 @@ export interface Models {
   DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type;
   DeviceAuthRequestForm_type: DeviceAuthRequestForm_type;
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
+  Discount_type: Discount_type;
   DockerSystemInfo_type: DockerSystemInfo_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
   EngineMetadata_type: EngineMetadata_type;
@@ -2941,7 +3025,6 @@ export interface Models {
   JetstreamConfig_type: JetstreamConfig_type;
   JetstreamStats_type: JetstreamStats_type;
   LeafNode_type: LeafNode_type;
-  Line3d_type: Line3d_type;
   Mesh_type: Mesh_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
@@ -2958,6 +3041,7 @@ export interface Models {
   OAuth2GrantType_type: OAuth2GrantType_type;
   Onboarding_type: Onboarding_type;
   OutputFile_type: OutputFile_type;
+  PathSegment_type: PathSegment_type;
   PaymentIntent_type: PaymentIntent_type;
   PaymentMethod_type: PaymentMethod_type;
   PaymentMethodCardChecks_type: PaymentMethodCardChecks_type;
