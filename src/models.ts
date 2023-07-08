@@ -240,11 +240,22 @@ This is the same as the API call ID. */
   "format": "byte",
   "nullable": true,
   "title": "String",
-  "description": "The converted file, if completed, base64 encoded."
+  "description": "The converted file (if single file conversion), if completed, base64 encoded. This field is deprecated, and will be removed in a future release. Use `outputs` instead."
 }*/
       output?: string;
       output_format: FileExportFormat_type /* The output format of the file conversion. */;
+      /* nullable:true, description:The output format options of the file conversion. */
+      output_format_options: OutputFormat_type;
+      outputs: {
+        [key: string]: /*{
+  "format": "byte",
+  "title": "String"
+}*/
+        string;
+      };
       src_format: FileImportFormat_type /* The source format of the file conversion. */;
+      /* nullable:true, description:The source format options of the file conversion. */
+      src_format_options: InputFormat_type;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -441,6 +452,13 @@ export type AsyncApiCallType_type =
   | 'FileMass'
   | 'FileDensity'
   | 'FileSurfaceArea';
+
+export type Axis_type = 'y' | 'z';
+
+export interface AxisDirectionPair_type {
+  axis: Axis_type /* Axis specifier. */;
+  direction: Direction_type /* Specifies which direction the axis is pointing. */;
+}
 
 export interface BillingInfo_type {
   /* nullable:true, description:The address of the customer. */
@@ -1126,6 +1144,8 @@ export interface DeviceAuthVerifyParams_type {
   user_code: string /* The user code. */;
 }
 
+export type Direction_type = 'positive' | 'negative';
+
 export interface Discount_type {
   coupon: Coupon_type /* The coupon that applied to create this discount. */;
 }
@@ -1529,11 +1549,22 @@ This is the same as the API call ID. */
   "format": "byte",
   "nullable": true,
   "title": "String",
-  "description": "The converted file, if completed, base64 encoded."
+  "description": "The converted file (if single file conversion), if completed, base64 encoded. This field is deprecated, and will be removed in a future release. Use `outputs` instead."
 }*/
   output?: string;
   output_format: FileExportFormat_type /* The output format of the file conversion. */;
+  /* nullable:true, description:The output format options of the file conversion. */
+  output_format_options: OutputFormat_type;
+  outputs: {
+    [key: string]: /*{
+  "format": "byte",
+  "title": "String"
+}*/
+    string;
+  };
   src_format: FileImportFormat_type /* The source format of the file conversion. */;
+  /* nullable:true, description:The source format options of the file conversion. */
+  src_format_options: InputFormat_type;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1586,6 +1617,7 @@ export type FileExportFormat_type =
   | 'dxf'
   | 'fbx'
   | 'fbxb'
+  | 'gltf'
   | 'obj'
   | 'ply'
   | 'step'
@@ -1595,7 +1627,7 @@ export type FileImportFormat_type =
   | 'dae'
   | 'dxf'
   | 'fbx'
-  | 'obj_zip'
+  | 'gltf'
   | 'obj'
   | 'ply'
   | 'step'
@@ -1735,6 +1767,36 @@ export interface IndexInfo_type {
 }*/
   secure?: boolean;
 }
+
+export type InputFormat_type =
+  | { type: 'Gltf' }
+  | {
+      /* Co-ordinate system of input data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System_type;
+      type: 'Step';
+    }
+  | {
+      /* Co-ordinate system of input data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System_type;
+      type: 'Obj';
+    }
+  | {
+      /* Co-ordinate system of input data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System_type;
+      type: 'Stl';
+    };
 
 export interface Invoice_type {
   /*{
@@ -2085,6 +2147,40 @@ export interface OutputFile_type {
   name: string;
 }
 
+export type OutputFormat_type =
+  | {
+      storage: Storage_type /* Specifies which kind of glTF 2.0 will be exported. */;
+      type: 'Gltf';
+    }
+  | {
+      /* Co-ordinate system of output data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System_type;
+      type: 'Obj';
+    }
+  | {
+      /* Co-ordinate system of output data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System_type;
+      type: 'Step';
+    }
+  | {
+      /* Co-ordinate system of output data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System_type;
+      storage: Storage_type /* Export storage. */;
+      type: 'Stl';
+    };
+
 export type PathSegment_type =
   | { Line: { end: Point3d_type /* End point of the line. */ } }
   | {
@@ -2267,6 +2363,13 @@ export interface Session_type {
   /* format:date-time, title:DateTime, description:The date and time the session was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user that the session belongs to. */;
+}
+
+export type Storage_type = 'binary' | 'standard' | 'embedded';
+
+export interface System_type {
+  forward: AxisDirectionPair_type /* Axis the front face of a model looks along. */;
+  up: AxisDirectionPair_type /* Axis pointing up and away from a model. */;
 }
 
 export type SystemInfoCgroupDriverEnum_type =
@@ -2977,6 +3080,8 @@ export interface Models {
   AsyncApiCallOutput_type: AsyncApiCallOutput_type;
   AsyncApiCallResultsPage_type: AsyncApiCallResultsPage_type;
   AsyncApiCallType_type: AsyncApiCallType_type;
+  Axis_type: Axis_type;
+  AxisDirectionPair_type: AxisDirectionPair_type;
   BillingInfo_type: BillingInfo_type;
   CacheMetadata_type: CacheMetadata_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
@@ -2995,6 +3100,7 @@ export interface Models {
   DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type;
   DeviceAuthRequestForm_type: DeviceAuthRequestForm_type;
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
+  Direction_type: Direction_type;
   Discount_type: Discount_type;
   DockerSystemInfo_type: DockerSystemInfo_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
@@ -3017,6 +3123,7 @@ export interface Models {
   Gateway_type: Gateway_type;
   ImageType_type: ImageType_type;
   IndexInfo_type: IndexInfo_type;
+  InputFormat_type: InputFormat_type;
   Invoice_type: Invoice_type;
   InvoiceLineItem_type: InvoiceLineItem_type;
   InvoiceStatus_type: InvoiceStatus_type;
@@ -3041,6 +3148,7 @@ export interface Models {
   OAuth2GrantType_type: OAuth2GrantType_type;
   Onboarding_type: Onboarding_type;
   OutputFile_type: OutputFile_type;
+  OutputFormat_type: OutputFormat_type;
   PathSegment_type: PathSegment_type;
   PaymentIntent_type: PaymentIntent_type;
   PaymentMethod_type: PaymentMethod_type;
@@ -3056,6 +3164,8 @@ export interface Models {
   RegistryServiceConfig_type: RegistryServiceConfig_type;
   Runtime_type: Runtime_type;
   Session_type: Session_type;
+  Storage_type: Storage_type;
+  System_type: System_type;
   SystemInfoCgroupDriverEnum_type: SystemInfoCgroupDriverEnum_type;
   SystemInfoCgroupVersionEnum_type: SystemInfoCgroupVersionEnum_type;
   SystemInfoDefaultAddressPools_type: SystemInfoDefaultAddressPools_type;
