@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/setup-node@v3.5.1
         with:
-            node-version: '16'
+            node-version: '20.5.0'
             cache: 'yarn'
       - run: yarn install
       - run: yarn gen
@@ -24,7 +24,7 @@ jobs:
       - run: yarn test
         env:
           KITTYCAD_TOKEN: ${{ secrets.KITTYCAD_TOKEN }}
-          BASE_URL: "https://dev.api.kittycad.io/"
+          BASE_URL: "https://api.dev.kittycad.io/"
       - name: check for changes
         id: git-check
         run: |

@@ -243,7 +243,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1volume~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        input_unit: 'cubic_centimetres',\n        output_unit: 'cubic_feet',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        input_unit: 'cm3',\n        output_unit: 'ft3',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -283,7 +283,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1mass~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_mass_unit_conversion({\n        input_unit: 'carats',\n        output_unit: 'grains',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_mass_unit_conversion({\n        input_unit: 'g',\n        output_unit: 'kg',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -291,7 +291,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1length~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        input_unit: 'centimetres',\n        output_unit: 'decimetres',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        input_unit: 'cm',\n        output_unit: 'ft',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -331,7 +331,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1area~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_area_unit_conversion({\n        input_unit: 'acres',\n        output_unit: 'hectares',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_area_unit_conversion({\n        input_unit: 'cm2',\n        output_unit: 'dm2',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -427,7 +427,7 @@
     "op": "add",
     "path": "/paths/~1file~1volume/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        output_unit: 'ft3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -435,7 +435,7 @@
     "op": "add",
     "path": "/paths/~1file~1surface-area/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_surface_area({\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_surface_area({\n        output_unit: 'dm2',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -443,7 +443,7 @@
     "op": "add",
     "path": "/paths/~1file~1mass/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_mass({\n        material_density: 7,\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_mass({\n        material_density: 7,\n        material_density_unit: 'lb:ft3',\n        output_unit: 'kg',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -459,7 +459,7 @@
     "op": "add",
     "path": "/paths/~1file~1density/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_density({\n        material_mass: 7,\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_density({\n        material_mass: 7,\n        material_mass_unit: 'g',\n        output_unit: 'kg:m3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -475,7 +475,7 @@
     "op": "add",
     "path": "/paths/~1file~1center-of-mass/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_center_of_mass({\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_center_of_mass({\n        output_unit: 'ft',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
