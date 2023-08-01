@@ -7,6 +7,8 @@ describe('Testing create_file_mass', () => {
   it("shouldn't throw", async () => {
     const response = await file.create_file_mass({
       src_format: 'obj',
+      material_density_unit: 'kg:m3',
+      output_unit: 'g',
       material_density: 0.007,
       body: await fsp.readFile('./example.obj', 'base64'),
     });
@@ -20,6 +22,8 @@ describe('Testing create_file_mass', () => {
     const response = await file.create_file_mass({
       client,
       src_format: 'obj',
+      material_density_unit: 'kg:m3',
+      output_unit: 'g',
       material_density: 0.007,
       body: await fsp.readFile('./example.obj', 'base64'),
     });

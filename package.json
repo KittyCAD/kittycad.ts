@@ -34,7 +34,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">= 16.13 <19"
+    "node": ">= 16.13"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.18.9",
@@ -66,7 +66,7 @@
     "build:js": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "build": "rimraf dist && npm run build:types && npm run build:js",
-    "gen": "ts-node ./src/modelsGen.ts && prettier --config .prettierrc --write './src' './__tests__' './kittycad.ts.patch.json'",
+    "gen": "node --experimental-loader ts-node/esm.mjs ./src/modelsGen.ts && prettier --config .prettierrc --write './src' './__tests__' './kittycad.ts.patch.json'",
     "test": "jest",
     "tsc": "tsc"
   },
