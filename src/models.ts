@@ -237,6 +237,7 @@ export type AsyncApiCallOutput_type =
 This is the same as the API call ID. */
       id: Uuid_type;
       /*{
+  "deprecated": true,
   "format": "byte",
   "nullable": true,
   "title": "String",
@@ -271,9 +272,14 @@ This is the same as the API call ID. */
     }
   | {
       /*{
-  "format": "double"
+  "deprecated": true,
+  "nullable": true,
+  "description": "The resulting center of mass. This is deprecated and will be removed in a future release. Use `centers_of_mass` instead."
 }*/
-      center_of_mass: number[];
+      center_of_mass: Point3d_type;
+      centers_of_mass: {
+        [key: string]: Point3d_type;
+      } /* The center of mass for each mesh in the file. The key of the hash map is the mesh name. */;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -289,6 +295,7 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
+      output_unit: UnitLength_type /* The output unit for the center of mass. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
@@ -319,10 +326,23 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
-      /* format:double, nullable:true, description:The resulting mass. */
+      /*{
+  "deprecated": true,
+  "format": "double",
+  "nullable": true,
+  "description": "The resulting mass. This is deprecated and will be removed in a future release, use `masses` instead."
+}*/
       mass?: number;
-      /* default:0, format:float, description:The material density as denoted by the user. */
+      masses: {
+        [key: string]: /*{
+  "format": "double"
+}*/
+        number;
+      };
+      /* default:0, format:double, description:The material density as denoted by the user. */
       material_density: number;
+      material_density_unit: UnitDensity_type /* The material density unit. */;
+      output_unit: UnitMass_type /* The output unit for the mass. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
@@ -353,6 +373,7 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
+      output_unit: UnitVolume_type /* The output unit for the volume. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
@@ -366,8 +387,19 @@ This is the same as the API call ID. */
       /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
-      /* format:double, nullable:true, description:The resulting volume. */
+      /*{
+  "deprecated": true,
+  "format": "double",
+  "nullable": true,
+  "description": "The resulting volume. This is deprecated and will be removed in a future release. Use `volumes` instead."
+}*/
       volume?: number;
+      volumes: {
+        [key: string]: /*{
+  "format": "double"
+}*/
+        number;
+      };
     }
   | {
       /*{
@@ -379,7 +411,18 @@ This is the same as the API call ID. */
       completed_at?: string;
       /* format:date-time, title:DateTime, description:The time and date the API call was created. */
       created_at: string;
-      /* format:double, nullable:true, description:The resulting density. */
+      densities: {
+        [key: string]: /*{
+  "format": "double"
+}*/
+        number;
+      };
+      /*{
+  "deprecated": true,
+  "format": "double",
+  "nullable": true,
+  "description": "The resulting density. This is deprecated and will be removed in a future release, use `densities` instead."
+}*/
       density?: number;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
@@ -387,8 +430,10 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
-      /* default:0, format:float, description:The material mass as denoted by the user. */
+      /* default:0, format:double, description:The material mass as denoted by the user. */
       material_mass: number;
+      material_mass_unit: UnitMass_type /* The material mass unit. */;
+      output_unit: UnitDensity_type /* The output unit for the density. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
@@ -419,6 +464,7 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
+      output_unit: UnitArea_type /* The output unit for the surface area. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
   "format": "date-time",
@@ -428,8 +474,19 @@ This is the same as the API call ID. */
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
-      /* format:double, nullable:true, description:The resulting surface area. */
+      /*{
+  "deprecated": true,
+  "format": "double",
+  "nullable": true,
+  "description": "The resulting surface area. This is deprecated and will be removed in a future release. Use `surface_areas` instead."
+}*/
       surface_area?: number;
+      surface_areas: {
+        [key: string]: /*{
+  "format": "double"
+}*/
+        number;
+      };
       type: 'FileSurfaceArea';
       /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
@@ -1497,9 +1554,14 @@ export interface Extrude_type {
 
 export interface FileCenterOfMass_type {
   /*{
-  "format": "double"
+  "deprecated": true,
+  "nullable": true,
+  "description": "The resulting center of mass. This is deprecated and will be removed in a future release. Use `centers_of_mass` instead."
 }*/
-  center_of_mass: number[];
+  center_of_mass: Point3d_type;
+  centers_of_mass: {
+    [key: string]: Point3d_type;
+  } /* The center of mass for each mesh in the file. The key of the hash map is the mesh name. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1515,6 +1577,7 @@ export interface FileCenterOfMass_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
+  output_unit: UnitLength_type /* The output unit for the center of mass. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
@@ -1546,6 +1609,7 @@ export interface FileConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /*{
+  "deprecated": true,
   "format": "byte",
   "nullable": true,
   "title": "String",
@@ -1588,7 +1652,18 @@ export interface FileDensity_type {
   completed_at?: string;
   /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
-  /* format:double, nullable:true, description:The resulting density. */
+  densities: {
+    [key: string]: /*{
+  "format": "double"
+}*/
+    number;
+  };
+  /*{
+  "deprecated": true,
+  "format": "double",
+  "nullable": true,
+  "description": "The resulting density. This is deprecated and will be removed in a future release, use `densities` instead."
+}*/
   density?: number;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -1596,8 +1671,10 @@ export interface FileDensity_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  /* default:0, format:float, description:The material mass as denoted by the user. */
+  /* default:0, format:double, description:The material mass as denoted by the user. */
   material_mass: number;
+  material_mass_unit: UnitMass_type /* The material mass unit. */;
+  output_unit: UnitDensity_type /* The output unit for the density. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
@@ -1614,7 +1691,6 @@ This is the same as the API call ID. */
 
 export type FileExportFormat_type =
   | 'dae'
-  | 'dxf'
   | 'fbx'
   | 'fbxb'
   | 'gltf'
@@ -1625,7 +1701,6 @@ export type FileExportFormat_type =
 
 export type FileImportFormat_type =
   | 'dae'
-  | 'dxf'
   | 'fbx'
   | 'gltf'
   | 'obj'
@@ -1649,10 +1724,23 @@ export interface FileMass_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  /* format:double, nullable:true, description:The resulting mass. */
+  /*{
+  "deprecated": true,
+  "format": "double",
+  "nullable": true,
+  "description": "The resulting mass. This is deprecated and will be removed in a future release, use `masses` instead."
+}*/
   mass?: number;
-  /* default:0, format:float, description:The material density as denoted by the user. */
+  masses: {
+    [key: string]: /*{
+  "format": "double"
+}*/
+    number;
+  };
+  /* default:0, format:double, description:The material density as denoted by the user. */
   material_density: number;
+  material_density_unit: UnitDensity_type /* The material density unit. */;
+  output_unit: UnitMass_type /* The output unit for the mass. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
@@ -1683,6 +1771,7 @@ export interface FileSurfaceArea_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
+  output_unit: UnitArea_type /* The output unit for the surface area. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
@@ -1692,8 +1781,19 @@ This is the same as the API call ID. */
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:double, nullable:true, description:The resulting surface area. */
+  /*{
+  "deprecated": true,
+  "format": "double",
+  "nullable": true,
+  "description": "The resulting surface area. This is deprecated and will be removed in a future release. Use `surface_areas` instead."
+}*/
   surface_area?: number;
+  surface_areas: {
+    [key: string]: /*{
+  "format": "double"
+}*/
+    number;
+  };
   /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
@@ -1719,6 +1819,7 @@ export interface FileVolume_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
+  output_unit: UnitVolume_type /* The output unit for the volume. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
   "format": "date-time",
@@ -1731,8 +1832,19 @@ This is the same as the API call ID. */
   /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
-  /* format:double, nullable:true, description:The resulting volume. */
+  /*{
+  "deprecated": true,
+  "format": "double",
+  "nullable": true,
+  "description": "The resulting volume. This is deprecated and will be removed in a future release. Use `volumes` instead."
+}*/
   volume?: number;
+  volumes: {
+    [key: string]: /*{
+  "format": "double"
+}*/
+    number;
+  };
 }
 
 export interface Gateway_type {
@@ -1787,6 +1899,17 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       type: 'Obj';
+      units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
+    }
+  | {
+      /* Co-ordinate system of input data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System_type;
+      type: 'Ply';
+      units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
     }
   | {
       /* Co-ordinate system of input data.
@@ -1796,6 +1919,7 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       type: 'Stl';
+      units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
     };
 
 export interface Invoice_type {
@@ -2063,6 +2187,27 @@ export type ModelingCmd_type =
         interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
         window: Point2d_type /* The final mouse position. */;
       };
+    }
+  | {
+      DefaultCameraLookAt: {
+        center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */;
+        up: Point3d_type /* Which way is "up", from the camera's point of view. */;
+        vantage: Point3d_type /* Where the camera is positioned */;
+      };
+    }
+  | {
+      DefaultCameraEnableSketchMode: {
+        /* format:float, description:How far to the sketching plane? */
+        distance_to_plane: number;
+        origin: Point3d_type /* What's the origin of the sketching plane? */;
+        ortho: boolean /* Should the camera use orthographic projection? In other words, should an object's size in the rendered image stay constant regardless of its distance from the camera. */;
+        x_axis: Point3d_type /* Which 3D axis of the scene should be the X axis of the sketching plane? */;
+        y_axis: Point3d_type /* Which 3D axis of the scene should be the Y axis of the sketching plane? */;
+      };
+    }
+  | 'DefaultCameraDisableSketchMode'
+  | {
+      Export: { format: OutputFormat_type /* The file format to export to. */ };
     };
 
 export type ModelingCmdId_type =
@@ -2160,6 +2305,16 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       type: 'Obj';
+    }
+  | {
+      /* Co-ordinate system of output data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System_type;
+      storage: Storage_type /* The storage for the output PLY file. */;
+      type: 'Ply';
     }
   | {
       /* Co-ordinate system of output data.
@@ -2431,20 +2586,14 @@ This is the same as the API call ID. */
 }
 
 export type UnitArea_type =
-  | 'acres'
-  | 'hectares'
-  | 'square_centimetres'
-  | 'square_decimetres'
-  | 'square_feet'
-  | 'square_hectometres'
-  | 'square_inches'
-  | 'square_kilometres'
-  | 'square_metres'
-  | 'square_micrometres'
-  | 'square_miles'
-  | 'square_millimetres'
-  | 'square_nanometres'
-  | 'square_yards';
+  | 'cm2'
+  | 'dm2'
+  | 'ft2'
+  | 'in2'
+  | 'km2'
+  | 'm2'
+  | 'mm2'
+  | 'yd2';
 
 export interface UnitAreaConversion_type {
   /*{
@@ -2521,6 +2670,8 @@ This is the same as the API call ID. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
+
+export type UnitDensity_type = 'lb:ft3' | 'kg:m3';
 
 export type UnitEnergy_type =
   | 'btu'
@@ -2654,20 +2805,7 @@ This is the same as the API call ID. */
   user_id: string /* The user ID of the user who created the API call. */;
 }
 
-export type UnitLength_type =
-  | 'centimetres'
-  | 'decimetres'
-  | 'feet'
-  | 'furlongs'
-  | 'hectometres'
-  | 'inches'
-  | 'kilometres'
-  | 'metres'
-  | 'micrometres'
-  | 'miles'
-  | 'millimetres'
-  | 'nanometres'
-  | 'yards';
+export type UnitLength_type = 'cm' | 'ft' | 'in' | 'm' | 'mm' | 'yd';
 
 export interface UnitLengthConversion_type {
   /*{
@@ -2704,22 +2842,7 @@ This is the same as the API call ID. */
   user_id: string /* The user ID of the user who created the API call. */;
 }
 
-export type UnitMass_type =
-  | 'carats'
-  | 'grains'
-  | 'grams'
-  | 'kilograms'
-  | 'long_tons'
-  | 'metric_tons'
-  | 'micrograms'
-  | 'milligrams'
-  | 'ounces'
-  | 'pennyweights'
-  | 'pounds'
-  | 'short_tons'
-  | 'stones'
-  | 'troy_ounces'
-  | 'troy_pounds';
+export type UnitMass_type = 'g' | 'kg' | 'lb';
 
 export interface UnitMassConversion_type {
   /*{
@@ -2923,25 +3046,15 @@ This is the same as the API call ID. */
 }
 
 export type UnitVolume_type =
-  | 'cubic_centimetres'
-  | 'cubic_feet'
-  | 'cubic_inches'
-  | 'cubic_metres'
-  | 'cubic_yards'
-  | 'cups'
-  | 'drams'
-  | 'drops'
-  | 'fluid_ounces'
-  | 'fluid_ounces_uk'
-  | 'gallons'
-  | 'gallons_uk'
-  | 'litres'
-  | 'millilitres'
-  | 'pints'
-  | 'pints_uk'
-  | 'quarts'
-  | 'tablespoons'
-  | 'teaspoons';
+  | 'cm3'
+  | 'ft3'
+  | 'in3'
+  | 'm3'
+  | 'yd3'
+  | 'usfloz'
+  | 'usgal'
+  | 'l'
+  | 'ml';
 
 export interface UnitVolumeConversion_type {
   /*{
@@ -3176,6 +3289,7 @@ export interface Models {
   UnitAreaConversion_type: UnitAreaConversion_type;
   UnitCurrent_type: UnitCurrent_type;
   UnitCurrentConversion_type: UnitCurrentConversion_type;
+  UnitDensity_type: UnitDensity_type;
   UnitEnergy_type: UnitEnergy_type;
   UnitEnergyConversion_type: UnitEnergyConversion_type;
   UnitForce_type: UnitForce_type;
