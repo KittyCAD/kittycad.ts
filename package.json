@@ -37,13 +37,16 @@
     "node": ">= 16.13"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.18.9",
     "@babel/preset-typescript": "^7.18.6",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@types/node": "~18",
+    "@types/jest": "^29.5.3",
+    "@types/node": "~20",
+    "@types/node-fetch": "^2.6.4",
     "@typescript-eslint/eslint-plugin": "~5.46",
     "@typescript-eslint/parser": "~5.26",
     "eslint": "^8.29.0",
@@ -63,9 +66,10 @@
     "build:js": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "build": "rimraf dist && npm run build:types && npm run build:js",
-    "gen": "node --experimental-loader ts-node/esm.mjs ./src/modelsGen.ts && prettier --config .prettierrc --write './src' './__tests__' './kittycad.ts.patch.json'",
+    "gen": "node --experimental-loader ts-node/esm.mjs ./src/modelsGen.ts && yarn fmt",
     "test": "vitest",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "fmt": "prettier --config .prettierrc --write './src' './__tests__' './kittycad.ts.patch.json' './rollup.config.js'"
   },
   "author": "Kurt Hutten <kurt@kittycad.io>",
   "license": "MIT",

@@ -1,11 +1,11 @@
-import { babel } from '@rollup/plugin-babel'
-import commonjs from '@rollup/plugin-commonjs'
-import json from '@rollup/plugin-json'
-import { nodeResolve } from '@rollup/plugin-node-resolve'
-import { terser } from 'rollup-plugin-terser'
-import pkg from './package.json'
+import { babel } from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
+import pkg from './package.json';
 
-const extensions = ['.js', '.ts']
+const extensions = ['.js', '.ts'];
 
 const plugins = [
   json(),
@@ -15,7 +15,7 @@ const plugins = [
     extensions,
   }),
   terser(),
-]
+];
 
 export default [
   {
@@ -33,12 +33,6 @@ export default [
         file: pkg.main,
         format: 'cjs',
       },
-    ],
-    plugins,
-  },
-  {
-    input: 'src/index.ts',
-    output: [
       {
         name: pkg.name,
         file: pkg.browser,
@@ -47,4 +41,4 @@ export default [
     ],
     plugins,
   },
-]
+];
