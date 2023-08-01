@@ -271,7 +271,6 @@ export default async function apiGen(lookup: any) {
           'users.get_user_front_hash_self',
           'oauth2.oauth2_provider_callback',
           'apps.apps_github_webhook',
-          'ai.create_image_to_3d',
         ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail
@@ -280,7 +279,9 @@ export default async function apiGen(lookup: any) {
           [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
         ]);
       } else if (
-        ['ai.create_text_to_3d'].includes(`${tag.trim()}.${operationId.trim()}`)
+        ['ai.create_text_to_3d', 'ai.create_image_to_3d'].includes(
+          `${tag.trim()}.${operationId.trim()}`,
+        )
       ) {
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],
