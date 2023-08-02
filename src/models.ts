@@ -2198,12 +2198,11 @@ export type ModelingCmd_type =
     }
   | { type: 'default_camera_disable_sketch_mode' }
   | {
-      format: OutputFormat_type /* The file format to export to. */;
       /*{
-  "format": "uuid",
-  "description": "ID of the scene or an item in the scene to be exported."
+  "format": "uuid"
 }*/
-      scene_id: string;
+      entity_ids: string[];
+      format: OutputFormat_type /* The file format to export to. */;
       type: 'export';
     }
   | {
