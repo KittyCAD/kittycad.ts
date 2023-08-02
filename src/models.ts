@@ -1545,13 +1545,6 @@ export interface ExtendedUserResultsPage_type {
   next_page?: string;
 }
 
-export interface Extrude_type {
-  cap: boolean /* Whether to cap the extrusion with a face, or not. If true, the resulting solid will be closed on all sides, like a dice. If false, it will be open on one side, like a drinking glass. */;
-  /* format:double, description:How far off the plane to extrude */
-  distance: number;
-  target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
-}
-
 export interface FileCenterOfMass_type {
   /*{
   "deprecated": true,
@@ -1881,7 +1874,7 @@ export interface IndexInfo_type {
 }
 
 export type InputFormat_type =
-  | { type: 'Gltf' }
+  | { type: 'gltf' }
   | {
       /* Co-ordinate system of input data.
 
@@ -1889,7 +1882,7 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
-      type: 'Step';
+      type: 'step';
     }
   | {
       /* Co-ordinate system of input data.
@@ -1898,7 +1891,7 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
-      type: 'Obj';
+      type: 'obj';
       units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
     }
   | {
@@ -1908,7 +1901,7 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
-      type: 'Ply';
+      type: 'ply';
       units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
     }
   | {
@@ -1918,7 +1911,7 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
-      type: 'Stl';
+      type: 'stl';
       units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
     };
 
@@ -2143,71 +2136,135 @@ export type Method_type =
   | 'EXTENSION';
 
 export type ModelingCmd_type =
-  | 'StartPath'
+  | { type: 'start_path' }
   | {
-      MovePathPen: {
-        path: ModelingCmdId_type /* The ID of the command which created the path. */;
-        to: Point3d_type /* Where the path's pen should be. */;
-      };
+      path: ModelingCmdId_type /* The ID of the command which created the path. */;
+      to: Point3d_type /* Where the path's pen should be. */;
+      type: 'move_path_pen';
     }
   | {
-      ExtendPath: {
-        path: ModelingCmdId_type /* The ID of the command which created the path. */;
-        segment: PathSegment_type /* Segment to append to the path. This segment will implicitly begin at the current "pen" location. */;
-      };
-    }
-  | { Extrude: any }
-  | {
-      ClosePath: {
-        /* format:uuid, description:Which path to close. */
-        path_id: string;
-      };
+      path: ModelingCmdId_type /* The ID of the command which created the path. */;
+      segment: PathSegment_type /* Segment to append to the path. This segment will implicitly begin at the current "pen" location. */;
+      type: 'extend_path';
     }
   | {
-      CameraDragStart: {
-        interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
-        window: Point2d_type /* The initial mouse position. */;
-      };
+      cap: boolean /* Whether to cap the extrusion with a face, or not. If true, the resulting solid will be closed on all sides, like a dice. If false, it will be open on one side, like a drinking glass. */;
+      /* format:double, description:How far off the plane to extrude */
+      distance: number;
+      target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
+      type: 'extrude';
     }
   | {
-      CameraDragMove: {
-        interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
-        /*{
+      /* format:uuid, description:Which path to close. */
+      path_id: string;
+      type: 'close_path';
+    }
+  | {
+      interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
+      type: 'camera_drag_start';
+      window: Point2d_type /* The initial mouse position. */;
+    }
+  | {
+      interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
+      /*{
   "format": "uint32",
   "minimum": 0,
   "nullable": true,
   "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
 }*/
-        sequence?: number;
-        window: Point2d_type /* The current mouse position. */;
-      };
+      sequence?: number;
+      type: 'camera_drag_move';
+      window: Point2d_type /* The current mouse position. */;
     }
   | {
-      CameraDragEnd: {
-        interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
-        window: Point2d_type /* The final mouse position. */;
-      };
+      interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
+      type: 'camera_drag_end';
+      window: Point2d_type /* The final mouse position. */;
     }
   | {
-      DefaultCameraLookAt: {
-        center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */;
-        up: Point3d_type /* Which way is "up", from the camera's point of view. */;
-        vantage: Point3d_type /* Where the camera is positioned */;
-      };
+      center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */;
+      type: 'default_camera_look_at';
+      up: Point3d_type /* Which way is "up", from the camera's point of view. */;
+      vantage: Point3d_type /* Where the camera is positioned */;
     }
   | {
-      DefaultCameraEnableSketchMode: {
-        /* format:float, description:How far to the sketching plane? */
-        distance_to_plane: number;
-        origin: Point3d_type /* What's the origin of the sketching plane? */;
-        ortho: boolean /* Should the camera use orthographic projection? In other words, should an object's size in the rendered image stay constant regardless of its distance from the camera. */;
-        x_axis: Point3d_type /* Which 3D axis of the scene should be the X axis of the sketching plane? */;
-        y_axis: Point3d_type /* Which 3D axis of the scene should be the Y axis of the sketching plane? */;
-      };
+      /* format:float, description:How far to the sketching plane? */
+      distance_to_plane: number;
+      origin: Point3d_type /* What's the origin of the sketching plane? */;
+      ortho: boolean /* Should the camera use orthographic projection? In other words, should an object's size in the rendered image stay constant regardless of its distance from the camera. */;
+      type: 'default_camera_enable_sketch_mode';
+      x_axis: Point3d_type /* Which 3D axis of the scene should be the X axis of the sketching plane? */;
+      y_axis: Point3d_type /* Which 3D axis of the scene should be the Y axis of the sketching plane? */;
     }
-  | 'DefaultCameraDisableSketchMode'
+  | { type: 'default_camera_disable_sketch_mode' }
   | {
-      Export: { format: OutputFormat_type /* The file format to export to. */ };
+      format: OutputFormat_type /* The file format to export to. */;
+      /*{
+  "format": "uuid",
+  "description": "ID of the scene or an item in the scene to be exported."
+}*/
+      scene_id: string;
+      type: 'export';
+    }
+  | {
+      /* format:uuid, description:ID of the entity being queried. */
+      entity_id: string;
+      type: 'entity_get_parent_id';
+    }
+  | {
+      /* format:uuid, description:ID of the entity being queried. */
+      entity_id: string;
+      type: 'entity_get_num_children';
+    }
+  | {
+      /* format:uint32, minimum:0, description:Index into the entity's list of children. */
+      child_index: number;
+      /* format:uuid, description:ID of the entity being queried. */
+      entity_id: string;
+      type: 'entity_get_child_uuid';
+    }
+  | {
+      /* format:uuid, description:ID of the entity being queried. */
+      entity_id: string;
+      type: 'entity_get_all_child_uuids';
+    }
+  | {
+      /* format:uuid, description:The edit target */
+      target: string;
+      type: 'edit_mode_enter';
+    }
+  | { type: 'edit_mode_exit' }
+  | {
+      selected_at_window: Point2d_type /* Where in the window was selected */;
+      selection_type: SceneSelectionType_type /* What entity was selected? */;
+      type: 'select_with_point';
+    }
+  | { type: 'select_clear' }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entities: string[];
+      type: 'select_add';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entities: string[];
+      type: 'select_remove';
+    }
+  | { type: 'select_get' }
+  | {
+      selected_at_window: Point2d_type /* Coordinates of the window being clicked */;
+      type: 'highlight_set_entity';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entities: string[];
+      type: 'highlight_set_entities';
     };
 
 export type ModelingCmdId_type =
@@ -2295,7 +2352,7 @@ export interface OutputFile_type {
 export type OutputFormat_type =
   | {
       storage: Storage_type /* Specifies which kind of glTF 2.0 will be exported. */;
-      type: 'Gltf';
+      type: 'gltf';
     }
   | {
       /* Co-ordinate system of output data.
@@ -2304,7 +2361,7 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
-      type: 'Obj';
+      type: 'obj';
     }
   | {
       /* Co-ordinate system of output data.
@@ -2314,7 +2371,7 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       storage: Storage_type /* The storage for the output PLY file. */;
-      type: 'Ply';
+      type: 'ply';
     }
   | {
       /* Co-ordinate system of output data.
@@ -2323,7 +2380,7 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
-      type: 'Step';
+      type: 'step';
     }
   | {
       /* Co-ordinate system of output data.
@@ -2333,28 +2390,26 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       storage: Storage_type /* Export storage. */;
-      type: 'Stl';
+      type: 'stl';
     };
 
 export type PathSegment_type =
-  | { Line: { end: Point3d_type /* End point of the line. */ } }
+  | { end: Point3d_type /* End point of the line. */; type: 'line' }
   | {
-      Arc: {
-        /* format:float, description:Start of the arc along circle's perimeter. */
-        angle_end: number;
-        /* format:float, description:Start of the arc along circle's perimeter. */
-        angle_start: number;
-        center: Point2d_type /* Center of the circle */;
-        /* format:float, description:Radius of the circle */
-        radius: number;
-      };
+      /* format:float, description:Start of the arc along circle's perimeter. */
+      angle_end: number;
+      /* format:float, description:Start of the arc along circle's perimeter. */
+      angle_start: number;
+      center: Point2d_type /* Center of the circle */;
+      /* format:float, description:Radius of the circle */
+      radius: number;
+      type: 'arc';
     }
   | {
-      Bezier: {
-        control1: Point3d_type /* First control point. */;
-        control2: Point3d_type /* Second control point. */;
-        end: Point3d_type /* Final control point. */;
-      };
+      control1: Point3d_type /* First control point. */;
+      control2: Point3d_type /* Second control point. */;
+      end: Point3d_type /* Final control point. */;
+      type: 'bezier';
     };
 
 export interface PaymentIntent_type {
@@ -2507,6 +2562,8 @@ export interface Runtime_type {
   path?: string;
   runtime_args: string[];
 }
+
+export type SceneSelectionType_type = 'replace' | 'add' | 'remove';
 
 export interface Session_type {
   /* format:date-time, title:DateTime, description:The date and time the session was created. */
@@ -3223,7 +3280,6 @@ export interface Models {
   ExecutorMetadata_type: ExecutorMetadata_type;
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
-  Extrude_type: Extrude_type;
   FileCenterOfMass_type: FileCenterOfMass_type;
   FileConversion_type: FileConversion_type;
   FileDensity_type: FileDensity_type;
@@ -3276,6 +3332,7 @@ export interface Models {
   Pong_type: Pong_type;
   RegistryServiceConfig_type: RegistryServiceConfig_type;
   Runtime_type: Runtime_type;
+  SceneSelectionType_type: SceneSelectionType_type;
   Session_type: Session_type;
   Storage_type: Storage_type;
   System_type: System_type;
