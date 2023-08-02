@@ -7539,6 +7539,14 @@
           {
             "description": "Export the scene to a file.",
             "properties": {
+              "entity_ids": {
+                "description": "IDs of the entities to be exported. If this is empty, then all entities are exported.",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "format": {
                 "allOf": [
                   {
@@ -7546,11 +7554,6 @@
                   }
                 ],
                 "description": "The file format to export to."
-              },
-              "scene_id": {
-                "description": "ID of the scene or an item in the scene to be exported.",
-                "format": "uuid",
-                "type": "string"
               },
               "type": {
                 "enum": [
@@ -7560,8 +7563,8 @@
               }
             },
             "required": [
+              "entity_ids",
               "format",
-              "scene_id",
               "type"
             ],
             "type": "object"
