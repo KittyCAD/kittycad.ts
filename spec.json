@@ -772,16 +772,8 @@
                     "$ref": "#/components/schemas/Point3d"
                   }
                 ],
-                "deprecated": true,
-                "description": "The resulting center of mass. This is deprecated and will be removed in a future release. Use `centers_of_mass` instead.",
+                "description": "The resulting center of mass.",
                 "nullable": true
-              },
-              "centers_of_mass": {
-                "additionalProperties": {
-                  "$ref": "#/components/schemas/Point3d"
-                },
-                "description": "The center of mass for each mesh in the file. The key of the hash map is the mesh name.",
-                "type": "object"
               },
               "completed_at": {
                 "description": "The time and date the API call was completed.",
@@ -898,19 +890,10 @@
                 "description": "The unique identifier of the API call.\n\nThis is the same as the API call ID."
               },
               "mass": {
-                "deprecated": true,
-                "description": "The resulting mass. This is deprecated and will be removed in a future release, use `masses` instead.",
+                "description": "The resulting mass.",
                 "format": "double",
                 "nullable": true,
                 "type": "number"
-              },
-              "masses": {
-                "additionalProperties": {
-                  "format": "double",
-                  "type": "number"
-                },
-                "description": "The mass for each mesh in the file. The key of the hash map is the mesh name.",
-                "type": "object"
               },
               "material_density": {
                 "default": 0.0,
@@ -1063,19 +1046,10 @@
                 "type": "string"
               },
               "volume": {
-                "deprecated": true,
-                "description": "The resulting volume. This is deprecated and will be removed in a future release. Use `volumes` instead.",
+                "description": "The resulting volume.",
                 "format": "double",
                 "nullable": true,
                 "type": "number"
-              },
-              "volumes": {
-                "additionalProperties": {
-                  "format": "double",
-                  "type": "number"
-                },
-                "description": "The volumes for each mesh in the file. The key of the hash map is the mesh name.",
-                "type": "object"
               }
             },
             "required": [
@@ -1105,17 +1079,8 @@
                 "title": "DateTime",
                 "type": "string"
               },
-              "densities": {
-                "additionalProperties": {
-                  "format": "double",
-                  "type": "number"
-                },
-                "description": "The density for each mesh in the file. The key of the hash map is the mesh name.",
-                "type": "object"
-              },
               "density": {
-                "deprecated": true,
-                "description": "The resulting density. This is deprecated and will be removed in a future release, use `densities` instead.",
+                "description": "The resulting density.",
                 "format": "double",
                 "nullable": true,
                 "type": "number"
@@ -1268,19 +1233,10 @@
                 "description": "The status of the API call."
               },
               "surface_area": {
-                "deprecated": true,
-                "description": "The resulting surface area. This is deprecated and will be removed in a future release. Use `surface_areas` instead.",
+                "description": "The resulting surface area.",
                 "format": "double",
                 "nullable": true,
                 "type": "number"
-              },
-              "surface_areas": {
-                "additionalProperties": {
-                  "format": "double",
-                  "type": "number"
-                },
-                "description": "The surface area for each mesh in the file. The key of the hash map is the mesh name.",
-                "type": "object"
               },
               "type": {
                 "enum": [
@@ -5599,16 +5555,8 @@
                 "$ref": "#/components/schemas/Point3d"
               }
             ],
-            "deprecated": true,
-            "description": "The resulting center of mass. This is deprecated and will be removed in a future release. Use `centers_of_mass` instead.",
+            "description": "The resulting center of mass.",
             "nullable": true
-          },
-          "centers_of_mass": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/Point3d"
-            },
-            "description": "The center of mass for each mesh in the file. The key of the hash map is the mesh name.",
-            "type": "object"
           },
           "completed_at": {
             "description": "The time and date the API call was completed.",
@@ -5820,17 +5768,8 @@
             "title": "DateTime",
             "type": "string"
           },
-          "densities": {
-            "additionalProperties": {
-              "format": "double",
-              "type": "number"
-            },
-            "description": "The density for each mesh in the file. The key of the hash map is the mesh name.",
-            "type": "object"
-          },
           "density": {
-            "deprecated": true,
-            "description": "The resulting density. This is deprecated and will be removed in a future release, use `densities` instead.",
+            "description": "The resulting density.",
             "format": "double",
             "nullable": true,
             "type": "number"
@@ -6060,19 +5999,10 @@
             "description": "The unique identifier of the API call.\n\nThis is the same as the API call ID."
           },
           "mass": {
-            "deprecated": true,
-            "description": "The resulting mass. This is deprecated and will be removed in a future release, use `masses` instead.",
+            "description": "The resulting mass.",
             "format": "double",
             "nullable": true,
             "type": "number"
-          },
-          "masses": {
-            "additionalProperties": {
-              "format": "double",
-              "type": "number"
-            },
-            "description": "The mass for each mesh in the file. The key of the hash map is the mesh name.",
-            "type": "object"
           },
           "material_density": {
             "default": 0.0,
@@ -6202,19 +6132,10 @@
             "description": "The status of the API call."
           },
           "surface_area": {
-            "deprecated": true,
-            "description": "The resulting surface area. This is deprecated and will be removed in a future release. Use `surface_areas` instead.",
+            "description": "The resulting surface area.",
             "format": "double",
             "nullable": true,
             "type": "number"
-          },
-          "surface_areas": {
-            "additionalProperties": {
-              "format": "double",
-              "type": "number"
-            },
-            "description": "The surface area for each mesh in the file. The key of the hash map is the mesh name.",
-            "type": "object"
           },
           "updated_at": {
             "description": "The time and date the API call was last updated.",
@@ -6321,19 +6242,10 @@
             "type": "string"
           },
           "volume": {
-            "deprecated": true,
-            "description": "The resulting volume. This is deprecated and will be removed in a future release. Use `volumes` instead.",
+            "description": "The resulting volume.",
             "format": "double",
             "nullable": true,
             "type": "number"
-          },
-          "volumes": {
-            "additionalProperties": {
-              "format": "double",
-              "type": "number"
-            },
-            "description": "The volumes for each mesh in the file. The key of the hash map is the mesh name.",
-            "type": "object"
           }
         },
         "required": [
@@ -6437,14 +6349,6 @@
           {
             "description": "ISO 10303-21 (STEP) format.",
             "properties": {
-              "coords": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/System"
-                  }
-                ],
-                "description": "Co-ordinate system of input data.\n\nDefaults to the [KittyCAD co-ordinate system].\n\n[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html"
-              },
               "type": {
                 "enum": [
                   "step"
@@ -6453,7 +6357,6 @@
               }
             },
             "required": [
-              "coords",
               "type"
             ],
             "type": "object"
