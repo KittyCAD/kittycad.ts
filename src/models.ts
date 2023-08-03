@@ -271,15 +271,8 @@ This is the same as the API call ID. */
       user_id: string /* The user ID of the user who created the API call. */;
     }
   | {
-      /*{
-  "deprecated": true,
-  "nullable": true,
-  "description": "The resulting center of mass. This is deprecated and will be removed in a future release. Use `centers_of_mass` instead."
-}*/
+      /* nullable:true, description:The resulting center of mass. */
       center_of_mass: Point3d_type;
-      centers_of_mass: {
-        [key: string]: Point3d_type;
-      } /* The center of mass for each mesh in the file. The key of the hash map is the mesh name. */;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -326,19 +319,8 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
-      /*{
-  "deprecated": true,
-  "format": "double",
-  "nullable": true,
-  "description": "The resulting mass. This is deprecated and will be removed in a future release, use `masses` instead."
-}*/
+      /* format:double, nullable:true, description:The resulting mass. */
       mass?: number;
-      masses: {
-        [key: string]: /*{
-  "format": "double"
-}*/
-        number;
-      };
       /* default:0, format:double, description:The material density as denoted by the user. */
       material_density: number;
       material_density_unit: UnitDensity_type /* The material density unit. */;
@@ -387,19 +369,8 @@ This is the same as the API call ID. */
       /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
-      /*{
-  "deprecated": true,
-  "format": "double",
-  "nullable": true,
-  "description": "The resulting volume. This is deprecated and will be removed in a future release. Use `volumes` instead."
-}*/
+      /* format:double, nullable:true, description:The resulting volume. */
       volume?: number;
-      volumes: {
-        [key: string]: /*{
-  "format": "double"
-}*/
-        number;
-      };
     }
   | {
       /*{
@@ -411,18 +382,7 @@ This is the same as the API call ID. */
       completed_at?: string;
       /* format:date-time, title:DateTime, description:The time and date the API call was created. */
       created_at: string;
-      densities: {
-        [key: string]: /*{
-  "format": "double"
-}*/
-        number;
-      };
-      /*{
-  "deprecated": true,
-  "format": "double",
-  "nullable": true,
-  "description": "The resulting density. This is deprecated and will be removed in a future release, use `densities` instead."
-}*/
+      /* format:double, nullable:true, description:The resulting density. */
       density?: number;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
@@ -474,19 +434,8 @@ This is the same as the API call ID. */
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
-      /*{
-  "deprecated": true,
-  "format": "double",
-  "nullable": true,
-  "description": "The resulting surface area. This is deprecated and will be removed in a future release. Use `surface_areas` instead."
-}*/
+      /* format:double, nullable:true, description:The resulting surface area. */
       surface_area?: number;
-      surface_areas: {
-        [key: string]: /*{
-  "format": "double"
-}*/
-        number;
-      };
       type: 'FileSurfaceArea';
       /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
       updated_at: string;
@@ -1546,15 +1495,8 @@ export interface ExtendedUserResultsPage_type {
 }
 
 export interface FileCenterOfMass_type {
-  /*{
-  "deprecated": true,
-  "nullable": true,
-  "description": "The resulting center of mass. This is deprecated and will be removed in a future release. Use `centers_of_mass` instead."
-}*/
+  /* nullable:true, description:The resulting center of mass. */
   center_of_mass: Point3d_type;
-  centers_of_mass: {
-    [key: string]: Point3d_type;
-  } /* The center of mass for each mesh in the file. The key of the hash map is the mesh name. */;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1645,18 +1587,7 @@ export interface FileDensity_type {
   completed_at?: string;
   /* format:date-time, title:DateTime, description:The time and date the API call was created. */
   created_at: string;
-  densities: {
-    [key: string]: /*{
-  "format": "double"
-}*/
-    number;
-  };
-  /*{
-  "deprecated": true,
-  "format": "double",
-  "nullable": true,
-  "description": "The resulting density. This is deprecated and will be removed in a future release, use `densities` instead."
-}*/
+  /* format:double, nullable:true, description:The resulting density. */
   density?: number;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -1717,19 +1648,8 @@ export interface FileMass_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  /*{
-  "deprecated": true,
-  "format": "double",
-  "nullable": true,
-  "description": "The resulting mass. This is deprecated and will be removed in a future release, use `masses` instead."
-}*/
+  /* format:double, nullable:true, description:The resulting mass. */
   mass?: number;
-  masses: {
-    [key: string]: /*{
-  "format": "double"
-}*/
-    number;
-  };
   /* default:0, format:double, description:The material density as denoted by the user. */
   material_density: number;
   material_density_unit: UnitDensity_type /* The material density unit. */;
@@ -1774,19 +1694,8 @@ This is the same as the API call ID. */
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /*{
-  "deprecated": true,
-  "format": "double",
-  "nullable": true,
-  "description": "The resulting surface area. This is deprecated and will be removed in a future release. Use `surface_areas` instead."
-}*/
+  /* format:double, nullable:true, description:The resulting surface area. */
   surface_area?: number;
-  surface_areas: {
-    [key: string]: /*{
-  "format": "double"
-}*/
-    number;
-  };
   /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
@@ -1825,19 +1734,8 @@ This is the same as the API call ID. */
   /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
-  /*{
-  "deprecated": true,
-  "format": "double",
-  "nullable": true,
-  "description": "The resulting volume. This is deprecated and will be removed in a future release. Use `volumes` instead."
-}*/
+  /* format:double, nullable:true, description:The resulting volume. */
   volume?: number;
-  volumes: {
-    [key: string]: /*{
-  "format": "double"
-}*/
-    number;
-  };
 }
 
 export interface Gateway_type {
@@ -1875,15 +1773,7 @@ export interface IndexInfo_type {
 
 export type InputFormat_type =
   | { type: 'gltf' }
-  | {
-      /* Co-ordinate system of input data.
-
-Defaults to the [KittyCAD co-ordinate system].
-
-[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System_type;
-      type: 'step';
-    }
+  | { type: 'step' }
   | {
       /* Co-ordinate system of input data.
 
