@@ -48,6 +48,46 @@ export interface AiPluginManifest_type {
   schema_version: string /* Manifest schema version. */;
 }
 
+export type AnnotationLineEnd_type =
+  /* Annotation line end type */
+  'none' | 'arrow';
+
+export interface AnnotationLineEndOptions_type {
+  end: AnnotationLineEnd_type /* How to style the end of the annotation line. */;
+  start: AnnotationLineEnd_type /* How to style the start of the annotation line. */;
+}
+
+export interface AnnotationOptions_type {
+  /* nullable:true, description:Color to render the annotation */
+  color: Color_type;
+  /* nullable:true, description:How to style the start and end of the line */
+  line_ends: AnnotationLineEndOptions_type;
+  /* format:float, nullable:true, description:Width of the annotation's line */
+  line_width?: number;
+  /* nullable:true, description:Position to put the annotation */
+  position: Point3d_type;
+  /* nullable:true, description:Text displayed on the annotation */
+  text: AnnotationTextOptions_type;
+}
+
+export type AnnotationTextAlignmentX_type =
+  /* Horizontal Text aligment */
+  'left' | 'center' | 'right';
+
+export type AnnotationTextAlignmentY_type =
+  /* Vertical Text aligment */
+  'bottom' | 'center' | 'top';
+
+export interface AnnotationTextOptions_type {
+  /* format:uint32, minimum:0, description:Text font's point size */
+  point_size: number;
+  text: string /* Text displayed on the annotation */;
+  x: AnnotationTextAlignmentX_type /* Alignment along the X axis */;
+  y: AnnotationTextAlignmentY_type /* Alignment along the Y axis */;
+}
+
+export type AnnotationType_type = 't2d' | 't3d';
+
 export interface ApiCallQueryGroup_type {
   /*{
   "format": "int64"
@@ -535,6 +575,17 @@ export interface CodeOutput_type {
   stderr: string;
   /* default:, description:The stdout of the code. */
   stdout: string;
+}
+
+export interface Color_type {
+  /* format:float, description:Alpha */
+  a: number;
+  /* format:float, description:Blue */
+  b: number;
+  /* format:float, description:Green */
+  g: number;
+  /* format:float, description:Red */
+  r: number;
 }
 
 export interface Commit_type {
@@ -1438,6 +1489,12 @@ export interface ExecutorMetadata_type {
   git_hash: string /* The git hash of the server. */;
 }
 
+export interface ExportFile_type {
+  /* format:byte, title:String, description:The contents of the file, base64 encoded. */
+  contents: string;
+  name: string /* The name of the file. */;
+}
+
 export interface ExtendedUser_type {
   company: string /* The user's company. */;
   /* format:date-time, title:DateTime, description:The date and time the user was created. */
@@ -2126,6 +2183,13 @@ export type ModelingCmd_type =
   | {
       selected_at_window: Point2d_type /* Where in the window was selected */;
       selection_type: SceneSelectionType_type /* What entity was selected? */;
+      /*{
+  "format": "uint32",
+  "minimum": 0,
+  "nullable": true,
+  "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
+}*/
+      sequence?: number;
       type: 'select_with_point';
     }
   | { type: 'select_clear' }
@@ -2154,6 +2218,24 @@ export type ModelingCmd_type =
 }*/
       entities: string[];
       type: 'highlight_set_entities';
+    }
+  | {
+      annotation_type: AnnotationType_type /* What type of annotation to create. */;
+      clobber: boolean /* If true, any existing drawables within the obj will be replaced (the object will be reset) */;
+      options: AnnotationOptions_type /* What should the annotation contain? */;
+      type: 'new_annotation';
+    }
+  | {
+      /* format:uuid, description:Which annotation to update */
+      annotation_id: string;
+      options: AnnotationOptions_type /* If any of these fields are set, they will overwrite the previous options for the annotation. */;
+      type: 'update_annotation';
+    }
+  | {
+      hidden: boolean /* Whether or not the object should be hidden. */;
+      /* format:uuid, description:Which object to change */
+      object_id: string;
+      type: 'object_visible';
     };
 
 export type ModelingCmdId_type =
@@ -2185,10 +2267,10 @@ export interface ModelingError_type {
 }
 
 export type ModelingOutcome_type =
-  | { Success: any }
-  | { Error: any }
+  | { success: any }
+  | { error: any }
   | {
-      Cancelled: {
+      cancelled: {
         what_failed: ModelingCmdId_type /* The ID of the command that failed, cancelling this command. */;
       };
     };
@@ -2221,6 +2303,45 @@ export interface OAuth2ClientInfo_type {
 
 export type OAuth2GrantType_type =
   'urn:ietf:params:oauth:grant-type:device_code';
+
+export type OkModelingCmdResponse_type =
+  | { type: 'empty' }
+  | {
+      files: ExportFile_type[] /* The files that were exported. */;
+      type: 'export';
+    }
+  | {
+      /* format:uuid, nullable:true, description:The UUID of the entity that was selected. */
+      entity_id?: string;
+      type: 'select_with_point';
+    }
+  | {
+      /* format:uuid, nullable:true, description:The UUID of the entity that was highlighted. */
+      entity_id?: string;
+      type: 'highlight_set_entity';
+    }
+  | {
+      /* format:uuid, description:The UUID of the child entity. */
+      entity_id: string;
+      type: 'entity_get_child_uuid';
+    }
+  | {
+      /* format:uint32, minimum:0, description:The number of children the entity has. */
+      num: number;
+      type: 'entity_get_num_children';
+    }
+  | {
+      /* format:uuid, description:The UUID of the parent entity. */
+      entity_id: string;
+      type: 'entity_get_parent_id';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      type: 'entity_get_all_child_uuids';
+    };
 
 export interface Onboarding_type {
   first_call_from_their_machine_date: string /* When the user first called an endpoint from their machine (i.e. not a litterbox execution) */;
@@ -3127,6 +3248,13 @@ export interface Models {
   AiPluginAuthType_type: AiPluginAuthType_type;
   AiPluginHttpAuthType_type: AiPluginHttpAuthType_type;
   AiPluginManifest_type: AiPluginManifest_type;
+  AnnotationLineEnd_type: AnnotationLineEnd_type;
+  AnnotationLineEndOptions_type: AnnotationLineEndOptions_type;
+  AnnotationOptions_type: AnnotationOptions_type;
+  AnnotationTextAlignmentX_type: AnnotationTextAlignmentX_type;
+  AnnotationTextAlignmentY_type: AnnotationTextAlignmentY_type;
+  AnnotationTextOptions_type: AnnotationTextOptions_type;
+  AnnotationType_type: AnnotationType_type;
   ApiCallQueryGroup_type: ApiCallQueryGroup_type;
   ApiCallQueryGroupBy_type: ApiCallQueryGroupBy_type;
   ApiCallStatus_type: ApiCallStatus_type;
@@ -3148,6 +3276,7 @@ export interface Models {
   Cluster_type: Cluster_type;
   CodeLanguage_type: CodeLanguage_type;
   CodeOutput_type: CodeOutput_type;
+  Color_type: Color_type;
   Commit_type: Commit_type;
   Connection_type: Connection_type;
   CountryCode_type: CountryCode_type;
@@ -3167,6 +3296,7 @@ export interface Models {
   Environment_type: Environment_type;
   Error_type: Error_type;
   ExecutorMetadata_type: ExecutorMetadata_type;
+  ExportFile_type: ExportFile_type;
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
   FileCenterOfMass_type: FileCenterOfMass_type;
@@ -3204,6 +3334,7 @@ export interface Models {
   NewAddress_type: NewAddress_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;
   OAuth2GrantType_type: OAuth2GrantType_type;
+  OkModelingCmdResponse_type: OkModelingCmdResponse_type;
   Onboarding_type: Onboarding_type;
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
