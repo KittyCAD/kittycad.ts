@@ -8352,6 +8352,13 @@
                 "nullable": true,
                 "type": "string"
               },
+              "sequence": {
+                "description": "If the client sent a sequence ID with its request, the backend sends it back.",
+                "format": "uint32",
+                "minimum": 0,
+                "nullable": true,
+                "type": "integer"
+              },
               "type": {
                 "enum": [
                   "select_with_point"
