@@ -211,6 +211,163 @@
         ],
         "type": "object"
       },
+      "AnnotationLineEnd": {
+        "description": "Annotation line end type",
+        "enum": [
+          "none",
+          "arrow"
+        ],
+        "type": "string"
+      },
+      "AnnotationLineEndOptions": {
+        "description": "Options for annotation text",
+        "properties": {
+          "end": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnnotationLineEnd"
+              }
+            ],
+            "description": "How to style the end of the annotation line."
+          },
+          "start": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnnotationLineEnd"
+              }
+            ],
+            "description": "How to style the start of the annotation line."
+          }
+        },
+        "required": [
+          "end",
+          "start"
+        ],
+        "type": "object"
+      },
+      "AnnotationOptions": {
+        "description": "Options for annotations",
+        "properties": {
+          "color": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Color"
+              }
+            ],
+            "description": "Color to render the annotation",
+            "nullable": true
+          },
+          "line_ends": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnnotationLineEndOptions"
+              }
+            ],
+            "description": "How to style the start and end of the line",
+            "nullable": true
+          },
+          "line_width": {
+            "description": "Width of the annotation's line",
+            "format": "float",
+            "nullable": true,
+            "type": "number"
+          },
+          "position": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Point3d"
+              }
+            ],
+            "description": "Position to put the annotation",
+            "nullable": true
+          },
+          "text": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnnotationTextOptions"
+              }
+            ],
+            "description": "Text displayed on the annotation",
+            "nullable": true
+          }
+        },
+        "type": "object"
+      },
+      "AnnotationTextAlignmentX": {
+        "description": "Horizontal Text aligment",
+        "enum": [
+          "left",
+          "center",
+          "right"
+        ],
+        "type": "string"
+      },
+      "AnnotationTextAlignmentY": {
+        "description": "Vertical Text aligment",
+        "enum": [
+          "bottom",
+          "center",
+          "top"
+        ],
+        "type": "string"
+      },
+      "AnnotationTextOptions": {
+        "description": "Options for annotation text",
+        "properties": {
+          "point_size": {
+            "description": "Text font's point size",
+            "format": "uint32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "text": {
+            "description": "Text displayed on the annotation",
+            "type": "string"
+          },
+          "x": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnnotationTextAlignmentX"
+              }
+            ],
+            "description": "Alignment along the X axis"
+          },
+          "y": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnnotationTextAlignmentY"
+              }
+            ],
+            "description": "Alignment along the Y axis"
+          }
+        },
+        "required": [
+          "point_size",
+          "text",
+          "x",
+          "y"
+        ],
+        "type": "object"
+      },
+      "AnnotationType": {
+        "description": "The type of annotation",
+        "oneOf": [
+          {
+            "description": "2D annotation type (screen or planar space)",
+            "enum": [
+              "t2d"
+            ],
+            "type": "string"
+          },
+          {
+            "description": "3D annotation type",
+            "enum": [
+              "t3d"
+            ],
+            "type": "string"
+          }
+        ]
+      },
       "ApiCallQueryGroup": {
         "description": "A response for a query on the API call table that is grouped by something.",
         "properties": {
@@ -1581,6 +1738,38 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "Color": {
+        "description": "An RGBA color",
+        "properties": {
+          "a": {
+            "description": "Alpha",
+            "format": "float",
+            "type": "number"
+          },
+          "b": {
+            "description": "Blue",
+            "format": "float",
+            "type": "number"
+          },
+          "g": {
+            "description": "Green",
+            "format": "float",
+            "type": "number"
+          },
+          "r": {
+            "description": "Red",
+            "format": "float",
+            "type": "number"
+          }
+        },
+        "required": [
+          "a",
+          "b",
+          "g",
+          "r"
+        ],
         "type": "object"
       },
       "Commit": {
@@ -5434,6 +5623,26 @@
         ],
         "type": "object"
       },
+      "ExportFile": {
+        "description": "A file to be exported to the client.",
+        "properties": {
+          "contents": {
+            "description": "The contents of the file, base64 encoded.",
+            "format": "byte",
+            "title": "String",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the file.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "contents",
+          "name"
+        ],
+        "type": "object"
+      },
       "ExtendedUser": {
         "description": "Extended user information.\n\nThis is mostly used for internal purposes. It returns a mapping of the user's information, including that of our third party services we use for users: MailChimp, Stripe, and Front",
         "properties": {
@@ -7618,6 +7827,13 @@
                 ],
                 "description": "What entity was selected?"
               },
+              "sequence": {
+                "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events.",
+                "format": "uint32",
+                "minimum": 0,
+                "nullable": true,
+                "type": "integer"
+              },
               "type": {
                 "enum": [
                   "select_with_point"
@@ -7757,6 +7973,100 @@
               "type"
             ],
             "type": "object"
+          },
+          {
+            "description": "Create a new annotation",
+            "properties": {
+              "annotation_type": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AnnotationType"
+                  }
+                ],
+                "description": "What type of annotation to create."
+              },
+              "clobber": {
+                "description": "If true, any existing drawables within the obj will be replaced (the object will be reset)",
+                "type": "boolean"
+              },
+              "options": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AnnotationOptions"
+                  }
+                ],
+                "description": "What should the annotation contain?"
+              },
+              "type": {
+                "enum": [
+                  "new_annotation"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "annotation_type",
+              "clobber",
+              "options",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Update an annotation",
+            "properties": {
+              "annotation_id": {
+                "description": "Which annotation to update",
+                "format": "uuid",
+                "type": "string"
+              },
+              "options": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AnnotationOptions"
+                  }
+                ],
+                "description": "If any of these fields are set, they will overwrite the previous options for the annotation."
+              },
+              "type": {
+                "enum": [
+                  "update_annotation"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "annotation_id",
+              "options",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Hide or show an object",
+            "properties": {
+              "hidden": {
+                "description": "Whether or not the object should be hidden.",
+                "type": "boolean"
+              },
+              "object_id": {
+                "description": "Which object to change",
+                "format": "uuid",
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "object_visible"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "hidden",
+              "object_id",
+              "type"
+            ],
+            "type": "object"
           }
         ]
       },
@@ -7852,12 +8162,14 @@
         "oneOf": [
           {
             "additionalProperties": false,
-            "description": "Each successful command has some result. Unfortunately this isn't strongly typed, because the result depends on the command. This means the OpenAPI schema for this won't be very useful.",
+            "description": "Each successful command has some result.",
             "properties": {
-              "Success": {}
+              "success": {
+                "$ref": "#/components/schemas/OkModelingCmdResponse"
+              }
             },
             "required": [
-              "Success"
+              "success"
             ],
             "type": "object"
           },
@@ -7865,12 +8177,12 @@
             "additionalProperties": false,
             "description": "It failed. Why? See 'struct Error' above.",
             "properties": {
-              "Error": {
+              "error": {
                 "$ref": "#/components/schemas/ModelingError"
               }
             },
             "required": [
-              "Error"
+              "error"
             ],
             "type": "object"
           },
@@ -7878,7 +8190,7 @@
             "additionalProperties": false,
             "description": "Cancelled because it required the output of a previous command, which failed.",
             "properties": {
-              "Cancelled": {
+              "cancelled": {
                 "properties": {
                   "what_failed": {
                     "allOf": [
@@ -7896,7 +8208,7 @@
               }
             },
             "required": [
-              "Cancelled"
+              "cancelled"
             ],
             "type": "object"
           }
@@ -7987,6 +8299,179 @@
               "urn:ietf:params:oauth:grant-type:device_code"
             ],
             "type": "string"
+          }
+        ]
+      },
+      "OkModelingCmdResponse": {
+        "description": "A successful response from a modeling command. This can be one of several types of responses, depending on the command.",
+        "oneOf": [
+          {
+            "description": "An empty response, used for any command that does not explicitly have a response defined here.",
+            "properties": {
+              "type": {
+                "enum": [
+                  "empty"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `Export` command. When this is being performed over a websocket, this is sent as binary not JSON. The binary data can be deserialized as `bincode` into a `Vec<ExportFile>`.",
+            "properties": {
+              "files": {
+                "description": "The files that were exported.",
+                "items": {
+                  "$ref": "#/components/schemas/ExportFile"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "export"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "files",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `SelectWithPoint` command.",
+            "properties": {
+              "entity_id": {
+                "description": "The UUID of the entity that was selected.",
+                "format": "uuid",
+                "nullable": true,
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "select_with_point"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `HighlightSetEntity` command.",
+            "properties": {
+              "entity_id": {
+                "description": "The UUID of the entity that was highlighted.",
+                "format": "uuid",
+                "nullable": true,
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "highlight_set_entity"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `EntityGetChildUuid` command.",
+            "properties": {
+              "entity_id": {
+                "description": "The UUID of the child entity.",
+                "format": "uuid",
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "entity_get_child_uuid"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_id",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `EntityGetNumChildren` command.",
+            "properties": {
+              "num": {
+                "description": "The number of children the entity has.",
+                "format": "uint32",
+                "minimum": 0,
+                "type": "integer"
+              },
+              "type": {
+                "enum": [
+                  "entity_get_num_children"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "num",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `EntityGetParentId` command.",
+            "properties": {
+              "entity_id": {
+                "description": "The UUID of the parent entity.",
+                "format": "uuid",
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "entity_get_parent_id"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_id",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `EntityGetAllChildUuids` command.",
+            "properties": {
+              "entity_ids": {
+                "description": "The UUIDs of the child entities.",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "entity_get_all_child_uuids"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_ids",
+              "type"
+            ],
+            "type": "object"
           }
         ]
       },
