@@ -2313,6 +2313,13 @@ export type OkModelingCmdResponse_type =
   | {
       /* format:uuid, nullable:true, description:The UUID of the entity that was selected. */
       entity_id?: string;
+      /*{
+  "format": "uint32",
+  "minimum": 0,
+  "nullable": true,
+  "description": "If the client sent a sequence ID with its request, the backend sends it back."
+}*/
+      sequence?: number;
       type: 'select_with_point';
     }
   | {
