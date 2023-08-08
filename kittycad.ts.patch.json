@@ -3,7 +3,7 @@
     "op": "add",
     "path": "/paths/~1ws~1modeling~1commands/get/x-typescript",
     "value": {
-      "example": "import { modeling } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.modeling_commands_ws()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { modeling } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.modeling_commands_ws({\n        fps: 7,\n        unlocked_framerate: true,\n        video_res_height: 7,\n        video_res_width: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
