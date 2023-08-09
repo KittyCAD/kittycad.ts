@@ -2183,13 +2183,6 @@ export type ModelingCmd_type =
   | {
       selected_at_window: Point2d_type /* Where in the window was selected */;
       selection_type: SceneSelectionType_type /* What entity was selected? */;
-      /*{
-  "format": "uint32",
-  "minimum": 0,
-  "nullable": true,
-  "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
-}*/
-      sequence?: number;
       type: 'select_with_point';
     }
   | { type: 'select_clear' }
@@ -2207,9 +2200,23 @@ export type ModelingCmd_type =
       entities: string[];
       type: 'select_remove';
     }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entities: string[];
+      type: 'select_replace';
+    }
   | { type: 'select_get' }
   | {
       selected_at_window: Point2d_type /* Coordinates of the window being clicked */;
+      /*{
+  "format": "uint32",
+  "minimum": 0,
+  "nullable": true,
+  "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
+}*/
+      sequence?: number;
       type: 'highlight_set_entity';
     }
   | {
@@ -2313,6 +2320,11 @@ export type OkModelingCmdResponse_type =
   | {
       /* format:uuid, nullable:true, description:The UUID of the entity that was selected. */
       entity_id?: string;
+      type: 'select_with_point';
+    }
+  | {
+      /* format:uuid, nullable:true, description:The UUID of the entity that was highlighted. */
+      entity_id?: string;
       /*{
   "format": "uint32",
   "minimum": 0,
@@ -2320,11 +2332,6 @@ export type OkModelingCmdResponse_type =
   "description": "If the client sent a sequence ID with its request, the backend sends it back."
 }*/
       sequence?: number;
-      type: 'select_with_point';
-    }
-  | {
-      /* format:uuid, nullable:true, description:The UUID of the entity that was highlighted. */
-      entity_id?: string;
       type: 'highlight_set_entity';
     }
   | {
@@ -2348,6 +2355,13 @@ export type OkModelingCmdResponse_type =
 }*/
       entity_ids: string[];
       type: 'entity_get_all_child_uuids';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      type: 'select_get';
     };
 
 export interface Onboarding_type {

@@ -7827,13 +7827,6 @@
                 ],
                 "description": "What entity was selected?"
               },
-              "sequence": {
-                "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events.",
-                "format": "uint32",
-                "minimum": 0,
-                "nullable": true,
-                "type": "integer"
-              },
               "type": {
                 "enum": [
                   "select_with_point"
@@ -7912,6 +7905,30 @@
             "type": "object"
           },
           {
+            "description": "Replaces the current selection with these new entities (by UUID). Equivalent to doing SelectClear then SelectAdd.",
+            "properties": {
+              "entities": {
+                "description": "Which entities to select",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "select_replace"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entities",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
             "description": "Find all IDs of selected entities",
             "properties": {
               "type": {
@@ -7936,6 +7953,13 @@
                   }
                 ],
                 "description": "Coordinates of the window being clicked"
+              },
+              "sequence": {
+                "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events.",
+                "format": "uint32",
+                "minimum": 0,
+                "nullable": true,
+                "type": "integer"
               },
               "type": {
                 "enum": [
@@ -8352,13 +8376,6 @@
                 "nullable": true,
                 "type": "string"
               },
-              "sequence": {
-                "description": "If the client sent a sequence ID with its request, the backend sends it back.",
-                "format": "uint32",
-                "minimum": 0,
-                "nullable": true,
-                "type": "integer"
-              },
               "type": {
                 "enum": [
                   "select_with_point"
@@ -8379,6 +8396,13 @@
                 "format": "uuid",
                 "nullable": true,
                 "type": "string"
+              },
+              "sequence": {
+                "description": "If the client sent a sequence ID with its request, the backend sends it back.",
+                "format": "uint32",
+                "minimum": 0,
+                "nullable": true,
+                "type": "integer"
               },
               "type": {
                 "enum": [
@@ -8470,6 +8494,30 @@
               "type": {
                 "enum": [
                   "entity_get_all_child_uuids"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_ids",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `SelectGet` command.",
+            "properties": {
+              "entity_ids": {
+                "description": "The UUIDs of the selected entities.",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "select_get"
                 ],
                 "type": "string"
               }
@@ -18609,6 +18657,46 @@
       "get": {
         "description": "Pass those commands to the engine via websocket, and pass responses back to the client. Basically, this is a websocket proxy between the frontend/client and the engine.",
         "operationId": "modeling_commands_ws",
+        "parameters": [
+          {
+            "description": "Frames per second of the video feed.",
+            "in": "query",
+            "name": "fps",
+            "schema": {
+              "format": "uint32",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "If true, engine will render video frames as fast as it can.",
+            "in": "query",
+            "name": "unlocked_framerate",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Height of the video feed. Must be a multiple of 4.",
+            "in": "query",
+            "name": "video_res_height",
+            "schema": {
+              "format": "uint32",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Width of the video feed. Must be a multiple of 4.",
+            "in": "query",
+            "name": "video_res_width",
+            "schema": {
+              "format": "uint32",
+              "minimum": 0,
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "default": {
             "content": {
