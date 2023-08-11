@@ -7583,6 +7583,10 @@
           {
             "description": "Enable sketch mode, where users can sketch 2D geometry. Users choose a plane to sketch on.",
             "properties": {
+              "animated": {
+                "description": "Should we animate or snap for the camera transition?",
+                "type": "boolean"
+              },
               "distance_to_plane": {
                 "description": "How far to the sketching plane?",
                 "format": "float",
@@ -7624,6 +7628,7 @@
               }
             },
             "required": [
+              "animated",
               "distance_to_plane",
               "origin",
               "ortho",
@@ -8117,16 +8122,11 @@
               }
             ],
             "description": "ID of command being submitted."
-          },
-          "file_id": {
-            "description": "ID of the model's file.",
-            "type": "string"
           }
         },
         "required": [
           "cmd",
-          "cmd_id",
-          "file_id"
+          "cmd_id"
         ],
         "type": "object"
       },
@@ -8139,15 +8139,10 @@
             },
             "description": "A set of commands to submit to the KittyCAD engine in a batch.",
             "type": "object"
-          },
-          "file_id": {
-            "description": "Which file is being drawn in.",
-            "type": "string"
           }
         },
         "required": [
-          "cmds",
-          "file_id"
+          "cmds"
         ],
         "type": "object"
       },
