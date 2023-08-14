@@ -2135,6 +2135,7 @@ export type ModelingCmd_type =
       vantage: Point3d_type /* Where the camera is positioned */;
     }
   | {
+      animated: boolean /* Should we animate or snap for the camera transition? */;
       /* format:float, description:How far to the sketching plane? */
       distance_to_plane: number;
       origin: Point3d_type /* What's the origin of the sketching plane? */;
@@ -2255,14 +2256,12 @@ export type ModelingCmdId_type =
 export interface ModelingCmdReq_type {
   cmd: ModelingCmd_type /* Which command to submit to the Kittycad engine. */;
   cmd_id: ModelingCmdId_type /* ID of command being submitted. */;
-  file_id: string /* ID of the model's file. */;
 }
 
 export interface ModelingCmdReqBatch_type {
   cmds: {
     [key: string]: ModelingCmdReq_type;
   } /* A set of commands to submit to the KittyCAD engine in a batch. */;
-  file_id: string /* Which file is being drawn in. */;
 }
 
 export interface ModelingError_type {
