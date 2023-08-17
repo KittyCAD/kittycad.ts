@@ -41,9 +41,6 @@ export const apps = {
   apps_github_webhook,
 };
 
-import get_physics_constant from './api/constant/get_physics_constant.js';
-export const constant = { get_physics_constant };
-
 import create_executor_term from './api/executor/create_executor_term.js';
 import create_file_execution from './api/executor/create_file_execution.js';
 export const executor = { create_executor_term, create_file_execution };
