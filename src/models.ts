@@ -1475,6 +1475,17 @@ export interface EngineMetadata_type {
   pubsub: Connection_type /* Metadata about our pub-sub connection. */;
 }
 
+export type EntityType_type =
+  /* The type of entity */
+  | 'entity'
+  | 'object'
+  | 'path'
+  | 'curve'
+  | 'solid2d'
+  | 'solid3d'
+  | 'edge'
+  | 'face';
+
 export type Environment_type = 'DEVELOPMENT' | 'PREVIEW' | 'PRODUCTION';
 
 export interface Error_type {
@@ -1670,24 +1681,9 @@ This is the same as the API call ID. */
   user_id: string /* The user ID of the user who created the API call. */;
 }
 
-export type FileExportFormat_type =
-  | 'dae'
-  | 'fbx'
-  | 'fbxb'
-  | 'gltf'
-  | 'obj'
-  | 'ply'
-  | 'step'
-  | 'stl';
+export type FileExportFormat_type = 'gltf' | 'obj' | 'ply' | 'step' | 'stl';
 
-export type FileImportFormat_type =
-  | 'dae'
-  | 'fbx'
-  | 'gltf'
-  | 'obj'
-  | 'ply'
-  | 'step'
-  | 'stl';
+export type FileImportFormat_type = 'gltf' | 'obj' | 'ply' | 'step' | 'stl';
 
 export interface FileMass_type {
   /*{
@@ -2244,6 +2240,66 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which object to change */
       object_id: string;
       type: 'object_visible';
+    }
+  | {
+      /* format:uuid, description:ID of the entity being queried. */
+      entity_id: string;
+      type: 'get_entity_type';
+    }
+  | {
+      /* format:uuid, description:Which edge you want the faces of. */
+      edge_id: string;
+      /* format:uuid, description:Which object is being queried. */
+      object_id: string;
+      type: 'solid3d_get_all_edge_faces';
+    }
+  | {
+      /*{
+  "nullable": true,
+  "description": "If given, ohnly faces parallel to this vector will be considered."
+}*/
+      along_vector: Point3d_type;
+      /* format:uuid, description:Which edge you want the opposites of. */
+      edge_id: string;
+      /* format:uuid, description:Which object is being queried. */
+      object_id: string;
+      type: 'solid3d_get_all_opposite_edges';
+    }
+  | {
+      /* format:uuid, description:Which edge you want the opposite of. */
+      edge_id: string;
+      /*{
+  "format": "uuid",
+  "description": "Which face is used to figure out the opposite edge?"
+}*/
+      face_uuid: string;
+      /* format:uuid, description:Which object is being queried. */
+      object_id: string;
+      type: 'solid3d_get_opposite_edge';
+    }
+  | {
+      /* format:uuid, description:Which edge you want the opposite of. */
+      edge_id: string;
+      /*{
+  "format": "uuid",
+  "description": "Which face is used to figure out the opposite edge?"
+}*/
+      face_uuid: string;
+      /* format:uuid, description:Which object is being queried. */
+      object_id: string;
+      type: 'solid3d_get_next_adjacent_edge';
+    }
+  | {
+      /* format:uuid, description:Which edge you want the opposite of. */
+      edge_id: string;
+      /*{
+  "format": "uuid",
+  "description": "Which face is used to figure out the opposite edge?"
+}*/
+      face_uuid: string;
+      /* format:uuid, description:Which object is being queried. */
+      object_id: string;
+      type: 'solid3d_get_prev_adjacent_edge';
     };
 
 export type ModelingCmdId_type =
@@ -2361,6 +2417,39 @@ export type OkModelingCmdResponse_type =
 }*/
       entity_ids: string[];
       type: 'select_get';
+    }
+  | {
+      entity_type: EntityType_type /* The type of the entity. */;
+      type: 'get_entity_type';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      faces: string[];
+      type: 'solid3d_get_all_edge_faces';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      edges: string[];
+      type: 'solid3d_get_all_opposite_edges';
+    }
+  | {
+      /* format:uuid, description:The UUID of the edge. */
+      edge: string;
+      type: 'solid3d_get_opposite_edge';
+    }
+  | {
+      /* format:uuid, description:The UUID of the edge. */
+      edge: string;
+      type: 'solid3d_get_prev_adjacent_edge';
+    }
+  | {
+      /* format:uuid, description:The UUID of the edge. */
+      edge: string;
+      type: 'solid3d_get_next_adjacent_edge';
     };
 
 export interface Onboarding_type {
@@ -2467,73 +2556,6 @@ export interface PaymentMethodCardChecks_type {
 }
 
 export type PaymentMethodType_type = 'card';
-
-export interface PhysicsConstant_type {
-  /*{
-  "format": "date-time",
-  "nullable": true,
-  "title": "DateTime",
-  "description": "The time and date the API call was completed."
-}*/
-  completed_at?: string;
-  constant: PhysicsConstantName_type /* The constant we are returning. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
-  created_at: string;
-  /* nullable:true, description:The error the function returned, if any. */
-  error?: string;
-  /* The unique identifier of the API call.
-
-This is the same as the API call ID. */
-  id: Uuid_type;
-  /*{
-  "format": "date-time",
-  "nullable": true,
-  "title": "DateTime",
-  "description": "The time and date the API call was started."
-}*/
-  started_at?: string;
-  status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
-  updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
-  /* format:double, nullable:true, description:The resulting value of the constant. */
-  value?: number;
-}
-
-export type PhysicsConstantName_type =
-  | 'pi'
-  | 'c'
-  | 'speed_of_light'
-  | 'G'
-  | 'newtonian_gravitation'
-  | 'h'
-  | 'planck_const'
-  | 'mu_0'
-  | 'vacuum_permeability'
-  | 'E_0'
-  | 'vacuum_permitivity'
-  | 'Z_0'
-  | 'vacuum_impedance'
-  | 'k_e'
-  | 'coulomb_const'
-  | 'e'
-  | 'elementary_charge'
-  | 'm_e'
-  | 'electron_mass'
-  | 'm_p'
-  | 'proton_mass'
-  | 'mu_B'
-  | 'bohr_magneton'
-  | 'NA'
-  | 'avogadro_num'
-  | 'R'
-  | 'molar_gas_const'
-  | 'K_B'
-  | 'boltzmann_const'
-  | 'F'
-  | 'faraday_const'
-  | 'sigma'
-  | 'stefan_boltzmann_const';
 
 export interface PluginsInfo_type {
   authorization: string[];
@@ -3313,6 +3335,7 @@ export interface Models {
   DockerSystemInfo_type: DockerSystemInfo_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
   EngineMetadata_type: EngineMetadata_type;
+  EntityType_type: EntityType_type;
   Environment_type: Environment_type;
   Error_type: Error_type;
   ExecutorMetadata_type: ExecutorMetadata_type;
@@ -3363,8 +3386,6 @@ export interface Models {
   PaymentMethod_type: PaymentMethod_type;
   PaymentMethodCardChecks_type: PaymentMethodCardChecks_type;
   PaymentMethodType_type: PaymentMethodType_type;
-  PhysicsConstant_type: PhysicsConstant_type;
-  PhysicsConstantName_type: PhysicsConstantName_type;
   PluginsInfo_type: PluginsInfo_type;
   Point2d_type: Point2d_type;
   Point3d_type: Point3d_type;
