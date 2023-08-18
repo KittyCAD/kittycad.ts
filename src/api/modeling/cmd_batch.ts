@@ -11,7 +11,7 @@ type Cmd_batch_return = ModelingOutcomes_type | Error_type;
 export default async function cmd_batch({
   client,
 }: Cmd_batch_params = {}): Promise<Cmd_batch_return> {
-  const url = `/modeling/cmd_batch`;
+  const url = `/modeling/cmd-batch`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client
