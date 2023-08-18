@@ -4,7 +4,7 @@ async function example() {
   const response = await api_tokens.list_api_tokens_for_user({
     limit: 7,
     page_token: 'string',
-    sort_by: 'created-at-ascending',
+    sort_by: 'created_at_ascending',
   });
   if ('error_code' in response) throw response;
 
