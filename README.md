@@ -29,11 +29,14 @@ import fsp from 'fs/promises';
 async function main() {
     // kittycad.io/docs/api/get-cad-file-mass?lang=typescript
     const response = await file.create_file_mass({
-        src_format: 'obj',
-        material_density: '0.007',
-        body: await fsp.readFile('./example.obj', 'base64'),
+      src_format: 'obj',
+      material_density_unit: 'kg:m3',
+      output_unit: 'g',
+      material_density: 0.007,
+      body: await fsp.readFile('./example.obj', 'base64'),
     })
-    if ('error_code' in response) throw response
+    if ('error_code' in response) throw 'error'
+
     const { status, mass } = response
     console.log(status, mass);
 }
