@@ -7643,6 +7643,27 @@
             "type": "object"
           },
           {
+            "description": "Adjust zoom of the default camera.",
+            "properties": {
+              "magnitude": {
+                "description": "Move the camera forward along the vector it's looking at, by this magnitudedefaultCameraZoom. Basically, how much should the camera move forward by.",
+                "format": "float",
+                "type": "number"
+              },
+              "type": {
+                "enum": [
+                  "default_camera_zoom"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "magnitude",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
             "description": "Enable sketch mode, where users can sketch 2D geometry. Users choose a plane to sketch on.",
             "properties": {
               "animated": {

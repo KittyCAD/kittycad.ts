@@ -2150,6 +2150,14 @@ export type ModelingCmd_type =
       vantage: Point3d_type /* Where the camera is positioned */;
     }
   | {
+      /*{
+  "format": "float",
+  "description": "Move the camera forward along the vector it's looking at, by this magnitudedefaultCameraZoom. Basically, how much should the camera move forward by."
+}*/
+      magnitude: number;
+      type: 'default_camera_zoom';
+    }
+  | {
       animated: boolean /* Should we animate or snap for the camera transition? */;
       /* format:float, description:How far to the sketching plane? */
       distance_to_plane: number;
