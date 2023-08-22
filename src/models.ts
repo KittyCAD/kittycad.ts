@@ -1115,6 +1115,10 @@ export type Currency_type =
   | 'zar'
   | 'zmw';
 
+export type CurveType_type =
+  /* The type of Curve (embedded within path) */
+  'line' | 'nurbs';
+
 export interface Customer_type {
   /* nullable:true, description:The customer's address. */
   address: NewAddress_type;
@@ -1489,7 +1493,8 @@ export type EntityType_type =
   | 'solid2d'
   | 'solid3d'
   | 'edge'
-  | 'face';
+  | 'face'
+  | 'plane';
 
 export type Environment_type = 'DEVELOPMENT' | 'PREVIEW' | 'PRODUCTION';
 
@@ -2327,6 +2332,72 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which object is being queried. */
       object_id: string;
       type: 'solid3d_get_prev_adjacent_edge';
+    }
+  | {
+      front: boolean /* Bring to front = true, send to back = false. */;
+      /* format:uuid, description:Which object is being changed. */
+      object_id: string;
+      type: 'send_object';
+    }
+  | {
+      /* format:uuid, description:Which entity is being changed. */
+      entity_id: string;
+      /*{
+  "format": "float",
+  "description": "How transparent should it be? 0 or lower is totally transparent. 1 or greater is totally opaque."
+}*/
+      opacity: number;
+      type: 'entity_set_opacity';
+    }
+  | {
+      /* default:0.4000000059604645, format:float, description:How many seconds the animation should take. */
+      duration_seconds: number;
+      /* format:uuid, description:Which entity is being changed. */
+      entity_id: string;
+      fade_in: boolean /* Fade in = true, fade out = false. */;
+      type: 'entity_fade';
+    }
+  | {
+      clobber: boolean /* If true, any existing drawables within the obj will be replaced (the object will be reset) */;
+      origin: Point3d_type /* Origin of the plane */;
+      /*{
+  "format": "float",
+  "description": "What should the plane's span/extent? When rendered visually, this is both the width and height along X and Y axis respectively."
+}*/
+      size: number;
+      type: 'make_plane';
+      x_axis: Point3d_type /* What should the plane's X axis be? */;
+      y_axis: Point3d_type /* What should the plane's Y axis be? */;
+    }
+  | {
+      color: Color_type /* What color it should be. */;
+      /* format:uuid, description:Which plane is being changed. */
+      plane_id: string;
+      type: 'plane_set_color';
+    }
+  | {
+      tool: SceneToolType_type /* What tool should be active. */;
+      type: 'set_tool';
+    }
+  | { type: 'mouse_move'; window: Point2d_type /* Where the mouse is */ }
+  | { type: 'mouse_click'; window: Point2d_type /* Where the mouse is */ }
+  | {
+      animated: boolean /* Animate the transition to sketch mode. */;
+      ortho: boolean /* Use an orthographic camera. */;
+      /* format:uuid, description:Sketch on this plane. */
+      plane_id: string;
+      type: 'sketch_mode_enable';
+    }
+  | { type: 'sketch_mode_disable' }
+  | {
+      /* format:uuid, description:Which curve to query. */
+      curve_id: string;
+      type: 'curve_get_type';
+    }
+  | {
+      /* format:uuid, description:Which curve to query. */
+      curve_id: string;
+      type: 'curve_get_control_points';
     };
 
 export type ModelingCmdId_type =
@@ -2477,6 +2548,22 @@ export type OkModelingCmdResponse_type =
       /* format:uuid, description:The UUID of the edge. */
       edge: string;
       type: 'solid3d_get_next_adjacent_edge';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entities_modified: string[];
+      /*{
+  "format": "uuid"
+}*/
+      entities_selected: string[];
+      type: 'mouse_click';
+    }
+  | { curve_type: CurveType_type /* Curve type */; type: 'curve_get_type' }
+  | {
+      control_points: Point3d_type[] /* Control points in the curve. */;
+      type: 'curve_get_control_points';
     };
 
 export interface Onboarding_type {
@@ -2712,6 +2799,15 @@ export interface Runtime_type {
 }
 
 export type SceneSelectionType_type = 'replace' | 'add' | 'remove';
+
+export type SceneToolType_type =
+  /* The type of scene's active tool */
+  | 'camera_revolve'
+  | 'select'
+  | 'move'
+  | 'sketch_line'
+  | 'sketch_curve'
+  | 'sketch_curve_mod';
 
 export interface Session_type {
   /* format:date-time, title:DateTime, description:The date and time the session was created. */
@@ -3458,6 +3554,7 @@ export interface Models {
   Coupon_type: Coupon_type;
   CreatedAtSortMode_type: CreatedAtSortMode_type;
   Currency_type: Currency_type;
+  CurveType_type: CurveType_type;
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
   DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type;
@@ -3538,6 +3635,7 @@ export interface Models {
   RtcSessionDescription_type: RtcSessionDescription_type;
   Runtime_type: Runtime_type;
   SceneSelectionType_type: SceneSelectionType_type;
+  SceneToolType_type: SceneToolType_type;
   Session_type: Session_type;
   SnakeCaseResult_type: SnakeCaseResult_type;
   Storage_type: Storage_type;
