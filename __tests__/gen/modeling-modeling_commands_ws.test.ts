@@ -6,6 +6,7 @@ async function example() {
     unlocked_framerate: true,
     video_res_height: 7,
     video_res_width: 7,
+    webrtc: true,
   });
   if ('error_code' in response) throw response;
 

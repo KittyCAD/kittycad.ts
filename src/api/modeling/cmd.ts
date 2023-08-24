@@ -1,12 +1,12 @@
 import fetch from 'node-fetch';
-import { Error_type } from '../../models.js';
+import { OkModelingCmdResponse_type, Error_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Cmd_params {
   client?: Client;
 }
 
-type Cmd_return = Error_type;
+type Cmd_return = OkModelingCmdResponse_type | Error_type;
 
 export default async function cmd({
   client,

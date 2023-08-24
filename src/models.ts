@@ -198,6 +198,11 @@ export interface ApiCallWithPriceResultsPage_type {
   next_page?: string;
 }
 
+export interface ApiError_type {
+  error_code: ErrorCode_type /* The error code. */;
+  message: string /* The error message. */;
+}
+
 export interface ApiToken_type {
   /* format:date-time, title:DateTime, description:The date and time the API token was created. */
   created_at: string;
@@ -216,6 +221,22 @@ export interface ApiTokenResultsPage_type {
   "description": "token used to fetch the next page of results (if any)"
 }*/
   next_page?: string;
+}
+
+export interface ApiWebSocketResponse_type {
+  errors: ApiError_type[] /* The errors that occurred. If `success` is true, this is empty. If `success` is false, this should be non-empty. */;
+  /*{
+  "format": "uuid",
+  "nullable": true,
+  "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
+}*/
+  request_id?: string;
+  /*{
+  "nullable": true,
+  "description": "The data sent with a successful response. This will be flattened into a 'type' and 'data' field. If `success` is true, this is non-empty. If `success` is false, this is empty."
+}*/
+  resp: OkWebSocketResponseData_type;
+  success: boolean /* Always false */;
 }
 
 export interface AppClientInfo_type {
@@ -1115,6 +1136,14 @@ export type Currency_type =
   | 'zar'
   | 'zmw';
 
+export interface CurveGetControlPoints_type {
+  control_points: Point3d_type[] /* Control points in the curve. */;
+}
+
+export interface CurveGetType_type {
+  curve_type: CurveType_type /* Curve type */;
+}
+
 export type CurveType_type =
   /* The type of Curve (embedded within path) */
   'line' | 'nurbs';
@@ -1470,11 +1499,6 @@ export interface EmailAuthenticationForm_type {
   email: string;
 }
 
-export interface EngineError_type {
-  error_code: ErrorCode_type /* The error code. */;
-  message: string /* The error message. */;
-}
-
 export interface EngineMetadata_type {
   async_jobs_running: boolean /* If any async job is currently running. */;
   cache: CacheMetadata_type /* Metadata about our cache. */;
@@ -1482,6 +1506,28 @@ export interface EngineMetadata_type {
   fs: FileSystemMetadata_type /* Metadata about our file system. */;
   git_hash: string /* The git hash of the server. */;
   pubsub: Connection_type /* Metadata about our pub-sub connection. */;
+}
+
+export interface EntityGetAllChildUuids_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
+}
+
+export interface EntityGetChildUuid_type {
+  /* format:uuid, description:The UUID of the child entity. */
+  entity_id: string;
+}
+
+export interface EntityGetNumChildren_type {
+  /* format:uint32, minimum:0, description:The number of children the entity has. */
+  num: number;
+}
+
+export interface EntityGetParentId_type {
+  /* format:uuid, description:The UUID of the parent entity. */
+  entity_id: string;
 }
 
 export type EntityType_type =
@@ -1504,16 +1550,23 @@ export interface Error_type {
   request_id: string;
 }
 
-export type ErrorCode_type = 'bad_request' | 'internal_engine';
-
-export interface ErrorResponse_type {
-  errors: EngineError_type[] /* A list of errors. */;
-}
+export type ErrorCode_type =
+  | 'internal_engine'
+  | 'internal_api'
+  | 'bad_request'
+  | 'invalid_json'
+  | 'connection_problem'
+  | 'message_type_not_accepted'
+  | 'message_type_not_accepted_for_web_r_t_c';
 
 export interface ExecutorMetadata_type {
   docker_info: DockerSystemInfo_type /* Information about the docker daemon. */;
   environment: Environment_type /* The environment we are running in. */;
   git_hash: string /* The git hash of the server. */;
+}
+
+export interface Export_type {
+  files: ExportFile_type[] /* The files that were exported. */;
 }
 
 export interface ExportFile_type {
@@ -1697,7 +1750,13 @@ This is the same as the API call ID. */
   user_id: string /* The user ID of the user who created the API call. */;
 }
 
-export type FileExportFormat_type = 'gltf' | 'obj' | 'ply' | 'step' | 'stl';
+export type FileExportFormat_type =
+  | 'glb'
+  | 'gltf'
+  | 'obj'
+  | 'ply'
+  | 'step'
+  | 'stl';
 
 export type FileImportFormat_type = 'gltf' | 'obj' | 'ply' | 'step' | 'stl';
 
@@ -1820,6 +1879,22 @@ export interface Gateway_type {
   tls_timeout: number;
 }
 
+export interface GetEntityType_type {
+  entity_type: EntityType_type /* The type of the entity. */;
+}
+
+export interface HighlightSetEntity_type {
+  /* format:uuid, nullable:true, description:The UUID of the entity that was highlighted. */
+  entity_id?: string;
+  /*{
+  "format": "uint32",
+  "minimum": 0,
+  "nullable": true,
+  "description": "If the client sent a sequence ID with its request, the backend sends it back."
+}*/
+  sequence?: number;
+}
+
 export interface IceServer_type {
   /* nullable:true, description:Credentials for a given TURN server. */
   credential?: string;
@@ -1827,6 +1902,8 @@ export interface IceServer_type {
   /* nullable:true, description:Username for a given TURN server. */
   username?: string;
 }
+
+export type ImageFormat_type = 'png';
 
 export type ImageType_type =
   /* An enumeration. */
@@ -2398,6 +2475,10 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which curve to query. */
       curve_id: string;
       type: 'curve_get_control_points';
+    }
+  | {
+      format: ImageFormat_type /* What image format to return. */;
+      type: 'take_snapshot';
     };
 
 export type ModelingCmdId_type =
@@ -2413,9 +2494,7 @@ export interface ModelingCmdReq_type {
 }
 
 export interface ModelingCmdReqBatch_type {
-  cmds: {
-    [key: string]: ModelingCmdReq_type;
-  } /* A set of commands to submit to the KittyCAD engine in a batch. */;
+  cmds: { [key: string]: ModelingCmdReq_type };
 }
 
 export interface ModelingError_type {
@@ -2436,9 +2515,18 @@ export type ModelingOutcome_type =
     };
 
 export interface ModelingOutcomes_type {
-  outcomes: {
-    [key: string]: ModelingOutcome_type;
-  } /* The results from each command in the batch. */;
+  outcomes: { [key: string]: ModelingOutcome_type };
+}
+
+export interface MouseClick_type {
+  /*{
+  "format": "uuid"
+}*/
+  entities_modified: string[];
+  /*{
+  "format": "uuid"
+}*/
+  entities_selected: string[];
 }
 
 export interface NewAddress_type {
@@ -2466,104 +2554,53 @@ export type OAuth2GrantType_type =
 
 export type OkModelingCmdResponse_type =
   | { type: 'empty' }
+  | { data: any; type: 'export' }
+  | { data: any; type: 'select_with_point' }
+  | { data: any; type: 'highlight_set_entity' }
+  | { data: any; type: 'entity_get_child_uuid' }
+  | { data: any; type: 'entity_get_num_children' }
+  | { data: any; type: 'entity_get_parent_id' }
+  | { data: any; type: 'entity_get_all_child_uuids' }
+  | { data: any; type: 'select_get' }
+  | { data: any; type: 'get_entity_type' }
+  | { data: any; type: 'solid3d_get_all_edge_faces' }
+  | { data: any; type: 'solid3d_get_all_opposite_edges' }
+  | { data: any; type: 'solid3d_get_opposite_edge' }
+  | { data: any; type: 'solid3d_get_prev_adjacent_edge' }
+  | { data: any; type: 'solid3d_get_next_adjacent_edge' }
+  | { data: any; type: 'mouse_click' }
+  | { data: any; type: 'curve_get_type' }
+  | { data: any; type: 'curve_get_control_points' }
+  | { data: any; type: 'take_snapshot' };
+
+export type OkWebSocketResponseData_type =
   | {
-      files: ExportFile_type[] /* The files that were exported. */;
+      data: {
+        ice_servers: IceServer_type[] /* Information about the ICE servers. */;
+      };
+      type: 'ice_server_info';
+    }
+  | {
+      data: {
+        candidate: RtcIceCandidateInit_type /* Information about the ICE candidate. */;
+      };
+      type: 'trickle_ice';
+    }
+  | {
+      data: {
+        answer: RtcSessionDescription_type /* The session description. */;
+      };
+      type: 'sdp_answer';
+    }
+  | {
+      data: {
+        modeling_response: OkModelingCmdResponse_type /* The result of the command. */;
+      };
+      type: 'modeling';
+    }
+  | {
+      data: { files: RawFile_type[] /* The exported files */ };
       type: 'export';
-    }
-  | {
-      /* format:uuid, nullable:true, description:The UUID of the entity that was selected. */
-      entity_id?: string;
-      type: 'select_with_point';
-    }
-  | {
-      /* format:uuid, nullable:true, description:The UUID of the entity that was highlighted. */
-      entity_id?: string;
-      /*{
-  "format": "uint32",
-  "minimum": 0,
-  "nullable": true,
-  "description": "If the client sent a sequence ID with its request, the backend sends it back."
-}*/
-      sequence?: number;
-      type: 'highlight_set_entity';
-    }
-  | {
-      /* format:uuid, description:The UUID of the child entity. */
-      entity_id: string;
-      type: 'entity_get_child_uuid';
-    }
-  | {
-      /* format:uint32, minimum:0, description:The number of children the entity has. */
-      num: number;
-      type: 'entity_get_num_children';
-    }
-  | {
-      /* format:uuid, description:The UUID of the parent entity. */
-      entity_id: string;
-      type: 'entity_get_parent_id';
-    }
-  | {
-      /*{
-  "format": "uuid"
-}*/
-      entity_ids: string[];
-      type: 'entity_get_all_child_uuids';
-    }
-  | {
-      /*{
-  "format": "uuid"
-}*/
-      entity_ids: string[];
-      type: 'select_get';
-    }
-  | {
-      entity_type: EntityType_type /* The type of the entity. */;
-      type: 'get_entity_type';
-    }
-  | {
-      /*{
-  "format": "uuid"
-}*/
-      faces: string[];
-      type: 'solid3d_get_all_edge_faces';
-    }
-  | {
-      /*{
-  "format": "uuid"
-}*/
-      edges: string[];
-      type: 'solid3d_get_all_opposite_edges';
-    }
-  | {
-      /* format:uuid, description:The UUID of the edge. */
-      edge: string;
-      type: 'solid3d_get_opposite_edge';
-    }
-  | {
-      /* format:uuid, description:The UUID of the edge. */
-      edge: string;
-      type: 'solid3d_get_prev_adjacent_edge';
-    }
-  | {
-      /* format:uuid, description:The UUID of the edge. */
-      edge: string;
-      type: 'solid3d_get_next_adjacent_edge';
-    }
-  | {
-      /*{
-  "format": "uuid"
-}*/
-      entities_modified: string[];
-      /*{
-  "format": "uuid"
-}*/
-      entities_selected: string[];
-      type: 'mouse_click';
-    }
-  | { curve_type: CurveType_type /* Curve type */; type: 'curve_get_type' }
-  | {
-      control_points: Point3d_type[] /* Control points in the curve. */;
-      type: 'curve_get_control_points';
     };
 
 export interface Onboarding_type {
@@ -2584,6 +2621,7 @@ export interface OutputFile_type {
 
 export type OutputFormat_type =
   | {
+      presentation: Presentation_type /* Specifies how the JSON will be presented. */;
       storage: Storage_type /* Specifies which kind of glTF 2.0 will be exported. */;
       type: 'gltf';
     }
@@ -2712,6 +2750,8 @@ export interface Pong_type {
   message: string /* The pong response. */;
 }
 
+export type Presentation_type = 'compact' | 'pretty';
+
 export interface RawFile_type {
   /*{
   "format": "uint8",
@@ -2727,24 +2767,6 @@ export interface RegistryServiceConfig_type {
   index_configs: { [key: string]: IndexInfo_type };
   insecure_registry_cid_rs: string[];
   mirrors: string[];
-}
-
-export interface RtcIceCandidate_type {
-  address: string /* The address of the candidate. */;
-  /* format:uint16, minimum:0, description:The component of the candidate. */
-  component: number;
-  foundation: string /* The foundation for the address. */;
-  /* format:uint16, minimum:0, description:The port used for the candidate. */
-  port: number;
-  /* format:uint32, minimum:0, description:The priority of the candidate. */
-  priority: number;
-  protocol: RtcIceProtocol_type /* The protocol used for the candidate. */;
-  related_address: string /* The related address of the candidate. */;
-  /* format:uint16, minimum:0, description:The related port of the candidate. */
-  related_port: number;
-  stats_id: string /* The stats ID. */;
-  tcp_type: string /* The TCP type of the candidate. */;
-  typ: RtcIceCandidateType_type /* The type of the candidate. */;
 }
 
 export interface RtcIceCandidateInit_type {
@@ -2767,15 +2789,6 @@ export interface RtcIceCandidateInit_type {
 }*/
   usernameFragment?: string;
 }
-
-export type RtcIceCandidateType_type =
-  | 'unspecified'
-  | 'host'
-  | 'srflx'
-  | 'prflx'
-  | 'relay';
-
-export type RtcIceProtocol_type = 'unspecified' | 'udp' | 'tcp';
 
 export type RtcSdpType_type =
   | 'unspecified'
@@ -2809,6 +2822,18 @@ export type SceneToolType_type =
   | 'sketch_curve'
   | 'sketch_curve_mod';
 
+export interface SelectGet_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
+}
+
+export interface SelectWithPoint_type {
+  /* format:uuid, nullable:true, description:The UUID of the entity that was selected. */
+  entity_id?: string;
+}
+
 export interface Session_type {
   /* format:date-time, title:DateTime, description:The date and time the session was created. */
   created_at: string;
@@ -2821,7 +2846,34 @@ export interface Session_type {
   user_id: string /* The user ID of the user that the session belongs to. */;
 }
 
-export type SnakeCaseResult_type = { ok: any } | { err: any };
+export interface Solid3dGetAllEdgeFaces_type {
+  /*{
+  "format": "uuid"
+}*/
+  faces: string[];
+}
+
+export interface Solid3dGetAllOppositeEdges_type {
+  /*{
+  "format": "uuid"
+}*/
+  edges: string[];
+}
+
+export interface Solid3dGetNextAdjacentEdge_type {
+  /* format:uuid, description:The UUID of the edge. */
+  edge: string;
+}
+
+export interface Solid3dGetOppositeEdge_type {
+  /* format:uuid, description:The UUID of the edge. */
+  edge: string;
+}
+
+export interface Solid3dGetPrevAdjacentEdge_type {
+  /* format:uuid, description:The UUID of the edge. */
+  edge: string;
+}
 
 export type Storage_type = 'binary' | 'standard' | 'embedded';
 
@@ -2850,6 +2902,14 @@ export type SystemInfoIsolationEnum_type =
   | 'default'
   | 'hyperv'
   | 'process';
+
+export interface TakeSnapshot_type {
+  /*{
+  "format": "uint8",
+  "minimum": 0
+}*/
+  contents: number[];
+}
 
 export type UnitAngle_type = 'degrees' | 'radians';
 
@@ -3489,27 +3549,8 @@ export type WebSocketMessages_type =
       cmd: ModelingCmd_type /* Which command to submit to the Kittycad engine. */;
       cmd_id: ModelingCmdId_type /* ID of command being submitted. */;
       type: 'modeling_cmd_req';
-    };
-
-export type WebSocketResponses_type =
-  | {
-      candidate: RtcIceCandidate_type /* Information about the ICE candidate. */;
-      type: 'trickle_ice';
     }
-  | {
-      answer: RtcSessionDescription_type /* The session description. */;
-      type: 'sdp_answer';
-    }
-  | {
-      ice_servers: IceServer_type[] /* Information about the ICE servers. */;
-      type: 'ice_server_info';
-    }
-  | {
-      cmd_id: ModelingCmdId_type /* The ID of the command. */;
-      result: SnakeCaseResult_type /* The result of the command. */;
-      type: 'modeling';
-    }
-  | { files: RawFile_type[] /* The exported files. */; type: 'export' };
+  | { type: 'ping' };
 
 export interface Models {
   AccountProvider_type: AccountProvider_type;
@@ -3531,8 +3572,10 @@ export interface Models {
   ApiCallStatus_type: ApiCallStatus_type;
   ApiCallWithPrice_type: ApiCallWithPrice_type;
   ApiCallWithPriceResultsPage_type: ApiCallWithPriceResultsPage_type;
+  ApiError_type: ApiError_type;
   ApiToken_type: ApiToken_type;
   ApiTokenResultsPage_type: ApiTokenResultsPage_type;
+  ApiWebSocketResponse_type: ApiWebSocketResponse_type;
   AppClientInfo_type: AppClientInfo_type;
   AsyncApiCall_type: AsyncApiCall_type;
   AsyncApiCallOutput_type: AsyncApiCallOutput_type;
@@ -3554,6 +3597,8 @@ export interface Models {
   Coupon_type: Coupon_type;
   CreatedAtSortMode_type: CreatedAtSortMode_type;
   Currency_type: Currency_type;
+  CurveGetControlPoints_type: CurveGetControlPoints_type;
+  CurveGetType_type: CurveGetType_type;
   CurveType_type: CurveType_type;
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
@@ -3564,14 +3609,17 @@ export interface Models {
   Discount_type: Discount_type;
   DockerSystemInfo_type: DockerSystemInfo_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
-  EngineError_type: EngineError_type;
   EngineMetadata_type: EngineMetadata_type;
+  EntityGetAllChildUuids_type: EntityGetAllChildUuids_type;
+  EntityGetChildUuid_type: EntityGetChildUuid_type;
+  EntityGetNumChildren_type: EntityGetNumChildren_type;
+  EntityGetParentId_type: EntityGetParentId_type;
   EntityType_type: EntityType_type;
   Environment_type: Environment_type;
   Error_type: Error_type;
   ErrorCode_type: ErrorCode_type;
-  ErrorResponse_type: ErrorResponse_type;
   ExecutorMetadata_type: ExecutorMetadata_type;
+  Export_type: Export_type;
   ExportFile_type: ExportFile_type;
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
@@ -3585,7 +3633,10 @@ export interface Models {
   FileSystemMetadata_type: FileSystemMetadata_type;
   FileVolume_type: FileVolume_type;
   Gateway_type: Gateway_type;
+  GetEntityType_type: GetEntityType_type;
+  HighlightSetEntity_type: HighlightSetEntity_type;
   IceServer_type: IceServer_type;
+  ImageFormat_type: ImageFormat_type;
   ImageType_type: ImageType_type;
   IndexInfo_type: IndexInfo_type;
   InputFormat_type: InputFormat_type;
@@ -3608,10 +3659,12 @@ export interface Models {
   ModelingError_type: ModelingError_type;
   ModelingOutcome_type: ModelingOutcome_type;
   ModelingOutcomes_type: ModelingOutcomes_type;
+  MouseClick_type: MouseClick_type;
   NewAddress_type: NewAddress_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;
   OAuth2GrantType_type: OAuth2GrantType_type;
   OkModelingCmdResponse_type: OkModelingCmdResponse_type;
+  OkWebSocketResponseData_type: OkWebSocketResponseData_type;
   Onboarding_type: Onboarding_type;
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
@@ -3625,25 +3678,30 @@ export interface Models {
   Point3d_type: Point3d_type;
   PointEMetadata_type: PointEMetadata_type;
   Pong_type: Pong_type;
+  Presentation_type: Presentation_type;
   RawFile_type: RawFile_type;
   RegistryServiceConfig_type: RegistryServiceConfig_type;
-  RtcIceCandidate_type: RtcIceCandidate_type;
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
-  RtcIceCandidateType_type: RtcIceCandidateType_type;
-  RtcIceProtocol_type: RtcIceProtocol_type;
   RtcSdpType_type: RtcSdpType_type;
   RtcSessionDescription_type: RtcSessionDescription_type;
   Runtime_type: Runtime_type;
   SceneSelectionType_type: SceneSelectionType_type;
   SceneToolType_type: SceneToolType_type;
+  SelectGet_type: SelectGet_type;
+  SelectWithPoint_type: SelectWithPoint_type;
   Session_type: Session_type;
-  SnakeCaseResult_type: SnakeCaseResult_type;
+  Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
+  Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
+  Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type;
+  Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
+  Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
   Storage_type: Storage_type;
   System_type: System_type;
   SystemInfoCgroupDriverEnum_type: SystemInfoCgroupDriverEnum_type;
   SystemInfoCgroupVersionEnum_type: SystemInfoCgroupVersionEnum_type;
   SystemInfoDefaultAddressPools_type: SystemInfoDefaultAddressPools_type;
   SystemInfoIsolationEnum_type: SystemInfoIsolationEnum_type;
+  TakeSnapshot_type: TakeSnapshot_type;
   UnitAngle_type: UnitAngle_type;
   UnitAngleConversion_type: UnitAngleConversion_type;
   UnitArea_type: UnitArea_type;
@@ -3677,5 +3735,4 @@ export interface Models {
   Uuid_type: Uuid_type;
   VerificationToken_type: VerificationToken_type;
   WebSocketMessages_type: WebSocketMessages_type;
-  WebSocketResponses_type: WebSocketResponses_type;
 }
