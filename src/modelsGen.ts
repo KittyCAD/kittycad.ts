@@ -57,6 +57,13 @@ async function main() {
                 `${key}: ${typeNameReference[ref]}`,
               );
             }
+            if ((subSchema as any).$ref) {
+              const ref = (subSchema as any).$ref;
+              return addCommentInfo(
+                subSchema,
+                `${key}: ${typeNameReference[ref]}`,
+              );
+            }
             return makeTypeStringForNode(subSchema, key);
           } else if (subSchema.type === 'array') {
             const items = subSchema.items;
