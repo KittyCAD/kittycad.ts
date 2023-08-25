@@ -223,7 +223,7 @@ export interface ApiTokenResultsPage_type {
   next_page?: string;
 }
 
-export interface ApiWebSocketResponse_type {
+export interface WebSocketResponse_type {
   errors: ApiError_type[] /* The errors that occurred. If `success` is true, this is empty. If `success` is false, this should be non-empty. */;
   /*{
   "format": "uuid",
@@ -3654,7 +3654,7 @@ export interface VerificationToken_type {
   updated_at: string;
 }
 
-export type WebSocketMessages_type =
+export type WebSocketRequest_type =
   | {
       candidate: RtcIceCandidateInit_type /* Information about the ICE candidate. */;
       type: 'trickle_ice';
@@ -3693,7 +3693,7 @@ export interface Models {
   ApiError_type: ApiError_type;
   ApiToken_type: ApiToken_type;
   ApiTokenResultsPage_type: ApiTokenResultsPage_type;
-  ApiWebSocketResponse_type: ApiWebSocketResponse_type;
+  WebSocketResponse_type: WebSocketResponse_type;
   AppClientInfo_type: AppClientInfo_type;
   AsyncApiCall_type: AsyncApiCall_type;
   AsyncApiCallOutput_type: AsyncApiCallOutput_type;
@@ -3852,5 +3852,5 @@ export interface Models {
   UserResultsPage_type: UserResultsPage_type;
   Uuid_type: Uuid_type;
   VerificationToken_type: VerificationToken_type;
-  WebSocketMessages_type: WebSocketMessages_type;
+  WebSocketRequest_type: WebSocketRequest_type;
 }
