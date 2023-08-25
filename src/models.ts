@@ -2506,8 +2506,18 @@ export interface ModelingError_type {
 }
 
 export type ModelingOutcome_type =
-  | { success: any }
-  | { error: any }
+  | {
+      /*{
+  "$ref": "#/components/schemas/OkModelingCmdResponse"
+}*/
+      success: OkModelingCmdResponse_type;
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ModelingError"
+}*/
+      error: ModelingError_type;
+    }
   | {
       cancelled: {
         what_failed: ModelingCmdId_type /* The ID of the command that failed, cancelling this command. */;
@@ -2554,24 +2564,132 @@ export type OAuth2GrantType_type =
 
 export type OkModelingCmdResponse_type =
   | { type: 'empty' }
-  | { data: any; type: 'export' }
-  | { data: any; type: 'select_with_point' }
-  | { data: any; type: 'highlight_set_entity' }
-  | { data: any; type: 'entity_get_child_uuid' }
-  | { data: any; type: 'entity_get_num_children' }
-  | { data: any; type: 'entity_get_parent_id' }
-  | { data: any; type: 'entity_get_all_child_uuids' }
-  | { data: any; type: 'select_get' }
-  | { data: any; type: 'get_entity_type' }
-  | { data: any; type: 'solid3d_get_all_edge_faces' }
-  | { data: any; type: 'solid3d_get_all_opposite_edges' }
-  | { data: any; type: 'solid3d_get_opposite_edge' }
-  | { data: any; type: 'solid3d_get_prev_adjacent_edge' }
-  | { data: any; type: 'solid3d_get_next_adjacent_edge' }
-  | { data: any; type: 'mouse_click' }
-  | { data: any; type: 'curve_get_type' }
-  | { data: any; type: 'curve_get_control_points' }
-  | { data: any; type: 'take_snapshot' };
+  | {
+      /*{
+  "$ref": "#/components/schemas/Export"
+}*/
+      data: Export_type;
+      type: 'export';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SelectWithPoint"
+}*/
+      data: SelectWithPoint_type;
+      type: 'select_with_point';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/HighlightSetEntity"
+}*/
+      data: HighlightSetEntity_type;
+      type: 'highlight_set_entity';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityGetChildUuid"
+}*/
+      data: EntityGetChildUuid_type;
+      type: 'entity_get_child_uuid';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityGetNumChildren"
+}*/
+      data: EntityGetNumChildren_type;
+      type: 'entity_get_num_children';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityGetParentId"
+}*/
+      data: EntityGetParentId_type;
+      type: 'entity_get_parent_id';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityGetAllChildUuids"
+}*/
+      data: EntityGetAllChildUuids_type;
+      type: 'entity_get_all_child_uuids';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SelectGet"
+}*/
+      data: SelectGet_type;
+      type: 'select_get';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/GetEntityType"
+}*/
+      data: GetEntityType_type;
+      type: 'get_entity_type';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dGetAllEdgeFaces"
+}*/
+      data: Solid3dGetAllEdgeFaces_type;
+      type: 'solid3d_get_all_edge_faces';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dGetAllOppositeEdges"
+}*/
+      data: Solid3dGetAllOppositeEdges_type;
+      type: 'solid3d_get_all_opposite_edges';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dGetOppositeEdge"
+}*/
+      data: Solid3dGetOppositeEdge_type;
+      type: 'solid3d_get_opposite_edge';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dGetPrevAdjacentEdge"
+}*/
+      data: Solid3dGetPrevAdjacentEdge_type;
+      type: 'solid3d_get_prev_adjacent_edge';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dGetNextAdjacentEdge"
+}*/
+      data: Solid3dGetNextAdjacentEdge_type;
+      type: 'solid3d_get_next_adjacent_edge';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/MouseClick"
+}*/
+      data: MouseClick_type;
+      type: 'mouse_click';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/CurveGetType"
+}*/
+      data: CurveGetType_type;
+      type: 'curve_get_type';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/CurveGetControlPoints"
+}*/
+      data: CurveGetControlPoints_type;
+      type: 'curve_get_control_points';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/TakeSnapshot"
+}*/
+      data: TakeSnapshot_type;
+      type: 'take_snapshot';
+    };
 
 export type OkWebSocketResponseData_type =
   | {
