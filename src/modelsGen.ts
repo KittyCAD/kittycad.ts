@@ -136,6 +136,16 @@ async function main() {
       );
       return `${namePart} ${unionParts.join(' | ')} /* use-type */`;
     }
+    if (schema.anyOf) {
+      const unionParts = schema.anyOf.map((subSchema: OpenAPIV3.SchemaObject) =>
+        makeTypeStringForNode(subSchema),
+      );
+      return `${namePart} ${unionParts.join(' | ')} /* use-type */`;
+    }
+    if (schema.allOf) {
+      const ref = (schema.allOf[0] as any).$ref;
+      return `${namePart} ${typeReference[ref]}`;
+    }
     if (schema.type === 'array') {
       return `${name}: ${makeTypeStringForNode(schema.items as any)}[]`;
     }
@@ -156,6 +166,7 @@ async function main() {
     const typeName = typeNameReference[componentRef(key)];
     typeReference[componentRef(key)] = typeBody;
     modelsExportParts.push(typeName);
+
     if (typeBody.includes('/* use-type */')) {
       template += `export type ${typeName} = ${typeBody.replaceAll(
         '/* use-type */',
@@ -168,6 +179,18 @@ async function main() {
   template += `export interface Models {\n${modelsExportParts
     .map((name) => `${name}: ${name}`)
     .join(';\n')}\n}\n\n`;
+
+  // openApi spec doesn't support a boolean that always false or always true
+  // however union types with forced booleans are very valuable for type narrowing in typescript
+  // The following regex replace might be brittle, but if it doesn't find these cases, the types
+  // will just be a litte worse.
+  // Note this relies on the addCommentInfo function to add the "Always false" comments from spec 
+  // descriptions in the typescript
+  // if these descriptions change in the spec, this will need to be updated
+  template = template.replaceAll(/boolean.+\/\* Always false \*\//g, 'false');
+  template = template.replaceAll(/boolean.+\/\* Always true \*\//g, 'true');
+
+
   await fsp.writeFile(`./src/models.ts`, template, 'utf8');
   apiGen(typeNameReference);
 }
