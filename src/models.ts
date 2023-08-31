@@ -223,22 +223,6 @@ export interface ApiTokenResultsPage_type {
   next_page?: string;
 }
 
-export interface WebSocketResponse_type {
-  errors: ApiError_type[] /* The errors that occurred. If `success` is true, this is empty. If `success` is false, this should be non-empty. */;
-  /*{
-  "format": "uuid",
-  "nullable": true,
-  "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
-}*/
-  request_id?: string;
-  /*{
-  "nullable": true,
-  "description": "The data sent with a successful response. This will be flattened into a 'type' and 'data' field. If `success` is true, this is non-empty. If `success` is false, this is empty."
-}*/
-  resp: OkWebSocketResponseData_type;
-  success: boolean /* Always false */;
-}
-
 export interface AppClientInfo_type {
   url: string /* The URL for consent. */;
 }
@@ -1631,6 +1615,19 @@ export interface ExtendedUserResultsPage_type {
   next_page?: string;
 }
 
+export interface FailureWebSocketResponse_type {
+  errors: ApiError_type[] /* The errors that occurred. */;
+  /*{
+  "format": "uuid",
+  "nullable": true,
+  "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
+}*/
+  request_id?: string;
+  success: false;
+}
+
+export type FbxStorage_type = 'ascii' | 'binary';
+
 export interface FileCenterOfMass_type {
   /* nullable:true, description:The resulting center of mass. */
   center_of_mass: Point3d_type;
@@ -1751,6 +1748,7 @@ This is the same as the API call ID. */
 }
 
 export type FileExportFormat_type =
+  | 'fbx'
   | 'glb'
   | 'gltf'
   | 'obj'
@@ -1758,7 +1756,14 @@ export type FileExportFormat_type =
   | 'step'
   | 'stl';
 
-export type FileImportFormat_type = 'gltf' | 'obj' | 'ply' | 'step' | 'stl';
+export type FileImportFormat_type =
+  | 'fbx'
+  | 'gltf'
+  | 'obj'
+  | 'ply'
+  | 'sldprt'
+  | 'step'
+  | 'stl';
 
 export interface FileMass_type {
   /*{
@@ -1883,6 +1888,10 @@ export interface GetEntityType_type {
   entity_type: EntityType_type /* The type of the entity. */;
 }
 
+export type GltfPresentation_type = 'compact' | 'pretty';
+
+export type GltfStorage_type = 'binary' | 'standard' | 'embedded';
+
 export interface HighlightSetEntity_type {
   /* format:uuid, nullable:true, description:The UUID of the entity that was highlighted. */
   entity_id?: string;
@@ -1903,7 +1912,7 @@ export interface IceServer_type {
   username?: string;
 }
 
-export type ImageFormat_type = 'png';
+export type ImageFormat_type = 'png' | 'jpeg';
 
 export type ImageType_type =
   /* An enumeration. */
@@ -1926,8 +1935,8 @@ export interface IndexInfo_type {
 }
 
 export type InputFormat_type =
+  | { type: 'fbx' }
   | { type: 'gltf' }
-  | { type: 'step' }
   | {
       /* Co-ordinate system of input data.
 
@@ -1948,6 +1957,8 @@ Defaults to the [KittyCAD co-ordinate system].
       type: 'ply';
       units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
     }
+  | { type: 'sldprt' }
+  | { type: 'step' }
   | {
       /* Co-ordinate system of input data.
 
@@ -2456,7 +2467,17 @@ export type ModelingCmd_type =
       tool: SceneToolType_type /* What tool should be active. */;
       type: 'set_tool';
     }
-  | { type: 'mouse_move'; window: Point2d_type /* Where the mouse is */ }
+  | {
+      /*{
+  "format": "uint32",
+  "minimum": 0,
+  "nullable": true,
+  "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
+}*/
+      sequence?: number;
+      type: 'mouse_move';
+      window: Point2d_type /* Where the mouse is */;
+    }
   | { type: 'mouse_click'; window: Point2d_type /* Where the mouse is */ }
   | {
       animated: boolean /* Animate the transition to sketch mode. */;
@@ -2479,6 +2500,35 @@ export type ModelingCmd_type =
   | {
       format: ImageFormat_type /* What image format to return. */;
       type: 'take_snapshot';
+    }
+  | {
+      clobber: boolean /* If true, any existing drawables within the obj will be replaced (the object will be reset) */;
+      gizmo_mode: boolean /* If true, axes gizmo will be placed in the corner of the screen. If false, it will be placed at the origin of the scene. */;
+      type: 'make_axes_gizmo';
+    }
+  | {
+      /* format:uuid, description:Which path to query */
+      path_id: string;
+      type: 'path_get_info';
+    }
+  | {
+      type: 'handle_mouse_drag_start';
+      window: Point2d_type /* The mouse position. */;
+    }
+  | {
+      /*{
+  "format": "uint32",
+  "minimum": 0,
+  "nullable": true,
+  "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
+}*/
+      sequence?: number;
+      type: 'handle_mouse_drag_move';
+      window: Point2d_type /* The mouse position. */;
+    }
+  | {
+      type: 'handle_mouse_drag_end';
+      window: Point2d_type /* The mouse position. */;
     };
 
 export type ModelingCmdId_type =
@@ -2689,6 +2739,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: TakeSnapshot_type;
       type: 'take_snapshot';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/PathGetInfo"
+}*/
+      data: PathGetInfo_type;
+      type: 'path_get_info';
     };
 
 export type OkWebSocketResponseData_type =
@@ -2739,8 +2796,12 @@ export interface OutputFile_type {
 
 export type OutputFormat_type =
   | {
-      presentation: Presentation_type /* Specifies how the JSON will be presented. */;
-      storage: Storage_type /* Specifies which kind of glTF 2.0 will be exported. */;
+      storage: FbxStorage_type /* Specifies which kind of FBX will be exported. */;
+      type: 'fbx';
+    }
+  | {
+      presentation: GltfPresentation_type /* Specifies how the JSON will be presented. */;
+      storage: GltfStorage_type /* Specifies which kind of glTF 2.0 will be exported. */;
       type: 'gltf';
     }
   | {
@@ -2759,7 +2820,7 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
-      storage: Storage_type /* The storage for the output PLY file. */;
+      storage: PlyStorage_type /* The storage for the output PLY file. */;
       type: 'ply';
     }
   | {
@@ -2778,9 +2839,17 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
-      storage: Storage_type /* Export storage. */;
+      storage: StlStorage_type /* Export storage. */;
       type: 'stl';
     };
+
+export type PathCommand_type =
+  /* The path component command type (within a Path) */
+  'move_to' | 'line_to' | 'bez_curve_to' | 'nurbs_curve_to' | 'add_arc';
+
+export interface PathGetInfo_type {
+  segments: PathSegmentInfo_type[] /* All segments in the path, in the order they were added. */;
+}
 
 export type PathSegment_type =
   | { end: Point3d_type /* End point of the line. */; type: 'line' }
@@ -2800,6 +2869,15 @@ export type PathSegment_type =
       end: Point3d_type /* Final control point. */;
       type: 'bezier';
     };
+
+export interface PathSegmentInfo_type {
+  command: PathCommand_type /* What is the path segment? */;
+  /*{
+  "nullable": true,
+  "description": "Which command created this path? This field is absent if the path command is not actually creating a path segment, e.g. moving the pen doesn't create a path segment."
+}*/
+  command_id: ModelingCmdId_type;
+}
 
 export interface PaymentIntent_type {
   client_secret: string /* The client secret is used for client-side retrieval using a publishable key. The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret. */;
@@ -2834,6 +2912,11 @@ export interface PluginsInfo_type {
   volume: string[];
 }
 
+export type PlyStorage_type =
+  | 'ascii'
+  | 'binary_little_endian'
+  | 'binary_big_endian';
+
 export interface Point2d_type {
   /*{
   "format": "float"
@@ -2867,8 +2950,6 @@ export interface PointEMetadata_type {
 export interface Pong_type {
   message: string /* The pong response. */;
 }
-
-export type Presentation_type = 'compact' | 'pretty';
 
 export interface RawFile_type {
   /*{
@@ -2993,7 +3074,18 @@ export interface Solid3dGetPrevAdjacentEdge_type {
   edge: string;
 }
 
-export type Storage_type = 'binary' | 'standard' | 'embedded';
+export type StlStorage_type = 'ascii' | 'binary';
+
+export interface SuccessWebSocketResponse_type {
+  /*{
+  "format": "uuid",
+  "nullable": true,
+  "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
+}*/
+  request_id?: string;
+  resp: OkWebSocketResponseData_type /* The data sent with a successful response. This will be flattened into a 'type' and 'data' field. */;
+  success: true;
+}
 
 export interface System_type {
   forward: AxisDirectionPair_type /* Axis the front face of a model looks along. */;
@@ -3022,11 +3114,8 @@ export type SystemInfoIsolationEnum_type =
   | 'process';
 
 export interface TakeSnapshot_type {
-  /*{
-  "format": "uint8",
-  "minimum": 0
-}*/
-  contents: number[];
+  /* format:byte, title:String, description:Contents of the image. */
+  contents: string;
 }
 
 export type UnitAngle_type = 'degrees' | 'radians';
@@ -3670,6 +3759,28 @@ export type WebSocketRequest_type =
     }
   | { type: 'ping' };
 
+export type WebSocketResponse_type =
+  | {
+      /*{
+  "format": "uuid",
+  "nullable": true,
+  "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
+}*/
+      request_id?: string;
+      resp: OkWebSocketResponseData_type /* The data sent with a successful response. This will be flattened into a 'type' and 'data' field. */;
+      success: true;
+    }
+  | {
+      errors: ApiError_type[] /* The errors that occurred. */;
+      /*{
+  "format": "uuid",
+  "nullable": true,
+  "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
+}*/
+      request_id?: string;
+      success: false;
+    };
+
 export interface Models {
   AccountProvider_type: AccountProvider_type;
   AiPluginApi_type: AiPluginApi_type;
@@ -3693,7 +3804,6 @@ export interface Models {
   ApiError_type: ApiError_type;
   ApiToken_type: ApiToken_type;
   ApiTokenResultsPage_type: ApiTokenResultsPage_type;
-  WebSocketResponse_type: WebSocketResponse_type;
   AppClientInfo_type: AppClientInfo_type;
   AsyncApiCall_type: AsyncApiCall_type;
   AsyncApiCallOutput_type: AsyncApiCallOutput_type;
@@ -3741,6 +3851,8 @@ export interface Models {
   ExportFile_type: ExportFile_type;
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
+  FailureWebSocketResponse_type: FailureWebSocketResponse_type;
+  FbxStorage_type: FbxStorage_type;
   FileCenterOfMass_type: FileCenterOfMass_type;
   FileConversion_type: FileConversion_type;
   FileDensity_type: FileDensity_type;
@@ -3752,6 +3864,8 @@ export interface Models {
   FileVolume_type: FileVolume_type;
   Gateway_type: Gateway_type;
   GetEntityType_type: GetEntityType_type;
+  GltfPresentation_type: GltfPresentation_type;
+  GltfStorage_type: GltfStorage_type;
   HighlightSetEntity_type: HighlightSetEntity_type;
   IceServer_type: IceServer_type;
   ImageFormat_type: ImageFormat_type;
@@ -3786,17 +3900,20 @@ export interface Models {
   Onboarding_type: Onboarding_type;
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
+  PathCommand_type: PathCommand_type;
+  PathGetInfo_type: PathGetInfo_type;
   PathSegment_type: PathSegment_type;
+  PathSegmentInfo_type: PathSegmentInfo_type;
   PaymentIntent_type: PaymentIntent_type;
   PaymentMethod_type: PaymentMethod_type;
   PaymentMethodCardChecks_type: PaymentMethodCardChecks_type;
   PaymentMethodType_type: PaymentMethodType_type;
   PluginsInfo_type: PluginsInfo_type;
+  PlyStorage_type: PlyStorage_type;
   Point2d_type: Point2d_type;
   Point3d_type: Point3d_type;
   PointEMetadata_type: PointEMetadata_type;
   Pong_type: Pong_type;
-  Presentation_type: Presentation_type;
   RawFile_type: RawFile_type;
   RegistryServiceConfig_type: RegistryServiceConfig_type;
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
@@ -3813,7 +3930,8 @@ export interface Models {
   Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type;
   Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
-  Storage_type: Storage_type;
+  StlStorage_type: StlStorage_type;
+  SuccessWebSocketResponse_type: SuccessWebSocketResponse_type;
   System_type: System_type;
   SystemInfoCgroupDriverEnum_type: SystemInfoCgroupDriverEnum_type;
   SystemInfoCgroupVersionEnum_type: SystemInfoCgroupVersionEnum_type;
@@ -3853,4 +3971,5 @@ export interface Models {
   Uuid_type: Uuid_type;
   VerificationToken_type: VerificationToken_type;
   WebSocketRequest_type: WebSocketRequest_type;
+  WebSocketResponse_type: WebSocketResponse_type;
 }

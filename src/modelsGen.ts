@@ -184,12 +184,11 @@ async function main() {
   // however union types with forced booleans are very valuable for type narrowing in typescript
   // The following regex replace might be brittle, but if it doesn't find these cases, the types
   // will just be a litte worse.
-  // Note this relies on the addCommentInfo function to add the "Always false" comments from spec 
+  // Note this relies on the addCommentInfo function to add the "Always false" comments from spec
   // descriptions in the typescript
   // if these descriptions change in the spec, this will need to be updated
   template = template.replaceAll(/boolean.+\/\* Always false \*\//g, 'false');
   template = template.replaceAll(/boolean.+\/\* Always true \*\//g, 'true');
-
 
   await fsp.writeFile(`./src/models.ts`, template, 'utf8');
   apiGen(typeNameReference);
