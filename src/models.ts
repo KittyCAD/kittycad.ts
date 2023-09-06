@@ -281,14 +281,6 @@ export type AsyncApiCallOutput_type =
 
 This is the same as the API call ID. */
       id: Uuid_type;
-      /*{
-  "deprecated": true,
-  "format": "byte",
-  "nullable": true,
-  "title": "String",
-  "description": "The converted file (if single file conversion), if completed, base64 encoded. This field is deprecated, and will be removed in a future release. Use `outputs` instead."
-}*/
-      output?: string;
       output_format: FileExportFormat_type /* The output format of the file conversion. */;
       /* nullable:true, description:The output format options of the file conversion. */
       output_format_options: OutputFormat_type;
@@ -1677,14 +1669,6 @@ export interface FileConversion_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  /*{
-  "deprecated": true,
-  "format": "byte",
-  "nullable": true,
-  "title": "String",
-  "description": "The converted file (if single file conversion), if completed, base64 encoded. This field is deprecated, and will be removed in a future release. Use `outputs` instead."
-}*/
-  output?: string;
   output_format: FileExportFormat_type /* The output format of the file conversion. */;
   /* nullable:true, description:The output format options of the file conversion. */
   output_format_options: OutputFormat_type;
@@ -2529,6 +2513,13 @@ export type ModelingCmd_type =
   | {
       type: 'handle_mouse_drag_end';
       window: Point2d_type /* The mouse position. */;
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      object_ids: string[];
+      type: 'remove_scene_objects';
     };
 
 export type ModelingCmdId_type =
