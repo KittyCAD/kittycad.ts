@@ -550,6 +550,55 @@ Can be `credit`, `debit`, `prepaid`, or `unknown`. */
   last4: string /* The last four digits of the card. */;
 }
 
+export interface ClientMetrics_type {
+  /*{
+  "format": "uint64",
+  "minimum": 0,
+  "description": "Counter of the number of WebRTC frames that the client has decoded during this session."
+}*/
+  rtc_frames_decoded: number;
+  /*{
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Counter of the number of WebRTC frames the client has dropped during this session."
+}*/
+  rtc_frames_dropped: number;
+  /*{
+  "format": "uint8",
+  "minimum": 0,
+  "description": "Current number of frames being rendered per second. A good target is 60 frames per second, but it can fluctuate depending on network conditions."
+}*/
+  rtc_frames_per_second: number;
+  /*{
+  "format": "uint64",
+  "minimum": 0,
+  "description": "Counter of the number of WebRTC frames that the client has received during this session."
+}*/
+  rtc_frames_received: number;
+  /*{
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Number of times the WebRTC playback has frozen. This is usually due to network conditions."
+}*/
+  rtc_freeze_count: number;
+  /*{
+  "format": "float",
+  "description": "Amount of \"jitter\" in the WebRTC session. Network latency is the time it takes a packet to traverse the network. The amount that the latency varies is the jitter. Video latency is the time it takes to render a frame sent by the server (including network latency). A low jitter means the video latency can be reduced without impacting smooth playback. High jitter means clients will increase video latency to ensure smooth playback."
+}*/
+  rtc_jitter_sec: number;
+  /*{
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Number of \"key frames\" decoded in the underlying h.264 stream. A key frame is an expensive (bandwidth-wise) \"full image\" of the video frame. Data after the keyframe become -- effectively -- \"diff\" operations on that key frame. The Engine will only send a keyframe if required, which is an indication that some of the \"diffs\" have been lost, usually an indication of poor network conditions. We like this metric to understand times when the connection has had to recover."
+}*/
+  rtc_keyframes_decoded: number;
+  /*{
+  "format": "float",
+  "description": "Number of seconds of frozen video the user has been subjected to."
+}*/
+  rtc_total_freezes_duration_sec: number;
+}
+
 export interface Cluster_type {
   /* nullable:true, description:The IP address of the cluster. */
   addr?: string;
@@ -2764,10 +2813,8 @@ export type OkWebSocketResponseData_type =
       };
       type: 'modeling';
     }
-  | {
-      data: { files: RawFile_type[] /* The exported files */ };
-      type: 'export';
-    };
+  | { data: { files: RawFile_type[] /* The exported files */ }; type: 'export' }
+  | { data: object; type: 'metrics_request' };
 
 export interface Onboarding_type {
   first_call_from_their_machine_date: string /* When the user first called an endpoint from their machine (i.e. not a litterbox execution) */;
@@ -3748,7 +3795,11 @@ export type WebSocketRequest_type =
       cmd_id: ModelingCmdId_type /* ID of command being submitted. */;
       type: 'modeling_cmd_req';
     }
-  | { type: 'ping' };
+  | { type: 'ping' }
+  | {
+      metrics: ClientMetrics_type /* Collected metrics from the Client's end of the engine connection. */;
+      type: 'metrics_response';
+    };
 
 export type WebSocketResponse_type =
   | {
@@ -3806,6 +3857,7 @@ export interface Models {
   CacheMetadata_type: CacheMetadata_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
   CardDetails_type: CardDetails_type;
+  ClientMetrics_type: ClientMetrics_type;
   Cluster_type: Cluster_type;
   CodeLanguage_type: CodeLanguage_type;
   CodeOutput_type: CodeOutput_type;
