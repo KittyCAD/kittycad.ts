@@ -550,6 +550,55 @@ Can be `credit`, `debit`, `prepaid`, or `unknown`. */
   last4: string /* The last four digits of the card. */;
 }
 
+export interface ClientMetrics_type {
+  /*{
+  "format": "uint64",
+  "minimum": 0,
+  "description": "Counter of the number of WebRTC frames that the client has decoded during this session."
+}*/
+  rtc_frames_decoded: number;
+  /*{
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Counter of the number of WebRTC frames the client has dropped during this session."
+}*/
+  rtc_frames_dropped: number;
+  /*{
+  "format": "uint8",
+  "minimum": 0,
+  "description": "Current number of frames being rendered per second. A good target is 60 frames per second, but it can fluctuate depending on network conditions."
+}*/
+  rtc_frames_per_second: number;
+  /*{
+  "format": "uint64",
+  "minimum": 0,
+  "description": "Counter of the number of WebRTC frames that the client has received during this session."
+}*/
+  rtc_frames_received: number;
+  /*{
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Number of times the WebRTC playback has frozen. This is usually due to network conditions."
+}*/
+  rtc_freeze_count: number;
+  /*{
+  "format": "float",
+  "description": "Amount of \"jitter\" in the WebRTC session. Network latency is the time it takes a packet to traverse the network. The amount that the latency varies is the jitter. Video latency is the time it takes to render a frame sent by the server (including network latency). A low jitter means the video latency can be reduced without impacting smooth playback. High jitter means clients will increase video latency to ensure smooth playback."
+}*/
+  rtc_jitter_sec: number;
+  /*{
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Number of \"key frames\" decoded in the underlying h.264 stream. A key frame is an expensive (bandwidth-wise) \"full image\" of the video frame. Data after the keyframe become -- effectively -- \"diff\" operations on that key frame. The Engine will only send a keyframe if required, which is an indication that some of the \"diffs\" have been lost, usually an indication of poor network conditions. We like this metric to understand times when the connection has had to recover."
+}*/
+  rtc_keyframes_decoded: number;
+  /*{
+  "format": "float",
+  "description": "Number of seconds of frozen video the user has been subjected to."
+}*/
+  rtc_total_freezes_duration_sec: number;
+}
+
 export interface Cluster_type {
   /* nullable:true, description:The IP address of the cluster. */
   addr?: string;
@@ -698,255 +747,7 @@ export interface Connection_type {
 }
 
 export type CountryCode_type =
-  | 'AF'
-  | 'AX'
-  | 'AL'
-  | 'DZ'
-  | 'AS'
-  | 'AD'
-  | 'AO'
-  | 'AI'
-  | 'AQ'
-  | 'AG'
-  | 'AR'
-  | 'AM'
-  | 'AW'
-  | 'AU'
-  | 'AT'
-  | 'AZ'
-  | 'BS'
-  | 'BH'
-  | 'BD'
-  | 'BB'
-  | 'BY'
-  | 'BE'
-  | 'BZ'
-  | 'BJ'
-  | 'BM'
-  | 'BT'
-  | 'BO'
-  | 'BQ'
-  | 'BA'
-  | 'BW'
-  | 'BV'
-  | 'BR'
-  | 'IO'
-  | 'BN'
-  | 'BG'
-  | 'BF'
-  | 'BI'
-  | 'CV'
-  | 'KH'
-  | 'CM'
-  | 'CA'
-  | 'KY'
-  | 'CF'
-  | 'TD'
-  | 'CL'
-  | 'CN'
-  | 'CX'
-  | 'CC'
-  | 'CO'
-  | 'KM'
-  | 'CG'
-  | 'CD'
-  | 'CK'
-  | 'CR'
-  | 'CI'
-  | 'HR'
-  | 'CU'
-  | 'CW'
-  | 'CY'
-  | 'CZ'
-  | 'DK'
-  | 'DJ'
-  | 'DM'
-  | 'DO'
-  | 'EC'
-  | 'EG'
-  | 'SV'
-  | 'GQ'
-  | 'ER'
-  | 'EE'
-  | 'ET'
-  | 'FK'
-  | 'FO'
-  | 'FJ'
-  | 'FI'
-  | 'FR'
-  | 'GF'
-  | 'PF'
-  | 'TF'
-  | 'GA'
-  | 'GM'
-  | 'GE'
-  | 'DE'
-  | 'GH'
-  | 'GI'
-  | 'GR'
-  | 'GL'
-  | 'GD'
-  | 'GP'
-  | 'GU'
-  | 'GT'
-  | 'GG'
-  | 'GN'
-  | 'GW'
-  | 'GY'
-  | 'HT'
-  | 'HM'
-  | 'VA'
-  | 'HN'
-  | 'HK'
-  | 'HU'
-  | 'IS'
-  | 'IN'
-  | 'ID'
-  | 'IR'
-  | 'IQ'
-  | 'IE'
-  | 'IM'
-  | 'IL'
-  | 'IT'
-  | 'JM'
-  | 'JP'
-  | 'JE'
-  | 'JO'
-  | 'KZ'
-  | 'KE'
-  | 'KI'
-  | 'KP'
-  | 'KR'
-  | 'KW'
-  | 'KG'
-  | 'LA'
-  | 'LV'
-  | 'LB'
-  | 'LS'
-  | 'LR'
-  | 'LY'
-  | 'LI'
-  | 'LT'
-  | 'LU'
-  | 'MO'
-  | 'MK'
-  | 'MG'
-  | 'MW'
-  | 'MY'
-  | 'MV'
-  | 'ML'
-  | 'MT'
-  | 'MH'
-  | 'MQ'
-  | 'MR'
-  | 'MU'
-  | 'YT'
-  | 'MX'
-  | 'FM'
-  | 'MD'
-  | 'MC'
-  | 'MN'
-  | 'ME'
-  | 'MS'
-  | 'MA'
-  | 'MZ'
-  | 'MM'
-  | 'NA'
-  | 'NR'
-  | 'NP'
-  | 'NL'
-  | 'NC'
-  | 'NZ'
-  | 'NI'
-  | 'NE'
-  | 'NG'
-  | 'NU'
-  | 'NF'
-  | 'MP'
-  | 'NO'
-  | 'OM'
-  | 'PK'
-  | 'PW'
-  | 'PS'
-  | 'PA'
-  | 'PG'
-  | 'PY'
-  | 'PE'
-  | 'PH'
-  | 'PN'
-  | 'PL'
-  | 'PT'
-  | 'PR'
-  | 'QA'
-  | 'RE'
-  | 'RO'
-  | 'RU'
-  | 'RW'
-  | 'BL'
-  | 'SH'
-  | 'KN'
-  | 'LC'
-  | 'MF'
-  | 'PM'
-  | 'VC'
-  | 'WS'
-  | 'SM'
-  | 'ST'
-  | 'SA'
-  | 'SN'
-  | 'RS'
-  | 'SC'
-  | 'SL'
-  | 'SG'
-  | 'SX'
-  | 'SK'
-  | 'SI'
-  | 'SB'
-  | 'SO'
-  | 'ZA'
-  | 'GS'
-  | 'SS'
-  | 'ES'
-  | 'LK'
-  | 'SD'
-  | 'SR'
-  | 'SJ'
-  | 'SZ'
-  | 'SE'
-  | 'CH'
-  | 'SY'
-  | 'TW'
-  | 'TJ'
-  | 'TZ'
-  | 'TH'
-  | 'TL'
-  | 'TG'
-  | 'TK'
-  | 'TO'
-  | 'TT'
-  | 'TN'
-  | 'TR'
-  | 'TM'
-  | 'TC'
-  | 'TV'
-  | 'UG'
-  | 'UA'
-  | 'AE'
-  | 'GB'
-  | 'US'
-  | 'UM'
-  | 'UY'
-  | 'UZ'
-  | 'VU'
-  | 'VE'
-  | 'VN'
-  | 'VG'
-  | 'VI'
-  | 'WF'
-  | 'EH'
-  | 'YE'
-  | 'ZM'
-  | 'ZW';
+  string; /* An ISO-3166 alpha-2 country code. Always uppercase. */
 
 export interface Coupon_type {
   /*{
@@ -972,145 +773,10 @@ export type CreatedAtSortMode_type =
   | 'created_at_descending';
 
 export type Currency_type =
-  | 'aed'
-  | 'afn'
-  | 'all'
-  | 'amd'
-  | 'ang'
-  | 'aoa'
-  | 'ars'
-  | 'aud'
-  | 'awg'
-  | 'azn'
-  | 'bam'
-  | 'bbd'
-  | 'bdt'
-  | 'bgn'
-  | 'bif'
-  | 'bmd'
-  | 'bnd'
-  | 'bob'
-  | 'brl'
-  | 'bsd'
-  | 'bwp'
-  | 'bzd'
-  | 'cad'
-  | 'cdf'
-  | 'chf'
-  | 'clp'
-  | 'cny'
-  | 'cop'
-  | 'crc'
-  | 'cve'
-  | 'czk'
-  | 'djf'
-  | 'dkk'
-  | 'dop'
-  | 'dzd'
-  | 'eek'
-  | 'egp'
-  | 'etb'
-  | 'eur'
-  | 'fjd'
-  | 'fkp'
-  | 'gbp'
-  | 'gel'
-  | 'gip'
-  | 'gmd'
-  | 'gnf'
-  | 'gtq'
-  | 'gyd'
-  | 'hkd'
-  | 'hnl'
-  | 'hrk'
-  | 'htg'
-  | 'huf'
-  | 'idr'
-  | 'ils'
-  | 'inr'
-  | 'isk'
-  | 'jmd'
-  | 'jpy'
-  | 'kes'
-  | 'kgs'
-  | 'khr'
-  | 'kmf'
-  | 'krw'
-  | 'kyd'
-  | 'kzt'
-  | 'lak'
-  | 'lbp'
-  | 'lkr'
-  | 'lrd'
-  | 'lsl'
-  | 'ltl'
-  | 'lvl'
-  | 'mad'
-  | 'mdl'
-  | 'mga'
-  | 'mkd'
-  | 'mnt'
-  | 'mop'
-  | 'mro'
-  | 'mur'
-  | 'mvr'
-  | 'mwk'
-  | 'mxn'
-  | 'myr'
-  | 'mzn'
-  | 'nad'
-  | 'ngn'
-  | 'nio'
-  | 'nok'
-  | 'npr'
-  | 'nzd'
-  | 'pab'
-  | 'pen'
-  | 'pgk'
-  | 'php'
-  | 'pkr'
-  | 'pln'
-  | 'pyg'
-  | 'qar'
-  | 'ron'
-  | 'rsd'
-  | 'rub'
-  | 'rwf'
-  | 'sar'
-  | 'sbd'
-  | 'scr'
-  | 'sek'
-  | 'sgd'
-  | 'shp'
-  | 'sll'
-  | 'sos'
-  | 'srd'
-  | 'std'
-  | 'svc'
-  | 'szl'
-  | 'thb'
-  | 'tjs'
-  | 'top'
-  | 'try'
-  | 'ttd'
-  | 'twd'
-  | 'tzs'
-  | 'uah'
-  | 'ugx'
-  | 'usd'
-  | 'uyu'
-  | 'uzs'
-  | 'vef'
-  | 'vnd'
-  | 'vuv'
-  | 'wst'
-  | 'xaf'
-  | 'xcd'
-  | 'xof'
-  | 'xpf'
-  | 'yer'
-  | 'zar'
-  | 'zmw';
+  /* Currency is the list of supported currencies. Always lowercase.
+
+This comes from the Stripe API docs: For more details see <https://support.stripe.com/questions/which-currencies-does-stripe-support>. */
+  string;
 
 export interface CurveGetControlPoints_type {
   control_points: Point3d_type[] /* Control points in the curve. */;
@@ -1122,7 +788,7 @@ export interface CurveGetType_type {
 
 export type CurveType_type =
   /* The type of Curve (embedded within path) */
-  'line' | 'nurbs';
+  'line' | 'arc' | 'nurbs';
 
 export interface Customer_type {
   /* nullable:true, description:The customer's address. */
@@ -2764,10 +2430,8 @@ export type OkWebSocketResponseData_type =
       };
       type: 'modeling';
     }
-  | {
-      data: { files: RawFile_type[] /* The exported files */ };
-      type: 'export';
-    };
+  | { data: { files: RawFile_type[] /* The exported files */ }; type: 'export' }
+  | { data: object; type: 'metrics_request' };
 
 export interface Onboarding_type {
   first_call_from_their_machine_date: string /* When the user first called an endpoint from their machine (i.e. not a litterbox execution) */;
@@ -3748,7 +3412,11 @@ export type WebSocketRequest_type =
       cmd_id: ModelingCmdId_type /* ID of command being submitted. */;
       type: 'modeling_cmd_req';
     }
-  | { type: 'ping' };
+  | { type: 'ping' }
+  | {
+      metrics: ClientMetrics_type /* Collected metrics from the Client's end of the engine connection. */;
+      type: 'metrics_response';
+    };
 
 export type WebSocketResponse_type =
   | {
@@ -3806,6 +3474,7 @@ export interface Models {
   CacheMetadata_type: CacheMetadata_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
   CardDetails_type: CardDetails_type;
+  ClientMetrics_type: ClientMetrics_type;
   Cluster_type: Cluster_type;
   CodeLanguage_type: CodeLanguage_type;
   CodeOutput_type: CodeOutput_type;
