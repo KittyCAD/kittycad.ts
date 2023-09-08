@@ -95,6 +95,8 @@ async function main() {
           }
           if (subSchema.type === 'object' && (subSchema as any).properties) {
             return `${key}: ${makeTypeStringForNode(subSchema, key)}`;
+          } else if (subSchema.type === 'object') {
+            return `${key}: object`;
           }
           console.log(subSchema, key);
           throw 'subSchema not implemented ' + subSchema.type;
