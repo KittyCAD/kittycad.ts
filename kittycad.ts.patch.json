@@ -409,22 +409,6 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1modeling~1cmd-batch/post/x-typescript",
-    "value": {
-      "example": "import { modeling } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.cmd_batch()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1modeling~1cmd/post/x-typescript",
-    "value": {
-      "example": "import { modeling } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.cmd()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
     "path": "/paths/~1file~1volume/post/x-typescript",
     "value": {
       "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        output_unit: 'ft3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
