@@ -48,6 +48,15 @@ export interface AiPluginManifest_type {
   schema_version: string /* Manifest schema version. */;
 }
 
+export interface Angle_type {
+  unit: UnitAngle_type /* What unit is the measurement? */;
+  /*{
+  "format": "double",
+  "description": "The size of the angle, measured in the chosen unit."
+}*/
+  value: number;
+}
+
 export type AnnotationLineEnd_type =
   /* Annotation line end type */
   'none' | 'arrow';
@@ -155,10 +164,11 @@ export interface ApiCallWithPrice_type {
   /*{
   "format": "money-usd",
   "nullable": true,
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "The price of the API call."
 }*/
-  price?: number;
+  price?: string;
   /* nullable:true, description:The request body sent by the API call. */
   request_body?: string;
   request_query_params: string /* The request query params sent by the API call. */;
@@ -600,7 +610,7 @@ export interface ClientMetrics_type {
 }
 
 export interface Cluster_type {
-  /* nullable:true, description:The IP address of the cluster. */
+  /* default:null, nullable:true, description:The IP address of the cluster. */
   addr?: string;
   /* default:0, format:int64, description:The auth timeout of the cluster. */
   auth_timeout: number;
@@ -634,20 +644,10 @@ export interface Color_type {
   r: number;
 }
 
-export interface Commit_type {
-  /*{
-  "nullable": true,
-  "description": "Commit ID of external tool expected by dockerd as set at build time."
-}*/
-  expected?: string;
-  /* nullable:true, description:Actual commit ID of external tool. */
-  id?: string;
-}
-
 export interface Connection_type {
   /* default:0, format:int64, description:The auth timeout of the server. */
   auth_timeout: number;
-  /* default:{auth_timeout:0, cluster_port:0, name:, tls_timeout:0}, description:Information about the cluster. */
+  /* default:{addr:null, auth_timeout:0, cluster_port:0, name:, tls_timeout:0, urls:[]}, description:Information about the cluster. */
   cluster: Cluster_type;
   /* format:date-time, description:The time the configuration was loaded. */
   config_load_time: string;
@@ -655,11 +655,8 @@ export interface Connection_type {
   connections: number;
   /* default:0, format:int64, description:The CPU core usage of the server. */
   cores: number;
-  /*{
-  "format": "double",
-  "nullable": true
-}*/
-  cpu?: number;
+  /* default:0, format:double, description:The CPU usage of the server. */
+  cpu: number;
   /* default:{auth_timeout:0, host:, name:, port:0, tls_timeout:0}, description:Information about the gateway. */
   gateway: Gateway_type;
   /* default:, description:The git commit. */
@@ -753,10 +750,11 @@ export interface Coupon_type {
   /*{
   "format": "money-usd",
   "nullable": true,
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer."
 }*/
-  amount_off?: number;
+  amount_off?: string;
   /* default:false, description:Always true for a deleted object. */
   deleted: boolean;
   id: string /* Unique identifier for the object. */;
@@ -782,6 +780,11 @@ export interface CurveGetControlPoints_type {
   control_points: Point3d_type[] /* Control points in the curve. */;
 }
 
+export interface CurveGetEndPoints_type {
+  end: Point3d_type /* End */;
+  start: Point3d_type /* Start */;
+}
+
 export interface CurveGetType_type {
   curve_type: CurveType_type /* Curve type */;
 }
@@ -796,10 +799,11 @@ export interface Customer_type {
   /*{
   "default": 0,
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "Current balance, if any, being stored on the customer in the payments service.\n\nIf negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that will be added to their next invoice. The balance does not refer to any unpaid invoices; it solely takes into account amounts that have yet to be successfully applied to any invoice. This balance is only taken into account as invoices are finalized."
 }*/
-  balance: number;
+  balance: string;
   /* format:date-time, description:Time at which the object was created. */
   created_at: string;
   /*{
@@ -832,28 +836,32 @@ export interface CustomerBalance_type {
   id: Uuid_type /* The unique identifier for the balance. */;
   /*{
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the user per month."
 }*/
-  monthly_credits_remaining: number;
+  monthly_credits_remaining: string;
   /*{
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "The amount of pre-pay cash remaining in the balance. This number goes down as the user uses their pre-paid credits. The reason we track this amount is if a user ever wants to withdraw their pre-pay cash, we can use this amount to determine how much to give them. Say a user has $100 in pre-paid cash, their bill is worth, $50 after subtracting any other credits (like monthly etc.) Their bill is $50, their pre-pay cash remaining will be subtracted by 50 to pay the bill and their `pre_pay_credits_remaining` will be subtracted by 50 to pay the bill. This way if they want to withdraw money after, they can only withdraw $50 since that is the amount of cash they have remaining."
 }*/
-  pre_pay_cash_remaining: number;
+  pre_pay_cash_remaining: string;
   /*{
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a user adds funds to their balance. This may be through a subscription or a one off payment."
 }*/
-  pre_pay_credits_remaining: number;
+  pre_pay_credits_remaining: string;
   /*{
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "This includes any outstanding, draft, or open invoices and any pending invoice items. This does not include any credits the user has on their account."
 }*/
-  total_due: number;
+  total_due: string;
   /* format:date-time, title:DateTime, description:The date and time the balance was last updated. */
   updated_at: string;
   user_id: string /* The user ID the balance belongs to. */;
@@ -882,254 +890,6 @@ export interface Discount_type {
   coupon: Coupon_type /* The coupon that applied to create this discount. */;
 }
 
-export interface DockerSystemInfo_type {
-  /*{
-  "nullable": true,
-  "description": "Hardware architecture of the host, as returned by the Go runtime (`GOARCH`).  A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment)."
-}*/
-  architecture?: string;
-  /*{
-  "nullable": true,
-  "description": "Indicates if `bridge-nf-call-ip6tables` is available on the host."
-}*/
-  bridge_nf_ip6tables?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Indicates if `bridge-nf-call-iptables` is available on the host."
-}*/
-  bridge_nf_iptables?: boolean;
-  /* nullable:true, description:The driver to use for managing cgroups. */
-  cgroup_driver: SystemInfoCgroupDriverEnum_type;
-  /* nullable:true, description:The version of the cgroup. */
-  cgroup_version: SystemInfoCgroupVersionEnum_type;
-  /*{
-  "nullable": true,
-  "description": "The network endpoint that the Engine advertises for the purpose of node discovery. ClusterAdvertise is a `host:port` combination on which the daemon is reachable by other hosts.\n\n**Deprecated**: This field is only propagated when using standalone Swarm mode, and overlay networking using an external k/v store. Overlay networks with Swarm mode enabled use the built-in raft store, and this field will be empty."
-}*/
-  cluster_advertise?: string;
-  /*{
-  "nullable": true,
-  "description": "URL of the distributed storage backend.   The storage backend is used for multihost networking (to store network and endpoint information) and by the node discovery mechanism.\n\n**Deprecated**: This field is only propagated when using standalone Swarm mode, and overlay networking using an external k/v store. Overlay networks with Swarm mode enabled use the built-in raft store, and this field will be empty."
-}*/
-  cluster_store?: string;
-  /*{
-  "nullable": true
-}*/
-  containerd_commit: Commit_type;
-  /* format:int64, nullable:true, description:Total number of containers on the host. */
-  containers?: number;
-  /* format:int64, nullable:true, description:Number of containers with status `\\\paused\\\`. */
-  containers_paused?: number;
-  /* format:int64, nullable:true, description:Number of containers with status `\\\running\\\`. */
-  containers_running?: number;
-  /* format:int64, nullable:true, description:Number of containers with status `\\\stopped\\\`. */
-  containers_stopped?: number;
-  /*{
-  "nullable": true,
-  "description": "Indicates if CPU CFS(Completely Fair Scheduler) period is supported by the host."
-}*/
-  cpu_cfs_period?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Indicates if CPU CFS(Completely Fair Scheduler) quota is supported by the host."
-}*/
-  cpu_cfs_quota?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Indicates if CPUsets (cpuset.cpus, cpuset.mems) are supported by the host.  See [cpuset(7)](https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.txt)"
-}*/
-  cpu_set?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Indicates if CPU Shares limiting is supported by the host."
-}*/
-  cpu_shares?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Indicates if the daemon is running in debug-mode / with debug-level logging enabled."
-}*/
-  debug?: boolean;
-  default_address_pools: SystemInfoDefaultAddressPools_type[] /* List of custom default address pools for local networks, which can be specified in the daemon.json file or dockerd option.  Example: a Base \"10.10.0.0/16\" with Size 24 will define the set of 256 10.10.[0-255].0/24 address pools. */;
-  /*{
-  "nullable": true,
-  "description": "Name of the default OCI runtime that is used when starting containers.  The default can be overridden per-container at create time."
-}*/
-  default_runtime?: string;
-  /*{
-  "nullable": true,
-  "description": "Root directory of persistent Docker state.  Defaults to `/var/lib/docker` on Linux, and `C:\\\\ProgramData\\\\docker` on Windows."
-}*/
-  docker_root_dir?: string;
-  /* nullable:true, description:Name of the storage driver in use. */
-  driver?: string;
-  driver_status: string[][];
-  /*{
-  "nullable": true,
-  "description": "Indicates if experimental features are enabled on the daemon."
-}*/
-  experimental_build?: boolean;
-  /*{
-  "nullable": true,
-  "description": "HTTP-proxy configured for the daemon. This value is obtained from the [`HTTP_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable. Credentials ([user info component](https://tools.ietf.org/html/rfc3986#section-3.2.1)) in the proxy URL are masked in the API response.  Containers do not automatically inherit this configuration."
-}*/
-  http_proxy?: string;
-  /*{
-  "nullable": true,
-  "description": "HTTPS-proxy configured for the daemon. This value is obtained from the [`HTTPS_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable. Credentials ([user info component](https://tools.ietf.org/html/rfc3986#section-3.2.1)) in the proxy URL are masked in the API response.  Containers do not automatically inherit this configuration."
-}*/
-  https_proxy?: string;
-  /*{
-  "nullable": true,
-  "description": "Unique identifier of the daemon.\n\n**Note**: The format of the ID itself is not part of the API, and should not be considered stable."
-}*/
-  id?: string;
-  /*{
-  "format": "int64",
-  "nullable": true,
-  "description": "Total number of images on the host. Both _tagged_ and _untagged_ (dangling) images are counted."
-}*/
-  images?: number;
-  /*{
-  "nullable": true,
-  "description": "Address / URL of the index server that is used for image search, and as a default for user authentication for Docker Hub and Docker Cloud."
-}*/
-  index_server_address?: string;
-  /*{
-  "nullable": true,
-  "description": "Name and, optional, path of the `docker-init` binary.  If the path is omitted, the daemon searches the host's `$PATH` for the binary and uses the first result."
-}*/
-  init_binary?: string;
-  /*{
-  "nullable": true
-}*/
-  init_commit: Commit_type;
-  /* nullable:true, description:Indicates IPv4 forwarding is enabled. */
-  ipv4_forwarding?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Represents the isolation technology to use as a default for containers. The supported values are platform-specific.  If no isolation value is specified on daemon start, on Windows client, the default is `hyperv`, and on Windows server, the default is `process`.  This option is currently not used on other platforms."
-}*/
-  isolation: SystemInfoIsolationEnum_type;
-  /*{
-  "nullable": true,
-  "description": "Indicates if the host has kernel memory limit support enabled.\n\n**Deprecated**: This field is deprecated as the kernel 5.4 deprecated `kmem.limit_in_bytes`."
-}*/
-  kernel_memory?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Indicates if the host has kernel memory TCP limit support enabled.  Kernel memory TCP limits are not supported when using cgroups v2, which does not support the corresponding `memory.kmem.tcp.limit_in_bytes` cgroup."
-}*/
-  kernel_memory_tcp?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Kernel version of the host.  On Linux, this information obtained from `uname`. On Windows this information is queried from the <kbd>HKEY_LOCAL_MACHINE\\\\\\\\SOFTWARE\\\\\\\\Microsoft\\\\\\\\Windows NT\\\\\\\\CurrentVersion\\\\\\\\</kbd> registry value, for example _\\\"10.0 14393 (14393.1198.amd64fre.rs1_release_sec.170427-1353)\\\"_."
-}*/
-  kernel_version?: string;
-  labels: string[];
-  /*{
-  "nullable": true,
-  "description": "Indicates if live restore is enabled.  If enabled, containers are kept running when the daemon is shutdown or upon daemon start if running containers are detected."
-}*/
-  live_restore_enabled?: boolean;
-  /*{
-  "nullable": true,
-  "description": "The logging driver to use as a default for new containers."
-}*/
-  logging_driver?: string;
-  /*{
-  "format": "int64",
-  "nullable": true,
-  "description": "Total amount of physical memory available on the host, in bytes."
-}*/
-  mem_total?: number;
-  /*{
-  "nullable": true,
-  "description": "Indicates if the host has memory limit support enabled."
-}*/
-  memory_limit?: boolean;
-  /* format:int64, nullable:true, description:Number of event listeners subscribed. */
-  n_events_listener?: number;
-  /*{
-  "format": "int64",
-  "nullable": true,
-  "description": "The total number of file Descriptors in use by the daemon process.  This information is only returned if debug-mode is enabled."
-}*/
-  n_fd?: number;
-  /* nullable:true, description:Hostname of the host. */
-  name?: string;
-  /*{
-  "format": "int64",
-  "nullable": true,
-  "description": "The number of logical CPUs usable by the daemon.  The number of available CPUs is checked by querying the operating system when the daemon starts. Changes to operating system CPU allocation after the daemon is started are not reflected."
-}*/
-  ncpu?: number;
-  /*{
-  "nullable": true,
-  "description": "Comma-separated list of domain extensions for which no proxy should be used. This value is obtained from the [`NO_PROXY`](https://www.gnu.org/software/wget/manual/html_node/Proxies.html) environment variable.  Containers do not automatically inherit this configuration."
-}*/
-  no_proxy?: string;
-  /*{
-  "nullable": true,
-  "description": "Indicates if OOM killer disable is supported on the host."
-}*/
-  oom_kill_disable?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Name of the host's operating system, for example: \\\"Ubuntu 16.04.2 LTS\\\" or \\\"Windows Server 2016 Datacenter\\\""
-}*/
-  operating_system?: string;
-  /*{
-  "nullable": true,
-  "description": "Generic type of the operating system of the host, as returned by the Go runtime (`GOOS`).  Currently returned values are \\\"linux\\\" and \\\"windows\\\". A full list of possible values can be found in the [Go documentation](https://golang.org/doc/install/source#environment)."
-}*/
-  os_type?: string;
-  /*{
-  "nullable": true,
-  "description": "Version of the host's operating system\n\n**Note**: The information returned in this field, including its very existence, and the formatting of values, should not be considered stable, and may change without notice."
-}*/
-  os_version?: string;
-  /*{
-  "nullable": true,
-  "description": "Indicates if the host kernel has PID limit support enabled."
-}*/
-  pids_limit?: boolean;
-  /*{
-  "nullable": true
-}*/
-  plugins: PluginsInfo_type;
-  /*{
-  "nullable": true,
-  "description": "Reports a summary of the product license on the daemon.  If a commercial license has been applied to the daemon, information such as number of nodes, and expiration are included."
-}*/
-  product_license?: string;
-  /*{
-  "nullable": true
-}*/
-  registry_config: RegistryServiceConfig_type;
-  /*{
-  "nullable": true
-}*/
-  runc_commit: Commit_type;
-  runtimes: { [key: string]: Runtime_type };
-  security_options: string[];
-  /*{
-  "nullable": true,
-  "description": "Version string of the daemon. **Note**: the [standalone Swarm API](https://docs.docker.com/swarm/swarm-api/) returns the Swarm version instead of the daemon  version, for example `swarm/1.2.8`."
-}*/
-  server_version?: string;
-  /*{
-  "nullable": true,
-  "description": "Indicates if the host has memory swap limit support enabled."
-}*/
-  swap_limit?: boolean;
-  /*{
-  "nullable": true,
-  "description": "The  number of goroutines that currently exist.  This information is only returned if debug-mode is enabled."
-}*/
-  system_time?: string;
-  warnings: string[];
-}
-
 export interface EmailAuthenticationForm_type {
   /*{
   "format": "uri",
@@ -1139,15 +899,6 @@ export interface EmailAuthenticationForm_type {
   callback_url?: string;
   /* format:email, description:The user's email. */
   email: string;
-}
-
-export interface EngineMetadata_type {
-  async_jobs_running: boolean /* If any async job is currently running. */;
-  cache: CacheMetadata_type /* Metadata about our cache. */;
-  environment: Environment_type /* The environment we are running in. */;
-  fs: FileSystemMetadata_type /* Metadata about our file system. */;
-  git_hash: string /* The git hash of the server. */;
-  pubsub: Connection_type /* Metadata about our pub-sub connection. */;
 }
 
 export interface EntityGetAllChildUuids_type {
@@ -1200,12 +951,6 @@ export type ErrorCode_type =
   | 'connection_problem'
   | 'message_type_not_accepted'
   | 'message_type_not_accepted_for_web_r_t_c';
-
-export interface ExecutorMetadata_type {
-  docker_info: DockerSystemInfo_type /* Information about the docker daemon. */;
-  environment: Environment_type /* The environment we are running in. */;
-  git_hash: string /* The git hash of the server. */;
-}
 
 export interface Export_type {
   files: ExportFile_type[] /* The files that were exported. */;
@@ -1568,22 +1313,6 @@ export type ImageType_type =
   /* An enumeration. */
   'png' | 'jpg';
 
-export interface IndexInfo_type {
-  mirrors: string[];
-  /* nullable:true, description:Name of the registry, such as \\\docker.io\\\. */
-  name?: string;
-  /*{
-  "nullable": true,
-  "description": "Indicates whether this is an official registry (i.e., Docker Hub / docker.io)"
-}*/
-  official?: boolean;
-  /*{
-  "nullable": true,
-  "description": "Indicates if the registry is part of the list of insecure registries.  If `false`, the registry is insecure. Insecure registries accept un-encrypted (HTTP) and/or untrusted (HTTPS with certificates from unknown CAs) communication.\n\n**Warning**: Insecure registries can be useful when running a local registry. However, because its use creates security vulnerabilities it should ONLY be enabled for testing purposes. For increased security, users should add their CA to their system's list of trusted CAs instead of enabling this option."
-}*/
-  secure?: boolean;
-}
-
 export type InputFormat_type =
   | { type: 'fbx' }
   | { type: 'gltf' }
@@ -1624,24 +1353,27 @@ export interface Invoice_type {
   /*{
   "default": 0,
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "Final amount due at this time for this invoice.\n\nIf the invoice's total is smaller than the minimum charge amount, for example, or if there is account credit that can be applied to the invoice, the `amount_due` may be 0. If there is a positive `starting_balance` for the invoice (the customer owes money), the `amount_due` will also take that into account. The charge that gets generated for the invoice will be for the amount specified in `amount_due`."
 }*/
-  amount_due: number;
+  amount_due: string;
   /*{
   "default": 0,
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "The amount, in USD, that was paid."
 }*/
-  amount_paid: number;
+  amount_paid: string;
   /*{
   "default": 0,
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "The amount remaining, in USD, that is due."
 }*/
-  amount_remaining: number;
+  amount_remaining: string;
   /*{
   "default": 0,
   "format": "uint64",
@@ -1694,24 +1426,27 @@ export interface Invoice_type {
   /*{
   "default": 0,
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or tax is applied.\n\nItem discounts are already incorporated."
 }*/
-  subtotal: number;
+  subtotal: string;
   /*{
   "default": 0,
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "The amount of tax on this invoice.\n\nThis is the sum of all the tax amounts on this invoice."
 }*/
-  tax: number;
+  tax: string;
   /*{
   "default": 0,
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "Total after discounts and taxes."
 }*/
-  total: number;
+  total: string;
   /*{
   "format": "uri",
   "nullable": true,
@@ -1724,10 +1459,11 @@ export interface InvoiceLineItem_type {
   /*{
   "default": 0,
   "format": "money-usd",
-  "title": "Number",
+  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+  "title": "Decimal",
   "description": "The amount, in USD."
 }*/
-  amount: number;
+  amount: string;
   /*{
   "default": "usd",
   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
@@ -1819,9 +1555,7 @@ export interface MetaClusterInfo_type {
 
 export interface Metadata_type {
   cache: CacheMetadata_type /* Metadata about our cache. */;
-  engine: EngineMetadata_type /* Metadata about our engine API connection. */;
   environment: Environment_type /* The environment we are running in. */;
-  executor: ExecutorMetadata_type /* Metadata about our executor API connection. */;
   fs: FileSystemMetadata_type /* Metadata about our file system. */;
   git_hash: string /* The git hash of the server. */;
   point_e: PointEMetadata_type /* Metadata about our point-e instance. */;
@@ -2099,7 +1833,7 @@ export type ModelingCmd_type =
       clobber: boolean /* If true, any existing drawables within the obj will be replaced (the object will be reset) */;
       origin: Point3d_type /* Origin of the plane */;
       /*{
-  "format": "float",
+  "format": "double",
   "description": "What should the plane's span/extent? When rendered visually, this is both the width and height along X and Y axis respectively."
 }*/
       size: number;
@@ -2162,6 +1896,15 @@ export type ModelingCmd_type =
       type: 'path_get_info';
     }
   | {
+      /* format:uuid, description:Which path to query */
+      path_id: string;
+      type: 'path_get_curve_uuids_for_vertices';
+      /*{
+  "format": "uuid"
+}*/
+      vertex_ids: string[];
+    }
+  | {
       type: 'handle_mouse_drag_start';
       window: Point2d_type /* The mouse position. */;
     }
@@ -2186,6 +1929,32 @@ export type ModelingCmd_type =
 }*/
       object_ids: string[];
       type: 'remove_scene_objects';
+    }
+  | {
+      /* nullable:true, description:0 will be interpreted as none/null. */
+      angle_snap_increment: Angle_type;
+      to: Point3d_type /* Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position. */;
+      type: 'path_tangential_arc_to';
+    }
+  | {
+      offset: Angle_type /* Offset of the arc. */;
+      /*{
+  "format": "double",
+  "description": "Radius of the arc. Not to be confused with Raiders of the Lost Ark."
+}*/
+      radius: number;
+      type: 'path_tangential_arc';
+    }
+  | {
+      /* format:uuid, description:The plane you're intersecting against. */
+      plane_id: string;
+      type: 'plane_intersect_and_project';
+      window: Point2d_type /* Window coordinates where the ray cast should be aimed. */;
+    }
+  | {
+      /* format:uuid, description:ID of the curve being queried. */
+      curve_id: string;
+      type: 'curve_get_end_points';
     };
 
 export type ModelingCmdId_type =
@@ -2194,46 +1963,6 @@ export type ModelingCmdId_type =
   "description": "All commands have unique IDs. These should be randomly generated."
 }*/
   string;
-
-export interface ModelingCmdReq_type {
-  cmd: ModelingCmd_type /* Which command to submit to the Kittycad engine. */;
-  cmd_id: ModelingCmdId_type /* ID of command being submitted. */;
-}
-
-export interface ModelingCmdReqBatch_type {
-  cmds: { [key: string]: ModelingCmdReq_type };
-}
-
-export interface ModelingError_type {
-  error_code: string /* A string error code which refers to a family of errors. E.g. "InvalidInput". */;
-  external_message: string /* Describe the specific error which occurred. Will be shown to users, not logged. */;
-  internal_message: string /* Describe the specific error which occurred. Will be logged, not shown to users. */;
-  /* format:uint16, minimum:0, description:A HTTP status code. */
-  status_code: number;
-}
-
-export type ModelingOutcome_type =
-  | {
-      /*{
-  "$ref": "#/components/schemas/OkModelingCmdResponse"
-}*/
-      success: OkModelingCmdResponse_type;
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/ModelingError"
-}*/
-      error: ModelingError_type;
-    }
-  | {
-      cancelled: {
-        what_failed: ModelingCmdId_type /* The ID of the command that failed, cancelling this command. */;
-      };
-    };
-
-export interface ModelingOutcomes_type {
-  outcomes: { [key: string]: ModelingOutcome_type };
-}
 
 export interface MouseClick_type {
   /*{
@@ -2403,6 +2132,27 @@ export type OkModelingCmdResponse_type =
 }*/
       data: PathGetInfo_type;
       type: 'path_get_info';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/PathGetCurveUuidsForVertices"
+}*/
+      data: PathGetCurveUuidsForVertices_type;
+      type: 'path_get_curve_uuids_for_vertices';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/PlaneIntersectAndProject"
+}*/
+      data: PlaneIntersectAndProject_type;
+      type: 'plane_intersect_and_project';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/CurveGetEndPoints"
+}*/
+      data: CurveGetEndPoints_type;
+      type: 'curve_get_end_points';
     };
 
 export type OkWebSocketResponseData_type =
@@ -2502,26 +2252,39 @@ export type PathCommand_type =
   /* The path component command type (within a Path) */
   'move_to' | 'line_to' | 'bez_curve_to' | 'nurbs_curve_to' | 'add_arc';
 
+export interface PathGetCurveUuidsForVertices_type {
+  /*{
+  "format": "uuid"
+}*/
+  curve_ids: string[];
+}
+
 export interface PathGetInfo_type {
   segments: PathSegmentInfo_type[] /* All segments in the path, in the order they were added. */;
 }
 
 export type PathSegment_type =
-  | { end: Point3d_type /* End point of the line. */; type: 'line' }
   | {
-      /* format:float, description:Start of the arc along circle's perimeter. */
+      end: Point3d_type /* End point of the line. */;
+      relative: boolean /* Whether or not this line is a relative offset */;
+      type: 'line';
+    }
+  | {
+      /* format:double, description:Start of the arc along circle's perimeter. */
       angle_end: number;
-      /* format:float, description:Start of the arc along circle's perimeter. */
+      /* format:double, description:Start of the arc along circle's perimeter. */
       angle_start: number;
       center: Point2d_type /* Center of the circle */;
-      /* format:float, description:Radius of the circle */
+      /* format:double, description:Radius of the circle */
       radius: number;
+      relative: boolean /* Whether or not this arc is a relative offset */;
       type: 'arc';
     }
   | {
       control1: Point3d_type /* First control point. */;
       control2: Point3d_type /* Second control point. */;
       end: Point3d_type /* Final control point. */;
+      relative: boolean /* Whether or not this bezier is a relative offset */;
       type: 'bezier';
     };
 
@@ -2532,6 +2295,7 @@ export interface PathSegmentInfo_type {
   "description": "Which command created this path? This field is absent if the path command is not actually creating a path segment, e.g. moving the pen doesn't create a path segment."
 }*/
   command_id: ModelingCmdId_type;
+  relative: boolean /* Whether or not this segment is a relative offset */;
 }
 
 export interface PaymentIntent_type {
@@ -2560,11 +2324,12 @@ export interface PaymentMethodCardChecks_type {
 
 export type PaymentMethodType_type = 'card';
 
-export interface PluginsInfo_type {
-  authorization: string[];
-  log: string[];
-  network: string[];
-  volume: string[];
+export interface PlaneIntersectAndProject_type {
+  /*{
+  "nullable": true,
+  "description": "Corresponding coordinates of given window coordinates, intersected on given plane."
+}*/
+  plane_coordinates: Point2d_type;
 }
 
 export type PlyStorage_type =
@@ -2574,11 +2339,11 @@ export type PlyStorage_type =
 
 export interface Point2d_type {
   /*{
-  "format": "float"
+  "format": "double"
 }*/
   x: number;
   /*{
-  "format": "float"
+  "format": "double"
 }*/
   y: number;
 }
@@ -2615,14 +2380,6 @@ export interface RawFile_type {
   name: string /* The name of the file. */;
 }
 
-export interface RegistryServiceConfig_type {
-  allow_nondistributable_artifacts_cid_rs: string[];
-  allow_nondistributable_artifacts_hostnames: string[];
-  index_configs: { [key: string]: IndexInfo_type };
-  insecure_registry_cid_rs: string[];
-  mirrors: string[];
-}
-
 export interface RtcIceCandidateInit_type {
   candidate: string /* The candidate string associated with the object. */;
   /*{
@@ -2654,15 +2411,6 @@ export type RtcSdpType_type =
 export interface RtcSessionDescription_type {
   sdp: string /* SDP string. */;
   type: RtcSdpType_type /* SDP type. */;
-}
-
-export interface Runtime_type {
-  /*{
-  "nullable": true,
-  "description": "Name and, optional, path, of the OCI executable binary.  If the path is omitted, the daemon searches the host's `$PATH` for the binary and uses the first result."
-}*/
-  path?: string;
-  runtime_args: string[];
 }
 
 export type SceneSelectionType_type = 'replace' | 'add' | 'remove';
@@ -2746,27 +2494,6 @@ export interface System_type {
   forward: AxisDirectionPair_type /* Axis the front face of a model looks along. */;
   up: AxisDirectionPair_type /* Axis pointing up and away from a model. */;
 }
-
-export type SystemInfoCgroupDriverEnum_type =
-  | ''
-  | 'cgroupfs'
-  | 'systemd'
-  | 'none';
-
-export type SystemInfoCgroupVersionEnum_type = '' | '1' | '2';
-
-export interface SystemInfoDefaultAddressPools_type {
-  /* nullable:true, description:The network address in CIDR format */
-  base?: string;
-  /* format:int64, nullable:true, description:The network pool size */
-  size?: number;
-}
-
-export type SystemInfoIsolationEnum_type =
-  | ''
-  | 'default'
-  | 'hyperv'
-  | 'process';
 
 export interface TakeSnapshot_type {
   /* format:byte, title:String, description:Contents of the image. */
@@ -3448,6 +3175,7 @@ export interface Models {
   AiPluginAuthType_type: AiPluginAuthType_type;
   AiPluginHttpAuthType_type: AiPluginHttpAuthType_type;
   AiPluginManifest_type: AiPluginManifest_type;
+  Angle_type: Angle_type;
   AnnotationLineEnd_type: AnnotationLineEnd_type;
   AnnotationLineEndOptions_type: AnnotationLineEndOptions_type;
   AnnotationOptions_type: AnnotationOptions_type;
@@ -3479,13 +3207,13 @@ export interface Models {
   CodeLanguage_type: CodeLanguage_type;
   CodeOutput_type: CodeOutput_type;
   Color_type: Color_type;
-  Commit_type: Commit_type;
   Connection_type: Connection_type;
   CountryCode_type: CountryCode_type;
   Coupon_type: Coupon_type;
   CreatedAtSortMode_type: CreatedAtSortMode_type;
   Currency_type: Currency_type;
   CurveGetControlPoints_type: CurveGetControlPoints_type;
+  CurveGetEndPoints_type: CurveGetEndPoints_type;
   CurveGetType_type: CurveGetType_type;
   CurveType_type: CurveType_type;
   Customer_type: Customer_type;
@@ -3495,9 +3223,7 @@ export interface Models {
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
   Direction_type: Direction_type;
   Discount_type: Discount_type;
-  DockerSystemInfo_type: DockerSystemInfo_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
-  EngineMetadata_type: EngineMetadata_type;
   EntityGetAllChildUuids_type: EntityGetAllChildUuids_type;
   EntityGetChildUuid_type: EntityGetChildUuid_type;
   EntityGetNumChildren_type: EntityGetNumChildren_type;
@@ -3506,7 +3232,6 @@ export interface Models {
   Environment_type: Environment_type;
   Error_type: Error_type;
   ErrorCode_type: ErrorCode_type;
-  ExecutorMetadata_type: ExecutorMetadata_type;
   Export_type: Export_type;
   ExportFile_type: ExportFile_type;
   ExtendedUser_type: ExtendedUser_type;
@@ -3530,7 +3255,6 @@ export interface Models {
   IceServer_type: IceServer_type;
   ImageFormat_type: ImageFormat_type;
   ImageType_type: ImageType_type;
-  IndexInfo_type: IndexInfo_type;
   InputFormat_type: InputFormat_type;
   Invoice_type: Invoice_type;
   InvoiceLineItem_type: InvoiceLineItem_type;
@@ -3546,11 +3270,6 @@ export interface Models {
   Method_type: Method_type;
   ModelingCmd_type: ModelingCmd_type;
   ModelingCmdId_type: ModelingCmdId_type;
-  ModelingCmdReq_type: ModelingCmdReq_type;
-  ModelingCmdReqBatch_type: ModelingCmdReqBatch_type;
-  ModelingError_type: ModelingError_type;
-  ModelingOutcome_type: ModelingOutcome_type;
-  ModelingOutcomes_type: ModelingOutcomes_type;
   MouseClick_type: MouseClick_type;
   NewAddress_type: NewAddress_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;
@@ -3561,6 +3280,7 @@ export interface Models {
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
   PathCommand_type: PathCommand_type;
+  PathGetCurveUuidsForVertices_type: PathGetCurveUuidsForVertices_type;
   PathGetInfo_type: PathGetInfo_type;
   PathSegment_type: PathSegment_type;
   PathSegmentInfo_type: PathSegmentInfo_type;
@@ -3568,18 +3288,16 @@ export interface Models {
   PaymentMethod_type: PaymentMethod_type;
   PaymentMethodCardChecks_type: PaymentMethodCardChecks_type;
   PaymentMethodType_type: PaymentMethodType_type;
-  PluginsInfo_type: PluginsInfo_type;
+  PlaneIntersectAndProject_type: PlaneIntersectAndProject_type;
   PlyStorage_type: PlyStorage_type;
   Point2d_type: Point2d_type;
   Point3d_type: Point3d_type;
   PointEMetadata_type: PointEMetadata_type;
   Pong_type: Pong_type;
   RawFile_type: RawFile_type;
-  RegistryServiceConfig_type: RegistryServiceConfig_type;
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
   RtcSdpType_type: RtcSdpType_type;
   RtcSessionDescription_type: RtcSessionDescription_type;
-  Runtime_type: Runtime_type;
   SceneSelectionType_type: SceneSelectionType_type;
   SceneToolType_type: SceneToolType_type;
   SelectGet_type: SelectGet_type;
@@ -3593,10 +3311,6 @@ export interface Models {
   StlStorage_type: StlStorage_type;
   SuccessWebSocketResponse_type: SuccessWebSocketResponse_type;
   System_type: System_type;
-  SystemInfoCgroupDriverEnum_type: SystemInfoCgroupDriverEnum_type;
-  SystemInfoCgroupVersionEnum_type: SystemInfoCgroupVersionEnum_type;
-  SystemInfoDefaultAddressPools_type: SystemInfoDefaultAddressPools_type;
-  SystemInfoIsolationEnum_type: SystemInfoIsolationEnum_type;
   TakeSnapshot_type: TakeSnapshot_type;
   UnitAngle_type: UnitAngle_type;
   UnitAngleConversion_type: UnitAngleConversion_type;

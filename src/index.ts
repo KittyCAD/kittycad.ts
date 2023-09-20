@@ -73,10 +73,8 @@ export const meta = {
   ping,
 };
 
-import cmd from './api/modeling/cmd.js';
-import cmd_batch from './api/modeling/cmd_batch.js';
 import modeling_commands_ws from './api/modeling/modeling_commands_ws.js';
-export const modeling = { cmd, cmd_batch, modeling_commands_ws };
+export const modeling = { modeling_commands_ws };
 
 import device_access_token from './api/oauth2/device_access_token.js';
 import device_auth_confirm from './api/oauth2/device_auth_confirm.js';
