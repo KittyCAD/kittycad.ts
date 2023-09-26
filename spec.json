@@ -3872,7 +3872,7 @@
                     "$ref": "#/components/schemas/UnitLength"
                   }
                 ],
-                "description": "The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc."
+                "description": "The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc.\n\nDefaults to meters."
               }
             },
             "required": [
@@ -6251,6 +6251,42 @@
               "type"
             ],
             "type": "object"
+          },
+          {
+            "description": "Reconfigure the stream.",
+            "properties": {
+              "fps": {
+                "description": "Frames per second.",
+                "format": "uint32",
+                "minimum": 0,
+                "type": "integer"
+              },
+              "height": {
+                "description": "Height of the stream.",
+                "format": "uint32",
+                "minimum": 0,
+                "type": "integer"
+              },
+              "type": {
+                "enum": [
+                  "reconfigure_stream"
+                ],
+                "type": "string"
+              },
+              "width": {
+                "description": "Width of the stream.",
+                "format": "uint32",
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "fps",
+              "height",
+              "type",
+              "width"
+            ],
+            "type": "object"
           }
         ]
       },
@@ -7087,11 +7123,20 @@
                   "obj"
                 ],
                 "type": "string"
+              },
+              "units": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "Export length unit.\n\nDefaults to meters."
               }
             },
             "required": [
               "coords",
-              "type"
+              "type",
+              "units"
             ],
             "type": "object"
           },
@@ -7176,12 +7221,21 @@
                   "stl"
                 ],
                 "type": "string"
+              },
+              "units": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "Export length unit.\n\nDefaults to meters."
               }
             },
             "required": [
               "coords",
               "storage",
-              "type"
+              "type",
+              "units"
             ],
             "type": "object"
           }
