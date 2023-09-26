@@ -1324,7 +1324,10 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       type: 'obj';
-      units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
+      /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc.
+
+Defaults to meters. */
+      units: UnitLength_type;
     }
   | {
       /* Co-ordinate system of input data.
@@ -1955,6 +1958,15 @@ export type ModelingCmd_type =
       /* format:uuid, description:ID of the curve being queried. */
       curve_id: string;
       type: 'curve_get_end_points';
+    }
+  | {
+      /* format:uint32, minimum:0, description:Frames per second. */
+      fps: number;
+      /* format:uint32, minimum:0, description:Height of the stream. */
+      height: number;
+      type: 'reconfigure_stream';
+      /* format:uint32, minimum:0, description:Width of the stream. */
+      width: number;
     };
 
 export type ModelingCmdId_type =
@@ -2217,6 +2229,10 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       type: 'obj';
+      /* Export length unit.
+
+Defaults to meters. */
+      units: UnitLength_type;
     }
   | {
       /* Co-ordinate system of output data.
@@ -2246,6 +2262,10 @@ Defaults to the [KittyCAD co-ordinate system].
       coords: System_type;
       storage: StlStorage_type /* Export storage. */;
       type: 'stl';
+      /* Export length unit.
+
+Defaults to meters. */
+      units: UnitLength_type;
     };
 
 export type PathCommand_type =
