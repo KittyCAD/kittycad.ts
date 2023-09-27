@@ -1688,6 +1688,32 @@
         },
         "type": "object"
       },
+      "CenterOfMass": {
+        "description": "The center of mass response.",
+        "properties": {
+          "center_of_mass": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Point3d"
+              }
+            ],
+            "description": "The center of mass."
+          },
+          "output_unit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnitLength"
+              }
+            ],
+            "description": "The output unit for the center of mass."
+          }
+        },
+        "required": [
+          "center_of_mass",
+          "output_unit"
+        ],
+        "type": "object"
+      },
       "ClientMetrics": {
         "description": "ClientMetrics contains information regarding the state of the peer.",
         "properties": {
@@ -2471,6 +2497,29 @@
         ],
         "type": "object"
       },
+      "Density": {
+        "description": "The density response.",
+        "properties": {
+          "density": {
+            "description": "The density.",
+            "format": "double",
+            "type": "number"
+          },
+          "output_unit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnitDensity"
+              }
+            ],
+            "description": "The output unit for the density."
+          }
+        },
+        "required": [
+          "density",
+          "output_unit"
+        ],
+        "type": "object"
+      },
       "DeviceAccessTokenRequestForm": {
         "description": "The form for a device access token request.",
         "properties": {
@@ -2731,6 +2780,20 @@
             "description": "Client sent invalid JSON.",
             "enum": [
               "invalid_json"
+            ],
+            "type": "string"
+          },
+          {
+            "description": "Client sent invalid BSON.",
+            "enum": [
+              "invalid_bson"
+            ],
+            "type": "string"
+          },
+          {
+            "description": "Client sent a message which is not accepted over this protocol.",
+            "enum": [
+              "wrong_protocol"
             ],
             "type": "string"
           },
@@ -3816,6 +3879,43 @@
         ],
         "type": "string"
       },
+      "ImportFile": {
+        "description": "File to import into the current model",
+        "properties": {
+          "data": {
+            "description": "The raw bytes of the file",
+            "items": {
+              "format": "uint8",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "path": {
+            "description": "The file's full path, including file extension.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "path"
+        ],
+        "type": "object"
+      },
+      "ImportFiles": {
+        "description": "Data from importing the files",
+        "properties": {
+          "object_id": {
+            "description": "ID of the imported 3D models within the scene.",
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "object_id"
+        ],
+        "type": "object"
+      },
       "InputFormat": {
         "description": "Input format specifier.",
         "oneOf": [
@@ -4424,6 +4524,29 @@
         },
         "type": "object"
       },
+      "Mass": {
+        "description": "The mass response.",
+        "properties": {
+          "mass": {
+            "description": "The mass.",
+            "format": "double",
+            "type": "number"
+          },
+          "output_unit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnitMass"
+              }
+            ],
+            "description": "The output unit for the mass."
+          }
+        },
+        "required": [
+          "mass",
+          "output_unit"
+        ],
+        "type": "object"
+      },
       "Mesh": {
         "properties": {
           "mesh": {
@@ -4991,6 +5114,14 @@
                 ],
                 "description": "The file format to export to."
               },
+              "source_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "Select the unit interpretation of exported objects.\n\nThis is not the same as the export units. Setting export units is part of the format options."
+              },
               "type": {
                 "enum": [
                   "export"
@@ -5001,6 +5132,7 @@
             "required": [
               "entity_ids",
               "format",
+              "source_unit",
               "type"
             ],
             "type": "object"
@@ -6139,69 +6271,6 @@
             "type": "object"
           },
           {
-            "description": "Adds a tangent arc from current pen position to the new position.",
-            "properties": {
-              "angle_snap_increment": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Angle"
-                  }
-                ],
-                "description": "0 will be interpreted as none/null.",
-                "nullable": true
-              },
-              "to": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Point3d"
-                  }
-                ],
-                "description": "Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position."
-              },
-              "type": {
-                "enum": [
-                  "path_tangential_arc_to"
-                ],
-                "type": "string"
-              }
-            },
-            "required": [
-              "to",
-              "type"
-            ],
-            "type": "object"
-          },
-          {
-            "description": "Adds a tangent arc from current pen position with the given radius and angle.",
-            "properties": {
-              "offset": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Angle"
-                  }
-                ],
-                "description": "Offset of the arc."
-              },
-              "radius": {
-                "description": "Radius of the arc. Not to be confused with Raiders of the Lost Ark.",
-                "format": "double",
-                "type": "number"
-              },
-              "type": {
-                "enum": [
-                  "path_tangential_arc"
-                ],
-                "type": "string"
-              }
-            },
-            "required": [
-              "offset",
-              "radius",
-              "type"
-            ],
-            "type": "object"
-          },
-          {
             "description": "Utility method. Performs both a ray cast and projection to plane-local coordinates. Returns the plane coordinates for the given window coordinates.",
             "properties": {
               "plane_id": {
@@ -6285,6 +6354,269 @@
               "height",
               "type",
               "width"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Import files to the current model.",
+            "properties": {
+              "files": {
+                "description": "Files to import",
+                "items": {
+                  "$ref": "#/components/schemas/ImportFile"
+                },
+                "type": "array"
+              },
+              "type": {
+                "enum": [
+                  "import_files"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "files",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Get the mass of entities in the scene or the default scene.",
+            "properties": {
+              "entity_ids": {
+                "description": "IDs of the entities to get the mass of. If this is empty, then the default scene is included in the mass.",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "material_density": {
+                "description": "The material density.",
+                "format": "double",
+                "type": "number"
+              },
+              "material_density_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitDensity"
+                  }
+                ],
+                "description": "The material density unit."
+              },
+              "output_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitMass"
+                  }
+                ],
+                "description": "The output unit for the mass."
+              },
+              "source_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "Select the unit interpretation of distances in the scene."
+              },
+              "type": {
+                "enum": [
+                  "mass"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_ids",
+              "material_density",
+              "material_density_unit",
+              "output_unit",
+              "source_unit",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Get the density of entities in the scene or the default scene.",
+            "properties": {
+              "entity_ids": {
+                "description": "IDs of the entities to get the density of. If this is empty, then the default scene is included in the density.",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "material_mass": {
+                "description": "The material mass.",
+                "format": "double",
+                "type": "number"
+              },
+              "material_mass_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitMass"
+                  }
+                ],
+                "description": "The material mass unit."
+              },
+              "output_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitDensity"
+                  }
+                ],
+                "description": "The output unit for the density."
+              },
+              "source_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "Select the unit interpretation of distances in the scene."
+              },
+              "type": {
+                "enum": [
+                  "density"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_ids",
+              "material_mass",
+              "material_mass_unit",
+              "output_unit",
+              "source_unit",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Get the volume of entities in the scene or the default scene.",
+            "properties": {
+              "entity_ids": {
+                "description": "IDs of the entities to get the volume of. If this is empty, then the default scene is included in the volume.",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "output_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitVolume"
+                  }
+                ],
+                "description": "The output unit for the volume."
+              },
+              "source_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "Select the unit interpretation of distances in the scene."
+              },
+              "type": {
+                "enum": [
+                  "volume"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_ids",
+              "output_unit",
+              "source_unit",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Get the center of mass of entities in the scene or the default scene.",
+            "properties": {
+              "entity_ids": {
+                "description": "IDs of the entities to get the center of mass of. If this is empty, then the default scene is included in the center of mass.",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "output_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "The output unit for the center of mass."
+              },
+              "source_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "Select the unit interpretation of distances in the scene."
+              },
+              "type": {
+                "enum": [
+                  "center_of_mass"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_ids",
+              "output_unit",
+              "source_unit",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Get the surface area of entities in the scene or the default scene.",
+            "properties": {
+              "entity_ids": {
+                "description": "IDs of the entities to get the surface area of. If this is empty, then the default scene is included in the surface area.",
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "output_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitArea"
+                  }
+                ],
+                "description": "The output unit for the surface area."
+              },
+              "source_unit": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ],
+                "description": "Select the unit interpretation of distances in the scene."
+              },
+              "type": {
+                "enum": [
+                  "surface_area"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity_ids",
+              "output_unit",
+              "source_unit",
+              "type"
             ],
             "type": "object"
           }
@@ -6819,6 +7151,120 @@
               "type": {
                 "enum": [
                   "curve_get_end_points"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `ImportFiles` command.",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/ImportFiles"
+              },
+              "type": {
+                "enum": [
+                  "import_files"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `Mass` command.",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/Mass"
+              },
+              "type": {
+                "enum": [
+                  "mass"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `Volume` command.",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/Volume"
+              },
+              "type": {
+                "enum": [
+                  "volume"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `Density` command.",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/Density"
+              },
+              "type": {
+                "enum": [
+                  "density"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `SurfaceArea` command.",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/SurfaceArea"
+              },
+              "type": {
+                "enum": [
+                  "surface_area"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "The response from the `CenterOfMass` command.",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/CenterOfMass"
+              },
+              "type": {
+                "enum": [
+                  "center_of_mass"
                 ],
                 "type": "string"
               }
@@ -7407,6 +7853,69 @@
               "control2",
               "end",
               "relative",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Adds a tangent arc from current pen position with the given radius and angle.",
+            "properties": {
+              "offset": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Angle"
+                  }
+                ],
+                "description": "Offset of the arc."
+              },
+              "radius": {
+                "description": "Radius of the arc. Not to be confused with Raiders of the Lost Ark.",
+                "format": "double",
+                "type": "number"
+              },
+              "type": {
+                "enum": [
+                  "tangential_arc"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "offset",
+              "radius",
+              "type"
+            ],
+            "type": "object"
+          },
+          {
+            "description": "Adds a tangent arc from current pen position to the new position.",
+            "properties": {
+              "angle_snap_increment": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Angle"
+                  }
+                ],
+                "description": "0 will be interpreted as none/null.",
+                "nullable": true
+              },
+              "to": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Point3d"
+                  }
+                ],
+                "description": "Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position."
+              },
+              "type": {
+                "enum": [
+                  "tangential_arc_to"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "to",
               "type"
             ],
             "type": "object"
@@ -7999,6 +8508,29 @@
         ],
         "type": "object"
       },
+      "SurfaceArea": {
+        "description": "The surface area response.",
+        "properties": {
+          "output_unit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnitArea"
+              }
+            ],
+            "description": "The output unit for the surface area."
+          },
+          "surface_area": {
+            "description": "The surface area.",
+            "format": "double",
+            "type": "number"
+          }
+        },
+        "required": [
+          "output_unit",
+          "surface_area"
+        ],
+        "type": "object"
+      },
       "System": {
         "description": "Co-ordinate system definition.\n\nThe `up` axis must be orthogonal to the `forward` axis.\n\nSee [cglearn.eu] for background reading.\n\n[cglearn.eu](https://cglearn.eu/pub/computer-graphics/introduction-to-geometry#material-coordinate-systems-1)",
         "properties": {
@@ -8156,14 +8688,14 @@
         "description": "The valid types of area units.",
         "oneOf": [
           {
-            "description": "Square centimetres <https://en.wikipedia.org/wiki/Square_centimetre>",
+            "description": "Square centimeters <https://en.wikipedia.org/wiki/Square_centimeter>",
             "enum": [
               "cm2"
             ],
             "type": "string"
           },
           {
-            "description": "Square decimetres <https://en.wikipedia.org/wiki/Square_decimetre>",
+            "description": "Square decimeters <https://en.wikipedia.org/wiki/Square_decimeter>",
             "enum": [
               "dm2"
             ],
@@ -8184,21 +8716,21 @@
             "type": "string"
           },
           {
-            "description": "Square kilometres <https://en.wikipedia.org/wiki/Square_kilometre>",
+            "description": "Square kilometers <https://en.wikipedia.org/wiki/Square_kilometer>",
             "enum": [
               "km2"
             ],
             "type": "string"
           },
           {
-            "description": "Square metres <https://en.wikipedia.org/wiki/Square_metre>",
+            "description": "Square meters <https://en.wikipedia.org/wiki/Square_meter>",
             "enum": [
               "m2"
             ],
             "type": "string"
           },
           {
-            "description": "Square millimetres <https://en.wikipedia.org/wiki/Square_millimetre>",
+            "description": "Square millimeters <https://en.wikipedia.org/wiki/Square_millimeter>",
             "enum": [
               "mm2"
             ],
@@ -8896,7 +9428,7 @@
         "description": "The valid types of length units.",
         "oneOf": [
           {
-            "description": "Centimetres <https://en.wikipedia.org/wiki/Centimetre>",
+            "description": "Centimeters <https://en.wikipedia.org/wiki/Centimeter>",
             "enum": [
               "cm"
             ],
@@ -8917,14 +9449,14 @@
             "type": "string"
           },
           {
-            "description": "Metres <https://en.wikipedia.org/wiki/Metre>",
+            "description": "Meters <https://en.wikipedia.org/wiki/Meter>",
             "enum": [
               "m"
             ],
             "type": "string"
           },
           {
-            "description": "Millimetres <https://en.wikipedia.org/wiki/Millimetre>",
+            "description": "Millimeters <https://en.wikipedia.org/wiki/Millimeter>",
             "enum": [
               "mm"
             ],
@@ -9687,7 +10219,7 @@
         "description": "The valid types of volume units.",
         "oneOf": [
           {
-            "description": "Cubic centimetres (cc or cm³) <https://en.wikipedia.org/wiki/Cubic_centimetre>",
+            "description": "Cubic centimeters (cc or cm³) <https://en.wikipedia.org/wiki/Cubic_centimeter>",
             "enum": [
               "cm3"
             ],
@@ -9708,7 +10240,7 @@
             "type": "string"
           },
           {
-            "description": "Cubic metres (m³) <https://en.wikipedia.org/wiki/Cubic_metre>",
+            "description": "Cubic meters (m³) <https://en.wikipedia.org/wiki/Cubic_meter>",
             "enum": [
               "m3"
             ],
@@ -10013,6 +10545,29 @@
           "created_at",
           "expires",
           "updated_at"
+        ],
+        "type": "object"
+      },
+      "Volume": {
+        "description": "The volume response.",
+        "properties": {
+          "output_unit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnitVolume"
+              }
+            ],
+            "description": "The output unit for the volume."
+          },
+          "volume": {
+            "description": "The volume.",
+            "format": "double",
+            "type": "number"
+          }
+        },
+        "required": [
+          "output_unit",
+          "volume"
         ],
         "type": "object"
       },

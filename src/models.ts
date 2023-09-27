@@ -560,6 +560,11 @@ Can be `credit`, `debit`, `prepaid`, or `unknown`. */
   last4: string /* The last four digits of the card. */;
 }
 
+export interface CenterOfMass_type {
+  center_of_mass: Point3d_type /* The center of mass. */;
+  output_unit: UnitLength_type /* The output unit for the center of mass. */;
+}
+
 export interface ClientMetrics_type {
   /*{
   "format": "uint64",
@@ -867,6 +872,12 @@ export interface CustomerBalance_type {
   user_id: string /* The user ID the balance belongs to. */;
 }
 
+export interface Density_type {
+  /* format:double, description:The density. */
+  density: number;
+  output_unit: UnitDensity_type /* The output unit for the density. */;
+}
+
 export interface DeviceAccessTokenRequestForm_type {
   /* format:uuid, description:The client ID. */
   client_id: string;
@@ -948,6 +959,8 @@ export type ErrorCode_type =
   | 'internal_api'
   | 'bad_request'
   | 'invalid_json'
+  | 'invalid_bson'
+  | 'wrong_protocol'
   | 'connection_problem'
   | 'message_type_not_accepted'
   | 'message_type_not_accepted_for_web_r_t_c';
@@ -1313,6 +1326,20 @@ export type ImageType_type =
   /* An enumeration. */
   'png' | 'jpg';
 
+export interface ImportFile_type {
+  /*{
+  "format": "uint8",
+  "minimum": 0
+}*/
+  data: number[];
+  path: string /* The file's full path, including file extension. */;
+}
+
+export interface ImportFiles_type {
+  /* format:uuid, description:ID of the imported 3D models within the scene. */
+  object_id: string;
+}
+
 export type InputFormat_type =
   | { type: 'fbx' }
   | { type: 'gltf' }
@@ -1543,6 +1570,12 @@ export interface LeafNode_type {
   tls_timeout: number;
 }
 
+export interface Mass_type {
+  /* format:double, description:The mass. */
+  mass: number;
+  output_unit: UnitMass_type /* The output unit for the mass. */;
+}
+
 export interface Mesh_type {
   mesh: string;
 }
@@ -1654,6 +1687,10 @@ export type ModelingCmd_type =
 }*/
       entity_ids: string[];
       format: OutputFormat_type /* The file format to export to. */;
+      /* Select the unit interpretation of exported objects.
+
+This is not the same as the export units. Setting export units is part of the format options. */
+      source_unit: UnitLength_type;
       type: 'export';
     }
   | {
@@ -1934,21 +1971,6 @@ export type ModelingCmd_type =
       type: 'remove_scene_objects';
     }
   | {
-      /* nullable:true, description:0 will be interpreted as none/null. */
-      angle_snap_increment: Angle_type;
-      to: Point3d_type /* Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position. */;
-      type: 'path_tangential_arc_to';
-    }
-  | {
-      offset: Angle_type /* Offset of the arc. */;
-      /*{
-  "format": "double",
-  "description": "Radius of the arc. Not to be confused with Raiders of the Lost Ark."
-}*/
-      radius: number;
-      type: 'path_tangential_arc';
-    }
-  | {
       /* format:uuid, description:The plane you're intersecting against. */
       plane_id: string;
       type: 'plane_intersect_and_project';
@@ -1967,6 +1989,58 @@ export type ModelingCmd_type =
       type: 'reconfigure_stream';
       /* format:uint32, minimum:0, description:Width of the stream. */
       width: number;
+    }
+  | { files: ImportFile_type[] /* Files to import */; type: 'import_files' }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      /* format:double, description:The material density. */
+      material_density: number;
+      material_density_unit: UnitDensity_type /* The material density unit. */;
+      output_unit: UnitMass_type /* The output unit for the mass. */;
+      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
+      type: 'mass';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      /* format:double, description:The material mass. */
+      material_mass: number;
+      material_mass_unit: UnitMass_type /* The material mass unit. */;
+      output_unit: UnitDensity_type /* The output unit for the density. */;
+      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
+      type: 'density';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      output_unit: UnitVolume_type /* The output unit for the volume. */;
+      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
+      type: 'volume';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      output_unit: UnitLength_type /* The output unit for the center of mass. */;
+      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
+      type: 'center_of_mass';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      output_unit: UnitArea_type /* The output unit for the surface area. */;
+      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
+      type: 'surface_area';
     };
 
 export type ModelingCmdId_type =
@@ -2165,6 +2239,48 @@ export type OkModelingCmdResponse_type =
 }*/
       data: CurveGetEndPoints_type;
       type: 'curve_get_end_points';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ImportFiles"
+}*/
+      data: ImportFiles_type;
+      type: 'import_files';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Mass"
+}*/
+      data: Mass_type;
+      type: 'mass';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Volume"
+}*/
+      data: Volume_type;
+      type: 'volume';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Density"
+}*/
+      data: Density_type;
+      type: 'density';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SurfaceArea"
+}*/
+      data: SurfaceArea_type;
+      type: 'surface_area';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/CenterOfMass"
+}*/
+      data: CenterOfMass_type;
+      type: 'center_of_mass';
     };
 
 export type OkWebSocketResponseData_type =
@@ -2306,6 +2422,21 @@ export type PathSegment_type =
       end: Point3d_type /* Final control point. */;
       relative: boolean /* Whether or not this bezier is a relative offset */;
       type: 'bezier';
+    }
+  | {
+      offset: Angle_type /* Offset of the arc. */;
+      /*{
+  "format": "double",
+  "description": "Radius of the arc. Not to be confused with Raiders of the Lost Ark."
+}*/
+      radius: number;
+      type: 'tangential_arc';
+    }
+  | {
+      /* nullable:true, description:0 will be interpreted as none/null. */
+      angle_snap_increment: Angle_type;
+      to: Point3d_type /* Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position. */;
+      type: 'tangential_arc_to';
     };
 
 export interface PathSegmentInfo_type {
@@ -2508,6 +2639,12 @@ export interface SuccessWebSocketResponse_type {
   request_id?: string;
   resp: OkWebSocketResponseData_type /* The data sent with a successful response. This will be flattened into a 'type' and 'data' field. */;
   success: true;
+}
+
+export interface SurfaceArea_type {
+  output_unit: UnitArea_type /* The output unit for the surface area. */;
+  /* format:double, description:The surface area. */
+  surface_area: number;
 }
 
 export interface System_type {
@@ -3145,6 +3282,12 @@ export interface VerificationToken_type {
   updated_at: string;
 }
 
+export interface Volume_type {
+  output_unit: UnitVolume_type /* The output unit for the volume. */;
+  /* format:double, description:The volume. */
+  volume: number;
+}
+
 export type WebSocketRequest_type =
   | {
       candidate: RtcIceCandidateInit_type /* Information about the ICE candidate. */;
@@ -3222,6 +3365,7 @@ export interface Models {
   CacheMetadata_type: CacheMetadata_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
   CardDetails_type: CardDetails_type;
+  CenterOfMass_type: CenterOfMass_type;
   ClientMetrics_type: ClientMetrics_type;
   Cluster_type: Cluster_type;
   CodeLanguage_type: CodeLanguage_type;
@@ -3238,6 +3382,7 @@ export interface Models {
   CurveType_type: CurveType_type;
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
+  Density_type: Density_type;
   DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type;
   DeviceAuthRequestForm_type: DeviceAuthRequestForm_type;
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
@@ -3275,6 +3420,8 @@ export interface Models {
   IceServer_type: IceServer_type;
   ImageFormat_type: ImageFormat_type;
   ImageType_type: ImageType_type;
+  ImportFile_type: ImportFile_type;
+  ImportFiles_type: ImportFiles_type;
   InputFormat_type: InputFormat_type;
   Invoice_type: Invoice_type;
   InvoiceLineItem_type: InvoiceLineItem_type;
@@ -3284,6 +3431,7 @@ export interface Models {
   JetstreamConfig_type: JetstreamConfig_type;
   JetstreamStats_type: JetstreamStats_type;
   LeafNode_type: LeafNode_type;
+  Mass_type: Mass_type;
   Mesh_type: Mesh_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
@@ -3330,6 +3478,7 @@ export interface Models {
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
   StlStorage_type: StlStorage_type;
   SuccessWebSocketResponse_type: SuccessWebSocketResponse_type;
+  SurfaceArea_type: SurfaceArea_type;
   System_type: System_type;
   TakeSnapshot_type: TakeSnapshot_type;
   UnitAngle_type: UnitAngle_type;
@@ -3364,6 +3513,7 @@ export interface Models {
   UserResultsPage_type: UserResultsPage_type;
   Uuid_type: Uuid_type;
   VerificationToken_type: VerificationToken_type;
+  Volume_type: Volume_type;
   WebSocketRequest_type: WebSocketRequest_type;
   WebSocketResponse_type: WebSocketResponse_type;
 }
