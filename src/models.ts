@@ -164,11 +164,10 @@ export interface ApiCallWithPrice_type {
   /*{
   "format": "money-usd",
   "nullable": true,
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "The price of the API call."
 }*/
-  price?: string;
+  price?: number;
   /* nullable:true, description:The request body sent by the API call. */
   request_body?: string;
   request_query_params: string /* The request query params sent by the API call. */;
@@ -755,11 +754,10 @@ export interface Coupon_type {
   /*{
   "format": "money-usd",
   "nullable": true,
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer."
 }*/
-  amount_off?: string;
+  amount_off?: number;
   /* default:false, description:Always true for a deleted object. */
   deleted: boolean;
   id: string /* Unique identifier for the object. */;
@@ -804,11 +802,10 @@ export interface Customer_type {
   /*{
   "default": 0,
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "Current balance, if any, being stored on the customer in the payments service.\n\nIf negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that will be added to their next invoice. The balance does not refer to any unpaid invoices; it solely takes into account amounts that have yet to be successfully applied to any invoice. This balance is only taken into account as invoices are finalized."
 }*/
-  balance: string;
+  balance: number;
   /* format:date-time, description:Time at which the object was created. */
   created_at: string;
   /*{
@@ -841,32 +838,28 @@ export interface CustomerBalance_type {
   id: Uuid_type /* The unique identifier for the balance. */;
   /*{
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the user per month."
 }*/
-  monthly_credits_remaining: string;
+  monthly_credits_remaining: number;
   /*{
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "The amount of pre-pay cash remaining in the balance. This number goes down as the user uses their pre-paid credits. The reason we track this amount is if a user ever wants to withdraw their pre-pay cash, we can use this amount to determine how much to give them. Say a user has $100 in pre-paid cash, their bill is worth, $50 after subtracting any other credits (like monthly etc.) Their bill is $50, their pre-pay cash remaining will be subtracted by 50 to pay the bill and their `pre_pay_credits_remaining` will be subtracted by 50 to pay the bill. This way if they want to withdraw money after, they can only withdraw $50 since that is the amount of cash they have remaining."
 }*/
-  pre_pay_cash_remaining: string;
+  pre_pay_cash_remaining: number;
   /*{
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a user adds funds to their balance. This may be through a subscription or a one off payment."
 }*/
-  pre_pay_credits_remaining: string;
+  pre_pay_credits_remaining: number;
   /*{
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "This includes any outstanding, draft, or open invoices and any pending invoice items. This does not include any credits the user has on their account."
 }*/
-  total_due: string;
+  total_due: number;
   /* format:date-time, title:DateTime, description:The date and time the balance was last updated. */
   updated_at: string;
   user_id: string /* The user ID the balance belongs to. */;
@@ -1296,6 +1289,12 @@ export interface GetEntityType_type {
   entity_type: EntityType_type /* The type of the entity. */;
 }
 
+export interface GetSketchModePlane_type {
+  x_axis: Point3d_type /* The x axis. */;
+  y_axis: Point3d_type /* The y axis. */;
+  z_axis: Point3d_type /* The z axis (normal). */;
+}
+
 export type GltfPresentation_type = 'compact' | 'pretty';
 
 export type GltfStorage_type = 'binary' | 'standard' | 'embedded';
@@ -1383,27 +1382,24 @@ export interface Invoice_type {
   /*{
   "default": 0,
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "Final amount due at this time for this invoice.\n\nIf the invoice's total is smaller than the minimum charge amount, for example, or if there is account credit that can be applied to the invoice, the `amount_due` may be 0. If there is a positive `starting_balance` for the invoice (the customer owes money), the `amount_due` will also take that into account. The charge that gets generated for the invoice will be for the amount specified in `amount_due`."
 }*/
-  amount_due: string;
+  amount_due: number;
   /*{
   "default": 0,
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "The amount, in USD, that was paid."
 }*/
-  amount_paid: string;
+  amount_paid: number;
   /*{
   "default": 0,
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "The amount remaining, in USD, that is due."
 }*/
-  amount_remaining: string;
+  amount_remaining: number;
   /*{
   "default": 0,
   "format": "uint64",
@@ -1456,27 +1452,24 @@ export interface Invoice_type {
   /*{
   "default": 0,
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or tax is applied.\n\nItem discounts are already incorporated."
 }*/
-  subtotal: string;
+  subtotal: number;
   /*{
   "default": 0,
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "The amount of tax on this invoice.\n\nThis is the sum of all the tax amounts on this invoice."
 }*/
-  tax: string;
+  tax: number;
   /*{
   "default": 0,
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "Total after discounts and taxes."
 }*/
-  total: string;
+  total: number;
   /*{
   "format": "uri",
   "nullable": true,
@@ -1489,11 +1482,10 @@ export interface InvoiceLineItem_type {
   /*{
   "default": 0,
   "format": "money-usd",
-  "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-  "title": "Decimal",
+  "title": "double",
   "description": "The amount, in USD."
 }*/
-  amount: string;
+  amount: number;
   /*{
   "default": "usd",
   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
@@ -1905,6 +1897,11 @@ This is not the same as the export units. Setting export units is part of the fo
   | { type: 'mouse_click'; window: Point2d_type /* Where the mouse is */ }
   | {
       animated: boolean /* Animate the transition to sketch mode. */;
+      /*{
+  "nullable": true,
+  "description": "Disable the camera entirely for sketch mode and sketch on a plane (this would be the normal of that plane)."
+}*/
+      disable_camera_with_plane: Point3d_type;
       ortho: boolean /* Use an orthographic camera. */;
       /* format:uuid, description:Sketch on this plane. */
       plane_id: string;
@@ -2041,7 +2038,8 @@ This is not the same as the export units. Setting export units is part of the fo
       output_unit: UnitArea_type /* The output unit for the surface area. */;
       source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
       type: 'surface_area';
-    };
+    }
+  | { type: 'get_sketch_mode_plane' };
 
 export type ModelingCmdId_type =
   /*{
@@ -2281,6 +2279,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: CenterOfMass_type;
       type: 'center_of_mass';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/GetSketchModePlane"
+}*/
+      data: GetSketchModePlane_type;
+      type: 'get_sketch_mode_plane';
     };
 
 export type OkWebSocketResponseData_type =
@@ -2614,8 +2619,8 @@ export interface Solid3dGetAllOppositeEdges_type {
 }
 
 export interface Solid3dGetNextAdjacentEdge_type {
-  /* format:uuid, description:The UUID of the edge. */
-  edge: string;
+  /* format:uuid, nullable:true, description:The UUID of the edge. */
+  edge?: string;
 }
 
 export interface Solid3dGetOppositeEdge_type {
@@ -2624,8 +2629,8 @@ export interface Solid3dGetOppositeEdge_type {
 }
 
 export interface Solid3dGetPrevAdjacentEdge_type {
-  /* format:uuid, description:The UUID of the edge. */
-  edge: string;
+  /* format:uuid, nullable:true, description:The UUID of the edge. */
+  edge?: string;
 }
 
 export type StlStorage_type = 'ascii' | 'binary';
@@ -3414,6 +3419,7 @@ export interface Models {
   FileVolume_type: FileVolume_type;
   Gateway_type: Gateway_type;
   GetEntityType_type: GetEntityType_type;
+  GetSketchModePlane_type: GetSketchModePlane_type;
   GltfPresentation_type: GltfPresentation_type;
   GltfStorage_type: GltfStorage_type;
   HighlightSetEntity_type: HighlightSetEntity_type;
