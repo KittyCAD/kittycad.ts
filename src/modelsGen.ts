@@ -54,7 +54,9 @@ async function main() {
               const ref = (subSchema.allOf[0] as any).$ref;
               return addCommentInfo(
                 subSchema,
-                `${key}: ${typeNameReference[ref]}`,
+                `${key}: ${typeNameReference[ref]}${
+                  subSchema.nullable ? ' | null ' : ''
+                }`,
               );
             }
             if ((subSchema as any).$ref) {
