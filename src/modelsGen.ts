@@ -55,7 +55,7 @@ async function main() {
               return addCommentInfo(
                 subSchema,
                 `${key}: ${typeNameReference[ref]}${
-                  subSchema.nullable ? ' | null ' : ''
+                  subSchema.nullable ? ' | null' : ''
                 }`,
               );
             }
