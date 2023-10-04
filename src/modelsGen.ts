@@ -52,11 +52,10 @@ async function main() {
           if (!(subSchema.type === 'array') && !(subSchema.type === 'object')) {
             if (subSchema.allOf) {
               const ref = (subSchema.allOf[0] as any).$ref;
+              const nullableQuestionMark = subSchema.nullable ? '?' : '';
               return addCommentInfo(
                 subSchema,
-                `${key}: ${typeNameReference[ref]}${
-                  subSchema.nullable ? ' | null' : ''
-                }`,
+                `${key}${nullableQuestionMark}: ${typeNameReference[ref]}`,
               );
             }
             if ((subSchema as any).$ref) {
