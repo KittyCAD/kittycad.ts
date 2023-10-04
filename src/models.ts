@@ -13,7 +13,7 @@ export type AiPluginApiType_type = 'openapi';
 
 export interface AiPluginAuth_type {
   /* nullable:true, description:The type of http authorization. */
-  authorization_type: AiPluginHttpAuthType_type;
+  authorization_type?: AiPluginHttpAuthType_type;
   /* default:none, description:The type of authentication. */
   type: AiPluginAuthType_type;
 }
@@ -68,15 +68,15 @@ export interface AnnotationLineEndOptions_type {
 
 export interface AnnotationOptions_type {
   /* nullable:true, description:Color to render the annotation */
-  color: Color_type;
+  color?: Color_type;
   /* nullable:true, description:How to style the start and end of the line */
-  line_ends: AnnotationLineEndOptions_type;
+  line_ends?: AnnotationLineEndOptions_type;
   /* format:float, nullable:true, description:Width of the annotation's line */
   line_width?: number;
   /* nullable:true, description:Position to put the annotation */
-  position: Point3d_type;
+  position?: Point3d_type;
   /* nullable:true, description:Text displayed on the annotation */
-  text: AnnotationTextOptions_type;
+  text?: AnnotationTextOptions_type;
 }
 
 export type AnnotationTextAlignmentX_type =
@@ -292,7 +292,7 @@ This is the same as the API call ID. */
       id: Uuid_type;
       output_format: FileExportFormat_type /* The output format of the file conversion. */;
       /* nullable:true, description:The output format options of the file conversion. */
-      output_format_options: OutputFormat_type;
+      output_format_options?: OutputFormat_type;
       outputs: {
         [key: string]: /*{
   "format": "byte",
@@ -302,7 +302,7 @@ This is the same as the API call ID. */
       };
       src_format: FileImportFormat_type /* The source format of the file conversion. */;
       /* nullable:true, description:The source format options of the file conversion. */
-      src_format_options: InputFormat_type;
+      src_format_options?: InputFormat_type;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -318,7 +318,7 @@ This is the same as the API call ID. */
     }
   | {
       /* nullable:true, description:The resulting center of mass. */
-      center_of_mass: Point3d_type;
+      center_of_mass?: Point3d_type;
       /*{
   "format": "date-time",
   "nullable": true,
@@ -514,7 +514,7 @@ export interface AxisDirectionPair_type {
 
 export interface BillingInfo_type {
   /* nullable:true, description:The address of the customer. */
-  address: NewAddress_type;
+  address?: NewAddress_type;
   name: string /* The name of the customer. */;
   /*{
   "default": "",
@@ -798,7 +798,7 @@ export type CurveType_type =
 
 export interface Customer_type {
   /* nullable:true, description:The customer's address. */
-  address: NewAddress_type;
+  address?: NewAddress_type;
   /*{
   "default": 0,
   "format": "money-usd",
@@ -1039,7 +1039,7 @@ export type FbxStorage_type = 'ascii' | 'binary';
 
 export interface FileCenterOfMass_type {
   /* nullable:true, description:The resulting center of mass. */
-  center_of_mass: Point3d_type;
+  center_of_mass?: Point3d_type;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1088,7 +1088,7 @@ This is the same as the API call ID. */
   id: Uuid_type;
   output_format: FileExportFormat_type /* The output format of the file conversion. */;
   /* nullable:true, description:The output format options of the file conversion. */
-  output_format_options: OutputFormat_type;
+  output_format_options?: OutputFormat_type;
   outputs: {
     [key: string]: /*{
   "format": "byte",
@@ -1098,7 +1098,7 @@ This is the same as the API call ID. */
   };
   src_format: FileImportFormat_type /* The source format of the file conversion. */;
   /* nullable:true, description:The source format options of the file conversion. */
-  src_format_options: InputFormat_type;
+  src_format_options?: InputFormat_type;
   /*{
   "format": "date-time",
   "nullable": true,
@@ -1448,7 +1448,7 @@ export interface Invoice_type {
   "nullable": true,
   "description": "The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`.\n\n[Learn more](https://stripe.com/docs/billing/invoices/workflow#workflow-overview)."
 }*/
-  status: InvoiceStatus_type;
+  status?: InvoiceStatus_type;
   /*{
   "default": 0,
   "format": "money-usd",
@@ -1794,7 +1794,7 @@ This is not the same as the export units. Setting export units is part of the fo
   "nullable": true,
   "description": "If given, ohnly faces parallel to this vector will be considered."
 }*/
-      along_vector: Point3d_type;
+      along_vector?: Point3d_type;
       /* format:uuid, description:Which edge you want the opposites of. */
       edge_id: string;
       /* format:uuid, description:Which object is being queried. */
@@ -1901,7 +1901,7 @@ This is not the same as the export units. Setting export units is part of the fo
   "nullable": true,
   "description": "Disable the camera entirely for sketch mode and sketch on a plane (this would be the normal of that plane)."
 }*/
-      disable_camera_with_plane: Point3d_type;
+      disable_camera_with_plane?: Point3d_type;
       ortho: boolean /* Use an orthographic camera. */;
       /* format:uuid, description:Sketch on this plane. */
       plane_id: string;
@@ -2439,7 +2439,7 @@ export type PathSegment_type =
     }
   | {
       /* nullable:true, description:0 will be interpreted as none/null. */
-      angle_snap_increment: Angle_type;
+      angle_snap_increment?: Angle_type;
       to: Point3d_type /* Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position. */;
       type: 'tangential_arc_to';
     };
@@ -2450,7 +2450,7 @@ export interface PathSegmentInfo_type {
   "nullable": true,
   "description": "Which command created this path? This field is absent if the path command is not actually creating a path segment, e.g. moving the pen doesn't create a path segment."
 }*/
-  command_id: ModelingCmdId_type;
+  command_id?: ModelingCmdId_type;
   relative: boolean /* Whether or not this segment is a relative offset */;
 }
 
@@ -2464,7 +2464,7 @@ export interface PaymentMethod_type {
   "nullable": true,
   "description": "The card, if it is one. For our purposes, this is the only type of payment method that we support."
 }*/
-  card: CardDetails_type;
+  card?: CardDetails_type;
   /* format:date-time, description:Time at which the object was created. */
   created_at: string;
   id: string /* Unique identifier for the object. */;
@@ -2485,7 +2485,7 @@ export interface PlaneIntersectAndProject_type {
   "nullable": true,
   "description": "Corresponding coordinates of given window coordinates, intersected on given plane."
 }*/
-  plane_coordinates: Point2d_type;
+  plane_coordinates?: Point2d_type;
 }
 
 export type PlyStorage_type =
