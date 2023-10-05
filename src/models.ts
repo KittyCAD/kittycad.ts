@@ -1863,6 +1863,7 @@ This is not the same as the export units. Setting export units is part of the fo
     }
   | {
       clobber: boolean /* If true, any existing drawables within the obj will be replaced (the object will be reset) */;
+      hide: boolean /* If true, the plane will be created but hidden initially. */;
       origin: Point3d_type /* Origin of the plane */;
       /*{
   "format": "double",
