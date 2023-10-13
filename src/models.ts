@@ -71,7 +71,7 @@ export interface AnnotationOptions_type {
   color?: Color_type;
   /* nullable:true, description:How to style the start and end of the line */
   line_ends?: AnnotationLineEndOptions_type;
-  /* format:float, nullable:true, description:Width of the annotation's line */
+  /* nullable:true, format:float, description:Width of the annotation's line */
   line_width?: number;
   /* nullable:true, description:Position to put the annotation */
   position?: Point3d_type;
@@ -122,18 +122,18 @@ export type ApiCallStatus_type =
 
 export interface ApiCallWithPrice_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The date and time the API call completed billing."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The date and time the API call was created. */
+  /* title:DateTime, format:date-time, description:The date and time the API call was created. */
   created_at: string;
   /*{
-  "format": "duration",
   "nullable": true,
   "title": "int64",
+  "format": "duration",
   "description": "The duration of the API call."
 }*/
   duration?: number;
@@ -142,9 +142,9 @@ export interface ApiCallWithPrice_type {
   endpoint: string /* The endpoint requested by the API call. */;
   id: Uuid_type /* The unique identifier for the API call. */;
   /*{
+  "title": "String",
   "default": "",
   "format": "ip",
-  "title": "String",
   "description": "The ip address of the origin."
 }*/
   ip_address: string;
@@ -155,16 +155,16 @@ export interface ApiCallWithPrice_type {
   litterbox?: boolean;
   method: Method_type /* The HTTP method requsted by the API call. */;
   /*{
-  "format": "int32",
   "nullable": true,
+  "format": "int32",
   "description": "The number of minutes the API call was billed for."
 }*/
   minutes?: number;
   origin: string /* The origin of the API call. */;
   /*{
-  "format": "money-usd",
   "nullable": true,
   "title": "double",
+  "format": "money-usd",
   "description": "The price of the API call."
 }*/
   price?: number;
@@ -177,22 +177,22 @@ export interface ApiCallWithPrice_type {
 }*/
   response_body?: string;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The date and time the API call started billing."
 }*/
   started_at?: string;
   /*{
-  "format": "int32",
   "nullable": true,
   "title": "int32",
+  "format": "int32",
   "description": "The status code returned by the API call."
 }*/
   status_code?: number;
   stripe_invoice_item_id: string /* The Stripe invoice item ID of the API call if it is billable. */;
   token: Uuid_type /* The API token that made the API call. */;
-  /* format:date-time, title:DateTime, description:The date and time the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The date and time the API call was last updated. */
   updated_at: string;
   user_agent: string /* The user agent of the request. */;
   user_id: string /* The ID of the user that made the API call. */;
@@ -213,12 +213,12 @@ export interface ApiError_type {
 }
 
 export interface ApiToken_type {
-  /* format:date-time, title:DateTime, description:The date and time the API token was created. */
+  /* title:DateTime, format:date-time, description:The date and time the API token was created. */
   created_at: string;
   id: string /* The unique identifier for the API token. */;
   is_valid: boolean /* If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token. */;
   token: Uuid_type /* The API token itself. */;
-  /* format:date-time, title:DateTime, description:The date and time the API token was last updated. */
+  /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string;
   user_id: string /* The ID of the user that owns the API token. */;
 }
@@ -238,13 +238,13 @@ export interface AppClientInfo_type {
 
 export interface AsyncApiCall_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the async API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the async API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the async API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -252,20 +252,20 @@ export interface AsyncApiCall_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  input: any;
-  output?: string;
+  input: string;
+  output: any;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the async API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the async API call. */;
   type: AsyncApiCallType_type /* The type of async API call. */;
   /*{
-  "format": "date-time",
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the async API call was last updated."
 }*/
   updated_at: string;
@@ -276,13 +276,13 @@ This is the same as the API call ID. */
 export type AsyncApiCallOutput_type =
   | {
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
@@ -295,8 +295,8 @@ This is the same as the API call ID. */
       output_format_options?: OutputFormat_type;
       outputs: {
         [key: string]: /*{
-  "format": "byte",
-  "title": "String"
+  "title": "String",
+  "format": "byte"
 }*/
         string;
       };
@@ -304,15 +304,15 @@ This is the same as the API call ID. */
       /* nullable:true, description:The source format options of the file conversion. */
       src_format_options?: InputFormat_type;
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
       type: 'file_conversion';
-      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
     }
@@ -320,13 +320,13 @@ This is the same as the API call ID. */
       /* nullable:true, description:The resulting center of mass. */
       center_of_mass?: Point3d_type;
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
@@ -337,27 +337,27 @@ This is the same as the API call ID. */
       output_unit: UnitLength_type /* The output unit for the center of mass. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
       type: 'file_center_of_mass';
-      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
@@ -365,7 +365,7 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
-      /* format:double, nullable:true, description:The resulting mass. */
+      /* nullable:true, format:double, description:The resulting mass. */
       mass?: number;
       /* default:0, format:double, description:The material density as denoted by the user. */
       material_density: number;
@@ -373,27 +373,27 @@ This is the same as the API call ID. */
       output_unit: UnitMass_type /* The output unit for the mass. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
       type: 'file_mass';
-      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
@@ -404,31 +404,31 @@ This is the same as the API call ID. */
       output_unit: UnitVolume_type /* The output unit for the volume. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
       type: 'file_volume';
-      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
-      /* format:double, nullable:true, description:The resulting volume. */
+      /* nullable:true, format:double, description:The resulting volume. */
       volume?: number;
     }
   | {
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
-      /* format:double, nullable:true, description:The resulting density. */
+      /* nullable:true, format:double, description:The resulting density. */
       density?: number;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
@@ -442,27 +442,27 @@ This is the same as the API call ID. */
       output_unit: UnitDensity_type /* The output unit for the density. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
       type: 'file_density';
-      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
-      /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
@@ -473,17 +473,17 @@ This is the same as the API call ID. */
       output_unit: UnitArea_type /* The output unit for the surface area. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
       /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
-      /* format:double, nullable:true, description:The resulting surface area. */
+      /* nullable:true, format:double, description:The resulting surface area. */
       surface_area?: number;
       type: 'file_surface_area';
-      /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
     };
@@ -517,9 +517,9 @@ export interface BillingInfo_type {
   address?: NewAddress_type;
   name: string /* The name of the customer. */;
   /*{
+  "title": "String",
   "default": "",
   "format": "phone",
-  "title": "String",
   "description": "The phone for the customer."
 }*/
   phone: string;
@@ -614,7 +614,7 @@ export interface ClientMetrics_type {
 }
 
 export interface Cluster_type {
-  /* default:null, nullable:true, description:The IP address of the cluster. */
+  /* nullable:true, description:The IP address of the cluster. */
   addr?: string;
   /* default:0, format:int64, description:The auth timeout of the cluster. */
   auth_timeout: number;
@@ -752,9 +752,9 @@ export type CountryCode_type =
 
 export interface Coupon_type {
   /*{
-  "format": "money-usd",
   "nullable": true,
   "title": "double",
+  "format": "money-usd",
   "description": "Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer."
 }*/
   amount_off?: number;
@@ -762,8 +762,8 @@ export interface Coupon_type {
   deleted: boolean;
   id: string /* Unique identifier for the object. */;
   /*{
-  "format": "double",
   "nullable": true,
+  "format": "double",
   "description": "Percent that will be taken off the subtotal of any invoices for this customer for the duration of the coupon.\n\nFor example, a coupon with percent_off of 50 will make a %s100 invoice %s50 instead."
 }*/
   percent_off?: number;
@@ -800,9 +800,9 @@ export interface Customer_type {
   /* nullable:true, description:The customer's address. */
   address?: NewAddress_type;
   /*{
+  "title": "double",
   "default": 0,
   "format": "money-usd",
-  "title": "double",
   "description": "Current balance, if any, being stored on the customer in the payments service.\n\nIf negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that will be added to their next invoice. The balance does not refer to any unpaid invoices; it solely takes into account amounts that have yet to be successfully applied to any invoice. This balance is only taken into account as invoices are finalized."
 }*/
   balance: number;
@@ -824,43 +824,43 @@ export interface Customer_type {
   metadata: { [key: string]: string };
   name: string /* The customer's full name or business name. */;
   /*{
+  "title": "String",
   "default": "",
   "format": "phone",
-  "title": "String",
   "description": "The customer's phone number."
 }*/
   phone: string;
 }
 
 export interface CustomerBalance_type {
-  /* format:date-time, title:DateTime, description:The date and time the balance was created. */
+  /* title:DateTime, format:date-time, description:The date and time the balance was created. */
   created_at: string;
   id: Uuid_type /* The unique identifier for the balance. */;
   /*{
-  "format": "money-usd",
   "title": "double",
+  "format": "money-usd",
   "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the user per month."
 }*/
   monthly_credits_remaining: number;
   /*{
-  "format": "money-usd",
   "title": "double",
+  "format": "money-usd",
   "description": "The amount of pre-pay cash remaining in the balance. This number goes down as the user uses their pre-paid credits. The reason we track this amount is if a user ever wants to withdraw their pre-pay cash, we can use this amount to determine how much to give them. Say a user has $100 in pre-paid cash, their bill is worth, $50 after subtracting any other credits (like monthly etc.) Their bill is $50, their pre-pay cash remaining will be subtracted by 50 to pay the bill and their `pre_pay_credits_remaining` will be subtracted by 50 to pay the bill. This way if they want to withdraw money after, they can only withdraw $50 since that is the amount of cash they have remaining."
 }*/
   pre_pay_cash_remaining: number;
   /*{
-  "format": "money-usd",
   "title": "double",
+  "format": "money-usd",
   "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a user adds funds to their balance. This may be through a subscription or a one off payment."
 }*/
   pre_pay_credits_remaining: number;
   /*{
-  "format": "money-usd",
   "title": "double",
+  "format": "money-usd",
   "description": "This includes any outstanding, draft, or open invoices and any pending invoice items. This does not include any credits the user has on their account."
 }*/
   total_due: number;
-  /* format:date-time, title:DateTime, description:The date and time the balance was last updated. */
+  /* title:DateTime, format:date-time, description:The date and time the balance was last updated. */
   updated_at: string;
   user_id: string /* The user ID the balance belongs to. */;
 }
@@ -896,8 +896,8 @@ export interface Discount_type {
 
 export interface EmailAuthenticationForm_type {
   /*{
-  "format": "uri",
   "nullable": true,
+  "format": "uri",
   "description": "The URL to redirect back to after we have authenticated."
 }*/
   callback_url?: string;
@@ -963,22 +963,22 @@ export interface Export_type {
 }
 
 export interface ExportFile_type {
-  /* format:byte, title:String, description:The contents of the file, base64 encoded. */
+  /* title:String, format:byte, description:The contents of the file, base64 encoded. */
   contents: string;
   name: string /* The name of the file. */;
 }
 
 export interface ExtendedUser_type {
   company: string /* The user's company. */;
-  /* format:date-time, title:DateTime, description:The date and time the user was created. */
+  /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
   discord: string /* The user's Discord handle. */;
   /* format:email, description:The email address of the user. */
   email: string;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The date and time the email address was verified."
 }*/
   email_verified?: string;
@@ -990,7 +990,7 @@ export interface ExtendedUser_type {
   front_id?: string;
   github: string /* The user's GitHub handle. */;
   id: string /* The unique identifier for the user. */;
-  /* format:uri, title:String, description:The image avatar for the user. This is a URL. */
+  /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
   last_name: string /* The user's last name. */;
   /*{
@@ -1000,9 +1000,9 @@ export interface ExtendedUser_type {
   mailchimp_id?: string;
   name: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
   /*{
+  "title": "String",
   "default": "",
   "format": "phone",
-  "title": "String",
   "description": "The user's phone number."
 }*/
   phone: string;
@@ -1011,7 +1011,7 @@ export interface ExtendedUser_type {
   "description": "The user's Stripe ID. This is mostly used for internal mapping."
 }*/
   stripe_id?: string;
-  /* format:date-time, title:DateTime, description:The date and time the user was last updated. */
+  /* title:DateTime, format:date-time, description:The date and time the user was last updated. */
   updated_at: string;
 }
 
@@ -1027,8 +1027,8 @@ export interface ExtendedUserResultsPage_type {
 export interface FailureWebSocketResponse_type {
   errors: ApiError_type[] /* The errors that occurred. */;
   /*{
-  "format": "uuid",
   "nullable": true,
+  "format": "uuid",
   "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
 }*/
   request_id?: string;
@@ -1041,13 +1041,13 @@ export interface FileCenterOfMass_type {
   /* nullable:true, description:The resulting center of mass. */
   center_of_mass?: Point3d_type;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -1058,27 +1058,27 @@ This is the same as the API call ID. */
   output_unit: UnitLength_type /* The output unit for the center of mass. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface FileConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -1091,8 +1091,8 @@ This is the same as the API call ID. */
   output_format_options?: OutputFormat_type;
   outputs: {
     [key: string]: /*{
-  "format": "byte",
-  "title": "String"
+  "title": "String",
+  "format": "byte"
 }*/
     string;
   };
@@ -1100,29 +1100,29 @@ This is the same as the API call ID. */
   /* nullable:true, description:The source format options of the file conversion. */
   src_format_options?: InputFormat_type;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface FileDensity_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
-  /* format:double, nullable:true, description:The resulting density. */
+  /* nullable:true, format:double, description:The resulting density. */
   density?: number;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -1136,14 +1136,14 @@ This is the same as the API call ID. */
   output_unit: UnitDensity_type /* The output unit for the density. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -1168,13 +1168,13 @@ export type FileImportFormat_type =
 
 export interface FileMass_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -1182,7 +1182,7 @@ export interface FileMass_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  /* format:double, nullable:true, description:The resulting mass. */
+  /* nullable:true, format:double, description:The resulting mass. */
   mass?: number;
   /* default:0, format:double, description:The material density as denoted by the user. */
   material_density: number;
@@ -1190,27 +1190,27 @@ This is the same as the API call ID. */
   output_unit: UnitMass_type /* The output unit for the mass. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
 
 export interface FileSurfaceArea_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -1221,16 +1221,16 @@ This is the same as the API call ID. */
   output_unit: UnitArea_type /* The output unit for the surface area. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:double, nullable:true, description:The resulting surface area. */
+  /* nullable:true, format:double, description:The resulting surface area. */
   surface_area?: number;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -1241,13 +1241,13 @@ export interface FileSystemMetadata_type {
 
 export interface FileVolume_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -1258,17 +1258,17 @@ This is the same as the API call ID. */
   output_unit: UnitVolume_type /* The output unit for the volume. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
-  /* format:double, nullable:true, description:The resulting volume. */
+  /* nullable:true, format:double, description:The resulting volume. */
   volume?: number;
 }
 
@@ -1300,12 +1300,12 @@ export type GltfPresentation_type = 'compact' | 'pretty';
 export type GltfStorage_type = 'binary' | 'standard' | 'embedded';
 
 export interface HighlightSetEntity_type {
-  /* format:uuid, nullable:true, description:The UUID of the entity that was highlighted. */
+  /* nullable:true, format:uuid, description:The UUID of the entity that was highlighted. */
   entity_id?: string;
   /*{
+  "nullable": true,
   "format": "uint32",
   "minimum": 0,
-  "nullable": true,
   "description": "If the client sent a sequence ID with its request, the backend sends it back."
 }*/
   sequence?: number;
@@ -1380,23 +1380,23 @@ Defaults to the [KittyCAD co-ordinate system].
 
 export interface Invoice_type {
   /*{
+  "title": "double",
   "default": 0,
   "format": "money-usd",
-  "title": "double",
   "description": "Final amount due at this time for this invoice.\n\nIf the invoice's total is smaller than the minimum charge amount, for example, or if there is account credit that can be applied to the invoice, the `amount_due` may be 0. If there is a positive `starting_balance` for the invoice (the customer owes money), the `amount_due` will also take that into account. The charge that gets generated for the invoice will be for the amount specified in `amount_due`."
 }*/
   amount_due: number;
   /*{
+  "title": "double",
   "default": 0,
   "format": "money-usd",
-  "title": "double",
   "description": "The amount, in USD, that was paid."
 }*/
   amount_paid: number;
   /*{
+  "title": "double",
   "default": 0,
   "format": "money-usd",
-  "title": "double",
   "description": "The amount remaining, in USD, that is due."
 }*/
   amount_remaining: number;
@@ -1440,7 +1440,7 @@ export interface Invoice_type {
   "description": "Whether payment was successfully collected for this invoice.\n\nAn invoice can be paid (most commonly) with a charge or with credit from the customer's account balance."
 }*/
   paid: boolean;
-  /* format:uri, nullable:true, description:The link to download the PDF for the invoice. */
+  /* nullable:true, format:uri, description:The link to download the PDF for the invoice. */
   pdf?: string;
   receipt_number: string /* This is the transaction number that appears on email receipts sent for this invoice. */;
   statement_descriptor: string /* Extra information about an invoice for the customer's credit card statement. */;
@@ -1450,29 +1450,29 @@ export interface Invoice_type {
 }*/
   status?: InvoiceStatus_type;
   /*{
+  "title": "double",
   "default": 0,
   "format": "money-usd",
-  "title": "double",
   "description": "Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or tax is applied.\n\nItem discounts are already incorporated."
 }*/
   subtotal: number;
   /*{
+  "title": "double",
   "default": 0,
   "format": "money-usd",
-  "title": "double",
   "description": "The amount of tax on this invoice.\n\nThis is the sum of all the tax amounts on this invoice."
 }*/
   tax: number;
   /*{
+  "title": "double",
   "default": 0,
   "format": "money-usd",
-  "title": "double",
   "description": "Total after discounts and taxes."
 }*/
   total: number;
   /*{
-  "format": "uri",
   "nullable": true,
+  "format": "uri",
   "description": "The URL for the hosted invoice page, which allows customers to view and pay an invoice."
 }*/
   url?: string;
@@ -1480,9 +1480,9 @@ export interface Invoice_type {
 
 export interface InvoiceLineItem_type {
   /*{
+  "title": "double",
   "default": 0,
   "format": "money-usd",
-  "title": "double",
   "description": "The amount, in USD."
 }*/
   amount: number;
@@ -1634,9 +1634,9 @@ export type ModelingCmd_type =
   | {
       interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */;
       /*{
+  "nullable": true,
   "format": "uint32",
   "minimum": 0,
-  "nullable": true,
   "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
 }*/
       sequence?: number;
@@ -1744,9 +1744,9 @@ This is not the same as the export units. Setting export units is part of the fo
   | {
       selected_at_window: Point2d_type /* Coordinates of the window being clicked */;
       /*{
+  "nullable": true,
   "format": "uint32",
   "minimum": 0,
-  "nullable": true,
   "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
 }*/
       sequence?: number;
@@ -1778,9 +1778,24 @@ This is not the same as the export units. Setting export units is part of the fo
       type: 'object_visible';
     }
   | {
+      /* format:uuid, description:Which object to change */
+      object_id: string;
+      type: 'object_bring_to_front';
+    }
+  | {
       /* format:uuid, description:ID of the entity being queried. */
       entity_id: string;
       type: 'get_entity_type';
+    }
+  | {
+      /*{
+  "format": "uuid",
+  "description": "The id of the path to use as the inner profile (hole)."
+}*/
+      hole_id: string;
+      /* format:uuid, description:Which object to add the hole to. */
+      object_id: string;
+      type: 'solid2d_add_hole';
     }
   | {
       /* format:uuid, description:Which edge you want the faces of. */
@@ -1863,7 +1878,11 @@ This is not the same as the export units. Setting export units is part of the fo
     }
   | {
       clobber: boolean /* If true, any existing drawables within the obj will be replaced (the object will be reset) */;
-      hide: boolean /* If true, the plane will be created but hidden initially. */;
+      /*{
+  "nullable": true,
+  "description": "If true, the plane will be created but hidden initially."
+}*/
+      hide?: boolean;
       origin: Point3d_type /* Origin of the plane */;
       /*{
   "format": "double",
@@ -1886,9 +1905,9 @@ This is not the same as the export units. Setting export units is part of the fo
     }
   | {
       /*{
+  "nullable": true,
   "format": "uint32",
   "minimum": 0,
-  "nullable": true,
   "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
 }*/
       sequence?: number;
@@ -1948,9 +1967,9 @@ This is not the same as the export units. Setting export units is part of the fo
     }
   | {
       /*{
+  "nullable": true,
   "format": "uint32",
   "minimum": 0,
-  "nullable": true,
   "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
 }*/
       sequence?: number;
@@ -2048,6 +2067,11 @@ export type ModelingCmdId_type =
   "description": "All commands have unique IDs. These should be randomly generated."
 }*/
   string;
+
+export interface ModelingCmdReq_type {
+  cmd: ModelingCmd_type /* Which command to submit to the Kittycad engine. */;
+  cmd_id: ModelingCmdId_type /* ID of command being submitted. */;
+}
 
 export interface MouseClick_type {
   /*{
@@ -2540,9 +2564,9 @@ export interface RawFile_type {
 export interface RtcIceCandidateInit_type {
   candidate: string /* The candidate string associated with the object. */;
   /*{
+  "nullable": true,
   "format": "uint16",
   "minimum": 0,
-  "nullable": true,
   "description": "The index (starting at zero) of the m-line in the SDP this candidate is associated with."
 }*/
   sdpMLineIndex?: number;
@@ -2578,6 +2602,7 @@ export type SceneToolType_type =
   | 'select'
   | 'move'
   | 'sketch_line'
+  | 'sketch_tangential_arc'
   | 'sketch_curve'
   | 'sketch_curve_mod';
 
@@ -2589,18 +2614,18 @@ export interface SelectGet_type {
 }
 
 export interface SelectWithPoint_type {
-  /* format:uuid, nullable:true, description:The UUID of the entity that was selected. */
+  /* nullable:true, format:uuid, description:The UUID of the entity that was selected. */
   entity_id?: string;
 }
 
 export interface Session_type {
-  /* format:date-time, title:DateTime, description:The date and time the session was created. */
+  /* title:DateTime, format:date-time, description:The date and time the session was created. */
   created_at: string;
-  /* format:date-time, title:DateTime, description:The date and time the session expires. */
+  /* title:DateTime, format:date-time, description:The date and time the session expires. */
   expires: string;
   id: string /* The unique identifier for the session. */;
   session_token: Uuid_type /* The session token. */;
-  /* format:date-time, title:DateTime, description:The date and time the session was last updated. */
+  /* title:DateTime, format:date-time, description:The date and time the session was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user that the session belongs to. */;
 }
@@ -2620,7 +2645,7 @@ export interface Solid3dGetAllOppositeEdges_type {
 }
 
 export interface Solid3dGetNextAdjacentEdge_type {
-  /* format:uuid, nullable:true, description:The UUID of the edge. */
+  /* nullable:true, format:uuid, description:The UUID of the edge. */
   edge?: string;
 }
 
@@ -2630,7 +2655,7 @@ export interface Solid3dGetOppositeEdge_type {
 }
 
 export interface Solid3dGetPrevAdjacentEdge_type {
-  /* format:uuid, nullable:true, description:The UUID of the edge. */
+  /* nullable:true, format:uuid, description:The UUID of the edge. */
   edge?: string;
 }
 
@@ -2638,8 +2663,8 @@ export type StlStorage_type = 'ascii' | 'binary';
 
 export interface SuccessWebSocketResponse_type {
   /*{
-  "format": "uuid",
   "nullable": true,
+  "format": "uuid",
   "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
 }*/
   request_id?: string;
@@ -2659,7 +2684,7 @@ export interface System_type {
 }
 
 export interface TakeSnapshot_type {
-  /* format:byte, title:String, description:Contents of the image. */
+  /* title:String, format:byte, description:Contents of the image. */
   contents: string;
 }
 
@@ -2667,13 +2692,13 @@ export type UnitAngle_type = 'degrees' | 'radians';
 
 export interface UnitAngleConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -2684,18 +2709,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitAngle_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitAngle_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -2712,13 +2737,13 @@ export type UnitArea_type =
 
 export interface UnitAreaConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -2729,18 +2754,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitArea_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitArea_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -2753,13 +2778,13 @@ export type UnitCurrent_type =
 
 export interface UnitCurrentConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -2770,18 +2795,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitCurrent_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitCurrent_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -2798,13 +2823,13 @@ export type UnitEnergy_type =
 
 export interface UnitEnergyConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -2815,18 +2840,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitEnergy_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitEnergy_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -2842,13 +2867,13 @@ export type UnitForce_type =
 
 export interface UnitForceConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -2859,18 +2884,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitForce_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitForce_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -2887,13 +2912,13 @@ export type UnitFrequency_type =
 
 export interface UnitFrequencyConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -2904,18 +2929,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitFrequency_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitFrequency_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -2924,13 +2949,13 @@ export type UnitLength_type = 'cm' | 'ft' | 'in' | 'm' | 'mm' | 'yd';
 
 export interface UnitLengthConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -2941,18 +2966,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitLength_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitLength_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -2961,13 +2986,13 @@ export type UnitMass_type = 'g' | 'kg' | 'lb';
 
 export interface UnitMassConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -2978,18 +3003,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitMass_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitMass_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -3005,13 +3030,13 @@ export type UnitPower_type =
 
 export interface UnitPowerConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -3022,18 +3047,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitPower_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitPower_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -3049,13 +3074,13 @@ export type UnitPressure_type =
 
 export interface UnitPressureConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -3066,18 +3091,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitPressure_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitPressure_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -3090,13 +3115,13 @@ export type UnitTemperature_type =
 
 export interface UnitTemperatureConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -3107,18 +3132,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitTemperature_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitTemperature_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -3127,13 +3152,13 @@ export type UnitTorque_type = 'newton_metres' | 'pound_foot';
 
 export interface UnitTorqueConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -3144,18 +3169,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitTorque_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitTorque_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -3173,13 +3198,13 @@ export type UnitVolume_type =
 
 export interface UnitVolumeConversion_type {
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
-  /* format:date-time, title:DateTime, description:The time and date the API call was created. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
@@ -3190,18 +3215,18 @@ This is the same as the API call ID. */
   /* default:0, format:double, description:The input value. */
   input: number;
   input_unit: UnitVolume_type /* The source format of the unit conversion. */;
-  /* format:double, nullable:true, description:The resulting value. */
+  /* nullable:true, format:double, description:The resulting value. */
   output?: number;
   output_unit: UnitVolume_type /* The output format of the unit conversion. */;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The time and date the API call was started."
 }*/
   started_at?: string;
   status: ApiCallStatus_type /* The status of the API call. */;
-  /* format:date-time, title:DateTime, description:The time and date the API call was last updated. */
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
   user_id: string /* The user ID of the user who created the API call. */;
 }
@@ -3213,9 +3238,9 @@ export interface UpdateUser_type {
   github: string /* The user's GitHub handle. */;
   last_name: string /* The user's last name. */;
   /*{
+  "title": "String",
   "default": "",
   "format": "phone",
-  "title": "String",
   "description": "The user's phone number."
 }*/
   phone: string;
@@ -3223,33 +3248,33 @@ export interface UpdateUser_type {
 
 export interface User_type {
   company: string /* The user's company. */;
-  /* format:date-time, title:DateTime, description:The date and time the user was created. */
+  /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
   discord: string /* The user's Discord handle. */;
   /* format:email, description:The email address of the user. */
   email: string;
   /*{
-  "format": "date-time",
   "nullable": true,
   "title": "DateTime",
+  "format": "date-time",
   "description": "The date and time the email address was verified."
 }*/
   email_verified?: string;
   first_name: string /* The user's first name. */;
   github: string /* The user's GitHub handle. */;
   id: string /* The unique identifier for the user. */;
-  /* format:uri, title:String, description:The image avatar for the user. This is a URL. */
+  /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
   last_name: string /* The user's last name. */;
   name: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
   /*{
+  "title": "String",
   "default": "",
   "format": "phone",
-  "title": "String",
   "description": "The user's phone number."
 }*/
   phone: string;
-  /* format:date-time, title:DateTime, description:The date and time the user was last updated. */
+  /* title:DateTime, format:date-time, description:The date and time the user was last updated. */
   updated_at: string;
 }
 
@@ -3271,18 +3296,18 @@ export type Uuid_type =
 
 export interface VerificationToken_type {
   /*{
-  "format": "date-time",
   "title": "DateTime",
+  "format": "date-time",
   "description": "The date and time the verification token was created."
 }*/
   created_at: string;
-  /* format:date-time, title:DateTime, description:The date and time the verification token expires. */
+  /* title:DateTime, format:date-time, description:The date and time the verification token expires. */
   expires: string;
   id: string /* The token used for verification. This is used as the id for the table since it is unique per record. */;
   identifier: string /* The identifier for the user. This is typically the user's email address since that is what we are verifying. */;
   /*{
-  "format": "date-time",
   "title": "DateTime",
+  "format": "date-time",
   "description": "The date and time the verification token was last updated."
 }*/
   updated_at: string;
@@ -3308,6 +3333,10 @@ export type WebSocketRequest_type =
       cmd_id: ModelingCmdId_type /* ID of command being submitted. */;
       type: 'modeling_cmd_req';
     }
+  | {
+      requests: ModelingCmdReq_type[] /* A sequence of modeling requests. If any request fails, following requests will not be tried. */;
+      type: 'modeling_cmd_batch_req';
+    }
   | { type: 'ping' }
   | {
       metrics: ClientMetrics_type /* Collected metrics from the Client's end of the engine connection. */;
@@ -3317,8 +3346,8 @@ export type WebSocketRequest_type =
 export type WebSocketResponse_type =
   | {
       /*{
-  "format": "uuid",
   "nullable": true,
+  "format": "uuid",
   "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
 }*/
       request_id?: string;
@@ -3328,8 +3357,8 @@ export type WebSocketResponse_type =
   | {
       errors: ApiError_type[] /* The errors that occurred. */;
       /*{
-  "format": "uuid",
   "nullable": true,
+  "format": "uuid",
   "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
 }*/
       request_id?: string;
@@ -3445,6 +3474,7 @@ export interface Models {
   Method_type: Method_type;
   ModelingCmd_type: ModelingCmd_type;
   ModelingCmdId_type: ModelingCmdId_type;
+  ModelingCmdReq_type: ModelingCmdReq_type;
   MouseClick_type: MouseClick_type;
   NewAddress_type: NewAddress_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;

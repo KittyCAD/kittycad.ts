@@ -113,9 +113,9 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1user~1payment/put/x-typescript",
+    "path": "/paths/~1user~1payment/delete/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -129,17 +129,17 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1user~1payment/get/x-typescript",
+    "path": "/paths/~1user~1payment/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
   {
     "op": "add",
-    "path": "/paths/~1user~1payment/delete/x-typescript",
+    "path": "/paths/~1user~1payment/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -169,17 +169,17 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1user~1api-tokens~1{token}/get/x-typescript",
+    "path": "/paths/~1user~1api-tokens~1{token}/delete/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.get_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
   {
     "op": "add",
-    "path": "/paths/~1user~1api-tokens~1{token}/delete/x-typescript",
+    "path": "/paths/~1user~1api-tokens~1{token}/get/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.get_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -217,6 +217,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user/delete/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user/put/x-typescript",
     "value": {
       "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -228,14 +236,6 @@
     "path": "/paths/~1user/get/x-typescript",
     "value": {
       "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1user/delete/x-typescript",
-    "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
