@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import {} from '../../models.js';
+import { WebSocketResponse_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Modeling_commands_ws_params {
@@ -11,7 +11,7 @@ interface Modeling_commands_ws_params {
   webrtc: boolean;
 }
 
-type Modeling_commands_ws_return = any;
+type Modeling_commands_ws_return = WebSocketResponse_type;
 
 export default async function modeling_commands_ws({
   client,
