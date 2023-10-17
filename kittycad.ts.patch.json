@@ -57,6 +57,22 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1text-to-cad~1{id}/post/x-typescript",
+    "value": {
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_text_to_cad_model_feedback({\n        id: 'string',\n        feedback: 'thumbs_up',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1text-to-cad/get/x-typescript",
+    "value": {
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.list_text_to_cad_models_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1session~1{token}/get/x-typescript",
     "value": {
       "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_session_for_user({ token: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -529,17 +545,9 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1ai~1text-to-3d~1{output_format}/post/x-typescript",
+    "path": "/paths/~1ai~1text-to-cad~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_text_to_3d({\n        output_format: 'stl',\n        prompt: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1ai~1image-to-3d~1{input_format}~1{output_format}/post/x-typescript",
-    "value": {
-      "example": "import fsp from 'fs/promises'\nimport { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_image_to_3d({\n        input_format: 'jpg',\n        output_format: 'stl',\n        body: await fsp.readFile('./example', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_text_to_cad({ output_format: 'stl' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
