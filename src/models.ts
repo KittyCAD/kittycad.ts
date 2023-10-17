@@ -1,5 +1,7 @@
 export type AccountProvider_type = 'google' | 'github';
 
+export type AiFeedback_type = 'thumbs_up' | 'thumbs_down';
+
 export interface AiPluginApi_type {
   /* default:false, description:If the API is authenticated. */
   is_user_authenticated: boolean;
@@ -486,6 +488,47 @@ This is the same as the API call ID. */
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: string /* The user ID of the user who created the API call. */;
+    }
+  | {
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+      completed_at?: string;
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* nullable:true, description:Feedback from the user, if any. */
+      feedback?: AiFeedback_type;
+      /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      model_version: string /* The version of the model. */;
+      output_format: FileExportFormat_type /* The output format of the model. */;
+      outputs: {
+        [key: string]: /*{
+  "title": "String",
+  "format": "byte"
+}*/
+        string;
+      };
+      prompt: string /* The prompt. */;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the API call. */;
+      type: 'text_to_cad';
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+      updated_at: string;
+      user_id: string /* The user ID of the user who created the API call. */;
     };
 
 export interface AsyncApiCallResultsPage_type {
@@ -503,7 +546,8 @@ export type AsyncApiCallType_type =
   | 'file_center_of_mass'
   | 'file_mass'
   | 'file_density'
-  | 'file_surface_area';
+  | 'file_surface_area'
+  | 'text_to_cad';
 
 export type Axis_type = 'y' | 'z';
 
@@ -1321,10 +1365,6 @@ export interface IceServer_type {
 
 export type ImageFormat_type = 'png' | 'jpeg';
 
-export type ImageType_type =
-  /* An enumeration. */
-  'png' | 'jpg';
-
 export interface ImportFile_type {
   /*{
   "format": "uint8",
@@ -1568,10 +1608,6 @@ export interface Mass_type {
   output_unit: UnitMass_type /* The output unit for the mass. */;
 }
 
-export interface Mesh_type {
-  mesh: string;
-}
-
 export interface MetaClusterInfo_type {
   /* default:0, format:int64, description:The size of the cluster. */
   cluster_size: number;
@@ -1586,7 +1622,6 @@ export interface Metadata_type {
   environment: Environment_type /* The environment we are running in. */;
   fs: FileSystemMetadata_type /* Metadata about our file system. */;
   git_hash: string /* The git hash of the server. */;
-  point_e: PointEMetadata_type /* Metadata about our point-e instance. */;
   pubsub: Connection_type /* Metadata about our pub-sub connection. */;
 }
 
@@ -1962,6 +1997,11 @@ This is not the same as the export units. Setting export units is part of the fo
       vertex_ids: string[];
     }
   | {
+      /* format:uuid, description:Which path to query */
+      path_id: string;
+      type: 'path_get_vertex_uuids';
+    }
+  | {
       type: 'handle_mouse_drag_start';
       window: Point2d_type /* The mouse position. */;
     }
@@ -2251,6 +2291,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/PathGetVertexUuids"
+}*/
+      data: PathGetVertexUuids_type;
+      type: 'path_get_vertex_uuids';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/PlaneIntersectAndProject"
 }*/
       data: PlaneIntersectAndProject_type;
@@ -2429,6 +2476,13 @@ export interface PathGetInfo_type {
   segments: PathSegmentInfo_type[] /* All segments in the path, in the order they were added. */;
 }
 
+export interface PathGetVertexUuids_type {
+  /*{
+  "format": "uuid"
+}*/
+  vertex_ids: string[];
+}
+
 export type PathSegment_type =
   | {
       end: Point3d_type /* End point of the line. */;
@@ -2436,14 +2490,32 @@ export type PathSegment_type =
       type: 'line';
     }
   | {
-      /* format:double, description:Start of the arc along circle's perimeter. */
+      /*{
+  "deprecated": true,
+  "format": "double",
+  "description": "End of the arc along circle's perimeter, in degrees. Deprecated: use `end` instead."
+}*/
       angle_end: number;
-      /* format:double, description:Start of the arc along circle's perimeter. */
+      /*{
+  "deprecated": true,
+  "format": "double",
+  "description": "Start of the arc along circle's perimeter, in degrees. Deprecated: use `start` instead."
+}*/
       angle_start: number;
       center: Point2d_type /* Center of the circle */;
+      /*{
+  "nullable": true,
+  "description": "End of the arc along circle's perimeter. If not given, this will use `degrees_end` instead."
+}*/
+      end?: Angle_type;
       /* format:double, description:Radius of the circle */
       radius: number;
       relative: boolean /* Whether or not this arc is a relative offset */;
+      /*{
+  "nullable": true,
+  "description": "Start of the arc along circle's perimeter. If not given, this will use `degrees_start` instead."
+}*/
+      start?: Angle_type;
       type: 'arc';
     }
   | {
@@ -2542,10 +2614,6 @@ export interface Point3d_type {
   "format": "float"
 }*/
   z: number;
-}
-
-export interface PointEMetadata_type {
-  ok: boolean /* If the point-e service returned an ok response from ping. */;
 }
 
 export interface Pong_type {
@@ -2686,6 +2754,60 @@ export interface System_type {
 export interface TakeSnapshot_type {
   /* title:String, format:byte, description:Contents of the image. */
   contents: string;
+}
+
+export interface TextToCad_type {
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+  completed_at?: string;
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* nullable:true, description:Feedback from the user, if any. */
+  feedback?: AiFeedback_type;
+  /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  model_version: string /* The version of the model. */;
+  output_format: FileExportFormat_type /* The output format of the model. */;
+  outputs: {
+    [key: string]: /*{
+  "title": "String",
+  "format": "byte"
+}*/
+    string;
+  };
+  prompt: string /* The prompt. */;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+  updated_at: string;
+  user_id: string /* The user ID of the user who created the API call. */;
+}
+
+export interface TextToCadCreateBody_type {
+  prompt: string /* The prompt for the model. */;
+}
+
+export interface TextToCadResultsPage_type {
+  items: TextToCad_type[] /* list of items on this page of results */;
+  /*{
+  "nullable": true,
+  "description": "token used to fetch the next page of results (if any)"
+}*/
+  next_page?: string;
 }
 
 export type UnitAngle_type = 'degrees' | 'radians';
@@ -3367,6 +3489,7 @@ export type WebSocketResponse_type =
 
 export interface Models {
   AccountProvider_type: AccountProvider_type;
+  AiFeedback_type: AiFeedback_type;
   AiPluginApi_type: AiPluginApi_type;
   AiPluginApiType_type: AiPluginApiType_type;
   AiPluginAuth_type: AiPluginAuth_type;
@@ -3455,7 +3578,6 @@ export interface Models {
   HighlightSetEntity_type: HighlightSetEntity_type;
   IceServer_type: IceServer_type;
   ImageFormat_type: ImageFormat_type;
-  ImageType_type: ImageType_type;
   ImportFile_type: ImportFile_type;
   ImportFiles_type: ImportFiles_type;
   InputFormat_type: InputFormat_type;
@@ -3468,7 +3590,6 @@ export interface Models {
   JetstreamStats_type: JetstreamStats_type;
   LeafNode_type: LeafNode_type;
   Mass_type: Mass_type;
-  Mesh_type: Mesh_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
   Method_type: Method_type;
@@ -3487,6 +3608,7 @@ export interface Models {
   PathCommand_type: PathCommand_type;
   PathGetCurveUuidsForVertices_type: PathGetCurveUuidsForVertices_type;
   PathGetInfo_type: PathGetInfo_type;
+  PathGetVertexUuids_type: PathGetVertexUuids_type;
   PathSegment_type: PathSegment_type;
   PathSegmentInfo_type: PathSegmentInfo_type;
   PaymentIntent_type: PaymentIntent_type;
@@ -3497,7 +3619,6 @@ export interface Models {
   PlyStorage_type: PlyStorage_type;
   Point2d_type: Point2d_type;
   Point3d_type: Point3d_type;
-  PointEMetadata_type: PointEMetadata_type;
   Pong_type: Pong_type;
   RawFile_type: RawFile_type;
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
@@ -3518,6 +3639,9 @@ export interface Models {
   SurfaceArea_type: SurfaceArea_type;
   System_type: System_type;
   TakeSnapshot_type: TakeSnapshot_type;
+  TextToCad_type: TextToCad_type;
+  TextToCadCreateBody_type: TextToCadCreateBody_type;
+  TextToCadResultsPage_type: TextToCadResultsPage_type;
   UnitAngle_type: UnitAngle_type;
   UnitAngleConversion_type: UnitAngleConversion_type;
   UnitArea_type: UnitArea_type;

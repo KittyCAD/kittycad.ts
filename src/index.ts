@@ -1,6 +1,11 @@
-import create_image_to_3d from './api/ai/create_image_to_3d.js';
-import create_text_to_3d from './api/ai/create_text_to_3d.js';
-export const ai = { create_image_to_3d, create_text_to_3d };
+import create_text_to_cad from './api/ai/create_text_to_cad.js';
+import create_text_to_cad_model_feedback from './api/ai/create_text_to_cad_model_feedback.js';
+import list_text_to_cad_models_for_user from './api/ai/list_text_to_cad_models_for_user.js';
+export const ai = {
+  create_text_to_cad,
+  create_text_to_cad_model_feedback,
+  list_text_to_cad_models_for_user,
+};
 
 import get_api_call from './api/api-calls/get_api_call.js';
 import get_api_call_for_user from './api/api-calls/get_api_call_for_user.js';
