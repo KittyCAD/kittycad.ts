@@ -6331,6 +6331,80 @@
       }
     },
     "/user/text-to-cad/{id}": {
+      "get": {
+        "tags": [
+          "ai",
+          "beta",
+          "hidden"
+        ],
+        "summary": "Get a text-to-CAD response.",
+        "description": "This endpoint requires authentication by any KittyCAD user. The user must be the owner of the text-to-CAD model.",
+        "operationId": "get_text_to_cad_model_for_user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the model to give feedback to.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextToCad"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      },
       "post": {
         "tags": [
           "ai",
@@ -7039,6 +7113,13 @@
         "description": "An account provider.",
         "oneOf": [
           {
+            "description": "The Discord account provider.",
+            "type": "string",
+            "enum": [
+              "discord"
+            ]
+          },
+          {
             "description": "The Google account provider.",
             "type": "string",
             "enum": [
@@ -7666,7 +7747,11 @@
           },
           "user_id": {
             "description": "The ID of the user that made the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -7675,7 +7760,8 @@
           "method",
           "token",
           "updated_at",
-          "user_agent"
+          "user_agent",
+          "user_id"
         ]
       },
       "ApiCallWithPriceResultsPage": {
@@ -7733,7 +7819,11 @@
           },
           "id": {
             "description": "The unique identifier for the API token.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           },
           "is_valid": {
             "description": "If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token.",
@@ -7755,14 +7845,20 @@
           },
           "user_id": {
             "description": "The ID of the user that owns the API token.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
           "created_at",
+          "id",
           "is_valid",
           "token",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "ApiTokenResultsPage": {
@@ -7864,7 +7960,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the async API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           },
           "worker": {
             "description": "The worker node that is performing or performed the async API call.",
@@ -7876,7 +7976,8 @@
           "id",
           "status",
           "type",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "AsyncApiCallOutput": {
@@ -7984,7 +8085,11 @@
               },
               "user_id": {
                 "description": "The user ID of the user who created the API call.",
-                "type": "string"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
               }
             },
             "required": [
@@ -7994,7 +8099,8 @@
               "src_format",
               "status",
               "type",
-              "updated_at"
+              "updated_at",
+              "user_id"
             ]
           },
           {
@@ -8081,7 +8187,11 @@
               },
               "user_id": {
                 "description": "The user ID of the user who created the API call.",
-                "type": "string"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
               }
             },
             "required": [
@@ -8091,7 +8201,8 @@
               "src_format",
               "status",
               "type",
-              "updated_at"
+              "updated_at",
+              "user_id"
             ]
           },
           {
@@ -8189,7 +8300,11 @@
               },
               "user_id": {
                 "description": "The user ID of the user who created the API call.",
-                "type": "string"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
               }
             },
             "required": [
@@ -8200,7 +8315,8 @@
               "src_format",
               "status",
               "type",
-              "updated_at"
+              "updated_at",
+              "user_id"
             ]
           },
           {
@@ -8278,7 +8394,11 @@
               },
               "user_id": {
                 "description": "The user ID of the user who created the API call.",
-                "type": "string"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
               },
               "volume": {
                 "nullable": true,
@@ -8294,7 +8414,8 @@
               "src_format",
               "status",
               "type",
-              "updated_at"
+              "updated_at",
+              "user_id"
             ]
           },
           {
@@ -8392,7 +8513,11 @@
               },
               "user_id": {
                 "description": "The user ID of the user who created the API call.",
-                "type": "string"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
               }
             },
             "required": [
@@ -8403,7 +8528,8 @@
               "src_format",
               "status",
               "type",
-              "updated_at"
+              "updated_at",
+              "user_id"
             ]
           },
           {
@@ -8487,7 +8613,11 @@
               },
               "user_id": {
                 "description": "The user ID of the user who created the API call.",
-                "type": "string"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
               }
             },
             "required": [
@@ -8497,7 +8627,8 @@
               "src_format",
               "status",
               "type",
-              "updated_at"
+              "updated_at",
+              "user_id"
             ]
           },
           {
@@ -8593,7 +8724,11 @@
               },
               "user_id": {
                 "description": "The user ID of the user who created the API call.",
-                "type": "string"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
               }
             },
             "required": [
@@ -8604,7 +8739,8 @@
               "prompt",
               "status",
               "type",
-              "updated_at"
+              "updated_at",
+              "user_id"
             ]
           }
         ]
@@ -9630,7 +9766,11 @@
           },
           "user_id": {
             "description": "The user ID the balance belongs to.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -9640,7 +9780,8 @@
           "pre_pay_cash_remaining",
           "pre_pay_credits_remaining",
           "total_due",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "Density": {
@@ -10047,7 +10188,11 @@
           },
           "id": {
             "description": "The unique identifier for the user.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           },
           "image": {
             "title": "String",
@@ -10089,6 +10234,7 @@
         },
         "required": [
           "created_at",
+          "id",
           "image",
           "updated_at"
         ]
@@ -10238,7 +10384,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -10247,7 +10397,8 @@
           "output_unit",
           "src_format",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "FileConversion": {
@@ -10346,7 +10497,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -10355,7 +10510,8 @@
           "output_format",
           "src_format",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "FileDensity": {
@@ -10447,7 +10603,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -10457,7 +10617,8 @@
           "output_unit",
           "src_format",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "FileExportFormat": {
@@ -10657,7 +10818,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -10667,7 +10832,8 @@
           "output_unit",
           "src_format",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "FileSurfaceArea": {
@@ -10745,7 +10911,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -10754,7 +10924,8 @@
           "output_unit",
           "src_format",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "FileSystemMetadata": {
@@ -10839,7 +11010,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           },
           "volume": {
             "nullable": true,
@@ -10854,7 +11029,8 @@
           "output_unit",
           "src_format",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "Gateway": {
@@ -13953,7 +14129,11 @@
           },
           "user_id": {
             "description": "The user ID that this address belongs to.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           },
           "zip": {
             "description": "The zip component.",
@@ -13961,7 +14141,8 @@
           }
         },
         "required": [
-          "country"
+          "country",
+          "user_id"
         ]
       },
       "OAuth2ClientInfo": {
@@ -15690,7 +15871,11 @@
           },
           "id": {
             "description": "The unique identifier for the session.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           },
           "session_token": {
             "description": "The session token.",
@@ -15708,14 +15893,20 @@
           },
           "user_id": {
             "description": "The user ID of the user that the session belongs to.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
           "created_at",
           "expires",
+          "id",
           "session_token",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "Solid3dGetAllEdgeFaces": {
@@ -15988,7 +16179,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -15998,7 +16193,8 @@
           "output_format",
           "prompt",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "TextToCadCreateBody": {
@@ -16135,7 +16331,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -16144,7 +16344,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitArea": {
@@ -16289,7 +16490,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -16298,7 +16503,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitCurrent": {
@@ -16415,7 +16621,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -16424,7 +16634,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitDensity": {
@@ -16574,7 +16785,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -16583,7 +16798,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitForce": {
@@ -16721,7 +16937,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -16730,7 +16950,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitFrequency": {
@@ -16875,7 +17096,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -16884,7 +17109,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitLength": {
@@ -17015,7 +17241,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -17024,7 +17254,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitMass": {
@@ -17134,7 +17365,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -17143,7 +17378,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitPower": {
@@ -17281,7 +17517,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -17290,7 +17530,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitPressure": {
@@ -17428,7 +17669,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -17437,7 +17682,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitTemperature": {
@@ -17554,7 +17800,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -17563,7 +17813,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitTorque": {
@@ -17666,7 +17917,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -17675,7 +17930,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UnitVolume": {
@@ -17827,7 +18083,11 @@
           },
           "user_id": {
             "description": "The user ID of the user who created the API call.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           }
         },
         "required": [
@@ -17836,7 +18096,8 @@
           "input_unit",
           "output_unit",
           "status",
-          "updated_at"
+          "updated_at",
+          "user_id"
         ]
       },
       "UpdateUser": {
@@ -17912,7 +18173,11 @@
           },
           "id": {
             "description": "The unique identifier for the user.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           },
           "image": {
             "title": "String",
@@ -17944,6 +18209,7 @@
         },
         "required": [
           "created_at",
+          "id",
           "image",
           "updated_at"
         ]
@@ -17970,7 +18236,7 @@
         ]
       },
       "Uuid": {
-        "description": "A uuid.\n\nA Version 4 UUID is a universally unique identifier that is generated using random numbers.",
+        "description": "A uuid stored as a varchar(191).\n\nA Version 4 UUID is a universally unique identifier that is generated using random numbers.",
         "type": "string",
         "format": "uuid"
       },
@@ -17992,7 +18258,11 @@
           },
           "id": {
             "description": "The token used for verification. This is used as the id for the table since it is unique per record.",
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
           },
           "identifier": {
             "description": "The identifier for the user. This is typically the user's email address since that is what we are verifying.",
@@ -18008,6 +18278,7 @@
         "required": [
           "created_at",
           "expires",
+          "id",
           "updated_at"
         ]
       },
