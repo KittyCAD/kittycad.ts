@@ -1,9 +1,11 @@
 import create_text_to_cad from './api/ai/create_text_to_cad.js';
 import create_text_to_cad_model_feedback from './api/ai/create_text_to_cad_model_feedback.js';
+import get_text_to_cad_model_for_user from './api/ai/get_text_to_cad_model_for_user.js';
 import list_text_to_cad_models_for_user from './api/ai/list_text_to_cad_models_for_user.js';
 export const ai = {
   create_text_to_cad,
   create_text_to_cad_model_feedback,
+  get_text_to_cad_model_for_user,
   list_text_to_cad_models_for_user,
 };
 

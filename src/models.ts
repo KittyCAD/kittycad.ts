@@ -1,4 +1,4 @@
-export type AccountProvider_type = 'google' | 'github';
+export type AccountProvider_type = 'discord' | 'google' | 'github';
 
 export type AiFeedback_type = 'thumbs_up' | 'thumbs_down';
 
@@ -197,7 +197,7 @@ export interface ApiCallWithPrice_type {
   /* title:DateTime, format:date-time, description:The date and time the API call was last updated. */
   updated_at: string;
   user_agent: string /* The user agent of the request. */;
-  user_id: string /* The ID of the user that made the API call. */;
+  user_id: Uuid_type /* The ID of the user that made the API call. */;
 }
 
 export interface ApiCallWithPriceResultsPage_type {
@@ -217,12 +217,12 @@ export interface ApiError_type {
 export interface ApiToken_type {
   /* title:DateTime, format:date-time, description:The date and time the API token was created. */
   created_at: string;
-  id: string /* The unique identifier for the API token. */;
+  id: Uuid_type /* The unique identifier for the API token. */;
   is_valid: boolean /* If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token. */;
   token: Uuid_type /* The API token itself. */;
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string;
-  user_id: string /* The ID of the user that owns the API token. */;
+  user_id: Uuid_type /* The ID of the user that owns the API token. */;
 }
 
 export interface ApiTokenResultsPage_type {
@@ -271,7 +271,7 @@ This is the same as the API call ID. */
   "description": "The time and date the async API call was last updated."
 }*/
   updated_at: string;
-  user_id: string /* The user ID of the user who created the async API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the async API call. */;
   worker: string /* The worker node that is performing or performed the async API call. */;
 }
 
@@ -316,7 +316,7 @@ This is the same as the API call ID. */
       type: 'file_conversion';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the API call. */;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
     }
   | {
       /* nullable:true, description:The resulting center of mass. */
@@ -349,7 +349,7 @@ This is the same as the API call ID. */
       type: 'file_center_of_mass';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the API call. */;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
@@ -385,7 +385,7 @@ This is the same as the API call ID. */
       type: 'file_mass';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the API call. */;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
@@ -416,7 +416,7 @@ This is the same as the API call ID. */
       type: 'file_volume';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the API call. */;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
       /* nullable:true, format:double, description:The resulting volume. */
       volume?: number;
     }
@@ -454,7 +454,7 @@ This is the same as the API call ID. */
       type: 'file_density';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the API call. */;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
@@ -487,7 +487,7 @@ This is the same as the API call ID. */
       type: 'file_surface_area';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the API call. */;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
     }
   | {
       /*{
@@ -528,7 +528,7 @@ This is the same as the API call ID. */
       type: 'text_to_cad';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
-      user_id: string /* The user ID of the user who created the API call. */;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
     };
 
 export interface AsyncApiCallResultsPage_type {
@@ -906,7 +906,7 @@ export interface CustomerBalance_type {
   total_due: number;
   /* title:DateTime, format:date-time, description:The date and time the balance was last updated. */
   updated_at: string;
-  user_id: string /* The user ID the balance belongs to. */;
+  user_id: Uuid_type /* The user ID the balance belongs to. */;
 }
 
 export interface Density_type {
@@ -1033,7 +1033,7 @@ export interface ExtendedUser_type {
 }*/
   front_id?: string;
   github: string /* The user's GitHub handle. */;
-  id: string /* The unique identifier for the user. */;
+  id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
   last_name: string /* The user's last name. */;
@@ -1111,7 +1111,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export interface FileConversion_type {
@@ -1153,7 +1153,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export interface FileDensity_type {
@@ -1189,7 +1189,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type FileExportFormat_type =
@@ -1243,7 +1243,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export interface FileSurfaceArea_type {
@@ -1276,7 +1276,7 @@ This is the same as the API call ID. */
   surface_area?: number;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export interface FileSystemMetadata_type {
@@ -1311,7 +1311,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
   /* nullable:true, format:double, description:The resulting volume. */
   volume?: number;
 }
@@ -2130,7 +2130,7 @@ export interface NewAddress_type {
   state: string /* The state component. */;
   street1: string /* The first street component. */;
   street2: string /* The second street component. */;
-  user_id: string /* The user ID that this address belongs to. */;
+  user_id: Uuid_type /* The user ID that this address belongs to. */;
   zip: string /* The zip component. */;
 }
 
@@ -2691,11 +2691,11 @@ export interface Session_type {
   created_at: string;
   /* title:DateTime, format:date-time, description:The date and time the session expires. */
   expires: string;
-  id: string /* The unique identifier for the session. */;
+  id: Uuid_type /* The unique identifier for the session. */;
   session_token: Uuid_type /* The session token. */;
   /* title:DateTime, format:date-time, description:The date and time the session was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user that the session belongs to. */;
+  user_id: Uuid_type /* The user ID of the user that the session belongs to. */;
 }
 
 export interface Solid3dGetAllEdgeFaces_type {
@@ -2794,7 +2794,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export interface TextToCadCreateBody_type {
@@ -2844,7 +2844,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitArea_type =
@@ -2889,7 +2889,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitCurrent_type =
@@ -2930,7 +2930,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitDensity_type = 'lb:ft3' | 'kg:m3';
@@ -2975,7 +2975,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitForce_type =
@@ -3019,7 +3019,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitFrequency_type =
@@ -3064,7 +3064,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitLength_type = 'cm' | 'ft' | 'in' | 'm' | 'mm' | 'yd';
@@ -3101,7 +3101,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitMass_type = 'g' | 'kg' | 'lb';
@@ -3138,7 +3138,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitPower_type =
@@ -3182,7 +3182,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitPressure_type =
@@ -3226,7 +3226,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitTemperature_type =
@@ -3267,7 +3267,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitTorque_type = 'newton_metres' | 'pound_foot';
@@ -3304,7 +3304,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export type UnitVolume_type =
@@ -3350,7 +3350,7 @@ This is the same as the API call ID. */
   status: ApiCallStatus_type /* The status of the API call. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string;
-  user_id: string /* The user ID of the user who created the API call. */;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
 export interface UpdateUser_type {
@@ -3384,7 +3384,7 @@ export interface User_type {
   email_verified?: string;
   first_name: string /* The user's first name. */;
   github: string /* The user's GitHub handle. */;
-  id: string /* The unique identifier for the user. */;
+  id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
   last_name: string /* The user's last name. */;
@@ -3412,7 +3412,7 @@ export interface UserResultsPage_type {
 export type Uuid_type =
   /*{
   "format": "uuid",
-  "description": "A uuid.\n\nA Version 4 UUID is a universally unique identifier that is generated using random numbers."
+  "description": "A uuid stored as a varchar(191).\n\nA Version 4 UUID is a universally unique identifier that is generated using random numbers."
 }*/
   string;
 
@@ -3425,7 +3425,7 @@ export interface VerificationToken_type {
   created_at: string;
   /* title:DateTime, format:date-time, description:The date and time the verification token expires. */
   expires: string;
-  id: string /* The token used for verification. This is used as the id for the table since it is unique per record. */;
+  id: Uuid_type /* The token used for verification. This is used as the id for the table since it is unique per record. */;
   identifier: string /* The identifier for the user. This is typically the user's email address since that is what we are verifying. */;
   /*{
   "title": "DateTime",

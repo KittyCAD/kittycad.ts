@@ -1,0 +1,33 @@
+import fetch from 'node-fetch';
+import { TextToCad_type, Error_type } from '../../models.js';
+import { Client } from '../../client.js';
+
+interface Get_text_to_cad_model_for_user_params {
+  client?: Client;
+  id: string;
+}
+
+type Get_text_to_cad_model_for_user_return = TextToCad_type | Error_type;
+
+export default async function get_text_to_cad_model_for_user({
+  client,
+  id,
+}: Get_text_to_cad_model_for_user_params): Promise<Get_text_to_cad_model_for_user_return> {
+  const url = `/user/text-to-cad/${id}`;
+  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const fullUrl = urlBase + url;
+  const kittycadToken = client
+    ? client.token
+    : process.env.KITTYCAD_TOKEN || '';
+  const headers = {
+    Authorization: `Bearer ${kittycadToken}`,
+  };
+  const fetchOptions = {
+    method: 'GET',
+    headers,
+  };
+  const response = await fetch(fullUrl, fetchOptions);
+  const result =
+    (await response.json()) as Get_text_to_cad_model_for_user_return;
+  return result;
+}

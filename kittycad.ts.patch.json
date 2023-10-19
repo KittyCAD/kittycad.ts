@@ -65,6 +65,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1text-to-cad~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.get_text_to_cad_model_for_user({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1text-to-cad/get/x-typescript",
     "value": {
       "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.list_text_to_cad_models_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -379,7 +387,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1consent/get/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_consent({\n        provider: 'google',\n        callback_url: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_consent({\n        provider: 'discord',\n        callback_url: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -387,7 +395,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1callback/get/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback({\n        provider: 'google',\n        code: 'string',\n        state: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback({\n        provider: 'discord',\n        code: 'string',\n        state: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
