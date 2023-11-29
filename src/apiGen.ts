@@ -271,7 +271,7 @@ export default async function apiGen(lookup: any) {
           'users.get_user_front_hash_self',
           'oauth2.oauth2_provider_callback',
           'apps.apps_github_webhook',
-          'meta.internal_get_api_token_for_discord_user'
+          'meta.internal_get_api_token_for_discord_user',
         ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail

@@ -50,6 +50,54 @@ export interface AiPluginManifest_type {
   schema_version: string /* Manifest schema version. */;
 }
 
+export interface AiPrompt_type {
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "When the prompt was completed."
+}*/
+  completed_at?: string;
+  /* title:DateTime, format:date-time, description:The date and time the AI prompt was created. */
+  created_at: string;
+  /* nullable:true, description:The error message if the prompt failed. */
+  error?: string;
+  /* nullable:true, description:Feedback from the user, if any. */
+  feedback?: AiFeedback_type;
+  id: UuidBinary_type /* The unique identifier for the AI Prompt. */;
+  metadata: any;
+  model_version: string /* The version of the model. */;
+  /*{
+  "nullable": true,
+  "description": "The output file. In the case of TextToCad this is a link to a file in a GCP bucket."
+}*/
+  output_file?: string;
+  prompt: string /* The prompt. */;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "When the prompt was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the prompt. */;
+  type: AiPromptType_type /* The type of prompt. */;
+  /* title:DateTime, format:date-time, description:The date and time the AI prompt was last updated. */
+  updated_at: string;
+  user_id: Uuid_type /* The user ID of the user who created the AI Prompt. */;
+}
+
+export interface AiPromptResultsPage_type {
+  items: AiPrompt_type[] /* list of items on this page of results */;
+  /*{
+  "nullable": true,
+  "description": "token used to fetch the next page of results (if any)"
+}*/
+  next_page?: string;
+}
+
+export type AiPromptType_type = 'text_to_cad';
+
 export interface Angle_type {
   unit: UnitAngle_type /* What unit is the measurement? */;
   /*{
@@ -82,11 +130,11 @@ export interface AnnotationOptions_type {
 }
 
 export type AnnotationTextAlignmentX_type =
-  /* Horizontal Text aligment */
+  /* Horizontal Text alignment */
   'left' | 'center' | 'right';
 
 export type AnnotationTextAlignmentY_type =
-  /* Vertical Text aligment */
+  /* Vertical Text alignment */
   'bottom' | 'center' | 'top';
 
 export interface AnnotationTextOptions_type {
@@ -155,7 +203,7 @@ export interface ApiCallWithPrice_type {
   "description": "If the API call was spawned from the litterbox or not."
 }*/
   litterbox?: boolean;
-  method: Method_type /* The HTTP method requsted by the API call. */;
+  method: Method_type /* The HTTP method requested by the API call. */;
   /*{
   "nullable": true,
   "format": "int32",
@@ -1709,6 +1757,11 @@ export type ModelingCmd_type =
     }
   | { type: 'default_camera_disable_sketch_mode' }
   | {
+      type: 'default_camera_focus_on';
+      /* format:uuid, description:UUID of object to focus on. */
+      uuid: string;
+    }
+  | {
       /*{
   "format": "uuid"
 }*/
@@ -2047,7 +2100,11 @@ This is not the same as the export units. Setting export units is part of the fo
       /* format:uint32, minimum:0, description:Width of the stream. */
       width: number;
     }
-  | { files: ImportFile_type[] /* Files to import */; type: 'import_files' }
+  | {
+      files: ImportFile_type[] /* Files to import. */;
+      format: InputFormat_type /* Input file format. */;
+      type: 'import_files';
+    }
   | {
       /*{
   "format": "uuid"
@@ -2099,7 +2156,14 @@ This is not the same as the export units. Setting export units is part of the fo
       source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
       type: 'surface_area';
     }
-  | { type: 'get_sketch_mode_plane' };
+  | { type: 'get_sketch_mode_plane' }
+  | {
+      constraint_bound: PathComponentConstraintBound_type /* Which constraint to apply. */;
+      constraint_type: PathComponentConstraintType_type /* What part of the curve should be constrained. */;
+      /* format:uuid, description:Which curve to constrain. */
+      object_id: string;
+      type: 'curve_set_constraint';
+    };
 
 export type ModelingCmdId_type =
   /*{
@@ -2434,8 +2498,13 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
+      selection: Selection_type /* Export selection. */;
       storage: PlyStorage_type /* The storage for the output PLY file. */;
       type: 'ply';
+      /* Export length unit.
+
+Defaults to meters. */
+      units: UnitLength_type;
     }
   | {
       /* Co-ordinate system of output data.
@@ -2453,6 +2522,7 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
+      selection: Selection_type /* Export selection. */;
       storage: StlStorage_type /* Export storage. */;
       type: 'stl';
       /* Export length unit.
@@ -2464,6 +2534,19 @@ Defaults to meters. */
 export type PathCommand_type =
   /* The path component command type (within a Path) */
   'move_to' | 'line_to' | 'bez_curve_to' | 'nurbs_curve_to' | 'add_arc';
+
+export type PathComponentConstraintBound_type =
+  /* The path component constraint bounds type */
+  'unconstrained' | 'partially_constrained' | 'fully_constrained';
+
+export type PathComponentConstraintType_type =
+  /* The path component constraint type */
+  | 'unconstrained'
+  | 'vertical'
+  | 'horizontal'
+  | 'equal_length'
+  | 'parallel'
+  | 'angle_between';
 
 export interface PathGetCurveUuidsForVertices_type {
   /*{
@@ -2685,6 +2768,21 @@ export interface SelectWithPoint_type {
   /* nullable:true, format:uuid, description:The UUID of the entity that was selected. */
   entity_id?: string;
 }
+
+export type Selection_type =
+  | { type: 'default_scene' }
+  | {
+      /* format:uint, minimum:0, description:The index. */
+      index: number;
+      type: 'scene_by_index';
+    }
+  | { name: string /* The name. */; type: 'scene_by_name' }
+  | {
+      /* format:uint, minimum:0, description:The index. */
+      index: number;
+      type: 'mesh_by_index';
+    }
+  | { name: string /* The name. */; type: 'mesh_by_name' };
 
 export interface Session_type {
   /* title:DateTime, format:date-time, description:The date and time the session was created. */
@@ -3416,6 +3514,13 @@ export type Uuid_type =
 }*/
   string;
 
+export type UuidBinary_type =
+  /*{
+  "format": "uuid",
+  "description": "A uuid stored as binary(16).\n\nMysql binary(16) storage for UUIDs. Uses Version 7 UUID by default, a universally unique identifier that is generated using random numbers and a timestamp. UUIDv7 are recommended for database ids/primary keys because they are sequential and this helps with efficient indexing, especially on MySQL. For other uses cases, like API tokens, UUIDv4 makes more sense because it's completely random.\n\nHowever, both should be stored as binary on MySQL! Both versions use the same data format, so they can be used interchangeably with this data type."
+}*/
+  string;
+
 export interface VerificationToken_type {
   /*{
   "title": "DateTime",
@@ -3496,6 +3601,9 @@ export interface Models {
   AiPluginAuthType_type: AiPluginAuthType_type;
   AiPluginHttpAuthType_type: AiPluginHttpAuthType_type;
   AiPluginManifest_type: AiPluginManifest_type;
+  AiPrompt_type: AiPrompt_type;
+  AiPromptResultsPage_type: AiPromptResultsPage_type;
+  AiPromptType_type: AiPromptType_type;
   Angle_type: Angle_type;
   AnnotationLineEnd_type: AnnotationLineEnd_type;
   AnnotationLineEndOptions_type: AnnotationLineEndOptions_type;
@@ -3606,6 +3714,8 @@ export interface Models {
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
   PathCommand_type: PathCommand_type;
+  PathComponentConstraintBound_type: PathComponentConstraintBound_type;
+  PathComponentConstraintType_type: PathComponentConstraintType_type;
   PathGetCurveUuidsForVertices_type: PathGetCurveUuidsForVertices_type;
   PathGetInfo_type: PathGetInfo_type;
   PathGetVertexUuids_type: PathGetVertexUuids_type;
@@ -3628,6 +3738,7 @@ export interface Models {
   SceneToolType_type: SceneToolType_type;
   SelectGet_type: SelectGet_type;
   SelectWithPoint_type: SelectWithPoint_type;
+  Selection_type: Selection_type;
   Session_type: Session_type;
   Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
   Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
@@ -3673,6 +3784,7 @@ export interface Models {
   User_type: User_type;
   UserResultsPage_type: UserResultsPage_type;
   Uuid_type: Uuid_type;
+  UuidBinary_type: UuidBinary_type;
   VerificationToken_type: VerificationToken_type;
   Volume_type: Volume_type;
   WebSocketRequest_type: WebSocketRequest_type;

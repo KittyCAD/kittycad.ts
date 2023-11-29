@@ -433,6 +433,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1internal~1discord~1api-token~1{discord_id}/get/x-typescript",
+    "value": {
+      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.internal_get_api_token_for_discord_user({\n        discord_id: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1file~1volume/post/x-typescript",
     "value": {
       "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        output_unit: 'ft3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -556,6 +564,22 @@
     "path": "/paths/~1ai~1text-to-cad~1{output_format}/post/x-typescript",
     "value": {
       "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_text_to_cad({ output_format: 'stl' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ai-prompts~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.get_ai_prompt({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ai-prompts/get/x-typescript",
+    "value": {
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.list_ai_prompts({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

@@ -1,11 +1,15 @@
 import create_text_to_cad from './api/ai/create_text_to_cad.js';
 import create_text_to_cad_model_feedback from './api/ai/create_text_to_cad_model_feedback.js';
+import get_ai_prompt from './api/ai/get_ai_prompt.js';
 import get_text_to_cad_model_for_user from './api/ai/get_text_to_cad_model_for_user.js';
+import list_ai_prompts from './api/ai/list_ai_prompts.js';
 import list_text_to_cad_models_for_user from './api/ai/list_text_to_cad_models_for_user.js';
 export const ai = {
   create_text_to_cad,
   create_text_to_cad_model_feedback,
+  get_ai_prompt,
   get_text_to_cad_model_for_user,
+  list_ai_prompts,
   list_text_to_cad_models_for_user,
 };
 
@@ -71,12 +75,14 @@ import get_ai_plugin_manifest from './api/meta/get_ai_plugin_manifest.js';
 import get_metadata from './api/meta/get_metadata.js';
 import get_openai_schema from './api/meta/get_openai_schema.js';
 import get_schema from './api/meta/get_schema.js';
+import internal_get_api_token_for_discord_user from './api/meta/internal_get_api_token_for_discord_user.js';
 import ping from './api/meta/ping.js';
 export const meta = {
   get_ai_plugin_manifest,
   get_metadata,
   get_openai_schema,
   get_schema,
+  internal_get_api_token_for_discord_user,
   ping,
 };
 
