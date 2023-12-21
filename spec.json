@@ -19313,7 +19313,7 @@
   "tags": [
     {
       "name": "ai",
-      "description": "AI uses machine learning to generate 3D meshes.",
+      "description": "AI uses machine learning to generate CAD models.",
       "externalDocs": {
         "url": "https://docs.kittycad.io/api/ai"
       }
