@@ -64,7 +64,7 @@ export interface AiPrompt_type {
   error?: string;
   /* nullable:true, description:Feedback from the user, if any. */
   feedback?: AiFeedback_type;
-  id: UuidBinary_type /* The unique identifier for the AI Prompt. */;
+  id: Uuid_type /* The unique identifier for the AI Prompt. */;
   metadata: any;
   model_version: string /* The version of the model. */;
   /*{
@@ -986,6 +986,10 @@ export interface Discount_type {
   coupon: Coupon_type /* The coupon that applied to create this discount. */;
 }
 
+export type DistanceType_type =
+  | { type: 'euclidean' }
+  | { axis: GlobalAxis_type /* Global axis */; type: 'on_axis' };
+
 export interface EmailAuthenticationForm_type {
   /*{
   "nullable": true,
@@ -1009,6 +1013,13 @@ export interface EntityGetChildUuid_type {
   entity_id: string;
 }
 
+export interface EntityGetDistance_type {
+  /* format:double, description:The maximum distance between the input entities. */
+  max_distance: number;
+  /* format:double, description:The minimum distance between the input entities. */
+  min_distance: number;
+}
+
 export interface EntityGetNumChildren_type {
   /* format:uint32, minimum:0, description:The number of children the entity has. */
   num: number;
@@ -1017,6 +1028,13 @@ export interface EntityGetNumChildren_type {
 export interface EntityGetParentId_type {
   /* format:uuid, description:The UUID of the parent entity. */
   entity_id: string;
+}
+
+export interface EntityLinearPattern_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
 }
 
 export type EntityType_type =
@@ -1386,6 +1404,8 @@ export interface GetSketchModePlane_type {
   y_axis: Point3d_type /* The y axis. */;
   z_axis: Point3d_type /* The z axis (normal). */;
 }
+
+export type GlobalAxis_type = 'x' | 'y' | 'z';
 
 export type GltfPresentation_type = 'compact' | 'pretty';
 
@@ -1767,10 +1787,7 @@ export type ModelingCmd_type =
 }*/
       entity_ids: string[];
       format: OutputFormat_type /* The file format to export to. */;
-      /* Select the unit interpretation of exported objects.
-
-This is not the same as the export units. Setting export units is part of the format options. */
-      source_unit: UnitLength_type;
+      source_unit: UnitLength_type /* Select the unit interpretation of exported objects. */;
       type: 'export';
     }
   | {
@@ -2163,6 +2180,43 @@ This is not the same as the export units. Setting export units is part of the fo
       /* format:uuid, description:Which curve to constrain. */
       object_id: string;
       type: 'curve_set_constraint';
+    }
+  | {
+      animated: boolean /* Should we animate or snap for the camera transition? */;
+      /* format:uuid, description:Which entity to sketch on. */
+      entity_id: string;
+      ortho: boolean /* Should the camera use orthographic projection? In other words, should an object's size in the rendered image stay constant regardless of its distance from the camera. */;
+      type: 'enable_sketch_mode';
+    }
+  | {
+      /* format:float, description:Ambient Occlusion of the new material */
+      ambient_occlusion: number;
+      color: Color_type /* Color of the new material */;
+      /* format:float, description:Metalness of the new material */
+      metalness: number;
+      /* format:uuid, description:Which object to change */
+      object_id: string;
+      /* format:float, description:Roughness of the new material */
+      roughness: number;
+      type: 'object_set_material_params_pbr';
+    }
+  | {
+      distance_type: DistanceType_type /* Type of distance to be measured. */;
+      /* format:uuid, description:ID of the first entity being queried. */
+      entity_id1: string;
+      /* format:uuid, description:ID of the second entity being queried. */
+      entity_id2: string;
+      type: 'entity_get_distance';
+    }
+  | {
+      axis: Point3d_type /* Axis along which to make the copites */;
+      /* format:uuid, description:ID of the entity being copied. */
+      entity_id: string;
+      /* format:uint32, minimum:0, description:Number of repetitions to make. */
+      num_repetitions: number;
+      /* format:double, description:Spacing between repetitions. */
+      spacing: number;
+      type: 'entity_linear_pattern';
     };
 
 export type ModelingCmdId_type =
@@ -2275,6 +2329,20 @@ export type OkModelingCmdResponse_type =
 }*/
       data: GetEntityType_type;
       type: 'get_entity_type';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityGetDistance"
+}*/
+      data: EntityGetDistance_type;
+      type: 'entity_get_distance';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityLinearPattern"
+}*/
+      data: EntityLinearPattern_type;
+      type: 'entity_linear_pattern';
     }
   | {
       /*{
@@ -2453,9 +2521,11 @@ export type OkWebSocketResponseData_type =
   | { data: object; type: 'metrics_request' };
 
 export interface Onboarding_type {
-  first_call_from_their_machine_date: string /* When the user first called an endpoint from their machine (i.e. not a litterbox execution) */;
-  first_litterbox_execute_date: string /* When the user first used the litterbox */;
-  first_token_date: string /* When the user created their first token */;
+  first_call_from_modeling_app_date: string /* When the user first used the modeling app. */;
+  first_call_from_text_to_cad_date: string /* When the user first used text-to-CAD. */;
+  first_call_from_their_machine_date: string /* When the user first called an endpoint from their machine (i.e. not a litterbox execution). */;
+  first_litterbox_execute_date: string /* When the user first used the litterbox. */;
+  first_token_date: string /* When the user created their first token. */;
 }
 
 export interface OutputFile_type {
@@ -2573,32 +2643,12 @@ export type PathSegment_type =
       type: 'line';
     }
   | {
-      /*{
-  "deprecated": true,
-  "format": "double",
-  "description": "End of the arc along circle's perimeter, in degrees. Deprecated: use `end` instead."
-}*/
-      angle_end: number;
-      /*{
-  "deprecated": true,
-  "format": "double",
-  "description": "Start of the arc along circle's perimeter, in degrees. Deprecated: use `start` instead."
-}*/
-      angle_start: number;
       center: Point2d_type /* Center of the circle */;
-      /*{
-  "nullable": true,
-  "description": "End of the arc along circle's perimeter. If not given, this will use `degrees_end` instead."
-}*/
-      end?: Angle_type;
+      end: Angle_type /* End of the arc along circle's perimeter. */;
       /* format:double, description:Radius of the circle */
       radius: number;
       relative: boolean /* Whether or not this arc is a relative offset */;
-      /*{
-  "nullable": true,
-  "description": "Start of the arc along circle's perimeter. If not given, this will use `degrees_start` instead."
-}*/
-      start?: Angle_type;
+      start: Angle_type /* Start of the arc along circle's perimeter. */;
       type: 'arc';
     }
   | {
@@ -3508,17 +3558,7 @@ export interface UserResultsPage_type {
 }
 
 export type Uuid_type =
-  /*{
-  "format": "uuid",
-  "description": "A uuid stored as a varchar(191).\n\nA Version 4 UUID is a universally unique identifier that is generated using random numbers."
-}*/
-  string;
-
-export type UuidBinary_type =
-  /*{
-  "format": "uuid",
-  "description": "A uuid stored as binary(16).\n\nMysql binary(16) storage for UUIDs. Uses Version 7 UUID by default, a universally unique identifier that is generated using random numbers and a timestamp. UUIDv7 are recommended for database ids/primary keys because they are sequential and this helps with efficient indexing, especially on MySQL. For other uses cases, like API tokens, UUIDv4 makes more sense because it's completely random.\n\nHowever, both should be stored as binary on MySQL! Both versions use the same data format, so they can be used interchangeably with this data type."
-}*/
+  /* format:uuid, description:A UUID usually v4 or v7 */
   string;
 
 export interface VerificationToken_type {
@@ -3654,11 +3694,14 @@ export interface Models {
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
   Direction_type: Direction_type;
   Discount_type: Discount_type;
+  DistanceType_type: DistanceType_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
   EntityGetAllChildUuids_type: EntityGetAllChildUuids_type;
   EntityGetChildUuid_type: EntityGetChildUuid_type;
+  EntityGetDistance_type: EntityGetDistance_type;
   EntityGetNumChildren_type: EntityGetNumChildren_type;
   EntityGetParentId_type: EntityGetParentId_type;
+  EntityLinearPattern_type: EntityLinearPattern_type;
   EntityType_type: EntityType_type;
   Environment_type: Environment_type;
   Error_type: Error_type;
@@ -3681,6 +3724,7 @@ export interface Models {
   Gateway_type: Gateway_type;
   GetEntityType_type: GetEntityType_type;
   GetSketchModePlane_type: GetSketchModePlane_type;
+  GlobalAxis_type: GlobalAxis_type;
   GltfPresentation_type: GltfPresentation_type;
   GltfStorage_type: GltfStorage_type;
   HighlightSetEntity_type: HighlightSetEntity_type;
@@ -3784,7 +3828,6 @@ export interface Models {
   User_type: User_type;
   UserResultsPage_type: UserResultsPage_type;
   Uuid_type: Uuid_type;
-  UuidBinary_type: UuidBinary_type;
   VerificationToken_type: VerificationToken_type;
   Volume_type: Volume_type;
   WebSocketRequest_type: WebSocketRequest_type;

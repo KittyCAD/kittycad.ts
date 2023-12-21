@@ -160,7 +160,6 @@ import delete_user_self from './api/users/delete_user_self.js';
 import get_session_for_user from './api/users/get_session_for_user.js';
 import get_user from './api/users/get_user.js';
 import get_user_extended from './api/users/get_user_extended.js';
-import get_user_front_hash_self from './api/users/get_user_front_hash_self.js';
 import get_user_onboarding_self from './api/users/get_user_onboarding_self.js';
 import get_user_self from './api/users/get_user_self.js';
 import get_user_self_extended from './api/users/get_user_self_extended.js';
@@ -172,7 +171,6 @@ export const users = {
   get_session_for_user,
   get_user,
   get_user_extended,
-  get_user_front_hash_self,
   get_user_onboarding_self,
   get_user_self,
   get_user_self_extended,
