@@ -86,9 +86,6 @@ export const meta = {
   ping,
 };
 
-import modeling_commands_ws from './api/modeling/modeling_commands_ws.js';
-export const modeling = { modeling_commands_ws };
-
 import device_access_token from './api/oauth2/device_access_token.js';
 import device_auth_confirm from './api/oauth2/device_auth_confirm.js';
 import device_auth_request from './api/oauth2/device_auth_request.js';

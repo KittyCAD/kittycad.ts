@@ -147,7 +147,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_information_for_user({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                user_id: 'A UUID usually v4 or v7',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -155,7 +155,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_user({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                user_id: 'A UUID usually v4 or v7',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -243,7 +243,7 @@
     "op": "add",
     "path": "/paths/~1user/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self({\n        body: {\n            company: \"The user's company.\",\n            discord: \"The user's Discord handle.\",\n            first_name: \"The user's first name.\",\n            github: \"The user's GitHub handle.\",\n            last_name: \"The user's last name.\",\n            phone: \"The user's phone number.\",\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -411,7 +411,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1device~1confirm/post/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_confirm()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_confirm({\n        body: { user_code: 'The user code.' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -555,7 +555,7 @@
     "op": "add",
     "path": "/paths/~1ai~1text-to-cad~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_text_to_cad({ output_format: 'stl' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_text_to_cad({\n        output_format: 'stl',\n        body: { prompt: 'The prompt for the model.' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

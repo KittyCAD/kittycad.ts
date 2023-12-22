@@ -1,16 +1,18 @@
 import fetch from 'node-fetch';
-import { Customer_type, Error_type } from '../../models.js';
+import { Customer_type, Error_type, BillingInfo_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Update_payment_information_for_user_params {
   client?: Client;
+  body: BillingInfo_type;
 }
 
 type Update_payment_information_for_user_return = Customer_type | Error_type;
 
 export default async function update_payment_information_for_user({
   client,
-}: Update_payment_information_for_user_params = {}): Promise<Update_payment_information_for_user_return> {
+  body,
+}: Update_payment_information_for_user_params): Promise<Update_payment_information_for_user_return> {
   const url = `/user/payment`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
@@ -23,6 +25,7 @@ export default async function update_payment_information_for_user({
   const fetchOptions = {
     method: 'PUT',
     headers,
+    body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   const result =
