@@ -144,7 +144,74 @@ export default async function apiGen(lookup: any) {
       const requestBody = operation.specSection
         ?.requestBody as OpenAPIV3.ResponseObject;
 
-      if (requestBody?.content?.['application/octet-stream']) {
+      if ((requestBody?.content?.['application/json']?.schema as any)?.$ref) {
+        const ref = (requestBody.content['application/json'].schema as any)
+          .$ref;
+        const typeReference = lookup[ref];
+        importedParamTypes.push(typeReference);
+        inputTypes.push(`body: ${typeReference}`);
+        inputParams.push('body');
+
+        const mapOverProperties = (rawRef: string): string => {
+          const refSchema = spec.components.schemas[
+            rawRef.split('/').pop()
+          ] as OpenAPIV3.SchemaObject;
+          if ('type' in refSchema && !refSchema.properties) {
+            if (refSchema.type === 'string') {
+              return `"${refSchema.description || 'string'}"`;
+            }
+            if (refSchema.type === 'number') {
+              return `7`;
+            }
+            if (refSchema.type === 'boolean') {
+              return `true`;
+            }
+          }
+          if (!refSchema.properties) {
+            return '';
+          }
+          const requiredProperties = Object.entries(refSchema.properties);
+          if (!requiredProperties.length) {
+            return '';
+          }
+          return `{${requiredProperties
+            .map(([key, value]) => {
+              if ('$ref' in value) {
+                // TODO
+                return '';
+              }
+              if (value.type === 'string') {
+                return `${key}: "${value.description || 'string'}"`;
+              }
+              if (value.type === 'number') {
+                return `${key}: 7`;
+              }
+              if (value.type === 'boolean') {
+                return `${key}: true`;
+              }
+              if (
+                'allOf' in value &&
+                value.allOf.length === 1 &&
+                '$ref' in value.allOf[0]
+              ) {
+                const ref = value.allOf[0].$ref;
+                return `${key}: ${mapOverProperties(ref)}`;
+              }
+              return '';
+            })
+            .filter(Boolean)
+            .join(', ')}}`;
+        };
+        const theStr = mapOverProperties(ref);
+        if (theStr) {
+          inputParamsExamples.push(`body: ${theStr}`);
+        }
+
+        template = template.replaceAll(
+          "body: 'BODY'",
+          'body: JSON.stringify(body)',
+        );
+      } else if (requestBody?.content?.['application/octet-stream']) {
         const schema = requestBody.content['application/octet-stream']
           .schema as OpenAPIV3.SchemaObject;
         if (schema?.type !== 'string') {
@@ -327,10 +394,12 @@ export default async function apiGen(lookup: any) {
           exportsStr: [],
         };
       }
-      indexFile[safeTag].importsStr.push(
-        `import ${operationId} from './api/${tag}/${operationId}.js';`,
-      );
-      indexFile[safeTag].exportsStr.push(operationId);
+      if (!['modeling_commands_ws'].includes(operationId)) {
+        indexFile[safeTag].importsStr.push(
+          `import ${operationId} from './api/${tag}/${operationId}.js';`,
+        );
+        indexFile[safeTag].exportsStr.push(operationId);
+      }
       const libWritePromise = fsp.writeFile(
         `./src/api/${tag}/${operationId}.ts`,
         template,
@@ -345,6 +414,7 @@ export default async function apiGen(lookup: any) {
   Object.entries(indexFile)
     .sort(([a], [b]) => (a > b ? 1 : -1))
     .forEach(([tag, { importsStr: imports, exportsStr: exports }]) => {
+      if (exports.length === 0) return;
       indexFileString += imports.sort().join('\n') + '\n';
       indexFileString += `export const ${tag} = { ${exports
         .sort()
