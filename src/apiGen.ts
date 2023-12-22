@@ -394,10 +394,12 @@ export default async function apiGen(lookup: any) {
           exportsStr: [],
         };
       }
-      indexFile[safeTag].importsStr.push(
-        `import ${operationId} from './api/${tag}/${operationId}.js';`,
-      );
-      indexFile[safeTag].exportsStr.push(operationId);
+      if (!['modeling_commands_ws'].includes(operationId)) {
+        indexFile[safeTag].importsStr.push(
+          `import ${operationId} from './api/${tag}/${operationId}.js';`,
+        );
+        indexFile[safeTag].exportsStr.push(operationId);
+      }
       const libWritePromise = fsp.writeFile(
         `./src/api/${tag}/${operationId}.ts`,
         template,
@@ -412,6 +414,7 @@ export default async function apiGen(lookup: any) {
   Object.entries(indexFile)
     .sort(([a], [b]) => (a > b ? 1 : -1))
     .forEach(([tag, { importsStr: imports, exportsStr: exports }]) => {
+      if (exports.length === 0) return;
       indexFileString += imports.sort().join('\n') + '\n';
       indexFileString += `export const ${tag} = { ${exports
         .sort()
