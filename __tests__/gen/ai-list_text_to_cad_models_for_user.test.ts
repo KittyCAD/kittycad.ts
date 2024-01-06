@@ -5,6 +5,7 @@ async function example() {
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
+    no_models: true,
   });
   if ('error_code' in response) throw response;
 

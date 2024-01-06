@@ -71,16 +71,12 @@ export const file = {
   create_file_volume,
 };
 
-import get_ai_plugin_manifest from './api/meta/get_ai_plugin_manifest.js';
 import get_metadata from './api/meta/get_metadata.js';
-import get_openai_schema from './api/meta/get_openai_schema.js';
 import get_schema from './api/meta/get_schema.js';
 import internal_get_api_token_for_discord_user from './api/meta/internal_get_api_token_for_discord_user.js';
 import ping from './api/meta/ping.js';
 export const meta = {
-  get_ai_plugin_manifest,
   get_metadata,
-  get_openai_schema,
   get_schema,
   internal_get_api_token_for_discord_user,
   ping,

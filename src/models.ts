@@ -2,54 +2,6 @@ export type AccountProvider_type = 'discord' | 'google' | 'github';
 
 export type AiFeedback_type = 'thumbs_up' | 'thumbs_down';
 
-export interface AiPluginApi_type {
-  /* default:false, description:If the API is authenticated. */
-  is_user_authenticated: boolean;
-  /* default:openapi, description:The type of API. */
-  type: AiPluginApiType_type;
-  /* format:uri, description:The url to the API's schema. */
-  url: string;
-}
-
-export type AiPluginApiType_type = 'openapi';
-
-export interface AiPluginAuth_type {
-  /* nullable:true, description:The type of http authorization. */
-  authorization_type?: AiPluginHttpAuthType_type;
-  /* default:none, description:The type of authentication. */
-  type: AiPluginAuthType_type;
-}
-
-export type AiPluginAuthType_type =
-  | 'none'
-  | 'user_http'
-  | 'service_http'
-  | 'oauth';
-
-export type AiPluginHttpAuthType_type = 'basic' | 'bearer';
-
-export interface AiPluginManifest_type {
-  api: AiPluginApi_type /* API specification. */;
-  auth: AiPluginAuth_type /* Authentication schema. */;
-  /*{
-  "format": "email",
-  "description": "Email contact for safety/moderation reachout, support, and deactivation."
-}*/
-  contact_email: string;
-  description_for_human: string /* Human-readable description of the plugin. */;
-  description_for_model: string /* Description better tailored to the model, such as token context length considerations or keyword usage for improved plugin prompting. */;
-  /*{
-  "format": "uri",
-  "description": "Redirect URL for users to view plugin information."
-}*/
-  legal_info_url: string;
-  /* format:uri, description:URL used to fetch the plugin's logo. */
-  logo_url: string;
-  name_for_human: string /* Human-readable name, such as the full company name. */;
-  name_for_model: string /* Name the model will used to target the plugin. */;
-  schema_version: string /* Manifest schema version. */;
-}
-
 export interface AiPrompt_type {
   /*{
   "nullable": true,
@@ -617,6 +569,10 @@ export interface BillingInfo_type {
   phone: string;
 }
 
+export type BlockReason_type =
+  | 'missing_payment_method'
+  | 'payment_method_failed';
+
 export interface CacheMetadata_type {
   ok: boolean /* If the cache returned an ok response from ping. */;
 }
@@ -853,6 +809,12 @@ export interface Coupon_type {
   /* default:false, description:Always true for a deleted object. */
   deleted: boolean;
   id: string /* Unique identifier for the object. */;
+  metadata: { [key: string]: string };
+  /*{
+  "nullable": true,
+  "description": "Name of the coupon displayed to customers on, for instance invoices, or receipts.\n\nBy default the `id` is shown if `name` is not set."
+}*/
+  name?: string;
   /*{
   "nullable": true,
   "format": "double",
@@ -1047,7 +1009,8 @@ export type EntityType_type =
   | 'solid3d'
   | 'edge'
   | 'face'
-  | 'plane';
+  | 'plane'
+  | 'vertex';
 
 export type Environment_type = 'DEVELOPMENT' | 'PREVIEW' | 'PRODUCTION';
 
@@ -1079,6 +1042,8 @@ export interface ExportFile_type {
 }
 
 export interface ExtendedUser_type {
+  /* nullable:true, description:If the user should be blocked and the reason why. */
+  block?: BlockReason_type;
   company: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
@@ -1606,7 +1571,6 @@ export interface InvoiceLineItem_type {
 }
 
 export type InvoiceStatus_type =
-  | 'deleted'
   | 'draft'
   | 'open'
   | 'paid'
@@ -2217,6 +2181,23 @@ export type ModelingCmd_type =
       /* format:double, description:Spacing between repetitions. */
       spacing: number;
       type: 'entity_linear_pattern';
+    }
+  | {
+      selection_type: SceneSelectionType_type /* What type of selection should occur when you select something? */;
+      type: 'set_selection_type';
+    }
+  | {
+      filter: EntityType_type[] /* If vector is empty, clear all filters. If vector is non-empty, only the given entity types will be selectable. */;
+      type: 'set_selection_filter';
+    }
+  | { type: 'default_camera_set_orthographic' }
+  | {
+      /*{
+  "nullable": true,
+  "description": "If this is not given, use the same parameters as last time the perspective camera was used."
+}*/
+      parameters?: PerspectiveCameraParameters_type;
+      type: 'default_camera_set_perspective';
     };
 
 export type ModelingCmdId_type =
@@ -2521,11 +2502,27 @@ export type OkWebSocketResponseData_type =
   | { data: object; type: 'metrics_request' };
 
 export interface Onboarding_type {
-  first_call_from_modeling_app_date: string /* When the user first used the modeling app. */;
-  first_call_from_text_to_cad_date: string /* When the user first used text-to-CAD. */;
-  first_call_from_their_machine_date: string /* When the user first called an endpoint from their machine (i.e. not a litterbox execution). */;
-  first_litterbox_execute_date: string /* When the user first used the litterbox. */;
-  first_token_date: string /* When the user created their first token. */;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "When the user first used the modeling app."
+}*/
+  first_call_from_modeling_app_date?: string;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "When the user first used text-to-CAD."
+}*/
+  first_call_from_text_to_cad_date?: string;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "When the user created their first token."
+}*/
+  first_token_date?: string;
 }
 
 export interface OutputFile_type {
@@ -2709,6 +2706,15 @@ export interface PaymentMethodCardChecks_type {
 }
 
 export type PaymentMethodType_type = 'card';
+
+export interface PerspectiveCameraParameters_type {
+  /* format:float, description:Camera frustum vertical field of view. */
+  fov_y: number;
+  /* format:float, description:Camera frustum far plane. */
+  z_far: number;
+  /* format:float, description:Camera frustum near plane. */
+  z_near: number;
+}
 
 export interface PlaneIntersectAndProject_type {
   /*{
@@ -3517,6 +3523,8 @@ export interface UpdateUser_type {
 }
 
 export interface User_type {
+  /* nullable:true, description:If the user should be blocked and the reason why. */
+  block?: BlockReason_type;
   company: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
@@ -3635,12 +3643,6 @@ export type WebSocketResponse_type =
 export interface Models {
   AccountProvider_type: AccountProvider_type;
   AiFeedback_type: AiFeedback_type;
-  AiPluginApi_type: AiPluginApi_type;
-  AiPluginApiType_type: AiPluginApiType_type;
-  AiPluginAuth_type: AiPluginAuth_type;
-  AiPluginAuthType_type: AiPluginAuthType_type;
-  AiPluginHttpAuthType_type: AiPluginHttpAuthType_type;
-  AiPluginManifest_type: AiPluginManifest_type;
   AiPrompt_type: AiPrompt_type;
   AiPromptResultsPage_type: AiPromptResultsPage_type;
   AiPromptType_type: AiPromptType_type;
@@ -3668,6 +3670,7 @@ export interface Models {
   Axis_type: Axis_type;
   AxisDirectionPair_type: AxisDirectionPair_type;
   BillingInfo_type: BillingInfo_type;
+  BlockReason_type: BlockReason_type;
   CacheMetadata_type: CacheMetadata_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
   CardDetails_type: CardDetails_type;
@@ -3769,6 +3772,7 @@ export interface Models {
   PaymentMethod_type: PaymentMethod_type;
   PaymentMethodCardChecks_type: PaymentMethodCardChecks_type;
   PaymentMethodType_type: PaymentMethodType_type;
+  PerspectiveCameraParameters_type: PerspectiveCameraParameters_type;
   PlaneIntersectAndProject_type: PlaneIntersectAndProject_type;
   PlyStorage_type: PlyStorage_type;
   Point2d_type: Point2d_type;
