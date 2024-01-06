@@ -75,7 +75,7 @@
     "op": "add",
     "path": "/paths/~1user~1text-to-cad/get/x-typescript",
     "value": {
-      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.list_text_to_cad_models_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.list_text_to_cad_models_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        no_models: true,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -369,14 +369,6 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1openai~1openapi.json/get/x-typescript",
-    "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_openai_schema()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1consent/get/x-typescript",
     "value": {
       "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_consent({\n        provider: 'discord',\n        callback_url: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -580,14 +572,6 @@
     "path": "/paths/~1_meta~1info/get/x-typescript",
     "value": {
       "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_metadata()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1.well-known~1ai-plugin.json/get/x-typescript",
-    "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_ai_plugin_manifest()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

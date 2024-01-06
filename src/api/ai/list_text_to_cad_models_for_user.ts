@@ -11,6 +11,7 @@ interface List_text_to_cad_models_for_user_params {
   limit: number;
   page_token: string;
   sort_by: CreatedAtSortMode_type;
+  no_models: boolean;
 }
 
 type List_text_to_cad_models_for_user_return =
@@ -22,8 +23,9 @@ export default async function list_text_to_cad_models_for_user({
   limit,
   page_token,
   sort_by,
+  no_models,
 }: List_text_to_cad_models_for_user_params): Promise<List_text_to_cad_models_for_user_return> {
-  const url = `/user/text-to-cad?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
+  const url = `/user/text-to-cad?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&no_models=${no_models}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client
