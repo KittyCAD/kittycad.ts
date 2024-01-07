@@ -2,7 +2,7 @@
 
 Fully typed js library, compatible with js and ts.
 
-### [Full documentation here](https://kittycad.io/docs/api/authentication?lang=typescript)
+### [Full documentation here](https://zoo.dev/docs/api?lang=typescript)
 
 Simple example below.
 
