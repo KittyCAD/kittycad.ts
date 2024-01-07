@@ -1,8 +1,4 @@
-![image](https://user-images.githubusercontent.com/19377312/165883233-3bdbc9fb-ddf9-4173-8cf2-d1b70ab7127d.png)
-
 # KittyCAD JS/TS API library
-
-`Socials::` - [blog](https://kittycad.io/blog) • [twitter](http://twitter.com/kittycadinc) • [linkedin](https://linkedin.com/company/kittycad) • [instagram](http://instagram.com/kittycadinc) • [youtube](https://www.youtube.com/channel/UCe_nbF3CBjbQRZoH_4xuNJA) • [discord](https://discord.com/invite/Bee65eqawJ) 
 
 Fully typed js library, compatible with js and ts.
 
