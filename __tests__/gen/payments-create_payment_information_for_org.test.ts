@@ -1,7 +1,7 @@
 import { payments } from '../../src/index.js';
 
 async function example() {
-  const response = await payments.create_payment_information_for_user({
+  const response = await payments.create_payment_information_for_org({
     body: {
       address: {
         city: 'The city component.',
@@ -20,7 +20,7 @@ async function example() {
   return response;
 }
 
-describe('Testing payments.create_payment_information_for_user', () => {
+describe('Testing payments.create_payment_information_for_org', () => {
   it('should be truthy or throw', async () => {
     expect(await example()).toBeTruthy();
   });

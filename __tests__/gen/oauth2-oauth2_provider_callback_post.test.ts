@@ -1,15 +1,15 @@
-import { api_tokens } from '../../src/index.js';
+import { oauth2 } from '../../src/index.js';
 
 async function example() {
-  const response = await api_tokens.create_api_token_for_user({
-    label: 'string',
+  const response = await oauth2.oauth2_provider_callback_post({
+    provider: 'apple',
   });
   if ('error_code' in response) throw response;
 
   return response;
 }
 
-describe('Testing api_tokens.create_api_token_for_user', () => {
+describe('Testing oauth2.oauth2_provider_callback_post', () => {
   it('should be truthy or throw', async () => {
     expect(await example()).toBeTruthy();
   });

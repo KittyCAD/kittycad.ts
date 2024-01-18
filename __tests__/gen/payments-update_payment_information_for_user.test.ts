@@ -9,7 +9,6 @@ async function example() {
         state: 'The state component.',
         street1: 'The first street component.',
         street2: 'The second street component.',
-        user_id: 'A UUID usually v4 or v7',
         zip: 'The zip component.',
       },
       name: 'The name of the customer.',

@@ -1,19 +1,13 @@
-import { oauth2 } from '../../src/index.js';
+import { orgs } from '../../src/index.js';
 
 async function example() {
-  const response = await oauth2.oauth2_provider_callback({
-    provider: 'apple',
-    code: 'string',
-    id_token: 'string',
-    state: 'string',
-    user: 'string',
-  });
+  const response = await orgs.get_user_org();
   if ('error_code' in response) throw response;
 
   return response;
 }
 
-describe('Testing oauth2.oauth2_provider_callback', () => {
+describe('Testing orgs.get_user_org', () => {
   it('should be truthy or throw', async () => {
     try {
       await example();

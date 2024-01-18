@@ -1,19 +1,19 @@
 import fetch from 'node-fetch';
-import { ApiToken_type, Error_type } from '../../models.js';
+import { OrgMember_type, Error_type, Uuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Create_api_token_for_user_params {
+interface Get_org_member_params {
   client?: Client;
-  label: string;
+  user_id: Uuid_type;
 }
 
-type Create_api_token_for_user_return = ApiToken_type | Error_type;
+type Get_org_member_return = OrgMember_type | Error_type;
 
-export default async function create_api_token_for_user({
+export default async function get_org_member({
   client,
-  label,
-}: Create_api_token_for_user_params): Promise<Create_api_token_for_user_return> {
-  const url = `/user/api-tokens?label=${label}`;
+  user_id,
+}: Get_org_member_params): Promise<Get_org_member_return> {
+  const url = `/org/members/${user_id}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -23,10 +23,10 @@ export default async function create_api_token_for_user({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'POST',
+    method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_api_token_for_user_return;
+  const result = (await response.json()) as Get_org_member_return;
   return result;
 }

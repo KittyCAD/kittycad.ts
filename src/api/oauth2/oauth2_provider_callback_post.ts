@@ -2,26 +2,18 @@ import fetch from 'node-fetch';
 import { Error_type, AccountProvider_type } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Oauth2_provider_callback_params {
+interface Oauth2_provider_callback_post_params {
   client?: Client;
   provider: AccountProvider_type;
-  code: string;
-  id_token: string;
-  state: string;
-  user: string;
 }
 
-type Oauth2_provider_callback_return = Error_type;
+type Oauth2_provider_callback_post_return = Error_type;
 
-export default async function oauth2_provider_callback({
+export default async function oauth2_provider_callback_post({
   client,
   provider,
-  code,
-  id_token,
-  state,
-  user,
-}: Oauth2_provider_callback_params): Promise<Oauth2_provider_callback_return> {
-  const url = `/oauth2/provider/${provider}/callback?code=${code}&id_token=${id_token}&state=${state}&user=${user}`;
+}: Oauth2_provider_callback_post_params): Promise<Oauth2_provider_callback_post_return> {
+  const url = `/oauth2/provider/${provider}/callback`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -31,10 +23,11 @@ export default async function oauth2_provider_callback({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'GET',
+    method: 'POST',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Oauth2_provider_callback_return;
+  const result =
+    (await response.json()) as Oauth2_provider_callback_post_return;
   return result;
 }

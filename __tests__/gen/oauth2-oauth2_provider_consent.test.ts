@@ -2,7 +2,7 @@ import { oauth2 } from '../../src/index.js';
 
 async function example() {
   const response = await oauth2.oauth2_provider_consent({
-    provider: 'discord',
+    provider: 'apple',
     callback_url: 'string',
   });
   if ('error_code' in response) throw response;
