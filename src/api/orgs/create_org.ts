@@ -1,19 +1,19 @@
 import fetch from 'node-fetch';
-import { ApiToken_type, Error_type } from '../../models.js';
+import { Org_type, Error_type, OrgDetails_type } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Create_api_token_for_user_params {
+interface Create_org_params {
   client?: Client;
-  label: string;
+  body: OrgDetails_type;
 }
 
-type Create_api_token_for_user_return = ApiToken_type | Error_type;
+type Create_org_return = Org_type | Error_type;
 
-export default async function create_api_token_for_user({
+export default async function create_org({
   client,
-  label,
-}: Create_api_token_for_user_params): Promise<Create_api_token_for_user_return> {
-  const url = `/user/api-tokens?label=${label}`;
+  body,
+}: Create_org_params): Promise<Create_org_return> {
+  const url = `/org`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -25,8 +25,9 @@ export default async function create_api_token_for_user({
   const fetchOptions = {
     method: 'POST',
     headers,
+    body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_api_token_for_user_return;
+  const result = (await response.json()) as Create_org_return;
   return result;
 }

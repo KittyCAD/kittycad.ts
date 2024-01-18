@@ -1,4 +1,25 @@
-export type AccountProvider_type = 'discord' | 'google' | 'github';
+export type AccountProvider_type =
+  | 'apple'
+  | 'discord'
+  | 'google'
+  | 'github'
+  | 'microsoft'
+  | 'tencent';
+
+export interface AddOrgMember_type {
+  /* format:email, description:The email address of the user to add to the org. */
+  email: string;
+  role: OrgRole_type /* The organization role to give the user. */;
+}
+
+export interface AddressDetails_type {
+  city: string /* The city component. */;
+  country: CountryCode_type /* The country component. This is a two-letter ISO country code. */;
+  state: string /* The state component. */;
+  street1: string /* The first street component. */;
+  street2: string /* The second street component. */;
+  zip: string /* The zip component. */;
+}
 
 export type AiFeedback_type = 'thumbs_up' | 'thumbs_down';
 
@@ -162,6 +183,11 @@ export interface ApiCallWithPrice_type {
   "description": "The number of minutes the API call was billed for."
 }*/
   minutes?: number;
+  /*{
+  "nullable": true,
+  "description": "The organization ID of the API call if it is billable through an organization."
+}*/
+  org_id?: Uuid_type;
   origin: string /* The origin of the API call. */;
   /*{
   "nullable": true,
@@ -219,6 +245,8 @@ export interface ApiToken_type {
   created_at: string;
   id: Uuid_type /* The unique identifier for the API token. */;
   is_valid: boolean /* If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token. */;
+  /* nullable:true, description:An optional label for the API token. */
+  label?: string;
   token: Uuid_type /* The API token itself. */;
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string;
@@ -549,6 +577,21 @@ export type AsyncApiCallType_type =
   | 'file_surface_area'
   | 'text_to_cad';
 
+export interface AuthCallback_type {
+  code: string /* The authorization code. */;
+  /*{
+  "nullable": true,
+  "description": "For Apple only, a JSON web token containing the user’s identity information."
+}*/
+  id_token?: string;
+  state: string /* The state that we had passed in through the user consent URL. */;
+  /*{
+  "nullable": true,
+  "description": "For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ \"name\": { \"firstName\": string, \"lastName\": string }, \"email\": string }`"
+}*/
+  user?: string;
+}
+
 export type Axis_type = 'y' | 'z';
 
 export interface AxisDirectionPair_type {
@@ -558,7 +601,7 @@ export interface AxisDirectionPair_type {
 
 export interface BillingInfo_type {
   /* nullable:true, description:The address of the customer. */
-  address?: NewAddress_type;
+  address?: AddressDetails_type;
   name: string /* The name of the customer. */;
   /*{
   "title": "String",
@@ -852,7 +895,7 @@ export type CurveType_type =
 
 export interface Customer_type {
   /* nullable:true, description:The customer's address. */
-  address?: NewAddress_type;
+  address?: AddressDetails_type;
   /*{
   "title": "double",
   "default": 0,
@@ -890,33 +933,33 @@ export interface CustomerBalance_type {
   /* title:DateTime, format:date-time, description:The date and time the balance was created. */
   created_at: string;
   id: Uuid_type /* The unique identifier for the balance. */;
+  map_id: Uuid_type /* The mapping id of the user or org. */;
   /*{
   "title": "double",
   "format": "money-usd",
-  "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the user per month."
+  "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the customer per month."
 }*/
   monthly_credits_remaining: number;
   /*{
   "title": "double",
   "format": "money-usd",
-  "description": "The amount of pre-pay cash remaining in the balance. This number goes down as the user uses their pre-paid credits. The reason we track this amount is if a user ever wants to withdraw their pre-pay cash, we can use this amount to determine how much to give them. Say a user has $100 in pre-paid cash, their bill is worth, $50 after subtracting any other credits (like monthly etc.) Their bill is $50, their pre-pay cash remaining will be subtracted by 50 to pay the bill and their `pre_pay_credits_remaining` will be subtracted by 50 to pay the bill. This way if they want to withdraw money after, they can only withdraw $50 since that is the amount of cash they have remaining."
+  "description": "The amount of pre-pay cash remaining in the balance. This number goes down as the customer uses their pre-paid credits. The reason we track this amount is if a customer ever wants to withdraw their pre-pay cash, we can use this amount to determine how much to give them. Say a customer has $100 in pre-paid cash, their bill is worth, $50 after subtracting any other credits (like monthly etc.) Their bill is $50, their pre-pay cash remaining will be subtracted by 50 to pay the bill and their `pre_pay_credits_remaining` will be subtracted by 50 to pay the bill. This way if they want to withdraw money after, they can only withdraw $50 since that is the amount of cash they have remaining."
 }*/
   pre_pay_cash_remaining: number;
   /*{
   "title": "double",
   "format": "money-usd",
-  "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a user adds funds to their balance. This may be through a subscription or a one off payment."
+  "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a customer adds funds to their balance. This may be through a subscription or a one off payment."
 }*/
   pre_pay_credits_remaining: number;
   /*{
   "title": "double",
   "format": "money-usd",
-  "description": "This includes any outstanding, draft, or open invoices and any pending invoice items. This does not include any credits the user has on their account."
+  "description": "This includes any outstanding, draft, or open invoices and any pending invoice items. This does not include any credits the customer has on their account."
 }*/
   total_due: number;
   /* title:DateTime, format:date-time, description:The date and time the balance was last updated. */
   updated_at: string;
-  user_id: Uuid_type /* The user ID the balance belongs to. */;
 }
 
 export interface Density_type {
@@ -2223,16 +2266,6 @@ export interface MouseClick_type {
   entities_selected: string[];
 }
 
-export interface NewAddress_type {
-  city: string /* The city component. */;
-  country: CountryCode_type /* The country component. This is a two-letter ISO country code. */;
-  state: string /* The state component. */;
-  street1: string /* The first street component. */;
-  street2: string /* The second street component. */;
-  user_id: Uuid_type /* The user ID that this address belongs to. */;
-  zip: string /* The zip component. */;
-}
-
 export interface OAuth2ClientInfo_type {
   csrf_token: string /* Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */;
   /*{
@@ -2524,6 +2557,120 @@ export interface Onboarding_type {
 }*/
   first_token_date?: string;
 }
+
+export interface Org_type {
+  /*{
+  "nullable": true,
+  "description": "If we should allow all future users who are created with email addresses from this domain to join the org."
+}*/
+  allow_users_in_domain_to_auto_join?: boolean;
+  /* format:email, description:The billing email address of the org. */
+  billing_email: string;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The date and time the billing email address was verified."
+}*/
+  billing_email_verified?: string;
+  /* nullable:true, description:If the org should be blocked and the reason why. */
+  block?: BlockReason_type;
+  /* title:DateTime, format:date-time, description:The date and time the org was created. */
+  created_at: string;
+  /* nullable:true, description:The org's domain. */
+  domain?: string;
+  id: Uuid_type /* The unique identifier for the org. */;
+  /*{
+  "nullable": true,
+  "title": "String",
+  "format": "uri",
+  "description": "The image for the org. This is a URL."
+}*/
+  image?: string;
+  name: string /* The name of the org. */;
+  /*{
+  "title": "String",
+  "default": "",
+  "format": "phone",
+  "description": "The org's phone number."
+}*/
+  phone: string;
+  /* nullable:true, description:The org's stripe id. */
+  stripe_id?: string;
+  /* title:DateTime, format:date-time, description:The date and time the org was last updated. */
+  updated_at: string;
+}
+
+export interface OrgDetails_type {
+  /*{
+  "nullable": true,
+  "description": "If we should allow all future users who are created with email addresses from this domain to join the org."
+}*/
+  allow_users_in_domain_to_auto_join?: boolean;
+  /* format:email, description:The billing email address of the org. */
+  billing_email: string;
+  /* nullable:true, description:The org's domain. */
+  domain?: string;
+  /*{
+  "nullable": true,
+  "title": "String",
+  "format": "uri",
+  "description": "The image for the org. This is a URL."
+}*/
+  image?: string;
+  name: string /* The name of the org. */;
+  /*{
+  "title": "String",
+  "default": "",
+  "format": "phone",
+  "description": "The org's phone number."
+}*/
+  phone: string;
+}
+
+export interface OrgMember_type {
+  company: string /* The user's company. */;
+  /* title:DateTime, format:date-time, description:The date and time the user was created. */
+  created_at: string;
+  discord: string /* The user's Discord handle. */;
+  /* format:email, description:The email address of the user. */
+  email: string;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The date and time the email address was verified."
+}*/
+  email_verified?: string;
+  first_name: string /* The user's first name. */;
+  github: string /* The user's GitHub handle. */;
+  id: Uuid_type /* The unique identifier for the user. */;
+  /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
+  image: string;
+  last_name: string /* The user's last name. */;
+  name: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
+  /*{
+  "title": "String",
+  "default": "",
+  "format": "phone",
+  "description": "The user's phone number."
+}*/
+  phone: string;
+  role: OrgRole_type /* The user's role in the org. */;
+  /* title:DateTime, format:date-time, description:The date and time the user was last updated. */
+  updated_at: string;
+}
+
+export interface OrgMemberResultsPage_type {
+  items: OrgMember_type[] /* list of items on this page of results */;
+  /*{
+  "nullable": true,
+  "description": "token used to fetch the next page of results (if any)"
+}*/
+  next_page?: string;
+}
+
+export type OrgRole_type = 'admin' | 'member';
 
 export interface OutputFile_type {
   /*{
@@ -3507,6 +3654,10 @@ This is the same as the API call ID. */
   user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
+export interface UpdateMemberToOrgBody_type {
+  role: OrgRole_type /* The organization role to give the user. */;
+}
+
 export interface UpdateUser_type {
   company: string /* The user's company. */;
   discord: string /* The user's Discord handle. */;
@@ -3553,6 +3704,50 @@ export interface User_type {
 }*/
   phone: string;
   /* title:DateTime, format:date-time, description:The date and time the user was last updated. */
+  updated_at: string;
+}
+
+export interface UserOrgInfo_type {
+  /*{
+  "nullable": true,
+  "description": "If we should allow all future users who are created with email addresses from this domain to join the org."
+}*/
+  allow_users_in_domain_to_auto_join?: boolean;
+  /* format:email, description:The billing email address of the org. */
+  billing_email: string;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The date and time the billing email address was verified."
+}*/
+  billing_email_verified?: string;
+  /* nullable:true, description:If the org should be blocked and the reason why. */
+  block?: BlockReason_type;
+  /* title:DateTime, format:date-time, description:The date and time the org was created. */
+  created_at: string;
+  /* nullable:true, description:The org's domain. */
+  domain?: string;
+  id: Uuid_type /* The unique identifier for the org. */;
+  /*{
+  "nullable": true,
+  "title": "String",
+  "format": "uri",
+  "description": "The image for the org. This is a URL."
+}*/
+  image?: string;
+  name: string /* The name of the org. */;
+  /*{
+  "title": "String",
+  "default": "",
+  "format": "phone",
+  "description": "The org's phone number."
+}*/
+  phone: string;
+  role: OrgRole_type /* The user's role in the org. */;
+  /* nullable:true, description:The org's stripe id. */
+  stripe_id?: string;
+  /* title:DateTime, format:date-time, description:The date and time the org was last updated. */
   updated_at: string;
 }
 
@@ -3642,6 +3837,8 @@ export type WebSocketResponse_type =
 
 export interface Models {
   AccountProvider_type: AccountProvider_type;
+  AddOrgMember_type: AddOrgMember_type;
+  AddressDetails_type: AddressDetails_type;
   AiFeedback_type: AiFeedback_type;
   AiPrompt_type: AiPrompt_type;
   AiPromptResultsPage_type: AiPromptResultsPage_type;
@@ -3667,6 +3864,7 @@ export interface Models {
   AsyncApiCallOutput_type: AsyncApiCallOutput_type;
   AsyncApiCallResultsPage_type: AsyncApiCallResultsPage_type;
   AsyncApiCallType_type: AsyncApiCallType_type;
+  AuthCallback_type: AuthCallback_type;
   Axis_type: Axis_type;
   AxisDirectionPair_type: AxisDirectionPair_type;
   BillingInfo_type: BillingInfo_type;
@@ -3752,12 +3950,16 @@ export interface Models {
   ModelingCmdId_type: ModelingCmdId_type;
   ModelingCmdReq_type: ModelingCmdReq_type;
   MouseClick_type: MouseClick_type;
-  NewAddress_type: NewAddress_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;
   OAuth2GrantType_type: OAuth2GrantType_type;
   OkModelingCmdResponse_type: OkModelingCmdResponse_type;
   OkWebSocketResponseData_type: OkWebSocketResponseData_type;
   Onboarding_type: Onboarding_type;
+  Org_type: Org_type;
+  OrgDetails_type: OrgDetails_type;
+  OrgMember_type: OrgMember_type;
+  OrgMemberResultsPage_type: OrgMemberResultsPage_type;
+  OrgRole_type: OrgRole_type;
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
   PathCommand_type: PathCommand_type;
@@ -3828,8 +4030,10 @@ export interface Models {
   UnitTorqueConversion_type: UnitTorqueConversion_type;
   UnitVolume_type: UnitVolume_type;
   UnitVolumeConversion_type: UnitVolumeConversion_type;
+  UpdateMemberToOrgBody_type: UpdateMemberToOrgBody_type;
   UpdateUser_type: UpdateUser_type;
   User_type: User_type;
+  UserOrgInfo_type: UserOrgInfo_type;
   UserResultsPage_type: UserResultsPage_type;
   Uuid_type: Uuid_type;
   VerificationToken_type: VerificationToken_type;
