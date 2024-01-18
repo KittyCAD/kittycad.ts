@@ -108,6 +108,13 @@ export default async function apiGen(lookup: any) {
             ) ||
               reffedSchema.oneOf?.[isOutput ? 1 : 0]) as OpenAPIV3.SchemaObject;
             inputParamsExamples.push(`${name}: '${input?.enum?.[0]}'`);
+          } else if (
+            reffedSchema.type === 'string' &&
+            reffedSchema.format === 'uuid'
+          ) {
+            inputParamsExamples.push(
+              `${name}: '${'00000000-0000-0000-0000-000000000000'}'`,
+            );
           }
         } else {
           if (schema.type === 'number' || schema.type === 'integer') {
@@ -126,6 +133,7 @@ export default async function apiGen(lookup: any) {
         }
         inputParams.push(name);
         if (_in === 'path') {
+          // console.log('yoyoyoyoyo', name, inputParamsExamples, schema);
           urlPathParams = urlPathParams.map((p) => {
             if (p === `{${name}}`) {
               return `\${${name}}`;
@@ -167,6 +175,12 @@ export default async function apiGen(lookup: any) {
               return `true`;
             }
           }
+          if ('oneOf' in refSchema) {
+            const oneOf = refSchema.oneOf;
+            if ('enum' in oneOf[0]) {
+              return `'${oneOf[0].enum[0]}'`;
+            }
+          }
           if (!refSchema.properties) {
             return '';
           }
@@ -197,6 +211,7 @@ export default async function apiGen(lookup: any) {
                 const ref = value.allOf[0].$ref;
                 return `${key}: ${mapOverProperties(ref)}`;
               }
+              console.log('yoyoy', value);
               return '';
             })
             .filter(Boolean)
