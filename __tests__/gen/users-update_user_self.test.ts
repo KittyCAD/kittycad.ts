@@ -7,6 +7,8 @@ async function example() {
       discord: "The user's Discord handle.",
       first_name: "The user's first name.",
       github: "The user's GitHub handle.",
+      image:
+        "The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next.",
       last_name: "The user's last name.",
       phone: "The user's phone number.",
     },

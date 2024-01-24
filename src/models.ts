@@ -1620,6 +1620,55 @@ export type InvoiceStatus_type =
   | 'uncollectible'
   | 'void';
 
+export interface IpAddrInfo_type {
+  /* nullable:true, format:int64, description:Autonomous System Number. */
+  asn?: number;
+  /* nullable:true, description:City name. */
+  city?: string;
+  /* nullable:true, description:Continent code (e.g., \EU\ for Europe). */
+  continent_code?: string;
+  /* nullable:true, description:Country name. */
+  country?: string;
+  /*{
+  "nullable": true,
+  "description": "Two-letter country code (e.g., \"NL\" for Netherlands)."
+}*/
+  country_code?: CountryCode_type;
+  /*{
+  "nullable": true,
+  "description": "Three-letter country code (e.g., \"NLD\" for Netherlands)."
+}*/
+  country_code3?: string;
+  /*{
+  "title": "String",
+  "default": "",
+  "format": "ip",
+  "description": "IP address of the user."
+}*/
+  ip: string;
+  /*{
+  "nullable": true,
+  "description": "Flag indicating whether the country is in the European Union."
+}*/
+  is_in_european_union?: boolean;
+  /* nullable:true, format:double, description:Geographic latitude. */
+  latitude?: number;
+  /* nullable:true, format:double, description:Geographic longitude. */
+  longitude?: number;
+  /* nullable:true, format:int64, description:Time offset in seconds from UTC. */
+  offset?: number;
+  /* nullable:true, description:Organization name (e.g., \RIPE NCC\). */
+  organization?: string;
+  /* nullable:true, description:Postal code. */
+  postal_code?: string;
+  /* nullable:true, description:Name of the region (e.g., \North Holland\). */
+  region?: string;
+  /* nullable:true, description:Region code (e.g., \NH\ for North Holland). */
+  region_code?: string;
+  /* nullable:true, description:Timezone (e.g., \Europe/Amsterdam\). */
+  timezone?: string;
+}
+
 export interface Jetstream_type {
   /* default:{domain:, max_memory:0, max_storage:0, store_dir:}, description:The Jetstream config. */
   config: JetstreamConfig_type;
@@ -3663,6 +3712,12 @@ export interface UpdateUser_type {
   discord: string /* The user's Discord handle. */;
   first_name: string /* The user's first name. */;
   github: string /* The user's GitHub handle. */;
+  /*{
+  "title": "String",
+  "format": "uri",
+  "description": "The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next."
+}*/
+  image: string;
   last_name: string /* The user's last name. */;
   /*{
   "title": "String",
@@ -3937,6 +3992,7 @@ export interface Models {
   Invoice_type: Invoice_type;
   InvoiceLineItem_type: InvoiceLineItem_type;
   InvoiceStatus_type: InvoiceStatus_type;
+  IpAddrInfo_type: IpAddrInfo_type;
   Jetstream_type: Jetstream_type;
   JetstreamApiStats_type: JetstreamApiStats_type;
   JetstreamConfig_type: JetstreamConfig_type;

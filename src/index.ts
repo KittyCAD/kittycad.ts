@@ -75,11 +75,13 @@ export const file = {
   create_file_volume,
 };
 
+import get_ipinfo from './api/meta/get_ipinfo.js';
 import get_metadata from './api/meta/get_metadata.js';
 import get_schema from './api/meta/get_schema.js';
 import internal_get_api_token_for_discord_user from './api/meta/internal_get_api_token_for_discord_user.js';
 import ping from './api/meta/ping.js';
 export const meta = {
+  get_ipinfo,
   get_metadata,
   get_schema,
   internal_get_api_token_for_discord_user,
@@ -199,6 +201,7 @@ export const unit = {
 };
 
 import delete_user_self from './api/users/delete_user_self.js';
+import get_oauth2_providers_for_user from './api/users/get_oauth2_providers_for_user.js';
 import get_session_for_user from './api/users/get_session_for_user.js';
 import get_user from './api/users/get_user.js';
 import get_user_extended from './api/users/get_user_extended.js';
@@ -210,6 +213,7 @@ import list_users_extended from './api/users/list_users_extended.js';
 import update_user_self from './api/users/update_user_self.js';
 export const users = {
   delete_user_self,
+  get_oauth2_providers_for_user,
   get_session_for_user,
   get_user,
   get_user_extended,
