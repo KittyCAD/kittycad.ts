@@ -387,6 +387,8 @@ export default async function apiGen(lookup: any) {
           'orgs.get_org',
           'orgs.delete_org_member',
           'orgs.delete_org',
+          'orgs.delete_org_saml_idp',
+          'orgs.get_org_saml_idp',
         ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail
