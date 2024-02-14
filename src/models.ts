@@ -4,6 +4,7 @@ export type AccountProvider_type =
   | 'google'
   | 'github'
   | 'microsoft'
+  | 'saml'
   | 'tencent';
 
 export interface AddOrgMember_type {
@@ -968,6 +969,17 @@ export interface Density_type {
   output_unit: UnitDensity_type /* The output unit for the density. */;
 }
 
+export interface DerEncodedKeyPair_type {
+  /* title:String, format:byte, description:The request signing private key (pem file). */
+  private_key: string;
+  /*{
+  "title": "String",
+  "format": "byte",
+  "description": "The request signing public certificate (pem file)."
+}*/
+  public_cert: string;
+}
+
 export interface DeviceAccessTokenRequestForm_type {
   /* format:uuid, description:The client ID. */
   client_id: string;
@@ -1004,6 +1016,13 @@ export interface EmailAuthenticationForm_type {
   callback_url?: string;
   /* format:email, description:The user's email. */
   email: string;
+}
+
+export interface EntityCircularPattern_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
 }
 
 export interface EntityGetAllChildUuids_type {
@@ -1140,6 +1159,16 @@ export interface ExtendedUserResultsPage_type {
   "description": "token used to fetch the next page of results (if any)"
 }*/
   next_page?: string;
+}
+
+export type ExtrusionFaceCapType_type = 'none' | 'top' | 'bottom';
+
+export interface ExtrusionFaceInfo_type {
+  cap: ExtrusionFaceCapType_type /* Whether or not this extrusion face is a top/bottom cap face or not. Note that top/bottom cap faces will not have associated curve IDs. */;
+  /* nullable:true, format:uuid, description:Path component (curve) UUID. */
+  curve_id?: string;
+  /* nullable:true, format:uuid, description:Face uuid. */
+  face_id?: string;
 }
 
 export interface FailureWebSocketResponse_type {
@@ -1438,6 +1467,26 @@ export interface IceServer_type {
   /* nullable:true, description:Username for a given TURN server. */
   username?: string;
 }
+
+export type IdpMetadataSource_type =
+  | {
+      type: 'url';
+      /*{
+  "title": "String",
+  "format": "uri",
+  "description": "The URL of the identity provider metadata descriptor."
+}*/
+      url: string;
+    }
+  | {
+      /*{
+  "title": "String",
+  "format": "byte",
+  "description": "The base64 encoded XML document containing the identity provider metadata descriptor."
+}*/
+      data: string;
+      type: 'base64_encoded_xml';
+    };
 
 export type ImageFormat_type = 'png' | 'jpeg';
 
@@ -1809,9 +1858,38 @@ export type ModelingCmd_type =
     }
   | {
       center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */;
+      /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
+}*/
+      sequence?: number;
       type: 'default_camera_look_at';
       up: Point3d_type /* Which way is "up", from the camera's point of view. */;
       vantage: Point3d_type /* Where the camera is positioned */;
+    }
+  | {
+      center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */;
+      /*{
+  "format": "float",
+  "description": "The field of view angle in the y direction, in degrees."
+}*/
+      fov_y: number;
+      /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Logical timestamp. The client should increment this with every event in the current mouse drag. That way, if the events are being sent over an unordered channel, the API can ignore the older events."
+}*/
+      sequence?: number;
+      type: 'default_camera_perspective_settings';
+      up: Point3d_type /* Which way is "up", from the camera's point of view. */;
+      vantage: Point3d_type /* Where the camera is positioned */;
+      /* format:float, description:The distance to the far clipping plane. */
+      z_far: number;
+      /* format:float, description:The distance to the near clipping plane. */
+      z_near: number;
     }
   | {
       /*{
@@ -2012,6 +2090,18 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which object is being queried. */
       object_id: string;
       type: 'solid3d_get_prev_adjacent_edge';
+    }
+  | {
+      /* format:uuid, description:Which edge you want to fillet. */
+      edge_id: string;
+      /* format:uuid, description:Which object is being filletted. */
+      object_id: string;
+      /*{
+  "format": "double",
+  "description": "The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero)."
+}*/
+      radius: number;
+      type: 'solid3d_fillet_edge';
     }
   | {
       front: boolean /* Bring to front = true, send to back = false. */;
@@ -2238,6 +2328,7 @@ export type ModelingCmd_type =
       type: 'curve_set_constraint';
     }
   | {
+      adjust_camera: boolean /* Should the camera move at all? */;
       animated: boolean /* Should we animate or snap for the camera transition? */;
       /* format:uuid, description:Which entity to sketch on. */
       entity_id: string;
@@ -2265,7 +2356,7 @@ export type ModelingCmd_type =
       type: 'entity_get_distance';
     }
   | {
-      axis: Point3d_type /* Axis along which to make the copites */;
+      axis: Point3d_type /* Axis along which to make the copies */;
       /* format:uuid, description:ID of the entity being copied. */
       entity_id: string;
       /* format:uint32, minimum:0, description:Number of repetitions to make. */
@@ -2273,6 +2364,21 @@ export type ModelingCmd_type =
       /* format:double, description:Spacing between repetitions. */
       spacing: number;
       type: 'entity_linear_pattern';
+    }
+  | {
+      /*{
+  "format": "double",
+  "description": "Arc angle (in degrees) to place repetitions along."
+}*/
+      arc_degrees: number;
+      axis: Point3d_type /* Axis around which to make the copies */;
+      center: Point3d_type /* Point around which to make the copies */;
+      /* format:uuid, description:ID of the entity being copied. */
+      entity_id: string;
+      /* format:uint32, minimum:0, description:Number of repetitions to make. */
+      num_repetitions: number;
+      rotate_duplicates: boolean /* Whether or not to rotate the objects as they are copied. */;
+      type: 'entity_circular_pattern';
     }
   | {
       selection_type: SceneSelectionType_type /* What type of selection should occur when you select something? */;
@@ -2290,6 +2396,16 @@ export type ModelingCmd_type =
 }*/
       parameters?: PerspectiveCameraParameters_type;
       type: 'default_camera_set_perspective';
+    }
+  | {
+      /* format:uuid, description:Any edge that lies on the extrusion base path. */
+      edge_id: string;
+      /*{
+  "format": "uuid",
+  "description": "The Solid3d object whose extrusion is being queried."
+}*/
+      object_id: string;
+      type: 'solid3d_get_extrusion_face_info';
     };
 
 export type ModelingCmdId_type =
@@ -2406,6 +2522,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: EntityLinearPattern_type;
       type: 'entity_linear_pattern';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityCircularPattern"
+}*/
+      data: EntityCircularPattern_type;
+      type: 'entity_circular_pattern';
     }
   | {
       /*{
@@ -2546,6 +2669,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: CenterOfMass_type;
       type: 'center_of_mass';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dGetExtrusionFaceInfo"
+}*/
+      data: Solid3dGetExtrusionFaceInfo_type;
+      type: 'solid3d_get_extrusion_face_info';
     }
   | {
       /*{
@@ -2997,6 +3127,60 @@ export interface RtcSessionDescription_type {
   type: RtcSdpType_type /* SDP type. */;
 }
 
+export interface SamlIdentityProvider_type {
+  /* title:String, format:uri, description:The ACS (Assertion Consumer Service) url. */
+  acs_url: string;
+  /*{
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The date and time the SAML identity provider was created."
+}*/
+  created_at: string;
+  id: Uuid_type /* The unique identifier for the SAML identity provider. */;
+  idp_entity_id: string /* The entity ID of the SAML identity provider. */;
+  idp_metadata_document_string: string /* The metadata document as a string. */;
+  org_id: Uuid_type /* The organization ID the SAML identity provider belongs to. */;
+  /*{
+  "nullable": true,
+  "title": "String",
+  "format": "byte",
+  "description": "The private key for the SAML identity provider. This is the PEM corresponding to the X509 pair."
+}*/
+  private_key?: string;
+  /*{
+  "nullable": true,
+  "title": "String",
+  "format": "byte",
+  "description": "The public certificate for the SAML identity provider. This is the PEM corresponding to the X509 pair."
+}*/
+  public_cert?: string;
+  /* title:String, format:uri, description:The SLO (Single Logout) url. */
+  slo_url: string;
+  /*{
+  "format": "email",
+  "description": "The technical contact email address for the SAML identity provider."
+}*/
+  technical_contact_email: string;
+  /*{
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The date and time the SAML identity provider was last updated."
+}*/
+  updated_at: string;
+}
+
+export interface SamlIdentityProviderCreate_type {
+  idp_entity_id: string /* The entity ID of the SAML identity provider. */;
+  idp_metadata_source: IdpMetadataSource_type /* The source of an identity provider metadata descriptor. */;
+  /* nullable:true, description:The request signing key pair. */
+  signing_keypair?: DerEncodedKeyPair_type;
+  /*{
+  "format": "email",
+  "description": "The technical contact email address for the SAML identity provider."
+}*/
+  technical_contact_email: string;
+}
+
 export type SceneSelectionType_type = 'replace' | 'add' | 'remove';
 
 export type SceneToolType_type =
@@ -3060,6 +3244,10 @@ export interface Solid3dGetAllOppositeEdges_type {
   "format": "uuid"
 }*/
   edges: string[];
+}
+
+export interface Solid3dGetExtrusionFaceInfo_type {
+  faces: ExtrusionFaceInfo_type[] /* Details of each face. */;
 }
 
 export interface Solid3dGetNextAdjacentEdge_type {
@@ -3819,7 +4007,7 @@ export type Uuid_type =
   /* format:uuid, description:A UUID usually v4 or v7 */
   string;
 
-export interface VerificationToken_type {
+export interface VerificationTokenResponse_type {
   /*{
   "title": "DateTime",
   "format": "date-time",
@@ -3830,6 +4018,13 @@ export interface VerificationToken_type {
   expires: string;
   id: Uuid_type /* The token used for verification. This is used as the id for the table since it is unique per record. */;
   identifier: string /* The identifier for the user. This is typically the user's email address since that is what we are verifying. */;
+  /*{
+  "nullable": true,
+  "title": "String",
+  "format": "uri",
+  "description": "The URL to redirect to if the user requires SAML authentication."
+}*/
+  saml_redirect_url?: string;
   /*{
   "title": "DateTime",
   "format": "date-time",
@@ -3945,6 +4140,7 @@ export interface Models {
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
   Density_type: Density_type;
+  DerEncodedKeyPair_type: DerEncodedKeyPair_type;
   DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type;
   DeviceAuthRequestForm_type: DeviceAuthRequestForm_type;
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
@@ -3952,6 +4148,7 @@ export interface Models {
   Discount_type: Discount_type;
   DistanceType_type: DistanceType_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
+  EntityCircularPattern_type: EntityCircularPattern_type;
   EntityGetAllChildUuids_type: EntityGetAllChildUuids_type;
   EntityGetChildUuid_type: EntityGetChildUuid_type;
   EntityGetDistance_type: EntityGetDistance_type;
@@ -3966,6 +4163,8 @@ export interface Models {
   ExportFile_type: ExportFile_type;
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
+  ExtrusionFaceCapType_type: ExtrusionFaceCapType_type;
+  ExtrusionFaceInfo_type: ExtrusionFaceInfo_type;
   FailureWebSocketResponse_type: FailureWebSocketResponse_type;
   FbxStorage_type: FbxStorage_type;
   FileCenterOfMass_type: FileCenterOfMass_type;
@@ -3985,6 +4184,7 @@ export interface Models {
   GltfStorage_type: GltfStorage_type;
   HighlightSetEntity_type: HighlightSetEntity_type;
   IceServer_type: IceServer_type;
+  IdpMetadataSource_type: IdpMetadataSource_type;
   ImageFormat_type: ImageFormat_type;
   ImportFile_type: ImportFile_type;
   ImportFiles_type: ImportFiles_type;
@@ -4040,6 +4240,8 @@ export interface Models {
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
   RtcSdpType_type: RtcSdpType_type;
   RtcSessionDescription_type: RtcSessionDescription_type;
+  SamlIdentityProvider_type: SamlIdentityProvider_type;
+  SamlIdentityProviderCreate_type: SamlIdentityProviderCreate_type;
   SceneSelectionType_type: SceneSelectionType_type;
   SceneToolType_type: SceneToolType_type;
   SelectGet_type: SelectGet_type;
@@ -4048,6 +4250,7 @@ export interface Models {
   Session_type: Session_type;
   Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
   Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
+  Solid3dGetExtrusionFaceInfo_type: Solid3dGetExtrusionFaceInfo_type;
   Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type;
   Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
@@ -4092,7 +4295,7 @@ export interface Models {
   UserOrgInfo_type: UserOrgInfo_type;
   UserResultsPage_type: UserResultsPage_type;
   Uuid_type: Uuid_type;
-  VerificationToken_type: VerificationToken_type;
+  VerificationTokenResponse_type: VerificationTokenResponse_type;
   Volume_type: Volume_type;
   WebSocketRequest_type: WebSocketRequest_type;
   WebSocketResponse_type: WebSocketResponse_type;
