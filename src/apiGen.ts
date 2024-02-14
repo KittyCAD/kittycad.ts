@@ -133,7 +133,6 @@ export default async function apiGen(lookup: any) {
         }
         inputParams.push(name);
         if (_in === 'path') {
-          // console.log('yoyoyoyoyo', name, inputParamsExamples, schema);
           urlPathParams = urlPathParams.map((p) => {
             if (p === `{${name}}`) {
               return `\${${name}}`;
@@ -164,58 +163,70 @@ export default async function apiGen(lookup: any) {
           const refSchema = spec.components.schemas[
             rawRef.split('/').pop()
           ] as OpenAPIV3.SchemaObject;
-          if ('type' in refSchema && !refSchema.properties) {
-            if (refSchema.type === 'string') {
-              return `"${refSchema.description || 'string'}"`;
+          const returnExample = (refSchema: OpenAPIV3.SchemaObject): string => {
+            if ('type' in refSchema && !refSchema.properties) {
+              if (refSchema.type === 'string') {
+                return `"${
+                  refSchema.description.replaceAll('"', ',') || 'string'
+                }"`;
+              }
+              if (refSchema.type === 'number') {
+                return `7`;
+              }
+              if (refSchema.type === 'boolean') {
+                return `true`;
+              }
             }
-            if (refSchema.type === 'number') {
-              return `7`;
+            if ('oneOf' in refSchema) {
+              const oneOf = refSchema.oneOf;
+              if ('enum' in oneOf[0]) {
+                return `'${oneOf[0].enum[0]}'`;
+              } else if ('type' in oneOf[0]) {
+                return returnExample(oneOf[0]);
+              }
             }
-            if (refSchema.type === 'boolean') {
-              return `true`;
-            }
-          }
-          if ('oneOf' in refSchema) {
-            const oneOf = refSchema.oneOf;
-            if ('enum' in oneOf[0]) {
-              return `'${oneOf[0].enum[0]}'`;
-            }
-          }
-          if (!refSchema.properties) {
-            return '';
-          }
-          const requiredProperties = Object.entries(refSchema.properties);
-          if (!requiredProperties.length) {
-            return '';
-          }
-          return `{${requiredProperties
-            .map(([key, value]) => {
-              if ('$ref' in value) {
-                // TODO
-                return '';
-              }
-              if (value.type === 'string') {
-                return `${key}: "${value.description || 'string'}"`;
-              }
-              if (value.type === 'number') {
-                return `${key}: 7`;
-              }
-              if (value.type === 'boolean') {
-                return `${key}: true`;
-              }
-              if (
-                'allOf' in value &&
-                value.allOf.length === 1 &&
-                '$ref' in value.allOf[0]
-              ) {
-                const ref = value.allOf[0].$ref;
-                return `${key}: ${mapOverProperties(ref)}`;
-              }
-              console.log('yoyoy', value);
+            if (!refSchema.properties) {
               return '';
-            })
-            .filter(Boolean)
-            .join(', ')}}`;
+            }
+            const requiredProperties = Object.entries(refSchema.properties);
+            if (!requiredProperties.length) {
+              return '';
+            }
+            return `{${requiredProperties
+              .map(([key, value]) => {
+                if ('$ref' in value) {
+                  // TODO
+                  return '';
+                }
+                if (value.type === 'string' && 'enum' in value) {
+                  return `${key}: '${value.enum[0]}'`;
+                }
+                if (value.type === 'string') {
+                  return `${key}: "${
+                    (value.description || '').replaceAll('"', "'") || 'string'
+                  }"`;
+                }
+                if (value.type === 'number' || value.type === 'integer') {
+                  return `${key}: 7`;
+                }
+                if (value.type === 'boolean') {
+                  return `${key}: true`;
+                }
+                if (
+                  'allOf' in value &&
+                  value.allOf.length === 1 &&
+                  '$ref' in value.allOf[0]
+                ) {
+                  const ref = value.allOf[0].$ref;
+                  return `${key}: ${mapOverProperties(ref)}`;
+                }
+                console.log('yoyoy', value);
+                return '';
+              })
+              .filter(Boolean)
+              .join(', ')}}`;
+          };
+          return returnExample(refSchema);
         };
         const theStr = mapOverProperties(ref);
         if (theStr) {
@@ -376,6 +387,8 @@ export default async function apiGen(lookup: any) {
           'orgs.get_org',
           'orgs.delete_org_member',
           'orgs.delete_org',
+          'orgs.delete_org_saml_idp',
+          'orgs.get_org_saml_idp',
         ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail

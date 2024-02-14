@@ -107,25 +107,33 @@ export const oauth2 = {
 
 import create_org from './api/orgs/create_org.js';
 import create_org_member from './api/orgs/create_org_member.js';
+import create_org_saml_idp from './api/orgs/create_org_saml_idp.js';
 import delete_org from './api/orgs/delete_org.js';
 import delete_org_member from './api/orgs/delete_org_member.js';
+import delete_org_saml_idp from './api/orgs/delete_org_saml_idp.js';
 import get_org from './api/orgs/get_org.js';
 import get_org_member from './api/orgs/get_org_member.js';
+import get_org_saml_idp from './api/orgs/get_org_saml_idp.js';
 import get_user_org from './api/orgs/get_user_org.js';
 import list_org_members from './api/orgs/list_org_members.js';
 import update_org from './api/orgs/update_org.js';
 import update_org_member from './api/orgs/update_org_member.js';
+import update_org_saml_idp from './api/orgs/update_org_saml_idp.js';
 export const orgs = {
   create_org,
   create_org_member,
+  create_org_saml_idp,
   delete_org,
   delete_org_member,
+  delete_org_saml_idp,
   get_org,
   get_org_member,
+  get_org_saml_idp,
   get_user_org,
   list_org_members,
   update_org,
   update_org_member,
+  update_org_saml_idp,
 };
 
 import create_payment_information_for_org from './api/payments/create_payment_information_for_org.js';
