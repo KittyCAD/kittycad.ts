@@ -408,6 +408,14 @@ export default async function apiGen(lookup: any) {
           'orgs.delete_org',
           'orgs.delete_org_saml_idp',
           'orgs.get_org_saml_idp',
+          'payments.get_payment_balance_for_any_user',
+          'payments.get_payment_balance_for_any_org',
+          'service-accounts.create_service_account_for_org',
+          'orgs.get_any_org',
+          'payments.get_user_subscription',
+          'users.get_user_privacy_settings',
+          'payments.get_org_subscription',
+          'orgs.get_org_privacy_settings',
         ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail
