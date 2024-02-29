@@ -26,6 +26,9 @@ async function main() {
   ): string => {
     const separator = schema.nullable ? '?:' : ':';
     const namePart = name ? `${name}${separator}` : '';
+    if (schema.type === 'number' && schema.format === 'double' && isRoot) {
+      return `${namePart} number /* use-type */`;
+    }
     if (schema.type === 'string' && schema.enum) {
       return [
         addCommentInfo(

@@ -220,7 +220,13 @@ export default async function apiGen(lookup: any) {
                   const ref = value.allOf[0].$ref;
                   return `${key}: ${mapOverProperties(ref)}`;
                 }
-                console.log('yoyoy', value);
+                if (
+                  value.type === 'array' &&
+                  'type' in value.items &&
+                  value.items.type === 'string'
+                ) {
+                  return `${key}: ['string']`;
+                }
                 return '';
               })
               .filter(Boolean)
@@ -308,6 +314,19 @@ export default async function apiGen(lookup: any) {
             }
           } else {
             throw 'only ref arrays implemented';
+          }
+        } else if (
+          schema.type === 'object' &&
+          'additionalProperties' in schema
+        ) {
+          schema.additionalProperties;
+          const addProps =
+            schema.additionalProperties as OpenAPIV3.SchemaObject;
+          if (addProps.type === 'array' && '$ref' in addProps.items) {
+            const typeReference = lookup[addProps.items.$ref];
+            if (!importedTypes.includes(typeReference + '[]')) {
+              importedTypes.push(typeReference + '[]');
+            }
           }
         } else {
           console.log('apiGen', schema);
