@@ -1,30 +1,29 @@
 import fetch from 'node-fetch';
 import {
-  OrgMemberResultsPage_type,
+  ServiceAccountResultsPage_type,
   Error_type,
   CreatedAtSortMode_type,
-  UserOrgRole_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface List_org_members_params {
+interface List_service_accounts_for_org_params {
   client?: Client;
   limit: number;
   page_token: string;
   sort_by: CreatedAtSortMode_type;
-  role: UserOrgRole_type;
 }
 
-type List_org_members_return = OrgMemberResultsPage_type | Error_type;
+type List_service_accounts_for_org_return =
+  | ServiceAccountResultsPage_type
+  | Error_type;
 
-export default async function list_org_members({
+export default async function list_service_accounts_for_org({
   client,
   limit,
   page_token,
   sort_by,
-  role,
-}: List_org_members_params): Promise<List_org_members_return> {
-  const url = `/org/members?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&role=${role}`;
+}: List_service_accounts_for_org_params): Promise<List_service_accounts_for_org_return> {
+  const url = `/org/service-accounts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -38,6 +37,7 @@ export default async function list_org_members({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as List_org_members_return;
+  const result =
+    (await response.json()) as List_service_accounts_for_org_return;
   return result;
 }

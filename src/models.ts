@@ -10,7 +10,7 @@ export type AccountProvider_type =
 export interface AddOrgMember_type {
   /* format:email, description:The email address of the user to add to the org. */
   email: string;
-  role: OrgRole_type /* The organization role to give the user. */;
+  role: UserOrgRole_type /* The organization role to give the user. */;
 }
 
 export interface AddressDetails_type {
@@ -621,7 +621,30 @@ export interface CacheMetadata_type {
   ok: boolean /* If the cache returned an ok response from ping. */;
 }
 
+export interface CameraDragEnd_type {
+  settings: CameraSettings_type /* Camera settings */;
+}
+
 export type CameraDragInteractionType_type = 'pan' | 'rotate' | 'zoom';
+
+export interface CameraDragMove_type {
+  settings: CameraSettings_type /* Camera settings */;
+}
+
+export interface CameraSettings_type {
+  center: Point3d_type /* Camera's look-at center (center-pos gives viewing vector) */;
+  /* nullable:true, format:float, description:Camera's field-of-view angle (if ortho is false) */
+  fov_y?: number;
+  ortho: boolean /* Whether or not the camera is in ortho mode */;
+  /*{
+  "nullable": true,
+  "format": "float",
+  "description": "The camera's ortho scale (derived from viewing distance if ortho is true)"
+}*/
+  ortho_scale?: number;
+  pos: Point3d_type /* Camera position (vantage) */;
+  up: Point3d_type /* Camera's world-space up vector */;
+}
 
 export interface CardDetails_type {
   /* Card brand.
@@ -936,6 +959,11 @@ export interface CustomerBalance_type {
   id: Uuid_type /* The unique identifier for the balance. */;
   map_id: Uuid_type /* The mapping id of the user or org. */;
   /*{
+  "nullable": true,
+  "description": "The enterprise price for the Modeling App subscription, if they are on the enterprise plan."
+}*/
+  modeling_app_enterprise_price?: SubscriptionTierPrice_type;
+  /*{
   "title": "double",
   "format": "money-usd",
   "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the customer per month."
@@ -953,6 +981,10 @@ export interface CustomerBalance_type {
   "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a customer adds funds to their balance. This may be through a subscription or a one off payment."
 }*/
   pre_pay_credits_remaining: number;
+  /* nullable:true, description:Details about the subscription. */
+  subscription_details?: ZooProductSubscriptions_type;
+  /* nullable:true, description:The subscription ID for the user. */
+  subscription_id?: string;
   /*{
   "title": "double",
   "format": "money-usd",
@@ -961,6 +993,14 @@ export interface CustomerBalance_type {
   total_due: number;
   /* title:DateTime, format:date-time, description:The date and time the balance was last updated. */
   updated_at: string;
+}
+
+export interface DefaultCameraGetSettings_type {
+  settings: CameraSettings_type /* Camera settings */;
+}
+
+export interface DefaultCameraZoom_type {
+  settings: CameraSettings_type /* Camera settings */;
 }
 
 export interface Density_type {
@@ -1003,6 +1043,14 @@ export interface Discount_type {
   coupon: Coupon_type /* The coupon that applied to create this discount. */;
 }
 
+export interface DiscountCode_type {
+  code: string /* The code for the discount. */;
+  /* nullable:true, format:date-time, description:The date the discount code expires. */
+  expires_at?: string;
+  /* format:uint32, minimum:0, description:The percent off for the discount. */
+  percent_off: number;
+}
+
 export type DistanceType_type =
   | { type: 'euclidean' }
   | { axis: GlobalAxis_type /* Global axis */; type: 'on_axis' };
@@ -1038,10 +1086,8 @@ export interface EntityGetChildUuid_type {
 }
 
 export interface EntityGetDistance_type {
-  /* format:double, description:The maximum distance between the input entities. */
-  max_distance: number;
-  /* format:double, description:The minimum distance between the input entities. */
-  min_distance: number;
+  max_distance: LengthUnit_type /* The maximum distance between the input entities. */;
+  min_distance: LengthUnit_type /* The minimum distance between the input entities. */;
 }
 
 export interface EntityGetNumChildren_type {
@@ -1106,6 +1152,11 @@ export interface ExportFile_type {
 export interface ExtendedUser_type {
   /* nullable:true, description:If the user should be blocked and the reason why. */
   block?: BlockReason_type;
+  /*{
+  "default": false,
+  "description": "If we can train on the user's data. If the user is a member of an organization, the organization's setting will override this."
+}*/
+  can_train_on_data: boolean;
   company: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
@@ -1129,6 +1180,8 @@ export interface ExtendedUser_type {
   id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
+  /* default:false, description:If the user is tied to a service account. */
+  is_service_account: boolean;
   last_name: string /* The user's last name. */;
   /*{
   "nullable": true,
@@ -1611,7 +1664,7 @@ export interface Invoice_type {
   statement_descriptor: string /* Extra information about an invoice for the customer's credit card statement. */;
   /*{
   "nullable": true,
-  "description": "The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`.\n\n[Learn more](https://stripe.com/docs/billing/invoices/workflow#workflow-overview)."
+  "description": "The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`."
 }*/
   status?: InvoiceStatus_type;
   /*{
@@ -1764,6 +1817,76 @@ export interface JetstreamStats_type {
   store: number;
 }
 
+export interface KclCodeCompletionParams_type {
+  /* default:, description:The language of the code. */
+  language: string;
+  /*{
+  "nullable": true,
+  "format": "uint8",
+  "minimum": 0,
+  "description": "The next indent of the code."
+}*/
+  next_indent?: number;
+  /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "The prompt tokens for the completions."
+}*/
+  prompt_tokens?: number;
+  /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "The suffix tokens for the completions."
+}*/
+  suffix_tokens?: number;
+  /* default:false, description:If we should trim by indentation. */
+  trim_by_indentation: boolean;
+}
+
+export interface KclCodeCompletionRequest_type {
+  /* default:{language:, trim_by_indentation:false}, description:Extra parameters for the completions. */
+  extra: KclCodeCompletionParams_type;
+  /*{
+  "nullable": true,
+  "format": "uint16",
+  "minimum": 0,
+  "description": "The maximum number of tokens that can be generated for the completions. The total length of input tokens and generated tokens is limited by the model’s context length."
+}*/
+  max_tokens?: number;
+  /*{
+  "nullable": true,
+  "format": "uint8",
+  "minimum": 0,
+  "description": "How many completion choices to generate for each input message."
+}*/
+  n?: number;
+  /*{
+  "nullable": true,
+  "description": "For GitHub copilot this is the `{org}/{repo}`. This does not do anything yet. But we wanted the same API as GitHub Copilot. It might be used in the future."
+}*/
+  nwo?: string;
+  /* default:, description:The prompt for the model. */
+  prompt: string;
+  stop: string[];
+  /*{
+  "default": false,
+  "description": "If set, partial message deltas will be sent, like in ChatGPT or OpenAPI. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message."
+}*/
+  stream: boolean;
+  /* default:, description:The suffix for the model. */
+  suffix: string;
+  /* nullable:true, format:float, description:The temperature for the model. */
+  temperature?: number;
+  /* nullable:true, format:float, description:The top p for the model. */
+  top_p?: number;
+}
+
+export interface KclCodeCompletionResponse_type {
+  completions: string[];
+}
+
 export interface LeafNode_type {
   /* default:0, format:int64, description:The auth timeout of the leaf node. */
   auth_timeout: number;
@@ -1774,6 +1897,8 @@ export interface LeafNode_type {
   /* default:0, format:int64, description:The TLS timeout for the leaf node. */
   tls_timeout: number;
 }
+
+export type LengthUnit_type = number;
 
 export interface Mass_type {
   /* format:double, description:The mass. */
@@ -1810,6 +1935,36 @@ export type Method_type =
   | 'PATCH'
   | 'EXTENSION';
 
+export type ModelingAppIndividualSubscriptionTier_type = 'free' | 'pro';
+
+export type ModelingAppOrganizationSubscriptionTier_type =
+  | 'team'
+  | 'enterprise';
+
+export interface ModelingAppSubscriptionTier_type {
+  description: string /* A description of the tier. */;
+  /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
+  features: SubscriptionTierFeature_type[];
+  name: ModelingAppSubscriptionTierName_type /* The name of the tier. */;
+  /*{
+  "title": "double",
+  "format": "money-usd",
+  "description": "The amount of pay-as-you-go credits the individual or org gets outside the modeling app."
+}*/
+  pay_as_you_go_credits: number;
+  price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */;
+  support_tier: SupportTier_type /* The support tier the subscription provides. */;
+  training_data_behavior: SubscriptionTrainingDataBehavior_type /* The behavior of the users data (can it be used for training, etc). */;
+  type: SubscriptionTierType_type /* If the tier is offered for an individual or an org. */;
+  zoo_tools_included: ZooTool_type[] /* The Zoo tools that you can call unlimited times with this tier. */;
+}
+
+export type ModelingAppSubscriptionTierName_type =
+  | 'free'
+  | 'pro'
+  | 'team'
+  | 'enterprise';
+
 export type ModelingCmd_type =
   | { type: 'start_path' }
   | {
@@ -1824,8 +1979,7 @@ export type ModelingCmd_type =
     }
   | {
       cap: boolean /* Whether to cap the extrusion with a face, or not. If true, the resulting solid will be closed on all sides, like a dice. If false, it will be open on one side, like a drinking glass. */;
-      /* format:double, description:How far off the plane to extrude */
-      distance: number;
+      distance: LengthUnit_type /* How far off the plane to extrude */;
       target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
       type: 'extrude';
     }
@@ -1856,6 +2010,7 @@ export type ModelingCmd_type =
       type: 'camera_drag_end';
       window: Point2d_type /* The final mouse position. */;
     }
+  | { type: 'default_camera_get_settings' }
   | {
       center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */;
       /*{
@@ -1911,11 +2066,6 @@ export type ModelingCmd_type =
     }
   | { type: 'default_camera_disable_sketch_mode' }
   | {
-      type: 'default_camera_focus_on';
-      /* format:uuid, description:UUID of object to focus on. */
-      uuid: string;
-    }
-  | {
       /*{
   "format": "uuid"
 }*/
@@ -1947,17 +2097,47 @@ export type ModelingCmd_type =
       type: 'entity_get_all_child_uuids';
     }
   | {
+      distance_type: DistanceType_type /* Type of distance to be measured. */;
+      /* format:uuid, description:ID of the first entity being queried. */
+      entity_id1: string;
+      /* format:uuid, description:ID of the second entity being queried. */
+      entity_id2: string;
+      type: 'entity_get_distance';
+    }
+  | {
+      axis: Point3d_type /* Axis along which to make the copies */;
+      /* format:uuid, description:ID of the entity being copied. */
+      entity_id: string;
+      /* format:uint32, minimum:0, description:Number of repetitions to make. */
+      num_repetitions: number;
+      spacing: LengthUnit_type /* Spacing between repetitions. */;
+      type: 'entity_linear_pattern';
+    }
+  | {
+      /*{
+  "format": "double",
+  "description": "Arc angle (in degrees) to place repetitions along."
+}*/
+      arc_degrees: number;
+      axis: Point3d_type /* Axis around which to make the copies */;
+      center: Point3d_type /* Point around which to make the copies */;
+      /* format:uuid, description:ID of the entity being copied. */
+      entity_id: string;
+      /* format:uint32, minimum:0, description:Number of repetitions to make. */
+      num_repetitions: number;
+      rotate_duplicates: boolean /* Whether or not to rotate the objects as they are copied. */;
+      type: 'entity_circular_pattern';
+    }
+  | {
       /* format:uuid, description:The edit target */
       target: string;
       type: 'edit_mode_enter';
     }
-  | { type: 'edit_mode_exit' }
   | {
       selected_at_window: Point2d_type /* Where in the window was selected */;
       selection_type: SceneSelectionType_type /* What entity was selected? */;
       type: 'select_with_point';
     }
-  | { type: 'select_clear' }
   | {
       /*{
   "format": "uuid"
@@ -1979,7 +2159,6 @@ export type ModelingCmd_type =
       entities: string[];
       type: 'select_replace';
     }
-  | { type: 'select_get' }
   | {
       selected_at_window: Point2d_type /* Coordinates of the window being clicked */;
       /*{
@@ -2022,9 +2201,28 @@ export type ModelingCmd_type =
       type: 'object_bring_to_front';
     }
   | {
+      /* format:float, description:Ambient Occlusion of the new material */
+      ambient_occlusion: number;
+      color: Color_type /* Color of the new material */;
+      /* format:float, description:Metalness of the new material */
+      metalness: number;
+      /* format:uuid, description:Which object to change */
+      object_id: string;
+      /* format:float, description:Roughness of the new material */
+      roughness: number;
+      type: 'object_set_material_params_pbr';
+    }
+  | {
       /* format:uuid, description:ID of the entity being queried. */
       entity_id: string;
       type: 'get_entity_type';
+    }
+  | {
+      /* format:uuid, description:Which edge you want the faces of. */
+      edge_id: string;
+      /* format:uuid, description:Which object is being queried. */
+      object_id: string;
+      type: 'solid3d_get_all_edge_faces';
     }
   | {
       /*{
@@ -2037,16 +2235,9 @@ export type ModelingCmd_type =
       type: 'solid2d_add_hole';
     }
   | {
-      /* format:uuid, description:Which edge you want the faces of. */
-      edge_id: string;
-      /* format:uuid, description:Which object is being queried. */
-      object_id: string;
-      type: 'solid3d_get_all_edge_faces';
-    }
-  | {
       /*{
   "nullable": true,
-  "description": "If given, ohnly faces parallel to this vector will be considered."
+  "description": "If given, only faces parallel to this vector will be considered."
 }*/
       along_vector?: Point3d_type;
       /* format:uuid, description:Which edge you want the opposites of. */
@@ -2096,11 +2287,8 @@ export type ModelingCmd_type =
       edge_id: string;
       /* format:uuid, description:Which object is being filletted. */
       object_id: string;
-      /*{
-  "format": "double",
-  "description": "The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero)."
-}*/
-      radius: number;
+      radius: LengthUnit_type /* The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero). */;
+      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the filleted surfaces. Must be positive (i.e. greater than zero). */;
       type: 'solid3d_fillet_edge';
     }
   | {
@@ -2135,11 +2323,7 @@ export type ModelingCmd_type =
 }*/
       hide?: boolean;
       origin: Point3d_type /* Origin of the plane */;
-      /*{
-  "format": "double",
-  "description": "What should the plane's span/extent? When rendered visually, this is both the width and height along X and Y axis respectively."
-}*/
-      size: number;
+      size: LengthUnit_type /* What should the plane's span/extent? When rendered visually, this is both the width and height along X and Y axis respectively. */;
       type: 'make_plane';
       x_axis: Point3d_type /* What should the plane's X axis be? */;
       y_axis: Point3d_type /* What should the plane's Y axis be? */;
@@ -2179,6 +2363,22 @@ export type ModelingCmd_type =
       type: 'sketch_mode_enable';
     }
   | { type: 'sketch_mode_disable' }
+  | { type: 'get_sketch_mode_plane' }
+  | {
+      constraint_bound: PathComponentConstraintBound_type /* Which constraint to apply. */;
+      constraint_type: PathComponentConstraintType_type /* What part of the curve should be constrained. */;
+      /* format:uuid, description:Which curve to constrain. */
+      object_id: string;
+      type: 'curve_set_constraint';
+    }
+  | {
+      adjust_camera: boolean /* Should the camera move at all? */;
+      animated: boolean /* Should we animate or snap for the camera transition? */;
+      /* format:uuid, description:Which entity to sketch on. */
+      entity_id: string;
+      ortho: boolean /* Should the camera use orthographic projection? In other words, should an object's size in the rendered image stay constant regardless of its distance from the camera. */;
+      type: 'enable_sketch_mode';
+    }
   | {
       /* format:uuid, description:Which curve to query. */
       curve_id: string;
@@ -2269,6 +2469,10 @@ export type ModelingCmd_type =
       type: 'import_files';
     }
   | {
+      type: 'set_scene_units';
+      unit: UnitLength_type /* Which units the scene uses. */;
+    }
+  | {
       /*{
   "format": "uuid"
 }*/
@@ -2319,66 +2523,10 @@ export type ModelingCmd_type =
       source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
       type: 'surface_area';
     }
-  | { type: 'get_sketch_mode_plane' }
   | {
-      constraint_bound: PathComponentConstraintBound_type /* Which constraint to apply. */;
-      constraint_type: PathComponentConstraintType_type /* What part of the curve should be constrained. */;
-      /* format:uuid, description:Which curve to constrain. */
-      object_id: string;
-      type: 'curve_set_constraint';
-    }
-  | {
-      adjust_camera: boolean /* Should the camera move at all? */;
-      animated: boolean /* Should we animate or snap for the camera transition? */;
-      /* format:uuid, description:Which entity to sketch on. */
-      entity_id: string;
-      ortho: boolean /* Should the camera use orthographic projection? In other words, should an object's size in the rendered image stay constant regardless of its distance from the camera. */;
-      type: 'enable_sketch_mode';
-    }
-  | {
-      /* format:float, description:Ambient Occlusion of the new material */
-      ambient_occlusion: number;
-      color: Color_type /* Color of the new material */;
-      /* format:float, description:Metalness of the new material */
-      metalness: number;
-      /* format:uuid, description:Which object to change */
-      object_id: string;
-      /* format:float, description:Roughness of the new material */
-      roughness: number;
-      type: 'object_set_material_params_pbr';
-    }
-  | {
-      distance_type: DistanceType_type /* Type of distance to be measured. */;
-      /* format:uuid, description:ID of the first entity being queried. */
-      entity_id1: string;
-      /* format:uuid, description:ID of the second entity being queried. */
-      entity_id2: string;
-      type: 'entity_get_distance';
-    }
-  | {
-      axis: Point3d_type /* Axis along which to make the copies */;
-      /* format:uuid, description:ID of the entity being copied. */
-      entity_id: string;
-      /* format:uint32, minimum:0, description:Number of repetitions to make. */
-      num_repetitions: number;
-      /* format:double, description:Spacing between repetitions. */
-      spacing: number;
-      type: 'entity_linear_pattern';
-    }
-  | {
-      /*{
-  "format": "double",
-  "description": "Arc angle (in degrees) to place repetitions along."
-}*/
-      arc_degrees: number;
-      axis: Point3d_type /* Axis around which to make the copies */;
-      center: Point3d_type /* Point around which to make the copies */;
-      /* format:uuid, description:ID of the entity being copied. */
-      entity_id: string;
-      /* format:uint32, minimum:0, description:Number of repetitions to make. */
-      num_repetitions: number;
-      rotate_duplicates: boolean /* Whether or not to rotate the objects as they are copied. */;
-      type: 'entity_circular_pattern';
+      type: 'default_camera_focus_on';
+      /* format:uuid, description:UUID of object to focus on. */
+      uuid: string;
     }
   | {
       selection_type: SceneSelectionType_type /* What type of selection should occur when you select something? */;
@@ -2406,7 +2554,10 @@ export type ModelingCmd_type =
 }*/
       object_id: string;
       type: 'solid3d_get_extrusion_face_info';
-    };
+    }
+  | { type: 'edit_mode_exit' }
+  | { type: 'select_clear' }
+  | { type: 'select_get' };
 
 export type ModelingCmdId_type =
   /*{
@@ -2497,38 +2648,38 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/CameraDragMove"
+}*/
+      data: CameraDragMove_type;
+      type: 'camera_drag_move';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/CameraDragEnd"
+}*/
+      data: CameraDragEnd_type;
+      type: 'camera_drag_end';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraGetSettings"
+}*/
+      data: DefaultCameraGetSettings_type;
+      type: 'default_camera_get_settings';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraZoom"
+}*/
+      data: DefaultCameraZoom_type;
+      type: 'default_camera_zoom';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/SelectGet"
 }*/
       data: SelectGet_type;
       type: 'select_get';
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/GetEntityType"
-}*/
-      data: GetEntityType_type;
-      type: 'get_entity_type';
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/EntityGetDistance"
-}*/
-      data: EntityGetDistance_type;
-      type: 'entity_get_distance';
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/EntityLinearPattern"
-}*/
-      data: EntityLinearPattern_type;
-      type: 'entity_linear_pattern';
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/EntityCircularPattern"
-}*/
-      data: EntityCircularPattern_type;
-      type: 'entity_circular_pattern';
     }
   | {
       /*{
@@ -2553,13 +2704,6 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
-  "$ref": "#/components/schemas/Solid3dGetPrevAdjacentEdge"
-}*/
-      data: Solid3dGetPrevAdjacentEdge_type;
-      type: 'solid3d_get_prev_adjacent_edge';
-    }
-  | {
-      /*{
   "$ref": "#/components/schemas/Solid3dGetNextAdjacentEdge"
 }*/
       data: Solid3dGetNextAdjacentEdge_type;
@@ -2567,10 +2711,24 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
-  "$ref": "#/components/schemas/MouseClick"
+  "$ref": "#/components/schemas/Solid3dGetPrevAdjacentEdge"
 }*/
-      data: MouseClick_type;
-      type: 'mouse_click';
+      data: Solid3dGetPrevAdjacentEdge_type;
+      type: 'solid3d_get_prev_adjacent_edge';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/GetEntityType"
+}*/
+      data: GetEntityType_type;
+      type: 'get_entity_type';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/CurveGetControlPoints"
+}*/
+      data: CurveGetControlPoints_type;
+      type: 'curve_get_control_points';
     }
   | {
       /*{
@@ -2581,10 +2739,10 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
-  "$ref": "#/components/schemas/CurveGetControlPoints"
+  "$ref": "#/components/schemas/MouseClick"
 }*/
-      data: CurveGetControlPoints_type;
-      type: 'curve_get_control_points';
+      data: MouseClick_type;
+      type: 'mouse_click';
     }
   | {
       /*{
@@ -2602,6 +2760,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/PathSegmentInfo"
+}*/
+      data: PathSegmentInfo_type;
+      type: 'path_segment_info';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/PathGetCurveUuidsForVertices"
 }*/
       data: PathGetCurveUuidsForVertices_type;
@@ -2616,17 +2781,17 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
-  "$ref": "#/components/schemas/PlaneIntersectAndProject"
-}*/
-      data: PlaneIntersectAndProject_type;
-      type: 'plane_intersect_and_project';
-    }
-  | {
-      /*{
   "$ref": "#/components/schemas/CurveGetEndPoints"
 }*/
       data: CurveGetEndPoints_type;
       type: 'curve_get_end_points';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/PlaneIntersectAndProject"
+}*/
+      data: PlaneIntersectAndProject_type;
+      type: 'plane_intersect_and_project';
     }
   | {
       /*{
@@ -2672,6 +2837,34 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/GetSketchModePlane"
+}*/
+      data: GetSketchModePlane_type;
+      type: 'get_sketch_mode_plane';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityGetDistance"
+}*/
+      data: EntityGetDistance_type;
+      type: 'entity_get_distance';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityLinearPattern"
+}*/
+      data: EntityLinearPattern_type;
+      type: 'entity_linear_pattern';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityCircularPattern"
+}*/
+      data: EntityCircularPattern_type;
+      type: 'entity_circular_pattern';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/Solid3dGetExtrusionFaceInfo"
 }*/
       data: Solid3dGetExtrusionFaceInfo_type;
@@ -2679,10 +2872,10 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
-  "$ref": "#/components/schemas/GetSketchModePlane"
+  "$ref": "#/components/schemas/ExtrusionFaceInfo"
 }*/
-      data: GetSketchModePlane_type;
-      type: 'get_sketch_mode_plane';
+      data: ExtrusionFaceInfo_type;
+      type: 'extrusion_face_info';
     };
 
 export type OkWebSocketResponseData_type =
@@ -2711,7 +2904,8 @@ export type OkWebSocketResponseData_type =
       type: 'modeling';
     }
   | { data: { files: RawFile_type[] /* The exported files */ }; type: 'export' }
-  | { data: object; type: 'metrics_request' };
+  | { data: object; type: 'metrics_request' }
+  | { data: object; type: 'pong' };
 
 export interface Onboarding_type {
   /*{
@@ -2754,6 +2948,11 @@ export interface Org_type {
   billing_email_verified?: string;
   /* nullable:true, description:If the org should be blocked and the reason why. */
   block?: BlockReason_type;
+  /*{
+  "default": false,
+  "description": "If we can train on the orgs's data. This value overrides any individual user's `can_train_on_data` value if they are a member of the org."
+}*/
+  can_train_on_data: boolean;
   /* title:DateTime, format:date-time, description:The date and time the org was created. */
   created_at: string;
   /* nullable:true, description:The org's domain. */
@@ -2849,7 +3048,16 @@ export interface OrgMemberResultsPage_type {
   next_page?: string;
 }
 
-export type OrgRole_type = 'admin' | 'member';
+export interface OrgResultsPage_type {
+  items: Org_type[] /* list of items on this page of results */;
+  /*{
+  "nullable": true,
+  "description": "token used to fetch the next page of results (if any)"
+}*/
+  next_page?: string;
+}
+
+export type OrgRole_type = 'admin' | 'member' | 'service_account';
 
 export interface OutputFile_type {
   /*{
@@ -2968,8 +3176,7 @@ export type PathSegment_type =
   | {
       center: Point2d_type /* Center of the circle */;
       end: Angle_type /* End of the arc along circle's perimeter. */;
-      /* format:double, description:Radius of the circle */
-      radius: number;
+      radius: LengthUnit_type /* Radius of the circle */;
       relative: boolean /* Whether or not this arc is a relative offset */;
       start: Angle_type /* Start of the arc along circle's perimeter. */;
       type: 'arc';
@@ -2983,11 +3190,7 @@ export type PathSegment_type =
     }
   | {
       offset: Angle_type /* Offset of the arc. */;
-      /*{
-  "format": "double",
-  "description": "Radius of the arc. Not to be confused with Raiders of the Lost Ark."
-}*/
-      radius: number;
+      radius: LengthUnit_type /* Radius of the arc. Not to be confused with Raiders of the Lost Ark. */;
       type: 'tangential_arc';
     }
   | {
@@ -3042,6 +3245,8 @@ export interface PerspectiveCameraParameters_type {
   z_near: number;
 }
 
+export type PlanInterval_type = 'day' | 'month' | 'week' | 'year';
+
 export interface PlaneIntersectAndProject_type {
   /*{
   "nullable": true,
@@ -3057,13 +3262,13 @@ export type PlyStorage_type =
 
 export interface Point2d_type {
   /*{
-  "format": "double"
+  "$ref": "#/components/schemas/LengthUnit"
 }*/
-  x: number;
+  x: LengthUnit_type;
   /*{
-  "format": "double"
+  "$ref": "#/components/schemas/LengthUnit"
 }*/
-  y: number;
+  y: LengthUnit_type;
 }
 
 export interface Point3d_type {
@@ -3083,6 +3288,10 @@ export interface Point3d_type {
 
 export interface Pong_type {
   message: string /* The pong response. */;
+}
+
+export interface PrivacySettings_type {
+  can_train_on_data: boolean /* If we can train on the data. If the user is a member of an organization, the organization's setting will override this. The organization's setting takes priority. */;
 }
 
 export interface RawFile_type {
@@ -3220,6 +3429,28 @@ export type Selection_type =
     }
   | { name: string /* The name. */; type: 'mesh_by_name' };
 
+export interface ServiceAccount_type {
+  /* title:DateTime, format:date-time, description:The date and time the API token was created. */
+  created_at: string;
+  id: Uuid_type /* The unique identifier for the API token. */;
+  is_valid: boolean /* If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token. */;
+  /* nullable:true, description:An optional label for the API token. */
+  label?: string;
+  org_id: Uuid_type /* The ID of the organization that owns the API token. */;
+  token: Uuid_type /* The API token itself. */;
+  /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
+  updated_at: string;
+}
+
+export interface ServiceAccountResultsPage_type {
+  items: ServiceAccount_type[] /* list of items on this page of results */;
+  /*{
+  "nullable": true,
+  "description": "token used to fetch the next page of results (if any)"
+}*/
+  next_page?: string;
+}
+
 export interface Session_type {
   /* title:DateTime, format:date-time, description:The date and time the session was created. */
   created_at: string;
@@ -3267,6 +3498,43 @@ export interface Solid3dGetPrevAdjacentEdge_type {
 
 export type StlStorage_type = 'ascii' | 'binary';
 
+export interface StoreCouponParams_type {
+  /* format:uint32, minimum:0, description:The percentage off. */
+  percent_off: number;
+}
+
+export interface SubscriptionTierFeature_type {
+  /* minLength:1, maxLength:80, description:Information about the feature. */
+  info: string;
+}
+
+export type SubscriptionTierPrice_type =
+  | {
+      interval: PlanInterval_type /* The interval the price is charged. */;
+      /* title:double, format:money-usd, description:The price. */
+      price: number;
+      type: 'flat';
+    }
+  | {
+      interval: PlanInterval_type /* The interval the price is charged. */;
+      /* title:double, format:money-usd, description:The price. */
+      price: number;
+      type: 'per_user';
+    }
+  | { type: 'enterprise' };
+
+export type SubscriptionTierType_type =
+  | { type: 'individual' }
+  | {
+      saml_sso: boolean /* Whether or not the subscription type supports SAML SSO. */;
+      type: 'organization';
+    };
+
+export type SubscriptionTrainingDataBehavior_type =
+  | 'always'
+  | 'default_on'
+  | 'default_off';
+
 export interface SuccessWebSocketResponse_type {
   /*{
   "nullable": true,
@@ -3277,6 +3545,12 @@ export interface SuccessWebSocketResponse_type {
   resp: OkWebSocketResponseData_type /* The data sent with a successful response. This will be flattened into a 'type' and 'data' field. */;
   success: true;
 }
+
+export type SupportTier_type =
+  | 'community'
+  | 'standard'
+  | 'premium'
+  | 'priority';
 
 export interface SurfaceArea_type {
   output_unit: UnitArea_type /* The output unit for the surface area. */;
@@ -3892,7 +4166,31 @@ This is the same as the API call ID. */
 }
 
 export interface UpdateMemberToOrgBody_type {
-  role: OrgRole_type /* The organization role to give the user. */;
+  role: UserOrgRole_type /* The organization role to give the user. */;
+}
+
+export interface UpdatePaymentBalance_type {
+  /*{
+  "nullable": true,
+  "title": "double",
+  "format": "money-usd",
+  "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the user per month."
+}*/
+  monthly_credits_remaining?: number;
+  /*{
+  "nullable": true,
+  "title": "double",
+  "format": "money-usd",
+  "description": "The amount of pre-pay cash remaining in the balance. This number goes down as the user uses their pre-paid credits. The reason we track this amount is if a user ever wants to withdraw their pre-pay cash, we can use this amount to determine how much to give them. Say a user has $100 in pre-paid cash, their bill is worth, $50 after subtracting any other credits (like monthly etc.) Their bill is $50, their pre-pay cash remaining will be subtracted by 50 to pay the bill and their `pre_pay_credits_remaining` will be subtracted by 50 to pay the bill. This way if they want to withdraw money after, they can only withdraw $50 since that is the amount of cash they have remaining."
+}*/
+  pre_pay_cash_remaining?: number;
+  /*{
+  "nullable": true,
+  "title": "double",
+  "format": "money-usd",
+  "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a user adds funds to their balance. This may be through a subscription or a one off payment."
+}*/
+  pre_pay_credits_remaining?: number;
 }
 
 export interface UpdateUser_type {
@@ -3919,6 +4217,11 @@ export interface UpdateUser_type {
 export interface User_type {
   /* nullable:true, description:If the user should be blocked and the reason why. */
   block?: BlockReason_type;
+  /*{
+  "default": false,
+  "description": "If we can train on the user's data. If the user is a member of an organization, the organization's setting will override this."
+}*/
+  can_train_on_data: boolean;
   company: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
@@ -3937,6 +4240,8 @@ export interface User_type {
   id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
+  /* default:false, description:If the user is tied to a service account. */
+  is_service_account: boolean;
   last_name: string /* The user's last name. */;
   name: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
   /*{
@@ -3993,6 +4298,8 @@ export interface UserOrgInfo_type {
   /* title:DateTime, format:date-time, description:The date and time the org was last updated. */
   updated_at: string;
 }
+
+export type UserOrgRole_type = 'admin' | 'member';
 
 export interface UserResultsPage_type {
   items: User_type[] /* list of items on this page of results */;
@@ -4085,6 +4392,43 @@ export type WebSocketResponse_type =
       success: false;
     };
 
+export type ZooProductSubscription_type = {
+  description: string /* A description of the tier. */;
+  /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
+  features: SubscriptionTierFeature_type[];
+  name: ModelingAppSubscriptionTierName_type /* The name of the tier. */;
+  /*{
+  "title": "double",
+  "format": "money-usd",
+  "description": "The amount of pay-as-you-go credits the individual or org gets outside the modeling app."
+}*/
+  pay_as_you_go_credits: number;
+  price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */;
+  support_tier: SupportTier_type /* The support tier the subscription provides. */;
+  training_data_behavior: SubscriptionTrainingDataBehavior_type /* The behavior of the users data (can it be used for training, etc). */;
+  type: SubscriptionTierType_type /* If the tier is offered for an individual or an org. */;
+  zoo_tools_included: ZooTool_type[] /* The Zoo tools that you can call unlimited times with this tier. */;
+};
+
+export interface ZooProductSubscriptions_type {
+  modeling_app: ModelingAppSubscriptionTier_type /* A modeling app subscription. */;
+}
+
+export interface ZooProductSubscriptionsOrgRequest_type {
+  /* default:team, description:A modeling app subscription. */
+  modeling_app: ModelingAppOrganizationSubscriptionTier_type;
+}
+
+export interface ZooProductSubscriptionsUserRequest_type {
+  /* default:free, description:A modeling app subscription. */
+  modeling_app: ModelingAppIndividualSubscriptionTier_type;
+}
+
+export type ZooTool_type =
+  | 'modeling_app'
+  | 'text_to_cad'
+  | 'diff_chrome_extension';
+
 export interface Models {
   AccountProvider_type: AccountProvider_type;
   AddOrgMember_type: AddOrgMember_type;
@@ -4120,7 +4464,10 @@ export interface Models {
   BillingInfo_type: BillingInfo_type;
   BlockReason_type: BlockReason_type;
   CacheMetadata_type: CacheMetadata_type;
+  CameraDragEnd_type: CameraDragEnd_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
+  CameraDragMove_type: CameraDragMove_type;
+  CameraSettings_type: CameraSettings_type;
   CardDetails_type: CardDetails_type;
   CenterOfMass_type: CenterOfMass_type;
   ClientMetrics_type: ClientMetrics_type;
@@ -4139,6 +4486,8 @@ export interface Models {
   CurveType_type: CurveType_type;
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
+  DefaultCameraGetSettings_type: DefaultCameraGetSettings_type;
+  DefaultCameraZoom_type: DefaultCameraZoom_type;
   Density_type: Density_type;
   DerEncodedKeyPair_type: DerEncodedKeyPair_type;
   DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type;
@@ -4146,6 +4495,7 @@ export interface Models {
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
   Direction_type: Direction_type;
   Discount_type: Discount_type;
+  DiscountCode_type: DiscountCode_type;
   DistanceType_type: DistanceType_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
   EntityCircularPattern_type: EntityCircularPattern_type;
@@ -4197,11 +4547,19 @@ export interface Models {
   JetstreamApiStats_type: JetstreamApiStats_type;
   JetstreamConfig_type: JetstreamConfig_type;
   JetstreamStats_type: JetstreamStats_type;
+  KclCodeCompletionParams_type: KclCodeCompletionParams_type;
+  KclCodeCompletionRequest_type: KclCodeCompletionRequest_type;
+  KclCodeCompletionResponse_type: KclCodeCompletionResponse_type;
   LeafNode_type: LeafNode_type;
+  LengthUnit_type: LengthUnit_type;
   Mass_type: Mass_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
   Method_type: Method_type;
+  ModelingAppIndividualSubscriptionTier_type: ModelingAppIndividualSubscriptionTier_type;
+  ModelingAppOrganizationSubscriptionTier_type: ModelingAppOrganizationSubscriptionTier_type;
+  ModelingAppSubscriptionTier_type: ModelingAppSubscriptionTier_type;
+  ModelingAppSubscriptionTierName_type: ModelingAppSubscriptionTierName_type;
   ModelingCmd_type: ModelingCmd_type;
   ModelingCmdId_type: ModelingCmdId_type;
   ModelingCmdReq_type: ModelingCmdReq_type;
@@ -4215,6 +4573,7 @@ export interface Models {
   OrgDetails_type: OrgDetails_type;
   OrgMember_type: OrgMember_type;
   OrgMemberResultsPage_type: OrgMemberResultsPage_type;
+  OrgResultsPage_type: OrgResultsPage_type;
   OrgRole_type: OrgRole_type;
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
@@ -4231,11 +4590,13 @@ export interface Models {
   PaymentMethodCardChecks_type: PaymentMethodCardChecks_type;
   PaymentMethodType_type: PaymentMethodType_type;
   PerspectiveCameraParameters_type: PerspectiveCameraParameters_type;
+  PlanInterval_type: PlanInterval_type;
   PlaneIntersectAndProject_type: PlaneIntersectAndProject_type;
   PlyStorage_type: PlyStorage_type;
   Point2d_type: Point2d_type;
   Point3d_type: Point3d_type;
   Pong_type: Pong_type;
+  PrivacySettings_type: PrivacySettings_type;
   RawFile_type: RawFile_type;
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
   RtcSdpType_type: RtcSdpType_type;
@@ -4247,6 +4608,8 @@ export interface Models {
   SelectGet_type: SelectGet_type;
   SelectWithPoint_type: SelectWithPoint_type;
   Selection_type: Selection_type;
+  ServiceAccount_type: ServiceAccount_type;
+  ServiceAccountResultsPage_type: ServiceAccountResultsPage_type;
   Session_type: Session_type;
   Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
   Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
@@ -4255,7 +4618,13 @@ export interface Models {
   Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
   StlStorage_type: StlStorage_type;
+  StoreCouponParams_type: StoreCouponParams_type;
+  SubscriptionTierFeature_type: SubscriptionTierFeature_type;
+  SubscriptionTierPrice_type: SubscriptionTierPrice_type;
+  SubscriptionTierType_type: SubscriptionTierType_type;
+  SubscriptionTrainingDataBehavior_type: SubscriptionTrainingDataBehavior_type;
   SuccessWebSocketResponse_type: SuccessWebSocketResponse_type;
+  SupportTier_type: SupportTier_type;
   SurfaceArea_type: SurfaceArea_type;
   System_type: System_type;
   TakeSnapshot_type: TakeSnapshot_type;
@@ -4290,13 +4659,20 @@ export interface Models {
   UnitVolume_type: UnitVolume_type;
   UnitVolumeConversion_type: UnitVolumeConversion_type;
   UpdateMemberToOrgBody_type: UpdateMemberToOrgBody_type;
+  UpdatePaymentBalance_type: UpdatePaymentBalance_type;
   UpdateUser_type: UpdateUser_type;
   User_type: User_type;
   UserOrgInfo_type: UserOrgInfo_type;
+  UserOrgRole_type: UserOrgRole_type;
   UserResultsPage_type: UserResultsPage_type;
   Uuid_type: Uuid_type;
   VerificationTokenResponse_type: VerificationTokenResponse_type;
   Volume_type: Volume_type;
   WebSocketRequest_type: WebSocketRequest_type;
   WebSocketResponse_type: WebSocketResponse_type;
+  ZooProductSubscription_type: ZooProductSubscription_type;
+  ZooProductSubscriptions_type: ZooProductSubscriptions_type;
+  ZooProductSubscriptionsOrgRequest_type: ZooProductSubscriptionsOrgRequest_type;
+  ZooProductSubscriptionsUserRequest_type: ZooProductSubscriptionsUserRequest_type;
+  ZooTool_type: ZooTool_type;
 }
