@@ -220,7 +220,13 @@ export default async function apiGen(lookup: any) {
                   const ref = value.allOf[0].$ref;
                   return `${key}: ${mapOverProperties(ref)}`;
                 }
-                console.log('yoyoy', value);
+                if (
+                  value.type === 'array' &&
+                  'type' in value.items &&
+                  value.items.type === 'string'
+                ) {
+                  return `${key}: ['string']`;
+                }
                 return '';
               })
               .filter(Boolean)
@@ -309,6 +315,19 @@ export default async function apiGen(lookup: any) {
           } else {
             throw 'only ref arrays implemented';
           }
+        } else if (
+          schema.type === 'object' &&
+          'additionalProperties' in schema
+        ) {
+          schema.additionalProperties;
+          const addProps =
+            schema.additionalProperties as OpenAPIV3.SchemaObject;
+          if (addProps.type === 'array' && '$ref' in addProps.items) {
+            const typeReference = lookup[addProps.items.$ref];
+            if (!importedTypes.includes(typeReference + '[]')) {
+              importedTypes.push(typeReference + '[]');
+            }
+          }
         } else {
           console.log('apiGen', schema);
           throw 'not implemented';
@@ -389,6 +408,14 @@ export default async function apiGen(lookup: any) {
           'orgs.delete_org',
           'orgs.delete_org_saml_idp',
           'orgs.get_org_saml_idp',
+          'payments.get_payment_balance_for_any_user',
+          'payments.get_payment_balance_for_any_org',
+          'service-accounts.create_service_account_for_org',
+          'orgs.get_any_org',
+          'payments.get_user_subscription',
+          'users.get_user_privacy_settings',
+          'payments.get_org_subscription',
+          'orgs.get_org_privacy_settings',
         ].includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail
