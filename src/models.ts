@@ -1224,6 +1224,27 @@ export interface ExtrusionFaceInfo_type {
   face_id?: string;
 }
 
+export interface FaceGetGradient_type {
+  df_du: Point3d_type /* dFdu */;
+  df_dv: Point3d_type /* dFdv */;
+  normal: Point3d_type /* Normal (||dFdu x dFdv||) */;
+}
+
+export interface FaceGetPosition_type {
+  pos: Point3d_type /* The 3D position on the surface that was evaluated */;
+}
+
+export interface FaceIsPlanar_type {
+  /* nullable:true, description:plane's origin */
+  origin?: Point3d_type;
+  /* nullable:true, description:plane's local x-axis */
+  x_axis?: Point3d_type;
+  /* nullable:true, description:plane's local y-axis */
+  y_axis?: Point3d_type;
+  /* nullable:true, description:plane's local z-axis (normal) */
+  z_axis?: Point3d_type;
+}
+
 export interface FailureWebSocketResponse_type {
   errors: ApiError_type[] /* The errors that occurred. */;
   /*{
@@ -2292,6 +2313,23 @@ export type ModelingCmd_type =
       type: 'solid3d_fillet_edge';
     }
   | {
+      /* format:uuid, description:Which face is being queried. */
+      object_id: string;
+      type: 'face_is_planar';
+    }
+  | {
+      /* format:uuid, description:Which face is being queried. */
+      object_id: string;
+      type: 'face_get_position';
+      uv: Point2d_type /* The 2D paramter-space u,v position to evaluate the surface at */;
+    }
+  | {
+      /* format:uuid, description:Which face is being queried. */
+      object_id: string;
+      type: 'face_get_gradient';
+      uv: Point2d_type /* The 2D paramter-space u,v position to evaluate the surface at */;
+    }
+  | {
       front: boolean /* Bring to front = true, send to back = false. */;
       /* format:uuid, description:Which object is being changed. */
       object_id: string;
@@ -2785,6 +2823,27 @@ export type OkModelingCmdResponse_type =
 }*/
       data: CurveGetEndPoints_type;
       type: 'curve_get_end_points';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/FaceIsPlanar"
+}*/
+      data: FaceIsPlanar_type;
+      type: 'face_is_planar';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/FaceGetPosition"
+}*/
+      data: FaceGetPosition_type;
+      type: 'face_get_position';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/FaceGetGradient"
+}*/
+      data: FaceGetGradient_type;
+      type: 'face_get_gradient';
     }
   | {
       /*{
@@ -4515,6 +4574,9 @@ export interface Models {
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
   ExtrusionFaceCapType_type: ExtrusionFaceCapType_type;
   ExtrusionFaceInfo_type: ExtrusionFaceInfo_type;
+  FaceGetGradient_type: FaceGetGradient_type;
+  FaceGetPosition_type: FaceGetPosition_type;
+  FaceIsPlanar_type: FaceIsPlanar_type;
   FailureWebSocketResponse_type: FailureWebSocketResponse_type;
   FbxStorage_type: FbxStorage_type;
   FileCenterOfMass_type: FileCenterOfMass_type;
