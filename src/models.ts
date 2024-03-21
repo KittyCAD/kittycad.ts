@@ -1139,6 +1139,29 @@ export type ErrorCode_type =
   | 'message_type_not_accepted'
   | 'message_type_not_accepted_for_web_r_t_c';
 
+export type Event_type = {
+  /*{
+  "nullable": true,
+  "description": "Attachment URI for where the attachment is stored."
+}*/
+  attachment_uri?: string;
+  /* format:date-time, description:Time this event was created. */
+  created_at: string;
+  event_type: ModelingAppEventType_type /* The specific event type from the modeling app. */;
+  /* nullable:true, format:date-time, description:Time the associated attachment was last compiled. */
+  last_compiled_at?: string;
+  /* nullable:true, description:Project descriptino as given by the user. */
+  project_description?: string;
+  project_name: string /* Project name as given by the user. */;
+  /*{
+  "format": "uuid",
+  "description": "The source app for this event, uuid that is unique to the app."
+}*/
+  source_id: string;
+  type: 'modeling_app_event';
+  user_id: string /* An anonymous user id generated client-side. */;
+};
+
 export interface Export_type {
   files: ExportFile_type[] /* The files that were exported. */;
 }
@@ -1508,6 +1531,11 @@ export interface Gateway_type {
 
 export interface GetEntityType_type {
   entity_type: EntityType_type /* The type of the entity. */;
+}
+
+export interface GetNumObjects_type {
+  /* format:uint32, minimum:0, description:The number of objects in the scene. */
+  num_objects: number;
 }
 
 export interface GetSketchModePlane_type {
@@ -1956,6 +1984,8 @@ export type Method_type =
   | 'PATCH'
   | 'EXTENSION';
 
+export type ModelingAppEventType_type = 'successful_compile_before_close';
+
 export type ModelingAppIndividualSubscriptionTier_type = 'free' | 'pro';
 
 export type ModelingAppOrganizationSubscriptionTier_type =
@@ -2126,7 +2156,7 @@ export type ModelingCmd_type =
       type: 'entity_get_distance';
     }
   | {
-      axis: Point3d_type /* Axis along which to make the copies */;
+      axis: Point3d_type /* Axis along which to make the copies. For Solid2d patterns, the z component is ignored. */;
       /* format:uuid, description:ID of the entity being copied. */
       entity_id: string;
       /* format:uint32, minimum:0, description:Number of repetitions to make. */
@@ -2140,14 +2170,24 @@ export type ModelingCmd_type =
   "description": "Arc angle (in degrees) to place repetitions along."
 }*/
       arc_degrees: number;
-      axis: Point3d_type /* Axis around which to make the copies */;
-      center: Point3d_type /* Point around which to make the copies */;
+      axis: Point3d_type /* Axis around which to make the copies. For Solid2d patterns, this is ignored. */;
+      center: Point3d_type /* Point around which to make the copies. For Solid2d patterns, the z component is ignored. */;
       /* format:uuid, description:ID of the entity being copied. */
       entity_id: string;
       /* format:uint32, minimum:0, description:Number of repetitions to make. */
       num_repetitions: number;
       rotate_duplicates: boolean /* Whether or not to rotate the objects as they are copied. */;
       type: 'entity_circular_pattern';
+    }
+  | {
+      /* format:uuid, description:ID of the cylinder. */
+      cylinder_id: string;
+      is_clockwise: boolean /* Is the helix rotation clockwise? */;
+      length: LengthUnit_type /* Length of the helix. */;
+      /* format:double, description:Number of revolutions. */
+      revolutions: number;
+      start_angle: Angle_type /* Start angle (in degrees). */;
+      type: 'entity_make_helix';
     }
   | {
       /* format:uuid, description:The edit target */
@@ -2173,6 +2213,7 @@ export type ModelingCmd_type =
       entities: string[];
       type: 'select_remove';
     }
+  | { type: 'scene_clear_all' }
   | {
       /*{
   "format": "uuid"
@@ -2418,6 +2459,10 @@ export type ModelingCmd_type =
       type: 'enable_sketch_mode';
     }
   | {
+      color: Color_type /* The color to set the background to. */;
+      type: 'set_background_color';
+    }
+  | {
       /* format:uuid, description:Which curve to query. */
       curve_id: string;
       type: 'curve_get_type';
@@ -2595,7 +2640,8 @@ export type ModelingCmd_type =
     }
   | { type: 'edit_mode_exit' }
   | { type: 'select_clear' }
-  | { type: 'select_get' };
+  | { type: 'select_get' }
+  | { type: 'get_num_objects' };
 
 export type ModelingCmdId_type =
   /*{
@@ -2711,6 +2757,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: DefaultCameraZoom_type;
       type: 'default_camera_zoom';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/GetNumObjects"
+}*/
+      data: GetNumObjects_type;
+      type: 'get_num_objects';
     }
   | {
       /*{
@@ -4568,6 +4621,7 @@ export interface Models {
   Environment_type: Environment_type;
   Error_type: Error_type;
   ErrorCode_type: ErrorCode_type;
+  Event_type: Event_type;
   Export_type: Export_type;
   ExportFile_type: ExportFile_type;
   ExtendedUser_type: ExtendedUser_type;
@@ -4590,6 +4644,7 @@ export interface Models {
   FileVolume_type: FileVolume_type;
   Gateway_type: Gateway_type;
   GetEntityType_type: GetEntityType_type;
+  GetNumObjects_type: GetNumObjects_type;
   GetSketchModePlane_type: GetSketchModePlane_type;
   GlobalAxis_type: GlobalAxis_type;
   GltfPresentation_type: GltfPresentation_type;
@@ -4618,6 +4673,7 @@ export interface Models {
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
   Method_type: Method_type;
+  ModelingAppEventType_type: ModelingAppEventType_type;
   ModelingAppIndividualSubscriptionTier_type: ModelingAppIndividualSubscriptionTier_type;
   ModelingAppOrganizationSubscriptionTier_type: ModelingAppOrganizationSubscriptionTier_type;
   ModelingAppSubscriptionTier_type: ModelingAppSubscriptionTier_type;
