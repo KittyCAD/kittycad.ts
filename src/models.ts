@@ -995,6 +995,8 @@ export interface CustomerBalance_type {
   updated_at: string;
 }
 
+export type DefaultCameraFocusOn_type = any;
+
 export interface DefaultCameraGetSettings_type {
   settings: CameraSettings_type /* Camera settings */;
 }
@@ -1606,6 +1608,12 @@ export interface ImportFiles_type {
   object_id: string;
 }
 
+export interface ImportedGeometry_type {
+  /* format:uuid, description:ID of the imported 3D models within the scene. */
+  id: string;
+  value: string[];
+}
+
 export type InputFormat_type =
   | { type: 'fbx' }
   | { type: 'gltf' }
@@ -2035,6 +2043,26 @@ export type ModelingCmd_type =
       type: 'extrude';
     }
   | {
+      angle: Angle_type /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */;
+      axis: Point3d_type /* The axis of the extrusion (taken from the origin) */;
+      axis_is_2d: boolean /* If true, the axis is interpreted within the 2D space of the solid 2D's plane */;
+      origin: Point3d_type /* The origin of the extrusion axis */;
+      target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */;
+      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
+      type: 'revolve';
+    }
+  | {
+      angle: Angle_type /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */;
+      /*{
+  "format": "uuid",
+  "description": "The edge to use as the axis of revolution, must be linear and lie in the plane of the solid"
+}*/
+      edge_id: string;
+      target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */;
+      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
+      type: 'revolve_about_edge';
+    }
+  | {
       /* format:uuid, description:Which path to close. */
       path_id: string;
       type: 'close_path';
@@ -2122,7 +2150,6 @@ export type ModelingCmd_type =
 }*/
       entity_ids: string[];
       format: OutputFormat_type /* The file format to export to. */;
-      source_unit: UnitLength_type /* Select the unit interpretation of exported objects. */;
       type: 'export';
     }
   | {
@@ -2564,7 +2591,6 @@ export type ModelingCmd_type =
       material_density: number;
       material_density_unit: UnitDensity_type /* The material density unit. */;
       output_unit: UnitMass_type /* The output unit for the mass. */;
-      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
       type: 'mass';
     }
   | {
@@ -2576,7 +2602,6 @@ export type ModelingCmd_type =
       material_mass: number;
       material_mass_unit: UnitMass_type /* The material mass unit. */;
       output_unit: UnitDensity_type /* The output unit for the density. */;
-      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
       type: 'density';
     }
   | {
@@ -2585,7 +2610,6 @@ export type ModelingCmd_type =
 }*/
       entity_ids: string[];
       output_unit: UnitVolume_type /* The output unit for the volume. */;
-      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
       type: 'volume';
     }
   | {
@@ -2594,7 +2618,6 @@ export type ModelingCmd_type =
 }*/
       entity_ids: string[];
       output_unit: UnitLength_type /* The output unit for the center of mass. */;
-      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
       type: 'center_of_mass';
     }
   | {
@@ -2603,7 +2626,6 @@ export type ModelingCmd_type =
 }*/
       entity_ids: string[];
       output_unit: UnitArea_type /* The output unit for the surface area. */;
-      source_unit: UnitLength_type /* Select the unit interpretation of distances in the scene. */;
       type: 'surface_area';
     }
   | {
@@ -2767,6 +2789,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/DefaultCameraFocusOn"
+}*/
+      data: DefaultCameraFocusOn_type;
+      type: 'default_camera_focus_on';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/SelectGet"
 }*/
       data: SelectGet_type;
@@ -2911,6 +2940,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: ImportFiles_type;
       type: 'import_files';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ImportedGeometry"
+}*/
+      data: ImportedGeometry_type;
+      type: 'imported_geometry';
     }
   | {
       /*{
@@ -4473,6 +4509,7 @@ export type WebSocketRequest_type =
       type: 'modeling_cmd_req';
     }
   | {
+      batch_id: ModelingCmdId_type /* ID of batch being submitted. Each request has their own individual ModelingCmdId, but this is the ID of the overall batch. */;
       requests: ModelingCmdReq_type[] /* A sequence of modeling requests. If any request fails, following requests will not be tried. */;
       type: 'modeling_cmd_batch_req';
     }
@@ -4598,6 +4635,7 @@ export interface Models {
   CurveType_type: CurveType_type;
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
+  DefaultCameraFocusOn_type: DefaultCameraFocusOn_type;
   DefaultCameraGetSettings_type: DefaultCameraGetSettings_type;
   DefaultCameraZoom_type: DefaultCameraZoom_type;
   Density_type: Density_type;
@@ -4655,6 +4693,7 @@ export interface Models {
   ImageFormat_type: ImageFormat_type;
   ImportFile_type: ImportFile_type;
   ImportFiles_type: ImportFiles_type;
+  ImportedGeometry_type: ImportedGeometry_type;
   InputFormat_type: InputFormat_type;
   Invoice_type: Invoice_type;
   InvoiceLineItem_type: InvoiceLineItem_type;
