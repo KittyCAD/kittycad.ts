@@ -49,7 +49,7 @@ async function main() {
     if (schema.type === 'number' || schema.type === 'integer') {
       return addCommentInfo(schema, `${namePart} number`);
     }
-    if (schema.type === 'object') {
+    if (schema.type === 'object' && schema.properties) {
       const objectInner = Object.entries(schema.properties)
         .map(([key, subSchema]: [string, OpenAPIV3.SchemaObject]) => {
           if (!(subSchema.type === 'array') && !(subSchema.type === 'object')) {
@@ -107,6 +107,16 @@ async function main() {
         })
         .join('; ');
       return `{${objectInner}}`;
+    }
+    if (
+      schema.type === 'object' &&
+      !schema.properties &&
+      schema.description.includes('DefaultCameraFocusOn')
+    ) {
+      // being very specific about DefaultCameraFocusOn as this schema is type object
+      // but doesn't have any properties or isn't reference, so we're making this any
+      // but hoping this is a mistake and we can remove this if block in future
+      return `${namePart} any /* use-type */`;
     }
     if (
       JSON.stringify(Object.keys(schema)) === '["description"]' ||
