@@ -3600,15 +3600,19 @@ export interface ServiceAccountResultsPage_type {
 }
 
 export interface Session_type {
-  /* title:DateTime, format:date-time, description:The date and time the session was created. */
+  /* format:date-time, description:The date and time the session was created. */
   created_at: string;
-  /* title:DateTime, format:date-time, description:The date and time the session expires. */
-  expires: string;
-  id: Uuid_type /* The unique identifier for the session. */;
-  session_token: Uuid_type /* The session token. */;
-  /* title:DateTime, format:date-time, description:The date and time the session was last updated. */
+  /* format:date-time, description:The date and time the session expires. */
+  expires_at: string;
+  /* format:uuid, description:The session token. */
+  token: string;
+  /* format:date-time, description:The date and time the session was last updated. */
   updated_at: string;
-  user_id: Uuid_type /* The user ID of the user that the session belongs to. */;
+  /*{
+  "format": "uuid",
+  "description": "The user ID of the user that the session belongs to."
+}*/
+  user_id: string;
 }
 
 export interface Solid3dGetAllEdgeFaces_type {
