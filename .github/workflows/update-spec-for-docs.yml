@@ -60,6 +60,9 @@ jobs:
           gh pr create --title "Update lang spec docs for typescript" \
               --body "Updating the generated docs for typescript" \
               --head "$NEW_BRANCH" \
+              --assignee jessfraz \
+              --assignee irevdev \
+              --assignee franknoirot \
               --base main || true
         env:
           GITHUB_TOKEN: ${{secrets.KITTYCAD_TS_PAT}}
