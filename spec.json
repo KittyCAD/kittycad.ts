@@ -1746,6 +1746,138 @@
         }
       }
     },
+    "/debug/uploads": {
+      "post": {
+        "tags": [
+          "meta",
+          "hidden"
+        ],
+        "summary": "Uploads files to public blob storage for debugging purposes.",
+        "description": "Do NOT send files here that you don't want to be public.",
+        "operationId": "create_debug_uploads",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "successful creation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Array_of_Url",
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "hidden"
+        ],
+        "summary": "OPTIONS endpoint.",
+        "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
+        "operationId": "options_create_debug_uploads",
+        "responses": {
+          "204": {
+            "description": "successful operation, no content",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
     "/events": {
       "post": {
         "tags": [
@@ -12212,6 +12344,14 @@
           },
           {
             "in": "query",
+            "name": "post_effect",
+            "description": "Engine Post effects (such as SSAO)",
+            "schema": {
+              "$ref": "#/components/schemas/PostEffectType"
+            }
+          },
+          {
+            "in": "query",
             "name": "unlocked_framerate",
             "description": "If true, engine will render video frames as fast as it can.",
             "schema": {
@@ -14115,6 +14255,44 @@
         "required": [
           "axis",
           "direction"
+        ]
+      },
+      "BatchResponse": {
+        "description": "Websocket responses can either be successful or unsuccessful. Slightly different schemas in either case.",
+        "anyOf": [
+          {
+            "description": "Response sent when a request succeeded.",
+            "type": "object",
+            "properties": {
+              "response": {
+                "description": "Response to the modeling command.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/OkModelingCmdResponse"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "response"
+            ]
+          },
+          {
+            "description": "Response sent when a request did not succeed.",
+            "type": "object",
+            "properties": {
+              "errors": {
+                "description": "Errors that occurred during the modeling command.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "required": [
+              "errors"
+            ]
+          }
         ]
       },
       "BillingInfo": {
@@ -16922,6 +17100,14 @@
         "description": "The plane for sketch mode.",
         "type": "object",
         "properties": {
+          "origin": {
+            "description": "The origin.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Point3d"
+              }
+            ]
+          },
           "x_axis": {
             "description": "The x axis.",
             "allOf": [
@@ -16948,6 +17134,7 @@
           }
         },
         "required": [
+          "origin",
           "x_axis",
           "y_axis",
           "z_axis"
@@ -19512,6 +19699,26 @@
             ]
           },
           {
+            "description": "Changes visibility of scene-wide edge lines on brep solids",
+            "type": "object",
+            "properties": {
+              "hidden": {
+                "description": "Whether or not the edge lines should be hidden.",
+                "type": "boolean"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "edge_lines_visible"
+                ]
+              }
+            },
+            "required": [
+              "hidden",
+              "type"
+            ]
+          },
+          {
             "description": "Hide or show an object",
             "type": "object",
             "properties": {
@@ -20363,6 +20570,54 @@
             },
             "required": [
               "color",
+              "type"
+            ]
+          },
+          {
+            "description": "Set the properties of the tool lines for the scene.",
+            "type": "object",
+            "properties": {
+              "color": {
+                "nullable": true,
+                "description": "The color to set the tool line to.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Color"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "set_current_tool_properties"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          {
+            "description": "Set the default system properties used when a specific property isn't set.",
+            "type": "object",
+            "properties": {
+              "color": {
+                "nullable": true,
+                "description": "The default system color.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Color"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "set_default_system_properties"
+                ]
+              }
+            },
+            "required": [
               "type"
             ]
           },
@@ -22280,6 +22535,37 @@
             ]
           },
           {
+            "description": "Response to a ModelingBatch.",
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "responses": {
+                    "description": "For each request in the batch, maps its ID to the request's outcome.",
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/BatchResponse"
+                    }
+                  }
+                },
+                "required": [
+                  "responses"
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "modeling_batch"
+                ]
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ]
+          },
+          {
             "description": "The exported files.",
             "type": "object",
             "properties": {
@@ -23463,6 +23749,15 @@
         },
         "required": [
           "message"
+        ]
+      },
+      "PostEffectType": {
+        "description": "Post effect type",
+        "type": "string",
+        "enum": [
+          "phosphor",
+          "ssao",
+          "noeffect"
         ]
       },
       "PrivacySettings": {
@@ -26935,6 +27230,11 @@
                   "$ref": "#/components/schemas/ModelingCmdReq"
                 }
               },
+              "responses": {
+                "description": "If false or omitted, responses to each batch command will just be Ok(()). If true, responses will be the actual response data for that modeling command.",
+                "default": false,
+                "type": "boolean"
+              },
               "type": {
                 "type": "string",
                 "enum": [
@@ -26984,6 +27284,29 @@
             },
             "required": [
               "metrics",
+              "type"
+            ]
+          },
+          {
+            "description": "Authentication header request.",
+            "type": "object",
+            "properties": {
+              "headers": {
+                "description": "The authentication header.",
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "headers"
+                ]
+              }
+            },
+            "required": [
+              "headers",
               "type"
             ]
           }
