@@ -77,6 +77,7 @@ export const file = {
   create_file_volume,
 };
 
+import create_debug_uploads from './api/meta/create_debug_uploads.js';
 import create_event from './api/meta/create_event.js';
 import get_ipinfo from './api/meta/get_ipinfo.js';
 import get_metadata from './api/meta/get_metadata.js';
@@ -85,6 +86,7 @@ import get_schema from './api/meta/get_schema.js';
 import internal_get_api_token_for_discord_user from './api/meta/internal_get_api_token_for_discord_user.js';
 import ping from './api/meta/ping.js';
 export const meta = {
+  create_debug_uploads,
   create_event,
   get_ipinfo,
   get_metadata,

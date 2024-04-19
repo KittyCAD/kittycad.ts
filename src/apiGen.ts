@@ -312,7 +312,10 @@ export default async function apiGen(lookup: any) {
             if (!importedTypes.includes(typeReference + '[]')) {
               importedTypes.push(typeReference + '[]');
             }
+          } else if (items.type === 'string') {
+            // do nothing
           } else {
+            console.log('apiGen', schema);
             throw 'only ref arrays implemented';
           }
         } else if (
