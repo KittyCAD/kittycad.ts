@@ -1,12 +1,12 @@
 import fetch from 'node-fetch';
-import { string, Error_type } from '../../models.js';
+import { Error_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_debug_uploads_params {
   client?: Client;
 }
 
-type Create_debug_uploads_return = string[] | Error_type;
+type Create_debug_uploads_return = Error_type;
 
 export default async function create_debug_uploads({
   client,
