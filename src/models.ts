@@ -600,6 +600,14 @@ export interface AxisDirectionPair_type {
   direction: Direction_type /* Specifies which direction the axis is pointing. */;
 }
 
+export type BatchResponse_type =
+  | {
+      response: OkModelingCmdResponse_type /* Response to the modeling command. */;
+    }
+  | {
+      errors: ApiError_type[] /* Errors that occurred during the modeling command. */;
+    };
+
 export interface BillingInfo_type {
   /* nullable:true, description:The address of the customer. */
   address?: AddressDetails_type;
@@ -1541,6 +1549,7 @@ export interface GetNumObjects_type {
 }
 
 export interface GetSketchModePlane_type {
+  origin: Point3d_type /* The origin. */;
   x_axis: Point3d_type /* The x axis. */;
   y_axis: Point3d_type /* The y axis. */;
   z_axis: Point3d_type /* The z axis (normal). */;
@@ -2279,6 +2288,10 @@ export type ModelingCmd_type =
       type: 'update_annotation';
     }
   | {
+      hidden: boolean /* Whether or not the edge lines should be hidden. */;
+      type: 'edge_lines_visible';
+    }
+  | {
       hidden: boolean /* Whether or not the object should be hidden. */;
       /* format:uuid, description:Which object to change */
       object_id: string;
@@ -2488,6 +2501,16 @@ export type ModelingCmd_type =
   | {
       color: Color_type /* The color to set the background to. */;
       type: 'set_background_color';
+    }
+  | {
+      /* nullable:true, description:The color to set the tool line to. */
+      color?: Color_type;
+      type: 'set_current_tool_properties';
+    }
+  | {
+      /* nullable:true, description:The default system color. */
+      color?: Color_type;
+      type: 'set_default_system_properties';
     }
   | {
       /* format:uuid, description:Which curve to query. */
@@ -3051,6 +3074,14 @@ export type OkWebSocketResponseData_type =
       };
       type: 'modeling';
     }
+  | {
+      data: {
+        responses: {
+          [key: string]: BatchResponse_type;
+        } /* For each request in the batch, maps its ID to the request's outcome. */;
+      };
+      type: 'modeling_batch';
+    }
   | { data: { files: RawFile_type[] /* The exported files */ }; type: 'export' }
   | { data: object; type: 'metrics_request' }
   | { data: object; type: 'pong' };
@@ -3437,6 +3468,10 @@ export interface Point3d_type {
 export interface Pong_type {
   message: string /* The pong response. */;
 }
+
+export type PostEffectType_type =
+  /* Post effect type */
+  'phosphor' | 'ssao' | 'noeffect';
 
 export interface PrivacySettings_type {
   can_train_on_data: boolean /* If we can train on the data. If the user is a member of an organization, the organization's setting will override this. The organization's setting takes priority. */;
@@ -4511,13 +4546,19 @@ export type WebSocketRequest_type =
   | {
       batch_id: ModelingCmdId_type /* ID of batch being submitted. Each request has their own individual ModelingCmdId, but this is the ID of the overall batch. */;
       requests: ModelingCmdReq_type[] /* A sequence of modeling requests. If any request fails, following requests will not be tried. */;
+      /*{
+  "default": false,
+  "description": "If false or omitted, responses to each batch command will just be Ok(()). If true, responses will be the actual response data for that modeling command."
+}*/
+      responses: boolean;
       type: 'modeling_cmd_batch_req';
     }
   | { type: 'ping' }
   | {
       metrics: ClientMetrics_type /* Collected metrics from the Client's end of the engine connection. */;
       type: 'metrics_response';
-    };
+    }
+  | { headers: { [key: string]: string }; type: 'headers' };
 
 export type WebSocketResponse_type =
   | {
@@ -4610,6 +4651,7 @@ export interface Models {
   AuthCallback_type: AuthCallback_type;
   Axis_type: Axis_type;
   AxisDirectionPair_type: AxisDirectionPair_type;
+  BatchResponse_type: BatchResponse_type;
   BillingInfo_type: BillingInfo_type;
   BlockReason_type: BlockReason_type;
   CacheMetadata_type: CacheMetadata_type;
@@ -4753,6 +4795,7 @@ export interface Models {
   Point2d_type: Point2d_type;
   Point3d_type: Point3d_type;
   Pong_type: Pong_type;
+  PostEffectType_type: PostEffectType_type;
   PrivacySettings_type: PrivacySettings_type;
   RawFile_type: RawFile_type;
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
