@@ -2674,6 +2674,15 @@ export type ModelingCmd_type =
       type: 'default_camera_set_perspective';
     }
   | {
+      /*{
+  "format": "uuid"
+}*/
+      object_ids: string[];
+      /* format:float, description:How much to pad the view frame by. */
+      padding: number;
+      type: 'zoom_to_fit';
+    }
+  | {
       /* format:uuid, description:Any edge that lies on the extrusion base path. */
       edge_id: string;
       /*{
