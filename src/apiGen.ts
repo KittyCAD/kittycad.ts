@@ -369,9 +369,7 @@ export default async function apiGen(lookup: any) {
         ['{ api }', `{ ${safeTag} }`],
         ['api.section', `${safeTag}.${operationId}`],
       ]);
-      if (
-        testsExpectedToFail.includes(`${tag.trim()}.${operationId.trim()}`)
-      ) {
+      if (testsExpectedToFail.includes(`${tag.trim()}.${operationId.trim()}`)) {
         // these test are expected to fail
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],

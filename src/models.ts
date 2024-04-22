@@ -2226,6 +2226,15 @@ export type ModelingCmd_type =
       type: 'entity_make_helix';
     }
   | {
+      axis: Point3d_type /* Axis to use as mirror. */;
+      /*{
+  "format": "uuid"
+}*/
+      ids: string[];
+      point: Point3d_type /* Point through which the mirror axis passes. */;
+      type: 'entity_mirror';
+    }
+  | {
       /* format:uuid, description:The edit target */
       target: string;
       type: 'edit_mode_enter';
