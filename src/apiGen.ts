@@ -2,6 +2,7 @@ import fsp from 'node:fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
 import { format } from 'prettier';
 import pkg from 'fast-json-patch';
+import { testsExpectedToFail } from './expectedToFail';
 const { observe, generate } = pkg;
 
 export default async function apiGen(lookup: any) {
@@ -369,57 +370,7 @@ export default async function apiGen(lookup: any) {
         ['api.section', `${safeTag}.${operationId}`],
       ]);
       if (
-        // Tests that are expected to fail
-        // They are not exactly ignored because we still hit the endpoint but might be rejected
-        // because the dummy data in the tests is not valid
-        // i.e. using a uuid like 000-000-....
-        // The time spent making these all pass is not worth it because the endpoint already have tests
-        // we mostly want to make sure the examples are valid aside from dummy data
-        // or at the very least checked periodically.
-
-        // underscores before the period should be replaced with hyphens
-        [
-          'payments.delete_payment_information_for_user',
-          'users.delete_user_self',
-          'api-calls.get_api_call_for_user',
-          'api-calls.get_async_operation',
-          'payments.validate_customer_tax_information_for_user',
-          'api-calls.get_api_call',
-          'users.get_user_extended',
-          'payments.delete_payment_method_for_user',
-          'users.get_user',
-          'oauth2.device_auth_verify',
-          'users.get_user_front_hash_self',
-          'oauth2.oauth2_provider_callback',
-          'apps.apps_github_webhook',
-          'meta.internal_get_api_token_for_discord_user',
-
-          // it's possible some of these org tests are failing because Kurt's account and token
-          // used in these test are not in an org
-          'payments.validate_customer_tax_information_for_org',
-          'payments.list_payment_methods_for_org',
-          'payments.list_invoices_for_org',
-          'payments.get_payment_information_for_org',
-          'payments.get_payment_balance_for_org',
-          'payments.delete_payment_method_for_org',
-          'payments.delete_payment_information_for_org',
-          'payments.create_payment_intent_for_org',
-          'orgs.get_user_org',
-          'orgs.get_org_member',
-          'orgs.get_org',
-          'orgs.delete_org_member',
-          'orgs.delete_org',
-          'orgs.delete_org_saml_idp',
-          'orgs.get_org_saml_idp',
-          'payments.get_payment_balance_for_any_user',
-          'payments.get_payment_balance_for_any_org',
-          'service-accounts.create_service_account_for_org',
-          'orgs.get_any_org',
-          'payments.get_user_subscription',
-          'users.get_user_privacy_settings',
-          'payments.get_org_subscription',
-          'orgs.get_org_privacy_settings',
-        ].includes(`${tag.trim()}.${operationId.trim()}`)
+        testsExpectedToFail.includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         // these test are expected to fail
         exampleTemplate = replacer(exampleTemplate, [
