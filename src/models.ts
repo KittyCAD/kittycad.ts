@@ -3386,7 +3386,7 @@ export type PathSegment_type =
       type: 'bezier';
     }
   | {
-      offset: Angle_type /* Offset of the arc. */;
+      offset: Angle_type /* Offset of the arc. Negative values will arc clockwise. */;
       radius: LengthUnit_type /* Radius of the arc. Not to be confused with Raiders of the Lost Ark. */;
       type: 'tangential_arc';
     }
