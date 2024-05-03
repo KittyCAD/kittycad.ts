@@ -2143,17 +2143,6 @@ export type ModelingCmd_type =
       type: 'default_camera_zoom';
     }
   | {
-      animated: boolean /* Should we animate or snap for the camera transition? */;
-      /* format:float, description:How far to the sketching plane? */
-      distance_to_plane: number;
-      origin: Point3d_type /* What's the origin of the sketching plane? */;
-      ortho: boolean /* Should the camera use orthographic projection? In other words, should an object's size in the rendered image stay constant regardless of its distance from the camera. */;
-      type: 'default_camera_enable_sketch_mode';
-      x_axis: Point3d_type /* Which 3D axis of the scene should be the X axis of the sketching plane? */;
-      y_axis: Point3d_type /* Which 3D axis of the scene should be the Y axis of the sketching plane? */;
-    }
-  | { type: 'default_camera_disable_sketch_mode' }
-  | {
       /*{
   "format": "uuid"
 }*/
@@ -2478,18 +2467,6 @@ export type ModelingCmd_type =
       window: Point2d_type /* Where the mouse is */;
     }
   | { type: 'mouse_click'; window: Point2d_type /* Where the mouse is */ }
-  | {
-      animated: boolean /* Animate the transition to sketch mode. */;
-      /*{
-  "nullable": true,
-  "description": "Disable the camera entirely for sketch mode and sketch on a plane (this would be the normal of that plane)."
-}*/
-      disable_camera_with_plane?: Point3d_type;
-      ortho: boolean /* Use an orthographic camera. */;
-      /* format:uuid, description:Sketch on this plane. */
-      plane_id: string;
-      type: 'sketch_mode_enable';
-    }
   | { type: 'sketch_mode_disable' }
   | { type: 'get_sketch_mode_plane' }
   | {
@@ -2505,6 +2482,11 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which entity to sketch on. */
       entity_id: string;
       ortho: boolean /* Should the camera use orthographic projection? In other words, should an object's size in the rendered image stay constant regardless of its distance from the camera. */;
+      /*{
+  "nullable": true,
+  "description": "If provided, ensures that the normal of the sketch plane must be aligned with this supplied normal (otherwise the camera position will be used to infer the normal to point towards the viewer)"
+}*/
+      planar_normal?: Point3d_type;
       type: 'enable_sketch_mode';
     }
   | {
