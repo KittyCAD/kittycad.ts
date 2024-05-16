@@ -1142,6 +1142,8 @@ export type ErrorCode_type =
   | 'internal_engine'
   | 'internal_api'
   | 'bad_request'
+  | 'auth_token_missing'
+  | 'auth_token_invalid'
   | 'invalid_json'
   | 'invalid_bson'
   | 'wrong_protocol'
@@ -1255,6 +1257,10 @@ export interface ExtrusionFaceInfo_type {
   curve_id?: string;
   /* nullable:true, format:uuid, description:Face uuid. */
   face_id?: string;
+}
+
+export interface FaceGetCenter_type {
+  pos: Point3d_type /* The 3D position on the surface center of mass */;
 }
 
 export interface FaceGetGradient_type {
@@ -2405,6 +2411,11 @@ export type ModelingCmd_type =
   | {
       /* format:uuid, description:Which face is being queried. */
       object_id: string;
+      type: 'face_get_center';
+    }
+  | {
+      /* format:uuid, description:Which face is being queried. */
+      object_id: string;
       type: 'face_get_gradient';
       uv: Point2d_type /* The 2D paramter-space u,v position to evaluate the surface at */;
     }
@@ -2672,6 +2683,11 @@ export type ModelingCmd_type =
       /* format:float, description:How much to pad the view frame by. */
       padding: number;
       type: 'zoom_to_fit';
+    }
+  | {
+      /* default:0, format:float, description:How much to pad the view frame by. */
+      padding: number;
+      type: 'view_isometric';
     }
   | {
       /* format:uuid, description:Any edge that lies on the extrusion base path. */
@@ -2942,6 +2958,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: FaceGetPosition_type;
       type: 'face_get_position';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/FaceGetCenter"
+}*/
+      data: FaceGetCenter_type;
+      type: 'face_get_center';
     }
   | {
       /*{
@@ -4708,6 +4731,7 @@ export interface Models {
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
   ExtrusionFaceCapType_type: ExtrusionFaceCapType_type;
   ExtrusionFaceInfo_type: ExtrusionFaceInfo_type;
+  FaceGetCenter_type: FaceGetCenter_type;
   FaceGetGradient_type: FaceGetGradient_type;
   FaceGetPosition_type: FaceGetPosition_type;
   FaceIsPlanar_type: FaceIsPlanar_type;
