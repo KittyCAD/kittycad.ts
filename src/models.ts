@@ -643,6 +643,7 @@ export interface CameraSettings_type {
   center: Point3d_type /* Camera's look-at center (center-pos gives viewing vector) */;
   /* nullable:true, format:float, description:Camera's field-of-view angle (if ortho is false) */
   fov_y?: number;
+  orientation: Point4d_type /* The Camera's orientation (in the form of a quaternion) */;
   ortho: boolean /* Whether or not the camera is in ortho mode */;
   /*{
   "nullable": true,
@@ -3488,6 +3489,25 @@ export interface Point3d_type {
   z: number;
 }
 
+export interface Point4d_type {
+  /*{
+  "format": "float"
+}*/
+  w: number;
+  /*{
+  "format": "float"
+}*/
+  x: number;
+  /*{
+  "format": "float"
+}*/
+  y: number;
+  /*{
+  "format": "float"
+}*/
+  z: number;
+}
+
 export interface Pong_type {
   message: string /* The pong response. */;
 }
@@ -4818,6 +4838,7 @@ export interface Models {
   PlyStorage_type: PlyStorage_type;
   Point2d_type: Point2d_type;
   Point3d_type: Point3d_type;
+  Point4d_type: Point4d_type;
   Pong_type: Pong_type;
   PostEffectType_type: PostEffectType_type;
   PrivacySettings_type: PrivacySettings_type;
