@@ -30,13 +30,6 @@ jobs:
         id: git-check
         run: |
           git add .
-          # git status
-          # git diff
-          # if git diff --exit-code; then
-          #   echo "::set-output name=modified::true"
-          # else
-          #   echo "::set-output name=modified::false"
-          # fi
           if git status | grep -q "Changes to be committed"
           then
             echo "::set-output name=modified::true"
@@ -51,19 +44,14 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git fetch origin
-          # git checkout ${{github.ref_name }}
           echo ${{ github.head_ref }}
           git checkout ${{ github.head_ref }}
           git commit -am "Generated new lib" || true
-          # git rebase origin/${{github.ref_name }} || true
           git push
           git push origin ${{ github.head_ref }}
-          # git push origin ${{github.ref_name }}
-
-          # git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          # git config --local user.name "github-actions[bot]"
-          # git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          # git fetch origin
-          # git commit -am "Generated new lib"
-          # git push
-
+       - name: Bump package.json version
+         run: |
+          npm version patch
+          git push origin ${{ github.head_ref }}
+          # Only push the new tag - the alternative is a very risky `git push --tags`
+          git push v$(npm view @kittycad/lib version)
