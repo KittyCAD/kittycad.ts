@@ -49,8 +49,9 @@ jobs:
           git commit -am "Generated new lib" || true
           git push
           git push origin ${{ github.head_ref }}
-       - name: Bump package.json version
-         run: |
+      - name: Bump package.json version to trigger make-release
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
           npm version patch
           git push origin ${{ github.head_ref }}
           # Only push the new tag - the alternative is a very risky `git push --tags`
