@@ -15835,7 +15835,7 @@
             ]
           },
           {
-            "description": "Auth token is missing from the request",
+            "description": "Auth token is missing from the request, you got me, punk?",
             "type": "string",
             "enum": [
               "auth_token_missing"
