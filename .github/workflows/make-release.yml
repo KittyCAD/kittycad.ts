@@ -1,0 +1,25 @@
+on:
+  push:
+    tags:
+      - v*
+name: make-release
+jobs:
+  makerelease:
+    name: make-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: '20.5.0'
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install
+      - name: Build package
+        run: yarn build
+      - name: Publish package
+        shell: bash
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

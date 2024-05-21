@@ -21,6 +21,7 @@ jobs:
       - run: yarn install
       - run: yarn gen
       - run: yarn build
+      # Generate the OpenAPI spec. Yes, yarn test generates it.
       - run: yarn test
         env:
           KITTYCAD_TOKEN: ${{ secrets.KITTYCAD_TOKEN }}
