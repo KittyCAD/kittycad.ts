@@ -1143,7 +1143,7 @@ export type ErrorCode_type =
   | 'internal_engine'
   | 'internal_api'
   | 'bad_request'
-  | 'auth_token_missing'
+  | 'auth_token_missing_revert_me'
   | 'auth_token_invalid'
   | 'invalid_json'
   | 'invalid_bson'
