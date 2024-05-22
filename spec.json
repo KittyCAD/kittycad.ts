@@ -15835,10 +15835,10 @@
             ]
           },
           {
-            "description": "Auth token is missing from the request, you got me, punk?",
+            "description": "Auth token is missing from the request",
             "type": "string",
             "enum": [
-              "auth_token_missing_revert_me"
+              "auth_token_missing"
             ]
           },
           {
