@@ -15811,7 +15811,7 @@
         ]
       },
       "ErrorCode": {
-        "description": "The type of error sent by the KittyCAD API.",
+        "description": "The type of error sent by the KittyCAD API",
         "oneOf": [
           {
             "description": "Graphics engine failed to complete request, consider retrying",

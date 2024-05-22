@@ -42,3 +42,8 @@ jobs:
           git commit -am "Generated new lib" || true
           git push
           git push origin ${{ github.head_ref }}
+      - name: Bump package.json version
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          npm version patch
+          git push origin ${{ github.head_ref }}
