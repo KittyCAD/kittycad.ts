@@ -1,7 +1,7 @@
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - main
 name: make-release
 jobs:
   makerelease:
@@ -14,8 +14,13 @@ jobs:
           node-version: '20.5.0'
           registry-url: 'https://registry.npmjs.org/'
           cache: 'yarn'
-      # No dependencies or building step required. Everything is actually already
-      # commited and ready to be published!
+      - name: Bump package.json version
+        run: |
+          npm version patch
+          git push origin ${{ github.head_ref }}
+          # Only push the new tag - the alternative is a very risky `git push --tags`
+          git push origin v$(npm view @kittycad/lib version)
+      # Everything is already ready to be published.
       - name: Publish package
         shell: bash
         run: npm publish

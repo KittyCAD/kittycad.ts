@@ -1,16 +1,11 @@
 name: CI
 
 on:
-    push:
-        branches:
-            - main
     pull_request:
 
 jobs:
   build:
-    
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
 
@@ -31,10 +26,8 @@ jobs:
         run: |
           git add .
           if git status | grep -q "Changes to be committed"
-          then
-            echo "::set-output name=modified::true"
-          else
-            echo "::set-output name=modified::false"
+            then echo "modified=true"  >> $GITHUB_OUTPUT
+            else echo "modified=false" >> $GITHUB_OUTPUT
           fi
       - name: Commit changes, if any
         if: steps.git-check.outputs.modified == 'true'
@@ -49,10 +42,3 @@ jobs:
           git commit -am "Generated new lib" || true
           git push
           git push origin ${{ github.head_ref }}
-      - name: Bump package.json version to trigger make-release
-        if: steps.git-check.outputs.modified == 'true'
-        run: |
-          npm version patch
-          git push origin ${{ github.head_ref }}
-          # Only push the new tag - the alternative is a very risky `git push --tags`
-          git push v$(npm view @kittycad/lib version)
