@@ -16,6 +16,10 @@ jobs:
           cache: 'yarn'
       - name: Bump package.json version
         run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          # Bump the patch part
           npm version patch
           git push origin ${{ github.head_ref }}
           # Only push the new tag - the alternative is a very risky `git push --tags`
