@@ -14,19 +14,13 @@ jobs:
           node-version: '20.5.0'
           registry-url: 'https://registry.npmjs.org/'
           cache: 'yarn'
-      - name: Bump package.json version
+      # Only push a tag that matches the version in package.json
+      - name: Tag em and bag em
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          # Bump the patch part
-          npm version patch
-          git push origin ${{ github.head_ref }}
-          # Only push the new tag - the alternative is a very risky `git push --tags`
+          git tag v$(npm view @kittycad/lib version)
           git push origin v$(npm view @kittycad/lib version)
       # Everything is already ready to be published.
       - name: Publish package
-        shell: bash
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
