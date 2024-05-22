@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+      - main
+name: make-release
+jobs:
+  makerelease:
+    name: make-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: '20.5.0'
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'yarn'
+      - name: Bump package.json version
+        run: |
+          npm version patch
+          git push origin ${{ github.head_ref }}
+          # Only push the new tag - the alternative is a very risky `git push --tags`
+          git push origin v$(npm view @kittycad/lib version)
+      # Everything is already ready to be published.
+      - name: Publish package
+        shell: bash
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
