@@ -16,9 +16,9 @@ jobs:
           cache: 'yarn'
       # Only push a tag that matches the version in package.json
       - name: Tag em and bag em
-          run: |
-            git tag v$(npm view @kittycad/lib version)
-            git push origin v$(npm view @kittycad/lib version)
+        run: |
+          git tag v$(npm view @kittycad/lib version)
+          git push origin v$(npm view @kittycad/lib version)
       # Everything is already ready to be published.
       - name: Publish package
         run: npm publish
