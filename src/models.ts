@@ -1143,7 +1143,7 @@ export type ErrorCode_type =
   | 'internal_engine'
   | 'internal_api'
   | 'bad_request'
-  | 'auth_token_missing_ok'
+  | 'auth_token_missing'
   | 'auth_token_invalid'
   | 'invalid_json'
   | 'invalid_bson'
@@ -2819,6 +2819,20 @@ export type OkModelingCmdResponse_type =
 }*/
       data: DefaultCameraZoom_type;
       type: 'default_camera_zoom';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ZoomToFit"
+}*/
+      data: ZoomToFit_type;
+      type: 'zoom_to_fit';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ViewIsometric"
+}*/
+      data: ViewIsometric_type;
+      type: 'view_isometric';
     }
   | {
       /*{
@@ -4566,6 +4580,10 @@ export interface VerificationTokenResponse_type {
   updated_at: string;
 }
 
+export interface ViewIsometric_type {
+  settings: CameraSettings_type /* Camera settings */;
+}
+
 export interface Volume_type {
   output_unit: UnitVolume_type /* The output unit for the volume. */;
   /* format:double, description:The volume. */
@@ -4661,6 +4679,10 @@ export type ZooTool_type =
   | 'modeling_app'
   | 'text_to_cad'
   | 'diff_chrome_extension';
+
+export interface ZoomToFit_type {
+  settings: CameraSettings_type /* Camera settings */;
+}
 
 export interface Models {
   AccountProvider_type: AccountProvider_type;
@@ -4912,6 +4934,7 @@ export interface Models {
   UserResultsPage_type: UserResultsPage_type;
   Uuid_type: Uuid_type;
   VerificationTokenResponse_type: VerificationTokenResponse_type;
+  ViewIsometric_type: ViewIsometric_type;
   Volume_type: Volume_type;
   WebSocketRequest_type: WebSocketRequest_type;
   WebSocketResponse_type: WebSocketResponse_type;
@@ -4920,4 +4943,5 @@ export interface Models {
   ZooProductSubscriptionsOrgRequest_type: ZooProductSubscriptionsOrgRequest_type;
   ZooProductSubscriptionsUserRequest_type: ZooProductSubscriptionsUserRequest_type;
   ZooTool_type: ZooTool_type;
+  ZoomToFit_type: ZoomToFit_type;
 }
