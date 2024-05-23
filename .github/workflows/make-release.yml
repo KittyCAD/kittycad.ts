@@ -19,7 +19,8 @@ jobs:
         run: |
           git tag v$(cat package.json | jq -r .version)
           git push origin v$(cat package.json | jq -r .version)
-      # Everything is already ready to be published.
+      - name: Build package artifacts
+        run: yarn install && yarn build
       - name: Publish package
         run: npm publish
         env:
