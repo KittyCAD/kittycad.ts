@@ -2068,6 +2068,16 @@ export type ModelingCmd_type =
       type: 'revolve';
     }
   | {
+      /*{
+  "format": "uuid"
+}*/
+      face_ids: string[];
+      /* format:uuid, description:Which Solid3D is being shelled. */
+      object_id: string;
+      shell_thickness: LengthUnit_type /* How thick the shell should be. Smaller values mean a thinner shell. */;
+      type: 'solid3d_shell_face';
+    }
+  | {
       angle: Angle_type /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */;
       /*{
   "format": "uuid",
