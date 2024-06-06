@@ -1004,6 +1004,8 @@ export interface CustomerBalance_type {
   updated_at: string;
 }
 
+export type CutType_type = 'fillet' | 'chamfer';
+
 export type DefaultCameraFocusOn_type = any;
 
 export interface DefaultCameraGetSettings_type {
@@ -2400,6 +2402,8 @@ export type ModelingCmd_type =
       type: 'solid3d_get_prev_adjacent_edge';
     }
   | {
+      /* default:fillet, description:How to apply the cut. */
+      cut_type: CutType_type;
       /* format:uuid, description:Which edge you want to fillet. */
       edge_id: string;
       /* format:uuid, description:Which object is being filletted. */
@@ -4752,6 +4756,7 @@ export interface Models {
   CurveType_type: CurveType_type;
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
+  CutType_type: CutType_type;
   DefaultCameraFocusOn_type: DefaultCameraFocusOn_type;
   DefaultCameraGetSettings_type: DefaultCameraGetSettings_type;
   DefaultCameraZoom_type: DefaultCameraZoom_type;
