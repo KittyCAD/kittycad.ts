@@ -737,6 +737,14 @@ export interface ClientMetrics_type {
   rtc_total_freezes_duration_sec: number;
 }
 
+export interface ClosePath_type {
+  /*{
+  "format": "uuid",
+  "description": "The UUID of the lone face of the resulting solid2D."
+}*/
+  face_id: string;
+}
+
 export interface Cluster_type {
   /* nullable:true, description:The IP address of the cluster. */
   addr?: string;
@@ -2808,6 +2816,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/ClosePath"
+}*/
+      data: ClosePath_type;
+      type: 'close_path';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/CameraDragMove"
 }*/
       data: CameraDragMove_type;
@@ -4741,6 +4756,7 @@ export interface Models {
   CardDetails_type: CardDetails_type;
   CenterOfMass_type: CenterOfMass_type;
   ClientMetrics_type: ClientMetrics_type;
+  ClosePath_type: ClosePath_type;
   Cluster_type: Cluster_type;
   CodeLanguage_type: CodeLanguage_type;
   CodeOutput_type: CodeOutput_type;
