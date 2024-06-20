@@ -1128,6 +1128,13 @@ export interface EntityLinearPattern_type {
   entity_ids: string[];
 }
 
+export interface EntityLinearPatternTransform_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
+}
+
 export type EntityType_type =
   /* The type of entity */
   | 'entity'
@@ -1983,6 +1990,32 @@ export interface LeafNode_type {
 
 export type LengthUnit_type = number;
 
+export interface LinearTransform_type {
+  /*{
+  "default": true,
+  "description": "Whether to replicate the original solid in this instance."
+}*/
+  replicate: boolean;
+  /*{
+  "default": {
+    "x": 1,
+    "y": 1,
+    "z": 1
+  },
+  "description": "Scale the replica's size along each axis. Defaults to (1, 1, 1) (i.e. the same size as the original)."
+}*/
+  scale: Point3d_type;
+  /*{
+  "default": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "description": "Translate the replica this far along each dimension. Defaults to zero vector (i.e. same position as the original)."
+}*/
+  translate: Point3d_type;
+}
+
 export interface Mass_type {
   /* format:double, description:The mass. */
   mass: number;
@@ -2206,6 +2239,12 @@ export type ModelingCmd_type =
       /* format:uuid, description:ID of the second entity being queried. */
       entity_id2: string;
       type: 'entity_get_distance';
+    }
+  | {
+      /* format:uuid, description:ID of the entity being copied. */
+      entity_id: string;
+      transform: LinearTransform_type[] /* How to transform each repeated solid. The total number of repetitions equals the size of this list. */;
+      type: 'entity_linear_pattern_transform';
     }
   | {
       axis: Point3d_type /* Axis along which to make the copies. For Solid2d patterns, the z component is ignored. */;
@@ -3086,6 +3125,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: EntityGetDistance_type;
       type: 'entity_get_distance';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityLinearPatternTransform"
+}*/
+      data: EntityLinearPatternTransform_type;
+      type: 'entity_linear_pattern_transform';
     }
   | {
       /*{
@@ -4793,6 +4839,7 @@ export interface Models {
   EntityGetNumChildren_type: EntityGetNumChildren_type;
   EntityGetParentId_type: EntityGetParentId_type;
   EntityLinearPattern_type: EntityLinearPattern_type;
+  EntityLinearPatternTransform_type: EntityLinearPatternTransform_type;
   EntityType_type: EntityType_type;
   Environment_type: Environment_type;
   Error_type: Error_type;
@@ -4847,6 +4894,7 @@ export interface Models {
   KclCodeCompletionResponse_type: KclCodeCompletionResponse_type;
   LeafNode_type: LeafNode_type;
   LengthUnit_type: LengthUnit_type;
+  LinearTransform_type: LinearTransform_type;
   Mass_type: Mass_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
