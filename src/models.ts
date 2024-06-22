@@ -2175,10 +2175,11 @@ export type ModelingCmd_type =
   | {
       center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */;
       /*{
+  "nullable": true,
   "format": "float",
   "description": "The field of view angle in the y direction, in degrees."
 }*/
-      fov_y: number;
+      fov_y?: number;
       /*{
   "nullable": true,
   "format": "uint32",
@@ -2189,10 +2190,10 @@ export type ModelingCmd_type =
       type: 'default_camera_perspective_settings';
       up: Point3d_type /* Which way is "up", from the camera's point of view. */;
       vantage: Point3d_type /* Where the camera is positioned */;
-      /* format:float, description:The distance to the far clipping plane. */
-      z_far: number;
-      /* format:float, description:The distance to the near clipping plane. */
-      z_near: number;
+      /* nullable:true, format:float, description:The distance to the far clipping plane. */
+      z_far?: number;
+      /* nullable:true, format:float, description:The distance to the near clipping plane. */
+      z_near?: number;
     }
   | {
       /*{
