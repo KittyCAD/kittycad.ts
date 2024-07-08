@@ -3530,12 +3530,12 @@ export interface PaymentMethodCardChecks_type {
 export type PaymentMethodType_type = 'card';
 
 export interface PerspectiveCameraParameters_type {
-  /* format:float, description:Camera frustum vertical field of view. */
-  fov_y: number;
-  /* format:float, description:Camera frustum far plane. */
-  z_far: number;
-  /* format:float, description:Camera frustum near plane. */
-  z_near: number;
+  /* nullable:true, format:float, description:Camera frustum vertical field of view. */
+  fov_y?: number;
+  /* nullable:true, format:float, description:Camera frustum far plane. */
+  z_far?: number;
+  /* nullable:true, format:float, description:Camera frustum near plane. */
+  z_near?: number;
 }
 
 export type PlanInterval_type = 'day' | 'month' | 'week' | 'year';
