@@ -5,6 +5,8 @@ on:
 name: make-release
 jobs:
   makerelease:
+    permissions:
+      contents: write
     name: make-release
     runs-on: ubuntu-latest
     steps:
