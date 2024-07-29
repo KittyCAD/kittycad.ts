@@ -248,7 +248,7 @@ export interface ApiToken_type {
   is_valid: boolean /* If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token. */;
   /* nullable:true, description:An optional label for the API token. */
   label?: string;
-  token: Uuid_type /* The API token itself. */;
+  token: StringUuid_type /* The API token itself. */;
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string;
   user_id: Uuid_type /* The ID of the user that owns the API token. */;
@@ -1119,6 +1119,13 @@ export interface EntityGetNumChildren_type {
 export interface EntityGetParentId_type {
   /* format:uuid, description:The UUID of the parent entity. */
   entity_id: string;
+}
+
+export interface EntityGetSketchPaths_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
 }
 
 export interface EntityLinearPattern_type {
@@ -2234,6 +2241,11 @@ export type ModelingCmd_type =
       type: 'entity_get_all_child_uuids';
     }
   | {
+      /* format:uuid, description:ID of the entity being queried. */
+      entity_id: string;
+      type: 'entity_get_sketch_paths';
+    }
+  | {
       distance_type: DistanceType_type /* Type of distance to be measured. */;
       /* format:uuid, description:ID of the first entity being queried. */
       entity_id1: string;
@@ -2244,7 +2256,7 @@ export type ModelingCmd_type =
   | {
       /* format:uuid, description:ID of the entity being copied. */
       entity_id: string;
-      transform: LinearTransform_type[] /* How to transform each repeated solid. The total number of repetitions equals the size of this list. */;
+      transform: LinearTransform_type[] /* How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list. */;
       type: 'entity_linear_pattern_transform';
     }
   | {
@@ -2289,6 +2301,18 @@ export type ModelingCmd_type =
       ids: string[];
       point: Point3d_type /* Point through which the mirror axis passes. */;
       type: 'entity_mirror';
+    }
+  | {
+      /*{
+  "format": "uuid",
+  "description": "The edge to use as the mirror axis, must be linear and lie in the plane of the solid"
+}*/
+      edge_id: string;
+      /*{
+  "format": "uuid"
+}*/
+      ids: string[];
+      type: 'entity_mirror_across_edge';
     }
   | {
       /* format:uuid, description:The edit target */
@@ -2611,9 +2635,25 @@ export type ModelingCmd_type =
       vertex_ids: string[];
     }
   | {
+      /*{
+  "format": "uint32",
+  "minimum": 0,
+  "description": "IDs of the vertices for which to obtain curve ids from"
+}*/
+      index: number;
+      /* format:uuid, description:Which path to query */
+      path_id: string;
+      type: 'path_get_curve_uuid';
+    }
+  | {
       /* format:uuid, description:Which path to query */
       path_id: string;
       type: 'path_get_vertex_uuids';
+    }
+  | {
+      /* format:uuid, description:Which path to query */
+      path_id: string;
+      type: 'path_get_sketch_target_uuid';
     }
   | {
       type: 'handle_mouse_drag_start';
@@ -2856,6 +2896,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/EntityGetSketchPaths"
+}*/
+      data: EntityGetSketchPaths_type;
+      type: 'entity_get_sketch_paths';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/ClosePath"
 }*/
       data: ClosePath_type;
@@ -3017,10 +3064,24 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/PathGetCurveUuid"
+}*/
+      data: PathGetCurveUuid_type;
+      type: 'path_get_curve_uuid';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/PathGetVertexUuids"
 }*/
       data: PathGetVertexUuids_type;
       type: 'path_get_vertex_uuids';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/PathGetSketchTargetUuid"
+}*/
+      data: PathGetSketchTargetUuid_type;
+      type: 'path_get_sketch_target_uuid';
     }
   | {
       /*{
@@ -3442,6 +3503,11 @@ export type PathComponentConstraintType_type =
   | 'parallel'
   | 'angle_between';
 
+export interface PathGetCurveUuid_type {
+  /* format:uuid, description:The UUID of the curve entity. */
+  curve_id: string;
+}
+
 export interface PathGetCurveUuidsForVertices_type {
   /*{
   "format": "uuid"
@@ -3451,6 +3517,11 @@ export interface PathGetCurveUuidsForVertices_type {
 
 export interface PathGetInfo_type {
   segments: PathSegmentInfo_type[] /* All segments in the path, in the order they were added. */;
+}
+
+export interface PathGetSketchTargetUuid_type {
+  /* nullable:true, format:uuid, description:The UUID of the sketch target. */
+  target_id?: string;
 }
 
 export interface PathGetVertexUuids_type {
@@ -3753,7 +3824,7 @@ export interface ServiceAccount_type {
   /* nullable:true, description:An optional label for the API token. */
   label?: string;
   org_id: Uuid_type /* The ID of the organization that owns the API token. */;
-  token: Uuid_type /* The API token itself. */;
+  token: StringUuid_type /* The API token itself. */;
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string;
 }
@@ -3773,11 +3844,14 @@ export interface Session_type {
   /* title:DateTime, format:date-time, description:The date and time the session expires. */
   expires: string;
   id: Uuid_type /* The unique identifier for the session. */;
-  session_token: Uuid_type /* The session token. */;
+  session_token: SessionTokenUuid_type /* The session token. */;
   /* title:DateTime, format:date-time, description:The date and time the session was last updated. */
   updated_at: string;
   user_id: Uuid_type /* The user ID of the user that the session belongs to. */;
 }
+
+export type SessionTokenUuid_type =
+  string; /* An auth token. A uuid with a prefix of ses- */
 
 export interface Solid3dGetAllEdgeFaces_type {
   /*{
@@ -3818,6 +3892,8 @@ export interface StoreCouponParams_type {
   /* format:uint32, minimum:0, description:The percentage off. */
   percent_off: number;
 }
+
+export type StringUuid_type = string; /* An auth token. A UUIDv4 */
 
 export interface SubscriptionTierFeature_type {
   /* minLength:1, maxLength:80, description:Information about the feature. */
@@ -4839,6 +4915,7 @@ export interface Models {
   EntityGetDistance_type: EntityGetDistance_type;
   EntityGetNumChildren_type: EntityGetNumChildren_type;
   EntityGetParentId_type: EntityGetParentId_type;
+  EntityGetSketchPaths_type: EntityGetSketchPaths_type;
   EntityLinearPattern_type: EntityLinearPattern_type;
   EntityLinearPatternTransform_type: EntityLinearPatternTransform_type;
   EntityType_type: EntityType_type;
@@ -4925,8 +5002,10 @@ export interface Models {
   PathCommand_type: PathCommand_type;
   PathComponentConstraintBound_type: PathComponentConstraintBound_type;
   PathComponentConstraintType_type: PathComponentConstraintType_type;
+  PathGetCurveUuid_type: PathGetCurveUuid_type;
   PathGetCurveUuidsForVertices_type: PathGetCurveUuidsForVertices_type;
   PathGetInfo_type: PathGetInfo_type;
+  PathGetSketchTargetUuid_type: PathGetSketchTargetUuid_type;
   PathGetVertexUuids_type: PathGetVertexUuids_type;
   PathSegment_type: PathSegment_type;
   PathSegmentInfo_type: PathSegmentInfo_type;
@@ -4958,6 +5037,7 @@ export interface Models {
   ServiceAccount_type: ServiceAccount_type;
   ServiceAccountResultsPage_type: ServiceAccountResultsPage_type;
   Session_type: Session_type;
+  SessionTokenUuid_type: SessionTokenUuid_type;
   Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
   Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
   Solid3dGetExtrusionFaceInfo_type: Solid3dGetExtrusionFaceInfo_type;
@@ -4966,6 +5046,7 @@ export interface Models {
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
   StlStorage_type: StlStorage_type;
   StoreCouponParams_type: StoreCouponParams_type;
+  StringUuid_type: StringUuid_type;
   SubscriptionTierFeature_type: SubscriptionTierFeature_type;
   SubscriptionTierPrice_type: SubscriptionTierPrice_type;
   SubscriptionTierType_type: SubscriptionTierType_type;
