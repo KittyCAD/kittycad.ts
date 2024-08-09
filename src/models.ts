@@ -1680,8 +1680,22 @@ Defaults to the [KittyCAD co-ordinate system].
       type: 'ply';
       units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
     }
-  | { type: 'sldprt' }
-  | { type: 'step' }
+  | {
+      /*{
+  "default": false,
+  "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
+}*/
+      split_closed_faces: boolean;
+      type: 'sldprt';
+    }
+  | {
+      /*{
+  "default": false,
+  "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
+}*/
+      split_closed_faces: boolean;
+      type: 'step';
+    }
   | {
       /* Co-ordinate system of input data.
 
