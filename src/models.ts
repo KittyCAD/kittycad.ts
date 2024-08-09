@@ -70,7 +70,7 @@ export interface AiPromptResultsPage_type {
   next_page?: string;
 }
 
-export type AiPromptType_type = 'text_to_cad';
+export type AiPromptType_type = 'text_to_cad' | 'text_to_kcl';
 
 export interface Angle_type {
   unit: UnitAngle_type /* What unit is the measurement? */;
@@ -521,6 +521,11 @@ This is the same as the API call ID. */
   | {
       /*{
   "nullable": true,
+  "description": "The code for the model. This is optional but will be required in the future once we are at v1."
+}*/
+      code?: string;
+      /*{
+  "nullable": true,
   "title": "DateTime",
   "format": "date-time",
   "description": "The time and date the API call was completed."
@@ -536,6 +541,7 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
+      model: TextToCadModel_type /* The model being used. */;
       model_version: string /* The version of the model. */;
       output_format: FileExportFormat_type /* The output format of the model. */;
       outputs: {
@@ -3977,6 +3983,11 @@ export interface TakeSnapshot_type {
 export interface TextToCad_type {
   /*{
   "nullable": true,
+  "description": "The code for the model. This is optional but will be required in the future once we are at v1."
+}*/
+  code?: string;
+  /*{
+  "nullable": true,
   "title": "DateTime",
   "format": "date-time",
   "description": "The time and date the API call was completed."
@@ -3992,6 +4003,7 @@ export interface TextToCad_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
+  model: TextToCadModel_type /* The model being used. */;
   model_version: string /* The version of the model. */;
   output_format: FileExportFormat_type /* The output format of the model. */;
   outputs: {
@@ -4018,6 +4030,8 @@ This is the same as the API call ID. */
 export interface TextToCadCreateBody_type {
   prompt: string /* The prompt for the model. */;
 }
+
+export type TextToCadModel_type = 'cad' | 'kcl';
 
 export interface TextToCadResultsPage_type {
   items: TextToCad_type[] /* list of items on this page of results */;
@@ -5072,6 +5086,7 @@ export interface Models {
   TakeSnapshot_type: TakeSnapshot_type;
   TextToCad_type: TextToCad_type;
   TextToCadCreateBody_type: TextToCadCreateBody_type;
+  TextToCadModel_type: TextToCadModel_type;
   TextToCadResultsPage_type: TextToCadResultsPage_type;
   UnitAngle_type: UnitAngle_type;
   UnitAngleConversion_type: UnitAngleConversion_type;

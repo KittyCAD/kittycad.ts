@@ -971,7 +971,7 @@
     "op": "add",
     "path": "/paths/~1ai~1text-to-cad~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_text_to_cad({\n        output_format: 'stl',\n        body: { prompt: 'The prompt for the model.' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ai } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ai.create_text_to_cad({\n        output_format: 'stl',\n        kcl: true,\n        body: { prompt: 'The prompt for the model.' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
