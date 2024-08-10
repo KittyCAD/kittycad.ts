@@ -1,20 +1,3 @@
-import create_kcl_code_completions from './api/ai/create_kcl_code_completions.js';
-import create_text_to_cad from './api/ai/create_text_to_cad.js';
-import create_text_to_cad_model_feedback from './api/ai/create_text_to_cad_model_feedback.js';
-import get_ai_prompt from './api/ai/get_ai_prompt.js';
-import get_text_to_cad_model_for_user from './api/ai/get_text_to_cad_model_for_user.js';
-import list_ai_prompts from './api/ai/list_ai_prompts.js';
-import list_text_to_cad_models_for_user from './api/ai/list_text_to_cad_models_for_user.js';
-export const ai = {
-  create_kcl_code_completions,
-  create_text_to_cad,
-  create_text_to_cad_model_feedback,
-  get_ai_prompt,
-  get_text_to_cad_model_for_user,
-  list_ai_prompts,
-  list_text_to_cad_models_for_user,
-};
-
 import get_api_call from './api/api-calls/get_api_call.js';
 import get_api_call_for_org from './api/api-calls/get_api_call_for_org.js';
 import get_api_call_for_user from './api/api-calls/get_api_call_for_user.js';
@@ -94,6 +77,23 @@ export const meta = {
   get_schema,
   internal_get_api_token_for_discord_user,
   ping,
+};
+
+import create_kcl_code_completions from './api/ml/create_kcl_code_completions.js';
+import create_text_to_cad from './api/ml/create_text_to_cad.js';
+import create_text_to_cad_model_feedback from './api/ml/create_text_to_cad_model_feedback.js';
+import get_ai_prompt from './api/ml/get_ai_prompt.js';
+import get_text_to_cad_model_for_user from './api/ml/get_text_to_cad_model_for_user.js';
+import list_ai_prompts from './api/ml/list_ai_prompts.js';
+import list_text_to_cad_models_for_user from './api/ml/list_text_to_cad_models_for_user.js';
+export const ml = {
+  create_kcl_code_completions,
+  create_text_to_cad,
+  create_text_to_cad_model_feedback,
+  get_ai_prompt,
+  get_text_to_cad_model_for_user,
+  list_ai_prompts,
+  list_text_to_cad_models_for_user,
 };
 
 import device_access_token from './api/oauth2/device_access_token.js';

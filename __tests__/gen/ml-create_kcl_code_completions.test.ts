@@ -1,7 +1,7 @@
-import { ai } from '../../src/index.js';
+import { ml } from '../../src/index.js';
 
 async function example() {
-  const response = await ai.create_kcl_code_completions({
+  const response = await ml.create_kcl_code_completions({
     body: {
       extra: {
         language: 'The language of the code.',
@@ -26,7 +26,7 @@ async function example() {
   return response;
 }
 
-describe('Testing ai.create_kcl_code_completions', () => {
+describe('Testing ml.create_kcl_code_completions', () => {
   it('should be truthy or throw', async () => {
     expect(await example()).toBeTruthy();
   });

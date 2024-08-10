@@ -39,7 +39,8 @@ export interface AiPrompt_type {
   /* nullable:true, description:Feedback from the user, if any. */
   feedback?: AiFeedback_type;
   id: Uuid_type /* The unique identifier for the AI Prompt. */;
-  metadata: any;
+  /* nullable:true, description:The metadata for the prompt. */
+  metadata?: AiPromptMetadata_type;
   model_version: string /* The version of the model. */;
   /*{
   "nullable": true,
@@ -59,6 +60,11 @@ export interface AiPrompt_type {
   /* title:DateTime, format:date-time, description:The date and time the AI prompt was last updated. */
   updated_at: string;
   user_id: Uuid_type /* The user ID of the user who created the AI Prompt. */;
+}
+
+export interface AiPromptMetadata_type {
+  /* nullable:true, description:Code for the model. */
+  code?: string;
 }
 
 export interface AiPromptResultsPage_type {
@@ -4870,6 +4876,7 @@ export interface Models {
   AddressDetails_type: AddressDetails_type;
   AiFeedback_type: AiFeedback_type;
   AiPrompt_type: AiPrompt_type;
+  AiPromptMetadata_type: AiPromptMetadata_type;
   AiPromptResultsPage_type: AiPromptResultsPage_type;
   AiPromptType_type: AiPromptType_type;
   Angle_type: Angle_type;
