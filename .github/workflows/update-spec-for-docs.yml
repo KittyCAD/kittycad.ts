@@ -2,6 +2,10 @@ on:
   push:
     tags:
       - v*
+    branches:
+      - main
+    paths:
+      - kittycad.ts.patch.json
   pull_request:
     paths:
       - .github/workflows/update-spec-for-docs.yml
