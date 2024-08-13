@@ -22,7 +22,11 @@ export interface AddressDetails_type {
   zip: string /* The zip component. */;
 }
 
-export type AiFeedback_type = 'thumbs_up' | 'thumbs_down';
+export type AiFeedback_type =
+  | 'thumbs_up'
+  | 'thumbs_down'
+  | 'accepted'
+  | 'rejected';
 
 export interface AiPrompt_type {
   /*{
