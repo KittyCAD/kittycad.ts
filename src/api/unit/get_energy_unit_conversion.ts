@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   UnitEnergyConversion_type,
   Error_type,

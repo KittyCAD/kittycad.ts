@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   CodeOutput_type,
   Error_type,

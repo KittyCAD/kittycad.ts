@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   FileSurfaceArea_type,
   Error_type,

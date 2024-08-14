@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { User_type, Error_type, UpdateUser_type } from '../../models.js';
 import { Client } from '../../client.js';
 

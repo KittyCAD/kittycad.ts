@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { Error_type, DeviceAuthVerifyParams_type } from '../../models.js';
 import { Client } from '../../client.js';
 

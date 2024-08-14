@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { Metadata_type, Error_type } from '../../models.js';
 import { Client } from '../../client.js';
 

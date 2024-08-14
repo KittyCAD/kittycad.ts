@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { Org_type, Error_type, OrgDetails_type } from '../../models.js';
 import { Client } from '../../client.js';
 

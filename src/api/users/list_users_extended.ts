@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   ExtendedUserResultsPage_type,
   Error_type,

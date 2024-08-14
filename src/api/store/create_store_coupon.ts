@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   DiscountCode_type,
   Error_type,

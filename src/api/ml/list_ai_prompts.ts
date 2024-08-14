@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   AiPromptResultsPage_type,
   Error_type,
