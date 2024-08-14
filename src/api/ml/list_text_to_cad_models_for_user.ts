@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   TextToCadResultsPage_type,
   Error_type,

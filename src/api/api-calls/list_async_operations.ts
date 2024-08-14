@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   AsyncApiCallResultsPage_type,
   Error_type,

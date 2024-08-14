@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { CustomerBalance_type, Error_type, Uuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 

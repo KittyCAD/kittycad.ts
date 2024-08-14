@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   KclCodeCompletionResponse_type,
   Error_type,

@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   ApiCallWithPriceResultsPage_type,
   Error_type,

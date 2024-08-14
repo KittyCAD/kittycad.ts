@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   OAuth2ClientInfo_type,
   Error_type,

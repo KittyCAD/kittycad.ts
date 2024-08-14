@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { Session_type, Error_type } from '../../models.js';
 import { Client } from '../../client.js';
 

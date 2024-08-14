@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   UnitCurrentConversion_type,
   Error_type,

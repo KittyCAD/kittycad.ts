@@ -1,5 +1,4 @@
 ```typescript
-import fetch from 'node-fetch';
 import * as types from './src/models.ts';
 import { Client } from '../../client.js';
 

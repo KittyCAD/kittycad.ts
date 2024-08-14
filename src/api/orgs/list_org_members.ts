@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import {
   OrgMemberResultsPage_type,
   Error_type,
