@@ -2152,6 +2152,11 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       face_ids: string[];
+      /*{
+  "default": false,
+  "description": "If true, the Solid3D is made hollow instead of removing the selected faces"
+}*/
+      hollow: boolean;
       /* format:uuid, description:Which Solid3D is being shelled. */
       object_id: string;
       shell_thickness: LengthUnit_type /* How thick the shell should be. Smaller values mean a thinner shell. */;
