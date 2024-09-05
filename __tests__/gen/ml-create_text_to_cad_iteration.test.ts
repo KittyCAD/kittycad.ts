@@ -6,6 +6,7 @@ async function example() {
       original_source_code:
         'The source code for the model (in kcl) that is to be edited.',
       prompt: 'The prompt for the model, if not using source ranges.',
+      source_ranges: [],
     },
   });
   if ('error_code' in response) throw response;

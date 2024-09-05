@@ -835,7 +835,7 @@
     "op": "add",
     "path": "/paths/~1ml~1text-to-cad~1iteration/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_iteration({\n        body: {\n            original_source_code:\n                'The source code for the model (in kcl) that is to be edited.',\n            prompt: 'The prompt for the model, if not using source ranges.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_iteration({\n        body: {\n            original_source_code:\n                'The source code for the model (in kcl) that is to be edited.',\n            prompt: 'The prompt for the model, if not using source ranges.',\n            source_ranges: [],\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
