@@ -13,7 +13,7 @@ export default async function device_auth_verify({
   user_code,
 }: Device_auth_verify_params): Promise<Device_auth_verify_return> {
   const url = `/oauth2/device/verify?user_code=${user_code}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

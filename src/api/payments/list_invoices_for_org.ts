@@ -11,7 +11,7 @@ export default async function list_invoices_for_org({
   client,
 }: List_invoices_for_org_params = {}): Promise<List_invoices_for_org_return> {
   const url = `/org/payment/invoices`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

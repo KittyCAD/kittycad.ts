@@ -69,7 +69,7 @@
     "tsc": "tsc",
     "fmt": "prettier --config .prettierrc --write './src' './__tests__' './kittycad.ts.patch.json' './rollup.config.js'"
   },
-  "author": "Kurt Hutten <kurt@kittycad.io>",
+  "author": "Kurt Hutten <kurt@zoo.dev>",
   "license": "MIT",
   "dependencies": {
     "openapi-types": "^12.0.0",

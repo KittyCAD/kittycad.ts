@@ -17,7 +17,7 @@ export default async function get_api_call_metrics({
   group_by,
 }: Get_api_call_metrics_params): Promise<Get_api_call_metrics_return> {
   const url = `/api-call-metrics?group_by=${group_by}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

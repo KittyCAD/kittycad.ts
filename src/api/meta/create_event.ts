@@ -11,7 +11,7 @@ export default async function create_event({
   client,
 }: Create_event_params = {}): Promise<Create_event_return> {
   const url = `/events`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

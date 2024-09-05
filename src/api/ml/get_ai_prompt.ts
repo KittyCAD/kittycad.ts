@@ -13,7 +13,7 @@ export default async function get_ai_prompt({
   id,
 }: Get_ai_prompt_params): Promise<Get_ai_prompt_return> {
   const url = `/ai-prompts/${id}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

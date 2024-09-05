@@ -13,7 +13,7 @@ export default async function create_org_member({
   body,
 }: Create_org_member_params): Promise<Create_org_member_return> {
   const url = `/org/members`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

@@ -13,7 +13,7 @@ export default async function create_org({
   body,
 }: Create_org_params): Promise<Create_org_return> {
   const url = `/org`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

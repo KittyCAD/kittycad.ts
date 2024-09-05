@@ -11,7 +11,7 @@ export default async function create_debug_uploads({
   client,
 }: Create_debug_uploads_params = {}): Promise<Create_debug_uploads_return> {
   const url = `/debug/uploads`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

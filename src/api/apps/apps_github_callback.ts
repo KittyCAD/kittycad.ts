@@ -11,7 +11,7 @@ export default async function apps_github_callback({
   client,
 }: Apps_github_callback_params = {}): Promise<Apps_github_callback_return> {
   const url = `/apps/github/callback`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

@@ -13,7 +13,7 @@ export default async function get_org_member({
   user_id,
 }: Get_org_member_params): Promise<Get_org_member_return> {
   const url = `/org/members/${user_id}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

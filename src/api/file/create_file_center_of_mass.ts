@@ -22,7 +22,7 @@ export default async function create_file_center_of_mass({
   body,
 }: Create_file_center_of_mass_params): Promise<Create_file_center_of_mass_return> {
   const url = `/file/center-of-mass?output_unit=${output_unit}&src_format=${src_format}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

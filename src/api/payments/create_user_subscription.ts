@@ -19,7 +19,7 @@ export default async function create_user_subscription({
   body,
 }: Create_user_subscription_params): Promise<Create_user_subscription_return> {
   const url = `/user/payment/subscriptions`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

@@ -25,7 +25,7 @@ export default async function list_text_to_cad_models_for_user({
   no_models,
 }: List_text_to_cad_models_for_user_params): Promise<List_text_to_cad_models_for_user_return> {
   const url = `/user/text-to-cad?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&no_models=${no_models}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

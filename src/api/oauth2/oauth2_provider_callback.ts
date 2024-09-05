@@ -21,7 +21,7 @@ export default async function oauth2_provider_callback({
   user,
 }: Oauth2_provider_callback_params): Promise<Oauth2_provider_callback_return> {
   const url = `/oauth2/provider/${provider}/callback?code=${code}&id_token=${id_token}&state=${state}&user=${user}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

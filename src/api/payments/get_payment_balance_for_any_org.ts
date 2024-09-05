@@ -13,7 +13,7 @@ export default async function get_payment_balance_for_any_org({
   id,
 }: Get_payment_balance_for_any_org_params): Promise<Get_payment_balance_for_any_org_return> {
   const url = `/orgs/${id}/payment/balance`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

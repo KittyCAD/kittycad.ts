@@ -15,7 +15,7 @@ export default async function create_text_to_cad_model_feedback({
   feedback,
 }: Create_text_to_cad_model_feedback_params): Promise<Create_text_to_cad_model_feedback_return> {
   const url = `/user/text-to-cad/${id}?feedback=${feedback}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

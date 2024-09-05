@@ -21,7 +21,7 @@ export default async function list_ai_prompts({
   sort_by,
 }: List_ai_prompts_params): Promise<List_ai_prompts_return> {
   const url = `/ai-prompts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

@@ -21,7 +21,7 @@ export default async function create_file_execution({
   body,
 }: Create_file_execution_params): Promise<Create_file_execution_return> {
   const url = `/file/execute/${lang}?output=${output}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

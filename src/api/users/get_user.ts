@@ -13,7 +13,7 @@ export default async function get_user({
   id,
 }: Get_user_params): Promise<Get_user_return> {
   const url = `/users/${id}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
