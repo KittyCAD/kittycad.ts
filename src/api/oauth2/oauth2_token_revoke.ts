@@ -1,18 +1,16 @@
-import { AiPrompt_type, Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Get_ai_prompt_params {
+interface Oauth2_token_revoke_params {
   client?: Client;
-  id: string;
 }
 
-type Get_ai_prompt_return = AiPrompt_type | Error_type;
+type Oauth2_token_revoke_return = any;
 
-export default async function get_ai_prompt({
+export default async function oauth2_token_revoke({
   client,
-  id,
-}: Get_ai_prompt_params): Promise<Get_ai_prompt_return> {
-  const url = `/ai-prompts/${id}`;
+}: Oauth2_token_revoke_params = {}): Promise<Oauth2_token_revoke_return> {
+  const url = `/oauth2/token/revoke`;
   const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -22,10 +20,10 @@ export default async function get_ai_prompt({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'GET',
+    method: 'POST',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_ai_prompt_return;
+  const result = (await response.json()) as Oauth2_token_revoke_return;
   return result;
 }

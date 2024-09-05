@@ -1,26 +1,26 @@
 import {
-  AiPromptResultsPage_type,
+  MlPromptResultsPage_type,
   Error_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface List_ai_prompts_params {
+interface List_ml_prompts_params {
   client?: Client;
   limit: number;
   page_token: string;
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_ai_prompts_return = AiPromptResultsPage_type | Error_type;
+type List_ml_prompts_return = MlPromptResultsPage_type | Error_type;
 
-export default async function list_ai_prompts({
+export default async function list_ml_prompts({
   client,
   limit,
   page_token,
   sort_by,
-}: List_ai_prompts_params): Promise<List_ai_prompts_return> {
-  const url = `/ai-prompts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
+}: List_ml_prompts_params): Promise<List_ml_prompts_return> {
+  const url = `/ml-prompts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -34,6 +34,6 @@ export default async function list_ai_prompts({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as List_ai_prompts_return;
+  const result = (await response.json()) as List_ml_prompts_return;
   return result;
 }
