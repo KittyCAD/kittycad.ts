@@ -11,7 +11,7 @@ export default async function apps_github_consent({
   client,
 }: Apps_github_consent_params = {}): Promise<Apps_github_consent_return> {
   const url = `/apps/github/consent`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

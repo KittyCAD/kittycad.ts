@@ -11,7 +11,7 @@ export default async function get_metadata({
   client,
 }: Get_metadata_params = {}): Promise<Get_metadata_return> {
   const url = `/_meta/info`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

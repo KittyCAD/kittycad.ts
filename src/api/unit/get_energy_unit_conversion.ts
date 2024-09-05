@@ -21,7 +21,7 @@ export default async function get_energy_unit_conversion({
   value,
 }: Get_energy_unit_conversion_params): Promise<Get_energy_unit_conversion_return> {
   const url = `/unit/conversion/energy/${input_unit}/${output_unit}?value=${value}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

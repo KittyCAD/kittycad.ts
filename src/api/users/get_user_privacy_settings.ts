@@ -11,7 +11,7 @@ export default async function get_user_privacy_settings({
   client,
 }: Get_user_privacy_settings_params = {}): Promise<Get_user_privacy_settings_return> {
   const url = `/user/privacy`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

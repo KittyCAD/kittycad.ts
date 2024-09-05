@@ -13,7 +13,7 @@ export default async function get_service_account_for_org({
   token,
 }: Get_service_account_for_org_params): Promise<Get_service_account_for_org_return> {
   const url = `/org/service-accounts/${token}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

@@ -11,7 +11,7 @@ export default async function get_oauth2_providers_for_user({
   client,
 }: Get_oauth2_providers_for_user_params = {}): Promise<Get_oauth2_providers_for_user_return> {
   const url = `/user/oauth2/providers`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

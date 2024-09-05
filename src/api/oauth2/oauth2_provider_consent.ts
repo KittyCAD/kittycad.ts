@@ -19,7 +19,7 @@ export default async function oauth2_provider_consent({
   callback_url,
 }: Oauth2_provider_consent_params): Promise<Oauth2_provider_consent_return> {
   const url = `/oauth2/provider/${provider}/consent?callback_url=${callback_url}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

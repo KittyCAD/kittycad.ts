@@ -11,7 +11,7 @@ export default async function ping({
   client,
 }: Ping_params = {}): Promise<Ping_return> {
   const url = `/ping`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

@@ -13,7 +13,7 @@ export default async function delete_payment_method_for_org({
   id,
 }: Delete_payment_method_for_org_params): Promise<Delete_payment_method_for_org_return> {
   const url = `/org/payment/methods/${id}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

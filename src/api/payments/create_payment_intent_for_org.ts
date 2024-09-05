@@ -11,7 +11,7 @@ export default async function create_payment_intent_for_org({
   client,
 }: Create_payment_intent_for_org_params = {}): Promise<Create_payment_intent_for_org_return> {
   const url = `/org/payment/intent`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

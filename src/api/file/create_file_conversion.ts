@@ -22,7 +22,7 @@ export default async function create_file_conversion({
   body,
 }: Create_file_conversion_params): Promise<Create_file_conversion_return> {
   const url = `/file/conversion/${src_format}/${output_format}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

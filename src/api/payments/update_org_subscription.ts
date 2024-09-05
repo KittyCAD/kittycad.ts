@@ -17,7 +17,7 @@ export default async function update_org_subscription({
   body,
 }: Update_org_subscription_params): Promise<Update_org_subscription_return> {
   const url = `/org/payment/subscriptions`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

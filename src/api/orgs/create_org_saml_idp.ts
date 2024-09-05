@@ -17,7 +17,7 @@ export default async function create_org_saml_idp({
   body,
 }: Create_org_saml_idp_params): Promise<Create_org_saml_idp_return> {
   const url = `/org/saml/idp`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

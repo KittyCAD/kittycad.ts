@@ -22,7 +22,7 @@ export default async function create_text_to_cad({
   body,
 }: Create_text_to_cad_params): Promise<Create_text_to_cad_return> {
   const url = `/ai/text-to-cad/${output_format}?kcl=${kcl}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

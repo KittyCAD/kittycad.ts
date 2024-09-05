@@ -21,7 +21,7 @@ export default async function list_users({
   sort_by,
 }: List_users_params): Promise<List_users_return> {
   const url = `/users?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

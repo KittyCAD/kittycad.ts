@@ -13,7 +13,7 @@ export default async function delete_service_account_for_org({
   token,
 }: Delete_service_account_for_org_params): Promise<Delete_service_account_for_org_return> {
   const url = `/org/service-accounts/${token}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

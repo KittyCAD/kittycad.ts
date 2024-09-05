@@ -21,7 +21,7 @@ export default async function org_list_api_calls({
   sort_by,
 }: Org_list_api_calls_params): Promise<Org_list_api_calls_return> {
   const url = `/org/api-calls?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

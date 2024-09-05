@@ -23,7 +23,7 @@ export default async function list_service_accounts_for_org({
   sort_by,
 }: List_service_accounts_for_org_params): Promise<List_service_accounts_for_org_return> {
   const url = `/org/service-accounts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

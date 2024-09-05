@@ -13,7 +13,7 @@ export default async function apps_github_webhook({
   body,
 }: Apps_github_webhook_params): Promise<Apps_github_webhook_return> {
   const url = `/apps/github/webhook`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

@@ -22,7 +22,7 @@ export default async function create_file_surface_area({
   body,
 }: Create_file_surface_area_params): Promise<Create_file_surface_area_return> {
   const url = `/file/surface-area?output_unit=${output_unit}&src_format=${src_format}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

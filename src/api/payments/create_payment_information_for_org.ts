@@ -13,7 +13,7 @@ export default async function create_payment_information_for_org({
   body,
 }: Create_payment_information_for_org_params): Promise<Create_payment_information_for_org_return> {
   const url = `/org/payment`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

@@ -22,7 +22,7 @@ export default async function update_enterprise_pricing_for_org({
   body,
 }: Update_enterprise_pricing_for_org_params): Promise<Update_enterprise_pricing_for_org_return> {
   const url = `/orgs/${id}/enterprise/pricing`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

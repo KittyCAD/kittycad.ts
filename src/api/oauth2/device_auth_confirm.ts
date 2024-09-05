@@ -13,7 +13,7 @@ export default async function device_auth_confirm({
   body,
 }: Device_auth_confirm_params): Promise<Device_auth_confirm_return> {
   const url = `/oauth2/device/confirm`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

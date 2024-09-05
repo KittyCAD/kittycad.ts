@@ -27,7 +27,7 @@ export default async function create_file_mass({
   body,
 }: Create_file_mass_params): Promise<Create_file_mass_return> {
   const url = `/file/mass?material_density=${material_density}&material_density_unit=${material_density_unit}&output_unit=${output_unit}&src_format=${src_format}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

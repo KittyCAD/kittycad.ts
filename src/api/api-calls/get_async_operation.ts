@@ -13,7 +13,7 @@ export default async function get_async_operation({
   id,
 }: Get_async_operation_params): Promise<Get_async_operation_return> {
   const url = `/async/operations/${id}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

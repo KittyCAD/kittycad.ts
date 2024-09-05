@@ -13,7 +13,7 @@ export default async function get_pricing_subscriptions({
   client,
 }: Get_pricing_subscriptions_params = {}): Promise<Get_pricing_subscriptions_return> {
   const url = `/pricing/subscriptions`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

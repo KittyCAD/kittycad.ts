@@ -17,7 +17,7 @@ export default async function create_store_coupon({
   body,
 }: Create_store_coupon_params): Promise<Create_store_coupon_return> {
   const url = `/store/coupon`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

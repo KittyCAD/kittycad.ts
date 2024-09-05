@@ -11,7 +11,7 @@ export default async function device_access_token({
   client,
 }: Device_access_token_params = {}): Promise<Device_access_token_return> {
   const url = `/oauth2/device/token`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

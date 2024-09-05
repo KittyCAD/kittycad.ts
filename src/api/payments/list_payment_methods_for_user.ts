@@ -11,7 +11,7 @@ export default async function list_payment_methods_for_user({
   client,
 }: List_payment_methods_for_user_params = {}): Promise<List_payment_methods_for_user_return> {
   const url = `/user/payment/methods`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token

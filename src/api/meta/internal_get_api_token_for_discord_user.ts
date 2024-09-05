@@ -15,7 +15,7 @@ export default async function internal_get_api_token_for_discord_user({
   discord_id,
 }: Internal_get_api_token_for_discord_user_params): Promise<Internal_get_api_token_for_discord_user_return> {
   const url = `/internal/discord/api-token/${discord_id}`;
-  const urlBase = process?.env?.BASE_URL || 'https://api.kittycad.io';
+  const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
     ? client.token
