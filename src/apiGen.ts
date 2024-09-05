@@ -188,9 +188,6 @@ export default async function apiGen(lookup: any) {
         inputTypes.push(`body: ${typeReference}`);
         inputParams.push('body');
 
-        if (path === '/ml/text-to-cad/iteration') {
-          console.log(operation, params);
-        }
         const mapOverProperties = (rawRef: string): string => {
           const refSchema = spec.components.schemas[
             rawRef.split('/').pop()
