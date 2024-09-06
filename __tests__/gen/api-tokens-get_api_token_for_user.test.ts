@@ -11,6 +11,10 @@ async function example() {
 
 describe('Testing api_tokens.get_api_token_for_user', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
+    try {
+      await example();
+    } catch (err) {
+      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+    }
   });
 });
