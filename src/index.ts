@@ -81,18 +81,20 @@ export const meta = {
 
 import create_kcl_code_completions from './api/ml/create_kcl_code_completions.js';
 import create_text_to_cad from './api/ml/create_text_to_cad.js';
+import create_text_to_cad_iteration from './api/ml/create_text_to_cad_iteration.js';
 import create_text_to_cad_model_feedback from './api/ml/create_text_to_cad_model_feedback.js';
-import get_ai_prompt from './api/ml/get_ai_prompt.js';
+import get_ml_prompt from './api/ml/get_ml_prompt.js';
 import get_text_to_cad_model_for_user from './api/ml/get_text_to_cad_model_for_user.js';
-import list_ai_prompts from './api/ml/list_ai_prompts.js';
+import list_ml_prompts from './api/ml/list_ml_prompts.js';
 import list_text_to_cad_models_for_user from './api/ml/list_text_to_cad_models_for_user.js';
 export const ml = {
   create_kcl_code_completions,
   create_text_to_cad,
+  create_text_to_cad_iteration,
   create_text_to_cad_model_feedback,
-  get_ai_prompt,
+  get_ml_prompt,
   get_text_to_cad_model_for_user,
-  list_ai_prompts,
+  list_ml_prompts,
   list_text_to_cad_models_for_user,
 };
 
@@ -103,6 +105,7 @@ import device_auth_verify from './api/oauth2/device_auth_verify.js';
 import oauth2_provider_callback from './api/oauth2/oauth2_provider_callback.js';
 import oauth2_provider_callback_post from './api/oauth2/oauth2_provider_callback_post.js';
 import oauth2_provider_consent from './api/oauth2/oauth2_provider_consent.js';
+import oauth2_token_revoke from './api/oauth2/oauth2_token_revoke.js';
 export const oauth2 = {
   device_access_token,
   device_auth_confirm,
@@ -111,6 +114,7 @@ export const oauth2 = {
   oauth2_provider_callback,
   oauth2_provider_callback_post,
   oauth2_provider_consent,
+  oauth2_token_revoke,
 };
 
 import create_org from './api/orgs/create_org.js';

@@ -116,6 +116,34 @@ export default async function apiGen(lookup: any) {
             inputParamsExamples.push(
               `${name}: '${'00000000-0000-0000-0000-000000000000'}'`,
             );
+          } else if (
+            reffedSchema.type === 'string' &&
+            refName == 'ServiceAccountTokenUuid'
+          ) {
+            inputParamsExamples.push(
+              `${name}: '${'svc-00000000-0000-0000-0000-000000000000'}'`,
+            );
+          } else if (
+            reffedSchema.type === 'string' &&
+            refName == 'SessionTokenUuid'
+          ) {
+            inputParamsExamples.push(
+              `${name}: '${'ses-00000000-0000-0000-0000-000000000000'}'`,
+            );
+          } else if (
+            reffedSchema.type === 'string' &&
+            refName == 'ApiTokenUuid'
+          ) {
+            inputParamsExamples.push(
+              `${name}: '${'api-00000000-0000-0000-0000-000000000000'}'`,
+            );
+          } else if (
+            reffedSchema.type === 'string' &&
+            refName == 'DeviceAccessTokenUuid'
+          ) {
+            inputParamsExamples.push(
+              `${name}: '${'dev-00000000-0000-0000-0000-000000000000'}'`,
+            );
           }
         } else {
           if (schema.type === 'number' || schema.type === 'integer') {
@@ -227,6 +255,10 @@ export default async function apiGen(lookup: any) {
                   value.items.type === 'string'
                 ) {
                   return `${key}: ['string']`;
+                }
+                if (value.type === 'array' && '$ref' in value.items) {
+                  // assuming text to cad iteration for now
+                  return `${key}: []`;
                 }
                 return '';
               })

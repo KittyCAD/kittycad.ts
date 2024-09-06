@@ -1,10 +1,10 @@
-import { Error_type, AiFeedback_type } from '../../models.js';
+import { Error_type, MlFeedback_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_text_to_cad_model_feedback_params {
   client?: Client;
   id: string;
-  feedback: AiFeedback_type;
+  feedback: MlFeedback_type;
 }
 
 type Create_text_to_cad_model_feedback_return = Error_type;

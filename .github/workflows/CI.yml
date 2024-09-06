@@ -13,7 +13,7 @@ jobs:
 
       - uses: actions/setup-node@v3.5.1
         with:
-            node-version: '20.5.0'
+            node-version: '20.9.0'
             cache: 'yarn'
       - run: yarn install
       - run: yarn gen

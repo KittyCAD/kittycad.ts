@@ -1,22 +1,18 @@
-import {
-  Session_type,
-  Error_type,
-  SessionTokenUuid_type,
-} from '../../models.js';
+import { MlPrompt_type, Error_type } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Get_session_for_user_params {
+interface Get_ml_prompt_params {
   client?: Client;
-  token: SessionTokenUuid_type;
+  id: string;
 }
 
-type Get_session_for_user_return = Session_type | Error_type;
+type Get_ml_prompt_return = MlPrompt_type | Error_type;
 
-export default async function get_session_for_user({
+export default async function get_ml_prompt({
   client,
-  token,
-}: Get_session_for_user_params): Promise<Get_session_for_user_return> {
-  const url = `/user/session/${token}`;
+  id,
+}: Get_ml_prompt_params): Promise<Get_ml_prompt_return> {
+  const url = `/ml-prompts/${id}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -30,6 +26,6 @@ export default async function get_session_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_session_for_user_return;
+  const result = (await response.json()) as Get_ml_prompt_return;
   return result;
 }

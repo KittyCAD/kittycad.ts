@@ -1,9 +1,9 @@
-import { ApiToken_type, Error_type } from '../../models.js';
+import { ApiToken_type, Error_type, ApiTokenUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Get_api_token_for_user_params {
   client?: Client;
-  token: string;
+  token: ApiTokenUuid_type;
 }
 
 type Get_api_token_for_user_return = ApiToken_type | Error_type;

@@ -3,7 +3,7 @@
     "op": "add",
     "path": "/paths/~1ws~1modeling~1commands/get/x-typescript",
     "value": {
-      "example": "import { modeling } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.modeling_commands_ws({\n        fps: 7,\n        pool: 'string',\n        post_effect: 'ssao',\n        show_grid: true,\n        unlocked_framerate: true,\n        video_res_height: 7,\n        video_res_width: 7,\n        webrtc: true,\n        body: {\n            candidate: {\n                candidate: 'The candidate string associated with the object.',\n                sdpMLineIndex: 7,\n                sdpMid: \"The identifier of the 'media stream identification' as defined in [RFC 8841](https://tools.ietf.org/html/rfc8841).\",\n                usernameFragment:\n                    'The username fragment (as defined in [RFC 8445](https://tools.ietf.org/html/rfc8445#section-5.2.1)) associated with the object.',\n            },\n            type: 'trickle_ice',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { modeling } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.modeling_commands_ws({\n        fps: 7,\n        pool: 'string',\n        post_effect: 'ssao',\n        replay: 'string',\n        show_grid: true,\n        unlocked_framerate: true,\n        video_res_height: 7,\n        video_res_width: 7,\n        webrtc: true,\n        body: {\n            candidate: {\n                candidate: 'The candidate string associated with the object.',\n                sdpMLineIndex: 7,\n                sdpMid: \"The identifier of the 'media stream identification' as defined in [RFC 8841](https://tools.ietf.org/html/rfc8841).\",\n                usernameFragment:\n                    'The username fragment (as defined in [RFC 8445](https://tools.ietf.org/html/rfc8445#section-5.2.1)) associated with the object.',\n            },\n            type: 'trickle_ice',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -99,7 +99,7 @@
     "op": "add",
     "path": "/paths/~1user~1session~1{token}/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_session_for_user({ token: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_session_for_user({\n        token: 'ses-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -259,7 +259,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens~1{token}/delete/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'api-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -267,7 +267,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens~1{token}/get/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.get_api_token_for_user({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.get_api_token_for_user({\n        token: 'api-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -499,7 +499,7 @@
     "op": "add",
     "path": "/paths/~1org~1service-accounts~1{token}/delete/x-typescript",
     "value": {
-      "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.delete_service_account_for_org({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.delete_service_account_for_org({\n        token: 'svc-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -507,7 +507,7 @@
     "op": "add",
     "path": "/paths/~1org~1service-accounts~1{token}/get/x-typescript",
     "value": {
-      "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.get_service_account_for_org({\n        token: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.get_service_account_for_org({\n        token: 'svc-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -769,6 +769,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1oauth2~1token~1revoke/post/x-typescript",
+    "value": {
+      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_token_revoke()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1consent/get/x-typescript",
     "value": {
       "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_consent({\n        provider: 'apple',\n        callback_url: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -820,6 +828,38 @@
     "path": "/paths/~1oauth2~1device~1auth/post/x-typescript",
     "value": {
       "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_request()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml~1text-to-cad~1iteration/post/x-typescript",
+    "value": {
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_iteration({\n        body: {\n            original_source_code:\n                'The source code for the model (in kcl) that is to be edited.',\n            prompt: 'The prompt for the model, if not using source ranges.',\n            source_ranges: [],\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml~1kcl~1completions/post/x-typescript",
+    "value": {
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_kcl_code_completions({\n        body: {\n            extra: {\n                language: 'The language of the code.',\n                next_indent: 7,\n                prompt_tokens: 7,\n                suffix_tokens: 7,\n                trim_by_indentation: true,\n            },\n            max_tokens: 7,\n            n: 7,\n            nwo: 'For GitHub copilot this is the `{org}/{repo}`. This does not do anything yet. But we wanted the same API as GitHub Copilot. It might be used in the future.',\n            prompt: 'The prompt for the model.',\n            stop: ['string'],\n            stream: true,\n            suffix: 'The suffix for the model.',\n            temperature: 7,\n            top_p: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml-prompts~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_ml_prompt({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml-prompts/get/x-typescript",
+    "value": {
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_ml_prompts({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -972,30 +1012,6 @@
     "path": "/paths/~1ai~1text-to-cad~1{output_format}/post/x-typescript",
     "value": {
       "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad({\n        output_format: 'stl',\n        kcl: true,\n        body: { prompt: 'The prompt for the model.' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1ai~1kcl~1completions/post/x-typescript",
-    "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_kcl_code_completions({\n        body: {\n            extra: {\n                language: 'The language of the code.',\n                next_indent: 7,\n                prompt_tokens: 7,\n                suffix_tokens: 7,\n                trim_by_indentation: true,\n            },\n            max_tokens: 7,\n            n: 7,\n            nwo: 'For GitHub copilot this is the `{org}/{repo}`. This does not do anything yet. But we wanted the same API as GitHub Copilot. It might be used in the future.',\n            prompt: 'The prompt for the model.',\n            stop: ['string'],\n            stream: true,\n            suffix: 'The suffix for the model.',\n            temperature: 7,\n            top_p: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1ai-prompts~1{id}/get/x-typescript",
-    "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_ai_prompt({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1ai-prompts/get/x-typescript",
-    "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_ai_prompts({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

@@ -52,6 +52,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -108,6 +116,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -175,93 +191,9 @@
                 "schema": {
                   "type": "string"
                 }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IpAddrInfo"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/Error"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/Error"
-          }
-        }
-      }
-    },
-    "/ai-prompts": {
-      "get": {
-        "tags": [
-          "ml",
-          "hidden"
-        ],
-        "summary": "List all AI prompts.",
-        "description": "For text-to-cad prompts, this will always return the STEP file contents as well as the format the user originally requested.\nThis endpoint requires authentication by a Zoo employee.\nThe AI prompts are returned in order of creation, with the most recently created AI prompts first.",
-        "operationId": "list_ai_prompts",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Maximum number of items returned by a single call",
-            "schema": {
-              "nullable": true,
-              "type": "integer",
-              "format": "uint32",
-              "minimum": 1
-            }
-          },
-          {
-            "in": "query",
-            "name": "page_token",
-            "description": "Token returned by previous call to retrieve the subsequent page",
-            "schema": {
-              "nullable": true,
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "sort_by",
-            "schema": {
-              "$ref": "#/components/schemas/CreatedAtSortMode"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "headers": {
-              "Access-Control-Allow-Credentials": {
-                "description": "Access-Control-Allow-Credentials header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
               },
-              "Access-Control-Allow-Headers": {
-                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Methods": {
-                "description": "Access-Control-Allow-Methods header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Origin": {
-                "description": "Access-Control-Allow-Origin header.",
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -272,210 +204,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AiPromptResultsPage"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/Error"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/Error"
-          }
-        },
-        "x-dropshot-pagination": {
-          "required": []
-        }
-      }
-    },
-    "/ai-prompts/{id}": {
-      "get": {
-        "tags": [
-          "ml",
-          "hidden"
-        ],
-        "summary": "Get an AI prompt.",
-        "description": "This endpoint requires authentication by a Zoo employee.",
-        "operationId": "get_ai_prompt",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "The id of the model to give feedback to.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "headers": {
-              "Access-Control-Allow-Credentials": {
-                "description": "Access-Control-Allow-Credentials header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Headers": {
-                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Methods": {
-                "description": "Access-Control-Allow-Methods header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Origin": {
-                "description": "Access-Control-Allow-Origin header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AiPrompt"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/Error"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/Error"
-          }
-        }
-      }
-    },
-    "/ai/kcl/completions": {
-      "post": {
-        "tags": [
-          "ml",
-          "beta"
-        ],
-        "summary": "Generate code completions for KCL.",
-        "operationId": "create_kcl_code_completions",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KclCodeCompletionRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "successful creation",
-            "headers": {
-              "Access-Control-Allow-Credentials": {
-                "description": "Access-Control-Allow-Credentials header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Headers": {
-                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Methods": {
-                "description": "Access-Control-Allow-Methods header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Origin": {
-                "description": "Access-Control-Allow-Origin header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KclCodeCompletionResponse"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/Error"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/Error"
-          }
-        }
-      },
-      "options": {
-        "tags": [
-          "hidden"
-        ],
-        "summary": "OPTIONS endpoint.",
-        "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
-        "operationId": "options_kcl_code_completions",
-        "responses": {
-          "204": {
-            "description": "successful operation, no content",
-            "headers": {
-              "Access-Control-Allow-Credentials": {
-                "description": "Access-Control-Allow-Credentials header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Headers": {
-                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Methods": {
-                "description": "Access-Control-Allow-Methods header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Access-Control-Allow-Origin": {
-                "description": "Access-Control-Allow-Origin header.",
-                "style": "simple",
-                "required": true,
-                "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/IpAddrInfo"
                 }
               }
             }
@@ -562,6 +291,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -633,6 +370,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -695,6 +440,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -796,6 +549,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -874,6 +635,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -945,6 +714,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -996,6 +773,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -1075,6 +860,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -1123,6 +916,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -1221,6 +1022,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -1298,6 +1107,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -1369,6 +1186,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -1424,6 +1249,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -1598,6 +1431,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -1744,6 +1585,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -1811,6 +1660,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -1871,6 +1728,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -1943,6 +1808,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -1991,6 +1864,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -2081,6 +1962,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -2136,6 +2025,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -2227,6 +2124,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -2302,6 +2207,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -2410,6 +2323,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -2465,6 +2386,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -2556,6 +2485,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -2622,6 +2559,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -2730,6 +2675,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -2785,6 +2738,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -2875,6 +2836,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -2930,6 +2899,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -3020,6 +2997,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -3075,6 +3060,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -3142,6 +3135,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -3270,6 +3271,483 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/ml-prompts": {
+      "get": {
+        "tags": [
+          "ml",
+          "hidden"
+        ],
+        "summary": "List all ML prompts.",
+        "description": "For text-to-cad prompts, this will always return the STEP file contents as well as the format the user originally requested.\nThis endpoint requires authentication by a Zoo employee.\nThe ML prompts are returned in order of creation, with the most recently created ML prompts first.",
+        "operationId": "list_ml_prompts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Maximum number of items returned by a single call",
+            "schema": {
+              "nullable": true,
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_token",
+            "description": "Token returned by previous call to retrieve the subsequent page",
+            "schema": {
+              "nullable": true,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "schema": {
+              "$ref": "#/components/schemas/CreatedAtSortMode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MlPromptResultsPage"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "x-dropshot-pagination": {
+          "required": []
+        }
+      }
+    },
+    "/ml-prompts/{id}": {
+      "get": {
+        "tags": [
+          "ml",
+          "hidden"
+        ],
+        "summary": "Get a ML prompt.",
+        "description": "This endpoint requires authentication by a Zoo employee.",
+        "operationId": "get_ml_prompt",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "The id of the model to give feedback to.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MlPrompt"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/ml/kcl/completions": {
+      "post": {
+        "tags": [
+          "ml",
+          "beta"
+        ],
+        "summary": "Generate code completions for KCL.",
+        "operationId": "create_kcl_code_completions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KclCodeCompletionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "successful creation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KclCodeCompletionResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "hidden"
+        ],
+        "summary": "OPTIONS endpoint.",
+        "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
+        "operationId": "options_kcl_code_completions",
+        "responses": {
+          "204": {
+            "description": "successful operation, no content",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/ml/text-to-cad/iteration": {
+      "post": {
+        "tags": [
+          "ml",
+          "beta"
+        ],
+        "summary": "Iterate on a CAD model with a prompt.",
+        "description": "This operation is performed asynchronously, the `id` of the operation will be returned. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.",
+        "operationId": "create_text_to_cad_iteration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextToCadIterationBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "successful creation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextToCadIteration"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "hidden"
+        ],
+        "summary": "OPTIONS endpoint.",
+        "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
+        "operationId": "options_text_to_cad_iteration",
+        "responses": {
+          "204": {
+            "description": "successful operation, no content",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -3354,6 +3832,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -3420,6 +3906,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -3468,6 +3962,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -3557,6 +4059,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -3619,6 +4129,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -3879,6 +4397,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -3954,12 +4480,112 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OAuth2ClientInfo"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/oauth2/token/revoke": {
+      "post": {
+        "tags": [
+          "oauth2",
+          "hidden"
+        ],
+        "summary": "Revoke an OAuth2 token.",
+        "description": "This endpoint is designed to be accessed from an *unauthenticated* API client.",
+        "operationId": "oauth2_token_revoke",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRevokeRequestForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "tags": [
+          "hidden"
+        ],
+        "summary": "OPTIONS endpoint.",
+        "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
+        "operationId": "options_oauth2_token_revoke",
+        "responses": {
+          "204": {
+            "description": "successful operation, no content",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -4011,6 +4637,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -4086,6 +4720,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -4156,6 +4798,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -4217,6 +4867,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -4265,6 +4923,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -4354,6 +5020,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -4426,6 +5100,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -4530,6 +5212,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -4603,6 +5293,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -4658,6 +5356,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -4724,6 +5430,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -4810,6 +5524,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -4881,6 +5603,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -4945,6 +5675,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -4995,6 +5733,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -5070,6 +5816,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -5140,6 +5894,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -5200,6 +5962,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -5248,6 +6018,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -5303,6 +6081,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -5371,6 +6157,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -5431,6 +6225,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -5481,6 +6283,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -5547,6 +6357,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -5630,6 +6448,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -5694,6 +6520,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -5744,6 +6578,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -5819,6 +6661,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -5889,6 +6739,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -5944,6 +6802,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -6005,6 +6871,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -6055,6 +6929,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -6130,6 +7012,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -6190,6 +7080,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -6240,6 +7138,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -6315,6 +7221,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -6385,6 +7299,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -6445,6 +7367,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -6493,6 +7423,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -6582,6 +7520,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -6656,6 +7602,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -6716,6 +7670,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -6743,8 +7705,7 @@
             "description": "The service account.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/ServiceAccountTokenUuid"
             }
           }
         ],
@@ -6783,6 +7744,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -6815,8 +7784,7 @@
             "description": "The service account.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/ServiceAccountTokenUuid"
             }
           }
         ],
@@ -6855,6 +7823,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -6880,8 +7856,7 @@
             "description": "The service account.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/ServiceAccountTokenUuid"
             }
           }
         ],
@@ -6915,6 +7890,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -7005,6 +7988,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -7077,6 +8068,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -7166,6 +8165,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -7237,6 +8244,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -7299,6 +8314,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -7386,6 +8409,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -7457,6 +8488,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -7506,6 +8545,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -7569,6 +8616,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -7654,6 +8709,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -7709,6 +8772,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -7794,6 +8865,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -7891,6 +8970,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -7978,6 +9065,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -8075,6 +9170,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -8162,6 +9265,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -8259,6 +9370,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -8346,6 +9465,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -8443,6 +9570,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -8530,6 +9665,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -8627,6 +9770,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -8714,6 +9865,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -8811,6 +9970,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -8903,6 +10070,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -8960,6 +10135,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -9035,6 +10218,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -9095,6 +10286,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -9143,6 +10342,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -9232,6 +10439,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -9304,6 +10519,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -9400,6 +10623,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -9474,6 +10705,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -9534,6 +10773,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -9561,8 +10808,7 @@
             "description": "The API token.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/ApiTokenUuid"
             }
           }
         ],
@@ -9601,6 +10847,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -9633,8 +10887,7 @@
             "description": "The API token.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/ApiTokenUuid"
             }
           }
         ],
@@ -9673,6 +10926,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -9698,8 +10959,7 @@
             "description": "The API token.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/ApiTokenUuid"
             }
           }
         ],
@@ -9733,6 +10993,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -9788,6 +11056,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -9850,6 +11126,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -9922,6 +11206,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -9985,6 +11277,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -10042,6 +11342,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -10117,6 +11425,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -10187,6 +11503,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -10247,6 +11571,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -10295,6 +11627,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -10350,6 +11690,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -10418,6 +11766,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -10478,6 +11834,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -10528,6 +11892,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -10594,6 +11966,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -10677,6 +12057,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -10741,6 +12129,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -10791,6 +12187,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -10866,6 +12270,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -10936,6 +12348,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -10991,6 +12411,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -11052,6 +12480,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -11102,6 +12538,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -11177,6 +12621,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -11237,6 +12689,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -11264,8 +12724,7 @@
             "description": "The API token.",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/SessionTokenUuid"
             }
           }
         ],
@@ -11299,6 +12758,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -11404,6 +12871,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -11481,6 +12956,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -11523,7 +13006,7 @@
             "description": "The feedback.",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/AiFeedback"
+              "$ref": "#/components/schemas/MlFeedback"
             }
           }
         ],
@@ -11557,6 +13040,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -11622,6 +13113,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -11707,6 +13206,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -11807,6 +13314,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -11884,6 +13399,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -11953,6 +13476,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -12059,6 +13590,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -12131,6 +13670,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -12218,6 +13765,14 @@
                 "schema": {
                   "type": "string"
                 }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -12284,6 +13839,14 @@
               },
               "Access-Control-Allow-Origin": {
                 "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
                 "style": "simple",
                 "required": true,
                 "schema": {
@@ -12358,6 +13921,15 @@
             "description": "Engine Post effects (such as SSAO)",
             "schema": {
               "$ref": "#/components/schemas/PostEffectType"
+            }
+          },
+          {
+            "in": "query",
+            "name": "replay",
+            "description": "If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging.",
+            "schema": {
+              "nullable": true,
+              "type": "string"
             }
           },
           {
@@ -12546,200 +14118,6 @@
         },
         "required": [
           "country"
-        ]
-      },
-      "AiFeedback": {
-        "description": "Human feedback on an AI response.",
-        "oneOf": [
-          {
-            "description": "Thumbs up.",
-            "type": "string",
-            "enum": [
-              "thumbs_up"
-            ]
-          },
-          {
-            "description": "Thumbs down.",
-            "type": "string",
-            "enum": [
-              "thumbs_down"
-            ]
-          },
-          {
-            "description": "Accepted.",
-            "type": "string",
-            "enum": [
-              "accepted"
-            ]
-          },
-          {
-            "description": "Rejected.",
-            "type": "string",
-            "enum": [
-              "rejected"
-            ]
-          }
-        ]
-      },
-      "AiPrompt": {
-        "description": "An AI prompt.",
-        "type": "object",
-        "properties": {
-          "completed_at": {
-            "nullable": true,
-            "title": "DateTime",
-            "description": "When the prompt was completed.",
-            "type": "string",
-            "format": "date-time"
-          },
-          "created_at": {
-            "title": "DateTime",
-            "description": "The date and time the AI prompt was created.",
-            "type": "string",
-            "format": "date-time"
-          },
-          "error": {
-            "nullable": true,
-            "description": "The error message if the prompt failed.",
-            "type": "string"
-          },
-          "feedback": {
-            "nullable": true,
-            "description": "Feedback from the user, if any.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AiFeedback"
-              }
-            ]
-          },
-          "id": {
-            "description": "The unique identifier for the AI Prompt.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Uuid"
-              }
-            ]
-          },
-          "metadata": {
-            "nullable": true,
-            "description": "The metadata for the prompt.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AiPromptMetadata"
-              }
-            ]
-          },
-          "model_version": {
-            "description": "The version of the model.",
-            "type": "string"
-          },
-          "output_file": {
-            "nullable": true,
-            "description": "The output file. In the case of TextToCad this is a link to a file in a GCP bucket.",
-            "type": "string"
-          },
-          "prompt": {
-            "description": "The prompt.",
-            "type": "string"
-          },
-          "started_at": {
-            "nullable": true,
-            "title": "DateTime",
-            "description": "When the prompt was started.",
-            "type": "string",
-            "format": "date-time"
-          },
-          "status": {
-            "description": "The status of the prompt.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApiCallStatus"
-              }
-            ]
-          },
-          "type": {
-            "description": "The type of prompt.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AiPromptType"
-              }
-            ]
-          },
-          "updated_at": {
-            "title": "DateTime",
-            "description": "The date and time the AI prompt was last updated.",
-            "type": "string",
-            "format": "date-time"
-          },
-          "user_id": {
-            "description": "The user ID of the user who created the AI Prompt.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Uuid"
-              }
-            ]
-          }
-        },
-        "required": [
-          "created_at",
-          "id",
-          "model_version",
-          "prompt",
-          "status",
-          "type",
-          "updated_at",
-          "user_id"
-        ]
-      },
-      "AiPromptMetadata": {
-        "description": "Metadata for an AI prompt.",
-        "type": "object",
-        "properties": {
-          "code": {
-            "nullable": true,
-            "description": "Code for the model.",
-            "type": "string"
-          }
-        }
-      },
-      "AiPromptResultsPage": {
-        "description": "A single page of results",
-        "type": "object",
-        "properties": {
-          "items": {
-            "description": "list of items on this page of results",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AiPrompt"
-            }
-          },
-          "next_page": {
-            "nullable": true,
-            "description": "token used to fetch the next page of results (if any)",
-            "type": "string"
-          }
-        },
-        "required": [
-          "items"
-        ]
-      },
-      "AiPromptType": {
-        "description": "A type of AI prompt.",
-        "oneOf": [
-          {
-            "description": "Text to CAD.",
-            "type": "string",
-            "enum": [
-              "text_to_cad"
-            ]
-          },
-          {
-            "description": "Text to KCL.",
-            "type": "string",
-            "enum": [
-              "text_to_kcl"
-            ]
-          }
         ]
       },
       "Angle": {
@@ -13256,7 +14634,7 @@
             "description": "The API token itself.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/StringUuid"
+                "$ref": "#/components/schemas/ApiTokenUuid"
               }
             ]
           },
@@ -13304,6 +14682,10 @@
         "required": [
           "items"
         ]
+      },
+      "ApiTokenUuid": {
+        "description": "An auth token. A uuid with a prefix of api-",
+        "type": "string"
       },
       "AppClientInfo": {
         "description": "Information about a third party app client.",
@@ -14086,7 +15468,7 @@
                 "description": "Feedback from the user, if any.",
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/AiFeedback"
+                    "$ref": "#/components/schemas/MlFeedback"
                   }
                 ]
               },
@@ -14179,6 +15561,127 @@
               "updated_at",
               "user_id"
             ]
+          },
+          {
+            "description": "Text to CAD iteration.",
+            "type": "object",
+            "properties": {
+              "code": {
+                "description": "The code for the new model.",
+                "type": "string"
+              },
+              "completed_at": {
+                "nullable": true,
+                "title": "DateTime",
+                "description": "The time and date the API call was completed.",
+                "type": "string",
+                "format": "date-time"
+              },
+              "created_at": {
+                "title": "DateTime",
+                "description": "The time and date the API call was created.",
+                "type": "string",
+                "format": "date-time"
+              },
+              "error": {
+                "nullable": true,
+                "description": "The error the function returned, if any.",
+                "type": "string"
+              },
+              "feedback": {
+                "nullable": true,
+                "description": "Feedback from the user, if any.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/MlFeedback"
+                  }
+                ]
+              },
+              "id": {
+                "description": "The unique identifier of the API call.\n\nThis is the same as the API call ID.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
+              },
+              "model": {
+                "description": "The model being used.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TextToCadModel"
+                  }
+                ]
+              },
+              "model_version": {
+                "description": "The version of the model.",
+                "type": "string"
+              },
+              "original_source_code": {
+                "description": "The original source code for the model, previous to the changes.",
+                "type": "string"
+              },
+              "prompt": {
+                "nullable": true,
+                "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges.",
+                "type": "string"
+              },
+              "source_ranges": {
+                "description": "The source ranges the user suggested to change.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SourceRangePrompt"
+                }
+              },
+              "started_at": {
+                "nullable": true,
+                "title": "DateTime",
+                "description": "The time and date the API call was started.",
+                "type": "string",
+                "format": "date-time"
+              },
+              "status": {
+                "description": "The status of the API call.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApiCallStatus"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "text_to_cad_iteration"
+                ]
+              },
+              "updated_at": {
+                "title": "DateTime",
+                "description": "The time and date the API call was last updated.",
+                "type": "string",
+                "format": "date-time"
+              },
+              "user_id": {
+                "description": "The user ID of the user who created the API call.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Uuid"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "created_at",
+              "id",
+              "model",
+              "model_version",
+              "original_source_code",
+              "source_ranges",
+              "status",
+              "type",
+              "updated_at",
+              "user_id"
+            ]
           }
         ]
       },
@@ -14253,6 +15756,13 @@
             "type": "string",
             "enum": [
               "text_to_cad"
+            ]
+          },
+          {
+            "description": "Text to CAD iteration.",
+            "type": "string",
+            "enum": [
+              "text_to_cad_iteration"
             ]
           }
         ]
@@ -15577,6 +17087,10 @@
           "device_code",
           "grant_type"
         ]
+      },
+      "DeviceAccessTokenUuid": {
+        "description": "An auth token. A uuid with a prefix of dev-",
+        "type": "string"
       },
       "DeviceAuthRequestForm": {
         "description": "The request parameters for the OAuth 2.0 Device Authorization Grant flow.",
@@ -18387,42 +19901,19 @@
         "type": "number",
         "format": "double"
       },
-      "LinearTransform": {
-        "description": "Ways to transform each solid being replicated in a repeating pattern.",
+      "Loft": {
+        "description": "The response from the `Loft` command.",
         "type": "object",
         "properties": {
-          "replicate": {
-            "description": "Whether to replicate the original solid in this instance.",
-            "default": true,
-            "type": "boolean"
-          },
-          "scale": {
-            "description": "Scale the replica's size along each axis. Defaults to (1, 1, 1) (i.e. the same size as the original).",
-            "default": {
-              "x": 1.0,
-              "y": 1.0,
-              "z": 1.0
-            },
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Point3d"
-              }
-            ]
-          },
-          "translate": {
-            "description": "Translate the replica this far along each dimension. Defaults to zero vector (i.e. same position as the original).",
-            "default": {
-              "x": 0.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Point3d"
-              }
-            ]
+          "solid_id": {
+            "description": "The UUID of the newly created solid loft.",
+            "type": "string",
+            "format": "uuid"
           }
-        }
+        },
+        "required": [
+          "solid_id"
+        ]
       },
       "Mass": {
         "description": "The mass response.",
@@ -18589,6 +20080,219 @@
             "type": "string",
             "enum": [
               "EXTENSION"
+            ]
+          }
+        ]
+      },
+      "MlFeedback": {
+        "description": "Human feedback on an ML response.",
+        "oneOf": [
+          {
+            "description": "Thumbs up.",
+            "type": "string",
+            "enum": [
+              "thumbs_up"
+            ]
+          },
+          {
+            "description": "Thumbs down.",
+            "type": "string",
+            "enum": [
+              "thumbs_down"
+            ]
+          },
+          {
+            "description": "Accepted.",
+            "type": "string",
+            "enum": [
+              "accepted"
+            ]
+          },
+          {
+            "description": "Rejected.",
+            "type": "string",
+            "enum": [
+              "rejected"
+            ]
+          }
+        ]
+      },
+      "MlPrompt": {
+        "description": "A ML prompt.",
+        "type": "object",
+        "properties": {
+          "completed_at": {
+            "nullable": true,
+            "title": "DateTime",
+            "description": "When the prompt was completed.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "title": "DateTime",
+            "description": "The date and time the ML prompt was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "error": {
+            "nullable": true,
+            "description": "The error message if the prompt failed.",
+            "type": "string"
+          },
+          "feedback": {
+            "nullable": true,
+            "description": "Feedback from the user, if any.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MlFeedback"
+              }
+            ]
+          },
+          "id": {
+            "description": "The unique identifier for the ML prompt.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
+          },
+          "metadata": {
+            "nullable": true,
+            "description": "The metadata for the prompt.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MlPromptMetadata"
+              }
+            ]
+          },
+          "model_version": {
+            "description": "The version of the model.",
+            "type": "string"
+          },
+          "output_file": {
+            "nullable": true,
+            "description": "The output file. In the case of TextToCad this is a link to a file in a GCP bucket.",
+            "type": "string"
+          },
+          "prompt": {
+            "description": "The prompt.",
+            "type": "string"
+          },
+          "started_at": {
+            "nullable": true,
+            "title": "DateTime",
+            "description": "When the prompt was started.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "description": "The status of the prompt.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiCallStatus"
+              }
+            ]
+          },
+          "type": {
+            "description": "The type of prompt.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MlPromptType"
+              }
+            ]
+          },
+          "updated_at": {
+            "title": "DateTime",
+            "description": "The date and time the ML prompt was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "user_id": {
+            "description": "The user ID of the user who created the ML prompt.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
+          }
+        },
+        "required": [
+          "created_at",
+          "id",
+          "model_version",
+          "prompt",
+          "status",
+          "type",
+          "updated_at",
+          "user_id"
+        ]
+      },
+      "MlPromptMetadata": {
+        "description": "Metadata for a ML prompt.",
+        "type": "object",
+        "properties": {
+          "code": {
+            "nullable": true,
+            "description": "Code for the model.",
+            "type": "string"
+          },
+          "original_source_code": {
+            "nullable": true,
+            "description": "The original source code for the model.",
+            "type": "string"
+          },
+          "source_ranges": {
+            "description": "The source ranges the user suggested to change.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRangePrompt"
+            }
+          }
+        }
+      },
+      "MlPromptResultsPage": {
+        "description": "A single page of results",
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "list of items on this page of results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MlPrompt"
+            }
+          },
+          "next_page": {
+            "nullable": true,
+            "description": "token used to fetch the next page of results (if any)",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "MlPromptType": {
+        "description": "A type of ML prompt.",
+        "oneOf": [
+          {
+            "description": "Text to CAD.",
+            "type": "string",
+            "enum": [
+              "text_to_cad"
+            ]
+          },
+          {
+            "description": "Text to KCL.",
+            "type": "string",
+            "enum": [
+              "text_to_kcl"
+            ]
+          },
+          {
+            "description": "Text to Kcl iteration,",
+            "type": "string",
+            "enum": [
+              "text_to_kcl_iteration"
             ]
           }
         ]
@@ -18945,7 +20649,7 @@
             ]
           },
           {
-            "description": "Command for revolving a solid 2d.",
+            "description": "Command for shelling a solid3d face",
             "type": "object",
             "properties": {
               "face_ids": {
@@ -19034,6 +20738,58 @@
               "target",
               "tolerance",
               "type"
+            ]
+          },
+          {
+            "description": "Command for lofting sections to create a solid",
+            "type": "object",
+            "properties": {
+              "base_curve_index": {
+                "nullable": true,
+                "description": "This can be set to override the automatically determined topological base curve, which is usually the first section encountered.",
+                "type": "integer",
+                "format": "uint32",
+                "minimum": 0
+              },
+              "bez_approximate_rational": {
+                "description": "Attempt to approximate rational curves (such as arcs) using a bezier. This will remove banding around interpolations between arcs and non-arcs.  It may produce errors in other scenarios Over time, this field won't be necessary.",
+                "type": "boolean"
+              },
+              "section_ids": {
+                "description": "The closed section curves to create a lofted solid from. Currently, these must be Solid2Ds",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "tolerance": {
+                "description": "Tolerance",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LengthUnit"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "loft"
+                ]
+              },
+              "v_degree": {
+                "description": "Degree of the interpolation. Must be greater than zero. For example, use 2 for quadratic, or 3 for cubic interpolation in the V direction.",
+                "type": "integer",
+                "format": "uint32",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "bez_approximate_rational",
+              "section_ids",
+              "tolerance",
+              "type",
+              "v_degree"
             ]
           },
           {
@@ -19497,7 +21253,7 @@
             ]
           },
           {
-            "description": "Create a pattern using this entity by specifying the transform for each desired repetition.",
+            "description": "Create a pattern using this entity by specifying the transform for each desired repetition. Transformations are performed in the following order (first applied to last applied): scale, rotate, translate.",
             "type": "object",
             "properties": {
               "entity_id": {
@@ -19509,7 +21265,7 @@
                 "description": "How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list.",
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/LinearTransform"
+                  "$ref": "#/components/schemas/Transform"
                 }
               },
               "type": {
@@ -21868,6 +23624,19 @@
           "cmd_id"
         ]
       },
+      "ModelingSessionData": {
+        "description": "Successful Websocket response.",
+        "type": "object",
+        "properties": {
+          "api_call_id": {
+            "description": "ID of the API call this modeling session is using. Useful for tracing and debugging.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "api_call_id"
+        ]
+      },
       "MouseClick": {
         "description": "The response from the `MouseClick` command.",
         "type": "object",
@@ -22087,6 +23856,25 @@
                 "type": "string",
                 "enum": [
                   "entity_get_sketch_paths"
+                ]
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ]
+          },
+          {
+            "description": "The response to the 'Loft' endpoint",
+            "type": "object",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/Loft"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "loft"
                 ]
               }
             },
@@ -23183,6 +24971,38 @@
             ]
           },
           {
+            "description": "Data about the Modeling Session (application-level).",
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "session": {
+                    "description": "Data about the Modeling Session (application-level).",
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/ModelingSessionData"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "session"
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "modeling_session_data"
+                ]
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ]
+          },
+          {
             "description": "Pong response to a Ping message.",
             "type": "object",
             "properties": {
@@ -23513,6 +25333,65 @@
             "type": "string",
             "enum": [
               "service_account"
+            ]
+          }
+        ]
+      },
+      "OriginType": {
+        "description": "The type of origin",
+        "oneOf": [
+          {
+            "description": "Local Origin (center of object bounding box).",
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "local"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          {
+            "description": "Global Origin (0, 0, 0).",
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "global"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          {
+            "description": "Custom Origin (user specified point).",
+            "type": "object",
+            "properties": {
+              "origin": {
+                "description": "Custom origin point.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Point3d"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "custom"
+                ]
+              }
+            },
+            "required": [
+              "origin",
+              "type"
             ]
           }
         ]
@@ -24415,6 +26294,41 @@
           "name"
         ]
       },
+      "Rotation": {
+        "description": "A rotation defined by an axis, origin of rotation, and an angle.",
+        "type": "object",
+        "properties": {
+          "angle": {
+            "description": "Rotate this far about the rotation axis. Defaults to zero (i.e. no rotation).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Angle"
+              }
+            ]
+          },
+          "axis": {
+            "description": "Rotation axis. Defaults to (0, 0, 1) (i.e. the Z axis).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Point3d"
+              }
+            ]
+          },
+          "origin": {
+            "description": "Origin of the rotation. If one isn't provided, the object will rotate about its own bounding box center.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OriginType"
+              }
+            ]
+          }
+        },
+        "required": [
+          "angle",
+          "axis",
+          "origin"
+        ]
+      },
       "RtcIceCandidateInit": {
         "description": "ICECandidateInit is used to serialize ice candidates",
         "type": "object",
@@ -24834,7 +26748,7 @@
             "description": "The API token itself.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/StringUuid"
+                "$ref": "#/components/schemas/ServiceAccountTokenUuid"
               }
             ]
           },
@@ -24874,6 +26788,10 @@
         "required": [
           "items"
         ]
+      },
+      "ServiceAccountTokenUuid": {
+        "description": "An auth token. A uuid with a prefix of svc-",
+        "type": "string"
       },
       "Session": {
         "description": "An authentication session.",
@@ -25023,6 +26941,76 @@
           }
         }
       },
+      "SourcePosition": {
+        "description": "A position in the source code.",
+        "type": "object",
+        "properties": {
+          "column": {
+            "description": "The column number.",
+            "type": "integer",
+            "format": "uint32",
+            "minimum": 0
+          },
+          "line": {
+            "description": "The line number.",
+            "type": "integer",
+            "format": "uint32",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "column",
+          "line"
+        ]
+      },
+      "SourceRange": {
+        "description": "A source range of code.",
+        "type": "object",
+        "properties": {
+          "end": {
+            "description": "The end of the range.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SourcePosition"
+              }
+            ]
+          },
+          "start": {
+            "description": "The start of the range.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SourcePosition"
+              }
+            ]
+          }
+        },
+        "required": [
+          "end",
+          "start"
+        ]
+      },
+      "SourceRangePrompt": {
+        "description": "A source range and prompt for a text to CAD iteration.",
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "description": "The prompt for the changes.",
+            "type": "string"
+          },
+          "range": {
+            "description": "The range of the source code to change.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SourceRange"
+              }
+            ]
+          }
+        },
+        "required": [
+          "prompt",
+          "range"
+        ]
+      },
       "StlStorage": {
         "description": "Export storage.",
         "oneOf": [
@@ -25056,10 +27044,6 @@
         "required": [
           "percent_off"
         ]
-      },
-      "StringUuid": {
-        "description": "An auth token. A UUIDv4",
-        "type": "string"
       },
       "SubscriptionTierFeature": {
         "description": "A subscription tier feature.",
@@ -25381,7 +27365,7 @@
             "description": "Feedback from the user, if any.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/AiFeedback"
+                "$ref": "#/components/schemas/MlFeedback"
               }
             ]
           },
@@ -25481,6 +27465,146 @@
           "prompt"
         ]
       },
+      "TextToCadIteration": {
+        "description": "A response from a text to CAD iteration.",
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "The code for the new model.",
+            "type": "string"
+          },
+          "completed_at": {
+            "nullable": true,
+            "title": "DateTime",
+            "description": "The time and date the API call was completed.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "title": "DateTime",
+            "description": "The time and date the API call was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "error": {
+            "nullable": true,
+            "description": "The error the function returned, if any.",
+            "type": "string"
+          },
+          "feedback": {
+            "nullable": true,
+            "description": "Feedback from the user, if any.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MlFeedback"
+              }
+            ]
+          },
+          "id": {
+            "description": "The unique identifier of the API call.\n\nThis is the same as the API call ID.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
+          },
+          "model": {
+            "description": "The model being used.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TextToCadModel"
+              }
+            ]
+          },
+          "model_version": {
+            "description": "The version of the model.",
+            "type": "string"
+          },
+          "original_source_code": {
+            "description": "The original source code for the model, previous to the changes.",
+            "type": "string"
+          },
+          "prompt": {
+            "nullable": true,
+            "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges.",
+            "type": "string"
+          },
+          "source_ranges": {
+            "description": "The source ranges the user suggested to change.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRangePrompt"
+            }
+          },
+          "started_at": {
+            "nullable": true,
+            "title": "DateTime",
+            "description": "The time and date the API call was started.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "description": "The status of the API call.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiCallStatus"
+              }
+            ]
+          },
+          "updated_at": {
+            "title": "DateTime",
+            "description": "The time and date the API call was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "user_id": {
+            "description": "The user ID of the user who created the API call.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "created_at",
+          "id",
+          "model",
+          "model_version",
+          "original_source_code",
+          "source_ranges",
+          "status",
+          "updated_at",
+          "user_id"
+        ]
+      },
+      "TextToCadIterationBody": {
+        "description": "Body for generating models from text.",
+        "type": "object",
+        "properties": {
+          "original_source_code": {
+            "description": "The source code for the model (in kcl) that is to be edited.",
+            "type": "string"
+          },
+          "prompt": {
+            "nullable": true,
+            "description": "The prompt for the model, if not using source ranges.",
+            "type": "string"
+          },
+          "source_ranges": {
+            "description": "The source ranges the user suggested to change. If empty, the prompt will be used and is required.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRangePrompt"
+            }
+          }
+        },
+        "required": [
+          "original_source_code",
+          "source_ranges"
+        ]
+      },
       "TextToCadModel": {
         "description": "A type of Text-to-CAD model.",
         "oneOf": [
@@ -25496,6 +27620,13 @@
             "type": "string",
             "enum": [
               "kcl"
+            ]
+          },
+          {
+            "description": "KCL iteration.",
+            "type": "string",
+            "enum": [
+              "kcl_iteration"
             ]
           }
         ]
@@ -25520,6 +27651,93 @@
         "required": [
           "items"
         ]
+      },
+      "TokenRevokeRequestForm": {
+        "description": "The request parameters for the OAuth 2.0 token revocation flow.",
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "description": "The client ID.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "client_secret": {
+            "nullable": true,
+            "description": "The client secret.",
+            "type": "string"
+          },
+          "token": {
+            "description": "The token to revoke.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeviceAccessTokenUuid"
+              }
+            ]
+          }
+        },
+        "required": [
+          "client_id",
+          "token"
+        ]
+      },
+      "Transform": {
+        "description": "Ways to transform each solid being replicated in a repeating pattern.",
+        "type": "object",
+        "properties": {
+          "replicate": {
+            "description": "Whether to replicate the original solid in this instance.",
+            "default": true,
+            "type": "boolean"
+          },
+          "rotation": {
+            "description": "Rotate the replica about the specified rotation axis and origin. Defaults to no rotation.",
+            "default": {
+              "angle": {
+                "unit": "degrees",
+                "value": 0.0
+              },
+              "axis": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0
+              },
+              "origin": {
+                "type": "local"
+              }
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Rotation"
+              }
+            ]
+          },
+          "scale": {
+            "description": "Scale the replica's size along each axis. Defaults to (1, 1, 1) (i.e. the same size as the original).",
+            "default": {
+              "x": 1.0,
+              "y": 1.0,
+              "z": 1.0
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Point3d"
+              }
+            ]
+          },
+          "translate": {
+            "description": "Translate the replica this far along each dimension. Defaults to zero vector (i.e. same position as the original).",
+            "default": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Point3d"
+              }
+            ]
+          }
+        }
       },
       "UnitAngle": {
         "description": "The valid types of angle formats.",

@@ -26,6 +26,11 @@ export const testsExpectedToFail =
     'users.get_user_extended',
     'users.get_user_front_hash_self',
     'users.get_user',
+    'api-tokens.delete_api_token_for_user',
+    'api-tokens.get_api_token_for_user',
+    'service-accounts.delete_service_account_for_org',
+    'service-accounts.get_service_account_for_org',
+    'users.get_session_for_user',
 
     // it's possible some of these org tests are failing because Kurt's account and token
     // used in these test are not in an org

@@ -1,17 +1,13 @@
 import { ml } from '../../src/index.js';
 
 async function example() {
-  const response = await ml.list_ai_prompts({
-    limit: 7,
-    page_token: 'string',
-    sort_by: 'created_at_ascending',
-  });
+  const response = await ml.get_ml_prompt({ id: 'string' });
   if ('error_code' in response) throw response;
 
   return response;
 }
 
-describe('Testing ml.list_ai_prompts', () => {
+describe('Testing ml.get_ml_prompt', () => {
   it('should be truthy or throw', async () => {
     expect(await example()).toBeTruthy();
   });

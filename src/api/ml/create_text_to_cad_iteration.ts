@@ -1,24 +1,22 @@
 import {
-  KclCodeCompletionResponse_type,
+  TextToCadIteration_type,
   Error_type,
-  KclCodeCompletionRequest_type,
+  TextToCadIterationBody_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Create_kcl_code_completions_params {
+interface Create_text_to_cad_iteration_params {
   client?: Client;
-  body: KclCodeCompletionRequest_type;
+  body: TextToCadIterationBody_type;
 }
 
-type Create_kcl_code_completions_return =
-  | KclCodeCompletionResponse_type
-  | Error_type;
+type Create_text_to_cad_iteration_return = TextToCadIteration_type | Error_type;
 
-export default async function create_kcl_code_completions({
+export default async function create_text_to_cad_iteration({
   client,
   body,
-}: Create_kcl_code_completions_params): Promise<Create_kcl_code_completions_return> {
-  const url = `/ml/kcl/completions`;
+}: Create_text_to_cad_iteration_params): Promise<Create_text_to_cad_iteration_return> {
+  const url = `/ml/text-to-cad/iteration`;
   const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -33,6 +31,6 @@ export default async function create_kcl_code_completions({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_kcl_code_completions_return;
+  const result = (await response.json()) as Create_text_to_cad_iteration_return;
   return result;
 }

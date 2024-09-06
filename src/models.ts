@@ -22,66 +22,6 @@ export interface AddressDetails_type {
   zip: string /* The zip component. */;
 }
 
-export type AiFeedback_type =
-  | 'thumbs_up'
-  | 'thumbs_down'
-  | 'accepted'
-  | 'rejected';
-
-export interface AiPrompt_type {
-  /*{
-  "nullable": true,
-  "title": "DateTime",
-  "format": "date-time",
-  "description": "When the prompt was completed."
-}*/
-  completed_at?: string;
-  /* title:DateTime, format:date-time, description:The date and time the AI prompt was created. */
-  created_at: string;
-  /* nullable:true, description:The error message if the prompt failed. */
-  error?: string;
-  /* nullable:true, description:Feedback from the user, if any. */
-  feedback?: AiFeedback_type;
-  id: Uuid_type /* The unique identifier for the AI Prompt. */;
-  /* nullable:true, description:The metadata for the prompt. */
-  metadata?: AiPromptMetadata_type;
-  model_version: string /* The version of the model. */;
-  /*{
-  "nullable": true,
-  "description": "The output file. In the case of TextToCad this is a link to a file in a GCP bucket."
-}*/
-  output_file?: string;
-  prompt: string /* The prompt. */;
-  /*{
-  "nullable": true,
-  "title": "DateTime",
-  "format": "date-time",
-  "description": "When the prompt was started."
-}*/
-  started_at?: string;
-  status: ApiCallStatus_type /* The status of the prompt. */;
-  type: AiPromptType_type /* The type of prompt. */;
-  /* title:DateTime, format:date-time, description:The date and time the AI prompt was last updated. */
-  updated_at: string;
-  user_id: Uuid_type /* The user ID of the user who created the AI Prompt. */;
-}
-
-export interface AiPromptMetadata_type {
-  /* nullable:true, description:Code for the model. */
-  code?: string;
-}
-
-export interface AiPromptResultsPage_type {
-  items: AiPrompt_type[] /* list of items on this page of results */;
-  /*{
-  "nullable": true,
-  "description": "token used to fetch the next page of results (if any)"
-}*/
-  next_page?: string;
-}
-
-export type AiPromptType_type = 'text_to_cad' | 'text_to_kcl';
-
 export interface Angle_type {
   unit: UnitAngle_type /* What unit is the measurement? */;
   /*{
@@ -258,7 +198,7 @@ export interface ApiToken_type {
   is_valid: boolean /* If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token. */;
   /* nullable:true, description:An optional label for the API token. */
   label?: string;
-  token: StringUuid_type /* The API token itself. */;
+  token: ApiTokenUuid_type /* The API token itself. */;
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string;
   user_id: Uuid_type /* The ID of the user that owns the API token. */;
@@ -272,6 +212,9 @@ export interface ApiTokenResultsPage_type {
 }*/
   next_page?: string;
 }
+
+export type ApiTokenUuid_type =
+  string; /* An auth token. A uuid with a prefix of api- */
 
 export interface AppClientInfo_type {
   url: string /* The URL for consent. */;
@@ -546,7 +489,7 @@ This is the same as the API call ID. */
       /* nullable:true, description:The error the function returned, if any. */
       error?: string;
       /* nullable:true, description:Feedback from the user, if any. */
-      feedback?: AiFeedback_type;
+      feedback?: MlFeedback_type;
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
@@ -574,6 +517,47 @@ This is the same as the API call ID. */
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: Uuid_type /* The user ID of the user who created the API call. */;
+    }
+  | {
+      code: string /* The code for the new model. */;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+      completed_at?: string;
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* nullable:true, description:Feedback from the user, if any. */
+      feedback?: MlFeedback_type;
+      /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      model: TextToCadModel_type /* The model being used. */;
+      model_version: string /* The version of the model. */;
+      original_source_code: string /* The original source code for the model, previous to the changes. */;
+      /*{
+  "nullable": true,
+  "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges."
+}*/
+      prompt?: string;
+      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the API call. */;
+      type: 'text_to_cad_iteration';
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+      updated_at: string;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
     };
 
 export interface AsyncApiCallResultsPage_type {
@@ -592,7 +576,8 @@ export type AsyncApiCallType_type =
   | 'file_mass'
   | 'file_density'
   | 'file_surface_area'
-  | 'text_to_cad';
+  | 'text_to_cad'
+  | 'text_to_cad_iteration';
 
 export interface AuthCallback_type {
   code: string /* The authorization code. */;
@@ -1064,6 +1049,9 @@ export interface DeviceAccessTokenRequestForm_type {
   device_code: string;
   grant_type: OAuth2GrantType_type /* The grant type. */;
 }
+
+export type DeviceAccessTokenUuid_type =
+  string; /* An auth token. A uuid with a prefix of dev- */
 
 export interface DeviceAuthRequestForm_type {
   /* format:uuid, description:The client ID. */
@@ -2027,30 +2015,9 @@ export interface LeafNode_type {
 
 export type LengthUnit_type = number;
 
-export interface LinearTransform_type {
-  /*{
-  "default": true,
-  "description": "Whether to replicate the original solid in this instance."
-}*/
-  replicate: boolean;
-  /*{
-  "default": {
-    "x": 1,
-    "y": 1,
-    "z": 1
-  },
-  "description": "Scale the replica's size along each axis. Defaults to (1, 1, 1) (i.e. the same size as the original)."
-}*/
-  scale: Point3d_type;
-  /*{
-  "default": {
-    "x": 0,
-    "y": 0,
-    "z": 0
-  },
-  "description": "Translate the replica this far along each dimension. Defaults to zero vector (i.e. same position as the original)."
-}*/
-  translate: Point3d_type;
+export interface Loft_type {
+  /* format:uuid, description:The UUID of the newly created solid loft. */
+  solid_id: string;
 }
 
 export interface Mass_type {
@@ -2087,6 +2054,72 @@ export type Method_type =
   | 'CONNECT'
   | 'PATCH'
   | 'EXTENSION';
+
+export type MlFeedback_type =
+  | 'thumbs_up'
+  | 'thumbs_down'
+  | 'accepted'
+  | 'rejected';
+
+export interface MlPrompt_type {
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "When the prompt was completed."
+}*/
+  completed_at?: string;
+  /* title:DateTime, format:date-time, description:The date and time the ML prompt was created. */
+  created_at: string;
+  /* nullable:true, description:The error message if the prompt failed. */
+  error?: string;
+  /* nullable:true, description:Feedback from the user, if any. */
+  feedback?: MlFeedback_type;
+  id: Uuid_type /* The unique identifier for the ML prompt. */;
+  /* nullable:true, description:The metadata for the prompt. */
+  metadata?: MlPromptMetadata_type;
+  model_version: string /* The version of the model. */;
+  /*{
+  "nullable": true,
+  "description": "The output file. In the case of TextToCad this is a link to a file in a GCP bucket."
+}*/
+  output_file?: string;
+  prompt: string /* The prompt. */;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "When the prompt was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the prompt. */;
+  type: MlPromptType_type /* The type of prompt. */;
+  /* title:DateTime, format:date-time, description:The date and time the ML prompt was last updated. */
+  updated_at: string;
+  user_id: Uuid_type /* The user ID of the user who created the ML prompt. */;
+}
+
+export interface MlPromptMetadata_type {
+  /* nullable:true, description:Code for the model. */
+  code?: string;
+  /* nullable:true, description:The original source code for the model. */
+  original_source_code?: string;
+  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
+}
+
+export interface MlPromptResultsPage_type {
+  items: MlPrompt_type[] /* list of items on this page of results */;
+  /*{
+  "nullable": true,
+  "description": "token used to fetch the next page of results (if any)"
+}*/
+  next_page?: string;
+}
+
+export type MlPromptType_type =
+  | 'text_to_cad'
+  | 'text_to_kcl'
+  | 'text_to_kcl_iteration';
 
 export type ModelingAppEventType_type = 'successful_compile_before_close';
 
@@ -2172,6 +2205,28 @@ export type ModelingCmd_type =
       target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
       type: 'revolve_about_edge';
+    }
+  | {
+      /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "This can be set to override the automatically determined topological base curve, which is usually the first section encountered."
+}*/
+      base_curve_index?: number;
+      bez_approximate_rational: boolean /* Attempt to approximate rational curves (such as arcs) using a bezier. This will remove banding around interpolations between arcs and non-arcs.  It may produce errors in other scenarios Over time, this field won't be necessary. */;
+      /*{
+  "format": "uuid"
+}*/
+      section_ids: string[];
+      tolerance: LengthUnit_type /* Tolerance */;
+      type: 'loft';
+      /*{
+  "format": "uint32",
+  "minimum": 1,
+  "description": "Degree of the interpolation. Must be greater than zero. For example, use 2 for quadratic, or 3 for cubic interpolation in the V direction."
+}*/
+      v_degree: number;
     }
   | {
       /* format:uuid, description:Which path to close. */
@@ -2291,7 +2346,7 @@ export type ModelingCmd_type =
   | {
       /* format:uuid, description:ID of the entity being copied. */
       entity_id: string;
-      transform: LinearTransform_type[] /* How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list. */;
+      transform: Transform_type[] /* How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list. */;
       type: 'entity_linear_pattern_transform';
     }
   | {
@@ -2857,6 +2912,10 @@ export interface ModelingCmdReq_type {
   cmd_id: ModelingCmdId_type /* ID of command being submitted. */;
 }
 
+export interface ModelingSessionData_type {
+  api_call_id: string /* ID of the API call this modeling session is using. Useful for tracing and debugging. */;
+}
+
 export interface MouseClick_type {
   /*{
   "format": "uuid"
@@ -2938,6 +2997,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: EntityGetSketchPaths_type;
       type: 'entity_get_sketch_paths';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Loft"
+}*/
+      data: Loft_type;
+      type: 'loft';
     }
   | {
       /*{
@@ -3297,6 +3363,12 @@ export type OkWebSocketResponseData_type =
     }
   | { data: { files: RawFile_type[] /* The exported files */ }; type: 'export' }
   | { data: object; type: 'metrics_request' }
+  | {
+      data: {
+        session: ModelingSessionData_type /* Data about the Modeling Session (application-level). */;
+      };
+      type: 'modeling_session_data';
+    }
   | { data: object; type: 'pong' };
 
 export interface Onboarding_type {
@@ -3450,6 +3522,11 @@ export interface OrgResultsPage_type {
 }
 
 export type OrgRole_type = 'admin' | 'member' | 'service_account';
+
+export type OriginType_type =
+  | { type: 'local' }
+  | { type: 'global' }
+  | { origin: Point3d_type /* Custom origin point. */; type: 'custom' };
 
 export interface OutputFile_type {
   /*{
@@ -3728,6 +3805,12 @@ export interface RawFile_type {
   name: string /* The name of the file. */;
 }
 
+export interface Rotation_type {
+  angle: Angle_type /* Rotate this far about the rotation axis. Defaults to zero (i.e. no rotation). */;
+  axis: Point3d_type /* Rotation axis. Defaults to (0, 0, 1) (i.e. the Z axis). */;
+  origin: OriginType_type /* Origin of the rotation. If one isn't provided, the object will rotate about its own bounding box center. */;
+}
+
 export interface RtcIceCandidateInit_type {
   candidate: string /* The candidate string associated with the object. */;
   /*{
@@ -3862,7 +3945,7 @@ export interface ServiceAccount_type {
   /* nullable:true, description:An optional label for the API token. */
   label?: string;
   org_id: Uuid_type /* The ID of the organization that owns the API token. */;
-  token: StringUuid_type /* The API token itself. */;
+  token: ServiceAccountTokenUuid_type /* The API token itself. */;
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string;
 }
@@ -3875,6 +3958,9 @@ export interface ServiceAccountResultsPage_type {
 }*/
   next_page?: string;
 }
+
+export type ServiceAccountTokenUuid_type =
+  string; /* An auth token. A uuid with a prefix of svc- */
 
 export interface Session_type {
   /* title:DateTime, format:date-time, description:The date and time the session was created. */
@@ -3924,14 +4010,29 @@ export interface Solid3dGetPrevAdjacentEdge_type {
   edge?: string;
 }
 
+export interface SourcePosition_type {
+  /* format:uint32, minimum:0, description:The column number. */
+  column: number;
+  /* format:uint32, minimum:0, description:The line number. */
+  line: number;
+}
+
+export interface SourceRange_type {
+  end: SourcePosition_type /* The end of the range. */;
+  start: SourcePosition_type /* The start of the range. */;
+}
+
+export interface SourceRangePrompt_type {
+  prompt: string /* The prompt for the changes. */;
+  range: SourceRange_type /* The range of the source code to change. */;
+}
+
 export type StlStorage_type = 'ascii' | 'binary';
 
 export interface StoreCouponParams_type {
   /* format:uint32, minimum:0, description:The percentage off. */
   percent_off: number;
 }
-
-export type StringUuid_type = string; /* An auth token. A UUIDv4 */
 
 export interface SubscriptionTierFeature_type {
   /* minLength:1, maxLength:80, description:Information about the feature. */
@@ -4016,7 +4117,7 @@ export interface TextToCad_type {
   /* nullable:true, description:The error the function returned, if any. */
   error?: string;
   /* nullable:true, description:Feedback from the user, if any. */
-  feedback?: AiFeedback_type;
+  feedback?: MlFeedback_type;
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
@@ -4049,7 +4150,58 @@ export interface TextToCadCreateBody_type {
   prompt: string /* The prompt for the model. */;
 }
 
-export type TextToCadModel_type = 'cad' | 'kcl';
+export interface TextToCadIteration_type {
+  code: string /* The code for the new model. */;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+  completed_at?: string;
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* nullable:true, description:Feedback from the user, if any. */
+  feedback?: MlFeedback_type;
+  /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  model: TextToCadModel_type /* The model being used. */;
+  model_version: string /* The version of the model. */;
+  original_source_code: string /* The original source code for the model, previous to the changes. */;
+  /*{
+  "nullable": true,
+  "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges."
+}*/
+  prompt?: string;
+  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+  updated_at: string;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
+}
+
+export interface TextToCadIterationBody_type {
+  original_source_code: string /* The source code for the model (in kcl) that is to be edited. */;
+  /*{
+  "nullable": true,
+  "description": "The prompt for the model, if not using source ranges."
+}*/
+  prompt?: string;
+  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */;
+}
+
+export type TextToCadModel_type = 'cad' | 'kcl' | 'kcl_iteration';
 
 export interface TextToCadResultsPage_type {
   items: TextToCad_type[] /* list of items on this page of results */;
@@ -4058,6 +4210,58 @@ export interface TextToCadResultsPage_type {
   "description": "token used to fetch the next page of results (if any)"
 }*/
   next_page?: string;
+}
+
+export interface TokenRevokeRequestForm_type {
+  /* format:uuid, description:The client ID. */
+  client_id: string;
+  /* nullable:true, description:The client secret. */
+  client_secret?: string;
+  token: DeviceAccessTokenUuid_type /* The token to revoke. */;
+}
+
+export interface Transform_type {
+  /*{
+  "default": true,
+  "description": "Whether to replicate the original solid in this instance."
+}*/
+  replicate: boolean;
+  /*{
+  "default": {
+    "angle": {
+      "unit": "degrees",
+      "value": 0
+    },
+    "axis": {
+      "x": 0,
+      "y": 0,
+      "z": 1
+    },
+    "origin": {
+      "type": "local"
+    }
+  },
+  "description": "Rotate the replica about the specified rotation axis and origin. Defaults to no rotation."
+}*/
+  rotation: Rotation_type;
+  /*{
+  "default": {
+    "x": 1,
+    "y": 1,
+    "z": 1
+  },
+  "description": "Scale the replica's size along each axis. Defaults to (1, 1, 1) (i.e. the same size as the original)."
+}*/
+  scale: Point3d_type;
+  /*{
+  "default": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "description": "Translate the replica this far along each dimension. Defaults to zero vector (i.e. same position as the original)."
+}*/
+  translate: Point3d_type;
 }
 
 export type UnitAngle_type = 'degrees' | 'radians';
@@ -4886,11 +5090,6 @@ export interface Models {
   AccountProvider_type: AccountProvider_type;
   AddOrgMember_type: AddOrgMember_type;
   AddressDetails_type: AddressDetails_type;
-  AiFeedback_type: AiFeedback_type;
-  AiPrompt_type: AiPrompt_type;
-  AiPromptMetadata_type: AiPromptMetadata_type;
-  AiPromptResultsPage_type: AiPromptResultsPage_type;
-  AiPromptType_type: AiPromptType_type;
   Angle_type: Angle_type;
   AnnotationLineEnd_type: AnnotationLineEnd_type;
   AnnotationLineEndOptions_type: AnnotationLineEndOptions_type;
@@ -4907,6 +5106,7 @@ export interface Models {
   ApiError_type: ApiError_type;
   ApiToken_type: ApiToken_type;
   ApiTokenResultsPage_type: ApiTokenResultsPage_type;
+  ApiTokenUuid_type: ApiTokenUuid_type;
   AppClientInfo_type: AppClientInfo_type;
   AsyncApiCall_type: AsyncApiCall_type;
   AsyncApiCallOutput_type: AsyncApiCallOutput_type;
@@ -4949,6 +5149,7 @@ export interface Models {
   Density_type: Density_type;
   DerEncodedKeyPair_type: DerEncodedKeyPair_type;
   DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type;
+  DeviceAccessTokenUuid_type: DeviceAccessTokenUuid_type;
   DeviceAuthRequestForm_type: DeviceAuthRequestForm_type;
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
   Direction_type: Direction_type;
@@ -5019,11 +5220,16 @@ export interface Models {
   KclCodeCompletionResponse_type: KclCodeCompletionResponse_type;
   LeafNode_type: LeafNode_type;
   LengthUnit_type: LengthUnit_type;
-  LinearTransform_type: LinearTransform_type;
+  Loft_type: Loft_type;
   Mass_type: Mass_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
   Method_type: Method_type;
+  MlFeedback_type: MlFeedback_type;
+  MlPrompt_type: MlPrompt_type;
+  MlPromptMetadata_type: MlPromptMetadata_type;
+  MlPromptResultsPage_type: MlPromptResultsPage_type;
+  MlPromptType_type: MlPromptType_type;
   ModelingAppEventType_type: ModelingAppEventType_type;
   ModelingAppIndividualSubscriptionTier_type: ModelingAppIndividualSubscriptionTier_type;
   ModelingAppOrganizationSubscriptionTier_type: ModelingAppOrganizationSubscriptionTier_type;
@@ -5032,6 +5238,7 @@ export interface Models {
   ModelingCmd_type: ModelingCmd_type;
   ModelingCmdId_type: ModelingCmdId_type;
   ModelingCmdReq_type: ModelingCmdReq_type;
+  ModelingSessionData_type: ModelingSessionData_type;
   MouseClick_type: MouseClick_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;
   OAuth2GrantType_type: OAuth2GrantType_type;
@@ -5044,6 +5251,7 @@ export interface Models {
   OrgMemberResultsPage_type: OrgMemberResultsPage_type;
   OrgResultsPage_type: OrgResultsPage_type;
   OrgRole_type: OrgRole_type;
+  OriginType_type: OriginType_type;
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
   PathCommand_type: PathCommand_type;
@@ -5071,6 +5279,7 @@ export interface Models {
   PostEffectType_type: PostEffectType_type;
   PrivacySettings_type: PrivacySettings_type;
   RawFile_type: RawFile_type;
+  Rotation_type: Rotation_type;
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
   RtcSdpType_type: RtcSdpType_type;
   RtcSessionDescription_type: RtcSessionDescription_type;
@@ -5083,6 +5292,7 @@ export interface Models {
   Selection_type: Selection_type;
   ServiceAccount_type: ServiceAccount_type;
   ServiceAccountResultsPage_type: ServiceAccountResultsPage_type;
+  ServiceAccountTokenUuid_type: ServiceAccountTokenUuid_type;
   Session_type: Session_type;
   SessionTokenUuid_type: SessionTokenUuid_type;
   Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
@@ -5091,9 +5301,11 @@ export interface Models {
   Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type;
   Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
+  SourcePosition_type: SourcePosition_type;
+  SourceRange_type: SourceRange_type;
+  SourceRangePrompt_type: SourceRangePrompt_type;
   StlStorage_type: StlStorage_type;
   StoreCouponParams_type: StoreCouponParams_type;
-  StringUuid_type: StringUuid_type;
   SubscriptionTierFeature_type: SubscriptionTierFeature_type;
   SubscriptionTierPrice_type: SubscriptionTierPrice_type;
   SubscriptionTierType_type: SubscriptionTierType_type;
@@ -5105,8 +5317,12 @@ export interface Models {
   TakeSnapshot_type: TakeSnapshot_type;
   TextToCad_type: TextToCad_type;
   TextToCadCreateBody_type: TextToCadCreateBody_type;
+  TextToCadIteration_type: TextToCadIteration_type;
+  TextToCadIterationBody_type: TextToCadIterationBody_type;
   TextToCadModel_type: TextToCadModel_type;
   TextToCadResultsPage_type: TextToCadResultsPage_type;
+  TokenRevokeRequestForm_type: TokenRevokeRequestForm_type;
+  Transform_type: Transform_type;
   UnitAngle_type: UnitAngle_type;
   UnitAngleConversion_type: UnitAngleConversion_type;
   UnitArea_type: UnitArea_type;

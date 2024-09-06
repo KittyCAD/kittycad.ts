@@ -1,9 +1,9 @@
-import { Error_type } from '../../models.js';
+import { Error_type, ApiTokenUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Delete_api_token_for_user_params {
   client?: Client;
-  token: string;
+  token: ApiTokenUuid_type;
 }
 
 type Delete_api_token_for_user_return = Error_type;
