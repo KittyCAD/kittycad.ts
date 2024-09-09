@@ -2166,7 +2166,6 @@ export type ModelingCmd_type =
       type: 'extend_path';
     }
   | {
-      cap: boolean /* Whether to cap the extrusion with a face, or not. If true, the resulting solid will be closed on all sides, like a dice. If false, it will be open on one side, like a drinking glass. */;
       distance: LengthUnit_type /* How far off the plane to extrude */;
       target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
       type: 'extrude';
@@ -2568,6 +2567,12 @@ export type ModelingCmd_type =
       cut_type: CutType_type;
       /* format:uuid, description:Which edge you want to fillet. */
       edge_id: string;
+      /*{
+  "nullable": true,
+  "format": "uuid",
+  "description": "The ID to use for the newly created fillet face. If not provided, the server will randomly generate one."
+}*/
+      face_id?: string;
       /* format:uuid, description:Which object is being filletted. */
       object_id: string;
       radius: LengthUnit_type /* The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero). */;
