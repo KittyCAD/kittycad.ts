@@ -1235,11 +1235,6 @@ export interface ExtendedUser_type {
 }*/
   email_verified?: string;
   first_name: string /* The user's first name. */;
-  /*{
-  "nullable": true,
-  "description": "The user's Front ID. This is mostly used for internal mapping."
-}*/
-  front_id?: string;
   github: string /* The user's GitHub handle. */;
   id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
