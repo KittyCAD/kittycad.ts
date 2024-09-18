@@ -2874,6 +2874,8 @@ export type ModelingCmd_type =
       type: 'default_camera_set_perspective';
     }
   | {
+      /* default:false, description:Whether or not to animate the camera movement. */
+      animated: boolean;
       /*{
   "format": "uuid"
 }*/
