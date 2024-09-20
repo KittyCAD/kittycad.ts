@@ -1236,6 +1236,11 @@ export interface ExtendedUser_type {
   email_verified?: string;
   first_name: string /* The user's first name. */;
   github: string /* The user's GitHub handle. */;
+  /*{
+  "nullable": true,
+  "description": "The user's Hubspot ID. This is mostly used for internal mapping."
+}*/
+  hubspot_contact_id?: string;
   id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
