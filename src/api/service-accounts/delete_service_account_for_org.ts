@@ -1,9 +1,9 @@
-import { Error_type, ServiceAccountTokenUuid_type } from '../../models.js';
+import { Error_type, ServiceAccountUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Delete_service_account_for_org_params {
   client?: Client;
-  token: ServiceAccountTokenUuid_type;
+  token: ServiceAccountUuid_type;
 }
 
 type Delete_service_account_for_org_return = Error_type;

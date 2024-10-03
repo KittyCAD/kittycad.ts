@@ -118,14 +118,14 @@ export default async function apiGen(lookup: any) {
             );
           } else if (
             reffedSchema.type === 'string' &&
-            refName == 'ServiceAccountTokenUuid'
+            refName == 'ServiceAccountUuid'
           ) {
             inputParamsExamples.push(
               `${name}: '${'svc-00000000-0000-0000-0000-000000000000'}'`,
             );
           } else if (
             reffedSchema.type === 'string' &&
-            refName == 'SessionTokenUuid'
+            refName == 'SessionUuid'
           ) {
             inputParamsExamples.push(
               `${name}: '${'ses-00000000-0000-0000-0000-000000000000'}'`,

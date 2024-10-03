@@ -640,6 +640,8 @@ export interface CameraDragMove_type {
   settings: CameraSettings_type /* Camera settings */;
 }
 
+export interface CameraDragStart_type {} /* Empty object */
+
 export interface CameraSettings_type {
   center: Point3d_type /* Camera's look-at center (center-pos gives viewing vector) */;
   /* nullable:true, format:float, description:Camera's field-of-view angle (if ortho is false) */
@@ -931,6 +933,8 @@ export interface CurveGetType_type {
   curve_type: CurveType_type /* Curve type */;
 }
 
+export interface CurveSetConstraint_type {} /* Empty object */
+
 export type CurveType_type =
   /* The type of Curve (embedded within path) */
   'line' | 'arc' | 'nurbs';
@@ -1015,11 +1019,21 @@ export interface CustomerBalance_type {
 
 export type CutType_type = 'fillet' | 'chamfer';
 
-export type DefaultCameraFocusOn_type = any;
+export interface DefaultCameraCenterToSelection_type {} /* Empty object */
+
+export interface DefaultCameraFocusOn_type {} /* Empty object */
 
 export interface DefaultCameraGetSettings_type {
   settings: CameraSettings_type /* Camera settings */;
 }
+
+export interface DefaultCameraLookAt_type {} /* Empty object */
+
+export interface DefaultCameraPerspectiveSettings_type {} /* Empty object */
+
+export interface DefaultCameraSetOrthographic_type {} /* Empty object */
+
+export interface DefaultCameraSetPerspective_type {} /* Empty object */
 
 export interface DefaultCameraZoom_type {
   settings: CameraSettings_type /* Camera settings */;
@@ -1064,6 +1078,8 @@ export interface DeviceAuthVerifyParams_type {
 
 export type Direction_type = 'positive' | 'negative';
 
+export interface DisableDryRun_type {} /* Empty object */
+
 export interface Discount_type {
   coupon: Coupon_type /* The coupon that applied to create this discount. */;
 }
@@ -1080,6 +1096,8 @@ export type DistanceType_type =
   | { type: 'euclidean' }
   | { axis: GlobalAxis_type /* Global axis */; type: 'on_axis' };
 
+export interface EdgeLinesVisible_type {} /* Empty object */
+
 export interface EmailAuthenticationForm_type {
   /*{
   "nullable": true,
@@ -1091,12 +1109,18 @@ export interface EmailAuthenticationForm_type {
   email: string;
 }
 
+export interface EnableDryRun_type {} /* Empty object */
+
+export interface EnableSketchMode_type {} /* Empty object */
+
 export interface EntityCircularPattern_type {
   /*{
   "format": "uuid"
 }*/
   entity_ids: string[];
 }
+
+export interface EntityFade_type {} /* Empty object */
 
 export interface EntityGetAllChildUuids_type {
   /*{
@@ -1145,6 +1169,14 @@ export interface EntityLinearPatternTransform_type {
 }*/
   entity_ids: string[];
 }
+
+export interface EntityMakeHelix_type {} /* Empty object */
+
+export interface EntityMirror_type {} /* Empty object */
+
+export interface EntityMirrorAcrossEdge_type {} /* Empty object */
+
+export interface EntitySetOpacity_type {} /* Empty object */
 
 export type EntityType_type =
   /* The type of entity */
@@ -1213,6 +1245,8 @@ export interface ExportFile_type {
   name: string /* The name of the file. */;
 }
 
+export interface ExtendPath_type {} /* Empty object */
+
 export interface ExtendedUser_type {
   /* nullable:true, description:If the user should be blocked and the reason why. */
   block?: BlockReason_type;
@@ -1247,11 +1281,6 @@ export interface ExtendedUser_type {
   /* default:false, description:If the user is tied to a service account. */
   is_service_account: boolean;
   last_name: string /* The user's last name. */;
-  /*{
-  "nullable": true,
-  "description": "The user's MailChimp ID. This is mostly used for internal mapping."
-}*/
-  mailchimp_id?: string;
   name: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
   /*{
   "title": "String",
@@ -1277,6 +1306,8 @@ export interface ExtendedUserResultsPage_type {
 }*/
   next_page?: string;
 }
+
+export interface Extrude_type {} /* Empty object */
 
 export type ExtrusionFaceCapType_type = 'none' | 'top' | 'bottom';
 
@@ -1595,6 +1626,14 @@ export type GlobalAxis_type = 'x' | 'y' | 'z';
 export type GltfPresentation_type = 'compact' | 'pretty';
 
 export type GltfStorage_type = 'binary' | 'standard' | 'embedded';
+
+export interface HandleMouseDragEnd_type {} /* Empty object */
+
+export interface HandleMouseDragMove_type {} /* Empty object */
+
+export interface HandleMouseDragStart_type {} /* Empty object */
+
+export interface HighlightSetEntities_type {} /* Empty object */
 
 export interface HighlightSetEntity_type {
   /* nullable:true, format:uuid, description:The UUID of the entity that was highlighted. */
@@ -2020,6 +2059,10 @@ export interface Loft_type {
   solid_id: string;
 }
 
+export interface MakeAxesGizmo_type {} /* Empty object */
+
+export interface MakePlane_type {} /* Empty object */
+
 export interface Mass_type {
   /* format:double, description:The mass. */
   mass: number;
@@ -2404,11 +2447,6 @@ export type ModelingCmd_type =
       type: 'entity_mirror_across_edge';
     }
   | {
-      /* format:uuid, description:The edit target */
-      target: string;
-      type: 'edit_mode_enter';
-    }
-  | {
       selected_at_window: Point2d_type /* Where in the window was selected */;
       selection_type: SceneSelectionType_type /* What entity was selected? */;
       type: 'select_with_point';
@@ -2682,6 +2720,8 @@ export type ModelingCmd_type =
       planar_normal?: Point3d_type;
       type: 'enable_sketch_mode';
     }
+  | { type: 'enable_dry_run' }
+  | { type: 'disable_dry_run' }
   | {
       color: Color_type /* The color to set the background to. */;
       type: 'set_background_color';
@@ -2873,6 +2913,7 @@ export type ModelingCmd_type =
       parameters?: PerspectiveCameraParameters_type;
       type: 'default_camera_set_perspective';
     }
+  | { type: 'default_camera_center_to_selection' }
   | {
       /* default:false, description:Whether or not to animate the camera movement. */
       animated: boolean;
@@ -2902,7 +2943,6 @@ export type ModelingCmd_type =
       object_id: string;
       type: 'solid3d_get_extrusion_face_info';
     }
-  | { type: 'edit_mode_exit' }
   | { type: 'select_clear' }
   | { type: 'select_get' }
   | { type: 'get_num_objects' };
@@ -2934,6 +2974,12 @@ export interface MouseClick_type {
   entities_selected: string[];
 }
 
+export interface MouseMove_type {} /* Empty object */
+
+export interface MovePathPen_type {} /* Empty object */
+
+export interface NewAnnotation_type {} /* Empty object */
+
 export interface OAuth2ClientInfo_type {
   csrf_token: string /* Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */;
   /*{
@@ -2947,8 +2993,392 @@ export interface OAuth2ClientInfo_type {
 export type OAuth2GrantType_type =
   'urn:ietf:params:oauth:grant-type:device_code';
 
+export interface ObjectBringToFront_type {} /* Empty object */
+
+export interface ObjectSetMaterialParamsPbr_type {} /* Empty object */
+
+export interface ObjectVisible_type {} /* Empty object */
+
 export type OkModelingCmdResponse_type =
   | { type: 'empty' }
+  | {
+      /*{
+  "$ref": "#/components/schemas/StartPath"
+}*/
+      data: StartPath_type;
+      type: 'start_path';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/MovePathPen"
+}*/
+      data: MovePathPen_type;
+      type: 'move_path_pen';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ExtendPath"
+}*/
+      data: ExtendPath_type;
+      type: 'extend_path';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Extrude"
+}*/
+      data: Extrude_type;
+      type: 'extrude';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Revolve"
+}*/
+      data: Revolve_type;
+      type: 'revolve';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dShellFace"
+}*/
+      data: Solid3dShellFace_type;
+      type: 'solid3d_shell_face';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/RevolveAboutEdge"
+}*/
+      data: RevolveAboutEdge_type;
+      type: 'revolve_about_edge';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/CameraDragStart"
+}*/
+      data: CameraDragStart_type;
+      type: 'camera_drag_start';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraLookAt"
+}*/
+      data: DefaultCameraLookAt_type;
+      type: 'default_camera_look_at';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraPerspectiveSettings"
+}*/
+      data: DefaultCameraPerspectiveSettings_type;
+      type: 'default_camera_perspective_settings';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityMakeHelix"
+}*/
+      data: EntityMakeHelix_type;
+      type: 'entity_make_helix';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityMirror"
+}*/
+      data: EntityMirror_type;
+      type: 'entity_mirror';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityMirrorAcrossEdge"
+}*/
+      data: EntityMirrorAcrossEdge_type;
+      type: 'entity_mirror_across_edge';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SelectAdd"
+}*/
+      data: SelectAdd_type;
+      type: 'select_add';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SelectRemove"
+}*/
+      data: SelectRemove_type;
+      type: 'select_remove';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SceneClearAll"
+}*/
+      data: SceneClearAll_type;
+      type: 'scene_clear_all';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SelectReplace"
+}*/
+      data: SelectReplace_type;
+      type: 'select_replace';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/HighlightSetEntities"
+}*/
+      data: HighlightSetEntities_type;
+      type: 'highlight_set_entities';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/NewAnnotation"
+}*/
+      data: NewAnnotation_type;
+      type: 'new_annotation';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/UpdateAnnotation"
+}*/
+      data: UpdateAnnotation_type;
+      type: 'update_annotation';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EdgeLinesVisible"
+}*/
+      data: EdgeLinesVisible_type;
+      type: 'edge_lines_visible';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ObjectVisible"
+}*/
+      data: ObjectVisible_type;
+      type: 'object_visible';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ObjectBringToFront"
+}*/
+      data: ObjectBringToFront_type;
+      type: 'object_bring_to_front';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ObjectSetMaterialParamsPbr"
+}*/
+      data: ObjectSetMaterialParamsPbr_type;
+      type: 'object_set_material_params_pbr';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid2dAddHole"
+}*/
+      data: Solid2dAddHole_type;
+      type: 'solid2d_add_hole';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dFilletEdge"
+}*/
+      data: Solid3dFilletEdge_type;
+      type: 'solid3d_fillet_edge';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SendObject"
+}*/
+      data: SendObject_type;
+      type: 'send_object';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntitySetOpacity"
+}*/
+      data: EntitySetOpacity_type;
+      type: 'entity_set_opacity';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityFade"
+}*/
+      data: EntityFade_type;
+      type: 'entity_fade';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/MakePlane"
+}*/
+      data: MakePlane_type;
+      type: 'make_plane';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/PlaneSetColor"
+}*/
+      data: PlaneSetColor_type;
+      type: 'plane_set_color';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetTool"
+}*/
+      data: SetTool_type;
+      type: 'set_tool';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/MouseMove"
+}*/
+      data: MouseMove_type;
+      type: 'mouse_move';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SketchModeDisable"
+}*/
+      data: SketchModeDisable_type;
+      type: 'sketch_mode_disable';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EnableDryRun"
+}*/
+      data: EnableDryRun_type;
+      type: 'enable_dry_run';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DisableDryRun"
+}*/
+      data: DisableDryRun_type;
+      type: 'disable_dry_run';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/CurveSetConstraint"
+}*/
+      data: CurveSetConstraint_type;
+      type: 'curve_set_constraint';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EnableSketchMode"
+}*/
+      data: EnableSketchMode_type;
+      type: 'enable_sketch_mode';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetBackgroundColor"
+}*/
+      data: SetBackgroundColor_type;
+      type: 'set_background_color';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetCurrentToolProperties"
+}*/
+      data: SetCurrentToolProperties_type;
+      type: 'set_current_tool_properties';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetDefaultSystemProperties"
+}*/
+      data: SetDefaultSystemProperties_type;
+      type: 'set_default_system_properties';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/MakeAxesGizmo"
+}*/
+      data: MakeAxesGizmo_type;
+      type: 'make_axes_gizmo';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/HandleMouseDragStart"
+}*/
+      data: HandleMouseDragStart_type;
+      type: 'handle_mouse_drag_start';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/HandleMouseDragMove"
+}*/
+      data: HandleMouseDragMove_type;
+      type: 'handle_mouse_drag_move';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/HandleMouseDragEnd"
+}*/
+      data: HandleMouseDragEnd_type;
+      type: 'handle_mouse_drag_end';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/RemoveSceneObjects"
+}*/
+      data: RemoveSceneObjects_type;
+      type: 'remove_scene_objects';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ReconfigureStream"
+}*/
+      data: ReconfigureStream_type;
+      type: 'reconfigure_stream';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetSceneUnits"
+}*/
+      data: SetSceneUnits_type;
+      type: 'set_scene_units';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetSelectionType"
+}*/
+      data: SetSelectionType_type;
+      type: 'set_selection_type';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetSelectionFilter"
+}*/
+      data: SetSelectionFilter_type;
+      type: 'set_selection_filter';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraSetOrthographic"
+}*/
+      data: DefaultCameraSetOrthographic_type;
+      type: 'default_camera_set_orthographic';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraSetPerspective"
+}*/
+      data: DefaultCameraSetPerspective_type;
+      type: 'default_camera_set_perspective';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraCenterToSelection"
+}*/
+      data: DefaultCameraCenterToSelection_type;
+      type: 'default_camera_center_to_selection';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SelectClear"
+}*/
+      data: SelectClear_type;
+      type: 'select_clear';
+    }
   | {
       /*{
   "$ref": "#/components/schemas/Export"
@@ -3741,6 +4171,8 @@ export interface PlaneIntersectAndProject_type {
   plane_coordinates?: Point2d_type;
 }
 
+export interface PlaneSetColor_type {} /* Empty object */
+
 export type PlyStorage_type =
   | 'ascii'
   | 'binary_little_endian'
@@ -3811,6 +4243,14 @@ export interface RawFile_type {
   contents: number[];
   name: string /* The name of the file. */;
 }
+
+export interface ReconfigureStream_type {} /* Empty object */
+
+export interface RemoveSceneObjects_type {} /* Empty object */
+
+export interface Revolve_type {} /* Empty object */
+
+export interface RevolveAboutEdge_type {} /* Empty object */
 
 export interface Rotation_type {
   angle: Angle_type /* Rotate this far about the rotation axis. Defaults to zero (i.e. no rotation). */;
@@ -3905,6 +4345,8 @@ export interface SamlIdentityProviderCreate_type {
   technical_contact_email: string;
 }
 
+export interface SceneClearAll_type {} /* Empty object */
+
 export type SceneSelectionType_type = 'replace' | 'add' | 'remove';
 
 export type SceneToolType_type =
@@ -3917,12 +4359,20 @@ export type SceneToolType_type =
   | 'sketch_curve'
   | 'sketch_curve_mod';
 
+export interface SelectAdd_type {} /* Empty object */
+
+export interface SelectClear_type {} /* Empty object */
+
 export interface SelectGet_type {
   /*{
   "format": "uuid"
 }*/
   entity_ids: string[];
 }
+
+export interface SelectRemove_type {} /* Empty object */
+
+export interface SelectReplace_type {} /* Empty object */
 
 export interface SelectWithPoint_type {
   /* nullable:true, format:uuid, description:The UUID of the entity that was selected. */
@@ -3944,6 +4394,8 @@ export type Selection_type =
     }
   | { name: string /* The name. */; type: 'mesh_by_name' };
 
+export interface SendObject_type {} /* Empty object */
+
 export interface ServiceAccount_type {
   /* title:DateTime, format:date-time, description:The date and time the API token was created. */
   created_at: string;
@@ -3952,7 +4404,7 @@ export interface ServiceAccount_type {
   /* nullable:true, description:An optional label for the API token. */
   label?: string;
   org_id: Uuid_type /* The ID of the organization that owns the API token. */;
-  token: ServiceAccountTokenUuid_type /* The API token itself. */;
+  token: ServiceAccountUuid_type /* The API token itself. */;
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string;
 }
@@ -3966,7 +4418,7 @@ export interface ServiceAccountResultsPage_type {
   next_page?: string;
 }
 
-export type ServiceAccountTokenUuid_type =
+export type ServiceAccountUuid_type =
   string; /* An auth token. A uuid with a prefix of svc- */
 
 export interface Session_type {
@@ -3975,14 +4427,34 @@ export interface Session_type {
   /* title:DateTime, format:date-time, description:The date and time the session expires. */
   expires: string;
   id: Uuid_type /* The unique identifier for the session. */;
-  session_token: SessionTokenUuid_type /* The session token. */;
+  session_token: SessionUuid_type /* The session token. */;
   /* title:DateTime, format:date-time, description:The date and time the session was last updated. */
   updated_at: string;
   user_id: Uuid_type /* The user ID of the user that the session belongs to. */;
 }
 
-export type SessionTokenUuid_type =
+export type SessionUuid_type =
   string; /* An auth token. A uuid with a prefix of ses- */
+
+export interface SetBackgroundColor_type {} /* Empty object */
+
+export interface SetCurrentToolProperties_type {} /* Empty object */
+
+export interface SetDefaultSystemProperties_type {} /* Empty object */
+
+export interface SetSceneUnits_type {} /* Empty object */
+
+export interface SetSelectionFilter_type {} /* Empty object */
+
+export interface SetSelectionType_type {} /* Empty object */
+
+export interface SetTool_type {} /* Empty object */
+
+export interface SketchModeDisable_type {} /* Empty object */
+
+export interface Solid2dAddHole_type {} /* Empty object */
+
+export interface Solid3dFilletEdge_type {} /* Empty object */
 
 export interface Solid3dGetAllEdgeFaces_type {
   /*{
@@ -4017,6 +4489,8 @@ export interface Solid3dGetPrevAdjacentEdge_type {
   edge?: string;
 }
 
+export interface Solid3dShellFace_type {} /* Empty object */
+
 export interface SourcePosition_type {
   /* format:uint32, minimum:0, description:The column number. */
   column: number;
@@ -4033,6 +4507,8 @@ export interface SourceRangePrompt_type {
   prompt: string /* The prompt for the changes. */;
   range: SourceRange_type /* The range of the source code to change. */;
 }
+
+export interface StartPath_type {} /* Empty object */
 
 export type StlStorage_type = 'ascii' | 'binary';
 
@@ -4814,6 +5290,8 @@ This is the same as the API call ID. */
   user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
+export interface UpdateAnnotation_type {} /* Empty object */
+
 export interface UpdateMemberToOrgBody_type {
   role: UserOrgRole_type /* The organization role to give the user. */;
 }
@@ -4973,7 +5451,11 @@ export interface VerificationTokenResponse_type {
   /* title:DateTime, format:date-time, description:The date and time the verification token expires. */
   expires: string;
   id: Uuid_type /* The token used for verification. This is used as the id for the table since it is unique per record. */;
-  identifier: string /* The identifier for the user. This is typically the user's email address since that is what we are verifying. */;
+  /*{
+  "format": "email",
+  "description": "The identifier for the user. This is typically the user's email address since that is what we are verifying."
+}*/
+  identifier: string;
   /*{
   "nullable": true,
   "title": "String",
@@ -5129,6 +5611,7 @@ export interface Models {
   CameraDragEnd_type: CameraDragEnd_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
   CameraDragMove_type: CameraDragMove_type;
+  CameraDragStart_type: CameraDragStart_type;
   CameraSettings_type: CameraSettings_type;
   CardDetails_type: CardDetails_type;
   CenterOfMass_type: CenterOfMass_type;
@@ -5146,12 +5629,18 @@ export interface Models {
   CurveGetControlPoints_type: CurveGetControlPoints_type;
   CurveGetEndPoints_type: CurveGetEndPoints_type;
   CurveGetType_type: CurveGetType_type;
+  CurveSetConstraint_type: CurveSetConstraint_type;
   CurveType_type: CurveType_type;
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
   CutType_type: CutType_type;
+  DefaultCameraCenterToSelection_type: DefaultCameraCenterToSelection_type;
   DefaultCameraFocusOn_type: DefaultCameraFocusOn_type;
   DefaultCameraGetSettings_type: DefaultCameraGetSettings_type;
+  DefaultCameraLookAt_type: DefaultCameraLookAt_type;
+  DefaultCameraPerspectiveSettings_type: DefaultCameraPerspectiveSettings_type;
+  DefaultCameraSetOrthographic_type: DefaultCameraSetOrthographic_type;
+  DefaultCameraSetPerspective_type: DefaultCameraSetPerspective_type;
   DefaultCameraZoom_type: DefaultCameraZoom_type;
   Density_type: Density_type;
   DerEncodedKeyPair_type: DerEncodedKeyPair_type;
@@ -5160,11 +5649,16 @@ export interface Models {
   DeviceAuthRequestForm_type: DeviceAuthRequestForm_type;
   DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
   Direction_type: Direction_type;
+  DisableDryRun_type: DisableDryRun_type;
   Discount_type: Discount_type;
   DiscountCode_type: DiscountCode_type;
   DistanceType_type: DistanceType_type;
+  EdgeLinesVisible_type: EdgeLinesVisible_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
+  EnableDryRun_type: EnableDryRun_type;
+  EnableSketchMode_type: EnableSketchMode_type;
   EntityCircularPattern_type: EntityCircularPattern_type;
+  EntityFade_type: EntityFade_type;
   EntityGetAllChildUuids_type: EntityGetAllChildUuids_type;
   EntityGetChildUuid_type: EntityGetChildUuid_type;
   EntityGetDistance_type: EntityGetDistance_type;
@@ -5173,6 +5667,10 @@ export interface Models {
   EntityGetSketchPaths_type: EntityGetSketchPaths_type;
   EntityLinearPattern_type: EntityLinearPattern_type;
   EntityLinearPatternTransform_type: EntityLinearPatternTransform_type;
+  EntityMakeHelix_type: EntityMakeHelix_type;
+  EntityMirror_type: EntityMirror_type;
+  EntityMirrorAcrossEdge_type: EntityMirrorAcrossEdge_type;
+  EntitySetOpacity_type: EntitySetOpacity_type;
   EntityType_type: EntityType_type;
   Environment_type: Environment_type;
   Error_type: Error_type;
@@ -5180,8 +5678,10 @@ export interface Models {
   Event_type: Event_type;
   Export_type: Export_type;
   ExportFile_type: ExportFile_type;
+  ExtendPath_type: ExtendPath_type;
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
+  Extrude_type: Extrude_type;
   ExtrusionFaceCapType_type: ExtrusionFaceCapType_type;
   ExtrusionFaceInfo_type: ExtrusionFaceInfo_type;
   FaceGetCenter_type: FaceGetCenter_type;
@@ -5206,6 +5706,10 @@ export interface Models {
   GlobalAxis_type: GlobalAxis_type;
   GltfPresentation_type: GltfPresentation_type;
   GltfStorage_type: GltfStorage_type;
+  HandleMouseDragEnd_type: HandleMouseDragEnd_type;
+  HandleMouseDragMove_type: HandleMouseDragMove_type;
+  HandleMouseDragStart_type: HandleMouseDragStart_type;
+  HighlightSetEntities_type: HighlightSetEntities_type;
   HighlightSetEntity_type: HighlightSetEntity_type;
   IceServer_type: IceServer_type;
   IdpMetadataSource_type: IdpMetadataSource_type;
@@ -5228,6 +5732,8 @@ export interface Models {
   LeafNode_type: LeafNode_type;
   LengthUnit_type: LengthUnit_type;
   Loft_type: Loft_type;
+  MakeAxesGizmo_type: MakeAxesGizmo_type;
+  MakePlane_type: MakePlane_type;
   Mass_type: Mass_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
   Metadata_type: Metadata_type;
@@ -5247,8 +5753,14 @@ export interface Models {
   ModelingCmdReq_type: ModelingCmdReq_type;
   ModelingSessionData_type: ModelingSessionData_type;
   MouseClick_type: MouseClick_type;
+  MouseMove_type: MouseMove_type;
+  MovePathPen_type: MovePathPen_type;
+  NewAnnotation_type: NewAnnotation_type;
   OAuth2ClientInfo_type: OAuth2ClientInfo_type;
   OAuth2GrantType_type: OAuth2GrantType_type;
+  ObjectBringToFront_type: ObjectBringToFront_type;
+  ObjectSetMaterialParamsPbr_type: ObjectSetMaterialParamsPbr_type;
+  ObjectVisible_type: ObjectVisible_type;
   OkModelingCmdResponse_type: OkModelingCmdResponse_type;
   OkWebSocketResponseData_type: OkWebSocketResponseData_type;
   Onboarding_type: Onboarding_type;
@@ -5278,6 +5790,7 @@ export interface Models {
   PerspectiveCameraParameters_type: PerspectiveCameraParameters_type;
   PlanInterval_type: PlanInterval_type;
   PlaneIntersectAndProject_type: PlaneIntersectAndProject_type;
+  PlaneSetColor_type: PlaneSetColor_type;
   PlyStorage_type: PlyStorage_type;
   Point2d_type: Point2d_type;
   Point3d_type: Point3d_type;
@@ -5286,31 +5799,53 @@ export interface Models {
   PostEffectType_type: PostEffectType_type;
   PrivacySettings_type: PrivacySettings_type;
   RawFile_type: RawFile_type;
+  ReconfigureStream_type: ReconfigureStream_type;
+  RemoveSceneObjects_type: RemoveSceneObjects_type;
+  Revolve_type: Revolve_type;
+  RevolveAboutEdge_type: RevolveAboutEdge_type;
   Rotation_type: Rotation_type;
   RtcIceCandidateInit_type: RtcIceCandidateInit_type;
   RtcSdpType_type: RtcSdpType_type;
   RtcSessionDescription_type: RtcSessionDescription_type;
   SamlIdentityProvider_type: SamlIdentityProvider_type;
   SamlIdentityProviderCreate_type: SamlIdentityProviderCreate_type;
+  SceneClearAll_type: SceneClearAll_type;
   SceneSelectionType_type: SceneSelectionType_type;
   SceneToolType_type: SceneToolType_type;
+  SelectAdd_type: SelectAdd_type;
+  SelectClear_type: SelectClear_type;
   SelectGet_type: SelectGet_type;
+  SelectRemove_type: SelectRemove_type;
+  SelectReplace_type: SelectReplace_type;
   SelectWithPoint_type: SelectWithPoint_type;
   Selection_type: Selection_type;
+  SendObject_type: SendObject_type;
   ServiceAccount_type: ServiceAccount_type;
   ServiceAccountResultsPage_type: ServiceAccountResultsPage_type;
-  ServiceAccountTokenUuid_type: ServiceAccountTokenUuid_type;
+  ServiceAccountUuid_type: ServiceAccountUuid_type;
   Session_type: Session_type;
-  SessionTokenUuid_type: SessionTokenUuid_type;
+  SessionUuid_type: SessionUuid_type;
+  SetBackgroundColor_type: SetBackgroundColor_type;
+  SetCurrentToolProperties_type: SetCurrentToolProperties_type;
+  SetDefaultSystemProperties_type: SetDefaultSystemProperties_type;
+  SetSceneUnits_type: SetSceneUnits_type;
+  SetSelectionFilter_type: SetSelectionFilter_type;
+  SetSelectionType_type: SetSelectionType_type;
+  SetTool_type: SetTool_type;
+  SketchModeDisable_type: SketchModeDisable_type;
+  Solid2dAddHole_type: Solid2dAddHole_type;
+  Solid3dFilletEdge_type: Solid3dFilletEdge_type;
   Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
   Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
   Solid3dGetExtrusionFaceInfo_type: Solid3dGetExtrusionFaceInfo_type;
   Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type;
   Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
+  Solid3dShellFace_type: Solid3dShellFace_type;
   SourcePosition_type: SourcePosition_type;
   SourceRange_type: SourceRange_type;
   SourceRangePrompt_type: SourceRangePrompt_type;
+  StartPath_type: StartPath_type;
   StlStorage_type: StlStorage_type;
   StoreCouponParams_type: StoreCouponParams_type;
   SubscriptionTierFeature_type: SubscriptionTierFeature_type;
@@ -5357,6 +5892,7 @@ export interface Models {
   UnitTorqueConversion_type: UnitTorqueConversion_type;
   UnitVolume_type: UnitVolume_type;
   UnitVolumeConversion_type: UnitVolumeConversion_type;
+  UpdateAnnotation_type: UpdateAnnotation_type;
   UpdateMemberToOrgBody_type: UpdateMemberToOrgBody_type;
   UpdatePaymentBalance_type: UpdatePaymentBalance_type;
   UpdateUser_type: UpdateUser_type;

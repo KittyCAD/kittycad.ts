@@ -108,15 +108,10 @@ async function main() {
         .join('; ');
       return `{${objectInner}}`;
     }
-    if (
-      schema.type === 'object' &&
-      !schema.properties &&
-      schema.description.includes('DefaultCameraFocusOn')
-    ) {
-      // being very specific about DefaultCameraFocusOn as this schema is type object
-      // but doesn't have any properties or isn't reference, so we're making this any
-      // but hoping this is a mistake and we can remove this if block in future
-      return `${namePart} any /* use-type */`;
+
+    // An empty object
+    if (schema.type === 'object' && !schema.properties) {
+      return `${namePart} {} /* Empty object */`;
     }
     if (
       JSON.stringify(Object.keys(schema)) === '["description"]' ||
