@@ -2,7 +2,8 @@
 
 Fully typed js library, compatible with js and ts.
 
-Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for how to to publish this.
+**Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for how to to publish AND
+AN EXPLANATION BEHIND THE DERIVATION PROCESS!**
 
 ### [Full documentation here](https://zoo.dev/docs/api?lang=typescript)
 
