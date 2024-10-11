@@ -1,8 +1,7 @@
-import { api_calls } from '../../src/index.js';
+import { users } from '../../src/index.js';
 
 async function example() {
-  const response = await api_calls.list_api_calls_for_user({
-    id: '31337',
+  const response = await users.get_user_shortlinks({
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
@@ -12,7 +11,7 @@ async function example() {
   return response;
 }
 
-describe('Testing api_calls.list_api_calls_for_user', () => {
+describe('Testing users.get_user_shortlinks', () => {
   it('should be truthy or throw', async () => {
     expect(await example()).toBeTruthy();
   });

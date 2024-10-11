@@ -1,7 +1,7 @@
 import { users } from '../../src/index.js';
 
 async function example() {
-  const response = await users.get_user_extended({ id: 'string' });
+  const response = await users.get_user_extended({ id: '31337' });
   if ('error_code' in response) throw response;
 
   return response;

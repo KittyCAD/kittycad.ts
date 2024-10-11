@@ -128,6 +128,7 @@ import get_org from './api/orgs/get_org.js';
 import get_org_member from './api/orgs/get_org_member.js';
 import get_org_privacy_settings from './api/orgs/get_org_privacy_settings.js';
 import get_org_saml_idp from './api/orgs/get_org_saml_idp.js';
+import get_org_shortlinks from './api/orgs/get_org_shortlinks.js';
 import get_user_org from './api/orgs/get_user_org.js';
 import list_org_members from './api/orgs/list_org_members.js';
 import list_orgs from './api/orgs/list_orgs.js';
@@ -148,6 +149,7 @@ export const orgs = {
   get_org_member,
   get_org_privacy_settings,
   get_org_saml_idp,
+  get_org_shortlinks,
   get_user_org,
   list_org_members,
   list_orgs,
@@ -264,7 +266,9 @@ export const unit = {
   get_volume_unit_conversion,
 };
 
+import create_user_shortlink from './api/users/create_user_shortlink.js';
 import delete_user_self from './api/users/delete_user_self.js';
+import delete_user_shortlink from './api/users/delete_user_shortlink.js';
 import get_oauth2_providers_for_user from './api/users/get_oauth2_providers_for_user.js';
 import get_session_for_user from './api/users/get_session_for_user.js';
 import get_user from './api/users/get_user.js';
@@ -273,12 +277,16 @@ import get_user_onboarding_self from './api/users/get_user_onboarding_self.js';
 import get_user_privacy_settings from './api/users/get_user_privacy_settings.js';
 import get_user_self from './api/users/get_user_self.js';
 import get_user_self_extended from './api/users/get_user_self_extended.js';
+import get_user_shortlinks from './api/users/get_user_shortlinks.js';
 import list_users from './api/users/list_users.js';
 import list_users_extended from './api/users/list_users_extended.js';
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js';
 import update_user_self from './api/users/update_user_self.js';
+import update_user_shortlink from './api/users/update_user_shortlink.js';
 export const users = {
+  create_user_shortlink,
   delete_user_self,
+  delete_user_shortlink,
   get_oauth2_providers_for_user,
   get_session_for_user,
   get_user,
@@ -287,10 +295,12 @@ export const users = {
   get_user_privacy_settings,
   get_user_self,
   get_user_self_extended,
+  get_user_shortlinks,
   list_users,
   list_users_extended,
   update_user_privacy_settings,
   update_user_self,
+  update_user_shortlink,
 };
 
 export type { Models } from './models.js';

@@ -2,7 +2,7 @@ import { payments } from '../../src/index.js';
 
 async function example() {
   const response = await payments.update_user_subscription({
-    body: { modeling_app: 'free' },
+    body: { modeling_app: 'free', pay_annually: true },
   });
   if ('error_code' in response) throw response;
 

@@ -19,7 +19,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1balance/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            monthly_credits_remaining: 7,\n            pre_pay_cash_remaining: 7,\n            pre_pay_credits_remaining: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '31337',\n        body: {\n            monthly_credits_remaining: 7,\n            pre_pay_cash_remaining: 7,\n            pre_pay_credits_remaining: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -27,7 +27,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1balance/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_user({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_user({\n        id: '31337',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -35,7 +35,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1api-calls/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.list_api_calls_for_user({\n        id: 'string',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.list_api_calls_for_user({\n        id: '31337',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -43,7 +43,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user({ id: '31337' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -51,7 +51,7 @@
     "op": "add",
     "path": "/paths/~1users-extended~1{id}/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_extended({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_extended({ id: '31337' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -97,6 +97,38 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1shortlinks~1{key}/delete/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_shortlink({ key: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1shortlinks~1{key}/put/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_shortlink({\n        key: 'string',\n        body: {\n            password:\n                'The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here.',\n            restrict_to_org: true,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1shortlinks/post/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.create_user_shortlink({\n        body: {\n            password:\n                'The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here.',\n            restrict_to_org: true,\n            url: 'The URL to redirect back to.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1shortlinks/get/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_shortlinks({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1session~1{token}/get/x-typescript",
     "value": {
       "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_session_for_user({\n        token: 'ses-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -131,7 +163,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1subscriptions/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_user_subscription({\n        body: { modeling_app: 'free' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_user_subscription({\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -139,7 +171,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1subscriptions/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_user_subscription({\n        body: { modeling_app: 'free' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_user_subscription({\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -497,6 +529,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1org~1shortlinks/get/x-typescript",
+    "value": {
+      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_shortlinks({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1org~1service-accounts~1{token}/delete/x-typescript",
     "value": {
       "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.delete_service_account_for_org({\n        token: 'svc-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -587,7 +627,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1subscriptions/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_org_subscription({\n        body: { modeling_app: 'team' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_org_subscription({\n        body: { modeling_app: 'team', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -595,7 +635,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1subscriptions/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_org_subscription({\n        body: { modeling_app: 'team' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_org_subscription({\n        body: { modeling_app: 'team', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -899,7 +939,7 @@
     "op": "add",
     "path": "/paths/~1file~1execute~1{lang}/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { executor } from '@kittycad/lib'\n\nasync function example() {\n    const response = await executor.create_file_execution({\n        lang: 'go',\n        output: 'string',\n        body: await fsp.readFile('./example', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import fsp from 'fs/promises'\nimport { executor } from '@kittycad/lib'\n\nasync function example() {\n    const response = await executor.create_file_execution({\n        lang: 'go',\n        output: 'string',\n        body: await fsp.readFile('./example.go', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

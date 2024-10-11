@@ -1,31 +1,26 @@
 import {
-  ApiCallWithPriceResultsPage_type,
+  ShortlinkResultsPage_type,
   Error_type,
-  UserIdentifier_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface List_api_calls_for_user_params {
+interface Get_user_shortlinks_params {
   client?: Client;
-  id: UserIdentifier_type;
   limit: number;
   page_token: string;
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_api_calls_for_user_return =
-  | ApiCallWithPriceResultsPage_type
-  | Error_type;
+type Get_user_shortlinks_return = ShortlinkResultsPage_type | Error_type;
 
-export default async function list_api_calls_for_user({
+export default async function get_user_shortlinks({
   client,
-  id,
   limit,
   page_token,
   sort_by,
-}: List_api_calls_for_user_params): Promise<List_api_calls_for_user_return> {
-  const url = `/users/${id}/api-calls?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
+}: Get_user_shortlinks_params): Promise<Get_user_shortlinks_return> {
+  const url = `/user/shortlinks?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -39,6 +34,6 @@ export default async function list_api_calls_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as List_api_calls_for_user_return;
+  const result = (await response.json()) as Get_user_shortlinks_return;
   return result;
 }

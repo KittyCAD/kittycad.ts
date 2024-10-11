@@ -1,15 +1,13 @@
-import { payments } from '../../src/index.js';
+import { users } from '../../src/index.js';
 
 async function example() {
-  const response = await payments.get_payment_balance_for_any_user({
-    id: '31337',
-  });
+  const response = await users.delete_user_shortlink({ key: 'string' });
   if ('error_code' in response) throw response;
 
   return response;
 }
 
-describe('Testing payments.get_payment_balance_for_any_user', () => {
+describe('Testing users.delete_user_shortlink', () => {
   it('should be truthy or throw', async () => {
     try {
       await example();
