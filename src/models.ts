@@ -910,6 +910,27 @@ export interface Coupon_type {
   percent_off?: number;
 }
 
+export interface CreateShortlinkRequest_type {
+  /*{
+  "nullable": true,
+  "description": "The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here."
+}*/
+  password?: string;
+  /*{
+  "default": false,
+  "description": "If the shortlink should be restricted to the user's organization to view. This only applies to org shortlinks. If you are creating a user shortlink and you are not a member of a team or enterprise and you try to set this to true, it will fail."
+}*/
+  restrict_to_org: boolean;
+  /* format:uri, description:The URL to redirect back to. */
+  url: string;
+}
+
+export interface CreateShortlinkResponse_type {
+  key: string /* The key for this url. This is what you use to update or delete the specific shortlink. */;
+  /* format:uri, description:The shortened url. */
+  url: string;
+}
+
 export type CreatedAtSortMode_type =
   | 'created_at_ascending'
   | 'created_at_descending';
@@ -2172,7 +2193,19 @@ export type ModelingAppOrganizationSubscriptionTier_type =
   | 'team'
   | 'enterprise';
 
+export type ModelingAppShareLinks_type =
+  | 'public'
+  | 'password_protected'
+  | 'organization_only';
+
 export interface ModelingAppSubscriptionTier_type {
+  /*{
+  "nullable": true,
+  "format": "uint",
+  "minimum": 0,
+  "description": "Annual discount. The percentage off the monthly price if the user pays annually."
+}*/
+  annual_discount?: number;
   description: string /* A description of the tier. */;
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
   features: SubscriptionTierFeature_type[];
@@ -2184,6 +2217,7 @@ export interface ModelingAppSubscriptionTier_type {
 }*/
   pay_as_you_go_credits: number;
   price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */;
+  share_links: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */;
   support_tier: SupportTier_type /* The support tier the subscription provides. */;
   training_data_behavior: SubscriptionTrainingDataBehavior_type /* The behavior of the users data (can it be used for training, etc). */;
   type: SubscriptionTierType_type /* If the tier is offered for an individual or an org. */;
@@ -2599,6 +2633,15 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which object is being queried. */
       object_id: string;
       type: 'solid3d_get_prev_adjacent_edge';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      face_ids: string[];
+      /* format:uuid, description:Which object is being queried. */
+      object_id: string;
+      type: 'solid3d_get_common_edge';
     }
   | {
       /* default:fillet, description:How to apply the cut. */
@@ -3549,6 +3592,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/Solid3dGetCommonEdge"
+}*/
+      data: Solid3dGetCommonEdge_type;
+      type: 'solid3d_get_common_edge';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/GetEntityType"
 }*/
       data: GetEntityType_type;
@@ -4450,6 +4500,36 @@ export interface SetSelectionType_type {} /* Empty object */
 
 export interface SetTool_type {} /* Empty object */
 
+export interface Shortlink_type {
+  /* title:DateTime, format:date-time, description:The date and time the shortlink was created. */
+  created_at: string;
+  id: Uuid_type /* The unique identifier for the shortlink. */;
+  key: string /* The key of the shortlink. This is the short part of the URL. */;
+  /* nullable:true, description:The organization ID of the shortlink. */
+  org_id?: Uuid_type;
+  /* nullable:true, description:The hash of the password for the shortlink. */
+  password_hash?: string;
+  /*{
+  "default": false,
+  "description": "If the shortlink should be restricted to the organization. This only applies to org shortlinks. If you are creating a user shortlink and you are not a member of a team or enterprise and you try to set this to true, it will fail."
+}*/
+  restrict_to_org: boolean;
+  /* title:DateTime, format:date-time, description:The date and time the shortlink was last updated. */
+  updated_at: string;
+  user_id: Uuid_type /* The ID of the user that made the shortlink. */;
+  /* title:String, format:uri, description:The URL the shortlink redirects to. */
+  value: string;
+}
+
+export interface ShortlinkResultsPage_type {
+  items: Shortlink_type[] /* list of items on this page of results */;
+  /*{
+  "nullable": true,
+  "description": "token used to fetch the next page of results (if any)"
+}*/
+  next_page?: string;
+}
+
 export interface SketchModeDisable_type {} /* Empty object */
 
 export interface Solid2dAddHole_type {} /* Empty object */
@@ -4468,6 +4548,11 @@ export interface Solid3dGetAllOppositeEdges_type {
   "format": "uuid"
 }*/
   edges: string[];
+}
+
+export interface Solid3dGetCommonEdge_type {
+  /* nullable:true, format:uuid, description:The UUID of the common edge, if any. */
+  edge?: string;
 }
 
 export interface Solid3dGetExtrusionFaceInfo_type {
@@ -5320,6 +5405,15 @@ export interface UpdatePaymentBalance_type {
   pre_pay_credits_remaining?: number;
 }
 
+export interface UpdateShortlinkRequest_type {
+  /*{
+  "nullable": true,
+  "description": "The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here."
+}*/
+  password?: string;
+  restrict_to_org: boolean /* If the shortlink should be restricted to the user's organization to view. This only applies to org shortlinks. If you are creating a user shortlink and you are not a member of a team or enterprise and you try to set this to true, it will fail. */;
+}
+
 export interface UpdateUser_type {
   company: string /* The user's company. */;
   discord: string /* The user's Discord handle. */;
@@ -5381,6 +5475,8 @@ export interface User_type {
   /* title:DateTime, format:date-time, description:The date and time the user was last updated. */
   updated_at: string;
 }
+
+export type UserIdentifier_type = string;
 
 export interface UserOrgInfo_type {
   /*{
@@ -5535,6 +5631,13 @@ export type WebSocketResponse_type =
     };
 
 export type ZooProductSubscription_type = {
+  /*{
+  "nullable": true,
+  "format": "uint",
+  "minimum": 0,
+  "description": "Annual discount. The percentage off the monthly price if the user pays annually."
+}*/
+  annual_discount?: number;
   description: string /* A description of the tier. */;
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
   features: SubscriptionTierFeature_type[];
@@ -5546,6 +5649,7 @@ export type ZooProductSubscription_type = {
 }*/
   pay_as_you_go_credits: number;
   price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */;
+  share_links: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */;
   support_tier: SupportTier_type /* The support tier the subscription provides. */;
   training_data_behavior: SubscriptionTrainingDataBehavior_type /* The behavior of the users data (can it be used for training, etc). */;
   type: SubscriptionTierType_type /* If the tier is offered for an individual or an org. */;
@@ -5559,11 +5663,21 @@ export interface ZooProductSubscriptions_type {
 export interface ZooProductSubscriptionsOrgRequest_type {
   /* default:team, description:A modeling app subscription. */
   modeling_app: ModelingAppOrganizationSubscriptionTier_type;
+  /*{
+  "nullable": true,
+  "description": "If the customer chooses to pay annually or monthly, we can add that here. The annual discount will apply if there is a discount for the subscription."
+}*/
+  pay_annually?: boolean;
 }
 
 export interface ZooProductSubscriptionsUserRequest_type {
   /* default:free, description:A modeling app subscription. */
   modeling_app: ModelingAppIndividualSubscriptionTier_type;
+  /*{
+  "nullable": true,
+  "description": "If the customer chooses to pay annually or monthly, we can add that here. The annual discount will apply if there is a discount for the subscription."
+}*/
+  pay_annually?: boolean;
 }
 
 export type ZooTool_type =
@@ -5624,6 +5738,8 @@ export interface Models {
   Connection_type: Connection_type;
   CountryCode_type: CountryCode_type;
   Coupon_type: Coupon_type;
+  CreateShortlinkRequest_type: CreateShortlinkRequest_type;
+  CreateShortlinkResponse_type: CreateShortlinkResponse_type;
   CreatedAtSortMode_type: CreatedAtSortMode_type;
   Currency_type: Currency_type;
   CurveGetControlPoints_type: CurveGetControlPoints_type;
@@ -5746,6 +5862,7 @@ export interface Models {
   ModelingAppEventType_type: ModelingAppEventType_type;
   ModelingAppIndividualSubscriptionTier_type: ModelingAppIndividualSubscriptionTier_type;
   ModelingAppOrganizationSubscriptionTier_type: ModelingAppOrganizationSubscriptionTier_type;
+  ModelingAppShareLinks_type: ModelingAppShareLinks_type;
   ModelingAppSubscriptionTier_type: ModelingAppSubscriptionTier_type;
   ModelingAppSubscriptionTierName_type: ModelingAppSubscriptionTierName_type;
   ModelingCmd_type: ModelingCmd_type;
@@ -5832,11 +5949,14 @@ export interface Models {
   SetSelectionFilter_type: SetSelectionFilter_type;
   SetSelectionType_type: SetSelectionType_type;
   SetTool_type: SetTool_type;
+  Shortlink_type: Shortlink_type;
+  ShortlinkResultsPage_type: ShortlinkResultsPage_type;
   SketchModeDisable_type: SketchModeDisable_type;
   Solid2dAddHole_type: Solid2dAddHole_type;
   Solid3dFilletEdge_type: Solid3dFilletEdge_type;
   Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
   Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
+  Solid3dGetCommonEdge_type: Solid3dGetCommonEdge_type;
   Solid3dGetExtrusionFaceInfo_type: Solid3dGetExtrusionFaceInfo_type;
   Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type;
   Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
@@ -5895,8 +6015,10 @@ export interface Models {
   UpdateAnnotation_type: UpdateAnnotation_type;
   UpdateMemberToOrgBody_type: UpdateMemberToOrgBody_type;
   UpdatePaymentBalance_type: UpdatePaymentBalance_type;
+  UpdateShortlinkRequest_type: UpdateShortlinkRequest_type;
   UpdateUser_type: UpdateUser_type;
   User_type: User_type;
+  UserIdentifier_type: UserIdentifier_type;
   UserOrgInfo_type: UserOrgInfo_type;
   UserOrgRole_type: UserOrgRole_type;
   UserResultsPage_type: UserResultsPage_type;

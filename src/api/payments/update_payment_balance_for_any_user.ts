@@ -1,14 +1,14 @@
 import {
   CustomerBalance_type,
   Error_type,
-  Uuid_type,
+  UserIdentifier_type,
   UpdatePaymentBalance_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Update_payment_balance_for_any_user_params {
   client?: Client;
-  id: Uuid_type;
+  id: UserIdentifier_type;
   body: UpdatePaymentBalance_type;
 }
 
