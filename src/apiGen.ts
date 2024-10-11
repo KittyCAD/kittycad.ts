@@ -148,16 +148,12 @@ export default async function apiGen(lookup: any) {
             reffedSchema.type === 'string' &&
             refName == 'UserIdentifier'
           ) {
-            inputParamsExamples.push(
-              `${name}: '${'31337'}'`,
-            );
+            inputParamsExamples.push(`${name}: '${'31337'}'`);
           } else if (
             reffedSchema.type === 'string' &&
             refName == 'CodeLanguage'
           ) {
-            inputParamsExamples.push(
-              `${name}: '${'node'}'`,
-            );
+            inputParamsExamples.push(`${name}: '${'node'}'`);
           }
         } else {
           if (schema.type === 'number' || schema.type === 'integer') {
@@ -298,14 +294,27 @@ export default async function apiGen(lookup: any) {
         }
         inputTypes.push('body: string');
         inputParams.push('body');
-        const srcFmts = inputParamsExamples.find((str) => {
+
+        let exampleFile = 'example';
+
+        // For requests depending on a model file
+        const modelFmts = inputParamsExamples.find((str) => {
           return str.startsWith('src_format:');
         });
-        const exampleFile = !srcFmts
-          ? 'example'
-          : srcFmts.includes('obj')
-          ? 'example.obj'
-          : 'example.svg';
+        if (modelFmts) {
+          exampleFile = modelFmts.includes('obj')
+            ? 'example.obj'
+            : 'example.svg';
+        }
+
+        // For requests depending on a source code file
+        const langFmts = inputParamsExamples.find((str) => {
+          return str.startsWith('lang:');
+        });
+        if (langFmts) {
+          exampleFile = `example.${langFmts.replace(/lang: '([a-z]+)'/, '$1')}`;
+        }
+
         inputParamsExamples.push(
           `body: await fsp.readFile('./${exampleFile}', 'base64')`,
         );
