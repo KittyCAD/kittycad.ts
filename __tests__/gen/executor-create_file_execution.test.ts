@@ -5,7 +5,7 @@ async function example() {
   const response = await executor.create_file_execution({
     lang: 'go',
     output: 'string',
-    body: await fsp.readFile('./example', 'base64'),
+    body: await fsp.readFile('./example.go', 'base64'),
   });
   if ('error_code' in response) throw response;
 

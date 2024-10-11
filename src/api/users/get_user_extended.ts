@@ -1,9 +1,13 @@
-import { ExtendedUser_type, Error_type } from '../../models.js';
+import {
+  ExtendedUser_type,
+  Error_type,
+  UserIdentifier_type,
+} from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Get_user_extended_params {
   client?: Client;
-  id: string;
+  id: UserIdentifier_type;
 }
 
 type Get_user_extended_return = ExtendedUser_type | Error_type;

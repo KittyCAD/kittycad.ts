@@ -1,9 +1,13 @@
-import { CustomerBalance_type, Error_type, Uuid_type } from '../../models.js';
+import {
+  CustomerBalance_type,
+  Error_type,
+  UserIdentifier_type,
+} from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Get_payment_balance_for_any_user_params {
   client?: Client;
-  id: Uuid_type;
+  id: UserIdentifier_type;
 }
 
 type Get_payment_balance_for_any_user_return =

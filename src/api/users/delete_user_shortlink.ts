@@ -1,18 +1,18 @@
-import { User_type, Error_type, UserIdentifier_type } from '../../models.js';
+import { Error_type } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Get_user_params {
+interface Delete_user_shortlink_params {
   client?: Client;
-  id: UserIdentifier_type;
+  key: string;
 }
 
-type Get_user_return = User_type | Error_type;
+type Delete_user_shortlink_return = Error_type;
 
-export default async function get_user({
+export default async function delete_user_shortlink({
   client,
-  id,
-}: Get_user_params): Promise<Get_user_return> {
-  const url = `/users/${id}`;
+  key,
+}: Delete_user_shortlink_params): Promise<Delete_user_shortlink_return> {
+  const url = `/user/shortlinks/${key}`;
   const urlBase = process?.env?.BASE_URL || 'https://api.zoo.dev';
   const fullUrl = urlBase + url;
   const kittycadToken = client
@@ -22,10 +22,10 @@ export default async function get_user({
     Authorization: `Bearer ${kittycadToken}`,
   };
   const fetchOptions = {
-    method: 'GET',
+    method: 'DELETE',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_user_return;
+  const result = (await response.json()) as Delete_user_shortlink_return;
   return result;
 }
