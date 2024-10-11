@@ -151,6 +151,13 @@ export default async function apiGen(lookup: any) {
             inputParamsExamples.push(
               `${name}: '${'31337'}'`,
             );
+          } else if (
+            reffedSchema.type === 'string' &&
+            refName == 'CodeLanguage'
+          ) {
+            inputParamsExamples.push(
+              `${name}: '${'node'}'`,
+            );
           }
         } else {
           if (schema.type === 'number' || schema.type === 'integer') {
