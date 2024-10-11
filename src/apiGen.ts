@@ -144,6 +144,13 @@ export default async function apiGen(lookup: any) {
             inputParamsExamples.push(
               `${name}: '${'dev-00000000-0000-0000-0000-000000000000'}'`,
             );
+          } else if (
+            reffedSchema.type === 'string' &&
+            refName == 'UserIdentifier'
+          ) {
+            inputParamsExamples.push(
+              `${name}: '${'31337'}'`,
+            );
           }
         } else {
           if (schema.type === 'number' || schema.type === 'integer') {
