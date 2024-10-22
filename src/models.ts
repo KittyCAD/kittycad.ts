@@ -1134,6 +1134,10 @@ export interface EnableDryRun_type {} /* Empty object */
 
 export interface EnableSketchMode_type {} /* Empty object */
 
+export interface EngineUtilEvaluatePath_type {
+  pos: Point3d_type /* The evaluated path curve position */;
+}
+
 export interface EntityCircularPattern_type {
   /*{
   "format": "uuid"
@@ -2231,6 +2235,15 @@ export type ModelingAppSubscriptionTierName_type =
   | 'enterprise';
 
 export type ModelingCmd_type =
+  | {
+      path_json: string /* The path in json form (the serialized result of the kcl Sketch/Path object */;
+      /*{
+  "format": "double",
+  "description": "The evaluation parameter (path curve parameter in the normalized domain [0, 1])"
+}*/
+      t: number;
+      type: 'engine_util_evaluate_path';
+    }
   | { type: 'start_path' }
   | {
       path: ModelingCmdId_type /* The ID of the command which created the path. */;
@@ -2965,6 +2978,7 @@ export type ModelingCmd_type =
 }*/
       object_ids: string[];
       /*{
+  "default": 0,
   "format": "float",
   "description": "How much to pad the view frame by, as a fraction of the object(s) bounding box size. Negative padding will crop the view of the object proportionally. e.g. padding = 0.2 means the view will span 120% of the object(s) bounding box, and padding = -0.2 means the view will span 80% of the object(s) bounding box."
 }*/
@@ -2972,7 +2986,11 @@ export type ModelingCmd_type =
       type: 'zoom_to_fit';
     }
   | {
-      /* default:0, format:float, description:How much to pad the view frame by. */
+      /*{
+  "default": 0,
+  "format": "float",
+  "description": "How much to pad the view frame by, as a fraction of the object(s) bounding box size. Negative padding will crop the view of the object proportionally. e.g. padding = 0.2 means the view will span 120% of the object(s) bounding box, and padding = -0.2 means the view will span 80% of the object(s) bounding box."
+}*/
       padding: number;
       type: 'view_isometric';
     }
@@ -3044,6 +3062,13 @@ export interface ObjectVisible_type {} /* Empty object */
 
 export type OkModelingCmdResponse_type =
   | { type: 'empty' }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EngineUtilEvaluatePath"
+}*/
+      data: EngineUtilEvaluatePath_type;
+      type: 'engine_util_evaluate_path';
+    }
   | {
       /*{
   "$ref": "#/components/schemas/StartPath"
@@ -5773,6 +5798,7 @@ export interface Models {
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
   EnableDryRun_type: EnableDryRun_type;
   EnableSketchMode_type: EnableSketchMode_type;
+  EngineUtilEvaluatePath_type: EngineUtilEvaluatePath_type;
   EntityCircularPattern_type: EntityCircularPattern_type;
   EntityFade_type: EntityFade_type;
   EntityGetAllChildUuids_type: EntityGetAllChildUuids_type;
