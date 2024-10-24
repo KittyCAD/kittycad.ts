@@ -1138,6 +1138,20 @@ export interface EngineUtilEvaluatePath_type {
   pos: Point3d_type /* The evaluated path curve position */;
 }
 
+export type EnterpriseSubscriptionTierPrice_type =
+  | {
+      interval: PlanInterval_type /* The interval the price is charged. */;
+      /* title:double, format:money-usd, description:The price. */
+      price: number;
+      type: 'flat';
+    }
+  | {
+      interval: PlanInterval_type /* The interval the price is charged. */;
+      /* title:double, format:money-usd, description:The price. */
+      price: number;
+      type: 'per_user';
+    };
+
 export interface EntityCircularPattern_type {
   /*{
   "format": "uuid"
@@ -5799,6 +5813,7 @@ export interface Models {
   EnableDryRun_type: EnableDryRun_type;
   EnableSketchMode_type: EnableSketchMode_type;
   EngineUtilEvaluatePath_type: EngineUtilEvaluatePath_type;
+  EnterpriseSubscriptionTierPrice_type: EnterpriseSubscriptionTierPrice_type;
   EntityCircularPattern_type: EntityCircularPattern_type;
   EntityFade_type: EntityFade_type;
   EntityGetAllChildUuids_type: EntityGetAllChildUuids_type;
