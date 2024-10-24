@@ -2,14 +2,14 @@ import {
   ZooProductSubscriptions_type,
   Error_type,
   Uuid_type,
-  SubscriptionTierPrice_type,
+  EnterpriseSubscriptionTierPrice_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Update_enterprise_pricing_for_org_params {
   client?: Client;
   id: Uuid_type;
-  body: SubscriptionTierPrice_type;
+  body: EnterpriseSubscriptionTierPrice_type;
 }
 
 type Update_enterprise_pricing_for_org_return =
