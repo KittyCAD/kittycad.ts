@@ -21,8 +21,8 @@ jobs:
       # Generate the OpenAPI spec. Yes, yarn test generates it.
       - run: yarn test
         env:
-          KITTYCAD_TOKEN: ${{ secrets.KITTYCAD_TOKEN }}
-          BASE_URL: "https://api.dev.kittycad.io/"
+          ZOO_API_TOKEN: ${{ secrets.KITTYCAD_TOKEN }}
+          ZOO_HOST: "https://api.dev.kittycad.io/"
       - name: check for changes
         id: git-check
         run: |
