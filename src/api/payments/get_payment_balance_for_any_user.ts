@@ -30,7 +30,7 @@ export default async function get_payment_balance_for_any_user({
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
   // check for that as well.
   const kittycadToken = client
-    ? client.token
+    ? client.token || process.env.ZOO_API_TOKEN || ''
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
