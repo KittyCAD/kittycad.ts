@@ -16,8 +16,8 @@ describe('Testing create_file_mass', () => {
 
     const { status, mass } = response;
     console.log(mass);
-    expect(mass).toBe(103.7539631347172);
     expect(status).toBe('completed');
+    expect(mass).toBe(103.7539631347172);
   });
   it("shouldn't throw when using a client", async () => {
     const response = await file.create_file_mass({
@@ -31,7 +31,7 @@ describe('Testing create_file_mass', () => {
     if ('error_code' in response) throw 'error' + JSON.stringify(response);
 
     const { status, mass } = response;
-    expect(mass).toBe(103.7539631347172);
     expect(status).toBe('completed');
+    expect(mass).toBe(103.7539631347172);
   });
 });
