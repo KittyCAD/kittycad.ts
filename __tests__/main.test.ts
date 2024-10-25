@@ -15,6 +15,7 @@ describe('Testing create_file_mass', () => {
     if ('error_code' in response) throw 'error' + JSON.stringify(response);
 
     const { status, mass } = response;
+    console.log(mass);
     expect(mass).toBe(103.7539631347172);
     expect(status).toBe('completed');
   });
