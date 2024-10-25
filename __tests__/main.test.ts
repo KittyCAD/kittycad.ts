@@ -1,7 +1,7 @@
 import { file, Client } from '../src/index.js';
 import fsp from 'fs/promises';
 
-const client = new Client(process.env.KITTYCAD_TOKEN || '');
+const client = new Client(null);
 
 describe('Testing create_file_mass', () => {
   it("shouldn't throw", async () => {
