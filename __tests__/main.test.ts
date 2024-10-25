@@ -12,6 +12,7 @@ describe('Testing create_file_mass', () => {
       material_density: 0.007,
       body: await fsp.readFile('./example.obj', 'base64'),
     });
+    console.log(JSON.stringify(response));
     if ('error_code' in response) throw 'error: ' + response;
 
     const { status, mass } = response;
