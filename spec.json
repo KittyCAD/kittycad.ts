@@ -1605,6 +1605,89 @@
         }
       }
     },
+    "/community/sso": {
+      "get": {
+        "tags": [
+          "meta",
+          "hidden"
+        ],
+        "summary": "Authorize an inbound auth request from our Community page.",
+        "operationId": "community_sso",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "sig",
+            "description": "The signature for the given payload",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sso",
+            "description": "The nonce and redirect URL sent to us by Discourse",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Temporary Redirect",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
     "/debug/uploads": {
       "post": {
         "tags": [
@@ -15102,11 +15185,6 @@
             "type": "string",
             "format": "ip"
           },
-          "litterbox": {
-            "nullable": true,
-            "description": "If the API call was spawned from the litterbox or not.",
-            "type": "boolean"
-          },
           "method": {
             "description": "The HTTP method requested by the API call.",
             "allOf": [
@@ -16610,10 +16688,17 @@
             ]
           },
           {
-            "description": "Camera rotate (revolve/orbit)",
+            "description": "Camera rotate (spherical camera revolve/orbit)",
             "type": "string",
             "enum": [
               "rotate"
+            ]
+          },
+          {
+            "description": "Camera rotate (trackball with 3 degrees of freedom)",
+            "type": "string",
+            "enum": [
+              "rotatetrackball"
             ]
           },
           {
@@ -16645,6 +16730,25 @@
       "CameraDragStart": {
         "description": "The response from the `CameraDragStart` endpoint.",
         "type": "object"
+      },
+      "CameraMovement": {
+        "description": "A type of camera movement applied after certain camera operations",
+        "oneOf": [
+          {
+            "description": "Adjusts the camera position during the camera operation",
+            "type": "string",
+            "enum": [
+              "vantage"
+            ]
+          },
+          {
+            "description": "Keeps the camera position in place",
+            "type": "string",
+            "enum": [
+              "none"
+            ]
+          }
+        ]
       },
       "CameraSettings": {
         "description": "Camera settings including position, center, fov etc",
@@ -17677,6 +17781,10 @@
           }
         ]
       },
+      "DefaultCameraCenterToScene": {
+        "description": "The response from the `DefaultCameraCenterToScene` endpoint.",
+        "type": "object"
+      },
       "DefaultCameraCenterToSelection": {
         "description": "The response from the `DefaultCameraCenterToSelection` endpoint.",
         "type": "object"
@@ -18647,6 +18755,13 @@
             "type": "string",
             "enum": [
               "bottom"
+            ]
+          },
+          {
+            "description": "Capped on both ends.",
+            "type": "string",
+            "enum": [
+              "both"
             ]
           }
         ]
@@ -20779,6 +20894,23 @@
         "description": "The response from the `MakeAxesGizmo` endpoint.",
         "type": "object"
       },
+      "MakeOffsetPath": {
+        "description": "The response from the `MakeOffsetPath` command.",
+        "type": "object",
+        "properties": {
+          "entity_ids": {
+            "description": "If the offset path splits into multiple paths, this will contain the UUIDs of the new paths. If the offset path remains as a single path, this will be empty, and the resulting ID of the (single) new path will be the ID of the `MakeOffsetPath` command.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "required": [
+          "entity_ids"
+        ]
+      },
       "MakePlane": {
         "description": "The response from the `MakePlane` endpoint.",
         "type": "object"
@@ -21513,6 +21645,53 @@
             ]
           },
           {
+            "description": "Extrude the object along a path.",
+            "type": "object",
+            "properties": {
+              "sectional": {
+                "description": "If true, the sweep will be broken up into sub-sweeps (extrusions, revolves, sweeps) based on the trajectory path components.",
+                "type": "boolean"
+              },
+              "target": {
+                "description": "Which sketch to sweep. Must be a closed 2D solid.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ModelingCmdId"
+                  }
+                ]
+              },
+              "tolerance": {
+                "description": "The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero).",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LengthUnit"
+                  }
+                ]
+              },
+              "trajectory": {
+                "description": "Path along which to sweep.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ModelingCmdId"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "sweep"
+                ]
+              }
+            },
+            "required": [
+              "sectional",
+              "target",
+              "tolerance",
+              "trajectory",
+              "type"
+            ]
+          },
+          {
             "description": "Command for revolving a solid 2d.",
             "type": "object",
             "properties": {
@@ -22192,9 +22371,21 @@
               },
               "transform": {
                 "description": "How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list.",
+                "default": [],
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Transform"
+                }
+              },
+              "transforms": {
+                "description": "Alternatively, you could set this key instead. If you want to use multiple transforms per item. If this is non-empty then the `transform` key must be empty, and vice-versa.",
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transform"
+                  }
                 }
               },
               "type": {
@@ -22206,7 +22397,6 @@
             },
             "required": [
               "entity_id",
-              "transform",
               "type"
             ]
           },
@@ -24039,6 +24229,13 @@
             "description": "Reconfigure the stream.",
             "type": "object",
             "properties": {
+              "bitrate": {
+                "nullable": true,
+                "description": "Video feed's constant bitrate (CBR)",
+                "type": "integer",
+                "format": "uint32",
+                "minimum": 0
+              },
               "fps": {
                 "description": "Frames per second.",
                 "type": "integer",
@@ -24433,10 +24630,43 @@
             "description": "Updates the camera to center to the center of the current selection (or the origin if nothing is selected)",
             "type": "object",
             "properties": {
+              "camera_movement": {
+                "description": "Dictates whether or not the camera position should be adjusted during this operation If no movement is requested, the camera will orbit around the new center from its current position",
+                "default": "vantage",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CameraMovement"
+                  }
+                ]
+              },
               "type": {
                 "type": "string",
                 "enum": [
                   "default_camera_center_to_selection"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          {
+            "description": "Updates the camera to center to the center of the current scene's bounds",
+            "type": "object",
+            "properties": {
+              "camera_movement": {
+                "description": "Dictates whether or not the camera position should be adjusted during this operation If no movement is requested, the camera will orbit around the new center from its current position",
+                "default": "vantage",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CameraMovement"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "default_camera_center_to_scene"
                 ]
               }
             },
@@ -24569,6 +24799,42 @@
               }
             },
             "required": [
+              "type"
+            ]
+          },
+          {
+            "description": "Make a new path by offsetting an object by a given distance. The new path's ID will be the ID of this command.",
+            "type": "object",
+            "properties": {
+              "face_id": {
+                "nullable": true,
+                "description": "If the object is a solid, this is the ID of the face to base the offset on. If given, and `object_id` refers to a solid, then this face on the solid will be offset. If given but `object_id` doesn't refer to a solid, responds with an error. If not given, then `object_id` itself will be offset directly.",
+                "type": "string",
+                "format": "uuid"
+              },
+              "object_id": {
+                "description": "The object that will be offset (can be a path, sketch, or a solid)",
+                "type": "string",
+                "format": "uuid"
+              },
+              "offset": {
+                "description": "The distance to offset the path (positive for outset, negative for inset)",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LengthUnit"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "make_offset_path"
+                ]
+              }
+            },
+            "required": [
+              "object_id",
+              "offset",
               "type"
             ]
           }
@@ -24799,6 +25065,24 @@
                 "type": "string",
                 "enum": [
                   "extrude"
+                ]
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/Sweep"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "sweep"
                 ]
               }
             },
@@ -25693,6 +25977,24 @@
             "type": "object",
             "properties": {
               "data": {
+                "$ref": "#/components/schemas/DefaultCameraCenterToScene"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "default_camera_center_to_scene"
+                ]
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
                 "$ref": "#/components/schemas/SelectClear"
               },
               "type": {
@@ -26005,6 +26307,24 @@
                 "type": "string",
                 "enum": [
                   "get_num_objects"
+                ]
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/MakeOffsetPath"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "make_offset_path"
                 ]
               }
             },
@@ -27900,6 +28220,44 @@
               "to",
               "type"
             ]
+          },
+          {
+            "description": "Adds an arc from the current position that goes through the given interior point and ends at the given end position",
+            "type": "object",
+            "properties": {
+              "end": {
+                "description": "End point of the arc.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Point3d"
+                  }
+                ]
+              },
+              "interior": {
+                "description": "Interior point of the arc.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Point3d"
+                  }
+                ]
+              },
+              "relative": {
+                "description": "Whether or not interior and end are relative to the previous path position",
+                "type": "boolean"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "arc_to"
+                ]
+              }
+            },
+            "required": [
+              "end",
+              "interior",
+              "relative",
+              "type"
+            ]
           }
         ]
       },
@@ -29446,6 +29804,10 @@
           "output_unit",
           "surface_area"
         ]
+      },
+      "Sweep": {
+        "description": "The response from the `Sweep` endpoint.",
+        "type": "object"
       },
       "System": {
         "description": "Co-ordinate system definition.\n\nThe `up` axis must be orthogonal to the `forward` axis.\n\nSee [cglearn.eu] for background reading.\n\n[cglearn.eu](https://cglearn.eu/pub/computer-graphics/introduction-to-geometry#material-coordinate-systems-1)",
@@ -32759,4 +33121,3 @@
     }
   ]
 }
-
