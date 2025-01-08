@@ -7,6 +7,13 @@ export type AccountProvider_type =
   | 'saml'
   | 'tencent';
 
+export interface AddHoleFromOffset_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
+}
+
 export interface AddOrgMember_type {
   /* format:email, description:The email address of the user to add to the org. */
   email: string;
@@ -122,11 +129,6 @@ export interface ApiCallWithPrice_type {
   "description": "The ip address of the origin."
 }*/
   ip_address: string;
-  /*{
-  "nullable": true,
-  "description": "If the API call was spawned from the litterbox or not."
-}*/
-  litterbox?: boolean;
   method: Method_type /* The HTTP method requested by the API call. */;
   /*{
   "nullable": true,
@@ -634,13 +636,19 @@ export interface CameraDragEnd_type {
   settings: CameraSettings_type /* Camera settings */;
 }
 
-export type CameraDragInteractionType_type = 'pan' | 'rotate' | 'zoom';
+export type CameraDragInteractionType_type =
+  | 'pan'
+  | 'rotate'
+  | 'rotatetrackball'
+  | 'zoom';
 
 export interface CameraDragMove_type {
   settings: CameraSettings_type /* Camera settings */;
 }
 
 export interface CameraDragStart_type {} /* Empty object */
+
+export type CameraMovement_type = 'vantage' | 'none';
 
 export interface CameraSettings_type {
   center: Point3d_type /* Camera's look-at center (center-pos gives viewing vector) */;
@@ -1040,6 +1048,8 @@ export interface CustomerBalance_type {
 
 export type CutType_type = 'fillet' | 'chamfer';
 
+export interface DefaultCameraCenterToScene_type {} /* Empty object */
+
 export interface DefaultCameraCenterToSelection_type {} /* Empty object */
 
 export interface DefaultCameraFocusOn_type {} /* Empty object */
@@ -1209,11 +1219,29 @@ export interface EntityLinearPatternTransform_type {
   entity_ids: string[];
 }
 
-export interface EntityMakeHelix_type {} /* Empty object */
+export interface EntityMakeHelix_type {
+  /* format:uuid, description:The UUID of the helix that was created. */
+  helix_id: string;
+}
 
-export interface EntityMirror_type {} /* Empty object */
+export interface EntityMakeHelixFromParams_type {
+  /* format:uuid, description:The UUID of the helix that was created. */
+  helix_id: string;
+}
 
-export interface EntityMirrorAcrossEdge_type {} /* Empty object */
+export interface EntityMirror_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
+}
+
+export interface EntityMirrorAcrossEdge_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
+}
 
 export interface EntitySetOpacity_type {} /* Empty object */
 
@@ -1348,7 +1376,22 @@ export interface ExtendedUserResultsPage_type {
 
 export interface Extrude_type {} /* Empty object */
 
-export type ExtrusionFaceCapType_type = 'none' | 'top' | 'bottom';
+export interface ExtrudedFaceInfo_type {
+  /*{
+  "nullable": true,
+  "format": "uuid",
+  "description": "The face made from the original 2D shape being extruded. If the solid is extruded from a shape which already has an ID (e.g. extruding something which was sketched on a face), this doesn't need to be sent."
+}*/
+  bottom?: string;
+  sides: SideFace_type[] /* Any intermediate sides between the top and bottom. */;
+  /*{
+  "format": "uuid",
+  "description": "Top face of the extrusion (parallel and further away from the original 2D shape being extruded)."
+}*/
+  top: string;
+}
+
+export type ExtrusionFaceCapType_type = 'none' | 'top' | 'bottom' | 'both';
 
 export interface ExtrusionFaceInfo_type {
   cap: ExtrusionFaceCapType_type /* Whether or not this extrusion face is a top/bottom cap face or not. Note that top/bottom cap faces will not have associated curve IDs. */;
@@ -2100,6 +2143,13 @@ export interface Loft_type {
 
 export interface MakeAxesGizmo_type {} /* Empty object */
 
+export interface MakeOffsetPath_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
+}
+
 export interface MakePlane_type {} /* Empty object */
 
 export interface Mass_type {
@@ -2271,8 +2321,20 @@ export type ModelingCmd_type =
     }
   | {
       distance: LengthUnit_type /* How far off the plane to extrude */;
+      /*{
+  "nullable": true,
+  "description": "Which IDs should the new faces have? If this isn't given, the engine will generate IDs."
+}*/
+      faces?: ExtrudedFaceInfo_type;
       target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
       type: 'extrude';
+    }
+  | {
+      sectional: boolean /* If true, the sweep will be broken up into sub-sweeps (extrusions, revolves, sweeps) based on the trajectory path components. */;
+      target: ModelingCmdId_type /* Which sketch to sweep. Must be a closed 2D solid. */;
+      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
+      trajectory: ModelingCmdId_type /* Path along which to sweep. */;
+      type: 'sweep';
     }
   | {
       angle: Angle_type /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */;
@@ -2449,7 +2511,12 @@ export type ModelingCmd_type =
   | {
       /* format:uuid, description:ID of the entity being copied. */
       entity_id: string;
-      transform: Transform_type[] /* How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list. */;
+      /*{
+  "default": [],
+  "description": "How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list."
+}*/
+      transform: Transform_type[];
+      transforms: Transform_type[][];
       type: 'entity_linear_pattern_transform';
     }
   | {
@@ -2483,8 +2550,22 @@ export type ModelingCmd_type =
       length: LengthUnit_type /* Length of the helix. */;
       /* format:double, description:Number of revolutions. */
       revolutions: number;
-      start_angle: Angle_type /* Start angle (in degrees). */;
+      /* default:{unit:degrees, value:0}, description:Start angle. */
+      start_angle: Angle_type;
       type: 'entity_make_helix';
+    }
+  | {
+      axis: Point3d_type /* Axis of the helix. The helix will be created around and in the direction of this axis. */;
+      center: Point3d_type /* Center of the helix at the base of the helix. */;
+      is_clockwise: boolean /* Is the helix rotation clockwise? */;
+      length: LengthUnit_type /* Length of the helix. */;
+      /* format:double, description:Radius of the helix. */
+      radius: number;
+      /* format:double, description:Number of revolutions. */
+      revolutions: number;
+      /* default:{unit:degrees, value:0}, description:Start angle. */
+      start_angle: Angle_type;
+      type: 'entity_make_helix_from_params';
     }
   | {
       axis: Point3d_type /* Axis to use as mirror. */;
@@ -2898,6 +2979,13 @@ export type ModelingCmd_type =
       type: 'curve_get_end_points';
     }
   | {
+      /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Video feed's constant bitrate (CBR)"
+}*/
+      bitrate?: number;
       /* format:uint32, minimum:0, description:Frames per second. */
       fps: number;
       /* format:uint32, minimum:0, description:Height of the stream. */
@@ -2983,7 +3071,22 @@ export type ModelingCmd_type =
       parameters?: PerspectiveCameraParameters_type;
       type: 'default_camera_set_perspective';
     }
-  | { type: 'default_camera_center_to_selection' }
+  | {
+      /*{
+  "default": "vantage",
+  "description": "Dictates whether or not the camera position should be adjusted during this operation If no movement is requested, the camera will orbit around the new center from its current position"
+}*/
+      camera_movement: CameraMovement_type;
+      type: 'default_camera_center_to_selection';
+    }
+  | {
+      /*{
+  "default": "vantage",
+  "description": "Dictates whether or not the camera position should be adjusted during this operation If no movement is requested, the camera will orbit around the new center from its current position"
+}*/
+      camera_movement: CameraMovement_type;
+      type: 'default_camera_center_to_scene';
+    }
   | {
       /* default:false, description:Whether or not to animate the camera movement. */
       animated: boolean;
@@ -3020,7 +3123,28 @@ export type ModelingCmd_type =
     }
   | { type: 'select_clear' }
   | { type: 'select_get' }
-  | { type: 'get_num_objects' };
+  | { type: 'get_num_objects' }
+  | {
+      /*{
+  "nullable": true,
+  "format": "uuid",
+  "description": "If the object is a solid, this is the ID of the face to base the offset on. If given, and `object_id` refers to a solid, then this face on the solid will be offset. If given but `object_id` doesn't refer to a solid, responds with an error. If not given, then `object_id` itself will be offset directly."
+}*/
+      face_id?: string;
+      /*{
+  "format": "uuid",
+  "description": "The object that will be offset (can be a path, sketch, or a solid)"
+}*/
+      object_id: string;
+      offset: LengthUnit_type /* The distance to offset the path (positive for outset, negative for inset) */;
+      type: 'make_offset_path';
+    }
+  | {
+      /* format:uuid, description:The closed path to add a hole to. */
+      object_id: string;
+      offset: LengthUnit_type /* The distance to offset the path (positive for outset, negative for inset) */;
+      type: 'add_hole_from_offset';
+    };
 
 export type ModelingCmdId_type =
   /*{
@@ -3113,6 +3237,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/Sweep"
+}*/
+      data: Sweep_type;
+      type: 'sweep';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/Revolve"
 }*/
       data: Revolve_type;
@@ -3152,27 +3283,6 @@ export type OkModelingCmdResponse_type =
 }*/
       data: DefaultCameraPerspectiveSettings_type;
       type: 'default_camera_perspective_settings';
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/EntityMakeHelix"
-}*/
-      data: EntityMakeHelix_type;
-      type: 'entity_make_helix';
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/EntityMirror"
-}*/
-      data: EntityMirror_type;
-      type: 'entity_mirror';
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/EntityMirrorAcrossEdge"
-}*/
-      data: EntityMirrorAcrossEdge_type;
-      type: 'entity_mirror_across_edge';
     }
   | {
       /*{
@@ -3456,6 +3566,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/DefaultCameraCenterToScene"
+}*/
+      data: DefaultCameraCenterToScene_type;
+      type: 'default_camera_center_to_scene';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/SelectClear"
 }*/
       data: SelectClear_type;
@@ -3579,6 +3696,20 @@ export type OkModelingCmdResponse_type =
 }*/
       data: GetNumObjects_type;
       type: 'get_num_objects';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/MakeOffsetPath"
+}*/
+      data: MakeOffsetPath_type;
+      type: 'make_offset_path';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/AddHoleFromOffset"
+}*/
+      data: AddHoleFromOffset_type;
+      type: 'add_hole_from_offset';
     }
   | {
       /*{
@@ -3838,6 +3969,34 @@ export type OkModelingCmdResponse_type =
 }*/
       data: EntityCircularPattern_type;
       type: 'entity_circular_pattern';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityMirror"
+}*/
+      data: EntityMirror_type;
+      type: 'entity_mirror';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityMirrorAcrossEdge"
+}*/
+      data: EntityMirrorAcrossEdge_type;
+      type: 'entity_mirror_across_edge';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityMakeHelix"
+}*/
+      data: EntityMakeHelix_type;
+      type: 'entity_make_helix';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityMakeHelixFromParams"
+}*/
+      data: EntityMakeHelixFromParams_type;
+      type: 'entity_make_helix_from_params';
     }
   | {
       /*{
@@ -4203,6 +4362,12 @@ export type PathSegment_type =
       angle_snap_increment?: Angle_type;
       to: Point3d_type /* Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position. */;
       type: 'tangential_arc_to';
+    }
+  | {
+      end: Point3d_type /* End point of the arc. */;
+      interior: Point3d_type /* Interior point of the arc. */;
+      relative: boolean /* Whether or not interior and end are relative to the previous path position */;
+      type: 'arc_to';
     };
 
 export interface PathSegmentInfo_type {
@@ -4569,6 +4734,13 @@ export interface ShortlinkResultsPage_type {
   next_page?: string;
 }
 
+export interface SideFace_type {
+  /* format:uuid, description:Desired ID for the resulting face. */
+  face_id: string;
+  /* format:uuid, description:ID of the path this face is being extruded from. */
+  path_id: string;
+}
+
 export interface SketchModeDisable_type {} /* Empty object */
 
 export interface Solid2dAddHole_type {} /* Empty object */
@@ -4695,6 +4867,8 @@ export interface SurfaceArea_type {
   /* format:double, description:The surface area. */
   surface_area: number;
 }
+
+export interface Sweep_type {} /* Empty object */
 
 export interface System_type {
   forward: AxisDirectionPair_type /* Axis the front face of a model looks along. */;
@@ -5730,6 +5904,7 @@ export interface ZoomToFit_type {
 
 export interface Models {
   AccountProvider_type: AccountProvider_type;
+  AddHoleFromOffset_type: AddHoleFromOffset_type;
   AddOrgMember_type: AddOrgMember_type;
   AddressDetails_type: AddressDetails_type;
   Angle_type: Angle_type;
@@ -5765,6 +5940,7 @@ export interface Models {
   CameraDragInteractionType_type: CameraDragInteractionType_type;
   CameraDragMove_type: CameraDragMove_type;
   CameraDragStart_type: CameraDragStart_type;
+  CameraMovement_type: CameraMovement_type;
   CameraSettings_type: CameraSettings_type;
   CardDetails_type: CardDetails_type;
   CenterOfMass_type: CenterOfMass_type;
@@ -5789,6 +5965,7 @@ export interface Models {
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
   CutType_type: CutType_type;
+  DefaultCameraCenterToScene_type: DefaultCameraCenterToScene_type;
   DefaultCameraCenterToSelection_type: DefaultCameraCenterToSelection_type;
   DefaultCameraFocusOn_type: DefaultCameraFocusOn_type;
   DefaultCameraGetSettings_type: DefaultCameraGetSettings_type;
@@ -5825,6 +6002,7 @@ export interface Models {
   EntityLinearPattern_type: EntityLinearPattern_type;
   EntityLinearPatternTransform_type: EntityLinearPatternTransform_type;
   EntityMakeHelix_type: EntityMakeHelix_type;
+  EntityMakeHelixFromParams_type: EntityMakeHelixFromParams_type;
   EntityMirror_type: EntityMirror_type;
   EntityMirrorAcrossEdge_type: EntityMirrorAcrossEdge_type;
   EntitySetOpacity_type: EntitySetOpacity_type;
@@ -5839,6 +6017,7 @@ export interface Models {
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
   Extrude_type: Extrude_type;
+  ExtrudedFaceInfo_type: ExtrudedFaceInfo_type;
   ExtrusionFaceCapType_type: ExtrusionFaceCapType_type;
   ExtrusionFaceInfo_type: ExtrusionFaceInfo_type;
   FaceGetCenter_type: FaceGetCenter_type;
@@ -5890,6 +6069,7 @@ export interface Models {
   LengthUnit_type: LengthUnit_type;
   Loft_type: Loft_type;
   MakeAxesGizmo_type: MakeAxesGizmo_type;
+  MakeOffsetPath_type: MakeOffsetPath_type;
   MakePlane_type: MakePlane_type;
   Mass_type: Mass_type;
   MetaClusterInfo_type: MetaClusterInfo_type;
@@ -5992,6 +6172,7 @@ export interface Models {
   SetTool_type: SetTool_type;
   Shortlink_type: Shortlink_type;
   ShortlinkResultsPage_type: ShortlinkResultsPage_type;
+  SideFace_type: SideFace_type;
   SketchModeDisable_type: SketchModeDisable_type;
   Solid2dAddHole_type: Solid2dAddHole_type;
   Solid3dFilletEdge_type: Solid3dFilletEdge_type;
@@ -6016,6 +6197,7 @@ export interface Models {
   SuccessWebSocketResponse_type: SuccessWebSocketResponse_type;
   SupportTier_type: SupportTier_type;
   SurfaceArea_type: SurfaceArea_type;
+  Sweep_type: Sweep_type;
   System_type: System_type;
   TakeSnapshot_type: TakeSnapshot_type;
   TextToCad_type: TextToCad_type;
