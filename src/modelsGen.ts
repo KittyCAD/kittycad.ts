@@ -160,6 +160,21 @@ async function main() {
     if (schema.type === 'array') {
       return `${name}: ${makeTypeStringForNode(schema.items as any)}[]`;
     }
+    // Object only has $ref inside
+    if (
+      schema &&
+      schema instanceof Object &&
+      Object.getPrototypeOf(schema) !== null &&
+      '$ref' in schema &&
+      typeof schema['$ref'] === 'string'
+    ) {
+      const ref = schema['$ref'];
+      // if `name` is empty, just pass back the looked-up type
+      const typeString =
+        (name ? `${name}: ` : '') +
+        (ref in typeNameReference ? typeNameReference[ref] : 'any');
+      return typeString;
+    }
     if (typeof schema.type === 'undefined') {
       return `${name}: any`;
     }
