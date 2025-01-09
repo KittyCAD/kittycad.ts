@@ -1,12 +1,28 @@
 /**
+ * These tests are not to be generated because they would cause
+ * issues with running the rest of the test suite.
+ *
+ * Underscores in the names before the period should be replaced with hyphens
+ */
+export const operationsToNotGenerateTestsFor = ['delete_user_self'];
+
+/**
+ * Construct a test path string from a tag and operationId
+ * to index into the arrays exported from this file
+ */
+export const toTestPathString = (tag: string, operationId: string) =>
+  `${tag.trim()}.${operationId.trim()}`;
+
+/**
  * These tests are expected to timeout due to the behavior of the Dev API
- * Underscores before the period should be replaced with hyphens
+ *
+ * Underscores in the names before the period should be replaced with hyphens
  */
 export const expectedToTimeout = [
   'ai.create_image_to_3d',
   'ai.create_text_to_3d',
   'meta.get_metadata',
-]
+];
 
 /**
  * Tests that are expected to fail
@@ -19,62 +35,61 @@ export const expectedToTimeout = [
 
  * Underscores in names before the period should be replaced with hyphens
  */
-export const testsExpectedToThrow =
-  [
-    'api-calls.get_api_call_for_user',
-    'api-calls.get_api_call',
-    'api-calls.get_async_operation',
-    'apps.apps_github_webhook',
-    'meta.internal_get_api_token_for_discord_user',
-    'oauth2.device_auth_verify',
-    'oauth2.oauth2_provider_callback',
-    'payments-get_payment_balance_for_user',
-    'payments.delete_payment_information_for_user',
-    'payments.delete_payment_method_for_user',
-    'payments.validate_customer_tax_information_for_user',
-    'unit-get_frequency_unit_conversion',
-    'unit.get_power_unit_conversion',
-    'users.delete_user_self',
-    'users.get_user_extended',
-    'users.get_user_front_hash_self',
-    'users.get_user',
-    'api-tokens.delete_api_token_for_user',
-    'api-tokens.get_api_token_for_user',
-    'service-accounts.delete_service_account_for_org',
-    'service-accounts.get_service_account_for_org',
-    'users.get_session_for_user',
+export const testsExpectedToThrow = [
+  'api-calls.get_api_call_for_user',
+  'api-calls.get_api_call',
+  'api-calls.get_async_operation',
+  'apps.apps_github_webhook',
+  'meta.internal_get_api_token_for_discord_user',
+  'oauth2.device_auth_verify',
+  'oauth2.oauth2_provider_callback',
+  'payments-get_payment_balance_for_user',
+  'payments.delete_payment_information_for_user',
+  'payments.delete_payment_method_for_user',
+  'payments.validate_customer_tax_information_for_user',
+  'unit-get_frequency_unit_conversion',
+  'unit.get_power_unit_conversion',
+  'users.delete_user_self',
+  'users.get_user_extended',
+  'users.get_user_front_hash_self',
+  'users.get_user',
+  'api-tokens.delete_api_token_for_user',
+  'api-tokens.get_api_token_for_user',
+  'service-accounts.delete_service_account_for_org',
+  'service-accounts.get_service_account_for_org',
+  'users.get_session_for_user',
 
-    // it's possible some of these org tests are failing because Kurt's account and token
-    // used in these test are not in an org
-    'orgs.delete_org_member',
-    'orgs.delete_org_saml_idp',
-    'orgs.delete_org',
-    'orgs.get_any_org',
-    'orgs.get_org_member',
-    'orgs.get_org_privacy_settings',
-    'orgs.get_org_saml_idp',
-    'orgs.get_org',
-    'orgs.get_user_org',
-    'payments.create_payment_intent_for_org',
-    'payments.delete_payment_information_for_org',
-    'payments.delete_payment_method_for_org',
-    'payments.get_org_subscription',
-    'payments.get_payment_balance_for_any_org',
-    'payments.get_payment_balance_for_any_user',
-    'payments.get_payment_balance_for_org',
-    'payments.get_payment_information_for_org',
-    'payments.get_user_subscription',
-    'payments.list_invoices_for_org',
-    'payments.list_payment_methods_for_org',
-    'payments.create_payment_intent_for_user',
-    'payments.get_payment_balance_for_user',
-    'payments.get_payment_information_for_user',
-    'payments.list_invoices_for_user',
-    'payments.list_payment_methods_for_user',
-    'payments.validate_customer_tax_information_for_org',
-    'service-accounts.create_service_account_for_org',
-    'users.get_user_privacy_settings',
+  // it's possible some of these org tests are failing because Kurt's account and token
+  // used in these test are not in an org
+  'orgs.delete_org_member',
+  'orgs.delete_org_saml_idp',
+  'orgs.delete_org',
+  'orgs.get_any_org',
+  'orgs.get_org_member',
+  'orgs.get_org_privacy_settings',
+  'orgs.get_org_saml_idp',
+  'orgs.get_org',
+  'orgs.get_user_org',
+  'payments.create_payment_intent_for_org',
+  'payments.delete_payment_information_for_org',
+  'payments.delete_payment_method_for_org',
+  'payments.get_org_subscription',
+  'payments.get_payment_balance_for_any_org',
+  'payments.get_payment_balance_for_any_user',
+  'payments.get_payment_balance_for_org',
+  'payments.get_payment_information_for_org',
+  'payments.get_user_subscription',
+  'payments.list_invoices_for_org',
+  'payments.list_payment_methods_for_org',
+  'payments.create_payment_intent_for_user',
+  'payments.get_payment_balance_for_user',
+  'payments.get_payment_information_for_user',
+  'payments.list_invoices_for_user',
+  'payments.list_payment_methods_for_user',
+  'payments.validate_customer_tax_information_for_org',
+  'service-accounts.create_service_account_for_org',
+  'users.get_user_privacy_settings',
 
-    // stateful. what matters is the creation variants succeed.
-    'users.delete_user_shortlink',
-  ];
+  // stateful. what matters is the creation variants succeed.
+  'users.delete_user_shortlink',
+];
