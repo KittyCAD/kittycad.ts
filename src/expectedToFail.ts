@@ -21,6 +21,7 @@ export const toTestPathString = (tag: string, operationId: string) =>
 export const expectedToTimeout = [
   'ai.create_image_to_3d',
   'ai.create_text_to_3d',
+  'api-calls.get_api_call_metrics',
   'meta.get_metadata',
 ];
 
