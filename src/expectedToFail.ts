@@ -8,16 +8,18 @@ export const expectedToTimeout = [
   'meta.get_metadata',
 ]
 
-export const testsExpectedToFail =
-  // Tests that are expected to fail
-  // They are not exactly ignored because we still hit the endpoint but might be rejected
-  // because the dummy data in the tests is not valid
-  // i.e. using a uuid like 000-000-....
-  // The time spent making these all pass is not worth it because the endpoint already have tests
-  // we mostly want to make sure the examples are valid aside from dummy data
-  // or at the very least checked periodically.
+/**
+ * Tests that are expected to fail
+ * They are not exactly ignored because we still hit the endpoint but might be rejected
+ * because the dummy data in the tests is not valid
+ * i.e. using a uuid like 000-000-....
+ * The time spent making these all pass is not worth it because the endpoint already have tests
+ * we mostly want to make sure the examples are valid aside from dummy data
+ * or at the very least checked periodically.
 
-  // underscores before the period should be replaced with hyphens
+ * Underscores in names before the period should be replaced with hyphens
+ */
+export const testsExpectedToThrow =
   [
     'api-calls.get_api_call_for_user',
     'api-calls.get_api_call',

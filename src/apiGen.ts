@@ -2,7 +2,7 @@ import fsp from 'node:fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
 import { format } from 'prettier';
 import pkg from 'fast-json-patch';
-import { testsExpectedToFail, expectedToTimeout } from './expectedToFail';
+import { testsExpectedToThrow, expectedToTimeout } from './expectedToFail';
 const { observe, generate } = pkg;
 
 export default async function apiGen(lookup: any) {
@@ -424,7 +424,7 @@ export default async function apiGen(lookup: any) {
         ['{ api }', `{ ${safeTag} }`],
         ['api.section', `${safeTag}.${operationId}`],
       ]);
-      if (testsExpectedToFail.includes(`${tag.trim()}.${operationId.trim()}`)) {
+      if (testsExpectedToThrow.includes(`${tag.trim()}.${operationId.trim()}`)) {
         // these test are expected to fail
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],
