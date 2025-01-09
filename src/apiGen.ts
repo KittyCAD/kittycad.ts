@@ -2,7 +2,7 @@ import fsp from 'node:fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
 import { format } from 'prettier';
 import pkg from 'fast-json-patch';
-import { testsExpectedToFail } from './expectedToFail';
+import { testsExpectedToFail, expectedToTimeout } from './expectedToFail';
 const { observe, generate } = pkg;
 
 export default async function apiGen(lookup: any) {
@@ -431,9 +431,7 @@ export default async function apiGen(lookup: any) {
           [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
         ]);
       } else if (
-        ['ai.create_text_to_3d', 'ai.create_image_to_3d'].includes(
-          `${tag.trim()}.${operationId.trim()}`,
-        )
+        expectedToTimeout.includes(`${tag.trim()}.${operationId.trim()}`)
       ) {
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],

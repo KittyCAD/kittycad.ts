@@ -1,3 +1,13 @@
+/**
+ * These tests are expected to timeout due to the behavior of the Dev API
+ * Underscores before the period should be replaced with hyphens
+ */
+export const expectedToTimeout = [
+  'ai.create_image_to_3d',
+  'ai.create_text_to_3d',
+  'meta.get_metadata',
+]
+
 export const testsExpectedToFail =
   // Tests that are expected to fail
   // They are not exactly ignored because we still hit the endpoint but might be rejected
