@@ -2,7 +2,12 @@ import fsp from 'node:fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
 import { format } from 'prettier';
 import pkg from 'fast-json-patch';
-import { testsExpectedToFail } from './expectedToFail';
+import {
+  testsExpectedToThrow,
+  expectedToTimeout,
+  toTestPathString,
+  operationsToNotGenerateTestsFor,
+} from './expectedToFail';
 const { observe, generate } = pkg;
 
 export default async function apiGen(lookup: any) {
@@ -424,16 +429,14 @@ export default async function apiGen(lookup: any) {
         ['{ api }', `{ ${safeTag} }`],
         ['api.section', `${safeTag}.${operationId}`],
       ]);
-      if (testsExpectedToFail.includes(`${tag.trim()}.${operationId.trim()}`)) {
+      if (testsExpectedToThrow.includes(toTestPathString(tag, operationId))) {
         // these test are expected to fail
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],
           [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
         ]);
       } else if (
-        ['ai.create_text_to_3d', 'ai.create_image_to_3d'].includes(
-          `${tag.trim()}.${operationId.trim()}`,
-        )
+        expectedToTimeout.includes(toTestPathString(tag, operationId))
       ) {
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],
@@ -450,11 +453,15 @@ export default async function apiGen(lookup: any) {
       genTest = replacer(genTest, [
         ['console.log(JSON.stringify(response, null, 2));', ''],
       ]);
-      const genTestsWritePromise = fsp.writeFile(
-        `./__tests__/gen/${tag}-${operationId}.test.ts`,
-        genTest,
-        'utf8',
-      );
+      const genTestsWritePromise = !operationsToNotGenerateTestsFor.includes(
+        operationId,
+      )
+        ? fsp.writeFile(
+            `./__tests__/gen/${tag}-${operationId}.test.ts`,
+            genTest,
+            'utf8',
+          )
+        : Promise.resolve();
       exampleTemplate = replacer(exampleTemplate, [
         ["from '../../src/index.js'", "from '@kittycad/lib'"],
         [/describe\('Testing(.|\n)+?(}\);)(.|\n)+?(}\);)/g, ''],
