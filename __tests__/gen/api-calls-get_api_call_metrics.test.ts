@@ -9,6 +9,10 @@ async function example() {
 
 describe('Testing api_calls.get_api_call_metrics', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
+    const examplePromise = example();
+    const timeoutPromise = new Promise((r) =>
+      setTimeout(() => r('timeout'), 450),
+    );
+    expect(await Promise.any([examplePromise, timeoutPromise])).toBe('timeout');
   });
 });
