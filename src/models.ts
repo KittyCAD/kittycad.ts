@@ -791,6 +791,23 @@ export interface Color_type {
   r: number;
 }
 
+export interface ComponentTransform_type {
+  /*{
+  "nullable": true,
+  "description": "Rotate component of the transform. The rotation is specified as an axis and an angle (xyz are the components of the axis, w is the angle in degrees)."
+}*/
+  rotate_angle_axis?: TransformByForPoint4d_type;
+  /*{
+  "nullable": true,
+  "description": "Rotate component of the transform. The rotation is specified as a roll, pitch, yaw."
+}*/
+  rotate_rpy?: TransformByForPoint3d_type;
+  /* nullable:true, description:Scale component of the transform. */
+  scale?: TransformByForPoint3d_type;
+  /* nullable:true, description:Translate component of the transform. */
+  translate?: TransformByForPoint3d_type;
+}
+
 export interface Connection_type {
   /* default:0, format:int64, description:The auth timeout of the server. */
   auth_timeout: number;
@@ -1219,15 +1236,11 @@ export interface EntityLinearPatternTransform_type {
   entity_ids: string[];
 }
 
-export interface EntityMakeHelix_type {
-  /* format:uuid, description:The UUID of the helix that was created. */
-  helix_id: string;
-}
+export interface EntityMakeHelix_type {} /* Empty object */
 
-export interface EntityMakeHelixFromParams_type {
-  /* format:uuid, description:The UUID of the helix that was created. */
-  helix_id: string;
-}
+export interface EntityMakeHelixFromEdge_type {} /* Empty object */
+
+export interface EntityMakeHelixFromParams_type {} /* Empty object */
 
 export interface EntityMirror_type {
   /*{
@@ -2559,13 +2572,28 @@ export type ModelingCmd_type =
       center: Point3d_type /* Center of the helix at the base of the helix. */;
       is_clockwise: boolean /* Is the helix rotation clockwise? */;
       length: LengthUnit_type /* Length of the helix. */;
-      /* format:double, description:Radius of the helix. */
-      radius: number;
+      radius: LengthUnit_type /* Radius of the helix. */;
       /* format:double, description:Number of revolutions. */
       revolutions: number;
       /* default:{unit:degrees, value:0}, description:Start angle. */
       start_angle: Angle_type;
       type: 'entity_make_helix_from_params';
+    }
+  | {
+      /* format:uuid, description:Edge about which to make the helix. */
+      edge_id: string;
+      is_clockwise: boolean /* Is the helix rotation clockwise? */;
+      /*{
+  "nullable": true,
+  "description": "Length of the helix. If None, the length of the edge will be used instead."
+}*/
+      length?: LengthUnit_type;
+      radius: LengthUnit_type /* Radius of the helix. */;
+      /* format:double, description:Number of revolutions. */
+      revolutions: number;
+      /* default:{unit:degrees, value:0}, description:Start angle. */
+      start_angle: Angle_type;
+      type: 'entity_make_helix_from_edge';
     }
   | {
       axis: Point3d_type /* Axis to use as mirror. */;
@@ -3124,6 +3152,12 @@ export type ModelingCmd_type =
   | { type: 'select_clear' }
   | { type: 'select_get' }
   | { type: 'get_num_objects' }
+  | {
+      /* format:uuid, description:Id of the object whose transform is to be set. */
+      object_id: string;
+      transforms: ComponentTransform_type[] /* List of transforms to be applied to the object. */;
+      type: 'set_object_transform';
+    }
   | {
       /*{
   "nullable": true,
@@ -3706,6 +3740,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/SetObjectTransform"
+}*/
+      data: SetObjectTransform_type;
+      type: 'set_object_transform';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/AddHoleFromOffset"
 }*/
       data: AddHoleFromOffset_type;
@@ -3997,6 +4038,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: EntityMakeHelixFromParams_type;
       type: 'entity_make_helix_from_params';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/EntityMakeHelixFromEdge"
+}*/
+      data: EntityMakeHelixFromEdge_type;
+      type: 'entity_make_helix_from_edge';
     }
   | {
       /*{
@@ -4696,6 +4744,8 @@ export interface SetCurrentToolProperties_type {} /* Empty object */
 
 export interface SetDefaultSystemProperties_type {} /* Empty object */
 
+export interface SetObjectTransform_type {} /* Empty object */
+
 export interface SetSceneUnits_type {} /* Empty object */
 
 export interface SetSelectionFilter_type {} /* Empty object */
@@ -5044,6 +5094,10 @@ export interface Transform_type {
 }*/
   translate: Point3d_type;
 }
+
+export type TransformByForPoint3d_type = string;
+
+export type TransformByForPoint4d_type = string;
 
 export type UnitAngle_type = 'degrees' | 'radians';
 
@@ -5950,6 +6004,7 @@ export interface Models {
   CodeLanguage_type: CodeLanguage_type;
   CodeOutput_type: CodeOutput_type;
   Color_type: Color_type;
+  ComponentTransform_type: ComponentTransform_type;
   Connection_type: Connection_type;
   CountryCode_type: CountryCode_type;
   Coupon_type: Coupon_type;
@@ -6002,6 +6057,7 @@ export interface Models {
   EntityLinearPattern_type: EntityLinearPattern_type;
   EntityLinearPatternTransform_type: EntityLinearPatternTransform_type;
   EntityMakeHelix_type: EntityMakeHelix_type;
+  EntityMakeHelixFromEdge_type: EntityMakeHelixFromEdge_type;
   EntityMakeHelixFromParams_type: EntityMakeHelixFromParams_type;
   EntityMirror_type: EntityMirror_type;
   EntityMirrorAcrossEdge_type: EntityMirrorAcrossEdge_type;
@@ -6166,6 +6222,7 @@ export interface Models {
   SetBackgroundColor_type: SetBackgroundColor_type;
   SetCurrentToolProperties_type: SetCurrentToolProperties_type;
   SetDefaultSystemProperties_type: SetDefaultSystemProperties_type;
+  SetObjectTransform_type: SetObjectTransform_type;
   SetSceneUnits_type: SetSceneUnits_type;
   SetSelectionFilter_type: SetSelectionFilter_type;
   SetSelectionType_type: SetSelectionType_type;
@@ -6208,6 +6265,8 @@ export interface Models {
   TextToCadResultsPage_type: TextToCadResultsPage_type;
   TokenRevokeRequestForm_type: TokenRevokeRequestForm_type;
   Transform_type: Transform_type;
+  TransformByForPoint3d_type: TransformByForPoint3d_type;
+  TransformByForPoint4d_type: TransformByForPoint4d_type;
   UnitAngle_type: UnitAngle_type;
   UnitAngleConversion_type: UnitAngleConversion_type;
   UnitArea_type: UnitArea_type;
