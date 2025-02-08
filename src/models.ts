@@ -1803,9 +1803,11 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       type: 'obj';
-      /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc.
+      /* The units of the input data.
 
-Defaults to meters. */
+This is very important for correct scaling and when calculating physics properties like mass, etc.
+
+Defaults to millimeters. */
       units: UnitLength_type;
     }
   | {
@@ -1816,7 +1818,12 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       type: 'ply';
-      units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
+      /* The units of the input data.
+
+This is very important for correct scaling and when calculating physics properties like mass, etc.
+
+Defaults to millimeters. */
+      units: UnitLength_type;
     }
   | {
       /*{
@@ -1842,7 +1849,12 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
       type: 'stl';
-      units: UnitLength_type /* The units of the input data. This is very important for correct scaling and when calculating physics properties like mass, etc. */;
+      /* The units of the input data.
+
+This is very important for correct scaling and when calculating physics properties like mass, etc.
+
+Defaults to millimeters. */
+      units: UnitLength_type;
     };
 
 export interface Invoice_type {
@@ -2926,6 +2938,21 @@ export type ModelingCmd_type =
       type: 'curve_get_control_points';
     }
   | {
+      /* format:uuid, description:Which entity to project (vertex or edge). */
+      entity_id: string;
+      /* format:uuid, description:Which plane to project entity_id onto. */
+      plane_id: string;
+      type: 'project_entity_to_plane';
+      use_plane_coords: boolean /* If true: the projected points are returned in the plane_id's coordinate system, else: the projected points are returned in the world coordinate system. */;
+    }
+  | {
+      /* format:uuid, description:The id of the plane used for the projection. */
+      plane_id: string;
+      points: Point3d_type[] /* The list of points that will be projected. */;
+      type: 'project_points_to_plane';
+      use_plane_coords: boolean /* If true: the projected points are returned in the plane_id's coordinate sysetm. else: the projected points are returned in the world coordinate system. */;
+    }
+  | {
       format: ImageFormat_type /* What image format to return. */;
       type: 'take_snapshot';
     }
@@ -3824,6 +3851,20 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/ProjectEntityToPlane"
+}*/
+      data: ProjectEntityToPlane_type;
+      type: 'project_entity_to_plane';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ProjectPointsToPlane"
+}*/
+      data: ProjectPointsToPlane_type;
+      type: 'project_points_to_plane';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/CurveGetType"
 }*/
       data: CurveGetType_type;
@@ -4291,7 +4332,7 @@ Defaults to the [KittyCAD co-ordinate system].
       type: 'obj';
       /* Export length unit.
 
-Defaults to meters. */
+Defaults to millimeters. */
       units: UnitLength_type;
     }
   | {
@@ -4306,7 +4347,7 @@ Defaults to the [KittyCAD co-ordinate system].
       type: 'ply';
       /* Export length unit.
 
-Defaults to meters. */
+Defaults to millimeters. */
       units: UnitLength_type;
     }
   | {
@@ -4330,7 +4371,7 @@ Defaults to the [KittyCAD co-ordinate system].
       type: 'stl';
       /* Export length unit.
 
-Defaults to meters. */
+Defaults to millimeters. */
       units: UnitLength_type;
     };
 
@@ -4535,6 +4576,14 @@ export type PostEffectType_type =
 
 export interface PrivacySettings_type {
   can_train_on_data: boolean /* If we can train on the data. If the user is a member of an organization, the organization's setting will override this. The organization's setting takes priority. */;
+}
+
+export interface ProjectEntityToPlane_type {
+  projected_points: Point3d_type[] /* Projected points. */;
+}
+
+export interface ProjectPointsToPlane_type {
+  projected_points: Point3d_type[] /* Projected points. */;
 }
 
 export interface RawFile_type {
@@ -6192,6 +6241,8 @@ export interface Models {
   Pong_type: Pong_type;
   PostEffectType_type: PostEffectType_type;
   PrivacySettings_type: PrivacySettings_type;
+  ProjectEntityToPlane_type: ProjectEntityToPlane_type;
+  ProjectPointsToPlane_type: ProjectPointsToPlane_type;
   RawFile_type: RawFile_type;
   ReconfigureStream_type: ReconfigureStream_type;
   RemoveSceneObjects_type: RemoveSceneObjects_type;
