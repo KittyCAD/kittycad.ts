@@ -40,7 +40,7 @@ export default async function functionName(
   files.forEach((file) => {
     formData.append(file.name, file.data, file.name);
   });
-  formData.append('body', 'BODY');
+  formData.append('event', 'BODY');
 
   const fetchOptions = {
     method: 'METHOD',

@@ -317,8 +317,8 @@ export default async function apiGen(lookup: any) {
           'body: JSON.stringify(body)',
         );
         template = template.replaceAll(
-          "formData.append('body', 'BODY')",
-          "formData.append('body', JSON.stringify(body))",
+          "formData.append('event', 'BODY')",
+          "formData.append('event', JSON.stringify(body))",
         );
       } else if (requestBody?.content?.['application/octet-stream']) {
         const schema = requestBody.content['application/octet-stream']
@@ -356,7 +356,10 @@ export default async function apiGen(lookup: any) {
         template = template.replaceAll("body: 'BODY'", 'body');
       } else {
         template = template.replaceAll(/body: 'BODY'.+/g, '');
-        template = template.replaceAll(/format.append('body', 'BODY');.+/g, '');
+        template = template.replaceAll(
+          /format.append('event', 'BODY');.+/g,
+          '',
+        );
       }
 
       if (inputParams.length === 1) {

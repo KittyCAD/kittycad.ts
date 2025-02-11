@@ -40,7 +40,7 @@ export default async function create_event({
   files.forEach((file) => {
     formData.append(file.name, file.data, file.name);
   });
-  formData.append('body', JSON.stringify(body));
+  formData.append('event', JSON.stringify(body));
 
   const fetchOptions = {
     method: 'POST',
