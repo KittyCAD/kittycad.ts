@@ -90,15 +90,6 @@ export default async function apiGen(lookup: any) {
         inputParamsExamples.push(
           `files: [{name: "thing.kcl", data: new Blob(['thing = 1'], {type: 'text/plain'})}]`,
         );
-
-        exampleTemplate = (
-          await fsp.readFile(
-            './src/exampleAndGenTestTemplateMultipart.md',
-            'utf8',
-          )
-        )
-          .replaceAll('```typescript', '')
-          .replaceAll('```', '');
       }
 
       const importedParamTypes: string[] = [];
