@@ -875,7 +875,7 @@
     "op": "add",
     "path": "/paths/~1ml~1text-to-cad~1multi-file~1iteration/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_multi_file_iteration()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_multi_file_iteration({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: { source_ranges: [] },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -979,7 +979,7 @@
     "op": "add",
     "path": "/paths/~1events/post/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.create_event()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.create_event({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            attachment_uri:\n                'Attachment URI for where the attachment is stored.',\n            created_at: 'Time this event was created.',\n            event_type: 'successful_compile_before_close',\n            last_compiled_at:\n                'Time the associated attachment was last compiled.',\n            project_description: 'Project descriptino as given by the user.',\n            project_name: 'Project name as given by the user.',\n            source_id:\n                'The source app for this event, uuid that is unique to the app.',\n            type: 'modeling_app_event',\n            user_id: 'An anonymous user id generated client-side.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -987,7 +987,7 @@
     "op": "add",
     "path": "/paths/~1debug~1uploads/post/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.create_debug_uploads()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.create_debug_uploads({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

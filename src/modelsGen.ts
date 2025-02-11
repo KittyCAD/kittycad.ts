@@ -216,6 +216,9 @@ async function main() {
   template = template.replaceAll(/boolean.+\/\* Always false \*\//g, 'false');
   template = template.replaceAll(/boolean.+\/\* Always true \*\//g, 'true');
 
+  // Add a file type to the Models interface.
+  template += `export type File =  {  readonly name: string;readonly data:Blob;  }\n\n`;
+
   await fsp.writeFile(`./src/models.ts`, template, 'utf8');
   apiGen(typeNameReference);
 }

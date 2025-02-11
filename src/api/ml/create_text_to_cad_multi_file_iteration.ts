@@ -1,18 +1,26 @@
-import { TextToCadMultiFileIteration_type, Error_type } from '../../models.js';
+import {
+  TextToCadMultiFileIteration_type,
+  Error_type,
+  TextToCadMultiFileIterationBody_type,
+} from '../../models.js';
+import { File } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_text_to_cad_multi_file_iteration_params {
   client?: Client;
+  body: TextToCadMultiFileIterationBody_type;
+  files: File[];
 }
 
 type Create_text_to_cad_multi_file_iteration_return =
   | TextToCadMultiFileIteration_type
   | Error_type;
 
-export default async function create_text_to_cad_multi_file_iteration(
-  { client }: Create_text_to_cad_multi_file_iteration_params = {},
-  files: types.File[],
-): Promise<Create_text_to_cad_multi_file_iteration_return> {
+export default async function create_text_to_cad_multi_file_iteration({
+  client,
+  files,
+  body,
+}: Create_text_to_cad_multi_file_iteration_params): Promise<Create_text_to_cad_multi_file_iteration_return> {
   const url = `/ml/text-to-cad/multi-file/iteration`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -38,7 +46,7 @@ export default async function create_text_to_cad_multi_file_iteration(
   files.forEach((file) => {
     formData.append(file.name, file.data, file.name);
   });
-  formData.append('body', 'BODY');
+  formData.append('body', JSON.stringify(body));
 
   const fetchOptions = {
     method: 'POST',

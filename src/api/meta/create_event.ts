@@ -1,16 +1,20 @@
-import { Error_type } from '../../models.js';
+import { Error_type, Event_type } from '../../models.js';
+import { File } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_event_params {
   client?: Client;
+  body: Event_type;
+  files: File[];
 }
 
 type Create_event_return = Error_type;
 
-export default async function create_event(
-  { client }: Create_event_params = {},
-  files: types.File[],
-): Promise<Create_event_return> {
+export default async function create_event({
+  client,
+  files,
+  body,
+}: Create_event_params): Promise<Create_event_return> {
   const url = `/events`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -36,7 +40,7 @@ export default async function create_event(
   files.forEach((file) => {
     formData.append(file.name, file.data, file.name);
   });
-  formData.append('body', 'BODY');
+  formData.append('body', JSON.stringify(body));
 
   const fetchOptions = {
     method: 'POST',

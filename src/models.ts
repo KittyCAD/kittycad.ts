@@ -6451,3 +6451,5 @@ export interface Models {
   ZooTool_type: ZooTool_type;
   ZoomToFit_type: ZoomToFit_type;
 }
+
+export type File = { readonly name: string; readonly data: Blob };

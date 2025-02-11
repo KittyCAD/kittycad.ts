@@ -1,9 +1,11 @@
 ```typescript
 import * as types from './src/models.ts';
+import { File } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface FunctionNameParams {
   exampleParam: string;
+  files: File[];
 }
 
 interface FunctionNameReturn {
@@ -12,7 +14,6 @@ interface FunctionNameReturn {
 
 export default async function functionName(
   functionNameParams: FunctionNameParams,
-  files: types.File[],
 ): Promise<FunctionNameReturn> {
   const url = 'string' + functionNameParams.exampleParam;
   // Backwards compatible for the BASE_URL env variable
