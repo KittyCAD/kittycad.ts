@@ -8,7 +8,13 @@ async function example() {
         data: new Blob(['thing = 1'], { type: 'text/plain' }),
       },
     ],
-    body: { source_ranges: [] },
+    body: {
+      kcl_version:
+        'The version of kcl to use. If empty, the latest version will be used.',
+      project_name:
+        'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',
+      source_ranges: [],
+    },
   });
   if ('error_code' in response) throw response;
 
