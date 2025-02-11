@@ -2269,6 +2269,8 @@ export interface MlPrompt_type {
   /* nullable:true, description:Feedback from the user, if any. */
   feedback?: MlFeedback_type;
   id: Uuid_type /* The unique identifier for the ML prompt. */;
+  /* nullable:true, description:The KCL version being used. */
+  kcl_version?: string;
   /* nullable:true, description:The metadata for the prompt. */
   metadata?: MlPromptMetadata_type;
   model_version: string /* The version of the model. */;
@@ -2277,6 +2279,11 @@ export interface MlPrompt_type {
   "description": "The output file. In the case of TextToCad this is a link to a file in a GCP bucket."
 }*/
   output_file?: string;
+  /*{
+  "nullable": true,
+  "description": "The name of the project, if any. This allows us to group prompts together that come from the same project and user."
+}*/
+  project_name?: string;
   prompt: string /* The prompt. */;
   /*{
   "nullable": true,
@@ -5069,6 +5076,16 @@ This is the same as the API call ID. */
 }
 
 export interface TextToCadCreateBody_type {
+  /*{
+  "nullable": true,
+  "description": "The version of kcl to use. If empty, the latest version will be used."
+}*/
+  kcl_version?: string;
+  /*{
+  "nullable": true,
+  "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
+}*/
+  project_name?: string;
   prompt: string /* The prompt for the model. */;
 }
 
@@ -5114,7 +5131,17 @@ This is the same as the API call ID. */
 }
 
 export interface TextToCadIterationBody_type {
+  /*{
+  "nullable": true,
+  "description": "The version of kcl to use. If empty, the latest version will be used."
+}*/
+  kcl_version?: string;
   original_source_code: string /* The source code for the model (in kcl) that is to be edited. */;
+  /*{
+  "nullable": true,
+  "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
+}*/
+  project_name?: string;
   /*{
   "nullable": true,
   "description": "The prompt for the model, if not using source ranges."
@@ -5161,6 +5188,16 @@ This is the same as the API call ID. */
 }
 
 export interface TextToCadMultiFileIterationBody_type {
+  /*{
+  "nullable": true,
+  "description": "The version of kcl to use. If empty, the latest version will be used."
+}*/
+  kcl_version?: string;
+  /*{
+  "nullable": true,
+  "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
+}*/
+  project_name?: string;
   source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */;
 }
 

@@ -875,7 +875,7 @@
     "op": "add",
     "path": "/paths/~1ml~1text-to-cad~1multi-file~1iteration/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_multi_file_iteration({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: { source_ranges: [] },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_multi_file_iteration({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            source_ranges: [],\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -883,7 +883,7 @@
     "op": "add",
     "path": "/paths/~1ml~1text-to-cad~1iteration/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_iteration({\n        body: {\n            original_source_code:\n                'The source code for the model (in kcl) that is to be edited.',\n            prompt: 'The prompt for the model, if not using source ranges.',\n            source_ranges: [],\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_iteration({\n        body: {\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            original_source_code:\n                'The source code for the model (in kcl) that is to be edited.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the model, if not using source ranges.',\n            source_ranges: [],\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1067,7 +1067,7 @@
     "op": "add",
     "path": "/paths/~1ai~1text-to-cad~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad({\n        output_format: 'stl',\n        kcl: true,\n        body: { prompt: 'The prompt for the model.' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad({\n        output_format: 'stl',\n        kcl: true,\n        body: {\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the model.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
