@@ -1,17 +1,20 @@
-import { Error_type } from '../../models.js';
+```typescript
+import * as types from './src/models.ts';
 import { Client } from '../../client.js';
 
-interface Create_event_params {
-  client?: Client;
+interface FunctionNameParams {
+  exampleParam: string;
 }
 
-type Create_event_return = Error_type;
+interface FunctionNameReturn {
+  exampleReturn: string;
+}
 
-export default async function create_event(
-  { client }: Create_event_params = {},
+export default async function functionName(
+  functionNameParams: FunctionNameParams,
   files: types.File[],
-): Promise<Create_event_return> {
-  const url = `/events`;
+): Promise<FunctionNameReturn> {
+  const url = 'string' + functionNameParams.exampleParam;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
@@ -39,11 +42,12 @@ export default async function create_event(
   formData.append('body', 'BODY');
 
   const fetchOptions = {
-    method: 'POST',
+    method: 'METHOD',
     headers,
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_event_return;
+  const result = (await response.json()) as FunctionNameReturn;
   return result;
 }
+```

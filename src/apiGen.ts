@@ -63,9 +63,27 @@ export default async function apiGen(lookup: any) {
       if ('hidden' === (operation.specSection as any).tags[0]) {
         return [];
       }
-      let template: string = (await fsp.readFile('./src/template.md', 'utf8'))
-        .replaceAll('```typescript', '')
-        .replaceAll('```', '');
+
+      let template = '';
+      // If we have a json content type, we use template.md.
+      if (
+        (operation.specSection?.requestBody as any)?.content?.[
+          'application/json'
+        ]?.schema
+      ) {
+        template = (await fsp.readFile('./src/template.md', 'utf8'))
+          .replaceAll('```typescript', '')
+          .replaceAll('```', '');
+      } else if (
+        (operation.specSection?.requestBody as any)?.content?.[
+          'multipart/form-data'
+        ]?.schema
+      ) {
+        template = (await fsp.readFile('./src/templateMultipart.md', 'utf8'))
+          .replaceAll('```typescript', '')
+          .replaceAll('```', '');
+      }
+
       let exampleTemplate: string = (
         await fsp.readFile('./src/exampleAndGenTestTemplate.md', 'utf8')
       )
