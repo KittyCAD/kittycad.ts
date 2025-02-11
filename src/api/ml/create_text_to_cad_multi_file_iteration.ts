@@ -1,21 +1,27 @@
-import { Error_type, Event_type } from '../../models.js';
+import {
+  TextToCadMultiFileIteration_type,
+  Error_type,
+  TextToCadMultiFileIterationBody_type,
+} from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Create_event_params {
+interface Create_text_to_cad_multi_file_iteration_params {
   client?: Client;
-  body: Event_type;
+  body: TextToCadMultiFileIterationBody_type;
   files: File[];
 }
 
-type Create_event_return = Error_type;
+type Create_text_to_cad_multi_file_iteration_return =
+  | TextToCadMultiFileIteration_type
+  | Error_type;
 
-export default async function create_event({
+export default async function create_text_to_cad_multi_file_iteration({
   client,
   files,
   body,
-}: Create_event_params): Promise<Create_event_return> {
-  const url = `/events`;
+}: Create_text_to_cad_multi_file_iteration_params): Promise<Create_text_to_cad_multi_file_iteration_return> {
+  const url = `/ml/text-to-cad/multi-file/iteration`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
@@ -48,6 +54,7 @@ export default async function create_event({
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_event_return;
+  const result =
+    (await response.json()) as Create_text_to_cad_multi_file_iteration_return;
   return result;
 }

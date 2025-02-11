@@ -560,6 +560,41 @@ This is the same as the API call ID. */
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: Uuid_type /* The user ID of the user who created the API call. */;
+    }
+  | {
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+      completed_at?: string;
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* nullable:true, description:Feedback from the user, if any. */
+      feedback?: MlFeedback_type;
+      /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      model: TextToCadModel_type /* The model being used. */;
+      model_version: string /* The version of the model. */;
+      outputs: { [key: string]: string };
+      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the API call. */;
+      type: 'text_to_cad_multi_file_iteration';
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+      updated_at: string;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
     };
 
 export interface AsyncApiCallResultsPage_type {
@@ -579,7 +614,8 @@ export type AsyncApiCallType_type =
   | 'file_density'
   | 'file_surface_area'
   | 'text_to_cad'
-  | 'text_to_cad_iteration';
+  | 'text_to_cad_iteration'
+  | 'text_to_cad_multi_file_iteration';
 
 export interface AuthCallback_type {
   code: string /* The authorization code. */;
@@ -2276,7 +2312,8 @@ export interface MlPromptResultsPage_type {
 export type MlPromptType_type =
   | 'text_to_cad'
   | 'text_to_kcl'
-  | 'text_to_kcl_iteration';
+  | 'text_to_kcl_iteration'
+  | 'text_to_kcl_multi_file_iteration';
 
 export type ModelingAppEventType_type = 'successful_compile_before_close';
 
@@ -4899,8 +4936,13 @@ export interface SourceRange_type {
 }
 
 export interface SourceRangePrompt_type {
+  /*{
+  "nullable": true,
+  "description": "The name of the file the source range applies to. This only applies to multi-file iterations."
+}*/
+  file?: string;
   prompt: string /* The prompt for the changes. */;
-  range: SourceRange_type /* The range of the source code to change. */;
+  range: SourceRange_type /* The range of the source code to change. If you want to apply the prompt to the whole file, set the start to 0 and the end to the end of the file. */;
 }
 
 export interface StartPath_type {} /* Empty object */
@@ -5082,6 +5124,45 @@ export interface TextToCadIterationBody_type {
 }
 
 export type TextToCadModel_type = 'cad' | 'kcl' | 'kcl_iteration';
+
+export interface TextToCadMultiFileIteration_type {
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+  completed_at?: string;
+  /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+  created_at: string;
+  /* nullable:true, description:The error the function returned, if any. */
+  error?: string;
+  /* nullable:true, description:Feedback from the user, if any. */
+  feedback?: MlFeedback_type;
+  /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+  id: Uuid_type;
+  model: TextToCadModel_type /* The model being used. */;
+  model_version: string /* The version of the model. */;
+  outputs: { [key: string]: string };
+  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
+  /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+  started_at?: string;
+  status: ApiCallStatus_type /* The status of the API call. */;
+  /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+  updated_at: string;
+  user_id: Uuid_type /* The user ID of the user who created the API call. */;
+}
+
+export interface TextToCadMultiFileIterationBody_type {
+  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */;
+}
 
 export interface TextToCadResultsPage_type {
   items: TextToCad_type[] /* list of items on this page of results */;
@@ -6313,6 +6394,8 @@ export interface Models {
   TextToCadIteration_type: TextToCadIteration_type;
   TextToCadIterationBody_type: TextToCadIterationBody_type;
   TextToCadModel_type: TextToCadModel_type;
+  TextToCadMultiFileIteration_type: TextToCadMultiFileIteration_type;
+  TextToCadMultiFileIterationBody_type: TextToCadMultiFileIterationBody_type;
   TextToCadResultsPage_type: TextToCadResultsPage_type;
   TokenRevokeRequestForm_type: TokenRevokeRequestForm_type;
   Transform_type: Transform_type;
@@ -6368,3 +6451,5 @@ export interface Models {
   ZooTool_type: ZooTool_type;
   ZoomToFit_type: ZoomToFit_type;
 }
+
+export type File = { readonly name: string; readonly data: Blob };

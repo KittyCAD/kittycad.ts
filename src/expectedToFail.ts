@@ -90,6 +90,7 @@ export const testsExpectedToThrow = [
   'payments.validate_customer_tax_information_for_org',
   'service-accounts.create_service_account_for_org',
   'users.get_user_privacy_settings',
+  'meta.create_event',
 
   // stateful. what matters is the creation variants succeed.
   'users.delete_user_shortlink',

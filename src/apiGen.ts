@@ -63,23 +63,40 @@ export default async function apiGen(lookup: any) {
       if ('hidden' === (operation.specSection as any).tags[0]) {
         return [];
       }
-      let template: string = (await fsp.readFile('./src/template.md', 'utf8'))
-        .replaceAll('```typescript', '')
-        .replaceAll('```', '');
+
       let exampleTemplate: string = (
         await fsp.readFile('./src/exampleAndGenTestTemplate.md', 'utf8')
       )
         .replaceAll('```typescript', '')
         .replaceAll('```', '');
+      let template = (await fsp.readFile('./src/template.md', 'utf8'))
+        .replaceAll('```typescript', '')
+        .replaceAll('```', '');
+
+      let inputTypes: string[] = ['client?: Client'];
+      let inputParams: string[] = ['client'];
+      const inputParamsExamples: string[] = [];
+
+      // If we have a multipart request, use the multipart template.
+      if (
+        (operation.specSection?.requestBody as any)?.content?.[
+          'multipart/form-data'
+        ]?.schema
+      ) {
+        template = (await fsp.readFile('./src/templateMultipart.md', 'utf8'))
+          .replaceAll('```typescript', '')
+          .replaceAll('```', '');
+        inputParams.push('files');
+        inputParamsExamples.push(
+          `files: [{name: "thing.kcl", data: new Blob(['thing = 1'], {type: 'text/plain'})}]`,
+        );
+      }
 
       const importedParamTypes: string[] = [];
       const path = operation.path;
       const params = operation.specSection
         .parameters as OpenAPIV3.ParameterObject[];
       template = template.replaceAll(',', ',');
-      const inputTypes: string[] = ['client?: Client'];
-      const inputParams: string[] = ['client'];
-      const inputParamsExamples: string[] = [];
       let urlPathParams: string[] = path.split('/');
       const urlQueryParams: string[] = [];
       (params || []).forEach(({ name, in: _in, schema }) => {
@@ -195,9 +212,17 @@ export default async function apiGen(lookup: any) {
       const requestBody = operation.specSection
         ?.requestBody as OpenAPIV3.ResponseObject;
 
-      if ((requestBody?.content?.['application/json']?.schema as any)?.$ref) {
-        const ref = (requestBody.content['application/json'].schema as any)
-          .$ref;
+      if (
+        (requestBody?.content?.['application/json']?.schema as any)?.$ref ||
+        (requestBody?.content?.['multipart/form-data']?.schema as any)?.$ref
+      ) {
+        let schema = requestBody.content['application/json']?.schema as any;
+        if (
+          (requestBody?.content?.['multipart/form-data']?.schema as any)?.$ref
+        ) {
+          schema = requestBody.content['multipart/form-data'].schema as any;
+        }
+        const ref = schema.$ref;
         const typeReference = lookup[ref];
         importedParamTypes.push(typeReference);
         inputTypes.push(`body: ${typeReference}`);
@@ -291,6 +316,10 @@ export default async function apiGen(lookup: any) {
           "body: 'BODY'",
           'body: JSON.stringify(body)',
         );
+        template = template.replaceAll(
+          "formData.append('event', 'BODY')",
+          "formData.append('event', JSON.stringify(body))",
+        );
       } else if (requestBody?.content?.['application/octet-stream']) {
         const schema = requestBody.content['application/octet-stream']
           .schema as OpenAPIV3.SchemaObject;
@@ -327,6 +356,7 @@ export default async function apiGen(lookup: any) {
         template = template.replaceAll("body: 'BODY'", 'body');
       } else {
         template = template.replaceAll(/body: 'BODY'.+/g, '');
+        template = template.replaceAll("formData.append('event', 'BODY');", '');
       }
 
       if (inputParams.length === 1) {

@@ -1,15 +1,18 @@
 import { Error_type } from '../../models.js';
+import { File } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_debug_uploads_params {
   client?: Client;
+  files: File[];
 }
 
 type Create_debug_uploads_return = Error_type;
 
 export default async function create_debug_uploads({
   client,
-}: Create_debug_uploads_params = {}): Promise<Create_debug_uploads_return> {
+  files,
+}: Create_debug_uploads_params): Promise<Create_debug_uploads_return> {
   const url = `/debug/uploads`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,9 +33,16 @@ export default async function create_debug_uploads({
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
   };
+
+  const formData = new FormData();
+  files.forEach((file) => {
+    formData.append(file.name, file.data, file.name);
+  });
+
   const fetchOptions = {
     method: 'POST',
     headers,
+    body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
   const result = (await response.json()) as Create_debug_uploads_return;
