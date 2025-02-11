@@ -356,10 +356,7 @@ export default async function apiGen(lookup: any) {
         template = template.replaceAll("body: 'BODY'", 'body');
       } else {
         template = template.replaceAll(/body: 'BODY'.+/g, '');
-        template = template.replaceAll(
-          /format.append('event', 'BODY');.+/g,
-          '',
-        );
+        template = template.replaceAll("formData.append('event', 'BODY');", '');
       }
 
       if (inputParams.length === 1) {

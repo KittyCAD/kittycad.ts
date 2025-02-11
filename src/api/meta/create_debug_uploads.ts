@@ -38,7 +38,6 @@ export default async function create_debug_uploads({
   files.forEach((file) => {
     formData.append(file.name, file.data, file.name);
   });
-  formData.append('event', 'BODY');
 
   const fetchOptions = {
     method: 'POST',
