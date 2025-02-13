@@ -496,6 +496,8 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
+      /* nullable:true, description:The version of kcl requested. */
+      kcl_version?: string;
       model: TextToCadModel_type /* The model being used. */;
       model_version: string /* The version of the model. */;
       output_format: FileExportFormat_type /* The output format of the model. */;
@@ -3203,6 +3205,25 @@ export type ModelingCmd_type =
     }
   | {
       /*{
+  "default": false,
+  "description": "Whether or not to animate the camera movement. (Animation is currently not supported.)"
+}*/
+      animated: boolean;
+      /*{
+  "format": "uuid",
+  "description": "Which face to orient camera to. If the face is not planar, no action will occur."
+}*/
+      face_id: string;
+      /*{
+  "default": 0,
+  "format": "float",
+  "description": "How much to pad the view frame by, as a fraction of the face bounding box size. Negative padding will crop the view of the face proportionally. e.g. padding = 0.2 means the view will span 120% of the face bounding box, and padding = -0.2 means the view will span 80% of the face bounding box."
+}*/
+      padding: number;
+      type: 'orient_to_face';
+    }
+  | {
+      /*{
   "default": 0,
   "format": "float",
   "description": "How much to pad the view frame by, as a fraction of the object(s) bounding box size. Negative padding will crop the view of the object proportionally. e.g. padding = 0.2 means the view will span 120% of the object(s) bounding box, and padding = -0.2 means the view will span 80% of the object(s) bounding box."
@@ -3790,6 +3811,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/OrientToFace"
+}*/
+      data: OrientToFace_type;
+      type: 'orient_to_face';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/ViewIsometric"
 }*/
       data: ViewIsometric_type;
@@ -4340,6 +4368,10 @@ export interface OrgResultsPage_type {
 }
 
 export type OrgRole_type = 'admin' | 'member' | 'service_account';
+
+export interface OrientToFace_type {
+  settings: CameraSettings_type /* Camera settings */;
+}
 
 export type OriginType_type =
   | { type: 'local' }
@@ -5051,6 +5083,8 @@ export interface TextToCad_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
+  /* nullable:true, description:The version of kcl requested. */
+  kcl_version?: string;
   model: TextToCadModel_type /* The model being used. */;
   model_version: string /* The version of the model. */;
   output_format: FileExportFormat_type /* The output format of the model. */;
@@ -6331,6 +6365,7 @@ export interface Models {
   OrgMemberResultsPage_type: OrgMemberResultsPage_type;
   OrgResultsPage_type: OrgResultsPage_type;
   OrgRole_type: OrgRole_type;
+  OrientToFace_type: OrientToFace_type;
   OriginType_type: OriginType_type;
   OutputFile_type: OutputFile_type;
   OutputFormat_type: OutputFormat_type;
