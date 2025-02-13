@@ -91,6 +91,7 @@ export const testsExpectedToThrow = [
   'service-accounts.create_service_account_for_org',
   'users.get_user_privacy_settings',
   'meta.create_event',
+  'ml.create_text_to_cad_multi_file_iteration',
 
   // stateful. what matters is the creation variants succeed.
   'users.delete_user_shortlink',
