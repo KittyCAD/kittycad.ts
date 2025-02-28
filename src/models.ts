@@ -224,6 +224,12 @@ export interface AppClientInfo_type {
 
 export interface AsyncApiCall_type {
   /*{
+  "default": 0,
+  "format": "int16",
+  "description": "The number of times we've attempted to process this job."
+}*/
+  attempts: number;
+  /*{
   "nullable": true,
   "title": "DateTime",
   "format": "date-time",
