@@ -284,7 +284,7 @@ This is the same as the API call ID. */
       id: Uuid_type;
       output_format: FileExportFormat_type /* The output format of the file conversion. */;
       /* nullable:true, description:The output format options of the file conversion. */
-      output_format_options?: OutputFormat_type;
+      output_format_options?: OutputFormat3d_type;
       outputs: {
         [key: string]: /*{
   "title": "String",
@@ -294,7 +294,7 @@ This is the same as the API call ID. */
       };
       src_format: FileImportFormat_type /* The source format of the file conversion. */;
       /* nullable:true, description:The source format options of the file conversion. */
-      src_format_options?: InputFormat_type;
+      src_format_options?: InputFormat3d_type;
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -710,6 +710,35 @@ export interface CameraSettings_type {
   up: Point3d_type /* Camera's world-space up vector */;
 }
 
+export interface CameraViewState_type {
+  /*{
+  "format": "float"
+}*/
+  eye_offset: number;
+  /*{
+  "format": "float"
+}*/
+  fov_y: number;
+  is_ortho: boolean;
+  ortho_scale_enabled: boolean;
+  /*{
+  "format": "float"
+}*/
+  ortho_scale_factor: number;
+  /*{
+  "format": "float"
+}*/
+  pivot_position: number[];
+  /*{
+  "format": "float"
+}*/
+  pivot_rotation: number[];
+  /*{
+  "$ref": "#/components/schemas/WorldCoordinateSystem"
+}*/
+  world_coord_system: WorldCoordinateSystem_type;
+}
+
 export interface CardDetails_type {
   /* Card brand.
 
@@ -1119,6 +1148,10 @@ export interface DefaultCameraGetSettings_type {
   settings: CameraSettings_type /* Camera settings */;
 }
 
+export interface DefaultCameraGetView_type {
+  view: CameraViewState_type /* Camera view state */;
+}
+
 export interface DefaultCameraLookAt_type {} /* Empty object */
 
 export interface DefaultCameraPerspectiveSettings_type {} /* Empty object */
@@ -1126,6 +1159,8 @@ export interface DefaultCameraPerspectiveSettings_type {} /* Empty object */
 export interface DefaultCameraSetOrthographic_type {} /* Empty object */
 
 export interface DefaultCameraSetPerspective_type {} /* Empty object */
+
+export interface DefaultCameraSetView_type {} /* Empty object */
 
 export interface DefaultCameraZoom_type {
   settings: CameraSettings_type /* Camera settings */;
@@ -1188,6 +1223,8 @@ export type DistanceType_type =
   | { type: 'euclidean' }
   | { axis: GlobalAxis_type /* Global axis */; type: 'on_axis' };
 
+export type DxfStorage_type = 'ascii' | 'binary';
+
 export interface EdgeLinesVisible_type {} /* Empty object */
 
 export interface EmailAuthenticationForm_type {
@@ -1229,6 +1266,8 @@ export interface EntityCircularPattern_type {
 }*/
   entity_ids: string[];
 }
+
+export interface EntityClone_type {} /* Empty object */
 
 export interface EntityFade_type {} /* Empty object */
 
@@ -1360,6 +1399,14 @@ export type Event_type = {
 };
 
 export interface Export_type {
+  files: ExportFile_type[] /* The files that were exported. */;
+}
+
+export interface Export2d_type {
+  files: ExportFile_type[] /* The files that were exported. */;
+}
+
+export interface Export3d_type {
   files: ExportFile_type[] /* The files that were exported. */;
 }
 
@@ -1547,7 +1594,7 @@ This is the same as the API call ID. */
   id: Uuid_type;
   output_format: FileExportFormat_type /* The output format of the file conversion. */;
   /* nullable:true, description:The output format options of the file conversion. */
-  output_format_options?: OutputFormat_type;
+  output_format_options?: OutputFormat3d_type;
   outputs: {
     [key: string]: /*{
   "title": "String",
@@ -1557,7 +1604,7 @@ This is the same as the API call ID. */
   };
   src_format: FileImportFormat_type /* The source format of the file conversion. */;
   /* nullable:true, description:The source format options of the file conversion. */
-  src_format_options?: InputFormat_type;
+  src_format_options?: InputFormat3d_type;
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1836,7 +1883,7 @@ export interface ImportedGeometry_type {
   value: string[];
 }
 
-export type InputFormat_type =
+export type InputFormat3d_type =
   | { type: 'fbx' }
   | { type: 'gltf' }
   | {
@@ -2498,6 +2545,11 @@ export type ModelingCmd_type =
       window: Point2d_type /* The final mouse position. */;
     }
   | { type: 'default_camera_get_settings' }
+  | { type: 'default_camera_get_view' }
+  | {
+      type: 'default_camera_set_view';
+      view: CameraViewState_type /* Camera view state */;
+    }
   | {
       center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */;
       /*{
@@ -2547,7 +2599,23 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       entity_ids: string[];
-      format: OutputFormat_type /* The file format to export to. */;
+      format: OutputFormat2d_type /* The file format to export to. */;
+      type: 'export2d';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      format: OutputFormat3d_type /* The file format to export to. */;
+      type: 'export3d';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      entity_ids: string[];
+      format: OutputFormat3d_type /* The file format to export to. */;
       type: 'export';
     }
   | {
@@ -2584,6 +2652,11 @@ export type ModelingCmd_type =
       /* format:uuid, description:ID of the second entity being queried. */
       entity_id2: string;
       type: 'entity_get_distance';
+    }
+  | {
+      /* format:uuid, description:ID of the entity being cloned. */
+      entity_id: string;
+      type: 'entity_clone';
     }
   | {
       /* format:uuid, description:ID of the entity being copied. */
@@ -3103,7 +3176,7 @@ export type ModelingCmd_type =
     }
   | {
       files: ImportFile_type[] /* Files to import. */;
-      format: InputFormat_type /* Input file format. */;
+      format: InputFormat3d_type /* Input file format. */;
       type: 'import_files';
     }
   | {
@@ -3276,6 +3349,16 @@ export type ModelingCmd_type =
       object_id: string;
       offset: LengthUnit_type /* The distance to offset the path (positive for outset, negative for inset) */;
       type: 'add_hole_from_offset';
+    }
+  | {
+      /* format:uuid, description:The grid to be moved. */
+      grid_id: string;
+      /*{
+  "format": "uuid",
+  "description": "The plane or face that the grid will be aligned to. If a face, it must be planar to succeed."
+}*/
+      reference_id: string;
+      type: 'set_grid_reference_plane';
     };
 
 export type ModelingCmdId_type =
@@ -3712,6 +3795,20 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/Export2d"
+}*/
+      data: Export2d_type;
+      type: 'export2d';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Export3d"
+}*/
+      data: Export3d_type;
+      type: 'export3d';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/Export"
 }*/
       data: Export_type;
@@ -3800,6 +3897,20 @@ export type OkModelingCmdResponse_type =
 }*/
       data: DefaultCameraGetSettings_type;
       type: 'default_camera_get_settings';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraGetView"
+}*/
+      data: DefaultCameraGetView_type;
+      type: 'default_camera_get_view';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/DefaultCameraSetView"
+}*/
+      data: DefaultCameraSetView_type;
+      type: 'default_camera_set_view';
     }
   | {
       /*{
@@ -4111,6 +4222,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/EntityClone"
+}*/
+      data: EntityClone_type;
+      type: 'entity_clone';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/EntityLinearPatternTransform"
 }*/
       data: EntityLinearPatternTransform_type;
@@ -4178,6 +4296,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: ExtrusionFaceInfo_type;
       type: 'extrusion_face_info';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetGridReferencePlane"
+}*/
+      data: SetGridReferencePlane_type;
+      type: 'set_grid_reference_plane';
     };
 
 export type OkWebSocketResponseData_type =
@@ -4394,7 +4519,12 @@ export interface OutputFile_type {
   name: string;
 }
 
-export type OutputFormat_type =
+export type OutputFormat2d_type = {
+  storage: DxfStorage_type /* Export storage. */;
+  type: 'dxf';
+};
+
+export type OutputFormat3d_type =
   | {
       storage: FbxStorage_type /* Specifies which kind of FBX will be exported. */;
       type: 'fbx';
@@ -4874,6 +5004,8 @@ export interface SetBackgroundColor_type {} /* Empty object */
 export interface SetCurrentToolProperties_type {} /* Empty object */
 
 export interface SetDefaultSystemProperties_type {} /* Empty object */
+
+export interface SetGridReferencePlane_type {} /* Empty object */
 
 export interface SetObjectTransform_type {} /* Empty object */
 
@@ -6104,6 +6236,10 @@ export type WebSocketResponse_type =
       success: false;
     };
 
+export type WorldCoordinateSystem_type =
+  | 'right_handed_up_z'
+  | 'right_handed_up_y';
+
 export type ZooProductSubscription_type = {
   /*{
   "nullable": true,
@@ -6203,6 +6339,7 @@ export interface Models {
   CameraDragStart_type: CameraDragStart_type;
   CameraMovement_type: CameraMovement_type;
   CameraSettings_type: CameraSettings_type;
+  CameraViewState_type: CameraViewState_type;
   CardDetails_type: CardDetails_type;
   CenterOfMass_type: CenterOfMass_type;
   ClientMetrics_type: ClientMetrics_type;
@@ -6231,10 +6368,12 @@ export interface Models {
   DefaultCameraCenterToSelection_type: DefaultCameraCenterToSelection_type;
   DefaultCameraFocusOn_type: DefaultCameraFocusOn_type;
   DefaultCameraGetSettings_type: DefaultCameraGetSettings_type;
+  DefaultCameraGetView_type: DefaultCameraGetView_type;
   DefaultCameraLookAt_type: DefaultCameraLookAt_type;
   DefaultCameraPerspectiveSettings_type: DefaultCameraPerspectiveSettings_type;
   DefaultCameraSetOrthographic_type: DefaultCameraSetOrthographic_type;
   DefaultCameraSetPerspective_type: DefaultCameraSetPerspective_type;
+  DefaultCameraSetView_type: DefaultCameraSetView_type;
   DefaultCameraZoom_type: DefaultCameraZoom_type;
   Density_type: Density_type;
   DerEncodedKeyPair_type: DerEncodedKeyPair_type;
@@ -6247,6 +6386,7 @@ export interface Models {
   Discount_type: Discount_type;
   DiscountCode_type: DiscountCode_type;
   DistanceType_type: DistanceType_type;
+  DxfStorage_type: DxfStorage_type;
   EdgeLinesVisible_type: EdgeLinesVisible_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
   EnableDryRun_type: EnableDryRun_type;
@@ -6254,6 +6394,7 @@ export interface Models {
   EngineUtilEvaluatePath_type: EngineUtilEvaluatePath_type;
   EnterpriseSubscriptionTierPrice_type: EnterpriseSubscriptionTierPrice_type;
   EntityCircularPattern_type: EntityCircularPattern_type;
+  EntityClone_type: EntityClone_type;
   EntityFade_type: EntityFade_type;
   EntityGetAllChildUuids_type: EntityGetAllChildUuids_type;
   EntityGetChildUuid_type: EntityGetChildUuid_type;
@@ -6275,6 +6416,8 @@ export interface Models {
   ErrorCode_type: ErrorCode_type;
   Event_type: Event_type;
   Export_type: Export_type;
+  Export2d_type: Export2d_type;
+  Export3d_type: Export3d_type;
   ExportFile_type: ExportFile_type;
   ExtendPath_type: ExtendPath_type;
   ExtendedUser_type: ExtendedUser_type;
@@ -6316,7 +6459,7 @@ export interface Models {
   ImportFile_type: ImportFile_type;
   ImportFiles_type: ImportFiles_type;
   ImportedGeometry_type: ImportedGeometry_type;
-  InputFormat_type: InputFormat_type;
+  InputFormat3d_type: InputFormat3d_type;
   Invoice_type: Invoice_type;
   InvoiceLineItem_type: InvoiceLineItem_type;
   InvoiceStatus_type: InvoiceStatus_type;
@@ -6374,7 +6517,8 @@ export interface Models {
   OrientToFace_type: OrientToFace_type;
   OriginType_type: OriginType_type;
   OutputFile_type: OutputFile_type;
-  OutputFormat_type: OutputFormat_type;
+  OutputFormat2d_type: OutputFormat2d_type;
+  OutputFormat3d_type: OutputFormat3d_type;
   PathCommand_type: PathCommand_type;
   PathComponentConstraintBound_type: PathComponentConstraintBound_type;
   PathComponentConstraintType_type: PathComponentConstraintType_type;
@@ -6432,6 +6576,7 @@ export interface Models {
   SetBackgroundColor_type: SetBackgroundColor_type;
   SetCurrentToolProperties_type: SetCurrentToolProperties_type;
   SetDefaultSystemProperties_type: SetDefaultSystemProperties_type;
+  SetGridReferencePlane_type: SetGridReferencePlane_type;
   SetObjectTransform_type: SetObjectTransform_type;
   SetSceneUnits_type: SetSceneUnits_type;
   SetSelectionFilter_type: SetSelectionFilter_type;
@@ -6522,6 +6667,7 @@ export interface Models {
   Volume_type: Volume_type;
   WebSocketRequest_type: WebSocketRequest_type;
   WebSocketResponse_type: WebSocketResponse_type;
+  WorldCoordinateSystem_type: WorldCoordinateSystem_type;
   ZooProductSubscription_type: ZooProductSubscription_type;
   ZooProductSubscriptions_type: ZooProductSubscriptions_type;
   ZooProductSubscriptionsOrgRequest_type: ZooProductSubscriptionsOrgRequest_type;
