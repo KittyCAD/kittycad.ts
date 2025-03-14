@@ -4526,6 +4526,8 @@ export type OutputFormat2d_type = {
 
 export type OutputFormat3d_type =
   | {
+      /* nullable:true, format:date-time, description:Timestamp override. */
+      created?: string;
       storage: FbxStorage_type /* Specifies which kind of FBX will be exported. */;
       type: 'fbx';
     }
@@ -4569,6 +4571,8 @@ Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System_type;
+      /* nullable:true, format:date-time, description:Timestamp override. */
+      created?: string;
       type: 'step';
     }
   | {
