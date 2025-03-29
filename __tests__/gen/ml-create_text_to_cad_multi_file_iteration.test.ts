@@ -13,6 +13,8 @@ async function example() {
         'The version of kcl to use. If empty, the latest version will be used.',
       project_name:
         'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',
+      prompt:
+        'The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files. If you want to apply a prompt to just a single file, use the source_ranges field and you can leave this empty.',
       source_ranges: [],
     },
   });
