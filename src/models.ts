@@ -590,6 +590,11 @@ This is the same as the API call ID. */
       model: TextToCadModel_type /* The model being used. */;
       model_version: string /* The version of the model. */;
       outputs: { [key: string]: string };
+      /*{
+  "nullable": true,
+  "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files."
+}*/
+      prompt?: string;
       source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
       /*{
   "nullable": true,
@@ -5119,7 +5124,7 @@ export interface SourceRange_type {
 export interface SourceRangePrompt_type {
   /*{
   "nullable": true,
-  "description": "The name of the file the source range applies to. This only applies to multi-file iterations."
+  "description": "The name of the file the source range applies to. This is the relative path to the file from the root of the project. This only applies to multi-file iterations."
 }*/
   file?: string;
   prompt: string /* The prompt for the changes. */;
@@ -5349,6 +5354,11 @@ This is the same as the API call ID. */
   model: TextToCadModel_type /* The model being used. */;
   model_version: string /* The version of the model. */;
   outputs: { [key: string]: string };
+  /*{
+  "nullable": true,
+  "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files."
+}*/
+  prompt?: string;
   source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
   /*{
   "nullable": true,
@@ -5374,6 +5384,11 @@ export interface TextToCadMultiFileIterationBody_type {
   "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
 }*/
   project_name?: string;
+  /*{
+  "nullable": true,
+  "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files. If you want to apply a prompt to just a single file, use the source_ranges field and you can leave this empty."
+}*/
+  prompt?: string;
   source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */;
 }
 
