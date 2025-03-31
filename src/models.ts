@@ -587,9 +587,19 @@ This is the same as the API call ID. */
 
 This is the same as the API call ID. */
       id: Uuid_type;
+      /*{
+  "nullable": true,
+  "description": "The version of kcl to use. If empty, the latest version will be used."
+}*/
+      kcl_version?: string;
       model: TextToCadModel_type /* The model being used. */;
       model_version: string /* The version of the model. */;
       outputs: { [key: string]: string };
+      /*{
+  "nullable": true,
+  "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
+}*/
+      project_name?: string;
       /*{
   "nullable": true,
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files."
@@ -5351,9 +5361,19 @@ export interface TextToCadMultiFileIteration_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
+  /*{
+  "nullable": true,
+  "description": "The version of kcl to use. If empty, the latest version will be used."
+}*/
+  kcl_version?: string;
   model: TextToCadModel_type /* The model being used. */;
   model_version: string /* The version of the model. */;
   outputs: { [key: string]: string };
+  /*{
+  "nullable": true,
+  "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
+}*/
+  project_name?: string;
   /*{
   "nullable": true,
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files."
