@@ -741,13 +741,13 @@ export interface CameraViewState_type {
 }*/
   ortho_scale_factor: number;
   /*{
-  "format": "float"
+  "$ref": "#/components/schemas/Point3d"
 }*/
-  pivot_position: number[];
+  pivot_position: Point3d_type;
   /*{
-  "format": "float"
+  "$ref": "#/components/schemas/Point4d"
 }*/
-  pivot_rotation: number[];
+  pivot_rotation: Point4d_type;
   /*{
   "$ref": "#/components/schemas/WorldCoordinateSystem"
 }*/
@@ -2936,12 +2936,6 @@ export type ModelingCmd_type =
       cut_type: CutType_type;
       /* format:uuid, description:Which edge you want to fillet. */
       edge_id: string;
-      /*{
-  "nullable": true,
-  "format": "uuid",
-  "description": "The ID to use for the newly created fillet face. If not provided, the server will randomly generate one."
-}*/
-      face_id?: string;
       /* format:uuid, description:Which object is being filletted. */
       object_id: string;
       radius: LengthUnit_type /* The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero). */;
@@ -4688,6 +4682,13 @@ export type PathSegment_type =
       interior: Point3d_type /* Interior point of the arc. */;
       relative: boolean /* Whether or not interior and end are relative to the previous path position */;
       type: 'arc_to';
+    }
+  | {
+      angle: Angle_type /* The angle to rotate the involute by. A value of zero will produce a curve with a tangent along the x-axis at the start point of the curve. */;
+      end_radius: LengthUnit_type /* The involute is described between two circles, end_radius is the radius of the outer circle. */;
+      reverse: boolean /* If reverse is true, the segment will start from the end of the involute, otherwise it will start from that start. */;
+      start_radius: LengthUnit_type /* The involute is described between two circles, start_radius is the radius of the inner circle. */;
+      type: 'circular_involute';
     };
 
 export interface PathSegmentInfo_type {
