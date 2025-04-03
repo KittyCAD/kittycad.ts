@@ -15469,6 +15469,32 @@
           "items"
         ]
       },
+      "ApiEndpoint": {
+        "description": "Types of API endpoints.",
+        "oneOf": [
+          {
+            "description": "The modeling API.",
+            "type": "string",
+            "enum": [
+              "modeling"
+            ]
+          },
+          {
+            "description": "Machine learning API.",
+            "type": "string",
+            "enum": [
+              "ml"
+            ]
+          },
+          {
+            "description": "File API.",
+            "type": "string",
+            "enum": [
+              "file"
+            ]
+          }
+        ]
+      },
       "ApiError": {
         "description": "An error.",
         "type": "object",
@@ -21977,6 +22003,13 @@
           "description": {
             "description": "A description of the tier.",
             "type": "string"
+          },
+          "endpoints_included": {
+            "description": "The Zoo API endpoints that are included when through an approved zoo tool.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiEndpoint"
+            }
           },
           "features": {
             "description": "Features that are included in the subscription.",
@@ -34421,6 +34454,13 @@
               "description": {
                 "description": "A description of the tier.",
                 "type": "string"
+              },
+              "endpoints_included": {
+                "description": "The Zoo API endpoints that are included when through an approved zoo tool.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ApiEndpoint"
+                }
               },
               "features": {
                 "description": "Features that are included in the subscription.",
