@@ -789,51 +789,106 @@ export interface CenterOfMass_type {
 
 export interface ClientMetrics_type {
   /*{
-  "format": "uint64",
-  "minimum": 0,
-  "description": "Counter of the number of WebRTC frames that the client has decoded during this session."
-}*/
-  rtc_frames_decoded: number;
-  /*{
+  "nullable": true,
   "format": "uint32",
   "minimum": 0,
-  "description": "Counter of the number of WebRTC frames the client has dropped during this session."
+  "description": "The height of the inbound video stream in pixels.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-frameheight"
 }*/
-  rtc_frames_dropped: number;
+  rtc_frame_height?: number;
   /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "The width of the inbound video stream in pixels.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-framewidth"
+}*/
+  rtc_frame_width?: number;
+  /*{
+  "nullable": true,
+  "format": "uint64",
+  "minimum": 0,
+  "description": "Counter of the number of WebRTC frames that the client has decoded from the inbound video stream.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-freezecount"
+}*/
+  rtc_frames_decoded?: number;
+  /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Counter of the number of WebRTC frames the client has dropped from the inbound video stream.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-framesdropped"
+}*/
+  rtc_frames_dropped?: number;
+  /*{
+  "nullable": true,
   "format": "uint8",
   "minimum": 0,
-  "description": "Current number of frames being rendered per second. A good target is 60 frames per second, but it can fluctuate depending on network conditions."
+  "description": "Current number of frames being rendered in the last second. A good target is 60 frames per second, but it can fluctuate depending on network conditions.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-freezecount"
 }*/
-  rtc_frames_per_second: number;
+  rtc_frames_per_second?: number;
   /*{
+  "nullable": true,
   "format": "uint64",
   "minimum": 0,
-  "description": "Counter of the number of WebRTC frames that the client has received during this session."
+  "description": "Counter of the number of WebRTC frames that the client has received from the inbound video stream.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-freezecount"
 }*/
-  rtc_frames_received: number;
+  rtc_frames_received?: number;
   /*{
+  "nullable": true,
   "format": "uint32",
   "minimum": 0,
-  "description": "Number of times the WebRTC playback has frozen. This is usually due to network conditions."
+  "description": "Number of times the inbound video playback has frozen. This is usually due to network conditions.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-freezecount"
 }*/
-  rtc_freeze_count: number;
+  rtc_freeze_count?: number;
   /*{
-  "format": "float",
-  "description": "Amount of \"jitter\" in the WebRTC session. Network latency is the time it takes a packet to traverse the network. The amount that the latency varies is the jitter. Video latency is the time it takes to render a frame sent by the server (including network latency). A low jitter means the video latency can be reduced without impacting smooth playback. High jitter means clients will increase video latency to ensure smooth playback."
+  "nullable": true,
+  "format": "double",
+  "description": "Amount of \"jitter\" in the inbound video stream. Network latency is the time it takes a packet to traverse the network. The amount that the latency varies is the jitter. Video latency is the time it takes to render a frame sent by the server (including network latency). A low jitter means the video latency can be reduced without impacting smooth playback. High jitter means clients will increase video latency to ensure smooth playback.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcreceivedrtpstreamstats-jitter"
 }*/
-  rtc_jitter_sec: number;
+  rtc_jitter_sec?: number;
   /*{
+  "nullable": true,
   "format": "uint32",
   "minimum": 0,
-  "description": "Number of \"key frames\" decoded in the underlying h.264 stream. A key frame is an expensive (bandwidth-wise) \"full image\" of the video frame. Data after the keyframe become -- effectively -- \"diff\" operations on that key frame. The Engine will only send a keyframe if required, which is an indication that some of the \"diffs\" have been lost, usually an indication of poor network conditions. We like this metric to understand times when the connection has had to recover."
+  "description": "Number of \"key frames\" decoded in the inbound h.264 stream. A key frame is an expensive (bandwidth-wise) \"full image\" of the video frame. Data after the keyframe become -- effectively -- \"diff\" operations on that key frame. The Engine will only send a keyframe if required, which is an indication that some of the \"diffs\" have been lost, usually an indication of poor network conditions. We like this metric to understand times when the connection has had to recover.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-keyframesdecoded"
 }*/
-  rtc_keyframes_decoded: number;
+  rtc_keyframes_decoded?: number;
   /*{
-  "format": "float",
-  "description": "Number of seconds of frozen video the user has been subjected to."
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Amount of packets lost in the inbound video stream.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcreceivedrtpstreamstats-packetslost"
 }*/
-  rtc_total_freezes_duration_sec: number;
+  rtc_packets_lost?: number;
+  /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Count of the total number of video pauses experienced by this receiver.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-pausecount"
+}*/
+  rtc_pause_count?: number;
+  /*{
+  "nullable": true,
+  "format": "uint32",
+  "minimum": 0,
+  "description": "Count the total number of Picture Loss Indication (PLI) packets.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-plicount"
+}*/
+  rtc_pli_count?: number;
+  /*{
+  "nullable": true,
+  "format": "float",
+  "description": "Total duration of pauses in seconds.\n\nThis is the \"ping\" between the client and the STUN server. Not to be confused with the E2E RTT documented [here](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime)\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-currentroundtriptime"
+}*/
+  rtc_stun_rtt_sec?: number;
+  /*{
+  "nullable": true,
+  "format": "float",
+  "description": "Number of seconds of frozen video the user has been subjected to.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-totalfreezesduration"
+}*/
+  rtc_total_freezes_duration_sec?: number;
+  /*{
+  "nullable": true,
+  "format": "float",
+  "description": "Count of the total number of video pauses experienced by this receiver.\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-totalpausesduration"
+}*/
+  rtc_total_pauses_duration_sec?: number;
 }
 
 export interface ClosePath_type {
