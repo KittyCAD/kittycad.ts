@@ -188,6 +188,8 @@ export interface ApiCallWithPriceResultsPage_type {
   next_page?: string;
 }
 
+export type ApiEndpoint_type = 'modeling' | 'ml' | 'file';
+
 export interface ApiError_type {
   error_code: ErrorCode_type /* The error code. */;
   message: string /* The error message. */;
@@ -2469,6 +2471,7 @@ export interface ModelingAppSubscriptionTier_type {
 }*/
   annual_discount?: number;
   description: string /* A description of the tier. */;
+  endpoints_included: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */;
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
   features: SubscriptionTierFeature_type[];
   name: ModelingAppSubscriptionTierName_type /* The name of the tier. */;
@@ -6344,6 +6347,7 @@ export type ZooProductSubscription_type = {
 }*/
   annual_discount?: number;
   description: string /* A description of the tier. */;
+  endpoints_included: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */;
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
   features: SubscriptionTierFeature_type[];
   name: ModelingAppSubscriptionTierName_type /* The name of the tier. */;
@@ -6412,6 +6416,7 @@ export interface Models {
   ApiCallStatus_type: ApiCallStatus_type;
   ApiCallWithPrice_type: ApiCallWithPrice_type;
   ApiCallWithPriceResultsPage_type: ApiCallWithPriceResultsPage_type;
+  ApiEndpoint_type: ApiEndpoint_type;
   ApiError_type: ApiError_type;
   ApiToken_type: ApiToken_type;
   ApiTokenResultsPage_type: ApiTokenResultsPage_type;
