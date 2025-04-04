@@ -3,6 +3,7 @@ import { Client } from '../../client.js';
 
 interface Device_auth_verify_params {
   client?: Client;
+  app_name: string;
   user_code: string;
 }
 
@@ -10,9 +11,10 @@ type Device_auth_verify_return = Error_type;
 
 export default async function device_auth_verify({
   client,
+  app_name,
   user_code,
 }: Device_auth_verify_params): Promise<Device_auth_verify_return> {
-  const url = `/oauth2/device/verify?user_code=${user_code}`;
+  const url = `/oauth2/device/verify?app_name=${app_name}&user_code=${user_code}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

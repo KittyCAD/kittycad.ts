@@ -1,9 +1,9 @@
-import { Error_type, DeviceAuthVerifyParams_type } from '../../models.js';
+import { Error_type, DeviceAuthConfirmParams_type } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Device_auth_confirm_params {
   client?: Client;
-  body: DeviceAuthVerifyParams_type;
+  body: DeviceAuthConfirmParams_type;
 }
 
 type Device_auth_confirm_return = Error_type;
