@@ -1266,13 +1266,13 @@ export interface DeviceAccessTokenRequestForm_type {
 export type DeviceAccessTokenUuid_type =
   string; /* An auth token. A uuid with a prefix of dev- */
 
+export interface DeviceAuthConfirmParams_type {
+  user_code: string /* The user code. */;
+}
+
 export interface DeviceAuthRequestForm_type {
   /* format:uuid, description:The client ID. */
   client_id: string;
-}
-
-export interface DeviceAuthVerifyParams_type {
-  user_code: string /* The user code. */;
 }
 
 export type Direction_type = 'positive' | 'negative';
@@ -6479,8 +6479,8 @@ export interface Models {
   DerEncodedKeyPair_type: DerEncodedKeyPair_type;
   DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type;
   DeviceAccessTokenUuid_type: DeviceAccessTokenUuid_type;
+  DeviceAuthConfirmParams_type: DeviceAuthConfirmParams_type;
   DeviceAuthRequestForm_type: DeviceAuthRequestForm_type;
-  DeviceAuthVerifyParams_type: DeviceAuthVerifyParams_type;
   Direction_type: Direction_type;
   DisableDryRun_type: DisableDryRun_type;
   Discount_type: Discount_type;

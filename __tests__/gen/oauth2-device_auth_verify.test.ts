@@ -1,7 +1,10 @@
 import { oauth2 } from '../../src/index.js';
 
 async function example() {
-  const response = await oauth2.device_auth_verify({ user_code: 'string' });
+  const response = await oauth2.device_auth_verify({
+    app_name: 'string',
+    user_code: 'string',
+  });
   if ('error_code' in response) throw response;
 
   return response;
