@@ -689,6 +689,27 @@ export type BlockReason_type =
   | 'missing_payment_method'
   | 'payment_method_failed';
 
+export interface BooleanIntersection_type {
+  /*{
+  "format": "uuid"
+}*/
+  extra_solid_ids: string[];
+}
+
+export interface BooleanSubtract_type {
+  /*{
+  "format": "uuid"
+}*/
+  extra_solid_ids: string[];
+}
+
+export interface BooleanUnion_type {
+  /*{
+  "format": "uuid"
+}*/
+  extra_solid_ids: string[];
+}
+
 export interface CacheMetadata_type {
   ok: boolean /* If the cache returned an ok response from ping. */;
 }
@@ -2523,6 +2544,11 @@ export type ModelingCmd_type =
   "description": "Which IDs should the new faces have? If this isn't given, the engine will generate IDs."
 }*/
       faces?: ExtrudedFaceInfo_type;
+      /*{
+  "default": "None",
+  "description": "Should the extrusion also extrude in the opposite direction? If so, this specifies its distance."
+}*/
+      opposite: OppositeForLengthUnit_type;
       target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
       type: 'extrude';
     }
@@ -2537,6 +2563,11 @@ export type ModelingCmd_type =
       angle: Angle_type /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */;
       axis: Point3d_type /* The axis of the extrusion (taken from the origin) */;
       axis_is_2d: boolean /* If true, the axis is interpreted within the 2D space of the solid 2D's plane */;
+      /*{
+  "default": "None",
+  "description": "Should the revolution also revolve in the opposite direction along the given axis? If so, this specifies its angle."
+}*/
+      opposite: OppositeForAngle_type;
       origin: Point3d_type /* The origin of the extrusion axis */;
       target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
@@ -2564,6 +2595,11 @@ export type ModelingCmd_type =
   "description": "The edge to use as the axis of revolution, must be linear and lie in the plane of the solid"
 }*/
       edge_id: string;
+      /*{
+  "default": "None",
+  "description": "Should the revolution also revolve in the opposite direction along the given axis? If so, this specifies its angle."
+}*/
+      opposite: OppositeForAngle_type;
       target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
       type: 'revolve_about_edge';
@@ -3395,6 +3431,34 @@ export type ModelingCmd_type =
       object_id: string;
       transforms: ComponentTransform_type[] /* List of transforms to be applied to the object. */;
       type: 'set_object_transform';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      solid_ids: string[];
+      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the joined solids. Must be positive (i.e. greater than zero). */;
+      type: 'boolean_union';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      solid_ids: string[];
+      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the joined solids. Must be positive (i.e. greater than zero). */;
+      type: 'boolean_intersection';
+    }
+  | {
+      /*{
+  "format": "uuid"
+}*/
+      target_ids: string[];
+      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the target and the solids cut out from it. Must be positive (i.e. greater than zero). */;
+      /*{
+  "format": "uuid"
+}*/
+      tool_ids: string[];
+      type: 'boolean_subtract';
     }
   | {
       /*{
@@ -4370,6 +4434,27 @@ export type OkModelingCmdResponse_type =
 }*/
       data: SetGridReferencePlane_type;
       type: 'set_grid_reference_plane';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/BooleanUnion"
+}*/
+      data: BooleanUnion_type;
+      type: 'boolean_union';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/BooleanIntersection"
+}*/
+      data: BooleanIntersection_type;
+      type: 'boolean_intersection';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/BooleanSubtract"
+}*/
+      data: BooleanSubtract_type;
+      type: 'boolean_subtract';
     };
 
 export type OkWebSocketResponseData_type =
@@ -4438,6 +4523,10 @@ export interface Onboarding_type {
 }*/
   first_token_date?: string;
 }
+
+export type OppositeForAngle_type = string;
+
+export type OppositeForLengthUnit_type = string;
 
 export interface Org_type {
   /*{
@@ -6432,6 +6521,9 @@ export interface Models {
   BatchResponse_type: BatchResponse_type;
   BillingInfo_type: BillingInfo_type;
   BlockReason_type: BlockReason_type;
+  BooleanIntersection_type: BooleanIntersection_type;
+  BooleanSubtract_type: BooleanSubtract_type;
+  BooleanUnion_type: BooleanUnion_type;
   CacheMetadata_type: CacheMetadata_type;
   CameraDragEnd_type: CameraDragEnd_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
@@ -6608,6 +6700,8 @@ export interface Models {
   OkModelingCmdResponse_type: OkModelingCmdResponse_type;
   OkWebSocketResponseData_type: OkWebSocketResponseData_type;
   Onboarding_type: Onboarding_type;
+  OppositeForAngle_type: OppositeForAngle_type;
+  OppositeForLengthUnit_type: OppositeForLengthUnit_type;
   Org_type: Org_type;
   OrgDetails_type: OrgDetails_type;
   OrgMember_type: OrgMember_type;
