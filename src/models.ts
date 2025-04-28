@@ -1522,6 +1522,8 @@ export interface ExtendedUser_type {
   company: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
+  /* default:false, description:If the user is scheduled for deletion */
+  deletion_scheduled: boolean;
   discord: string /* The user's Discord handle. */;
   /* format:email, description:The email address of the user. */
   email: string;
@@ -6239,6 +6241,8 @@ export interface User_type {
   company: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
+  /* default:false, description:If the user is scheduled for deletion */
+  deletion_scheduled: boolean;
   discord: string /* The user's Discord handle. */;
   /* format:email, description:The email address of the user. */
   email: string;
