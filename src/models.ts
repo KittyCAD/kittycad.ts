@@ -3529,6 +3529,8 @@ export interface NewAnnotation_type {} /* Empty object */
 
 export interface OAuth2ClientInfo_type {
   csrf_token: string /* Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */;
+  /* nullable:true, description:Nonce required for OIDC flows. */
+  oidc_nonce?: string;
   /*{
   "nullable": true,
   "description": "Code Verifier used for [PKCE]((https://tools.ietf.org/html/rfc7636)) protection via the `code_verifier` parameter. The value must have a minimum length of 43 characters and a maximum length of 128 characters.  Each character must be ASCII alphanumeric or one of the characters \"-\" / \".\" / \"_\" / \"~\"."
