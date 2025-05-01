@@ -2334,6 +2334,10 @@ export interface KclCodeCompletionResponse_type {
   completions: string[];
 }
 
+export interface KclModel_type {
+  code: string /* The KCL code. */;
+}
+
 export interface LeafNode_type {
   /* default:0, format:int64, description:The auth timeout of the leaf node. */
   auth_timeout: number;
@@ -6669,6 +6673,7 @@ export interface Models {
   KclCodeCompletionParams_type: KclCodeCompletionParams_type;
   KclCodeCompletionRequest_type: KclCodeCompletionRequest_type;
   KclCodeCompletionResponse_type: KclCodeCompletionResponse_type;
+  KclModel_type: KclModel_type;
   LeafNode_type: LeafNode_type;
   LengthUnit_type: LengthUnit_type;
   Loft_type: Loft_type;
