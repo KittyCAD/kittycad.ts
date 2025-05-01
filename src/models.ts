@@ -4506,7 +4506,13 @@ export type OkWebSocketResponseData_type =
       };
       type: 'modeling_session_data';
     }
-  | { data: object; type: 'pong' };
+  | { data: object; type: 'pong' }
+  | {
+      data: {
+        name: string /* Instance name. This may or may not mean something. */;
+      };
+      type: 'debug';
+    };
 
 export interface Onboarding_type {
   /*{
@@ -6409,6 +6415,7 @@ export type WebSocketRequest_type =
       metrics: ClientMetrics_type /* Collected metrics from the Client's end of the engine connection. */;
       type: 'metrics_response';
     }
+  | { type: 'debug' }
   | { headers: { [key: string]: string }; type: 'headers' };
 
 export type WebSocketResponse_type =
