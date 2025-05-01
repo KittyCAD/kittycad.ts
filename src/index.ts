@@ -82,6 +82,7 @@ export const meta = {
 };
 
 import create_kcl_code_completions from './api/ml/create_kcl_code_completions.js';
+import create_proprietary_to_kcl from './api/ml/create_proprietary_to_kcl.js';
 import create_text_to_cad from './api/ml/create_text_to_cad.js';
 import create_text_to_cad_iteration from './api/ml/create_text_to_cad_iteration.js';
 import create_text_to_cad_model_feedback from './api/ml/create_text_to_cad_model_feedback.js';
@@ -92,6 +93,7 @@ import list_ml_prompts from './api/ml/list_ml_prompts.js';
 import list_text_to_cad_models_for_user from './api/ml/list_text_to_cad_models_for_user.js';
 export const ml = {
   create_kcl_code_completions,
+  create_proprietary_to_kcl,
   create_text_to_cad,
   create_text_to_cad_iteration,
   create_text_to_cad_model_feedback,
