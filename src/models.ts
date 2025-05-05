@@ -1198,23 +1198,29 @@ export interface CustomerBalance_type {
 }*/
   modeling_app_enterprise_price?: SubscriptionTierPrice_type;
   /*{
-  "title": "double",
-  "format": "money-usd",
-  "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the customer per month."
+  "format": "uint64",
+  "minimum": 0,
+  "description": "The number of monthly API credits remaining in the balance. This is the number of credits remaining in the balance.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
 }*/
-  monthly_credits_remaining: number;
+  monthly_api_credits_remaining: number;
   /*{
   "title": "double",
   "format": "money-usd",
-  "description": "The amount of pre-pay cash remaining in the balance. This number goes down as the customer uses their pre-paid credits. The reason we track this amount is if a customer ever wants to withdraw their pre-pay cash, we can use this amount to determine how much to give them. Say a customer has $100 in pre-paid cash, their bill is worth, $50 after subtracting any other credits (like monthly etc.) Their bill is $50, their pre-pay cash remaining will be subtracted by 50 to pay the bill and their `pre_pay_credits_remaining` will be subtracted by 50 to pay the bill. This way if they want to withdraw money after, they can only withdraw $50 since that is the amount of cash they have remaining."
+  "description": "The monetary value of the monthy API credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
 }*/
-  pre_pay_cash_remaining: number;
+  monthly_api_credits_remaining_monetary_value: number;
+  /*{
+  "format": "uint64",
+  "minimum": 0,
+  "description": "The number of stable API credits remaining in the balance. These do not get reset or re-upped every month. This is separate from the monthly credits. Credits will first pull from the monthly credits, then the stable credits. Stable just means that they do not get reset every month. A user will have stable credits if a Zoo employee granted them credits.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
+}*/
+  stable_api_credits_remaining: number;
   /*{
   "title": "double",
   "format": "money-usd",
-  "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a customer adds funds to their balance. This may be through a subscription or a one off payment."
+  "description": "The monetary value of stable API credits remaining in the balance. These do not get reset or re-upped every month. This is separate from the monthly credits. Credits will first pull from the monthly credits, then the stable credits. Stable just means that they do not get reset every month. A user will have stable credits if a Zoo employee granted them credits.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
 }*/
-  pre_pay_credits_remaining: number;
+  stable_api_credits_remaining_monetary_value: number;
   /* nullable:true, description:Details about the subscription. */
   subscription_details?: ZooProductSubscriptions_type;
   /* nullable:true, description:The subscription ID for the user. */
@@ -2501,13 +2507,27 @@ export interface ModelingAppSubscriptionTier_type {
   endpoints_included: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */;
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
   features: SubscriptionTierFeature_type[];
-  name: ModelingAppSubscriptionTierName_type /* The name of the tier. */;
+  /*{
+  "default": 0,
+  "format": "uint64",
+  "minimum": 0,
+  "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month. This is equivalent to the monetary value divided by the price of an API credit."
+}*/
+  monthly_pay_as_you_go_api_credits: number;
   /*{
   "title": "double",
   "format": "money-usd",
-  "description": "The amount of pay-as-you-go credits the individual or org gets outside the modeling app."
+  "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month."
 }*/
-  pay_as_you_go_credits: number;
+  monthly_pay_as_you_go_api_credits_monetary_value: number;
+  name: ModelingAppSubscriptionTierName_type /* The name of the tier. */;
+  /*{
+  "title": "double",
+  "default": 0,
+  "format": "money-usd",
+  "description": "The price of an API credit (meaning 1 credit = 1 minute of API usage)."
+}*/
+  pay_as_you_go_api_credit_price: number;
   price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */;
   share_links: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */;
   support_tier: SupportTier_type /* The support tier the subscription provides. */;
@@ -6193,23 +6213,16 @@ export interface UpdatePaymentBalance_type {
   "nullable": true,
   "title": "double",
   "format": "money-usd",
-  "description": "The monthy credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month. It is a stable amount granted to the user per month."
+  "description": "The monetary value of the monthy API credits remaining in the balance. This gets re-upped every month,"
 }*/
-  monthly_credits_remaining?: number;
+  monthly_api_credits_remaining_monetary_value?: number;
   /*{
   "nullable": true,
   "title": "double",
   "format": "money-usd",
-  "description": "The amount of pre-pay cash remaining in the balance. This number goes down as the user uses their pre-paid credits. The reason we track this amount is if a user ever wants to withdraw their pre-pay cash, we can use this amount to determine how much to give them. Say a user has $100 in pre-paid cash, their bill is worth, $50 after subtracting any other credits (like monthly etc.) Their bill is $50, their pre-pay cash remaining will be subtracted by 50 to pay the bill and their `pre_pay_credits_remaining` will be subtracted by 50 to pay the bill. This way if they want to withdraw money after, they can only withdraw $50 since that is the amount of cash they have remaining."
+  "description": "The monetary value of stable API credits remaining in the balance. These do not get reset or re-upped every month. This is separate from the monthly credits. Credits will first pull from the monthly credits, then the stable credits. Stable just means that they do not get reset every month. A user will have stable credits if a Zoo employee granted them credits."
 }*/
-  pre_pay_cash_remaining?: number;
-  /*{
-  "nullable": true,
-  "title": "double",
-  "format": "money-usd",
-  "description": "The amount of credits remaining in the balance. This is typically the amount of cash * some multiplier they get for pre-paying their account. This number lowers every time a bill is paid with the balance. This number increases every time a user adds funds to their balance. This may be through a subscription or a one off payment."
-}*/
-  pre_pay_credits_remaining?: number;
+  stable_api_credits_remaining_monetary_value?: number;
 }
 
 export interface UpdateShortlinkRequest_type {
@@ -6456,13 +6469,27 @@ export type ZooProductSubscription_type = {
   endpoints_included: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */;
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
   features: SubscriptionTierFeature_type[];
-  name: ModelingAppSubscriptionTierName_type /* The name of the tier. */;
+  /*{
+  "default": 0,
+  "format": "uint64",
+  "minimum": 0,
+  "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month. This is equivalent to the monetary value divided by the price of an API credit."
+}*/
+  monthly_pay_as_you_go_api_credits: number;
   /*{
   "title": "double",
   "format": "money-usd",
-  "description": "The amount of pay-as-you-go credits the individual or org gets outside the modeling app."
+  "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month."
 }*/
-  pay_as_you_go_credits: number;
+  monthly_pay_as_you_go_api_credits_monetary_value: number;
+  name: ModelingAppSubscriptionTierName_type /* The name of the tier. */;
+  /*{
+  "title": "double",
+  "default": 0,
+  "format": "money-usd",
+  "description": "The price of an API credit (meaning 1 credit = 1 minute of API usage)."
+}*/
+  pay_as_you_go_api_credit_price: number;
   price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */;
   share_links: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */;
   support_tier: SupportTier_type /* The support tier the subscription provides. */;

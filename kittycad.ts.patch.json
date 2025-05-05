@@ -19,7 +19,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1balance/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '31337',\n        body: {\n            monthly_credits_remaining: 7,\n            pre_pay_cash_remaining: 7,\n            pre_pay_credits_remaining: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '31337',\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -491,7 +491,7 @@
     "op": "add",
     "path": "/paths/~1orgs~1{id}~1payment~1balance/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            monthly_credits_remaining: 7,\n            pre_pay_cash_remaining: 7,\n            pre_pay_credits_remaining: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
