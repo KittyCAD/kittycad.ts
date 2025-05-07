@@ -3,6 +3,7 @@ import { payments } from '../../src/index.js';
 async function example() {
   const response = await payments.get_payment_balance_for_any_user({
     id: '31337',
+    include_total_due: true,
   });
   if ('error_code' in response) throw response;
 

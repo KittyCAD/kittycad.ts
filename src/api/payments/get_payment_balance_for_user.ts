@@ -3,14 +3,16 @@ import { Client } from '../../client.js';
 
 interface Get_payment_balance_for_user_params {
   client?: Client;
+  include_total_due: boolean;
 }
 
 type Get_payment_balance_for_user_return = CustomerBalance_type | Error_type;
 
 export default async function get_payment_balance_for_user({
   client,
-}: Get_payment_balance_for_user_params = {}): Promise<Get_payment_balance_for_user_return> {
-  const url = `/user/payment/balance`;
+  include_total_due,
+}: Get_payment_balance_for_user_params): Promise<Get_payment_balance_for_user_return> {
+  const url = `/user/payment/balance?include_total_due=${include_total_due}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

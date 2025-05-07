@@ -1226,11 +1226,12 @@ export interface CustomerBalance_type {
   /* nullable:true, description:The subscription ID for the user. */
   subscription_id?: string;
   /*{
+  "nullable": true,
   "title": "double",
   "format": "money-usd",
-  "description": "This includes any outstanding, draft, or open invoices and any pending invoice items. This does not include any credits the customer has on their account."
+  "description": "This includes any outstanding, draft, or open invoices and any pending invoice items. This does not include any credits the customer has on their account. This amount is only returned if requested from the api."
 }*/
-  total_due: number;
+  total_due?: number;
   /* title:DateTime, format:date-time, description:The date and time the balance was last updated. */
   updated_at: string;
 }
