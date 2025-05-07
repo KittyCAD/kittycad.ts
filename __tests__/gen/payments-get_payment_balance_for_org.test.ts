@@ -1,7 +1,9 @@
 import { payments } from '../../src/index.js';
 
 async function example() {
-  const response = await payments.get_payment_balance_for_org();
+  const response = await payments.get_payment_balance_for_org({
+    include_total_due: true,
+  });
   if ('error_code' in response) throw response;
 
   return response;
