@@ -34,6 +34,7 @@ export default async function functionName(
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': contentTypeToBeReplacedDuringApiGen,
   };
 
   const formData = new FormData();

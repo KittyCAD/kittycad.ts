@@ -212,6 +212,18 @@ export default async function apiGen(lookup: any) {
       const requestBody = operation.specSection
         ?.requestBody as OpenAPIV3.ResponseObject;
 
+      // ASSUMPTION: That there is 1 Content-Type for a request.
+      // IN PRACTICE: We only ever use 1 Content-Type for a request.
+      const contentType = (
+        Object.keys(requestBody?.content ?? {})[0] ?? 'text/plain'
+      ).replaceAll(' ', '');
+
+      template = template.replaceAll(
+        'contentTypeToBeReplacedDuringApiGen',
+        // We need those surrounding ''!
+        `'${contentType}'`,
+      );
+
       if (
         (requestBody?.content?.['application/json']?.schema as any)?.$ref ||
         (requestBody?.content?.['multipart/form-data']?.schema as any)?.$ref
