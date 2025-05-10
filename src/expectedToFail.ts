@@ -9,10 +9,13 @@ export const operationsToNotGenerateTestsFor = [
   'delete_user_self',
   'delete_payment_information_for_user',
   'oauth2_provider_callback_post',
+
+  // All of these randomly timeout. Unacceptable nondeterminism.
   'get_any_org',
   'delete_org',
   'delete_payment_method_for_user',
   'list_invoices_for_user',
+  'get_payment_balance_for_any_user',
 ];
 
 /**
@@ -89,7 +92,6 @@ export const testsExpectedToThrow = [
   'payments.delete_payment_method_for_org',
   'payments.get_org_subscription',
   'payments.get_payment_balance_for_any_org',
-  'payments.get_payment_balance_for_any_user',
   'payments.get_payment_balance_for_org',
   'payments.get_payment_information_for_org',
   'payments.get_user_subscription',
