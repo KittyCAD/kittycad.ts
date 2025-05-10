@@ -10,6 +10,8 @@ export const operationsToNotGenerateTestsFor = [
   'delete_payment_information_for_user',
   'oauth2_provider_callback_post',
   'get_any_org',
+  'delete_payment_method_for_user',
+  'list_invoices_for_user',
 ];
 
 /**
@@ -29,7 +31,6 @@ export const expectedToTimeout = [
   'ai.create_text_to_3d',
   'api-calls.get_api_call_metrics',
   'meta.get_metadata',
-  'payments.list_invoices_for_user',
   'payments.get_payment_balance_for_user',
   'orgs.get_org_member',
 ];
@@ -53,7 +54,6 @@ export const testsExpectedToThrow = [
   'meta.internal_get_api_token_for_discord_user',
   'oauth2.device_auth_verify',
   'oauth2.oauth2_provider_callback',
-  'payments.delete_payment_method_for_user',
   'payments.validate_customer_tax_information_for_user',
   'payments.update_payment_balance_for_any_user',
   'payments.update_payment_balance_for_any_org',
