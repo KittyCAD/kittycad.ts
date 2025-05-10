@@ -4,7 +4,13 @@
  *
  * Underscores in the names before the period should be replaced with hyphens
  */
-export const operationsToNotGenerateTestsFor = ['delete_user_self'];
+// WATCH OUT. These do NOT respect the full path.
+export const operationsToNotGenerateTestsFor = [
+  'delete_user_self',
+  'delete_payment_information_for_user',
+  'oauth2_provider_callback_post',
+  'get_any_org',
+];
 
 /**
  * Construct a test path string from a tag and operationId
@@ -23,7 +29,10 @@ export const expectedToTimeout = [
   'ai.create_text_to_3d',
   'api-calls.get_api_call_metrics',
   'meta.get_metadata',
-;
+  'payments.list_invoices_for_user',
+  'payments.get_payment_balance_for_user',
+  'orgs.get_org_member',
+];
 
 /**
  * Tests that are expected to fail
@@ -44,20 +53,16 @@ export const testsExpectedToThrow = [
   'meta.internal_get_api_token_for_discord_user',
   'oauth2.device_auth_verify',
   'oauth2.oauth2_provider_callback',
-  'payments-get_payment_balance_for_user',
-  'payments.delete_payment_information_for_user',
   'payments.delete_payment_method_for_user',
   'payments.validate_customer_tax_information_for_user',
   'payments.update_payment_balance_for_any_user',
   'payments.update_payment_balance_for_any_org',
   'payments.update_org_subscription',
-  'payments.delete_payment_information_for_user',
   'payments.create_org_subscription',
   'orgs.update_org_privacy_settings',
   'orgs.update_org_member',
   'orgs.update_enterprise_pricing_for_org',
   'orgs.create_org_member',
-  'auth2.oauth2_provider_callback_post',
   'oauth2.device_auth_confirm',
   'unit-get_frequency_unit_conversion',
   'unit.get_power_unit_conversion',
@@ -72,13 +77,9 @@ export const testsExpectedToThrow = [
   'service-accounts.get_service_account_for_org',
   'users.get_session_for_user',
 
-  // it's possible some of these org tests are failing because Kurt's account and token
-  // used in these test are not in an org
   'orgs.delete_org_member',
   'orgs.delete_org_saml_idp',
   'orgs.delete_org',
-  'orgs.get_any_org',
-  'orgs.get_org_member',
   'orgs.get_org_privacy_settings',
   'orgs.get_org_saml_idp',
   'orgs.get_org',
@@ -97,7 +98,6 @@ export const testsExpectedToThrow = [
   'payments.create_payment_intent_for_user',
   'payments.get_payment_balance_for_user',
   'payments.get_payment_information_for_user',
-  'payments.list_invoices_for_user',
   'payments.list_payment_methods_for_user',
   'payments.validate_customer_tax_information_for_org',
   'service-accounts.create_service_account_for_org',
@@ -105,9 +105,6 @@ export const testsExpectedToThrow = [
   'meta.create_event',
   'ml.create_text_to_cad_multi_file_iteration',
 
-  // stateful. what matters is the creation variants succeed.
   'users.delete_user_shortlink',
   'users.update_user_shortlink',
-  'payments.delete_payment_information_for_user',
-  'auth2.oauth2_provider_callback_post',
 ];
