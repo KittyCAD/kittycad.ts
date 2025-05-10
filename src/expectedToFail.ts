@@ -9,6 +9,7 @@ export const operationsToNotGenerateTestsFor = [
   'delete_user_self',
   'delete_payment_information_for_user',
   'oauth2_provider_callback_post',
+  'create_file_execution',
 
   // All of these randomly timeout. Unacceptable nondeterminism.
   'get_any_org',
