@@ -319,6 +319,7 @@ export default async function apiGen(lookup: any) {
           };
           return returnExample(refSchema);
         };
+
         const theStr = mapOverProperties(ref);
         if (theStr) {
           inputParamsExamples.push(`body: ${theStr}`);
