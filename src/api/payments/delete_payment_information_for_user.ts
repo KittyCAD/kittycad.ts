@@ -29,6 +29,7 @@ export default async function delete_payment_information_for_user({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'DELETE',

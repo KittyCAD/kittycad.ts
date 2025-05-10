@@ -31,6 +31,7 @@ export default async function apps_github_webhook({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/octet-stream',
   };
   const fetchOptions = {
     method: 'POST',

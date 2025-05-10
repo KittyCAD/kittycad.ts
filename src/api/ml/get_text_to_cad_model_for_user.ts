@@ -31,6 +31,7 @@ export default async function get_text_to_cad_model_for_user({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'GET',

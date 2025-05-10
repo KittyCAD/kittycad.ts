@@ -32,6 +32,7 @@ export default async function create_debug_uploads({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'multipart/form-data',
   };
 
   const formData = new FormData();

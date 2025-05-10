@@ -31,6 +31,7 @@ export default async function oauth2_provider_callback_post({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/x-www-form-urlencoded',
   };
   const fetchOptions = {
     method: 'POST',

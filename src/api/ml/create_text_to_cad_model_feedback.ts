@@ -33,6 +33,7 @@ export default async function create_text_to_cad_model_feedback({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'POST',

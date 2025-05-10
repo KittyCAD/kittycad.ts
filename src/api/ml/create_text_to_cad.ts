@@ -40,6 +40,7 @@ export default async function create_text_to_cad({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/json',
   };
   const fetchOptions = {
     method: 'POST',

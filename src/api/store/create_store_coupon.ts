@@ -35,6 +35,7 @@ export default async function create_store_coupon({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/json',
   };
   const fetchOptions = {
     method: 'POST',

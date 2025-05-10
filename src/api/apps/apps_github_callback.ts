@@ -29,6 +29,7 @@ export default async function apps_github_callback({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/json',
   };
   const fetchOptions = {
     method: 'GET',

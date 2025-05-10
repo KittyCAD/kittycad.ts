@@ -40,6 +40,7 @@ export default async function create_file_surface_area({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/octet-stream',
   };
   const fetchOptions = {
     method: 'POST',

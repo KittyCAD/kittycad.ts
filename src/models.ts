@@ -957,6 +957,19 @@ export interface Color_type {
   r: number;
 }
 
+export interface ComplementaryEdges_type {
+  /*{
+  "format": "uuid"
+}*/
+  adjacent_ids: string[];
+  /*{
+  "nullable": true,
+  "format": "uuid",
+  "description": "The opposite edge has no common vertices with the original edge. A wall may not have an opposite edge (i.e. a revolve that touches the axis of rotation)."
+}*/
+  opposite_id?: string;
+}
+
 export interface ComponentTransform_type {
   /*{
   "nullable": true,
@@ -1236,6 +1249,8 @@ export interface CustomerBalance_type {
   updated_at: string;
 }
 
+export type CutStrategy_type = 'basic' | 'csg' | 'automatic';
+
 export type CutType_type = 'fillet' | 'chamfer';
 
 export interface DefaultCameraCenterToScene_type {} /* Empty object */
@@ -1361,13 +1376,20 @@ export type EnterpriseSubscriptionTierPrice_type =
     };
 
 export interface EntityCircularPattern_type {
+  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
   /*{
   "format": "uuid"
 }*/
   entity_ids: string[];
 }
 
-export interface EntityClone_type {} /* Empty object */
+export interface EntityClone_type {
+  /*{
+  "format": "uuid"
+}*/
+  entity_ids: string[];
+  face_edge_ids: FaceEdgeInfo_type[] /* The Face and Edge Ids of the cloned entity. */;
+}
 
 export interface EntityFade_type {} /* Empty object */
 
@@ -1406,6 +1428,7 @@ export interface EntityGetSketchPaths_type {
 }
 
 export interface EntityLinearPattern_type {
+  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
   /*{
   "format": "uuid"
 }*/
@@ -1413,6 +1436,7 @@ export interface EntityLinearPattern_type {
 }
 
 export interface EntityLinearPatternTransform_type {
+  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
   /*{
   "format": "uuid"
 }*/
@@ -1426,6 +1450,7 @@ export interface EntityMakeHelixFromEdge_type {} /* Empty object */
 export interface EntityMakeHelixFromParams_type {} /* Empty object */
 
 export interface EntityMirror_type {
+  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
   /*{
   "format": "uuid"
 }*/
@@ -1433,6 +1458,7 @@ export interface EntityMirror_type {
 }
 
 export interface EntityMirrorAcrossEdge_type {
+  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
   /*{
   "format": "uuid"
 }*/
@@ -1605,6 +1631,19 @@ export interface ExtrusionFaceInfo_type {
   curve_id?: string;
   /* nullable:true, format:uuid, description:Face uuid. */
   face_id?: string;
+}
+
+export interface FaceEdgeInfo_type {
+  /*{
+  "format": "uuid"
+}*/
+  edges: string[];
+  /*{
+  "format": "uuid"
+}*/
+  faces: string[];
+  /* format:uuid, description:The UUID of the object. */
+  object_id: string;
 }
 
 export interface FaceGetCenter_type {
@@ -3055,11 +3094,21 @@ export type ModelingCmd_type =
   | {
       /* default:fillet, description:How to apply the cut. */
       cut_type: CutType_type;
-      /* format:uuid, description:Which edge you want to fillet. */
-      edge_id: string;
+      /* nullable:true, format:uuid, description:Which edge you want to fillet. */
+      edge_id?: string;
+      /*{
+  "format": "uuid"
+}*/
+      edge_ids: string[];
+      /*{
+  "format": "uuid"
+}*/
+      extra_face_ids: string[];
       /* format:uuid, description:Which object is being filletted. */
       object_id: string;
       radius: LengthUnit_type /* The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero). */;
+      /* default:automatic, description:Which cutting algorithm to use. */
+      strategy: CutStrategy_type;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the filleted surfaces. Must be positive (i.e. greater than zero). */;
       type: 'solid3d_fillet_edge';
     }
@@ -3449,6 +3498,11 @@ export type ModelingCmd_type =
 }*/
       object_id: string;
       type: 'solid3d_get_extrusion_face_info';
+    }
+  | {
+      /* format:uuid, description:The Solid3d object whose info is being queried. */
+      object_id: string;
+      type: 'solid3d_get_info';
     }
   | { type: 'select_clear' }
   | { type: 'select_get' }
@@ -4382,6 +4436,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/FaceEdgeInfo"
+}*/
+      data: FaceEdgeInfo_type;
+      type: 'face_edge_info';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/EntityClone"
 }*/
       data: EntityClone_type;
@@ -4456,6 +4517,27 @@ export type OkModelingCmdResponse_type =
 }*/
       data: ExtrusionFaceInfo_type;
       type: 'extrusion_face_info';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ComplementaryEdges"
+}*/
+      data: ComplementaryEdges_type;
+      type: 'complementary_edges';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/Solid3dGetInfo"
+}*/
+      data: Solid3dGetInfo_type;
+      type: 'solid3d_get_info';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SolidInfo"
+}*/
+      data: SolidInfo_type;
+      type: 'solid_info';
     }
   | {
       /*{
@@ -5285,6 +5367,10 @@ export interface Solid3dGetExtrusionFaceInfo_type {
   faces: ExtrusionFaceInfo_type[] /* Details of each face. */;
 }
 
+export interface Solid3dGetInfo_type {
+  info: SolidInfo_type /* Details of each face. */;
+}
+
 export interface Solid3dGetNextAdjacentEdge_type {
   /* nullable:true, format:uuid, description:The UUID of the edge. */
   edge?: string;
@@ -5301,6 +5387,22 @@ export interface Solid3dGetPrevAdjacentEdge_type {
 }
 
 export interface Solid3dShellFace_type {} /* Empty object */
+
+export interface SolidInfo_type {
+  /* nullable:true, format:uuid, description:UUID for bottom cap. */
+  bottom_cap_id?: string;
+  common_edges: {
+    [key: string]: /*{
+  "format": "uuid"
+}*/
+    string[];
+  };
+  complementary_edges: {
+    [key: string]: ComplementaryEdges_type;
+  } /* A map containing the adjacent and opposite edge ids of each wall face. */;
+  /* nullable:true, format:uuid, description:UUID for top cap. */
+  top_cap_id?: string;
+}
 
 export interface SourcePosition_type {
   /* format:uint32, minimum:0, description:The column number. */
@@ -5378,9 +5480,9 @@ export interface SuccessWebSocketResponse_type {
 
 export type SupportTier_type =
   | 'community'
-  | 'standard'
-  | 'premium'
-  | 'priority';
+  | 'standard_email'
+  | 'priority_email'
+  | 'premium';
 
 export interface SurfaceArea_type {
   output_unit: UnitArea_type /* The output unit for the surface area. */;
@@ -6585,6 +6687,7 @@ export interface Models {
   CodeLanguage_type: CodeLanguage_type;
   CodeOutput_type: CodeOutput_type;
   Color_type: Color_type;
+  ComplementaryEdges_type: ComplementaryEdges_type;
   ComponentTransform_type: ComponentTransform_type;
   Connection_type: Connection_type;
   CountryCode_type: CountryCode_type;
@@ -6600,6 +6703,7 @@ export interface Models {
   CurveType_type: CurveType_type;
   Customer_type: Customer_type;
   CustomerBalance_type: CustomerBalance_type;
+  CutStrategy_type: CutStrategy_type;
   CutType_type: CutType_type;
   DefaultCameraCenterToScene_type: DefaultCameraCenterToScene_type;
   DefaultCameraCenterToSelection_type: DefaultCameraCenterToSelection_type;
@@ -6663,6 +6767,7 @@ export interface Models {
   ExtrudedFaceInfo_type: ExtrudedFaceInfo_type;
   ExtrusionFaceCapType_type: ExtrusionFaceCapType_type;
   ExtrusionFaceInfo_type: ExtrusionFaceInfo_type;
+  FaceEdgeInfo_type: FaceEdgeInfo_type;
   FaceGetCenter_type: FaceGetCenter_type;
   FaceGetGradient_type: FaceGetGradient_type;
   FaceGetPosition_type: FaceGetPosition_type;
@@ -6832,10 +6937,12 @@ export interface Models {
   Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
   Solid3dGetCommonEdge_type: Solid3dGetCommonEdge_type;
   Solid3dGetExtrusionFaceInfo_type: Solid3dGetExtrusionFaceInfo_type;
+  Solid3dGetInfo_type: Solid3dGetInfo_type;
   Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type;
   Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
   Solid3dShellFace_type: Solid3dShellFace_type;
+  SolidInfo_type: SolidInfo_type;
   SourcePosition_type: SourcePosition_type;
   SourceRange_type: SourceRange_type;
   SourceRangePrompt_type: SourceRangePrompt_type;

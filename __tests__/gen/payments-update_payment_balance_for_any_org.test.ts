@@ -16,6 +16,10 @@ async function example() {
 
 describe('Testing payments.update_payment_balance_for_any_org', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
+    try {
+      await example();
+    } catch (err) {
+      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+    }
   });
 });

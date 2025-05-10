@@ -31,6 +31,7 @@ export default async function device_auth_confirm({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/json',
   };
   const fetchOptions = {
     method: 'POST',

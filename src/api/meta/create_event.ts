@@ -34,6 +34,7 @@ export default async function create_event({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'multipart/form-data',
   };
 
   const formData = new FormData();

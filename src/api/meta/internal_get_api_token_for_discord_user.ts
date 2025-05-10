@@ -33,6 +33,7 @@ export default async function internal_get_api_token_for_discord_user({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'GET',

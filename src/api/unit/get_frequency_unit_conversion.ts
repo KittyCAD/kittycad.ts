@@ -41,6 +41,7 @@ export default async function get_frequency_unit_conversion({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'GET',

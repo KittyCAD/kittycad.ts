@@ -29,6 +29,7 @@ export default async function oauth2_token_revoke({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/x-www-form-urlencoded',
   };
   const fetchOptions = {
     method: 'POST',
