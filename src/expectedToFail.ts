@@ -10,6 +10,7 @@ export const operationsToNotGenerateTestsFor = [
   'delete_payment_information_for_user',
   'oauth2_provider_callback_post',
   'get_any_org',
+  'delete_org',
   'delete_payment_method_for_user',
   'list_invoices_for_user',
 ];
@@ -79,7 +80,6 @@ export const testsExpectedToThrow = [
 
   'orgs.delete_org_member',
   'orgs.delete_org_saml_idp',
-  'orgs.delete_org',
   'orgs.get_org_privacy_settings',
   'orgs.get_org_saml_idp',
   'orgs.get_org',
