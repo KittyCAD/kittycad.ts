@@ -107,4 +107,7 @@ export const testsExpectedToThrow = [
 
   'users.delete_user_shortlink',
   'users.update_user_shortlink',
+
+  'ml.create_text_to_cad_iteration',
+  'ml.create_text_to_cad',
 ];
