@@ -35,6 +35,7 @@ export default async function get_user_extended({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'GET',

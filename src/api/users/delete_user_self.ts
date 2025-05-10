@@ -29,6 +29,7 @@ export default async function delete_user_self({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'DELETE',

@@ -41,6 +41,7 @@ export default async function list_service_accounts_for_org({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'GET',

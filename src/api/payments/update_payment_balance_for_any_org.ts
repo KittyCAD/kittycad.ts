@@ -42,6 +42,7 @@ export default async function update_payment_balance_for_any_org({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/json',
   };
   const fetchOptions = {
     method: 'PUT',

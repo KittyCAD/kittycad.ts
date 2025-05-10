@@ -29,6 +29,7 @@ export default async function get_ipinfo({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'GET',

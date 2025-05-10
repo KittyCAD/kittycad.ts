@@ -93,6 +93,12 @@ async function main() {
                 `${key}: {[key: string] : ${typeNameReference[ref]}}`,
               );
             }
+            // Avoids nested colons (:)
+            if ((subSchema.additionalProperties as any).type === 'array') {
+              return `${key}: {[key: string] ${makeTypeStringForNode(
+                subSchema.additionalProperties as any,
+              )}}`;
+            }
             return `${key}: {[key: string] : ${makeTypeStringForNode(
               subSchema.additionalProperties as any,
             )}}`;

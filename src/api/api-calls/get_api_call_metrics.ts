@@ -35,6 +35,7 @@ export default async function get_api_call_metrics({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'GET',

@@ -39,6 +39,7 @@ export default async function create_file_execution({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/octet-stream',
   };
   const fetchOptions = {
     method: 'POST',

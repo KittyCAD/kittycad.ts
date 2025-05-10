@@ -29,6 +29,7 @@ export default async function device_auth_request({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/x-www-form-urlencoded',
   };
   const fetchOptions = {
     method: 'POST',

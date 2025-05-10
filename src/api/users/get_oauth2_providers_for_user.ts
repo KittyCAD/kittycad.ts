@@ -29,6 +29,7 @@ export default async function get_oauth2_providers_for_user({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'GET',

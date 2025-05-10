@@ -40,6 +40,7 @@ export default async function update_enterprise_pricing_for_org({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/json',
   };
   const fetchOptions = {
     method: 'PUT',

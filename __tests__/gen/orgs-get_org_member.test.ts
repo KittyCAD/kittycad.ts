@@ -11,10 +11,10 @@ async function example() {
 
 describe('Testing orgs.get_org_member', () => {
   it('should be truthy or throw', async () => {
-    try {
-      await example();
-    } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
-    }
+    const examplePromise = example();
+    const timeoutPromise = new Promise((r) =>
+      setTimeout(() => r('timeout'), 450),
+    );
+    expect(await Promise.any([examplePromise, timeoutPromise])).toBe('timeout');
   });
 });

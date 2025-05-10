@@ -31,6 +31,7 @@ export default async function delete_org_member({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'DELETE',

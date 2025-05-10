@@ -40,6 +40,7 @@ export default async function create_text_to_cad_multi_file_iteration({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'multipart/form-data',
   };
 
   const formData = new FormData();

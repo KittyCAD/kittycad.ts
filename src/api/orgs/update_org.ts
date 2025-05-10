@@ -31,6 +31,7 @@ export default async function update_org({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'application/json',
   };
   const fetchOptions = {
     method: 'PUT',

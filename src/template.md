@@ -32,6 +32,7 @@ export default async function functionName(
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': contentTypeToBeReplacedDuringApiGen,
   };
   const fetchOptions = {
     method: 'METHOD',

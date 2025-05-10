@@ -29,6 +29,7 @@ export default async function create_payment_intent_for_user({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'POST',

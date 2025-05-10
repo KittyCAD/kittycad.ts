@@ -31,6 +31,7 @@ export default async function delete_service_account_for_org({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
+    'Content-Type': 'text/plain',
   };
   const fetchOptions = {
     method: 'DELETE',
