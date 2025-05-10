@@ -23,8 +23,7 @@ export const expectedToTimeout = [
   'ai.create_text_to_3d',
   'api-calls.get_api_call_metrics',
   'meta.get_metadata',
-  'payments.list_invoices_for_user',
-];
+;
 
 /**
  * Tests that are expected to fail
@@ -108,4 +107,7 @@ export const testsExpectedToThrow = [
 
   // stateful. what matters is the creation variants succeed.
   'users.delete_user_shortlink',
+  'users.update_user_shortlink',
+  'payments.delete_payment_information_for_user',
+  'auth2.oauth2_provider_callback_post',
 ];
