@@ -1139,6 +1139,15 @@ export type CreatedAtSortMode_type =
   | 'created_at_ascending'
   | 'created_at_descending';
 
+export interface CrmData_type {
+  /* nullable:true, description:The industry of the user. */
+  cad_industry?: string;
+  /* nullable:true, description:The user count of the user. */
+  cad_user_count?: string;
+  /* nullable:true, description:The user type. */
+  cad_user_type?: string;
+}
+
 export type Currency_type =
   /* Currency is the list of supported currencies. Always lowercase.
 
@@ -1577,6 +1586,8 @@ export interface ExtendedUser_type {
   id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
+  /* default:false, description:If the user has finished onboarding. */
+  is_onboarded: boolean;
   /* default:false, description:If the user is tied to a service account. */
   is_service_account: boolean;
   last_name: string /* The user's last name. */;
@@ -2088,6 +2099,31 @@ This is very important for correct scaling and when calculating physics properti
 Defaults to millimeters. */
       units: UnitLength_type;
     };
+
+export interface InquiryForm_type {
+  /* nullable:true, description:The company name. */
+  company?: string;
+  /* format:email, description:The email address of the user. */
+  email: string;
+  first_name: string /* The first name of the user. */;
+  /* nullable:true, description:The industry of the user. */
+  industry?: string;
+  inquiry_type: InquiryType_type /* The type of inquiry. */;
+  last_name: string /* The last name of the user. */;
+  message: string /* The message content. */;
+  /* nullable:true, description:The phone number of the user. */
+  phone?: string;
+}
+
+export type InquiryType_type =
+  | 'general_inquiry'
+  | 'sales_question'
+  | 'developer_inquiry'
+  | 'partnership_opportunity'
+  | 'other_sales_inquiry'
+  | 'technical_support'
+  | 'account_management'
+  | 'other_support_inquiry';
 
 export interface Invoice_type {
   /*{
@@ -5435,6 +5471,11 @@ export interface StoreCouponParams_type {
   percent_off: number;
 }
 
+export interface Subscribe_type {
+  /* format:email, description:The email */
+  email: string;
+}
+
 export interface SubscriptionTierFeature_type {
   /* minLength:1, maxLength:80, description:Information about the feature. */
   info: string;
@@ -6348,6 +6389,8 @@ export interface UpdateUser_type {
   "description": "The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next."
 }*/
   image: string;
+  /* nullable:true, description:If the user is now onboarded. */
+  is_onboarded?: boolean;
   last_name: string /* The user's last name. */;
   /*{
   "title": "String",
@@ -6369,7 +6412,7 @@ export interface User_type {
   company: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
-  /* default:false, description:If the user is scheduled for deletion */
+  /* default:false, description:If the user is scheduled for deletion. */
   deletion_scheduled: boolean;
   discord: string /* The user's Discord handle. */;
   /* format:email, description:The email address of the user. */
@@ -6386,6 +6429,8 @@ export interface User_type {
   id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
+  /* default:false, description:If the user has finished onboarding. */
+  is_onboarded: boolean;
   /* default:false, description:If the user is tied to a service account. */
   is_service_account: boolean;
   last_name: string /* The user's last name. */;
@@ -6695,6 +6740,7 @@ export interface Models {
   CreateShortlinkRequest_type: CreateShortlinkRequest_type;
   CreateShortlinkResponse_type: CreateShortlinkResponse_type;
   CreatedAtSortMode_type: CreatedAtSortMode_type;
+  CrmData_type: CrmData_type;
   Currency_type: Currency_type;
   CurveGetControlPoints_type: CurveGetControlPoints_type;
   CurveGetEndPoints_type: CurveGetEndPoints_type;
@@ -6802,6 +6848,8 @@ export interface Models {
   ImportFiles_type: ImportFiles_type;
   ImportedGeometry_type: ImportedGeometry_type;
   InputFormat3d_type: InputFormat3d_type;
+  InquiryForm_type: InquiryForm_type;
+  InquiryType_type: InquiryType_type;
   Invoice_type: Invoice_type;
   InvoiceLineItem_type: InvoiceLineItem_type;
   InvoiceStatus_type: InvoiceStatus_type;
@@ -6949,6 +6997,7 @@ export interface Models {
   StartPath_type: StartPath_type;
   StlStorage_type: StlStorage_type;
   StoreCouponParams_type: StoreCouponParams_type;
+  Subscribe_type: Subscribe_type;
   SubscriptionTierFeature_type: SubscriptionTierFeature_type;
   SubscriptionTierPrice_type: SubscriptionTierPrice_type;
   SubscriptionTierType_type: SubscriptionTierType_type;

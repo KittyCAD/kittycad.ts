@@ -17,6 +17,22 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1website~1subscribe/put/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_subscribe({\n        body: { email: 'The email' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1website~1form/put/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_form({\n        body: {\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'general_inquiry',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            phone: 'The phone number of the user.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1balance/put/x-typescript",
     "value": {
       "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '31337',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -281,9 +297,25 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1form/put/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_user_form_self({\n        body: {\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'general_inquiry',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            phone: 'The phone number of the user.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1extended/get/x-typescript",
     "value": {
       "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self_extended()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1crm/patch/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.patch_user_crm({\n        body: {\n            cad_industry: 'The industry of the user.',\n            cad_user_count: 'The user count of the user.',\n            cad_user_type: 'The user type.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -347,7 +379,7 @@
     "op": "add",
     "path": "/paths/~1user/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self({\n        body: {\n            company: \"The user's company.\",\n            discord: \"The user's Discord handle.\",\n            first_name: \"The user's first name.\",\n            github: \"The user's GitHub handle.\",\n            image: \"The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next.\",\n            last_name: \"The user's last name.\",\n            phone: \"The user's phone number.\",\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self({\n        body: {\n            company: \"The user's company.\",\n            discord: \"The user's Discord handle.\",\n            first_name: \"The user's first name.\",\n            github: \"The user's GitHub handle.\",\n            image: \"The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next.\",\n            is_onboarded: true,\n            last_name: \"The user's last name.\",\n            phone: \"The user's phone number.\",\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
