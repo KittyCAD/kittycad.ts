@@ -9,6 +9,7 @@ async function example() {
       github: "The user's GitHub handle.",
       image:
         "The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next.",
+      is_onboarded: true,
       last_name: "The user's last name.",
       phone: "The user's phone number.",
     },

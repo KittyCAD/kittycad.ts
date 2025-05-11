@@ -286,6 +286,10 @@ import get_user_self_extended from './api/users/get_user_self_extended.js';
 import get_user_shortlinks from './api/users/get_user_shortlinks.js';
 import list_users from './api/users/list_users.js';
 import list_users_extended from './api/users/list_users_extended.js';
+import patch_user_crm from './api/users/patch_user_crm.js';
+import put_public_form from './api/users/put_public_form.js';
+import put_public_subscribe from './api/users/put_public_subscribe.js';
+import put_user_form_self from './api/users/put_user_form_self.js';
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js';
 import update_user_self from './api/users/update_user_self.js';
 import update_user_shortlink from './api/users/update_user_shortlink.js';
@@ -304,6 +308,10 @@ export const users = {
   get_user_shortlinks,
   list_users,
   list_users_extended,
+  patch_user_crm,
+  put_public_form,
+  put_public_subscribe,
+  put_user_form_self,
   update_user_privacy_settings,
   update_user_self,
   update_user_shortlink,
