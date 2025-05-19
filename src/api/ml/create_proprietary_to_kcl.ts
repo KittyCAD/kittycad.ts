@@ -1,9 +1,10 @@
-import { KclModel_type, Error_type } from '../../models.js';
+import { KclModel_type, Error_type, CodeOption_type } from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
 
 interface Create_proprietary_to_kcl_params {
   client?: Client;
+  code_option: CodeOption_type;
   files: File[];
 }
 
@@ -12,8 +13,9 @@ type Create_proprietary_to_kcl_return = KclModel_type | Error_type;
 export default async function create_proprietary_to_kcl({
   client,
   files,
+  code_option,
 }: Create_proprietary_to_kcl_params): Promise<Create_proprietary_to_kcl_return> {
-  const url = `/ml/convert/proprietary-to-kcl`;
+  const url = `/ml/convert/proprietary-to-kcl?code_option=${code_option}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

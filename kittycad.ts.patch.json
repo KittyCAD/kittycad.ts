@@ -315,7 +315,7 @@
     "op": "add",
     "path": "/paths/~1user~1crm/patch/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.patch_user_crm({\n        body: {\n            cad_industry: 'The industry of the user.',\n            cad_user_count: 'The user count of the user.',\n            cad_user_type: 'The user type.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.patch_user_crm({\n        body: {\n            cad_industry: 'The industry of the user.',\n            cad_user_type: 'The user type.',\n            number_of_cad_users: 'The user count of the user.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -931,7 +931,7 @@
     "op": "add",
     "path": "/paths/~1ml~1convert~1proprietary-to-kcl/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_proprietary_to_kcl({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_proprietary_to_kcl({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        code_option: 'execute',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
