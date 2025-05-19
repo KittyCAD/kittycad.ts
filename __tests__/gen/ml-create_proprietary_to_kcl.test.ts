@@ -8,6 +8,7 @@ async function example() {
         data: new Blob(['thing = 1'], { type: 'text/plain' }),
       },
     ],
+    code_option: 'execute',
   });
   if ('error_code' in response) throw response;
 

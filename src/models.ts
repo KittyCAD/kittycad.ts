@@ -29,6 +29,15 @@ export interface AddressDetails_type {
   zip: string /* The zip component. */;
 }
 
+export interface AdjacencyInfo_type {
+  /* nullable:true, description:Adjacent edge and face info. */
+  adjacent_info?: EdgeInfo_type;
+  /* nullable:true, description:Opposite edge and face info. */
+  opposite_info?: EdgeInfo_type;
+  /* nullable:true, description:Original edge id and face info. */
+  original_info?: EdgeInfo_type;
+}
+
 export interface Angle_type {
   unit: UnitAngle_type /* What unit is the measurement? */;
   /*{
@@ -938,6 +947,14 @@ export interface Cluster_type {
 
 export type CodeLanguage_type = 'go' | 'python' | 'node';
 
+export type CodeOption_type =
+  /* Code option for running and verifying kcl.
+
+<details><summary>JSON schema</summary>
+
+```json { "title": "CodeOption", "description": "Code option for running and verifying kcl.", "type": "string", "enum": [ "parse", "execute", "cleanup", "mock_execute" ] } ``` </details> */
+  'parse' | 'execute' | 'cleanup' | 'mock_execute';
+
 export interface CodeOutput_type {
   output_files: OutputFile_type[] /* The contents of the files requested if they were passed. */;
   /* default:, description:The stderr of the code. */
@@ -1142,10 +1159,10 @@ export type CreatedAtSortMode_type =
 export interface CrmData_type {
   /* nullable:true, description:The industry of the user. */
   cad_industry?: string;
-  /* nullable:true, description:The user count of the user. */
-  cad_user_count?: string;
   /* nullable:true, description:The user type. */
   cad_user_type?: string;
+  /* nullable:true, description:The user count of the user. */
+  number_of_cad_users?: string;
 }
 
 export type Currency_type =
@@ -1348,6 +1365,15 @@ export type DistanceType_type =
   | { axis: GlobalAxis_type /* Global axis */; type: 'on_axis' };
 
 export type DxfStorage_type = 'ascii' | 'binary';
+
+export interface EdgeInfo_type {
+  /* format:uuid, description:The UUID of the id. */
+  edge_id: string;
+  /*{
+  "format": "uuid"
+}*/
+  faces: string[];
+}
 
 export interface EdgeLinesVisible_type {} /* Empty object */
 
@@ -2655,6 +2681,8 @@ export type ModelingCmd_type =
       type: 'extrude';
     }
   | {
+      /* default:sketch_plane, description:What is this sweep relative to? */
+      relative_to: RelativeTo_type;
       sectional: boolean /* If true, the sweep will be broken up into sub-sweeps (extrusions, revolves, sweeps) based on the trajectory path components. */;
       target: ModelingCmdId_type /* Which sketch to sweep. Must be a closed 2D solid. */;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
@@ -3536,9 +3564,11 @@ export type ModelingCmd_type =
       type: 'solid3d_get_extrusion_face_info';
     }
   | {
+      /* format:uuid, description:Any edge that lies on the extrusion base path. */
+      edge_id: string;
       /* format:uuid, description:The Solid3d object whose info is being queried. */
       object_id: string;
-      type: 'solid3d_get_info';
+      type: 'solid3d_get_adjacency_info';
     }
   | { type: 'select_clear' }
   | { type: 'select_get' }
@@ -4234,6 +4264,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/Solid3dGetAdjacencyInfo"
+}*/
+      data: Solid3dGetAdjacencyInfo_type;
+      type: 'solid3d_get_adjacency_info';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/Solid3dGetAllEdgeFaces"
 }*/
       data: Solid3dGetAllEdgeFaces_type;
@@ -4479,6 +4516,13 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
+  "$ref": "#/components/schemas/EdgeInfo"
+}*/
+      data: EdgeInfo_type;
+      type: 'edge_info';
+    }
+  | {
+      /*{
   "$ref": "#/components/schemas/EntityClone"
 }*/
       data: EntityClone_type;
@@ -4563,17 +4607,10 @@ export type OkModelingCmdResponse_type =
     }
   | {
       /*{
-  "$ref": "#/components/schemas/Solid3dGetInfo"
+  "$ref": "#/components/schemas/AdjacencyInfo"
 }*/
-      data: Solid3dGetInfo_type;
-      type: 'solid3d_get_info';
-    }
-  | {
-      /*{
-  "$ref": "#/components/schemas/SolidInfo"
-}*/
-      data: SolidInfo_type;
-      type: 'solid_info';
+      data: AdjacencyInfo_type;
+      type: 'adjacency_info';
     }
   | {
       /*{
@@ -5129,6 +5166,8 @@ export interface RawFile_type {
 
 export interface ReconfigureStream_type {} /* Empty object */
 
+export type RelativeTo_type = 'sketch_plane' | 'trajectory_curve';
+
 export interface RemoveSceneObjects_type {} /* Empty object */
 
 export interface Revolve_type {} /* Empty object */
@@ -5380,6 +5419,10 @@ export interface Solid2dAddHole_type {} /* Empty object */
 
 export interface Solid3dFilletEdge_type {} /* Empty object */
 
+export interface Solid3dGetAdjacencyInfo_type {
+  edges: AdjacencyInfo_type[] /* Details of each edge. */;
+}
+
 export interface Solid3dGetAllEdgeFaces_type {
   /*{
   "format": "uuid"
@@ -5403,10 +5446,6 @@ export interface Solid3dGetExtrusionFaceInfo_type {
   faces: ExtrusionFaceInfo_type[] /* Details of each face. */;
 }
 
-export interface Solid3dGetInfo_type {
-  info: SolidInfo_type /* Details of each face. */;
-}
-
 export interface Solid3dGetNextAdjacentEdge_type {
   /* nullable:true, format:uuid, description:The UUID of the edge. */
   edge?: string;
@@ -5423,22 +5462,6 @@ export interface Solid3dGetPrevAdjacentEdge_type {
 }
 
 export interface Solid3dShellFace_type {} /* Empty object */
-
-export interface SolidInfo_type {
-  /* nullable:true, format:uuid, description:UUID for bottom cap. */
-  bottom_cap_id?: string;
-  common_edges: {
-    [key: string]: /*{
-  "format": "uuid"
-}*/
-    string[];
-  };
-  complementary_edges: {
-    [key: string]: ComplementaryEdges_type;
-  } /* A map containing the adjacent and opposite edge ids of each wall face. */;
-  /* nullable:true, format:uuid, description:UUID for top cap. */
-  top_cap_id?: string;
-}
 
 export interface SourcePosition_type {
   /* format:uint32, minimum:0, description:The column number. */
@@ -6672,8 +6695,8 @@ export interface ZooProductSubscriptionsUserRequest_type {
 
 export type ZooTool_type =
   | 'modeling_app'
-  | 'text_to_cad'
-  | 'diff_chrome_extension';
+  | 'diff_chrome_extension'
+  | 'text_to_cad';
 
 export interface ZoomToFit_type {
   settings: CameraSettings_type /* Camera settings */;
@@ -6684,6 +6707,7 @@ export interface Models {
   AddHoleFromOffset_type: AddHoleFromOffset_type;
   AddOrgMember_type: AddOrgMember_type;
   AddressDetails_type: AddressDetails_type;
+  AdjacencyInfo_type: AdjacencyInfo_type;
   Angle_type: Angle_type;
   AnnotationLineEnd_type: AnnotationLineEnd_type;
   AnnotationLineEndOptions_type: AnnotationLineEndOptions_type;
@@ -6730,6 +6754,7 @@ export interface Models {
   ClosePath_type: ClosePath_type;
   Cluster_type: Cluster_type;
   CodeLanguage_type: CodeLanguage_type;
+  CodeOption_type: CodeOption_type;
   CodeOutput_type: CodeOutput_type;
   Color_type: Color_type;
   ComplementaryEdges_type: ComplementaryEdges_type;
@@ -6774,6 +6799,7 @@ export interface Models {
   DiscountCode_type: DiscountCode_type;
   DistanceType_type: DistanceType_type;
   DxfStorage_type: DxfStorage_type;
+  EdgeInfo_type: EdgeInfo_type;
   EdgeLinesVisible_type: EdgeLinesVisible_type;
   EmailAuthenticationForm_type: EmailAuthenticationForm_type;
   EnableDryRun_type: EnableDryRun_type;
@@ -6941,6 +6967,7 @@ export interface Models {
   ProjectPointsToPlane_type: ProjectPointsToPlane_type;
   RawFile_type: RawFile_type;
   ReconfigureStream_type: ReconfigureStream_type;
+  RelativeTo_type: RelativeTo_type;
   RemoveSceneObjects_type: RemoveSceneObjects_type;
   Revolve_type: Revolve_type;
   RevolveAboutEdge_type: RevolveAboutEdge_type;
@@ -6981,16 +7008,15 @@ export interface Models {
   SketchModeDisable_type: SketchModeDisable_type;
   Solid2dAddHole_type: Solid2dAddHole_type;
   Solid3dFilletEdge_type: Solid3dFilletEdge_type;
+  Solid3dGetAdjacencyInfo_type: Solid3dGetAdjacencyInfo_type;
   Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type;
   Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type;
   Solid3dGetCommonEdge_type: Solid3dGetCommonEdge_type;
   Solid3dGetExtrusionFaceInfo_type: Solid3dGetExtrusionFaceInfo_type;
-  Solid3dGetInfo_type: Solid3dGetInfo_type;
   Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type;
   Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type;
   Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type;
   Solid3dShellFace_type: Solid3dShellFace_type;
-  SolidInfo_type: SolidInfo_type;
   SourcePosition_type: SourcePosition_type;
   SourceRange_type: SourceRange_type;
   SourceRangePrompt_type: SourceRangePrompt_type;
