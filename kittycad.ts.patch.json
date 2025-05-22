@@ -1121,14 +1121,6 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1_meta~1info/get/x-typescript",
-    "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_metadata()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
     "path": "/paths/~1/get/x-typescript",
     "value": {
       "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_schema()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",

@@ -719,10 +719,6 @@ export interface BooleanUnion_type {
   extra_solid_ids: string[];
 }
 
-export interface CacheMetadata_type {
-  ok: boolean /* If the cache returned an ok response from ping. */;
-}
-
 export interface CameraDragEnd_type {
   settings: CameraSettings_type /* Camera settings */;
 }
@@ -931,20 +927,6 @@ export interface ClosePath_type {
   face_id: string;
 }
 
-export interface Cluster_type {
-  /* nullable:true, description:The IP address of the cluster. */
-  addr?: string;
-  /* default:0, format:int64, description:The auth timeout of the cluster. */
-  auth_timeout: number;
-  /* default:0, format:int64, description:The port of the cluster. */
-  cluster_port: number;
-  /* default:, description:The name of the cluster. */
-  name: string;
-  /* default:0, format:int64, description:The TLS timeout for the cluster. */
-  tls_timeout: number;
-  urls: string[];
-}
-
 export type CodeLanguage_type = 'go' | 'python' | 'node';
 
 export type CodeOption_type =
@@ -1002,105 +984,6 @@ export interface ComponentTransform_type {
   scale?: TransformByForPoint3d_type;
   /* nullable:true, description:Translate component of the transform. */
   translate?: TransformByForPoint3d_type;
-}
-
-export interface Connection_type {
-  /* default:0, format:int64, description:The auth timeout of the server. */
-  auth_timeout: number;
-  /* default:{addr:null, auth_timeout:0, cluster_port:0, name:, tls_timeout:0, urls:[]}, description:Information about the cluster. */
-  cluster: Cluster_type;
-  /* format:date-time, description:The time the configuration was loaded. */
-  config_load_time: string;
-  /* default:0, format:int64, description:The number of connections to the server. */
-  connections: number;
-  /* default:0, format:int64, description:The CPU core usage of the server. */
-  cores: number;
-  /* default:0, format:double, description:The CPU usage of the server. */
-  cpu: number;
-  /* default:{auth_timeout:0, host:, name:, port:0, tls_timeout:0}, description:Information about the gateway. */
-  gateway: Gateway_type;
-  /* default:, description:The git commit. */
-  git_commit: string;
-  /* default:, description:The go version. */
-  go: string;
-  /* default:0, format:int64, description:`GOMAXPROCS` of the server. */
-  gomaxprocs: number;
-  /* format:ip, description:The host of the server. */
-  host: string;
-  /* default:, description:The http base path of the server. */
-  http_base_path: string;
-  /* default:, description:The http host of the server. */
-  http_host: string;
-  /* default:0, format:int64, description:The http port of the server. */
-  http_port: number;
-  http_req_stats: {
-    [key: string]: /*{
-  "format": "int64"
-}*/
-    number;
-  };
-  /* default:0, format:int64, description:The https port of the server. */
-  https_port: number;
-  /* default:0, format:int64, description:The count of inbound bytes for the server. */
-  in_bytes: number;
-  /* default:0, format:int64, description:The number of inbound messages for the server. */
-  in_msgs: number;
-  /* default:{config:{domain:, max_memory:0, max_storage:0, store_dir:}, meta:{cluster_size:0, leader:, name:}, stats:{accounts:0, api:{errors:0, inflight:0, total:0}, ha_assets:0, memory:0, reserved_memory:0, reserved_store:0, store:0}}, description:Jetstream information. */
-  jetstream: Jetstream_type;
-  /* default:{auth_timeout:0, host:, port:0, tls_timeout:0}, description:Information about leaf nodes. */
-  leaf: LeafNode_type;
-  /* default:0, format:int64, description:The number of leaf nodes for the server. */
-  leafnodes: number;
-  /* default:0, format:int64, description:The max connections of the server. */
-  max_connections: number;
-  /* default:0, format:int64, description:The max control line of the server. */
-  max_control_line: number;
-  /* default:0, format:int64, description:The max payload of the server. */
-  max_payload: number;
-  /* default:0, format:int64, description:The max pending of the server. */
-  max_pending: number;
-  /* default:0, format:int64, description:The memory usage of the server. */
-  mem: number;
-  /* format:date-time, description:The time now. */
-  now: string;
-  /* default:0, format:int64, description:The count of outbound bytes for the server. */
-  out_bytes: number;
-  /* default:0, format:int64, description:The number of outbound messages for the server. */
-  out_msgs: number;
-  /* default:0, format:int64, description:The ping interval of the server. */
-  ping_interval: number;
-  /* default:0, format:int64, description:The ping max of the server. */
-  ping_max: number;
-  /* default:0, format:int64, description:The port of the server. */
-  port: number;
-  /* default:0, format:int64, description:The protocol version. */
-  proto: number;
-  /* default:0, format:int64, description:The number of remotes for the server. */
-  remotes: number;
-  /* default:0, format:int64, description:The number of routes for the server. */
-  routes: number;
-  /* default:, description:The server ID. */
-  server_id: string;
-  /* default:, description:The server name. */
-  server_name: string;
-  /* default:0, format:int64, description:The number of slow consumers for the server. */
-  slow_consumers: number;
-  /* format:date-time, description:When the server was started. */
-  start: string;
-  /* default:0, format:int64, description:The number of subscriptions for the server. */
-  subscriptions: number;
-  /* default:, description:The system account. */
-  system_account: string;
-  /* default:0, format:int64, description:The TLS timeout of the server. */
-  tls_timeout: number;
-  /* default:0, format:int64, description:The total number of connections to the server. */
-  total_connections: number;
-  /* default:, description:The uptime of the server. */
-  uptime: string;
-  /* default:, description:The version of the service. */
-  version: string;
-  /* default:0, format:int64, description:The write deadline of the server. */
-  write_deadline: number;
 }
 
 export type CountryCode_type =
@@ -1515,8 +1398,6 @@ export type EntityType_type =
   | 'plane'
   | 'vertex';
 
-export type Environment_type = 'DEVELOPMENT' | 'PREVIEW' | 'PRODUCTION';
-
 export interface Error_type {
   error_code: string;
   message: string;
@@ -1919,10 +1800,6 @@ This is the same as the API call ID. */
   user_id: Uuid_type /* The user ID of the user who created the API call. */;
 }
 
-export interface FileSystemMetadata_type {
-  ok: boolean /* If the file system passed a sanity check. */;
-}
-
 export interface FileVolume_type {
   /*{
   "nullable": true,
@@ -1954,19 +1831,6 @@ This is the same as the API call ID. */
   user_id: Uuid_type /* The user ID of the user who created the API call. */;
   /* nullable:true, format:double, description:The resulting volume. */
   volume?: number;
-}
-
-export interface Gateway_type {
-  /* default:0, format:int64, description:The auth timeout of the gateway. */
-  auth_timeout: number;
-  /* default:, description:The host of the gateway. */
-  host: string;
-  /* default:, description:The name of the gateway. */
-  name: string;
-  /* default:0, format:int64, description:The port of the gateway. */
-  port: number;
-  /* default:0, format:int64, description:The TLS timeout for the gateway. */
-  tls_timeout: number;
 }
 
 export interface GetEntityType_type {
@@ -2326,52 +2190,6 @@ export interface IpAddrInfo_type {
   timezone?: string;
 }
 
-export interface Jetstream_type {
-  /* default:{domain:, max_memory:0, max_storage:0, store_dir:}, description:The Jetstream config. */
-  config: JetstreamConfig_type;
-  /* default:{cluster_size:0, leader:, name:}, description:Meta information about the cluster. */
-  meta: MetaClusterInfo_type;
-  /* default:{accounts:0, api:{errors:0, inflight:0, total:0}, ha_assets:0, memory:0, reserved_memory:0, reserved_store:0, store:0}, description:Jetstream statistics. */
-  stats: JetstreamStats_type;
-}
-
-export interface JetstreamApiStats_type {
-  /* default:0, format:int64, description:The number of errors. */
-  errors: number;
-  /* default:0, format:int64, description:The number of inflight requests. */
-  inflight: number;
-  /* default:0, format:int64, description:The number of requests. */
-  total: number;
-}
-
-export interface JetstreamConfig_type {
-  /* default:, description:The domain. */
-  domain: string;
-  /* default:0, format:int64, description:The max memory. */
-  max_memory: number;
-  /* default:0, format:int64, description:The max storage. */
-  max_storage: number;
-  /* default:, description:The store directory. */
-  store_dir: string;
-}
-
-export interface JetstreamStats_type {
-  /* default:0, format:int64, description:The number of accounts. */
-  accounts: number;
-  /* default:{errors:0, inflight:0, total:0}, description:API stats. */
-  api: JetstreamApiStats_type;
-  /* default:0, format:int64, description:The number of HA assets. */
-  ha_assets: number;
-  /* default:0, format:int64, description:The memory used by the Jetstream server. */
-  memory: number;
-  /* default:0, format:int64, description:The reserved memory for the Jetstream server. */
-  reserved_memory: number;
-  /* default:0, format:int64, description:The reserved storage for the Jetstream server. */
-  reserved_store: number;
-  /* default:0, format:int64, description:The storage used by the Jetstream server. */
-  store: number;
-}
-
 export interface KclCodeCompletionParams_type {
   /* default:, description:The language of the code. */
   language: string;
@@ -2446,17 +2264,6 @@ export interface KclModel_type {
   code: string /* The KCL code. */;
 }
 
-export interface LeafNode_type {
-  /* default:0, format:int64, description:The auth timeout of the leaf node. */
-  auth_timeout: number;
-  /* default:, description:The host of the leaf node. */
-  host: string;
-  /* default:0, format:int64, description:The port of the leaf node. */
-  port: number;
-  /* default:0, format:int64, description:The TLS timeout for the leaf node. */
-  tls_timeout: number;
-}
-
 export type LengthUnit_type = number;
 
 export interface Loft_type {
@@ -2479,23 +2286,6 @@ export interface Mass_type {
   /* format:double, description:The mass. */
   mass: number;
   output_unit: UnitMass_type /* The output unit for the mass. */;
-}
-
-export interface MetaClusterInfo_type {
-  /* default:0, format:int64, description:The size of the cluster. */
-  cluster_size: number;
-  /* default:, description:The leader of the cluster. */
-  leader: string;
-  /* default:, description:The name of the cluster. */
-  name: string;
-}
-
-export interface Metadata_type {
-  cache: CacheMetadata_type /* Metadata about our cache. */;
-  environment: Environment_type /* The environment we are running in. */;
-  fs: FileSystemMetadata_type /* Metadata about our file system. */;
-  git_hash: string /* The git hash of the server. */;
-  pubsub: Connection_type /* Metadata about our pub-sub connection. */;
 }
 
 export type Method_type =
@@ -6740,7 +6530,6 @@ export interface Models {
   BooleanIntersection_type: BooleanIntersection_type;
   BooleanSubtract_type: BooleanSubtract_type;
   BooleanUnion_type: BooleanUnion_type;
-  CacheMetadata_type: CacheMetadata_type;
   CameraDragEnd_type: CameraDragEnd_type;
   CameraDragInteractionType_type: CameraDragInteractionType_type;
   CameraDragMove_type: CameraDragMove_type;
@@ -6752,14 +6541,12 @@ export interface Models {
   CenterOfMass_type: CenterOfMass_type;
   ClientMetrics_type: ClientMetrics_type;
   ClosePath_type: ClosePath_type;
-  Cluster_type: Cluster_type;
   CodeLanguage_type: CodeLanguage_type;
   CodeOption_type: CodeOption_type;
   CodeOutput_type: CodeOutput_type;
   Color_type: Color_type;
   ComplementaryEdges_type: ComplementaryEdges_type;
   ComponentTransform_type: ComponentTransform_type;
-  Connection_type: Connection_type;
   CountryCode_type: CountryCode_type;
   Coupon_type: Coupon_type;
   CreateShortlinkRequest_type: CreateShortlinkRequest_type;
@@ -6824,7 +6611,6 @@ export interface Models {
   EntityMirrorAcrossEdge_type: EntityMirrorAcrossEdge_type;
   EntitySetOpacity_type: EntitySetOpacity_type;
   EntityType_type: EntityType_type;
-  Environment_type: Environment_type;
   Error_type: Error_type;
   ErrorCode_type: ErrorCode_type;
   Event_type: Event_type;
@@ -6853,9 +6639,7 @@ export interface Models {
   FileImportFormat_type: FileImportFormat_type;
   FileMass_type: FileMass_type;
   FileSurfaceArea_type: FileSurfaceArea_type;
-  FileSystemMetadata_type: FileSystemMetadata_type;
   FileVolume_type: FileVolume_type;
-  Gateway_type: Gateway_type;
   GetEntityType_type: GetEntityType_type;
   GetNumObjects_type: GetNumObjects_type;
   GetSketchModePlane_type: GetSketchModePlane_type;
@@ -6880,23 +6664,16 @@ export interface Models {
   InvoiceLineItem_type: InvoiceLineItem_type;
   InvoiceStatus_type: InvoiceStatus_type;
   IpAddrInfo_type: IpAddrInfo_type;
-  Jetstream_type: Jetstream_type;
-  JetstreamApiStats_type: JetstreamApiStats_type;
-  JetstreamConfig_type: JetstreamConfig_type;
-  JetstreamStats_type: JetstreamStats_type;
   KclCodeCompletionParams_type: KclCodeCompletionParams_type;
   KclCodeCompletionRequest_type: KclCodeCompletionRequest_type;
   KclCodeCompletionResponse_type: KclCodeCompletionResponse_type;
   KclModel_type: KclModel_type;
-  LeafNode_type: LeafNode_type;
   LengthUnit_type: LengthUnit_type;
   Loft_type: Loft_type;
   MakeAxesGizmo_type: MakeAxesGizmo_type;
   MakeOffsetPath_type: MakeOffsetPath_type;
   MakePlane_type: MakePlane_type;
   Mass_type: Mass_type;
-  MetaClusterInfo_type: MetaClusterInfo_type;
-  Metadata_type: Metadata_type;
   Method_type: Method_type;
   MlFeedback_type: MlFeedback_type;
   MlPrompt_type: MlPrompt_type;
