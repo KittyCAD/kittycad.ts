@@ -9,6 +9,6 @@ async function example() {
 
 describe('Testing api_calls.get_api_call_metrics', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBe([]);
+    expect(await example()).toBeTruthy();
   });
 });

@@ -651,6 +651,10 @@ export type AsyncApiCallType_type =
   | 'text_to_cad_iteration'
   | 'text_to_cad_multi_file_iteration';
 
+export interface AuthApiKeyResponse_type {
+  session_token: string /* The session token */;
+}
+
 export interface AuthCallback_type {
   code: string /* The authorization code. */;
   /*{
@@ -986,6 +990,11 @@ export interface ComponentTransform_type {
   translate?: TransformByForPoint3d_type;
 }
 
+export interface ConversionParams_type {
+  output_format: OutputFormat3d_type /* Describes the output file(s). */;
+  src_format: InputFormat3d_type /* Describes the input file(s). */;
+}
+
 export type CountryCode_type =
   string; /* An ISO-3166 alpha-2 country code. Always uppercase. */
 
@@ -1295,17 +1304,9 @@ export type EnterpriseSubscriptionTierPrice_type =
 
 export interface EntityCircularPattern_type {
   entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
-  /*{
-  "format": "uuid"
-}*/
-  entity_ids: string[];
 }
 
 export interface EntityClone_type {
-  /*{
-  "format": "uuid"
-}*/
-  entity_ids: string[];
   face_edge_ids: FaceEdgeInfo_type[] /* The Face and Edge Ids of the cloned entity. */;
 }
 
@@ -1347,18 +1348,10 @@ export interface EntityGetSketchPaths_type {
 
 export interface EntityLinearPattern_type {
   entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
-  /*{
-  "format": "uuid"
-}*/
-  entity_ids: string[];
 }
 
 export interface EntityLinearPatternTransform_type {
   entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
-  /*{
-  "format": "uuid"
-}*/
-  entity_ids: string[];
 }
 
 export interface EntityMakeHelix_type {} /* Empty object */
@@ -1369,18 +1362,10 @@ export interface EntityMakeHelixFromParams_type {} /* Empty object */
 
 export interface EntityMirror_type {
   entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
-  /*{
-  "format": "uuid"
-}*/
-  entity_ids: string[];
 }
 
 export interface EntityMirrorAcrossEdge_type {
   entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
-  /*{
-  "format": "uuid"
-}*/
-  entity_ids: string[];
 }
 
 export interface EntitySetOpacity_type {} /* Empty object */
@@ -2471,6 +2456,28 @@ export type ModelingCmd_type =
       type: 'extrude';
     }
   | {
+      /*{
+  "default": {
+    "unit": "degrees",
+    "value": 15
+  },
+  "description": "Angle step interval (converted to whole number degrees and bounded between 4° and 90°)"
+}*/
+      angle_step_size: Angle_type;
+      /* default:{x:0, y:0}, description:Center to twist about (relative to 2D sketch) */
+      center_2d: Point2d_type;
+      distance: LengthUnit_type /* How far off the plane to extrude */;
+      /*{
+  "nullable": true,
+  "description": "Which IDs should the new faces have? If this isn't given, the engine will generate IDs."
+}*/
+      faces?: ExtrudedFaceInfo_type;
+      target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
+      tolerance: LengthUnit_type /* The twisted surface loft tolerance */;
+      total_rotation_angle: Angle_type /* Total rotation of the section */;
+      type: 'twist_extrude';
+    }
+  | {
       /* default:sketch_plane, description:What is this sweep relative to? */
       relative_to: RelativeTo_type;
       sectional: boolean /* If true, the sweep will be broken up into sub-sweeps (extrusions, revolves, sweeps) based on the trajectory path components. */;
@@ -3427,7 +3434,17 @@ export type ModelingCmd_type =
 }*/
       reference_id: string;
       type: 'set_grid_reference_plane';
-    };
+    }
+  | {
+      type: 'set_grid_scale';
+      units: UnitLength_type /* Which units the `value` field uses. */;
+      /*{
+  "format": "float",
+  "description": "Distance between grid lines represents this much distance."
+}*/
+      value: number;
+    }
+  | { type: 'set_grid_auto_scale' };
 
 export type ModelingCmdId_type =
   /*{
@@ -3519,6 +3536,13 @@ export type OkModelingCmdResponse_type =
 }*/
       data: Extrude_type;
       type: 'extrude';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/TwistExtrude"
+}*/
+      data: TwistExtrude_type;
+      type: 'twist_extrude';
     }
   | {
       /*{
@@ -4429,6 +4453,20 @@ export type OkModelingCmdResponse_type =
 }*/
       data: BooleanSubtract_type;
       type: 'boolean_subtract';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetGridScale"
+}*/
+      data: SetGridScale_type;
+      type: 'set_grid_scale';
+    }
+  | {
+      /*{
+  "$ref": "#/components/schemas/SetGridAutoScale"
+}*/
+      data: SetGridAutoScale_type;
+      type: 'set_grid_auto_scale';
     };
 
 export type OkWebSocketResponseData_type =
@@ -4479,30 +4517,6 @@ export type OkWebSocketResponseData_type =
       };
       type: 'debug';
     };
-
-export interface Onboarding_type {
-  /*{
-  "nullable": true,
-  "title": "DateTime",
-  "format": "date-time",
-  "description": "When the user first used the modeling app."
-}*/
-  first_call_from_modeling_app_date?: string;
-  /*{
-  "nullable": true,
-  "title": "DateTime",
-  "format": "date-time",
-  "description": "When the user first used text-to-CAD."
-}*/
-  first_call_from_text_to_cad_date?: string;
-  /*{
-  "nullable": true,
-  "title": "DateTime",
-  "format": "date-time",
-  "description": "When the user created their first token."
-}*/
-  first_token_date?: string;
-}
 
 export type OppositeForAngle_type = string;
 
@@ -5154,7 +5168,11 @@ export interface SetCurrentToolProperties_type {} /* Empty object */
 
 export interface SetDefaultSystemProperties_type {} /* Empty object */
 
+export interface SetGridAutoScale_type {} /* Empty object */
+
 export interface SetGridReferencePlane_type {} /* Empty object */
+
+export interface SetGridScale_type {} /* Empty object */
 
 export interface SetObjectTransform_type {} /* Empty object */
 
@@ -5612,9 +5630,37 @@ export interface Transform_type {
   translate: Point3d_type;
 }
 
-export type TransformByForPoint3d_type = string;
+export interface TransformByForPoint3d_type {
+  /*{
+  "deprecated": true,
+  "description": "If true, the transform is applied in local space. If false, the transform is applied in global space."
+}*/
+  is_local: boolean;
+  /*{
+  "nullable": true,
+  "description": "What to use as the origin for the transformation. If not provided, will fall back to local or global origin, depending on whatever the `is_local` field was set to."
+}*/
+  origin?: OriginType_type;
+  property: Point3d_type /* The scale, or rotation, or translation. */;
+  set: boolean /* If true, overwrite the previous value with this. If false, the previous value will be modified. E.g. when translating, `set=true` will set a new location, and `set=false` will translate the current location by the given X/Y/Z. */;
+}
 
-export type TransformByForPoint4d_type = string;
+export interface TransformByForPoint4d_type {
+  /*{
+  "deprecated": true,
+  "description": "If true, the transform is applied in local space. If false, the transform is applied in global space."
+}*/
+  is_local: boolean;
+  /*{
+  "nullable": true,
+  "description": "What to use as the origin for the transformation. If not provided, will fall back to local or global origin, depending on whatever the `is_local` field was set to."
+}*/
+  origin?: OriginType_type;
+  property: Point4d_type /* The scale, or rotation, or translation. */;
+  set: boolean /* If true, overwrite the previous value with this. If false, the previous value will be modified. E.g. when translating, `set=true` will set a new location, and `set=false` will translate the current location by the given X/Y/Z. */;
+}
+
+export interface TwistExtrude_type {} /* Empty object */
 
 export type UnitAngle_type = 'degrees' | 'radians';
 
@@ -6521,6 +6567,7 @@ export interface Models {
   AsyncApiCallOutput_type: AsyncApiCallOutput_type;
   AsyncApiCallResultsPage_type: AsyncApiCallResultsPage_type;
   AsyncApiCallType_type: AsyncApiCallType_type;
+  AuthApiKeyResponse_type: AuthApiKeyResponse_type;
   AuthCallback_type: AuthCallback_type;
   Axis_type: Axis_type;
   AxisDirectionPair_type: AxisDirectionPair_type;
@@ -6547,6 +6594,7 @@ export interface Models {
   Color_type: Color_type;
   ComplementaryEdges_type: ComplementaryEdges_type;
   ComponentTransform_type: ComponentTransform_type;
+  ConversionParams_type: ConversionParams_type;
   CountryCode_type: CountryCode_type;
   Coupon_type: Coupon_type;
   CreateShortlinkRequest_type: CreateShortlinkRequest_type;
@@ -6701,7 +6749,6 @@ export interface Models {
   ObjectVisible_type: ObjectVisible_type;
   OkModelingCmdResponse_type: OkModelingCmdResponse_type;
   OkWebSocketResponseData_type: OkWebSocketResponseData_type;
-  Onboarding_type: Onboarding_type;
   OppositeForAngle_type: OppositeForAngle_type;
   OppositeForLengthUnit_type: OppositeForLengthUnit_type;
   Org_type: Org_type;
@@ -6773,7 +6820,9 @@ export interface Models {
   SetBackgroundColor_type: SetBackgroundColor_type;
   SetCurrentToolProperties_type: SetCurrentToolProperties_type;
   SetDefaultSystemProperties_type: SetDefaultSystemProperties_type;
+  SetGridAutoScale_type: SetGridAutoScale_type;
   SetGridReferencePlane_type: SetGridReferencePlane_type;
+  SetGridScale_type: SetGridScale_type;
   SetObjectTransform_type: SetObjectTransform_type;
   SetSceneUnits_type: SetSceneUnits_type;
   SetSelectionFilter_type: SetSelectionFilter_type;
@@ -6823,6 +6872,7 @@ export interface Models {
   Transform_type: Transform_type;
   TransformByForPoint3d_type: TransformByForPoint3d_type;
   TransformByForPoint4d_type: TransformByForPoint4d_type;
+  TwistExtrude_type: TwistExtrude_type;
   UnitAngle_type: UnitAngle_type;
   UnitAngleConversion_type: UnitAngleConversion_type;
   UnitArea_type: UnitArea_type;

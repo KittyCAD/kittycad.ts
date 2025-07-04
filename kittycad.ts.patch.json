@@ -33,6 +33,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1users~1{id}~1payment~1subscriptions/put/x-typescript",
+    "value": {
+      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_subscription_for_user({\n        id: '31337',\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1balance/put/x-typescript",
     "value": {
       "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '31337',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
@@ -276,14 +284,6 @@
     "path": "/paths/~1user~1org/get/x-typescript",
     "value": {
       "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_user_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1user~1onboarding/get/x-typescript",
-    "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_onboarding_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1004,6 +1004,14 @@
     "path": "/paths/~1file~1conversion~1{src_format}~1{output_format}/post/x-typescript",
     "value": {
       "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        output_format: 'stl',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1file~1conversion/post/x-typescript",
+    "value": {
+      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion_options({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            output_format: {\n                created: 'Timestamp override.',\n                storage: 'ascii',\n                type: 'fbx',\n            },\n            src_format: { type: 'fbx' },\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

@@ -1,16 +1,25 @@
-import { Onboarding_type, Error_type } from '../../models.js';
+import {
+  FileConversion_type,
+  Error_type,
+  ConversionParams_type,
+} from '../../models.js';
+import { File } from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Get_user_onboarding_self_params {
+interface Create_file_conversion_options_params {
   client?: Client;
+  body: ConversionParams_type;
+  files: File[];
 }
 
-type Get_user_onboarding_self_return = Onboarding_type | Error_type;
+type Create_file_conversion_options_return = FileConversion_type | Error_type;
 
-export default async function get_user_onboarding_self({
+export default async function create_file_conversion_options({
   client,
-}: Get_user_onboarding_self_params = {}): Promise<Get_user_onboarding_self_return> {
-  const url = `/user/onboarding`;
+  files,
+  body,
+}: Create_file_conversion_options_params): Promise<Create_file_conversion_options_return> {
+  const url = `/file/conversion`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
@@ -29,13 +38,22 @@ export default async function get_user_onboarding_self({
       '';
   const headers = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
+    'Content-Type': 'multipart/form-data',
   };
+
+  const formData = new FormData();
+  files.forEach((file) => {
+    formData.append(file.name, file.data, file.name);
+  });
+  formData.append('event', JSON.stringify(body));
+
   const fetchOptions = {
-    method: 'GET',
+    method: 'POST',
     headers,
+    body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_user_onboarding_self_return;
+  const result =
+    (await response.json()) as Create_file_conversion_options_return;
   return result;
 }
