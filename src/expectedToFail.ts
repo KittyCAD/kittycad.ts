@@ -10,6 +10,8 @@ export const operationsToNotGenerateTestsFor = [
   'delete_payment_information_for_user',
   'oauth2_provider_callback_post',
   'create_file_execution',
+  'create_file_execution',
+  'update_subscription_for_user',
 
   // All of these randomly timeout. Unacceptable nondeterminism.
   'get_any_org',
@@ -34,7 +36,6 @@ export const toTestPathString = (tag: string, operationId: string) =>
 export const expectedToTimeout = [
   'ai.create_image_to_3d',
   'ai.create_text_to_3d',
-  'api-calls.get_api_call_metrics',
   'meta.get_metadata',
   'payments.get_payment_balance_for_user',
   'orgs.get_org_member',
