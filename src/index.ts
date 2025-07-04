@@ -47,6 +47,7 @@ export const executor = { create_executor_term, create_file_execution };
 
 import create_file_center_of_mass from './api/file/create_file_center_of_mass.js';
 import create_file_conversion from './api/file/create_file_conversion.js';
+import create_file_conversion_options from './api/file/create_file_conversion_options.js';
 import create_file_density from './api/file/create_file_density.js';
 import create_file_mass from './api/file/create_file_mass.js';
 import create_file_surface_area from './api/file/create_file_surface_area.js';
@@ -54,6 +55,7 @@ import create_file_volume from './api/file/create_file_volume.js';
 export const file = {
   create_file_center_of_mass,
   create_file_conversion,
+  create_file_conversion_options,
   create_file_density,
   create_file_mass,
   create_file_surface_area,
@@ -277,7 +279,6 @@ import get_oauth2_providers_for_user from './api/users/get_oauth2_providers_for_
 import get_session_for_user from './api/users/get_session_for_user.js';
 import get_user from './api/users/get_user.js';
 import get_user_extended from './api/users/get_user_extended.js';
-import get_user_onboarding_self from './api/users/get_user_onboarding_self.js';
 import get_user_privacy_settings from './api/users/get_user_privacy_settings.js';
 import get_user_self from './api/users/get_user_self.js';
 import get_user_self_extended from './api/users/get_user_self_extended.js';
@@ -288,6 +289,7 @@ import patch_user_crm from './api/users/patch_user_crm.js';
 import put_public_form from './api/users/put_public_form.js';
 import put_public_subscribe from './api/users/put_public_subscribe.js';
 import put_user_form_self from './api/users/put_user_form_self.js';
+import update_subscription_for_user from './api/users/update_subscription_for_user.js';
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js';
 import update_user_self from './api/users/update_user_self.js';
 import update_user_shortlink from './api/users/update_user_shortlink.js';
@@ -299,7 +301,6 @@ export const users = {
   get_session_for_user,
   get_user,
   get_user_extended,
-  get_user_onboarding_self,
   get_user_privacy_settings,
   get_user_self,
   get_user_self_extended,
@@ -310,6 +311,7 @@ export const users = {
   put_public_form,
   put_public_subscribe,
   put_user_form_self,
+  update_subscription_for_user,
   update_user_privacy_settings,
   update_user_self,
   update_user_shortlink,
