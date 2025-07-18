@@ -1511,6 +1511,8 @@ export interface ExtendedUserResultsPage_type {
 
 export interface Extrude_type {} /* Empty object */
 
+export type ExtrudeMethod_type = 'new' | 'merge';
+
 export interface ExtrudedFaceInfo_type {
   /*{
   "nullable": true,
@@ -2375,8 +2377,7 @@ export type ModelingAppShareLinks_type =
 export interface ModelingAppSubscriptionTier_type {
   /*{
   "nullable": true,
-  "format": "uint",
-  "minimum": 0,
+  "format": "double",
   "description": "Annual discount. The percentage off the monthly price if the user pays annually."
 }*/
   annual_discount?: number;
@@ -2442,6 +2443,11 @@ export type ModelingCmd_type =
     }
   | {
       distance: LengthUnit_type /* How far off the plane to extrude */;
+      /*{
+  "default": "merge",
+  "description": "Should the extrusion create a new object or be part of the existing object. If a new object is created, the command id will be the id of the newly created object."
+}*/
+      extrude_method: ExtrudeMethod_type;
       /*{
   "nullable": true,
   "description": "Which IDs should the new faces have? If this isn't given, the engine will generate IDs."
@@ -2982,7 +2988,7 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which face is being queried. */
       object_id: string;
       type: 'face_get_position';
-      uv: Point2d_type /* The 2D paramter-space u,v position to evaluate the surface at */;
+      uv: Point2d_type /* The 2D parameter-space u,v position to evaluate the surface at */;
     }
   | {
       /* format:uuid, description:Which face is being queried. */
@@ -2993,7 +2999,7 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which face is being queried. */
       object_id: string;
       type: 'face_get_gradient';
-      uv: Point2d_type /* The 2D paramter-space u,v position to evaluate the surface at */;
+      uv: Point2d_type /* The 2D parameter-space u,v position to evaluate the surface at */;
     }
   | {
       front: boolean /* Bring to front = true, send to back = false. */;
@@ -3012,7 +3018,7 @@ export type ModelingCmd_type =
       type: 'entity_set_opacity';
     }
   | {
-      /* default:0.4000000059604645, format:float, description:How many seconds the animation should take. */
+      /* default:0.4, format:double, description:How many seconds the animation should take. */
       duration_seconds: number;
       /* format:uuid, description:Which entity is being changed. */
       entity_id: string;
@@ -4830,6 +4836,22 @@ export type PathSegment_type =
       reverse: boolean /* If reverse is true, the segment will start from the end of the involute, otherwise it will start from that start. */;
       start_radius: LengthUnit_type /* The involute is described between two circles, start_radius is the radius of the inner circle. */;
       type: 'circular_involute';
+    }
+  | {
+      center: Point2d_type /* The center point of the ellipse. */;
+      end_angle: Angle_type /* End of the path along the perimeter of the ellipse. */;
+      major_radius: LengthUnit_type /* Major radius of the ellipse (along the x axis). */;
+      minor_radius: LengthUnit_type /* Minor radius of the ellipse (along the y axis). */;
+      start_angle: Angle_type /* Start of the path along the perimeter of the ellipse. */;
+      type: 'ellipse';
+    }
+  | {
+      end: Point2d_type /* End point of the conic. */;
+      end_tangent: Point2d_type /* Tangent at the end of the conic. */;
+      interior: Point2d_type /* Interior point that lies on the conic. */;
+      relative: boolean /* Whether or not the interior and end points are relative to the previous path position. */;
+      start_tangent: Point2d_type /* Tangent at the start of the conic. */;
+      type: 'conic_to';
     };
 
 export interface PathSegmentInfo_type {
@@ -6467,8 +6489,7 @@ export type WorldCoordinateSystem_type =
 export type ZooProductSubscription_type = {
   /*{
   "nullable": true,
-  "format": "uint",
-  "minimum": 0,
+  "format": "double",
   "description": "Annual discount. The percentage off the monthly price if the user pays annually."
 }*/
   annual_discount?: number;
@@ -6670,6 +6691,7 @@ export interface Models {
   ExtendedUser_type: ExtendedUser_type;
   ExtendedUserResultsPage_type: ExtendedUserResultsPage_type;
   Extrude_type: Extrude_type;
+  ExtrudeMethod_type: ExtrudeMethod_type;
   ExtrudedFaceInfo_type: ExtrudedFaceInfo_type;
   ExtrusionFaceCapType_type: ExtrusionFaceCapType_type;
   ExtrusionFaceInfo_type: ExtrusionFaceInfo_type;
