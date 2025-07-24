@@ -24269,6 +24269,13 @@
             ]
           },
           {
+            "description": "The plus tier.",
+            "type": "string",
+            "enum": [
+              "plus"
+            ]
+          },
+          {
             "description": "The pro tier.",
             "type": "string",
             "enum": [
@@ -24445,6 +24452,13 @@
             "type": "string",
             "enum": [
               "free"
+            ]
+          },
+          {
+            "description": "The plus tier.",
+            "type": "string",
+            "enum": [
+              "plus"
             ]
           },
           {
