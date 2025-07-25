@@ -9,6 +9,7 @@ async function example() {
       },
     ],
     body: {
+      conversation_id: 'A UUID usually v4 or v7',
       kcl_version:
         'The version of kcl to use. If empty, the latest version will be used.',
       project_name:
