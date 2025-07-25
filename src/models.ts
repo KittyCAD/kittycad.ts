@@ -2363,7 +2363,10 @@ export type MlPromptType_type =
 
 export type ModelingAppEventType_type = 'successful_compile_before_close';
 
-export type ModelingAppIndividualSubscriptionTier_type = 'free' | 'pro';
+export type ModelingAppIndividualSubscriptionTier_type =
+  | 'free'
+  | 'plus'
+  | 'pro';
 
 export type ModelingAppOrganizationSubscriptionTier_type =
   | 'team'
@@ -2416,6 +2419,7 @@ export interface ModelingAppSubscriptionTier_type {
 
 export type ModelingAppSubscriptionTierName_type =
   | 'free'
+  | 'plus'
   | 'pro'
   | 'team'
   | 'enterprise';
