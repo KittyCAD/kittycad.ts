@@ -588,6 +588,7 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
+      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
@@ -2301,6 +2302,11 @@ export interface MlPrompt_type {
   "description": "When the prompt was completed."
 }*/
   completed_at?: string;
+  /*{
+  "nullable": true,
+  "description": "The id for the conversation related to this prompt."
+}*/
+  conversation_id?: Uuid_type;
   /* title:DateTime, format:date-time, description:The date and time the ML prompt was created. */
   created_at: string;
   /* nullable:true, description:The error message if the prompt failed. */
@@ -2449,7 +2455,7 @@ export type ModelingCmd_type =
       distance: LengthUnit_type /* How far off the plane to extrude */;
       /*{
   "default": "merge",
-  "description": "Should the extrusion create a new object or be part of the existing object. If a new object is created, the command id will be the id of the newly created object."
+  "description": "Should the extrusion create a new object or be part of the existing object."
 }*/
       extrude_method: ExtrudeMethod_type;
       /*{
@@ -5534,6 +5540,7 @@ export interface TextToCadMultiFileIteration_type {
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
+  conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
@@ -5577,6 +5584,11 @@ This is the same as the API call ID. */
 }
 
 export interface TextToCadMultiFileIterationBody_type {
+  /*{
+  "nullable": true,
+  "description": "The conversation ID Conversations group different prompts together. This should be omitted when starting a new conversation. The conversation_id returned in the response should be used to link future messages in the same conversation."
+}*/
+  conversation_id?: Uuid_type;
   /*{
   "nullable": true,
   "description": "The version of kcl to use. If empty, the latest version will be used."
