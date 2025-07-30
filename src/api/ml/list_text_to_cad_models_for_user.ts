@@ -1,7 +1,8 @@
 import {
-  TextToCadResultsPage_type,
+  TextToCadResponseResultsPage_type,
   Error_type,
   CreatedAtSortMode_type,
+  Uuid_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
 
@@ -10,11 +11,12 @@ interface List_text_to_cad_models_for_user_params {
   limit: number;
   page_token: string;
   sort_by: CreatedAtSortMode_type;
+  conversation_id: Uuid_type;
   no_models: boolean;
 }
 
 type List_text_to_cad_models_for_user_return =
-  | TextToCadResultsPage_type
+  | TextToCadResponseResultsPage_type
   | Error_type;
 
 export default async function list_text_to_cad_models_for_user({
@@ -22,9 +24,10 @@ export default async function list_text_to_cad_models_for_user({
   limit,
   page_token,
   sort_by,
+  conversation_id,
   no_models,
 }: List_text_to_cad_models_for_user_params): Promise<List_text_to_cad_models_for_user_return> {
-  const url = `/user/text-to-cad?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&no_models=${no_models}`;
+  const url = `/user/text-to-cad?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&conversation_id=${conversation_id}&no_models=${no_models}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

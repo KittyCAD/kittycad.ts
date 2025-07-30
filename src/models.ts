@@ -991,6 +991,29 @@ export interface ComponentTransform_type {
   translate?: TransformByForPoint3d_type;
 }
 
+export interface Conversation_type {
+  /* title:DateTime, format:date-time, description:The date and time the conversation was created. */
+  created_at: string;
+  first_prompt: string /* The prompt that started this conversation. */;
+  id: Uuid_type /* The unique identifier for the conversation. */;
+  /*{
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The date and time the conversation was last updated."
+}*/
+  updated_at: string;
+  user_id: Uuid_type /* The user ID of the user who created the conversation. */;
+}
+
+export interface ConversationResultsPage_type {
+  items: Conversation_type[] /* list of items on this page of results */;
+  /*{
+  "nullable": true,
+  "description": "token used to fetch the next page of results (if any)"
+}*/
+  next_page?: string;
+}
+
 export interface ConversionParams_type {
   output_format: OutputFormat3d_type /* Describes the output file(s). */;
   src_format: InputFormat3d_type /* Describes the input file(s). */;
@@ -5607,8 +5630,148 @@ export interface TextToCadMultiFileIterationBody_type {
   source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */;
 }
 
-export interface TextToCadResultsPage_type {
-  items: TextToCad_type[] /* list of items on this page of results */;
+export type TextToCadResponse_type =
+  | {
+      /*{
+  "nullable": true,
+  "description": "The code for the model. This is optional but will be required in the future once we are at v1."
+}*/
+      code?: string;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+      completed_at?: string;
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* nullable:true, description:Feedback from the user, if any. */
+      feedback?: MlFeedback_type;
+      /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      /* nullable:true, description:The version of kcl requested. */
+      kcl_version?: string;
+      model: TextToCadModel_type /* The model being used. */;
+      model_version: string /* The version of the model. */;
+      output_format: FileExportFormat_type /* The output format of the model. */;
+      outputs: {
+        [key: string]: /*{
+  "title": "String",
+  "format": "byte"
+}*/
+        string;
+      };
+      prompt: string /* The prompt. */;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the API call. */;
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+      updated_at: string;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
+    }
+  | {
+      code: string /* The code for the new model. */;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+      completed_at?: string;
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* nullable:true, description:Feedback from the user, if any. */
+      feedback?: MlFeedback_type;
+      /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      model: TextToCadModel_type /* The model being used. */;
+      model_version: string /* The version of the model. */;
+      original_source_code: string /* The original source code for the model, previous to the changes. */;
+      /*{
+  "nullable": true,
+  "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges."
+}*/
+      prompt?: string;
+      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the API call. */;
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+      updated_at: string;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
+    }
+  | {
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was completed."
+}*/
+      completed_at?: string;
+      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
+      /* title:DateTime, format:date-time, description:The time and date the API call was created. */
+      created_at: string;
+      /* nullable:true, description:The error the function returned, if any. */
+      error?: string;
+      /* nullable:true, description:Feedback from the user, if any. */
+      feedback?: MlFeedback_type;
+      /* The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid_type;
+      /*{
+  "nullable": true,
+  "description": "The version of kcl to use. If empty, the latest version will be used."
+}*/
+      kcl_version?: string;
+      model: TextToCadModel_type /* The model being used. */;
+      model_version: string /* The version of the model. */;
+      outputs: { [key: string]: string };
+      /*{
+  "nullable": true,
+  "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
+}*/
+      project_name?: string;
+      /*{
+  "nullable": true,
+  "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files."
+}*/
+      prompt?: string;
+      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
+      /*{
+  "nullable": true,
+  "title": "DateTime",
+  "format": "date-time",
+  "description": "The time and date the API call was started."
+}*/
+      started_at?: string;
+      status: ApiCallStatus_type /* The status of the API call. */;
+      /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+      updated_at: string;
+      user_id: Uuid_type /* The user ID of the user who created the API call. */;
+    };
+
+export interface TextToCadResponseResultsPage_type {
+  items: TextToCadResponse_type[] /* list of items on this page of results */;
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -6631,6 +6794,8 @@ export interface Models {
   Color_type: Color_type;
   ComplementaryEdges_type: ComplementaryEdges_type;
   ComponentTransform_type: ComponentTransform_type;
+  Conversation_type: Conversation_type;
+  ConversationResultsPage_type: ConversationResultsPage_type;
   ConversionParams_type: ConversionParams_type;
   CountryCode_type: CountryCode_type;
   Coupon_type: Coupon_type;
@@ -6905,7 +7070,8 @@ export interface Models {
   TextToCadModel_type: TextToCadModel_type;
   TextToCadMultiFileIteration_type: TextToCadMultiFileIteration_type;
   TextToCadMultiFileIterationBody_type: TextToCadMultiFileIterationBody_type;
-  TextToCadResultsPage_type: TextToCadResultsPage_type;
+  TextToCadResponse_type: TextToCadResponse_type;
+  TextToCadResponseResultsPage_type: TextToCadResponseResultsPage_type;
   TokenRevokeRequestForm_type: TokenRevokeRequestForm_type;
   Transform_type: Transform_type;
   TransformByForPoint3d_type: TransformByForPoint3d_type;
