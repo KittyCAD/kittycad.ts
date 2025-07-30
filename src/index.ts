@@ -89,6 +89,7 @@ import create_text_to_cad_model_feedback from './api/ml/create_text_to_cad_model
 import create_text_to_cad_multi_file_iteration from './api/ml/create_text_to_cad_multi_file_iteration.js';
 import get_ml_prompt from './api/ml/get_ml_prompt.js';
 import get_text_to_cad_model_for_user from './api/ml/get_text_to_cad_model_for_user.js';
+import list_conversations_for_user from './api/ml/list_conversations_for_user.js';
 import list_ml_prompts from './api/ml/list_ml_prompts.js';
 import list_text_to_cad_models_for_user from './api/ml/list_text_to_cad_models_for_user.js';
 export const ml = {
@@ -100,6 +101,7 @@ export const ml = {
   create_text_to_cad_multi_file_iteration,
   get_ml_prompt,
   get_text_to_cad_model_for_user,
+  list_conversations_for_user,
   list_ml_prompts,
   list_text_to_cad_models_for_user,
 };

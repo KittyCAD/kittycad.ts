@@ -1,20 +1,28 @@
-import { TextToCadResponse_type, Error_type } from '../../models.js';
+import {
+  ConversationResultsPage_type,
+  Error_type,
+  CreatedAtSortMode_type,
+} from '../../models.js';
 import { Client } from '../../client.js';
 
-interface Get_text_to_cad_model_for_user_params {
+interface List_conversations_for_user_params {
   client?: Client;
-  id: string;
+  limit: number;
+  page_token: string;
+  sort_by: CreatedAtSortMode_type;
 }
 
-type Get_text_to_cad_model_for_user_return =
-  | TextToCadResponse_type
+type List_conversations_for_user_return =
+  | ConversationResultsPage_type
   | Error_type;
 
-export default async function get_text_to_cad_model_for_user({
+export default async function list_conversations_for_user({
   client,
-  id,
-}: Get_text_to_cad_model_for_user_params): Promise<Get_text_to_cad_model_for_user_return> {
-  const url = `/user/text-to-cad/${id}`;
+  limit,
+  page_token,
+  sort_by,
+}: List_conversations_for_user_params): Promise<List_conversations_for_user_return> {
+  const url = `/ml/conversations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
@@ -40,7 +48,6 @@ export default async function get_text_to_cad_model_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
-  const result =
-    (await response.json()) as Get_text_to_cad_model_for_user_return;
+  const result = (await response.json()) as List_conversations_for_user_return;
   return result;
 }
