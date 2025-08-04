@@ -15,10 +15,6 @@ async function example() {
 
 describe('Testing users.patch_user_crm', () => {
   it('should be truthy or throw', async () => {
-    try {
-      await example();
-    } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
-    }
+    expect(await example()).toBeTruthy();
   });
 });
