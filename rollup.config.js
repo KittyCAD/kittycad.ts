@@ -30,7 +30,7 @@ export default [
         format: 'esm',
       },
       {
-        file: pkg.main.replace('.js', '.cjs'),
+        file: pkg.main,
         format: 'cjs',
       },
       {
