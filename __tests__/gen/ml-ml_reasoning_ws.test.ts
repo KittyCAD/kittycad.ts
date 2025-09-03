@@ -3,7 +3,7 @@ import { ml } from '../../src/index.js';
 async function example() {
   const response = await ml.ml_reasoning_ws({
     id: 'string',
-    body: { type: 'headers' },
+    body: { headers: {}, type: 'headers' },
   });
   if ('error_code' in response) throw response;
 

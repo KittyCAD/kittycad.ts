@@ -11,7 +11,7 @@
     "op": "add",
     "path": "/paths/~1ws~1ml~1reasoning~1{id}/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_reasoning_ws({\n        id: 'string',\n        body: { type: 'headers' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_reasoning_ws({\n        id: 'string',\n        body: { headers: {}, type: 'headers' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },
@@ -19,7 +19,7 @@
     "op": "add",
     "path": "/paths/~1ws~1ml~1copilot/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_copilot_ws({ body: { type: 'headers' } })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_copilot_ws({\n        body: { headers: {}, type: 'headers' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
       "libDocsLink": ""
     }
   },

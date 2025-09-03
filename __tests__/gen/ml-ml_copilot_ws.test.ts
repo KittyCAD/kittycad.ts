@@ -1,7 +1,9 @@
 import { ml } from '../../src/index.js';
 
 async function example() {
-  const response = await ml.ml_copilot_ws({ body: { type: 'headers' } });
+  const response = await ml.ml_copilot_ws({
+    body: { headers: {}, type: 'headers' },
+  });
   if ('error_code' in response) throw response;
 
   return response;

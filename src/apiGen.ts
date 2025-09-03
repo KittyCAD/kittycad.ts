@@ -281,6 +281,20 @@ export default async function apiGen(lookup: any) {
                   // TODO
                   return '';
                 }
+                // Handle object properties, including index signatures
+                if (
+                  (value as any).type === 'object' &&
+                  'additionalProperties' in (value as any)
+                ) {
+                  const addProps = (value as any)
+                    .additionalProperties as OpenAPIV3.SchemaObject;
+                  // If the index signature is strings, provide a minimal example
+                  if ((addProps as any).type === 'string') {
+                    return `${key}: {}`;
+                  }
+                  // Fallback to an empty object for other cases
+                  return `${key}: {}`;
+                }
                 if (value.type === 'string' && 'enum' in value) {
                   return `${key}: '${value.enum[0]}'`;
                 }
@@ -313,6 +327,10 @@ export default async function apiGen(lookup: any) {
                 if (value.type === 'array' && '$ref' in value.items) {
                   // assuming text to cad iteration for now
                   return `${key}: []`;
+                }
+                if (value.type === 'object') {
+                  // generic nested object; provide minimal example
+                  return `${key}: {}`;
                 }
                 return '';
               })
