@@ -548,7 +548,11 @@ export default async function apiGen(lookup: any) {
           exportsStr: [],
         };
       }
-      if (!['modeling_commands_ws'].includes(operationId)) {
+      if (
+        !['modeling_commands_ws', 'ml_copilot_ws', 'ml_reasoning_ws'].includes(
+          operationId,
+        )
+      ) {
         indexFile[safeTag].importsStr.push(
           `import ${operationId} from './api/${tag}/${operationId}.js';`,
         );

@@ -12,6 +12,11 @@ export const operationsToNotGenerateTestsFor = [
   'create_file_execution',
   'create_file_execution',
   'update_subscription_for_user',
+  // WebSocket tests that are noisy or require special setup
+  'ml_copilot_ws',
+  'ml_reasoning_ws',
+  // Payments subscription update test causes side effects; skip generation
+  'update_user_subscription',
 
   // All of these randomly timeout. Unacceptable nondeterminism.
   'get_any_org',

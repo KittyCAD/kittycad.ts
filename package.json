@@ -66,7 +66,7 @@
     "build:js": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "build": "rimraf dist && npm run build:types && npm run build:js",
-    "gen": "node --loader ts-node/esm ./src/modelsGen.ts && rm -rf __tests__/gen/modeling-modeling_commands_ws.test.ts && rm -rf src/api/modeling/modeling_commands_ws.ts && yarn fmt",
+    "gen": "node --loader ts-node/esm ./src/modelsGen.ts && find __tests__ -name '*_ws.test.ts' -delete && find src/api -name '*_ws.ts' -delete && yarn fmt",
     "test": "vitest",
     "tsc": "tsc",
     "fmt": "prettier --config .prettierrc --write './src' './__tests__' './kittycad.ts.patch.json' './rollup.config.js'"

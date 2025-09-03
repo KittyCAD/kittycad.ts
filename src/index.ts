@@ -92,8 +92,6 @@ import get_text_to_cad_model_for_user from './api/ml/get_text_to_cad_model_for_u
 import list_conversations_for_user from './api/ml/list_conversations_for_user.js';
 import list_ml_prompts from './api/ml/list_ml_prompts.js';
 import list_text_to_cad_models_for_user from './api/ml/list_text_to_cad_models_for_user.js';
-import ml_copilot_ws from './api/ml/ml_copilot_ws.js';
-import ml_reasoning_ws from './api/ml/ml_reasoning_ws.js';
 export const ml = {
   create_kcl_code_completions,
   create_proprietary_to_kcl,
@@ -106,8 +104,6 @@ export const ml = {
   list_conversations_for_user,
   list_ml_prompts,
   list_text_to_cad_models_for_user,
-  ml_copilot_ws,
-  ml_reasoning_ws,
 };
 
 import device_access_token from './api/oauth2/device_access_token.js';
