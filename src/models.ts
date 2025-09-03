@@ -503,6 +503,7 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
+      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
@@ -548,6 +549,7 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
+      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
@@ -2311,6 +2313,61 @@ export type Method_type =
   | 'PATCH'
   | 'EXTENSION';
 
+export type MlCopilotClientMessage_type =
+  | { headers: { [key: string]: string }; type: 'headers' }
+  | {
+      content: string /* The content of the user's message. */;
+      current_files: {
+        [key: string]: /*{
+  "format": "uint8",
+  "minimum": 0
+}*/
+        number[];
+      };
+      /*{
+  "nullable": true,
+  "description": "The project name, if any. This can be used to associate the message with a specific project."
+}*/
+      project_name?: string;
+      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */;
+      type: 'user';
+    }
+  | {
+      command: MlCopilotSystemCommand_type /* The content of the system message. */;
+      type: 'system';
+    };
+
+export type MlCopilotServerMessage_type =
+  | {
+      delta: {
+        delta: string /* The delta text, which is a part of the response that is being streamed. */;
+      };
+    }
+  | {
+      tool_output: {
+        result: MlToolResult_type /* The result of the tool call. */;
+      };
+    }
+  | { error: { detail: string /* The error message. */ } }
+  | { info: { text: string /* The informational text. */ } }
+  | {
+      /*{
+  "$ref": "#/components/schemas/ReasoningMessage"
+}*/
+      reasoning: ReasoningMessage_type;
+    }
+  | {
+      end_of_stream: {
+        /*{
+  "nullable": true,
+  "description": "The whole response text, which is the final output of the AI. This is only relevant if in copilot mode, where the AI is expected to return the whole response at once."
+}*/
+        whole_response?: string;
+      };
+    };
+
+export type MlCopilotSystemCommand_type = 'new' | 'bye';
+
 export type MlFeedback_type =
   | 'thumbs_up'
   | 'thumbs_down'
@@ -2389,6 +2446,38 @@ export type MlPromptType_type =
   | 'text_to_kcl'
   | 'text_to_kcl_iteration'
   | 'text_to_kcl_multi_file_iteration';
+
+export type MlToolResult_type =
+  | {
+      /*{
+  "nullable": true,
+  "description": "Any error that occurred during the tool execution."
+}*/
+      error?: string;
+      outputs: { [key: string]: string };
+      /* nullable:true, description:The name of the project, if any. */
+      project_name?: string;
+      /* title:int32, format:int32, description:The status code of the tool execution. */
+      status_code: number;
+      type: 'text_to_cad';
+    }
+  | {
+      /*{
+  "nullable": true,
+  "description": "Any error that occurred during the tool execution."
+}*/
+      error?: string;
+      outputs: { [key: string]: string };
+      /* nullable:true, description:The name of the project, if any. */
+      project_name?: string;
+      /* title:int32, format:int32, description:The status code of the tool execution. */
+      status_code: number;
+      type: 'edit_kcl_code';
+    }
+  | {
+      response: string /* The response from the mechanical knowledge base. */;
+      type: 'mechanical_knowledge_base';
+    };
 
 export type ModelingAppEventType_type = 'successful_compile_before_close';
 
@@ -4873,8 +4962,8 @@ export type PathSegment_type =
   | {
       center: Point2d_type /* The center point of the ellipse. */;
       end_angle: Angle_type /* End of the path along the perimeter of the ellipse. */;
-      major_radius: LengthUnit_type /* Major radius of the ellipse (along the x axis). */;
-      minor_radius: LengthUnit_type /* Minor radius of the ellipse (along the y axis). */;
+      major_axis: Point2d_type /* Major axis of the ellipse. */;
+      minor_radius: LengthUnit_type /* Minor radius of the ellipse. */;
       start_angle: Angle_type /* Start of the path along the perimeter of the ellipse. */;
       type: 'ellipse';
     }
@@ -4933,6 +5022,11 @@ export interface PerspectiveCameraParameters_type {
 }
 
 export type PlanInterval_type = 'day' | 'month' | 'week' | 'year';
+
+export interface PlanStep_type {
+  edit_instructions: string /* The edit instructions for the step. */;
+  filepath_to_edit: string /* The file path it's editing. */;
+}
 
 export interface PlaneIntersectAndProject_type {
   /*{
@@ -5022,6 +5116,38 @@ export interface RawFile_type {
   contents: number[];
   name: string /* The name of the file. */;
 }
+
+export type ReasoningMessage_type =
+  | { content: string /* The content of the reasoning. */; type: 'text' }
+  | { content: string /* The content of the reasoning. */; type: 'kcl_docs' }
+  | {
+      content: string /* The content of the reasoning. */;
+      type: 'kcl_code_examples';
+    }
+  | {
+      content: string /* The content of the reasoning. */;
+      type: 'feature_tree_outline';
+    }
+  | {
+      steps: PlanStep_type[] /* The steps in the design plan. */;
+      type: 'design_plan';
+    }
+  | {
+      code: string /* The content of the reasoning. */;
+      type: 'generated_kcl_code';
+    }
+  | { error: string /* The error message. */; type: 'kcl_code_error' }
+  | {
+      content: string /* The content of the file. */;
+      file_name: string /* The file name. */;
+      type: 'created_kcl_file';
+    }
+  | {
+      content: string /* The content of the file. */;
+      file_name: string /* The file name. */;
+      type: 'updated_kcl_file';
+    }
+  | { file_name: string /* The file name. */; type: 'deleted_kcl_file' };
 
 export interface ReconfigureStream_type {} /* Empty object */
 
@@ -5442,6 +5568,7 @@ export interface TextToCad_type {
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
+  conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
@@ -5501,6 +5628,7 @@ export interface TextToCadIteration_type {
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string;
+  conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
   /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string;
   /* nullable:true, description:The error the function returned, if any. */
@@ -5644,6 +5772,7 @@ export type TextToCadResponse_type =
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
+      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
@@ -5688,6 +5817,7 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string;
+      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */;
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string;
       /* nullable:true, description:The error the function returned, if any. */
@@ -6586,9 +6716,9 @@ export interface VerificationTokenResponse_type {
   "nullable": true,
   "title": "String",
   "format": "uri",
-  "description": "The URL to redirect to if the user requires SAML authentication."
+  "description": "The URL to redirect to if the user requires SAML authentication or belongs somewhere else."
 }*/
-  saml_redirect_url?: string;
+  redirect_url?: string;
   /*{
   "title": "DateTime",
   "format": "date-time",
@@ -6926,11 +7056,15 @@ export interface Models {
   MakePlane_type: MakePlane_type;
   Mass_type: Mass_type;
   Method_type: Method_type;
+  MlCopilotClientMessage_type: MlCopilotClientMessage_type;
+  MlCopilotServerMessage_type: MlCopilotServerMessage_type;
+  MlCopilotSystemCommand_type: MlCopilotSystemCommand_type;
   MlFeedback_type: MlFeedback_type;
   MlPrompt_type: MlPrompt_type;
   MlPromptMetadata_type: MlPromptMetadata_type;
   MlPromptResultsPage_type: MlPromptResultsPage_type;
   MlPromptType_type: MlPromptType_type;
+  MlToolResult_type: MlToolResult_type;
   ModelingAppEventType_type: ModelingAppEventType_type;
   ModelingAppIndividualSubscriptionTier_type: ModelingAppIndividualSubscriptionTier_type;
   ModelingAppOrganizationSubscriptionTier_type: ModelingAppOrganizationSubscriptionTier_type;
@@ -6981,6 +7115,7 @@ export interface Models {
   PaymentMethodType_type: PaymentMethodType_type;
   PerspectiveCameraParameters_type: PerspectiveCameraParameters_type;
   PlanInterval_type: PlanInterval_type;
+  PlanStep_type: PlanStep_type;
   PlaneIntersectAndProject_type: PlaneIntersectAndProject_type;
   PlaneSetColor_type: PlaneSetColor_type;
   PlyStorage_type: PlyStorage_type;
@@ -6993,6 +7128,7 @@ export interface Models {
   ProjectEntityToPlane_type: ProjectEntityToPlane_type;
   ProjectPointsToPlane_type: ProjectPointsToPlane_type;
   RawFile_type: RawFile_type;
+  ReasoningMessage_type: ReasoningMessage_type;
   ReconfigureStream_type: ReconfigureStream_type;
   RelativeTo_type: RelativeTo_type;
   RemoveSceneObjects_type: RemoveSceneObjects_type;

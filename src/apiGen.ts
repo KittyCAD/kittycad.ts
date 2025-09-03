@@ -17,8 +17,10 @@ export default async function apiGen(lookup: any) {
   const observer = observe(spec);
   const tags = spec.tags;
 
-  await fsp.rmdir('./src/api', { recursive: true });
-  await fsp.rmdir('./__tests__/gen', { recursive: true });
+  // Use fs.rm over deprecated fs.rmdir({ recursive: true }) to be compatible
+  // with Node.js >= 22 and future removals of the recursive rmdir option.
+  await fsp.rm('./src/api', { recursive: true, force: true });
+  await fsp.rm('./__tests__/gen', { recursive: true, force: true });
 
   await fsp.mkdir(`./src/api`);
   await fsp.mkdir(`./__tests__/gen`);
