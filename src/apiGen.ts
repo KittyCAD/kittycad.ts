@@ -17,8 +17,10 @@ export default async function apiGen(lookup: any) {
   const observer = observe(spec);
   const tags = spec.tags;
 
-  await fsp.rmdir('./src/api', { recursive: true });
-  await fsp.rmdir('./__tests__/gen', { recursive: true });
+  // Use fs.rm over deprecated fs.rmdir({ recursive: true }) to be compatible
+  // with Node.js >= 22 and future removals of the recursive rmdir option.
+  await fsp.rm('./src/api', { recursive: true, force: true });
+  await fsp.rm('./__tests__/gen', { recursive: true, force: true });
 
   await fsp.mkdir(`./src/api`);
   await fsp.mkdir(`./__tests__/gen`);
@@ -279,6 +281,20 @@ export default async function apiGen(lookup: any) {
                   // TODO
                   return '';
                 }
+                // Handle object properties, including index signatures
+                if (
+                  (value as any).type === 'object' &&
+                  'additionalProperties' in (value as any)
+                ) {
+                  const addProps = (value as any)
+                    .additionalProperties as OpenAPIV3.SchemaObject;
+                  // If the index signature is strings, provide a minimal example
+                  if ((addProps as any).type === 'string') {
+                    return `${key}: {}`;
+                  }
+                  // Fallback to an empty object for other cases
+                  return `${key}: {}`;
+                }
                 if (value.type === 'string' && 'enum' in value) {
                   return `${key}: '${value.enum[0]}'`;
                 }
@@ -311,6 +327,10 @@ export default async function apiGen(lookup: any) {
                 if (value.type === 'array' && '$ref' in value.items) {
                   // assuming text to cad iteration for now
                   return `${key}: []`;
+                }
+                if (value.type === 'object') {
+                  // generic nested object; provide minimal example
+                  return `${key}: {}`;
                 }
                 return '';
               })
@@ -528,7 +548,11 @@ export default async function apiGen(lookup: any) {
           exportsStr: [],
         };
       }
-      if (!['modeling_commands_ws'].includes(operationId)) {
+      if (
+        !['modeling_commands_ws', 'ml_copilot_ws', 'ml_reasoning_ws'].includes(
+          operationId,
+        )
+      ) {
         indexFile[safeTag].importsStr.push(
           `import ${operationId} from './api/${tag}/${operationId}.js';`,
         );
