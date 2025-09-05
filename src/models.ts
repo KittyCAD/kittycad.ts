@@ -5804,6 +5804,7 @@ This is the same as the API call ID. */
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
+      type: 'text_to_cad';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: Uuid_type /* The user ID of the user who created the API call. */;
@@ -5845,6 +5846,7 @@ This is the same as the API call ID. */
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
+      type: 'text_to_cad_iteration';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: Uuid_type /* The user ID of the user who created the API call. */;
@@ -5895,6 +5897,7 @@ This is the same as the API call ID. */
 }*/
       started_at?: string;
       status: ApiCallStatus_type /* The status of the API call. */;
+      type: 'text_to_cad_multi_file_iteration';
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string;
       user_id: Uuid_type /* The user ID of the user who created the API call. */;
