@@ -39,21 +39,11 @@ export default class ExecutorTerm<Req = any, Res = any> {
         reject(ev?.error || new Error('WebSocket error'));
       };
       const remove = () => {
-        if ('removeEventListener' in ws) {
-          ws.removeEventListener('open', onOpen);
-          ws.removeEventListener('error', onError);
-        } else if ('off' in ws) {
-          ws.off('open', onOpen);
-          ws.off('error', onError);
-        }
+        ws.removeEventListener('open', onOpen);
+        ws.removeEventListener('error', onError);
       };
-      if ('addEventListener' in ws) {
-        ws.addEventListener('open', onOpen);
-        ws.addEventListener('error', onError);
-      } else if ('on' in ws) {
-        ws.on('open', onOpen);
-        ws.on('error', onError);
-      }
+      ws.addEventListener('open', onOpen);
+      ws.addEventListener('error', onError);
     });
 
     // Send auth headers as a message immediately after connect (browser-safe)
@@ -117,22 +107,12 @@ export default class ExecutorTerm<Req = any, Res = any> {
 
       const cleanup = () => {
         clearTimeout(timer);
-        if ('removeEventListener' in this.ws) {
-          this.ws.removeEventListener('message', onMessage as any);
-          this.ws.removeEventListener('error', onError);
-        } else if ('off' in this.ws) {
-          this.ws.off('message', onMessage as any);
-          this.ws.off('error', onError);
-        }
+        this.ws.removeEventListener('message', onMessage as any);
+        this.ws.removeEventListener('error', onError);
       };
 
-      if ('addEventListener' in this.ws) {
-        this.ws.addEventListener('message', onMessage as any);
-        this.ws.addEventListener('error', onError);
-      } else if ('on' in this.ws) {
-        this.ws.on('message', (data: any) => onMessage({ data }));
-        this.ws.on('error', onError);
-      }
+      this.ws.addEventListener('message', onMessage as any);
+      this.ws.addEventListener('error', onError);
     });
   }
 
