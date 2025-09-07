@@ -41,9 +41,12 @@ export const apps = {
   apps_github_webhook,
 };
 
-import create_executor_term from './api/executor/create_executor_term.js';
+import ExecutorTerm from './api/executor/create_executor_term.js';
 import create_file_execution from './api/executor/create_file_execution.js';
-export const executor = { create_executor_term, create_file_execution };
+export const executor = {
+  create_executor_term: (params) => new ExecutorTerm(params),
+  create_file_execution,
+};
 
 import create_file_center_of_mass from './api/file/create_file_center_of_mass.js';
 import create_file_conversion from './api/file/create_file_conversion.js';
@@ -81,6 +84,8 @@ export const meta = {
   ping,
 };
 
+import MlCopilotWs from './api/ml/ml_copilot_ws.js';
+import MlReasoningWs from './api/ml/ml_reasoning_ws.js';
 import create_kcl_code_completions from './api/ml/create_kcl_code_completions.js';
 import create_proprietary_to_kcl from './api/ml/create_proprietary_to_kcl.js';
 import create_text_to_cad from './api/ml/create_text_to_cad.js';
@@ -92,8 +97,6 @@ import get_text_to_cad_model_for_user from './api/ml/get_text_to_cad_model_for_u
 import list_conversations_for_user from './api/ml/list_conversations_for_user.js';
 import list_ml_prompts from './api/ml/list_ml_prompts.js';
 import list_text_to_cad_models_for_user from './api/ml/list_text_to_cad_models_for_user.js';
-import ml_copilot_ws from './api/ml/ml_copilot_ws.js';
-import ml_reasoning_ws from './api/ml/ml_reasoning_ws.js';
 export const ml = {
   create_kcl_code_completions,
   create_proprietary_to_kcl,
@@ -106,12 +109,14 @@ export const ml = {
   list_conversations_for_user,
   list_ml_prompts,
   list_text_to_cad_models_for_user,
-  ml_copilot_ws,
-  ml_reasoning_ws,
+  ml_copilot_ws: (params) => new MlCopilotWs(params),
+  ml_reasoning_ws: (params) => new MlReasoningWs(params),
 };
 
-import modeling_commands_ws from './api/modeling/modeling_commands_ws.js';
-export const modeling = { modeling_commands_ws };
+import ModelingCommandsWs from './api/modeling/modeling_commands_ws.js';
+export const modeling = {
+  modeling_commands_ws: (params) => new ModelingCommandsWs(params),
+};
 
 import device_access_token from './api/oauth2/device_access_token.js';
 import device_auth_confirm from './api/oauth2/device_auth_confirm.js';

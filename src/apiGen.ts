@@ -721,10 +721,20 @@ export default async function apiGen(lookup: any) {
           exportsStr: [],
         };
       }
-      indexFile[safeTag].importsStr.push(
-        `import ${operationId} from './api/${tag}/${operationId}.js';`,
-      );
-      indexFile[safeTag].exportsStr.push(operationId);
+      if (isWebSocket) {
+        const className = toWsClassName(operationId);
+        indexFile[safeTag].importsStr.push(
+          `import ${className} from './api/${tag}/${operationId}.js';`,
+        );
+        indexFile[safeTag].exportsStr.push(
+          `${operationId}: (params) => new ${className}(params)`,
+        );
+      } else {
+        indexFile[safeTag].importsStr.push(
+          `import ${operationId} from './api/${tag}/${operationId}.js';`,
+        );
+        indexFile[safeTag].exportsStr.push(operationId);
+      }
       const libWritePromise = fsp.writeFile(
         `./src/api/${tag}/${operationId}.ts`,
         template,

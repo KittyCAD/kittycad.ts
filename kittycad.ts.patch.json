@@ -3,7 +3,7 @@
     "op": "add",
     "path": "/paths/~1ws~1modeling~1commands/get/x-typescript",
     "value": {
-      "example": "import { modeling, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await new modeling.modeling_commands_ws({\n        client: new Client(process.env.KITTYCAD_TOKEN),\n        api_call_id: 'string',\n        fps: 7,\n        pool: 'string',\n        post_effect: 'ssao',\n        replay: 'string',\n        show_grid: true,\n        unlocked_framerate: true,\n        video_res_height: 7,\n        video_res_width: 7,\n        webrtc: true,\n    }).connect()\n    response.close()\n    return true\n}\n",
+      "example": "import { modeling, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling\n        .modeling_commands_ws({\n            client: new Client(process.env.KITTYCAD_TOKEN),\n            api_call_id: 'string',\n            fps: 7,\n            pool: 'string',\n            post_effect: 'ssao',\n            replay: 'string',\n            show_grid: true,\n            unlocked_framerate: true,\n            video_res_height: 7,\n            video_res_width: 7,\n            webrtc: true,\n        })\n        .connect()\n    response.close()\n    return true\n}\n",
       "libDocsLink": ""
     }
   },
@@ -11,7 +11,7 @@
     "op": "add",
     "path": "/paths/~1ws~1ml~1reasoning~1{id}/get/x-typescript",
     "value": {
-      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await new ml.ml_reasoning_ws({\n        client: new Client(process.env.KITTYCAD_TOKEN),\n        id: 'string',\n    }).connect()\n    response.close()\n    return true\n}\n",
+      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml\n        .ml_reasoning_ws({\n            client: new Client(process.env.KITTYCAD_TOKEN),\n            id: 'string',\n        })\n        .connect()\n    response.close()\n    return true\n}\n",
       "libDocsLink": ""
     }
   },
@@ -19,7 +19,7 @@
     "op": "add",
     "path": "/paths/~1ws~1ml~1copilot/get/x-typescript",
     "value": {
-      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await new ml.ml_copilot_ws({\n        client: new Client(process.env.KITTYCAD_TOKEN),\n    }).connect()\n    response.close()\n    return true\n}\n",
+      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml\n        .ml_copilot_ws({ client: new Client(process.env.KITTYCAD_TOKEN) })\n        .connect()\n    response.close()\n    return true\n}\n",
       "libDocsLink": ""
     }
   },
@@ -27,7 +27,7 @@
     "op": "add",
     "path": "/paths/~1ws~1executor~1term/get/x-typescript",
     "value": {
-      "example": "import { executor, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await new executor.create_executor_term({\n        client: new Client(process.env.KITTYCAD_TOKEN),\n    }).connect()\n    response.close()\n    return true\n}\n",
+      "example": "import { executor, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await executor\n        .create_executor_term({\n            client: new Client(process.env.KITTYCAD_TOKEN),\n        })\n        .connect()\n    response.close()\n    return true\n}\n",
       "libDocsLink": ""
     }
   },

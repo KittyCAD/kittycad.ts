@@ -2,7 +2,7 @@
 import { api } from '../../src/index.js';
 
 async function example() {
-  const response = await new api.section({ param: 'param' }).connect();
+  const response = await api.section({ param: 'param' }).connect();
   response.close();
   return true;
 }
