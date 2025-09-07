@@ -61,3 +61,26 @@ jobs:
           npx esbuild entry.ts --bundle --platform=browser --format=esm --outfile=out.mjs
           node -e "require('fs').statSync('out.mjs'); console.log('ok')"
 
+      - name: Browser bundling (Vite) smoke
+        shell: bash
+        run: |
+          mkdir -p /tmp/vite && cd /tmp/vite
+          yarn init -y >/dev/null 2>&1
+          yarn add -D vite >/dev/null 2>&1
+          yarn add ../../pkg.tgz >/dev/null 2>&1
+          mkdir -p src
+          cat > index.html << 'HTML'
+          <!doctype html>
+          <html>
+            <head><meta charset="utf-8" /><title>smoke</title></head>
+            <body>
+              <script type="module" src="/src/main.ts"></script>
+            </body>
+          </html>
+          HTML
+          cat > src/main.ts << 'TS'
+          import { Client, meta } from '@kittycad/lib'
+          console.log(typeof Client === 'function' && typeof meta === 'object' ? 'ok' : 'bad')
+          TS
+          npx vite build --logLevel warn
+          [ -d dist ] && echo ok
