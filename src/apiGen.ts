@@ -676,6 +676,27 @@ export default async function apiGen(lookup: any) {
           [/describe\('Testing(.|\n)+?(}\);)(.|\n)+?(}\);)/g, ''],
           [/.+return response;\n/g, ''],
         ]);
+        // Ensure ApiError is imported in the docs example
+        exampleTemplate = exampleTemplate.replace(
+          new RegExp(`import \{\\s*${safeTag}\\s*\} from '@kittycad/lib';`),
+          `import { ${safeTag}, ApiError } from '@kittycad/lib';`,
+        );
+        // Append error-handling snippet for docs readers
+        exampleTemplate += [
+          '',
+          '// Error handling',
+          'try {',
+          '  const res = await example()',
+          '} catch (e) {',
+          '  if (e instanceof ApiError) {',
+          "    console.error('status', e.status, 'code', e.body?.error_code)",
+          "    console.error('message', e.body?.message)",
+          "    console.error('request_id', e.body?.request_id)",
+          '  } else {',
+          '    throw e',
+          '  }',
+          '}',
+        ].join('\n');
       } else {
         exampleTemplate = replacer(exampleTemplate, [
           ["from '../../src/index.js'", "from '@kittycad/lib'"],
