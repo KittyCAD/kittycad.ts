@@ -1,0 +1,48 @@
+name: win-ca-smoke
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  smoke:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+      - name: Build SDK
+        run: yarn build
+      - name: Create and trust local root CA and server cert
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = New-SelfSignedCertificate -Type Custom -KeySpec Signature -Subject "CN=KittyCAD-Test-Root" -KeyExportPolicy Exportable -HashAlgorithm sha256 -KeyLength 2048 -CertStoreLocation "Cert:\CurrentUser\My" -KeyUsage CertSign,CRLSign,DigitalSignature -NotAfter (Get-Date).AddYears(1) -TextExtension @("2.5.29.19={text}CA=1&pathlength=3")
+          $server = New-SelfSignedCertificate -Type Custom -DnsName "localhost","127.0.0.1" -Subject "CN=localhost" -KeyExportPolicy Exportable -HashAlgorithm sha256 -KeyLength 2048 -CertStoreLocation "Cert:\CurrentUser\My" -KeyUsage DigitalSignature,KeyEncipherment -Signer $root -TextExtension @("2.5.29.19={text}CA=0")
+          Export-Certificate -Cert $root -FilePath root.cer | Out-Null
+          certutil -user -addstore Root root.cer | Out-Null
+          $pwd = ConvertTo-SecureString -String "pass" -Force -AsPlainText
+          Export-PfxCertificate -Cert $server -FilePath servercert.pfx -Password $pwd | Out-Null
+      - name: Start HTTPS test server
+        shell: pwsh
+        run: |
+          Start-Job -Name https -ScriptBlock { node scripts/https-server.mjs } | Out-Null
+          Start-Sleep -Seconds 2
+      - name: Smoke test (TLS with win-ca)
+        run: node scripts/win-ca-smoke.mjs
+      - name: Stop HTTPS server
+        if: always()
+        shell: pwsh
+        run: |
+          Get-Job -Name https | Stop-Job -PassThru | Remove-Job
+
