@@ -105,7 +105,7 @@ export default class MlCopilotWs<
         cleanup();
         try {
           const parsed = this.parseMessage(evOrData);
-          resolve(parsed as Res);
+          resolve(parsed);
         } catch (e) {
           reject(e);
         }
@@ -126,7 +126,7 @@ export default class MlCopilotWs<
     this.ws.close();
   }
 
-  private parseMessage(evOrData: any): unknown {
+  private parseMessage(evOrData: any): Res {
     const data = 'data' in evOrData ? evOrData.data : evOrData;
     if (typeof data === 'string') return JSON.parse(data);
     // Node ws Buffer
@@ -135,7 +135,8 @@ export default class MlCopilotWs<
       try {
         return JSON.parse(buf.toString('utf8'));
       } catch {}
-      return BSON.deserialize(buf);
+      const out: any = BSON.deserialize(buf);
+      return out;
     }
     // ArrayBuffer or Uint8Array
     if (data instanceof ArrayBuffer || data?.buffer instanceof ArrayBuffer) {
@@ -147,7 +148,8 @@ export default class MlCopilotWs<
         const text = new TextDecoder().decode(bytes);
         return JSON.parse(text);
       } catch {}
-      return BSON.deserialize(bytes);
+      const out: any = BSON.deserialize(bytes);
+      return out;
     }
     // Fallback
     return data;
