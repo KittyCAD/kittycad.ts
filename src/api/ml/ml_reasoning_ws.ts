@@ -1,15 +1,22 @@
 import { Client } from '../../client.js';
-import {} from '../../models.js';
+import {
+  MlCopilotClientMessage_type,
+  MlCopilotServerMessage_type,
+} from '../../models.js';
 import { BSON } from 'bson';
 
 // Types for requests/responses are injected by apiGen
-// import { any, any } from '../../models.js';
+// import { MlCopilotClientMessage_type, MlCopilotServerMessage_type } from '../../models.js';
 
-interface Create_executor_term_params {
+interface Ml_reasoning_ws_params {
   client?: Client;
+  id: string;
 }
 
-export default class Create_executor_termClass<Req = any, Res = any> {
+export default class Ml_reasoning_wsClass<
+  Req = MlCopilotClientMessage_type,
+  Res = MlCopilotServerMessage_type,
+> {
   private ws: any;
 
   private constructor(wsImpl: any) {
@@ -18,8 +25,9 @@ export default class Create_executor_termClass<Req = any, Res = any> {
 
   static async connect({
     client,
-  }: Create_executor_term_params): Promise<Create_executor_termClass> {
-    const url = `/ws/executor/term`;
+    id,
+  }: Ml_reasoning_ws_params): Promise<Ml_reasoning_wsClass> {
+    const url = `/ws/ml/reasoning/${id}`;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
     const httpUrl = urlBase + url;
@@ -75,7 +83,7 @@ export default class Create_executor_termClass<Req = any, Res = any> {
       } catch {}
     }
 
-    return new Create_executor_termClass(ws);
+    return new Ml_reasoning_wsClass(ws);
   }
 
   send(data: Req): void {

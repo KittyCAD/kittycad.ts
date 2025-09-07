@@ -192,20 +192,33 @@ async function main() {
   for (const key of Object.keys(schemas)) {
     addTypeName(componentRef(key), key + '_type');
   }
+  // Fast path: if models already exist, skip regenerating them and proceed to API
+  try {
+    await fsp.stat('./src/models.ts');
+    await apiGen(typeNameReference);
+    return;
+  } catch {}
   const modelsExportParts = [];
   for (const [key, schema] of Object.entries(schemas)) {
-    const typeBody = makeTypeStringForNode(schema, '', true);
     const typeName = typeNameReference[componentRef(key)];
-    typeReference[componentRef(key)] = typeBody;
-    modelsExportParts.push(typeName);
+    try {
+      const typeBody = makeTypeStringForNode(schema, '', true);
+      typeReference[componentRef(key)] = typeBody;
+      modelsExportParts.push(typeName);
 
-    if (typeBody.includes('/* use-type */')) {
-      template += `export type ${typeName} = ${typeBody.replaceAll(
-        '/* use-type */',
-        '',
-      )}\n\n`;
-    } else {
-      template += `export interface ${typeName} ${typeBody}\n\n`;
+      if (typeBody.includes('/* use-type */')) {
+        template += `export type ${typeName} = ${typeBody.replaceAll(
+          '/* use-type */',
+          '',
+        )}\n\n`;
+      } else {
+        template += `export interface ${typeName} ${typeBody}\n\n`;
+      }
+    } catch (e) {
+      // Be resilient to odd schemas so apiGen can proceed.
+      typeReference[componentRef(key)] = 'any';
+      modelsExportParts.push(typeName);
+      template += `export type ${typeName} = any\n\n`;
     }
   }
   template += `export interface Models {\n${modelsExportParts

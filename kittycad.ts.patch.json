@@ -3,7 +3,7 @@
     "op": "add",
     "path": "/paths/~1ws~1modeling~1commands/get/x-typescript",
     "value": {
-      "example": "import { modeling } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.modeling_commands_ws({\n        api_call_id: 'string',\n        fps: 7,\n        pool: 'string',\n        post_effect: 'ssao',\n        replay: 'string',\n        show_grid: true,\n        unlocked_framerate: true,\n        video_res_height: 7,\n        video_res_width: 7,\n        webrtc: true,\n        body: {\n            candidate: {\n                candidate: 'The candidate string associated with the object.',\n                sdpMLineIndex: 7,\n                sdpMid: \"The identifier of the 'media stream identification' as defined in [RFC 8841](https://tools.ietf.org/html/rfc8841).\",\n                usernameFragment:\n                    'The username fragment (as defined in [RFC 8445](https://tools.ietf.org/html/rfc8445#section-5.2.1)) associated with the object.',\n            },\n            type: 'trickle_ice',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { modeling, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.modeling_commands_ws.connect({\n        client: new Client(process.env.KITTYCAD_TOKEN),\n        api_call_id: 'string',\n        fps: 7,\n        pool: 'string',\n        post_effect: 'ssao',\n        replay: 'string',\n        show_grid: true,\n        unlocked_framerate: true,\n        video_res_height: 7,\n        video_res_width: 7,\n        webrtc: true,\n    })\n    response.close()\n    return true\n}\n",
       "libDocsLink": ""
     }
   },
@@ -11,7 +11,7 @@
     "op": "add",
     "path": "/paths/~1ws~1ml~1reasoning~1{id}/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_reasoning_ws({\n        id: 'string',\n        body: { headers: {}, type: 'headers' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_reasoning_ws.connect({\n        client: new Client(process.env.KITTYCAD_TOKEN),\n        id: 'string',\n    })\n    response.close()\n    return true\n}\n",
       "libDocsLink": ""
     }
   },
@@ -19,7 +19,7 @@
     "op": "add",
     "path": "/paths/~1ws~1ml~1copilot/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_copilot_ws({\n        body: { headers: {}, type: 'headers' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_copilot_ws.connect({\n        client: new Client(process.env.KITTYCAD_TOKEN),\n    })\n    response.close()\n    return true\n}\n",
       "libDocsLink": ""
     }
   },
@@ -27,7 +27,7 @@
     "op": "add",
     "path": "/paths/~1ws~1executor~1term/get/x-typescript",
     "value": {
-      "example": "import { executor } from '@kittycad/lib'\n\nasync function example() {\n    const response = await executor.create_executor_term()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { executor, Client } from '@kittycad/lib'\n\nasync function example() {\n    const response = await executor.create_executor_term.connect({\n        client: new Client(process.env.KITTYCAD_TOKEN),\n    })\n    response.close()\n    return true\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1164,7 +1164,8 @@
     "path": "/info/x-typescript",
     "value": {
       "client": "// Create a client with your token.\nasync function ExampleWithClient() {\n  const client = new Client('your-token');\n  const response = await meta.ping({ client });\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}\n\n// - OR -\n\n// Your token will be parsed from the environment\n// variable: 'KITTYCAD_TOKEN'.\nasync function ExampleWithOutClient() {\n  const response = await meta.ping();\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}",
-      "install": "npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib"
+      "install": "npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib",
+      "ws": "// WebSocket usage\nasync function ExampleWs() {\n  const client = new Client('your-token');\n  const conn = await ml.ml_copilot_ws.connect({ client });\n  // Send a message (shape depends on endpoint)\n  // conn.send({ type: 'headers', headers: { 'X-Example': '1' } } as any);\n  // Read one message:\n  // const msg = await conn.recv();\n  // Or stream:\n  for await (const msg of conn) {\n    console.log(msg);\n    break;\n  }\n  conn.close();\n}"
     }
   }
 ]

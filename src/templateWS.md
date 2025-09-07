@@ -1,25 +1,28 @@
+```typescript
 import { Client } from '../../client.js';
-import {} from '../../models.js';
 import { BSON } from 'bson';
 
 // Types for requests/responses are injected by apiGen
-// import { any, any } from '../../models.js';
+// import { RequestTypeName, ResponseTypeName } from '../../models.js';
 
-interface Create_executor_term_params {
-  client?: Client;
+interface FunctionNameParams {
+  exampleParam: string;
 }
 
-export default class Create_executor_termClass<Req = any, Res = any> {
+export default class FunctionNameClass<
+  Req = RequestTypeName,
+  Res = ResponseTypeName,
+> {
   private ws: any;
 
   private constructor(wsImpl: any) {
     this.ws = wsImpl;
   }
 
-  static async connect({
-    client,
-  }: Create_executor_term_params): Promise<Create_executor_termClass> {
-    const url = `/ws/executor/term`;
+  static async connect(
+    functionNameParams: FunctionNameParams,
+  ): Promise<FunctionNameClass> {
+    const url = 'string' + functionNameParams.exampleParam;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
     const httpUrl = urlBase + url;
@@ -75,7 +78,7 @@ export default class Create_executor_termClass<Req = any, Res = any> {
       } catch {}
     }
 
-    return new Create_executor_termClass(ws);
+    return new FunctionNameClass(ws);
   }
 
   send(data: Req): void {
@@ -222,3 +225,4 @@ export default class Create_executor_termClass<Req = any, Res = any> {
     return data;
   }
 }
+```

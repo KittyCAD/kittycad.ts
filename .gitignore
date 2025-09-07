@@ -32,3 +32,4 @@ build/
 .DS_Store
 
 .direnv
+scripts/gen.cjs

@@ -1,14 +1,15 @@
-import { executor } from '../../src/index.js';
+import { executor, Client } from '../../src/index.js';
 
 async function example() {
-  const response = await executor.create_executor_term();
-  if ('error_code' in response) throw response;
-
-  return response;
+  const response = await executor.create_executor_term.connect({
+    client: new Client(process.env.KITTYCAD_TOKEN),
+  });
+  response.close();
+  return true;
 }
 
-describe('Testing executor.create_executor_term', () => {
-  it('should be truthy or throw', async () => {
+describe('Testing WS executor.create_executor_term', () => {
+  it('connects and closes', async () => {
     expect(await example()).toBeTruthy();
   });
 });

@@ -1,15 +1,32 @@
 import { Client } from '../../client.js';
-import {} from '../../models.js';
+import {
+  PostEffectType_type,
+  WebSocketRequest_type,
+  WebSocketResponse_type,
+} from '../../models.js';
 import { BSON } from 'bson';
 
 // Types for requests/responses are injected by apiGen
-// import { any, any } from '../../models.js';
+// import { WebSocketRequest_type, WebSocketResponse_type } from '../../models.js';
 
-interface Create_executor_term_params {
+interface Modeling_commands_ws_params {
   client?: Client;
+  api_call_id: string;
+  fps: number;
+  pool: string;
+  post_effect: PostEffectType_type;
+  replay: string;
+  show_grid: boolean;
+  unlocked_framerate: boolean;
+  video_res_height: number;
+  video_res_width: number;
+  webrtc: boolean;
 }
 
-export default class Create_executor_termClass<Req = any, Res = any> {
+export default class Modeling_commands_wsClass<
+  Req = WebSocketRequest_type,
+  Res = WebSocketResponse_type,
+> {
   private ws: any;
 
   private constructor(wsImpl: any) {
@@ -18,8 +35,18 @@ export default class Create_executor_termClass<Req = any, Res = any> {
 
   static async connect({
     client,
-  }: Create_executor_term_params): Promise<Create_executor_termClass> {
-    const url = `/ws/executor/term`;
+    api_call_id,
+    fps,
+    pool,
+    post_effect,
+    replay,
+    show_grid,
+    unlocked_framerate,
+    video_res_height,
+    video_res_width,
+    webrtc,
+  }: Modeling_commands_ws_params): Promise<Modeling_commands_wsClass> {
+    const url = `/ws/modeling/commands?api_call_id=${api_call_id}&fps=${fps}&pool=${pool}&post_effect=${post_effect}&replay=${replay}&show_grid=${show_grid}&unlocked_framerate=${unlocked_framerate}&video_res_height=${video_res_height}&video_res_width=${video_res_width}&webrtc=${webrtc}`;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
     const httpUrl = urlBase + url;
@@ -75,7 +102,7 @@ export default class Create_executor_termClass<Req = any, Res = any> {
       } catch {}
     }
 
-    return new Create_executor_termClass(ws);
+    return new Modeling_commands_wsClass(ws);
   }
 
   send(data: Req): void {

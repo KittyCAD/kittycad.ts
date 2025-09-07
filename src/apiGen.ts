@@ -66,18 +66,38 @@ export default async function apiGen(lookup: any) {
         return [];
       }
 
+      const isWebSocket = Boolean(
+        (operation.specSection as any)['x-dropshot-websocket'],
+      );
+
       let exampleTemplate: string = (
-        await fsp.readFile('./src/exampleAndGenTestTemplate.md', 'utf8')
+        await fsp.readFile(
+          isWebSocket
+            ? './src/exampleAndGenWsTestTemplate.md'
+            : './src/exampleAndGenTestTemplate.md',
+          'utf8',
+        )
       )
         .replaceAll('```typescript', '')
         .replaceAll('```', '');
-      let template = (await fsp.readFile('./src/template.md', 'utf8'))
+
+      let template = (
+        await fsp.readFile(
+          isWebSocket ? './src/templateWS.md' : './src/template.md',
+          'utf8',
+        )
+      )
         .replaceAll('```typescript', '')
         .replaceAll('```', '');
 
       let inputTypes: string[] = ['client?: Client'];
       let inputParams: string[] = ['client'];
       const inputParamsExamples: string[] = [];
+      if (isWebSocket) {
+        inputParamsExamples.push(
+          `client: new Client(process.env.KITTYCAD_TOKEN)`,
+        );
+      }
 
       // If we have a multipart request, use the multipart template.
       if (
@@ -214,20 +234,23 @@ export default async function apiGen(lookup: any) {
       const requestBody = operation.specSection
         ?.requestBody as OpenAPIV3.ResponseObject;
 
-      // ASSUMPTION: That there is 1 Content-Type for a request.
-      // IN PRACTICE: We only ever use 1 Content-Type for a request.
-      const contentType = (
-        Object.keys(requestBody?.content ?? {})[0] ?? 'text/plain'
-      ).replaceAll(' ', '');
+      if (!isWebSocket) {
+        // ASSUMPTION: That there is 1 Content-Type for a request.
+        // IN PRACTICE: We only ever use 1 Content-Type for a request.
+        const contentType = (
+          Object.keys(requestBody?.content ?? {})[0] ?? 'text/plain'
+        ).replaceAll(' ', '');
 
-      template = template.replaceAll(
-        'contentTypeToBeReplacedDuringApiGen',
-        // We need those surrounding ''!
-        `'${contentType}'`,
-      );
+        template = template.replaceAll(
+          'contentTypeToBeReplacedDuringApiGen',
+          // We need those surrounding ''!
+          `'${contentType}'`,
+        );
+      }
 
       if (
-        (requestBody?.content?.['application/json']?.schema as any)?.$ref ||
+        (!isWebSocket &&
+          (requestBody?.content?.['application/json']?.schema as any)?.$ref) ||
         (requestBody?.content?.['multipart/form-data']?.schema as any)?.$ref
       ) {
         let schema = requestBody.content['application/json']?.schema as any;
@@ -353,7 +376,10 @@ export default async function apiGen(lookup: any) {
           "formData.append('event', 'BODY')",
           "formData.append('event', JSON.stringify(body))",
         );
-      } else if (requestBody?.content?.['application/octet-stream']) {
+      } else if (
+        !isWebSocket &&
+        requestBody?.content?.['application/octet-stream']
+      ) {
         const schema = requestBody.content['application/octet-stream']
           .schema as OpenAPIV3.SchemaObject;
         if (schema?.type !== 'string') {
@@ -392,7 +418,7 @@ export default async function apiGen(lookup: any) {
         template = template.replaceAll("formData.append('event', 'BODY');", '');
       }
 
-      if (inputParams.length === 1) {
+      if (inputParams.length === 1 && !isWebSocket) {
         template = replacer(template, [
           [
             'functionNameParams: FunctionNameParams,',
@@ -404,101 +430,179 @@ export default async function apiGen(lookup: any) {
         ]);
       }
       const importedTypes: string[] = [];
-      Object.values(operation.specSection?.responses).forEach((response) => {
-        const schema = (response as any)?.content?.['application/json']
-          ?.schema as OpenAPIV3.SchemaObject;
-        if (!schema) {
-          let ref = (response as any)?.$ref || '';
-          ref = ref.replace('responses', 'schemas');
-          const typeReference = lookup[ref];
+      if (!isWebSocket) {
+        Object.values(operation.specSection?.responses).forEach((response) => {
+          const schema = (response as any)?.content?.['application/json']
+            ?.schema as OpenAPIV3.SchemaObject;
+          if (!schema) {
+            let ref = (response as any)?.$ref || '';
+            ref = ref.replace('responses', 'schemas');
+            const typeReference = lookup[ref];
 
-          if (!importedTypes.includes(typeReference) && ref) {
-            importedTypes.push(typeReference);
-          }
-        } else if (
-          (response as any)?.content['application/json']?.schema?.$ref
-        ) {
-          const ref = (response as any)?.content['application/json']?.schema
-            ?.$ref;
-          const typeReference = lookup[ref];
-          if (!importedTypes.includes(typeReference)) {
-            importedTypes.push(typeReference);
-          }
-        } else if (
-          Object.keys(schema).length === 0 ||
-          schema.type === 'string'
-        ) {
-          // do nothing
-        } else if (schema.type === 'array') {
-          const items = schema.items as OpenAPIV3.SchemaObject;
-          if ((items as any).$ref) {
-            const typeReference = lookup[(items as any).$ref];
-            if (!importedTypes.includes(typeReference + '[]')) {
-              importedTypes.push(typeReference + '[]');
+            if (!importedTypes.includes(typeReference) && ref) {
+              importedTypes.push(typeReference);
             }
-          } else if (items.type === 'string') {
+          } else if (
+            (response as any)?.content['application/json']?.schema?.$ref
+          ) {
+            const ref = (response as any)?.content['application/json']?.schema
+              ?.$ref;
+            const typeReference = lookup[ref];
+            if (!importedTypes.includes(typeReference)) {
+              importedTypes.push(typeReference);
+            }
+          } else if (
+            Object.keys(schema).length === 0 ||
+            schema.type === 'string'
+          ) {
             // do nothing
-          } else {
-            console.log('apiGen', schema);
-            throw 'only ref arrays implemented';
-          }
-        } else if (
-          schema.type === 'object' &&
-          'additionalProperties' in schema
-        ) {
-          schema.additionalProperties;
-          const addProps =
-            schema.additionalProperties as OpenAPIV3.SchemaObject;
-          if (addProps.type === 'array' && '$ref' in addProps.items) {
-            const typeReference = lookup[addProps.items.$ref];
-            if (!importedTypes.includes(typeReference + '[]')) {
-              importedTypes.push(typeReference + '[]');
+          } else if (schema.type === 'array') {
+            const items = schema.items as OpenAPIV3.SchemaObject;
+            if ((items as any).$ref) {
+              const typeReference = lookup[(items as any).$ref];
+              if (!importedTypes.includes(typeReference + '[]')) {
+                importedTypes.push(typeReference + '[]');
+              }
+            } else if (items.type === 'string') {
+              // do nothing
+            } else {
+              // Fallback: accept any[] for unhandled array response shapes
+              importedTypes.push('any[]');
             }
+          } else if (
+            schema.type === 'object' &&
+            'additionalProperties' in schema
+          ) {
+            schema.additionalProperties;
+            const addProps =
+              schema.additionalProperties as OpenAPIV3.SchemaObject;
+            if (addProps.type === 'array' && '$ref' in addProps.items) {
+              const typeReference = lookup[addProps.items.$ref];
+              if (!importedTypes.includes(typeReference + '[]')) {
+                importedTypes.push(typeReference + '[]');
+              }
+            }
+          } else {
+            // Fallback: accept any for unhandled response shapes
+            importedTypes.push('any');
           }
-        } else {
-          console.log('apiGen', schema);
-          throw 'not implemented';
+        });
+      } else {
+        // For websocket endpoints, import request/response message types if present
+        let wsReqType = 'any';
+        let wsRespType = 'any';
+        const reqSchema = (requestBody as any)?.content?.['application/json']
+          ?.schema as any;
+        if (reqSchema?.$ref) {
+          wsReqType = lookup[reqSchema.$ref];
+          importedTypes.push(wsReqType);
         }
-      });
+        const wsDefaultResp = (operation.specSection?.responses as any)?.[
+          'default'
+        ];
+        const respSchema = wsDefaultResp?.content?.['application/json']?.schema;
+        if (respSchema?.$ref) {
+          wsRespType = lookup[respSchema.$ref];
+          importedTypes.push(wsRespType);
+        }
 
-      const returnTyping = `type ${FC(operationId)}_return = ${
-        importedTypes.length ? importedTypes.join(' | ') : 'any'
-      }`;
+        // Replace placeholders in WS template
+        template = replacer(template, [
+          [
+            /interface FunctionNameParams(.|\n)+?}/g,
+            `interface ${FC(operationId)}_params {\n${inputTypes.join(
+              '; ',
+            )}\n}`,
+          ],
+          [/class FunctionNameClass/g, `class ${FC(operationId)}Class`],
+          [
+            /export default class FunctionNameClass/g,
+            `export default class ${FC(operationId)}Class`,
+          ],
+          [/FunctionNameClass/g, `${FC(operationId)}Class`],
+          [/FunctionNameParams/g, `${FC(operationId)}_params`],
+          [
+            `import { Client } from '../../client.js';`,
+            `import { Client } from '../../client.js';\nimport {${[
+              ...new Set([...importedParamTypes, ...importedTypes]),
+            ]
+              .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
+              .join(', ')}} from '../../models.js';`,
+          ],
+          [`'string' + functionNameParams.exampleParam`, templateUrlPath],
+          [/RequestTypeName/g, wsReqType],
+          [/ResponseTypeName/g, wsRespType],
+        ]);
+      }
 
-      template = replacer(template, [
-        [/interface FunctionNameReturn(.|\n)+?}/g, returnTyping],
-        [`'string' + functionNameParams.exampleParam`, templateUrlPath],
-        [
-          `functionNameParams:`,
-          `{${inputParams.filter((a) => a).join(', ')}}:`,
-        ],
-        [`exampleParam: string`, inputTypes.join('; ')],
-        ["method: 'METHOD'", `method: '${operation.method.toUpperCase()}'`],
-        ['function functionName', `function ${operationId}`],
-        ['FunctionNameReturn', `${FC(operationId)}_return`],
-        ['FunctionNameParams', `${FC(operationId)}_params`],
-        [
-          "import * as types from './src/models.ts';",
-          `import {${[...new Set([...importedTypes, ...importedParamTypes])]
-            .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
-            .join(', ')}} from '../../models.js';`,
-        ],
-      ]);
+      if (!isWebSocket) {
+        const returnTyping = `type ${FC(operationId)}_return = ${
+          importedTypes.length ? importedTypes.join(' | ') : 'any'
+        }`;
+
+        template = replacer(template, [
+          [/interface FunctionNameReturn(.|\n)+?}/g, returnTyping],
+          [`'string' + functionNameParams.exampleParam`, templateUrlPath],
+          [
+            `functionNameParams:`,
+            `{${inputParams.filter((a) => a).join(', ')}}:`,
+          ],
+          [`exampleParam: string`, inputTypes.join('; ')],
+          ["method: 'METHOD'", `method: '${operation.method.toUpperCase()}'`],
+          ['function functionName', `function ${operationId}`],
+          ['FunctionNameReturn', `${FC(operationId)}_return`],
+          ['FunctionNameParams', `${FC(operationId)}_params`],
+          [
+            "import * as types from './src/models.ts';",
+            `import {${[...new Set([...importedTypes, ...importedParamTypes])]
+              .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
+              .join(', ')}} from '../../models.js';`,
+          ],
+        ]);
+      } else {
+        // ws-specific: ensure params typing and object destructuring
+        template = replacer(template, [
+          [
+            `functionNameParams: FunctionNameParams,`,
+            `functionNameParams: ${FC(operationId)}_params,`,
+          ],
+          [
+            `functionNameParams:`,
+            `{${inputParams.filter((a) => a).join(', ')}}:`,
+          ],
+        ]);
+      }
 
       const tag = operation.specSection?.tags?.[0] || 'err';
       const safeTag = tag.replaceAll('-', '_');
-      exampleTemplate = replacer(exampleTemplate, [
-        [`param: 'param'`, inputParamsExamples.filter((a) => a).join(', ')],
-        ['{ api }', `{ ${safeTag} }`],
-        ['api.section', `${safeTag}.${operationId}`],
-      ]);
-      if (testsExpectedToThrow.includes(toTestPathString(tag, operationId))) {
+      if (isWebSocket) {
+        exampleTemplate = replacer(exampleTemplate, [
+          [`param: 'param'`, inputParamsExamples.filter((a) => a).join(', ')],
+          ['{ api }', `{ ${safeTag}, Client }`],
+          ['api.section', `${safeTag}.${operationId}`],
+          [
+            `import { api } from '../../src/index.js';`,
+            `import { ${safeTag}, Client } from '../../src/index.js';`,
+          ],
+        ]);
+      } else {
+        exampleTemplate = replacer(exampleTemplate, [
+          [`param: 'param'`, inputParamsExamples.filter((a) => a).join(', ')],
+          ['{ api }', `{ ${safeTag} }`],
+          ['api.section', `${safeTag}.${operationId}`],
+        ]);
+      }
+      if (
+        !isWebSocket &&
+        testsExpectedToThrow.includes(toTestPathString(tag, operationId))
+      ) {
         // these test are expected to fail
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],
           [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
         ]);
       } else if (
+        !isWebSocket &&
         expectedToTimeout.includes(toTestPathString(tag, operationId))
       ) {
         exampleTemplate = replacer(exampleTemplate, [
@@ -506,10 +610,12 @@ export default async function apiGen(lookup: any) {
           [/try {(.|\n)+?}(.|\n)+?}/g, ''],
         ]);
       } else {
-        exampleTemplate = replacer(exampleTemplate, [
-          [/try {(.|\n)+?}(.|\n)+?}/g, ''],
-          [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
-        ]);
+        if (!isWebSocket) {
+          exampleTemplate = replacer(exampleTemplate, [
+            [/try {(.|\n)+?}(.|\n)+?}/g, ''],
+            [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
+          ]);
+        }
       }
       let genTest = exampleTemplate;
 
@@ -525,11 +631,18 @@ export default async function apiGen(lookup: any) {
             'utf8',
           )
         : Promise.resolve();
-      exampleTemplate = replacer(exampleTemplate, [
-        ["from '../../src/index.js'", "from '@kittycad/lib'"],
-        [/describe\('Testing(.|\n)+?(}\);)(.|\n)+?(}\);)/g, ''],
-        [/.+return response;\n/g, ''],
-      ]);
+      if (!isWebSocket) {
+        exampleTemplate = replacer(exampleTemplate, [
+          ["from '../../src/index.js'", "from '@kittycad/lib'"],
+          [/describe\('Testing(.|\n)+?(}\);)(.|\n)+?(}\);)/g, ''],
+          [/.+return response;\n/g, ''],
+        ]);
+      } else {
+        exampleTemplate = replacer(exampleTemplate, [
+          ["from '../../src/index.js'", "from '@kittycad/lib'"],
+          [/describe\('Testing(.|\n)+?(}\);)(.|\n)+?(}\);)/g, ''],
+        ]);
+      }
       spec.paths[operation.path][operation.method]['x-typescript'] = {
         example: format(exampleTemplate, {
           parser: 'babel',
@@ -548,16 +661,10 @@ export default async function apiGen(lookup: any) {
           exportsStr: [],
         };
       }
-      if (
-        !['modeling_commands_ws', 'ml_copilot_ws', 'ml_reasoning_ws'].includes(
-          operationId,
-        )
-      ) {
-        indexFile[safeTag].importsStr.push(
-          `import ${operationId} from './api/${tag}/${operationId}.js';`,
-        );
-        indexFile[safeTag].exportsStr.push(operationId);
-      }
+      indexFile[safeTag].importsStr.push(
+        `import ${operationId} from './api/${tag}/${operationId}.js';`,
+      );
+      indexFile[safeTag].exportsStr.push(operationId);
       const libWritePromise = fsp.writeFile(
         `./src/api/${tag}/${operationId}.ts`,
         template,
@@ -581,6 +688,38 @@ export default async function apiGen(lookup: any) {
   indexFileString += `export type { Models } from './models.js';\n`;
   indexFileString += `export { Client} from './client.js';\n`;
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8');
+
+  // Build a concise WS usage snippet if the spec has any WS endpoints
+  const wsOps = Object.entries(operations).filter(([, op]) =>
+    Boolean((op.specSection as any)['x-dropshot-websocket']),
+  );
+  let wsSnippet = '';
+  if (wsOps.length) {
+    const prefer = ['ml_copilot_ws', 'modeling_commands_ws', 'ml_reasoning_ws'];
+    const preferred = wsOps.find(([id]) => prefer.includes(id)) || wsOps[0];
+    const [sampleId, sampleOp] = preferred;
+    const sampleTag = (sampleOp.specSection?.tags?.[0] || 'api')
+      .toString()
+      .replaceAll('-', '_');
+    wsSnippet = [
+      `// WebSocket usage`,
+      `async function ExampleWs() {`,
+      `  const client = new Client('your-token');`,
+      `  const conn = await ${sampleTag}.${sampleId}.connect({ client });`,
+      `  // Send a message (shape depends on endpoint)`,
+      `  // conn.send({ type: 'headers', headers: { 'X-Example': '1' } } as any);`,
+      `  // Read one message:`,
+      `  // const msg = await conn.recv();`,
+      `  // Or stream:`,
+      `  for await (const msg of conn) {`,
+      `    console.log(msg);`,
+      `    break;`,
+      `  }`,
+      `  conn.close();`,
+      `}`,
+    ].join('\n');
+  }
+
   spec.info['x-typescript'] = {
     client: [
       `// Create a client with your token.`,
@@ -602,6 +741,7 @@ export default async function apiGen(lookup: any) {
       `}`,
     ].join('\n'),
     install: 'npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib',
+    ...(wsSnippet ? { ws: wsSnippet } : {}),
   };
   const patch = generate(observer);
   await fsp.writeFile(
