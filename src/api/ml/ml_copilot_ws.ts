@@ -16,7 +16,7 @@ export default class MlCopilotWs<
   Req = MlCopilotClientMessage_type,
   Res = MlCopilotServerMessage_type,
 > {
-  private ws: any;
+  private ws!: WebSocket;
 
   constructor(private readonly functionNameParams: MlCopilotWsParams) {}
 
@@ -27,13 +27,12 @@ export default class MlCopilotWs<
     const httpUrl = urlBase + url;
     const wsUrl = httpUrl.replace(/^http/, 'ws');
 
-    const WSImpl: any = (globalThis as any).WebSocket;
-    if (!WSImpl) {
+    if (typeof WebSocket === 'undefined') {
       throw new Error(
         'WebSocket global is not available. Add a WebSocket polyfill.',
       );
     }
-    const ws: any = new WSImpl(wsUrl);
+    const ws = new WebSocket(wsUrl);
 
     await new Promise<void>((resolve, reject) => {
       const onOpen = () => {
