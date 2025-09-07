@@ -106,10 +106,10 @@ export default class ModelingCommandsWs<
         reject(ev?.error || new Error('WebSocket error'));
       };
 
-      const onMessage = (evOrData: any) => {
+      const onMessage = (ev: MessageEvent) => {
         cleanup();
         try {
-          const parsed = this.parseMessage(evOrData);
+          const parsed = this.parseMessage(ev);
           resolve(parsed);
         } catch (e) {
           reject(e);
@@ -118,11 +118,11 @@ export default class ModelingCommandsWs<
 
       const cleanup = () => {
         clearTimeout(timer);
-        this.ws.removeEventListener('message', onMessage as any);
+        this.ws.removeEventListener('message', onMessage as EventListener);
         this.ws.removeEventListener('error', onError);
       };
 
-      this.ws.addEventListener('message', onMessage as any);
+      this.ws.addEventListener('message', onMessage as EventListener);
       this.ws.addEventListener('error', onError);
     });
   }
@@ -131,8 +131,8 @@ export default class ModelingCommandsWs<
     this.ws.close();
   }
 
-  private parseMessage(evOrData: any): Res {
-    const data = 'data' in evOrData ? evOrData.data : evOrData;
+  private parseMessage(ev: MessageEvent): Res {
+    const data: any = ev?.data;
     if (typeof data === 'string') return JSON.parse(data);
     // Node ws Buffer
     if ((globalThis as any).Buffer && (Buffer as any).isBuffer?.(data)) {
