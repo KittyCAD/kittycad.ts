@@ -1,0 +1,39 @@
+import * as types from './src/models.ts';
+import { File } from '../../models.js';
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
+{{{paramsInterface}}}
+
+{{{returnType}}}
+
+export default async function {{functionName}}(
+  {{paramsSignature}}
+): Promise<{{returnTypeName}}> {
+  const url = {{urlExpr}};
+  const urlBase = process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
+  const fullUrl = urlBase + url;
+  const kittycadToken = client
+    ? client.token || process.env.ZOO_API_TOKEN || ''
+    : process.env.KITTYCAD_TOKEN || process.env.KITTYCAD_API_TOKEN || process.env.ZOO_API_TOKEN || '';
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${kittycadToken}`,
+  };
+
+  const formData = new FormData();
+  files.forEach((file) => {
+    formData.append(file.name, file.data, file.name);
+  });
+  {{{multipartAppendBody}}}
+
+  const fetchOptions: RequestInit = {
+    method: '{{httpMethod}}',
+    headers,
+    body: formData,
+  };
+  const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
+  const result = (await response.json()) as {{returnTypeName}};
+  return result;
+}
+

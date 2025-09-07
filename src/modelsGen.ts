@@ -2,7 +2,10 @@ import fsp from 'fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
 import apiGen from './apiGen';
 
-main();
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 
 async function main() {
   const spec: OpenAPIV3.Document = JSON.parse(
@@ -170,7 +173,7 @@ async function main() {
           } else if (subSchema.type === 'object') {
             return makeTypeStringForNode(subSchema);
           }
-          throw 'oneOf subSchema not implemented ' + subSchema.type;
+          return 'any';
         },
       );
       return `${namePart} ${unionParts.join(' | ')} /* use-type */`;
@@ -256,7 +259,7 @@ async function main() {
   template += `export type File =  {  readonly name: string;readonly data:Blob;  }\n\n`;
 
   await fsp.writeFile(`./src/models.ts`, template, 'utf8');
-  apiGen(typeNameReference);
+  await apiGen(typeNameReference);
 }
 
 function addCommentInfo(schema: any, typeString: string) {

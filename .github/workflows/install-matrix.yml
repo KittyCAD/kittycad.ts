@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p /tmp/esm && cd /tmp/esm
           yarn init -y >/dev/null 2>&1
-          jq '.type="module"' package.json > package.json.tmp && mv package.json.tmp package.json
+          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.type='module';fs.writeFileSync('package.json',JSON.stringify(p,null,2));"
           yarn add ../../pkg.tgz >/dev/null 2>&1
           cat > test.mjs << 'JS'
           import { Client, meta } from '@kittycad/lib'

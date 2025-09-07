@@ -1,5 +1,6 @@
 import fsp from 'node:fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
+import * as Handlebars from 'handlebars';
 import { format } from 'prettier';
 import pkg from 'fast-json-patch';
 import {
@@ -62,6 +63,7 @@ export default async function apiGen(lookup: any) {
   } = {};
   const writePromises = Object.entries(operations).map(
     async ([operationId, operation]) => {
+      try {
       if ('hidden' === (operation.specSection as any).tags[0]) {
         return [];
       }
@@ -81,14 +83,11 @@ export default async function apiGen(lookup: any) {
         .replaceAll('```typescript', '')
         .replaceAll('```', '');
 
-      let template = (
-        await fsp.readFile(
-          isWebSocket ? './src/templateWS.md' : './src/template.md',
-          'utf8',
-        )
-      )
-        .replaceAll('```typescript', '')
-        .replaceAll('```', '');
+      const templatePath = isWebSocket
+        ? './src/templates/ws.hbs'
+        : (operation.specSection?.requestBody as any)?.content?.['multipart/form-data']?.schema
+        ? './src/templates/multipart.hbs'
+        : './src/templates/rest.hbs';
 
       let inputTypes: string[] = ['client?: Client'];
       let inputParams: string[] = ['client'];
@@ -99,15 +98,10 @@ export default async function apiGen(lookup: any) {
         );
       }
 
-      // If we have a multipart request, use the multipart template.
-      if (
-        (operation.specSection?.requestBody as any)?.content?.[
-          'multipart/form-data'
-        ]?.schema
-      ) {
-        template = (await fsp.readFile('./src/templateMultipart.md', 'utf8'))
-          .replaceAll('```typescript', '')
-          .replaceAll('```', '');
+      const isMultipart = Boolean(
+        (operation.specSection?.requestBody as any)?.content?.['multipart/form-data']?.schema,
+      );
+      if (isMultipart) {
         inputParams.push('files');
         inputParamsExamples.push(
           `files: [{name: "thing.kcl", data: new Blob(['thing = 1'], {type: 'text/plain'})}]`,
@@ -130,7 +124,8 @@ export default async function apiGen(lookup: any) {
           const refName = ref.split('/').pop();
           const reffedSchema = spec.components.schemas[refName];
           if ('$ref' in reffedSchema) {
-            throw 'bad';
+            // Nested $ref not expected; fallback to 'any'.
+            _type = 'any';
           }
           if (reffedSchema.type === 'string' && reffedSchema.enum) {
             if (operationId.includes('file') && name === 'src_format') {
@@ -212,7 +207,7 @@ export default async function apiGen(lookup: any) {
         }
         inputTypes.push(`${name}: ${_type}`);
         if (!name) {
-          throw 'no name for param';
+          return;
         }
         inputParams.push(name);
         if (_in === 'path') {
@@ -234,19 +229,9 @@ export default async function apiGen(lookup: any) {
       const requestBody = operation.specSection
         ?.requestBody as OpenAPIV3.ResponseObject;
 
-      if (!isWebSocket) {
-        // ASSUMPTION: That there is 1 Content-Type for a request.
-        // IN PRACTICE: We only ever use 1 Content-Type for a request.
-        const contentType = (
-          Object.keys(requestBody?.content ?? {})[0] ?? 'text/plain'
-        ).replaceAll(' ', '');
-
-        template = template.replaceAll(
-          'contentTypeToBeReplacedDuringApiGen',
-          // We need those surrounding ''!
-          `'${contentType}'`,
-        );
-      }
+      const contentType = !isWebSocket
+        ? (Object.keys(requestBody?.content ?? {})[0] ?? 'text/plain').replaceAll(' ', '')
+        : '';
 
       if (
         (!isWebSocket &&
@@ -383,7 +368,7 @@ export default async function apiGen(lookup: any) {
         const schema = requestBody.content['application/octet-stream']
           .schema as OpenAPIV3.SchemaObject;
         if (schema?.type !== 'string') {
-          throw 'requestBody type not implemented';
+          // Fallback to string body
         }
         inputTypes.push('body: string');
         inputParams.push('body');
@@ -556,40 +541,60 @@ export default async function apiGen(lookup: any) {
         ]);
       }
 
+      // Render with Handlebars
+      const render = async (path: string, ctx: any) => {
+        const raw = await fsp.readFile(path, 'utf8');
+        const tpl = Handlebars.compile(raw);
+        return tpl(ctx);
+      };
+
+      let template = '';
       if (!isWebSocket) {
         const returnTyping = `type ${FC(operationId)}_return = ${
           importedTypes.length ? importedTypes.join(' | ') : 'any'
         }`;
-
-        template = replacer(template, [
-          [/interface FunctionNameReturn(.|\n)+?}/g, returnTyping],
-          [`'string' + functionNameParams.exampleParam`, templateUrlPath],
-          [
-            `functionNameParams:`,
-            `{${inputParams.filter((a) => a).join(', ')}}:`,
-          ],
-          [`exampleParam: string`, inputTypes.join('; ')],
-          ["method: 'METHOD'", `method: '${operation.method.toUpperCase()}'`],
-          ['function functionName', `function ${operationId}`],
-          ['FunctionNameReturn', `${FC(operationId)}_return`],
-          ['FunctionNameParams', `${FC(operationId)}_params`],
-          [
-            "import * as types from './src/models.ts';",
-            `import {${[...new Set([...importedTypes, ...importedParamTypes])]
-              .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
-              .join(', ')}} from '../../models.js';`,
-          ],
-        ]);
+        const paramsInterfaceName = `${FC(operationId)}_params`;
+        const paramsInterface = `interface ${paramsInterfaceName} { ${inputTypes.join('; ')} }`;
+        const paramsSignature = `{${inputParams.filter((a) => a).join(', ')}}: ${paramsInterfaceName}`;
+        const importsModels = `import {${[...new Set([...importedTypes, ...importedParamTypes])]
+          .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
+          .join(', ')}} from '../../models.js';`;
+        let bodyLine = '';
+        if (requestBody?.content?.['application/json']) bodyLine = 'body: JSON.stringify(body)';
+        if (requestBody?.content?.['application/octet-stream']) bodyLine = 'body';
+        const ctx = {
+          importsModels,
+          paramsInterface,
+          returnType: returnTyping,
+          returnTypeName: `${FC(operationId)}_return`,
+          functionName: operationId,
+          paramsSignature,
+          urlExpr: templateUrlPath,
+          httpMethod: operation.method.toUpperCase(),
+          contentType,
+          omitContentType: isMultipart,
+          bodyLine,
+          multipartAppendBody: "formData.append('event', JSON.stringify(body))",
+        };
+        template = await render(templatePath, ctx);
       } else {
-        // ws-specific: ensure params typing
         const className = toWsClassName(operationId);
         const paramsName = `${className}Params`;
-        template = replacer(template, [
-          [
-            `functionNameParams: FunctionNameParams`,
-            `functionNameParams: ${paramsName}`,
-          ],
-        ]);
+        const importsModels = `import {${[...new Set([...importedParamTypes, ...importedTypes])]
+          .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
+          .join(', ')}} from '../../models.js';`;
+        const paramsFields = inputTypes.join('; ');
+        const wsUrlExpr = templateUrlPath.replaceAll('${', '${this.functionNameParams.');
+        const ctx = {
+          importsModels,
+          className,
+          paramsInterfaceName: paramsName,
+          paramsFields,
+          urlExpr: wsUrlExpr,
+          wsReqType: wsReqType || 'any',
+          wsRespType: wsRespType || 'any',
+        };
+        template = await render(templatePath, ctx);
       }
 
       const tag = operation.specSection?.tags?.[0] || 'err';
@@ -735,12 +740,12 @@ export default async function apiGen(lookup: any) {
         );
         indexFile[safeTag].exportsStr.push(operationId);
       }
-      const libWritePromise = fsp.writeFile(
-        `./src/api/${tag}/${operationId}.ts`,
-        template,
-        'utf8',
-      );
+      const libWritePromise = fsp.writeFile(`./src/api/${tag}/${operationId}.ts`, template, 'utf8');
       return [genTestsWritePromise, libWritePromise];
+      } catch (e) {
+        console.error('apiGen failure for', operationId, e);
+        throw e;
+      }
     },
   );
   await Promise.all(writePromises.flat());

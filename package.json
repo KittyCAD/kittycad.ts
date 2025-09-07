@@ -24,8 +24,10 @@
       "types": "./dist/types/src/index.d.ts",
       "browser": "./dist/mjs/index.js",
       "import": "./dist/mjs/index.js",
-      "require": "./dist/cjs/index.cjs"
-    }
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/mjs/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/mjs/index.js",
@@ -63,6 +65,7 @@
     "tsutils": "~3.21",
     "typescript": "~4.7",
     "vitest": "^0.33.0",
+    "handlebars": "^4.7.8",
     "@types/ws": "^8.5.12"
   },
   "scripts": {
