@@ -24,11 +24,6 @@ export default class FunctionNameClass<
     const httpUrl = urlBase + url;
     const wsUrl = httpUrl.replace(/^http/, 'ws');
 
-    if (typeof WebSocket === 'undefined') {
-      throw new Error(
-        'WebSocket global is not available. Add a WebSocket polyfill.',
-      );
-    }
     const ws = new WebSocket(wsUrl);
 
     await new Promise<void>((resolve, reject) => {
