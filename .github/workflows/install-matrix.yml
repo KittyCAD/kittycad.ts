@@ -1,0 +1,63 @@
+name: install-matrix
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [18, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+      - name: Build package
+        run: yarn build
+      - name: Pack tarball
+        run: yarn pack --filename pkg.tgz
+
+      - name: Node ESM import smoke
+        shell: bash
+        run: |
+          mkdir -p /tmp/esm && cd /tmp/esm
+          yarn init -y >/dev/null 2>&1
+          jq '.type="module"' package.json > package.json.tmp && mv package.json.tmp package.json
+          yarn add ../../pkg.tgz >/dev/null 2>&1
+          cat > test.mjs << 'JS'
+          import { Client, meta } from '@kittycad/lib'
+          console.log(typeof Client === 'function' && typeof meta === 'object' ? 'ok' : 'bad')
+          JS
+          node test.mjs
+
+      - name: Node CJS require smoke
+        shell: bash
+        run: |
+          mkdir -p /tmp/cjs && cd /tmp/cjs
+          yarn init -y >/dev/null 2>&1
+          yarn add ../../pkg.tgz >/dev/null 2>&1
+          node -e "const lib=require('@kittycad/lib'); console.log(typeof lib.meta==='object'?'ok':'bad')"
+
+      - name: Browser bundling (esbuild) smoke
+        shell: bash
+        run: |
+          mkdir -p /tmp/browser && cd /tmp/browser
+          yarn init -y >/dev/null 2>&1
+          yarn add esbuild ../../pkg.tgz >/dev/null 2>&1
+          cat > entry.ts << 'TS'
+          import { Client, meta } from '@kittycad/lib'
+          void new Client('test')
+          void meta
+          TS
+          npx esbuild entry.ts --bundle --platform=browser --format=esm --outfile=out.mjs
+          node -e "require('fs').statSync('out.mjs'); console.log('ok')"
+
