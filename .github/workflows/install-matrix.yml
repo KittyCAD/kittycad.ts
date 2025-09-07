@@ -1,4 +1,6 @@
 name: install-matrix
+permissions:
+  contents: read
 
 on:
   pull_request:
