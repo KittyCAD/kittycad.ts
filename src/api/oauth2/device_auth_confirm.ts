@@ -1,18 +1,19 @@
-import { DeviceAuthConfirmParams_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Device_auth_confirm_params {
+import { DeviceAuthConfirmParams_type } from '../../models.js';
+
+interface DeviceAuthConfirmParams {
   client?: Client;
   body: DeviceAuthConfirmParams_type;
 }
 
-type Device_auth_confirm_return = any;
+type DeviceAuthConfirmReturn = unknown;
 
 export default async function device_auth_confirm({
   client,
   body,
-}: Device_auth_confirm_params): Promise<Device_auth_confirm_return> {
+}: DeviceAuthConfirmParams): Promise<DeviceAuthConfirmReturn> {
   const url = `/oauth2/device/confirm`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,17 @@ export default async function device_auth_confirm({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Device_auth_confirm_return;
+  const result = (await response.json()) as DeviceAuthConfirmReturn;
   return result;
 }

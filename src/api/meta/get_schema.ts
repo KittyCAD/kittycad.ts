@@ -1,16 +1,17 @@
-import {} from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_schema_params {
+import {} from '../../models.js';
+
+interface GetSchemaParams {
   client?: Client;
 }
 
-type Get_schema_return = any;
+type GetSchemaReturn = unknown;
 
-export default async function get_schema({
-  client,
-}: Get_schema_params = {}): Promise<Get_schema_return> {
+export default async function get_schema(
+  { client }: GetSchemaParams = {} as GetSchemaParams,
+): Promise<GetSchemaReturn> {
   const url = `/`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,16 +29,15 @@ export default async function get_schema({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Get_schema_return;
+  const result = (await response.json()) as GetSchemaReturn;
   return result;
 }

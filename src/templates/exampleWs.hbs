@@ -1,0 +1,14 @@
+import { {{tag}}, Client } from '../../src/index.js';
+
+async function example() {
+  const conn = await {{tag}}.{{operationId}}({{#if hasParams}}{ {{{params}}} }{{/if}}).connect();
+  conn.close();
+  return true;
+}
+
+describe('Testing WS {{tag}}.{{operationId}}', () => {
+  it('connects and closes', async () => {
+    expect(await example()).toBeTruthy();
+  });
+});
+

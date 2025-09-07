@@ -8,7 +8,6 @@ async function example() {
     conversation_id: '00000000-0000-0000-0000-000000000000',
     no_models: true,
   });
-
   return response;
 }
 
@@ -17,8 +16,6 @@ describe('Testing ml.list_text_to_cad_models_for_user', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

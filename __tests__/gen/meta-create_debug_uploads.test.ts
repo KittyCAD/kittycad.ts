@@ -9,7 +9,6 @@ async function example() {
       },
     ],
   });
-
   return response;
 }
 
@@ -18,8 +17,6 @@ describe('Testing meta.create_debug_uploads', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

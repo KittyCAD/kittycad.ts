@@ -1,18 +1,19 @@
-import { Session_type, SessionUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_session_for_user_params {
+import { Session_type, SessionUuid_type } from '../../models.js';
+
+interface GetSessionForUserParams {
   client?: Client;
   token: SessionUuid_type;
 }
 
-type Get_session_for_user_return = Session_type;
+type GetSessionForUserReturn = Session_type;
 
 export default async function get_session_for_user({
   client,
   token,
-}: Get_session_for_user_params): Promise<Get_session_for_user_return> {
+}: GetSessionForUserParams): Promise<GetSessionForUserReturn> {
   const url = `/user/session/${token}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,16 +31,15 @@ export default async function get_session_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Get_session_for_user_return;
+  const result = (await response.json()) as GetSessionForUserReturn;
   return result;
 }

@@ -8,7 +8,6 @@ async function example() {
     state: 'string',
     user: 'string',
   });
-
   return response;
 }
 
@@ -17,8 +16,6 @@ describe('Testing oauth2.oauth2_provider_callback', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

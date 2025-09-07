@@ -1,21 +1,22 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   SamlIdentityProvider_type,
   SamlIdentityProviderCreate_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Create_org_saml_idp_params {
+interface CreateOrgSamlIdpParams {
   client?: Client;
   body: SamlIdentityProviderCreate_type;
 }
 
-type Create_org_saml_idp_return = SamlIdentityProvider_type;
+type CreateOrgSamlIdpReturn = SamlIdentityProvider_type;
 
 export default async function create_org_saml_idp({
   client,
   body,
-}: Create_org_saml_idp_params): Promise<Create_org_saml_idp_return> {
+}: CreateOrgSamlIdpParams): Promise<CreateOrgSamlIdpReturn> {
   const url = `/org/saml/idp`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -33,17 +34,17 @@ export default async function create_org_saml_idp({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_org_saml_idp_return;
+  const result = (await response.json()) as CreateOrgSamlIdpReturn;
   return result;
 }

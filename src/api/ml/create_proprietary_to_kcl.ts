@@ -1,21 +1,22 @@
-import { KclModel_type, CodeOption_type } from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_proprietary_to_kcl_params {
+import { KclModel_type, CodeOption_type } from '../../models.js';
+
+interface CreateProprietaryToKclParams {
   client?: Client;
-  code_option: CodeOption_type;
   files: File[];
+  code_option: CodeOption_type;
 }
 
-type Create_proprietary_to_kcl_return = KclModel_type;
+type CreateProprietaryToKclReturn = KclModel_type;
 
 export default async function create_proprietary_to_kcl({
   client,
   files,
   code_option,
-}: Create_proprietary_to_kcl_params): Promise<Create_proprietary_to_kcl_return> {
+}: CreateProprietaryToKclParams): Promise<CreateProprietaryToKclReturn> {
   const url = `/ml/convert/proprietary-to-kcl?code_option=${code_option}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -33,7 +34,7 @@ export default async function create_proprietary_to_kcl({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'multipart/form-data',
   };
@@ -43,13 +44,13 @@ export default async function create_proprietary_to_kcl({
     formData.append(file.name, file.data, file.name);
   });
 
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_proprietary_to_kcl_return;
+  const result = (await response.json()) as CreateProprietaryToKclReturn;
   return result;
 }

@@ -1,18 +1,19 @@
-import { AsyncApiCallOutput_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_async_operation_params {
+import { AsyncApiCallOutput_type } from '../../models.js';
+
+interface GetAsyncOperationParams {
   client?: Client;
   id: string;
 }
 
-type Get_async_operation_return = AsyncApiCallOutput_type;
+type GetAsyncOperationReturn = AsyncApiCallOutput_type;
 
 export default async function get_async_operation({
   client,
   id,
-}: Get_async_operation_params): Promise<Get_async_operation_return> {
+}: GetAsyncOperationParams): Promise<GetAsyncOperationReturn> {
   const url = `/async/operations/${id}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,16 +31,15 @@ export default async function get_async_operation({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Get_async_operation_return;
+  const result = (await response.json()) as GetAsyncOperationReturn;
   return result;
 }

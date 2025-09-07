@@ -1,16 +1,17 @@
-import {} from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Apps_github_callback_params {
+import {} from '../../models.js';
+
+interface AppsGithubCallbackParams {
   client?: Client;
 }
 
-type Apps_github_callback_return = any;
+type AppsGithubCallbackReturn = unknown;
 
-export default async function apps_github_callback({
-  client,
-}: Apps_github_callback_params = {}): Promise<Apps_github_callback_return> {
+export default async function apps_github_callback(
+  { client }: AppsGithubCallbackParams = {} as AppsGithubCallbackParams,
+): Promise<AppsGithubCallbackReturn> {
   const url = `/apps/github/callback`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,16 +29,15 @@ export default async function apps_github_callback({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Apps_github_callback_return;
+  const result = (await response.json()) as AppsGithubCallbackReturn;
   return result;
 }

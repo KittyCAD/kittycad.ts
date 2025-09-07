@@ -1,16 +1,19 @@
-import {} from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Delete_payment_information_for_user_params {
+import {} from '../../models.js';
+
+interface DeletePaymentInformationForUserParams {
   client?: Client;
 }
 
-type Delete_payment_information_for_user_return = any;
+type DeletePaymentInformationForUserReturn = unknown;
 
-export default async function delete_payment_information_for_user({
-  client,
-}: Delete_payment_information_for_user_params = {}): Promise<Delete_payment_information_for_user_return> {
+export default async function delete_payment_information_for_user(
+  {
+    client,
+  }: DeletePaymentInformationForUserParams = {} as DeletePaymentInformationForUserParams,
+): Promise<DeletePaymentInformationForUserReturn> {
   const url = `/user/payment`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,17 +31,16 @@ export default async function delete_payment_information_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'DELETE',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
   const result =
-    (await response.json()) as Delete_payment_information_for_user_return;
+    (await response.json()) as DeletePaymentInformationForUserReturn;
   return result;
 }

@@ -13,7 +13,6 @@ async function example() {
       phone: 'The phone number of the user.',
     },
   });
-
   return response;
 }
 
@@ -22,8 +21,6 @@ describe('Testing users.put_user_form_self', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

@@ -1,12 +1,13 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   OrgMemberResultsPage_type,
   CreatedAtSortMode_type,
   UserOrgRole_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface List_org_members_params {
+interface ListOrgMembersParams {
   client?: Client;
   limit: number;
   page_token: string;
@@ -14,7 +15,7 @@ interface List_org_members_params {
   role: UserOrgRole_type;
 }
 
-type List_org_members_return = OrgMemberResultsPage_type;
+type ListOrgMembersReturn = OrgMemberResultsPage_type;
 
 export default async function list_org_members({
   client,
@@ -22,7 +23,7 @@ export default async function list_org_members({
   page_token,
   sort_by,
   role,
-}: List_org_members_params): Promise<List_org_members_return> {
+}: ListOrgMembersParams): Promise<ListOrgMembersReturn> {
   const url = `/org/members?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&role=${role}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -40,16 +41,15 @@ export default async function list_org_members({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as List_org_members_return;
+  const result = (await response.json()) as ListOrgMembersReturn;
   return result;
 }

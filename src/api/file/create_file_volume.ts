@@ -1,26 +1,27 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   FileVolume_type,
   UnitVolume_type,
   FileImportFormat_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Create_file_volume_params {
+interface CreateFileVolumeParams {
   client?: Client;
   output_unit: UnitVolume_type;
   src_format: FileImportFormat_type;
   body: string;
 }
 
-type Create_file_volume_return = FileVolume_type;
+type CreateFileVolumeReturn = FileVolume_type;
 
 export default async function create_file_volume({
   client,
   output_unit,
   src_format,
   body,
-}: Create_file_volume_params): Promise<Create_file_volume_return> {
+}: CreateFileVolumeParams): Promise<CreateFileVolumeReturn> {
   const url = `/file/volume?output_unit=${output_unit}&src_format=${src_format}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -38,17 +39,17 @@ export default async function create_file_volume({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/octet-stream',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_file_volume_return;
+  const result = (await response.json()) as CreateFileVolumeReturn;
   return result;
 }

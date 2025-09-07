@@ -1,25 +1,25 @@
-import {
-  TextToCadMultiFileIteration_type,
-  TextToCadMultiFileIterationBody_type,
-} from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_text_to_cad_multi_file_iteration_params {
+import {
+  TextToCadMultiFileIteration_type,
+  TextToCadMultiFileIterationBody_type,
+} from '../../models.js';
+
+interface CreateTextToCadMultiFileIterationParams {
   client?: Client;
-  body: TextToCadMultiFileIterationBody_type;
   files: File[];
+  body: TextToCadMultiFileIterationBody_type;
 }
 
-type Create_text_to_cad_multi_file_iteration_return =
-  TextToCadMultiFileIteration_type;
+type CreateTextToCadMultiFileIterationReturn = TextToCadMultiFileIteration_type;
 
 export default async function create_text_to_cad_multi_file_iteration({
   client,
   files,
   body,
-}: Create_text_to_cad_multi_file_iteration_params): Promise<Create_text_to_cad_multi_file_iteration_return> {
+}: CreateTextToCadMultiFileIterationParams): Promise<CreateTextToCadMultiFileIterationReturn> {
   const url = `/ml/text-to-cad/multi-file/iteration`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -37,7 +37,7 @@ export default async function create_text_to_cad_multi_file_iteration({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'multipart/form-data',
   };
@@ -48,7 +48,7 @@ export default async function create_text_to_cad_multi_file_iteration({
   });
   formData.append('event', JSON.stringify(body));
 
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: formData,
@@ -56,6 +56,6 @@ export default async function create_text_to_cad_multi_file_iteration({
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
   const result =
-    (await response.json()) as Create_text_to_cad_multi_file_iteration_return;
+    (await response.json()) as CreateTextToCadMultiFileIterationReturn;
   return result;
 }

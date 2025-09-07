@@ -4,7 +4,6 @@ async function example() {
   const response = await store.create_store_coupon({
     body: { percent_off: 7 },
   });
-
   return response;
 }
 

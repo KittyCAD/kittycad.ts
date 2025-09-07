@@ -1,18 +1,19 @@
-import { Subscribe_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Put_public_subscribe_params {
+import { Subscribe_type } from '../../models.js';
+
+interface PutPublicSubscribeParams {
   client?: Client;
   body: Subscribe_type;
 }
 
-type Put_public_subscribe_return = any;
+type PutPublicSubscribeReturn = unknown;
 
 export default async function put_public_subscribe({
   client,
   body,
-}: Put_public_subscribe_params): Promise<Put_public_subscribe_return> {
+}: PutPublicSubscribeParams): Promise<PutPublicSubscribeReturn> {
   const url = `/website/subscribe`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,17 @@ export default async function put_public_subscribe({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Put_public_subscribe_return;
+  const result = (await response.json()) as PutPublicSubscribeReturn;
   return result;
 }

@@ -1,24 +1,25 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   ZooProductSubscriptions_type,
   Uuid_type,
   EnterpriseSubscriptionTierPrice_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Update_enterprise_pricing_for_org_params {
+interface UpdateEnterprisePricingForOrgParams {
   client?: Client;
   id: Uuid_type;
   body: EnterpriseSubscriptionTierPrice_type;
 }
 
-type Update_enterprise_pricing_for_org_return = ZooProductSubscriptions_type;
+type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions_type;
 
 export default async function update_enterprise_pricing_for_org({
   client,
   id,
   body,
-}: Update_enterprise_pricing_for_org_params): Promise<Update_enterprise_pricing_for_org_return> {
+}: UpdateEnterprisePricingForOrgParams): Promise<UpdateEnterprisePricingForOrgReturn> {
   const url = `/orgs/${id}/enterprise/pricing`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -36,18 +37,17 @@ export default async function update_enterprise_pricing_for_org({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Update_enterprise_pricing_for_org_return;
+  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn;
   return result;
 }

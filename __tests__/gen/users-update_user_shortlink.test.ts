@@ -9,7 +9,6 @@ async function example() {
       restrict_to_org: true,
     },
   });
-
   return response;
 }
 
@@ -18,8 +17,6 @@ describe('Testing users.update_user_shortlink', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

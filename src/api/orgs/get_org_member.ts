@@ -1,18 +1,19 @@
-import { OrgMember_type, Uuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_org_member_params {
+import { OrgMember_type, Uuid_type } from '../../models.js';
+
+interface GetOrgMemberParams {
   client?: Client;
   user_id: Uuid_type;
 }
 
-type Get_org_member_return = OrgMember_type;
+type GetOrgMemberReturn = OrgMember_type;
 
 export default async function get_org_member({
   client,
   user_id,
-}: Get_org_member_params): Promise<Get_org_member_return> {
+}: GetOrgMemberParams): Promise<GetOrgMemberReturn> {
   const url = `/org/members/${user_id}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,16 +31,15 @@ export default async function get_org_member({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Get_org_member_return;
+  const result = (await response.json()) as GetOrgMemberReturn;
   return result;
 }

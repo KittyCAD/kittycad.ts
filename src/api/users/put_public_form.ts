@@ -1,18 +1,19 @@
-import { InquiryForm_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Put_public_form_params {
+import { InquiryForm_type } from '../../models.js';
+
+interface PutPublicFormParams {
   client?: Client;
   body: InquiryForm_type;
 }
 
-type Put_public_form_return = any;
+type PutPublicFormReturn = unknown;
 
 export default async function put_public_form({
   client,
   body,
-}: Put_public_form_params): Promise<Put_public_form_return> {
+}: PutPublicFormParams): Promise<PutPublicFormReturn> {
   const url = `/website/form`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,17 @@ export default async function put_public_form({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Put_public_form_return;
+  const result = (await response.json()) as PutPublicFormReturn;
   return result;
 }

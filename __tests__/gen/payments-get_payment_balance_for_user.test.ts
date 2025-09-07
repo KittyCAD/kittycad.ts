@@ -4,7 +4,6 @@ async function example() {
   const response = await payments.get_payment_balance_for_user({
     include_total_due: true,
   });
-
   return response;
 }
 
@@ -13,8 +12,6 @@ describe('Testing payments.get_payment_balance_for_user', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

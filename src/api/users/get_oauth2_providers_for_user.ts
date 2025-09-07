@@ -1,16 +1,19 @@
-import { AccountProvider_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_oauth2_providers_for_user_params {
+import { AccountProvider_type } from '../../models.js';
+
+interface GetOauth2ProvidersForUserParams {
   client?: Client;
 }
 
-type Get_oauth2_providers_for_user_return = AccountProvider_type[];
+type GetOauth2ProvidersForUserReturn = AccountProvider_type[];
 
-export default async function get_oauth2_providers_for_user({
-  client,
-}: Get_oauth2_providers_for_user_params = {}): Promise<Get_oauth2_providers_for_user_return> {
+export default async function get_oauth2_providers_for_user(
+  {
+    client,
+  }: GetOauth2ProvidersForUserParams = {} as GetOauth2ProvidersForUserParams,
+): Promise<GetOauth2ProvidersForUserReturn> {
   const url = `/user/oauth2/providers`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,17 +31,15 @@ export default async function get_oauth2_providers_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Get_oauth2_providers_for_user_return;
+  const result = (await response.json()) as GetOauth2ProvidersForUserReturn;
   return result;
 }

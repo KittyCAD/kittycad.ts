@@ -1,26 +1,27 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   CustomerBalance_type,
   UserIdentifier_type,
   UpdatePaymentBalance_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Update_payment_balance_for_any_user_params {
+interface UpdatePaymentBalanceForAnyUserParams {
   client?: Client;
   id: UserIdentifier_type;
   include_total_due: boolean;
   body: UpdatePaymentBalance_type;
 }
 
-type Update_payment_balance_for_any_user_return = CustomerBalance_type;
+type UpdatePaymentBalanceForAnyUserReturn = CustomerBalance_type;
 
 export default async function update_payment_balance_for_any_user({
   client,
   id,
   include_total_due,
   body,
-}: Update_payment_balance_for_any_user_params): Promise<Update_payment_balance_for_any_user_return> {
+}: UpdatePaymentBalanceForAnyUserParams): Promise<UpdatePaymentBalanceForAnyUserReturn> {
   const url = `/users/${id}/payment/balance?include_total_due=${include_total_due}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -38,11 +39,11 @@ export default async function update_payment_balance_for_any_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,
     body: JSON.stringify(body),
@@ -50,6 +51,6 @@ export default async function update_payment_balance_for_any_user({
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
   const result =
-    (await response.json()) as Update_payment_balance_for_any_user_return;
+    (await response.json()) as UpdatePaymentBalanceForAnyUserReturn;
   return result;
 }

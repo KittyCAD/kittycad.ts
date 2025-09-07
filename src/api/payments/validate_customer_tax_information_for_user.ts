@@ -1,16 +1,19 @@
-import {} from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Validate_customer_tax_information_for_user_params {
+import {} from '../../models.js';
+
+interface ValidateCustomerTaxInformationForUserParams {
   client?: Client;
 }
 
-type Validate_customer_tax_information_for_user_return = any;
+type ValidateCustomerTaxInformationForUserReturn = unknown;
 
-export default async function validate_customer_tax_information_for_user({
-  client,
-}: Validate_customer_tax_information_for_user_params = {}): Promise<Validate_customer_tax_information_for_user_return> {
+export default async function validate_customer_tax_information_for_user(
+  {
+    client,
+  }: ValidateCustomerTaxInformationForUserParams = {} as ValidateCustomerTaxInformationForUserParams,
+): Promise<ValidateCustomerTaxInformationForUserReturn> {
   const url = `/user/payment/tax`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,17 +31,16 @@ export default async function validate_customer_tax_information_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
   const result =
-    (await response.json()) as Validate_customer_tax_information_for_user_return;
+    (await response.json()) as ValidateCustomerTaxInformationForUserReturn;
   return result;
 }

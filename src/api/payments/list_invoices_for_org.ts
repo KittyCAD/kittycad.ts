@@ -1,16 +1,17 @@
-import { Invoice_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface List_invoices_for_org_params {
+import { Invoice_type } from '../../models.js';
+
+interface ListInvoicesForOrgParams {
   client?: Client;
 }
 
-type List_invoices_for_org_return = Invoice_type[];
+type ListInvoicesForOrgReturn = Invoice_type[];
 
-export default async function list_invoices_for_org({
-  client,
-}: List_invoices_for_org_params = {}): Promise<List_invoices_for_org_return> {
+export default async function list_invoices_for_org(
+  { client }: ListInvoicesForOrgParams = {} as ListInvoicesForOrgParams,
+): Promise<ListInvoicesForOrgReturn> {
   const url = `/org/payment/invoices`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,16 +29,15 @@ export default async function list_invoices_for_org({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as List_invoices_for_org_return;
+  const result = (await response.json()) as ListInvoicesForOrgReturn;
   return result;
 }

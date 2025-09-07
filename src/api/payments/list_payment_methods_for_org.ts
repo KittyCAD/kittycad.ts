@@ -1,16 +1,19 @@
-import { PaymentMethod_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface List_payment_methods_for_org_params {
+import { PaymentMethod_type } from '../../models.js';
+
+interface ListPaymentMethodsForOrgParams {
   client?: Client;
 }
 
-type List_payment_methods_for_org_return = PaymentMethod_type[];
+type ListPaymentMethodsForOrgReturn = PaymentMethod_type[];
 
-export default async function list_payment_methods_for_org({
-  client,
-}: List_payment_methods_for_org_params = {}): Promise<List_payment_methods_for_org_return> {
+export default async function list_payment_methods_for_org(
+  {
+    client,
+  }: ListPaymentMethodsForOrgParams = {} as ListPaymentMethodsForOrgParams,
+): Promise<ListPaymentMethodsForOrgReturn> {
   const url = `/org/payment/methods`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,16 +31,15 @@ export default async function list_payment_methods_for_org({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as List_payment_methods_for_org_return;
+  const result = (await response.json()) as ListPaymentMethodsForOrgReturn;
   return result;
 }

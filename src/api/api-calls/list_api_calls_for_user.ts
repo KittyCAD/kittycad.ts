@@ -1,12 +1,13 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   ApiCallWithPriceResultsPage_type,
   UserIdentifier_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface List_api_calls_for_user_params {
+interface ListApiCallsForUserParams {
   client?: Client;
   id: UserIdentifier_type;
   limit: number;
@@ -14,7 +15,7 @@ interface List_api_calls_for_user_params {
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_api_calls_for_user_return = ApiCallWithPriceResultsPage_type;
+type ListApiCallsForUserReturn = ApiCallWithPriceResultsPage_type;
 
 export default async function list_api_calls_for_user({
   client,
@@ -22,7 +23,7 @@ export default async function list_api_calls_for_user({
   limit,
   page_token,
   sort_by,
-}: List_api_calls_for_user_params): Promise<List_api_calls_for_user_return> {
+}: ListApiCallsForUserParams): Promise<ListApiCallsForUserReturn> {
   const url = `/users/${id}/api-calls?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -40,16 +41,15 @@ export default async function list_api_calls_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as List_api_calls_for_user_return;
+  const result = (await response.json()) as ListApiCallsForUserReturn;
   return result;
 }

@@ -1,18 +1,19 @@
-import { User_type, UpdateUser_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Update_user_self_params {
+import { User_type, UpdateUser_type } from '../../models.js';
+
+interface UpdateUserSelfParams {
   client?: Client;
   body: UpdateUser_type;
 }
 
-type Update_user_self_return = User_type;
+type UpdateUserSelfReturn = User_type;
 
 export default async function update_user_self({
   client,
   body,
-}: Update_user_self_params): Promise<Update_user_self_return> {
+}: UpdateUserSelfParams): Promise<UpdateUserSelfReturn> {
   const url = `/user`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,17 @@ export default async function update_user_self({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Update_user_self_return;
+  const result = (await response.json()) as UpdateUserSelfReturn;
   return result;
 }

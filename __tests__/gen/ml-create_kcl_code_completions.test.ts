@@ -21,7 +21,6 @@ async function example() {
       top_p: 7,
     },
   });
-
   return response;
 }
 

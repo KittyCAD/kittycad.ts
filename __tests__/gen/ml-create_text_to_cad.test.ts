@@ -12,7 +12,6 @@ async function example() {
       prompt: 'The prompt for the model.',
     },
   });
-
   return response;
 }
 
@@ -21,8 +20,6 @@ describe('Testing ml.create_text_to_cad', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

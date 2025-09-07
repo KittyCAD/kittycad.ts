@@ -6,7 +6,6 @@ async function example() {
     page_token: 'string',
     sort_by: 'created_at_ascending',
   });
-
   return response;
 }
 
@@ -15,8 +14,6 @@ describe('Testing orgs.get_org_shortlinks', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

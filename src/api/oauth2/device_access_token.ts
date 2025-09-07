@@ -1,16 +1,17 @@
-import {} from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Device_access_token_params {
+import {} from '../../models.js';
+
+interface DeviceAccessTokenParams {
   client?: Client;
 }
 
-type Device_access_token_return = any;
+type DeviceAccessTokenReturn = unknown;
 
-export default async function device_access_token({
-  client,
-}: Device_access_token_params = {}): Promise<Device_access_token_return> {
+export default async function device_access_token(
+  { client }: DeviceAccessTokenParams = {} as DeviceAccessTokenParams,
+): Promise<DeviceAccessTokenReturn> {
   const url = `/oauth2/device/token`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,16 +29,15 @@ export default async function device_access_token({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/x-www-form-urlencoded',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Device_access_token_return;
+  const result = (await response.json()) as DeviceAccessTokenReturn;
   return result;
 }

@@ -1,18 +1,19 @@
-import { TextToCadResponse_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_text_to_cad_model_for_user_params {
+import { TextToCadResponse_type } from '../../models.js';
+
+interface GetTextToCadModelForUserParams {
   client?: Client;
   id: string;
 }
 
-type Get_text_to_cad_model_for_user_return = TextToCadResponse_type;
+type GetTextToCadModelForUserReturn = TextToCadResponse_type;
 
 export default async function get_text_to_cad_model_for_user({
   client,
   id,
-}: Get_text_to_cad_model_for_user_params): Promise<Get_text_to_cad_model_for_user_return> {
+}: GetTextToCadModelForUserParams): Promise<GetTextToCadModelForUserReturn> {
   const url = `/user/text-to-cad/${id}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,15 @@ export default async function get_text_to_cad_model_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Get_text_to_cad_model_for_user_return;
+  const result = (await response.json()) as GetTextToCadModelForUserReturn;
   return result;
 }

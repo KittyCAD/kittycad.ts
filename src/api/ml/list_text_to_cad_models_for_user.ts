@@ -1,12 +1,13 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   TextToCadResponseResultsPage_type,
   CreatedAtSortMode_type,
   Uuid_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface List_text_to_cad_models_for_user_params {
+interface ListTextToCadModelsForUserParams {
   client?: Client;
   limit: number;
   page_token: string;
@@ -15,8 +16,7 @@ interface List_text_to_cad_models_for_user_params {
   no_models: boolean;
 }
 
-type List_text_to_cad_models_for_user_return =
-  TextToCadResponseResultsPage_type;
+type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage_type;
 
 export default async function list_text_to_cad_models_for_user({
   client,
@@ -25,7 +25,7 @@ export default async function list_text_to_cad_models_for_user({
   sort_by,
   conversation_id,
   no_models,
-}: List_text_to_cad_models_for_user_params): Promise<List_text_to_cad_models_for_user_return> {
+}: ListTextToCadModelsForUserParams): Promise<ListTextToCadModelsForUserReturn> {
   const url = `/user/text-to-cad?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&conversation_id=${conversation_id}&no_models=${no_models}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -43,17 +43,15 @@ export default async function list_text_to_cad_models_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as List_text_to_cad_models_for_user_return;
+  const result = (await response.json()) as ListTextToCadModelsForUserReturn;
   return result;
 }

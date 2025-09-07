@@ -1,18 +1,19 @@
-import { CrmData_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Patch_user_crm_params {
+import { CrmData_type } from '../../models.js';
+
+interface PatchUserCrmParams {
   client?: Client;
   body: CrmData_type;
 }
 
-type Patch_user_crm_return = any;
+type PatchUserCrmReturn = unknown;
 
 export default async function patch_user_crm({
   client,
   body,
-}: Patch_user_crm_params): Promise<Patch_user_crm_return> {
+}: PatchUserCrmParams): Promise<PatchUserCrmReturn> {
   const url = `/user/crm`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,17 @@ export default async function patch_user_crm({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'PATCH',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Patch_user_crm_return;
+  const result = (await response.json()) as PatchUserCrmReturn;
   return result;
 }

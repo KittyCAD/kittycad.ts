@@ -1,16 +1,17 @@
-import {} from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Delete_user_self_params {
+import {} from '../../models.js';
+
+interface DeleteUserSelfParams {
   client?: Client;
 }
 
-type Delete_user_self_return = any;
+type DeleteUserSelfReturn = unknown;
 
-export default async function delete_user_self({
-  client,
-}: Delete_user_self_params = {}): Promise<Delete_user_self_return> {
+export default async function delete_user_self(
+  { client }: DeleteUserSelfParams = {} as DeleteUserSelfParams,
+): Promise<DeleteUserSelfReturn> {
   const url = `/user`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,16 +29,15 @@ export default async function delete_user_self({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'DELETE',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Delete_user_self_return;
+  const result = (await response.json()) as DeleteUserSelfReturn;
   return result;
 }

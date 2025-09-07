@@ -1,26 +1,27 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   FileSurfaceArea_type,
   UnitArea_type,
   FileImportFormat_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Create_file_surface_area_params {
+interface CreateFileSurfaceAreaParams {
   client?: Client;
   output_unit: UnitArea_type;
   src_format: FileImportFormat_type;
   body: string;
 }
 
-type Create_file_surface_area_return = FileSurfaceArea_type;
+type CreateFileSurfaceAreaReturn = FileSurfaceArea_type;
 
 export default async function create_file_surface_area({
   client,
   output_unit,
   src_format,
   body,
-}: Create_file_surface_area_params): Promise<Create_file_surface_area_return> {
+}: CreateFileSurfaceAreaParams): Promise<CreateFileSurfaceAreaReturn> {
   const url = `/file/surface-area?output_unit=${output_unit}&src_format=${src_format}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -38,17 +39,17 @@ export default async function create_file_surface_area({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/octet-stream',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_file_surface_area_return;
+  const result = (await response.json()) as CreateFileSurfaceAreaReturn;
   return result;
 }

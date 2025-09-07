@@ -1,20 +1,21 @@
-import { CustomerBalance_type, Uuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_payment_balance_for_any_org_params {
+import { CustomerBalance_type, Uuid_type } from '../../models.js';
+
+interface GetPaymentBalanceForAnyOrgParams {
   client?: Client;
   include_total_due: boolean;
   id: Uuid_type;
 }
 
-type Get_payment_balance_for_any_org_return = CustomerBalance_type;
+type GetPaymentBalanceForAnyOrgReturn = CustomerBalance_type;
 
 export default async function get_payment_balance_for_any_org({
   client,
   include_total_due,
   id,
-}: Get_payment_balance_for_any_org_params): Promise<Get_payment_balance_for_any_org_return> {
+}: GetPaymentBalanceForAnyOrgParams): Promise<GetPaymentBalanceForAnyOrgReturn> {
   const url = `/orgs/${id}/payment/balance?include_total_due=${include_total_due}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -32,17 +33,15 @@ export default async function get_payment_balance_for_any_org({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Get_payment_balance_for_any_org_return;
+  const result = (await response.json()) as GetPaymentBalanceForAnyOrgReturn;
   return result;
 }

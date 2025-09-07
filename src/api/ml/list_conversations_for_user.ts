@@ -1,25 +1,26 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   ConversationResultsPage_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface List_conversations_for_user_params {
+interface ListConversationsForUserParams {
   client?: Client;
   limit: number;
   page_token: string;
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_conversations_for_user_return = ConversationResultsPage_type;
+type ListConversationsForUserReturn = ConversationResultsPage_type;
 
 export default async function list_conversations_for_user({
   client,
   limit,
   page_token,
   sort_by,
-}: List_conversations_for_user_params): Promise<List_conversations_for_user_return> {
+}: ListConversationsForUserParams): Promise<ListConversationsForUserReturn> {
   const url = `/ml/conversations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -37,16 +38,15 @@ export default async function list_conversations_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as List_conversations_for_user_return;
+  const result = (await response.json()) as ListConversationsForUserReturn;
   return result;
 }

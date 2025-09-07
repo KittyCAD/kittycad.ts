@@ -1,26 +1,27 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   FileConversion_type,
   FileExportFormat_type,
   FileImportFormat_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Create_file_conversion_params {
+interface CreateFileConversionParams {
   client?: Client;
   output_format: FileExportFormat_type;
   src_format: FileImportFormat_type;
   body: string;
 }
 
-type Create_file_conversion_return = FileConversion_type;
+type CreateFileConversionReturn = FileConversion_type;
 
 export default async function create_file_conversion({
   client,
   output_format,
   src_format,
   body,
-}: Create_file_conversion_params): Promise<Create_file_conversion_return> {
+}: CreateFileConversionParams): Promise<CreateFileConversionReturn> {
   const url = `/file/conversion/${src_format}/${output_format}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -38,17 +39,17 @@ export default async function create_file_conversion({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/octet-stream',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_file_conversion_return;
+  const result = (await response.json()) as CreateFileConversionReturn;
   return result;
 }

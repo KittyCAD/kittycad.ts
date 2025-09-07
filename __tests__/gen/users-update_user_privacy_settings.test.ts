@@ -4,7 +4,6 @@ async function example() {
   const response = await users.update_user_privacy_settings({
     body: { can_train_on_data: true },
   });
-
   return response;
 }
 
@@ -13,8 +12,6 @@ describe('Testing users.update_user_privacy_settings', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

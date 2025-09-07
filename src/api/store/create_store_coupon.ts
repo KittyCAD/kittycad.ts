@@ -1,18 +1,19 @@
-import { DiscountCode_type, StoreCouponParams_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_store_coupon_params {
+import { DiscountCode_type, StoreCouponParams_type } from '../../models.js';
+
+interface CreateStoreCouponParams {
   client?: Client;
   body: StoreCouponParams_type;
 }
 
-type Create_store_coupon_return = DiscountCode_type;
+type CreateStoreCouponReturn = DiscountCode_type;
 
 export default async function create_store_coupon({
   client,
   body,
-}: Create_store_coupon_params): Promise<Create_store_coupon_return> {
+}: CreateStoreCouponParams): Promise<CreateStoreCouponReturn> {
   const url = `/store/coupon`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,17 @@ export default async function create_store_coupon({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_store_coupon_return;
+  const result = (await response.json()) as CreateStoreCouponReturn;
   return result;
 }

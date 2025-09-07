@@ -1,13 +1,14 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   FileMass_type,
   UnitDensity_type,
   UnitMass_type,
   FileImportFormat_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Create_file_mass_params {
+interface CreateFileMassParams {
   client?: Client;
   material_density: number;
   material_density_unit: UnitDensity_type;
@@ -16,7 +17,7 @@ interface Create_file_mass_params {
   body: string;
 }
 
-type Create_file_mass_return = FileMass_type;
+type CreateFileMassReturn = FileMass_type;
 
 export default async function create_file_mass({
   client,
@@ -25,7 +26,7 @@ export default async function create_file_mass({
   output_unit,
   src_format,
   body,
-}: Create_file_mass_params): Promise<Create_file_mass_return> {
+}: CreateFileMassParams): Promise<CreateFileMassReturn> {
   const url = `/file/mass?material_density=${material_density}&material_density_unit=${material_density_unit}&output_unit=${output_unit}&src_format=${src_format}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -43,17 +44,17 @@ export default async function create_file_mass({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/octet-stream',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_file_mass_return;
+  const result = (await response.json()) as CreateFileMassReturn;
   return result;
 }

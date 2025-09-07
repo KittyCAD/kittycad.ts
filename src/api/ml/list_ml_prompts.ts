@@ -1,25 +1,26 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   MlPromptResultsPage_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface List_ml_prompts_params {
+interface ListMlPromptsParams {
   client?: Client;
   limit: number;
   page_token: string;
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_ml_prompts_return = MlPromptResultsPage_type;
+type ListMlPromptsReturn = MlPromptResultsPage_type;
 
 export default async function list_ml_prompts({
   client,
   limit,
   page_token,
   sort_by,
-}: List_ml_prompts_params): Promise<List_ml_prompts_return> {
+}: ListMlPromptsParams): Promise<ListMlPromptsReturn> {
   const url = `/ml-prompts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -37,16 +38,15 @@ export default async function list_ml_prompts({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as List_ml_prompts_return;
+  const result = (await response.json()) as ListMlPromptsReturn;
   return result;
 }

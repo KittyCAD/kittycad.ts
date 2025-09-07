@@ -1,16 +1,19 @@
-import { PaymentIntent_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_payment_intent_for_user_params {
+import { PaymentIntent_type } from '../../models.js';
+
+interface CreatePaymentIntentForUserParams {
   client?: Client;
 }
 
-type Create_payment_intent_for_user_return = PaymentIntent_type;
+type CreatePaymentIntentForUserReturn = PaymentIntent_type;
 
-export default async function create_payment_intent_for_user({
-  client,
-}: Create_payment_intent_for_user_params = {}): Promise<Create_payment_intent_for_user_return> {
+export default async function create_payment_intent_for_user(
+  {
+    client,
+  }: CreatePaymentIntentForUserParams = {} as CreatePaymentIntentForUserParams,
+): Promise<CreatePaymentIntentForUserReturn> {
   const url = `/user/payment/intent`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,17 +31,15 @@ export default async function create_payment_intent_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Create_payment_intent_for_user_return;
+  const result = (await response.json()) as CreatePaymentIntentForUserReturn;
   return result;
 }

@@ -1,22 +1,23 @@
-import { UnitVolumeConversion_type, UnitVolume_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_volume_unit_conversion_params {
+import { UnitVolumeConversion_type, UnitVolume_type } from '../../models.js';
+
+interface GetVolumeUnitConversionParams {
   client?: Client;
   input_unit: UnitVolume_type;
   output_unit: UnitVolume_type;
   value: number;
 }
 
-type Get_volume_unit_conversion_return = UnitVolumeConversion_type;
+type GetVolumeUnitConversionReturn = UnitVolumeConversion_type;
 
 export default async function get_volume_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: Get_volume_unit_conversion_params): Promise<Get_volume_unit_conversion_return> {
+}: GetVolumeUnitConversionParams): Promise<GetVolumeUnitConversionReturn> {
   const url = `/unit/conversion/volume/${input_unit}/${output_unit}?value=${value}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -34,16 +35,15 @@ export default async function get_volume_unit_conversion({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Get_volume_unit_conversion_return;
+  const result = (await response.json()) as GetVolumeUnitConversionReturn;
   return result;
 }

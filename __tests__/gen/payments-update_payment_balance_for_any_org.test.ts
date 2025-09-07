@@ -9,7 +9,6 @@ async function example() {
       stable_api_credits_remaining_monetary_value: 7,
     },
   });
-
   return response;
 }
 
@@ -18,8 +17,6 @@ describe('Testing payments.update_payment_balance_for_any_org', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

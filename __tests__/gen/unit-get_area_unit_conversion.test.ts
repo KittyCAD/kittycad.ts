@@ -6,7 +6,6 @@ async function example() {
     output_unit: 'dm2',
     value: 7,
   });
-
   return response;
 }
 

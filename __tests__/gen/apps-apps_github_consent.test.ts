@@ -2,7 +2,6 @@ import { apps } from '../../src/index.js';
 
 async function example() {
   const response = await apps.apps_github_consent();
-
   return response;
 }
 

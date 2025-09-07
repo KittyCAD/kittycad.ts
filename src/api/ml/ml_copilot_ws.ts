@@ -1,12 +1,9 @@
 import { Client } from '../../client.js';
+import { BSON } from 'bson';
 import {
   MlCopilotClientMessage_type,
   MlCopilotServerMessage_type,
 } from '../../models.js';
-import { BSON } from 'bson';
-
-// Types for requests/responses are injected by apiGen
-// import { MlCopilotClientMessage_type, MlCopilotServerMessage_type } from '../../models.js';
 
 interface MlCopilotWsParams {
   client?: Client;
@@ -22,13 +19,15 @@ export default class MlCopilotWs<
 
   async connect(): Promise<this> {
     const url = `/ws/ml/copilot`;
+    // Backwards compatible for the BASE_URL env variable
+    // That used to exist in only this lib, ZOO_HOST exists in the all the other
+    // sdks and the CLI.
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
     const httpUrl = urlBase + url;
     const wsUrl = httpUrl.replace(/^http/, 'ws');
 
     const ws = new WebSocket(wsUrl);
-
     await new Promise<void>((resolve, reject) => {
       const onOpen = () => {
         remove();
@@ -46,7 +45,10 @@ export default class MlCopilotWs<
       ws.addEventListener('error', onError);
     });
 
-    // Send auth headers as a message immediately after connect (browser-safe)
+    // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
+    // backwards compatibility, but the new standard is ZOO_API_TOKEN.
+    // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
+    // check for that as well.
     const kittycadToken = (this.functionNameParams as any)?.client
       ? (this.functionNameParams as any).client?.token ||
         process.env.ZOO_API_TOKEN ||
@@ -72,13 +74,11 @@ export default class MlCopilotWs<
   send(data: Req): void {
     this.ws.send(JSON.stringify(data));
   }
-
   sendBinary(data: Req): void {
     try {
       const bytes = BSON.serialize(data as any);
       this.ws.send(bytes);
-    } catch (e) {
-      // Fallback to JSON if BSON isn’t serializable
+    } catch {
       this.ws.send(JSON.stringify(data));
     }
   }
@@ -89,12 +89,10 @@ export default class MlCopilotWs<
         cleanup();
         reject(new Error('timeout'));
       }, timeoutMs);
-
       const onError = (_ev: Event) => {
         cleanup();
         reject(new Error('WebSocket error'));
       };
-
       const onMessage = (ev: MessageEvent) => {
         cleanup();
         try {
@@ -104,13 +102,11 @@ export default class MlCopilotWs<
           reject(e);
         }
       };
-
       const cleanup = () => {
         clearTimeout(timer);
         this.ws.removeEventListener('message', onMessage);
         this.ws.removeEventListener('error', onError);
       };
-
       this.ws.addEventListener('message', onMessage);
       this.ws.addEventListener('error', onError);
     });
@@ -123,7 +119,6 @@ export default class MlCopilotWs<
   private parseMessage(ev: MessageEvent): Res {
     const data: any = ev?.data;
     if (typeof data === 'string') return JSON.parse(data);
-    // Node ws Buffer
     if ((globalThis as any).Buffer && (Buffer as any).isBuffer?.(data)) {
       const buf = data as Buffer;
       try {
@@ -132,7 +127,6 @@ export default class MlCopilotWs<
       const out: any = BSON.deserialize(buf);
       return out;
     }
-    // ArrayBuffer or Uint8Array
     if (data instanceof ArrayBuffer || data?.buffer instanceof ArrayBuffer) {
       const bytes =
         data instanceof ArrayBuffer
@@ -145,7 +139,6 @@ export default class MlCopilotWs<
       const out: any = BSON.deserialize(bytes);
       return out;
     }
-    // Fallback
     return data;
   }
 }

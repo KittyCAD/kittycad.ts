@@ -1,25 +1,26 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   UnitTemperatureConversion_type,
   UnitTemperature_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Get_temperature_unit_conversion_params {
+interface GetTemperatureUnitConversionParams {
   client?: Client;
   input_unit: UnitTemperature_type;
   output_unit: UnitTemperature_type;
   value: number;
 }
 
-type Get_temperature_unit_conversion_return = UnitTemperatureConversion_type;
+type GetTemperatureUnitConversionReturn = UnitTemperatureConversion_type;
 
 export default async function get_temperature_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: Get_temperature_unit_conversion_params): Promise<Get_temperature_unit_conversion_return> {
+}: GetTemperatureUnitConversionParams): Promise<GetTemperatureUnitConversionReturn> {
   const url = `/unit/conversion/temperature/${input_unit}/${output_unit}?value=${value}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -37,17 +38,15 @@ export default async function get_temperature_unit_conversion({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Get_temperature_unit_conversion_return;
+  const result = (await response.json()) as GetTemperatureUnitConversionReturn;
   return result;
 }

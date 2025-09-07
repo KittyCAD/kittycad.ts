@@ -6,7 +6,6 @@ async function example() {
     output_unit: 'kg',
     value: 7,
   });
-
   return response;
 }
 

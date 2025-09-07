@@ -17,7 +17,6 @@ async function example() {
       src_format: { type: 'fbx' },
     },
   });
-
   return response;
 }
 
@@ -26,8 +25,6 @@ describe('Testing file.create_file_conversion_options', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

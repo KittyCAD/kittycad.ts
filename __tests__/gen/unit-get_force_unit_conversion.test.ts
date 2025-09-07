@@ -6,7 +6,6 @@ async function example() {
     output_unit: 'kiloponds',
     value: 7,
   });
-
   return response;
 }
 

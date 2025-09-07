@@ -5,7 +5,6 @@ async function example() {
     provider: 'apple',
     callback_url: 'string',
   });
-
   return response;
 }
 

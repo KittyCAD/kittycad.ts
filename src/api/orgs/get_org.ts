@@ -1,16 +1,17 @@
-import { Org_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_org_params {
+import { Org_type } from '../../models.js';
+
+interface GetOrgParams {
   client?: Client;
 }
 
-type Get_org_return = Org_type;
+type GetOrgReturn = Org_type;
 
-export default async function get_org({
-  client,
-}: Get_org_params = {}): Promise<Get_org_return> {
+export default async function get_org(
+  { client }: GetOrgParams = {} as GetOrgParams,
+): Promise<GetOrgReturn> {
   const url = `/org`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,16 +29,15 @@ export default async function get_org({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Get_org_return;
+  const result = (await response.json()) as GetOrgReturn;
   return result;
 }

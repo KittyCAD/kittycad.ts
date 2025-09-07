@@ -1,18 +1,19 @@
-import { ApiToken_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Internal_get_api_token_for_discord_user_params {
+import { ApiToken_type } from '../../models.js';
+
+interface InternalGetApiTokenForDiscordUserParams {
   client?: Client;
   discord_id: string;
 }
 
-type Internal_get_api_token_for_discord_user_return = ApiToken_type;
+type InternalGetApiTokenForDiscordUserReturn = ApiToken_type;
 
 export default async function internal_get_api_token_for_discord_user({
   client,
   discord_id,
-}: Internal_get_api_token_for_discord_user_params): Promise<Internal_get_api_token_for_discord_user_return> {
+}: InternalGetApiTokenForDiscordUserParams): Promise<InternalGetApiTokenForDiscordUserReturn> {
   const url = `/internal/discord/api-token/${discord_id}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,16 @@ export default async function internal_get_api_token_for_discord_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
   const result =
-    (await response.json()) as Internal_get_api_token_for_discord_user_return;
+    (await response.json()) as InternalGetApiTokenForDiscordUserReturn;
   return result;
 }

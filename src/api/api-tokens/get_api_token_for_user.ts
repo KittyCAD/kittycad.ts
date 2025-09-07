@@ -1,18 +1,19 @@
-import { ApiToken_type, ApiTokenUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_api_token_for_user_params {
+import { ApiToken_type, ApiTokenUuid_type } from '../../models.js';
+
+interface GetApiTokenForUserParams {
   client?: Client;
   token: ApiTokenUuid_type;
 }
 
-type Get_api_token_for_user_return = ApiToken_type;
+type GetApiTokenForUserReturn = ApiToken_type;
 
 export default async function get_api_token_for_user({
   client,
   token,
-}: Get_api_token_for_user_params): Promise<Get_api_token_for_user_return> {
+}: GetApiTokenForUserParams): Promise<GetApiTokenForUserReturn> {
   const url = `/user/api-tokens/${token}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,16 +31,15 @@ export default async function get_api_token_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Get_api_token_for_user_return;
+  const result = (await response.json()) as GetApiTokenForUserReturn;
   return result;
 }

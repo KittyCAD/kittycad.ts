@@ -1,20 +1,21 @@
-import { MlFeedback_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_text_to_cad_model_feedback_params {
+import { MlFeedback_type } from '../../models.js';
+
+interface CreateTextToCadModelFeedbackParams {
   client?: Client;
   id: string;
   feedback: MlFeedback_type;
 }
 
-type Create_text_to_cad_model_feedback_return = any;
+type CreateTextToCadModelFeedbackReturn = unknown;
 
 export default async function create_text_to_cad_model_feedback({
   client,
   id,
   feedback,
-}: Create_text_to_cad_model_feedback_params): Promise<Create_text_to_cad_model_feedback_return> {
+}: CreateTextToCadModelFeedbackParams): Promise<CreateTextToCadModelFeedbackReturn> {
   const url = `/user/text-to-cad/${id}?feedback=${feedback}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -32,17 +33,15 @@ export default async function create_text_to_cad_model_feedback({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Create_text_to_cad_model_feedback_return;
+  const result = (await response.json()) as CreateTextToCadModelFeedbackReturn;
   return result;
 }

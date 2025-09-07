@@ -1,18 +1,19 @@
-import { ServiceAccount_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_service_account_for_org_params {
+import { ServiceAccount_type } from '../../models.js';
+
+interface CreateServiceAccountForOrgParams {
   client?: Client;
   label: string;
 }
 
-type Create_service_account_for_org_return = ServiceAccount_type;
+type CreateServiceAccountForOrgReturn = ServiceAccount_type;
 
 export default async function create_service_account_for_org({
   client,
   label,
-}: Create_service_account_for_org_params): Promise<Create_service_account_for_org_return> {
+}: CreateServiceAccountForOrgParams): Promise<CreateServiceAccountForOrgReturn> {
   const url = `/org/service-accounts?label=${label}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,15 @@ export default async function create_service_account_for_org({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Create_service_account_for_org_return;
+  const result = (await response.json()) as CreateServiceAccountForOrgReturn;
   return result;
 }

@@ -75,7 +75,7 @@
     "gen": "node --loader ts-node/esm ./src/modelsGen.ts && yarn fmt",
     "test": "vitest",
     "tsc": "tsc",
-    "fmt": "prettier --config .prettierrc --write './src' './__tests__' './kittycad.ts.patch.json' './rollup.config.js'"
+    "fmt": "prettier --config .prettierrc --write './src/**/*.ts' './__tests__/**/*.ts' './kittycad.ts.patch.json' './rollup.config.js'"
   },
   "author": "Kurt Hutten <kurt@zoo.dev>",
   "license": "MIT",

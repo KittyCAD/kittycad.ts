@@ -1,18 +1,19 @@
-import { ApiTokenUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Delete_api_token_for_user_params {
+import { ApiTokenUuid_type } from '../../models.js';
+
+interface DeleteApiTokenForUserParams {
   client?: Client;
   token: ApiTokenUuid_type;
 }
 
-type Delete_api_token_for_user_return = any;
+type DeleteApiTokenForUserReturn = unknown;
 
 export default async function delete_api_token_for_user({
   client,
   token,
-}: Delete_api_token_for_user_params): Promise<Delete_api_token_for_user_return> {
+}: DeleteApiTokenForUserParams): Promise<DeleteApiTokenForUserReturn> {
   const url = `/user/api-tokens/${token}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,16 +31,15 @@ export default async function delete_api_token_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'DELETE',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Delete_api_token_for_user_return;
+  const result = (await response.json()) as DeleteApiTokenForUserReturn;
   return result;
 }

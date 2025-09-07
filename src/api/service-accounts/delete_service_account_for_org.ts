@@ -1,18 +1,19 @@
-import { ServiceAccountUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Delete_service_account_for_org_params {
+import { ServiceAccountUuid_type } from '../../models.js';
+
+interface DeleteServiceAccountForOrgParams {
   client?: Client;
   token: ServiceAccountUuid_type;
 }
 
-type Delete_service_account_for_org_return = any;
+type DeleteServiceAccountForOrgReturn = unknown;
 
 export default async function delete_service_account_for_org({
   client,
   token,
-}: Delete_service_account_for_org_params): Promise<Delete_service_account_for_org_return> {
+}: DeleteServiceAccountForOrgParams): Promise<DeleteServiceAccountForOrgReturn> {
   const url = `/org/service-accounts/${token}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,17 +31,15 @@ export default async function delete_service_account_for_org({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'DELETE',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result =
-    (await response.json()) as Delete_service_account_for_org_return;
+  const result = (await response.json()) as DeleteServiceAccountForOrgReturn;
   return result;
 }

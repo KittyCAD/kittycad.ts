@@ -1,18 +1,19 @@
-import { MlPrompt_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Get_ml_prompt_params {
+import { MlPrompt_type } from '../../models.js';
+
+interface GetMlPromptParams {
   client?: Client;
   id: string;
 }
 
-type Get_ml_prompt_return = MlPrompt_type;
+type GetMlPromptReturn = MlPrompt_type;
 
 export default async function get_ml_prompt({
   client,
   id,
-}: Get_ml_prompt_params): Promise<Get_ml_prompt_return> {
+}: GetMlPromptParams): Promise<GetMlPromptReturn> {
   const url = `/ml-prompts/${id}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,16 +31,15 @@ export default async function get_ml_prompt({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Get_ml_prompt_return;
+  const result = (await response.json()) as GetMlPromptReturn;
   return result;
 }

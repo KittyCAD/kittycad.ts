@@ -6,7 +6,6 @@ async function example() {
     output_unit: 'fahrenheit',
     value: 7,
   });
-
   return response;
 }
 

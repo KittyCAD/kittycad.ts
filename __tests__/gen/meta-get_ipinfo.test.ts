@@ -2,7 +2,6 @@ import { meta } from '../../src/index.js';
 
 async function example() {
   const response = await meta.get_ipinfo();
-
   return response;
 }
 

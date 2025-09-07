@@ -7,7 +7,6 @@ async function example() {
       role: 'admin',
     },
   });
-
   return response;
 }
 
@@ -16,8 +15,6 @@ describe('Testing orgs.create_org_member', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

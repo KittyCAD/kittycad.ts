@@ -1,16 +1,17 @@
-import {} from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Oauth2_token_revoke_params {
+import {} from '../../models.js';
+
+interface Oauth2TokenRevokeParams {
   client?: Client;
 }
 
-type Oauth2_token_revoke_return = any;
+type Oauth2TokenRevokeReturn = unknown;
 
-export default async function oauth2_token_revoke({
-  client,
-}: Oauth2_token_revoke_params = {}): Promise<Oauth2_token_revoke_return> {
+export default async function oauth2_token_revoke(
+  { client }: Oauth2TokenRevokeParams = {} as Oauth2TokenRevokeParams,
+): Promise<Oauth2TokenRevokeReturn> {
   const url = `/oauth2/token/revoke`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -28,16 +29,15 @@ export default async function oauth2_token_revoke({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/x-www-form-urlencoded',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Oauth2_token_revoke_return;
+  const result = (await response.json()) as Oauth2TokenRevokeReturn;
   return result;
 }

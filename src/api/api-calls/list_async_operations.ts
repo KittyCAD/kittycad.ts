@@ -1,12 +1,13 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   AsyncApiCallResultsPage_type,
   CreatedAtSortMode_type,
   ApiCallStatus_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface List_async_operations_params {
+interface ListAsyncOperationsParams {
   client?: Client;
   limit: number;
   page_token: string;
@@ -14,7 +15,7 @@ interface List_async_operations_params {
   status: ApiCallStatus_type;
 }
 
-type List_async_operations_return = AsyncApiCallResultsPage_type;
+type ListAsyncOperationsReturn = AsyncApiCallResultsPage_type;
 
 export default async function list_async_operations({
   client,
@@ -22,7 +23,7 @@ export default async function list_async_operations({
   page_token,
   sort_by,
   status,
-}: List_async_operations_params): Promise<List_async_operations_return> {
+}: ListAsyncOperationsParams): Promise<ListAsyncOperationsReturn> {
   const url = `/async/operations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&status=${status}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -40,16 +41,15 @@ export default async function list_async_operations({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as List_async_operations_return;
+  const result = (await response.json()) as ListAsyncOperationsReturn;
   return result;
 }

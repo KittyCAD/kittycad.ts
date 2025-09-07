@@ -6,7 +6,6 @@ async function example() {
     output_unit: 'ft3',
     value: 7,
   });
-
   return response;
 }
 

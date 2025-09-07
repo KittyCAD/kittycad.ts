@@ -1,20 +1,21 @@
-import { OAuth2ClientInfo_type, AccountProvider_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Oauth2_provider_consent_params {
+import { OAuth2ClientInfo_type, AccountProvider_type } from '../../models.js';
+
+interface Oauth2ProviderConsentParams {
   client?: Client;
   provider: AccountProvider_type;
   callback_url: string;
 }
 
-type Oauth2_provider_consent_return = OAuth2ClientInfo_type;
+type Oauth2ProviderConsentReturn = OAuth2ClientInfo_type;
 
 export default async function oauth2_provider_consent({
   client,
   provider,
   callback_url,
-}: Oauth2_provider_consent_params): Promise<Oauth2_provider_consent_return> {
+}: Oauth2ProviderConsentParams): Promise<Oauth2ProviderConsentReturn> {
   const url = `/oauth2/provider/${provider}/consent?callback_url=${callback_url}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -32,16 +33,15 @@ export default async function oauth2_provider_consent({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Oauth2_provider_consent_return;
+  const result = (await response.json()) as Oauth2ProviderConsentReturn;
   return result;
 }

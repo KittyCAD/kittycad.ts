@@ -14,7 +14,6 @@ async function example() {
       phone: "The user's phone number.",
     },
   });
-
   return response;
 }
 

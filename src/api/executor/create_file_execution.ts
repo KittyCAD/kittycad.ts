@@ -1,22 +1,23 @@
-import { CodeOutput_type, CodeLanguage_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_file_execution_params {
+import { CodeOutput_type, CodeLanguage_type } from '../../models.js';
+
+interface CreateFileExecutionParams {
   client?: Client;
   lang: CodeLanguage_type;
   output: string;
   body: string;
 }
 
-type Create_file_execution_return = CodeOutput_type;
+type CreateFileExecutionReturn = CodeOutput_type;
 
 export default async function create_file_execution({
   client,
   lang,
   output,
   body,
-}: Create_file_execution_params): Promise<Create_file_execution_return> {
+}: CreateFileExecutionParams): Promise<CreateFileExecutionReturn> {
   const url = `/file/execute/${lang}?output=${output}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -34,17 +35,17 @@ export default async function create_file_execution({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/octet-stream',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_file_execution_return;
+  const result = (await response.json()) as CreateFileExecutionReturn;
   return result;
 }

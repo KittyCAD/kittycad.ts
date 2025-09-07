@@ -15,7 +15,6 @@ async function example() {
       phone: 'The phone for the customer.',
     },
   });
-
   return response;
 }
 
@@ -24,8 +23,6 @@ describe('Testing payments.update_payment_information_for_user', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

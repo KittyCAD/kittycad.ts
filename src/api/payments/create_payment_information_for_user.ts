@@ -1,18 +1,19 @@
-import { Customer_type, BillingInfo_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_payment_information_for_user_params {
+import { Customer_type, BillingInfo_type } from '../../models.js';
+
+interface CreatePaymentInformationForUserParams {
   client?: Client;
   body: BillingInfo_type;
 }
 
-type Create_payment_information_for_user_return = Customer_type;
+type CreatePaymentInformationForUserReturn = Customer_type;
 
 export default async function create_payment_information_for_user({
   client,
   body,
-}: Create_payment_information_for_user_params): Promise<Create_payment_information_for_user_return> {
+}: CreatePaymentInformationForUserParams): Promise<CreatePaymentInformationForUserReturn> {
   const url = `/user/payment`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -30,11 +31,11 @@ export default async function create_payment_information_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
@@ -42,6 +43,6 @@ export default async function create_payment_information_for_user({
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
   const result =
-    (await response.json()) as Create_payment_information_for_user_return;
+    (await response.json()) as CreatePaymentInformationForUserReturn;
   return result;
 }

@@ -1,20 +1,21 @@
-import { UpdateShortlinkRequest_type } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Update_user_shortlink_params {
+import { UpdateShortlinkRequest_type } from '../../models.js';
+
+interface UpdateUserShortlinkParams {
   client?: Client;
   key: string;
   body: UpdateShortlinkRequest_type;
 }
 
-type Update_user_shortlink_return = any;
+type UpdateUserShortlinkReturn = unknown;
 
 export default async function update_user_shortlink({
   client,
   key,
   body,
-}: Update_user_shortlink_params): Promise<Update_user_shortlink_return> {
+}: UpdateUserShortlinkParams): Promise<UpdateUserShortlinkReturn> {
   const url = `/user/shortlinks/${key}`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -32,17 +33,17 @@ export default async function update_user_shortlink({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Update_user_shortlink_return;
+  const result = (await response.json()) as UpdateUserShortlinkReturn;
   return result;
 }

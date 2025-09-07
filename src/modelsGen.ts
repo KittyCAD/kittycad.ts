@@ -1,9 +1,10 @@
 import fsp from 'fs/promises';
 import { OpenAPIV3 } from 'openapi-types';
-import apiGen from './apiGen';
+import apiGen from './apiGen.js';
 
 main().catch((e) => {
-  console.error(e);
+  // Provide a stack trace for easier debugging in CI and locally.
+  console.error(e instanceof Error ? e.stack : e);
   process.exit(1);
 });
 

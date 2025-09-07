@@ -1,21 +1,22 @@
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
 import {
   ZooProductSubscriptions_type,
   ZooProductSubscriptionsOrgRequest_type,
 } from '../../models.js';
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
 
-interface Create_org_subscription_params {
+interface CreateOrgSubscriptionParams {
   client?: Client;
   body: ZooProductSubscriptionsOrgRequest_type;
 }
 
-type Create_org_subscription_return = ZooProductSubscriptions_type;
+type CreateOrgSubscriptionReturn = ZooProductSubscriptions_type;
 
 export default async function create_org_subscription({
   client,
   body,
-}: Create_org_subscription_params): Promise<Create_org_subscription_return> {
+}: CreateOrgSubscriptionParams): Promise<CreateOrgSubscriptionReturn> {
   const url = `/org/payment/subscriptions`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -33,17 +34,17 @@ export default async function create_org_subscription({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'application/json',
   };
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_org_subscription_return;
+  const result = (await response.json()) as CreateOrgSubscriptionReturn;
   return result;
 }

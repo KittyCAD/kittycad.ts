@@ -1,21 +1,22 @@
-import { Event_type } from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 
-interface Create_event_params {
+import { Event_type } from '../../models.js';
+
+interface CreateEventParams {
   client?: Client;
-  body: Event_type;
   files: File[];
+  body: Event_type;
 }
 
-type Create_event_return = any;
+type CreateEventReturn = unknown;
 
 export default async function create_event({
   client,
   files,
   body,
-}: Create_event_params): Promise<Create_event_return> {
+}: CreateEventParams): Promise<CreateEventReturn> {
   const url = `/events`;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -33,7 +34,7 @@ export default async function create_event({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'multipart/form-data',
   };
@@ -44,13 +45,13 @@ export default async function create_event({
   });
   formData.append('event', JSON.stringify(body));
 
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
-  const result = (await response.json()) as Create_event_return;
+  const result = (await response.json()) as CreateEventReturn;
   return result;
 }

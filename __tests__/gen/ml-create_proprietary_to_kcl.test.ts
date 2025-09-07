@@ -10,7 +10,6 @@ async function example() {
     ],
     code_option: 'execute',
   });
-
   return response;
 }
 
@@ -19,8 +18,6 @@ describe('Testing ml.create_proprietary_to_kcl', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });

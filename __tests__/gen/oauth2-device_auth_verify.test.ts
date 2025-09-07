@@ -5,7 +5,6 @@ async function example() {
     app_name: 'string',
     user_code: 'string',
   });
-
   return response;
 }
 
@@ -14,8 +13,6 @@ describe('Testing oauth2.device_auth_verify', () => {
     try {
       await example();
     } catch (err) {
-      // Only present in tests expected to throw
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       expect(err).toBeInstanceOf(ApiError);
     }
   });
