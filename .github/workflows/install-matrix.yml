@@ -38,6 +38,13 @@ jobs:
           cat > test.mjs << 'JS'
           import { Client, meta } from '@kittycad/lib'
           console.log(typeof Client === 'function' && typeof meta === 'object' ? 'ok' : 'bad')
+          // Basic no-auth request to ensure runtime works in ESM
+          try {
+            const res = await meta.get_schema()
+            console.log(res ? 'ok' : 'bad')
+          } catch (e) {
+            console.log('bad')
+          }
           JS
           node test.mjs
 
@@ -48,6 +55,7 @@ jobs:
           yarn init -y >/dev/null 2>&1
           yarn add ../../pkg.tgz >/dev/null 2>&1
           node -e "const lib=require('@kittycad/lib'); console.log(typeof lib.meta==='object'?'ok':'bad')"
+          node -e "(async()=>{const lib=require('@kittycad/lib'); try{const r=await lib.meta.get_schema(); console.log(r?'ok':'bad')}catch(e){console.log('bad')}})()"
 
       - name: Browser bundling (esbuild) smoke
         shell: bash
