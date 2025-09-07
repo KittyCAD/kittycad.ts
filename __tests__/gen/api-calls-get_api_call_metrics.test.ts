@@ -1,12 +1,12 @@
-import { api_calls } from '../../src/index.js';
+import { api_calls } from '../../src/index.js'
 
 async function example() {
-  const response = await api_calls.get_api_call_metrics({ group_by: 'email' });
-  return response;
+  const response = await api_calls.get_api_call_metrics({ group_by: 'email' })
+  return response
 }
 
 describe('Testing api_calls.get_api_call_metrics', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
-  });
-});
+    expect(await example()).toBeTruthy()
+  })
+})

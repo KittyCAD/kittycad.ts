@@ -1,26 +1,26 @@
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-import { ApiCallWithPrice_type } from '../../models.js';
+import { ApiCallWithPrice_type } from '../../models.js'
 
 interface GetApiCallForUserParams {
-  client?: Client;
-  id: string;
+  client?: Client
+  id: string
 }
 
-type GetApiCallForUserReturn = ApiCallWithPrice_type;
+type GetApiCallForUserReturn = ApiCallWithPrice_type
 
 export default async function get_api_call_for_user({
   client,
   id,
 }: GetApiCallForUserParams): Promise<GetApiCallForUserReturn> {
-  const url = `/user/api-calls/${id}`;
+  const url = `/user/api-calls/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -30,16 +30,16 @@ export default async function get_api_call_for_user({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
+      ''
   const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-  };
+  }
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  await throwIfNotOk(response);
-  const result = (await response.json()) as GetApiCallForUserReturn;
-  return result;
+  }
+  const response = await fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetApiCallForUserReturn
+  return result
 }

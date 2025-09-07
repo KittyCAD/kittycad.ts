@@ -1,16 +1,16 @@
-import { orgs, ApiError } from '../../src/index.js';
+import { orgs, ApiError } from '../../src/index.js'
 
 async function example() {
-  const response = await orgs.get_org_privacy_settings();
-  return response;
+  const response = await orgs.get_org_privacy_settings()
+  return response
 }
 
 describe('Testing orgs.get_org_privacy_settings', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

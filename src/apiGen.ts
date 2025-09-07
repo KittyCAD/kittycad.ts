@@ -1,262 +1,259 @@
-import fsp from 'node:fs/promises';
-import { OpenAPIV3 } from 'openapi-types';
-import Handlebars from 'handlebars';
-import { format } from 'prettier';
-import pkg from 'fast-json-patch';
+import fsp from 'node:fs/promises'
+import pkg from 'fast-json-patch'
+import Handlebars from 'handlebars'
+import type { OpenAPIV3 } from 'openapi-types'
+import { format } from 'prettier'
 import {
-  testsExpectedToThrow,
   expectedToTimeout,
-  toTestPathString,
   operationsToNotGenerateTestsFor,
-} from './expectedToFail.js';
-const { observe, generate } = pkg;
+  testsExpectedToThrow,
+  toTestPathString,
+} from './expectedToFail.js'
+const { observe, generate } = pkg
 
 export default async function apiGen(lookup: Record<string, string>) {
   const spec: OpenAPIV3.Document = JSON.parse(
-    await fsp.readFile('./spec.json', 'utf8'),
-  );
-  const observer = observe(spec);
-  const tags = spec.tags;
+    await fsp.readFile('./spec.json', 'utf8')
+  )
+  const observer = observe(spec)
+  const tags = spec.tags
 
   // Use fs.rm over deprecated fs.rmdir({ recursive: true }) to be compatible
   // with Node.js >= 22 and future removals of the recursive rmdir option.
-  await fsp.rm('./src/api', { recursive: true, force: true });
-  await fsp.rm('./__tests__/gen', { recursive: true, force: true });
+  await fsp.rm('./src/api', { recursive: true, force: true })
+  await fsp.rm('./__tests__/gen', { recursive: true, force: true })
 
-  await fsp.mkdir(`./src/api`);
-  await fsp.mkdir(`./__tests__/gen`);
+  await fsp.mkdir(`./src/api`)
+  await fsp.mkdir(`./__tests__/gen`)
   await Promise.allSettled(
-    tags.map(({ name }) => fsp.mkdir(`./src/api/${name}`)),
-  );
-  const operationIds: string[] = [];
+    tags.map(({ name }) => fsp.mkdir(`./src/api/${name}`))
+  )
+  const operationIds: string[] = []
   const operations: {
     [key: string]: {
-      specSection: OpenAPIV3.PathItemObject['post' | 'get' | 'put' | 'delete'];
-      path: string;
-      method: string;
-    };
-  } = {};
+      specSection: OpenAPIV3.PathItemObject['post' | 'get' | 'put' | 'delete']
+      path: string
+      method: string
+    }
+  } = {}
   Object.entries(spec.paths).forEach(([path, pathValue]) => {
     Object.entries(pathValue).forEach(([method, _methodValue]) => {
       const methodValue = _methodValue as OpenAPIV3.PathItemObject[
         | 'post'
         | 'get'
         | 'put'
-        | 'delete'];
-      const operationId = (methodValue as any).operationId;
+        | 'delete']
+      const operationId = (methodValue as any).operationId
       if (!operationId) {
-        throw `no operationId for ${path} ${method}`;
+        throw `no operationId for ${path} ${method}`
       }
       operations[operationId] = {
         path,
         method,
         specSection: methodValue,
-      };
-      operationIds.push(operationId);
-    });
-  });
+      }
+      operationIds.push(operationId)
+    })
+  })
   const indexFile: {
     [tag: string]: {
-      importsStr: string[];
-      exportsStr: string[];
-    };
-  } = {};
+      importsStr: string[]
+      exportsStr: string[]
+    }
+  } = {}
   const writePromises = Object.entries(operations).map(
     async ([operationId, operation]) => {
       try {
         if ('hidden' === (operation.specSection as any).tags[0]) {
-          return [];
+          return []
         }
 
         const isWebSocket = Boolean(
-          (operation.specSection as any)['x-dropshot-websocket'],
-        );
+          (operation.specSection as any)['x-dropshot-websocket']
+        )
         const exampleTplPath = isWebSocket
           ? './src/templates/exampleWs.hbs'
-          : './src/templates/exampleRest.hbs';
-        let exampleTemplate = '';
+          : './src/templates/exampleRest.hbs'
+        let exampleTemplate = ''
 
         const templatePath = isWebSocket
           ? './src/templates/ws.hbs'
           : (operation.specSection?.requestBody as any)?.content?.[
-              'multipart/form-data'
-            ]?.schema
-          ? './src/templates/multipart.hbs'
-          : './src/templates/rest.hbs';
+                'multipart/form-data'
+              ]?.schema
+            ? './src/templates/multipart.hbs'
+            : './src/templates/rest.hbs'
 
-        let inputTypes: string[] = ['client?: Client'];
-        let inputParams: string[] = ['client'];
-        const inputParamsExamples: string[] = [];
+        const inputTypes: string[] = ['client?: Client']
+        const inputParams: string[] = ['client']
+        const inputParamsExamples: string[] = []
         if (isWebSocket) {
           inputParamsExamples.push(
-            `client: new Client(process.env.KITTYCAD_TOKEN)`,
-          );
+            `client: new Client(process.env.KITTYCAD_TOKEN)`
+          )
         }
 
         const isMultipart = Boolean(
           (operation.specSection?.requestBody as any)?.content?.[
             'multipart/form-data'
-          ],
-        );
+          ]
+        )
         if (isMultipart) {
-          inputParams.push('files');
-          inputTypes.push('files: File[]');
+          inputParams.push('files')
+          inputTypes.push('files: File[]')
           inputParamsExamples.push(
-            `files: [{name: "thing.kcl", data: new Blob(['thing = 1'], {type: 'text/plain'})}]`,
-          );
+            `files: [{name: "thing.kcl", data: new Blob(['thing = 1'], {type: 'text/plain'})}]`
+          )
         }
-        let needsFsImport = false;
+        let needsFsImport = false
 
-        const importedParamTypes: string[] = [];
-        const path = operation.path;
+        const importedParamTypes: string[] = []
+        const path = operation.path
         const params = operation.specSection
-          .parameters as OpenAPIV3.ParameterObject[];
+          .parameters as OpenAPIV3.ParameterObject[]
         // 'template' holds the generated API source for this operation
         // (REST, multipart, or websocket) after Handlebars rendering.
-        let urlPathParams: string[] = path.split('/');
-        const urlQueryParams: string[] = [];
-        (params || []).forEach(({ name, in: _in, schema }) => {
-          let _type = 'unknown';
+        let urlPathParams: string[] = path.split('/')
+        const urlQueryParams: string[] = []
+        ;(params || []).forEach(({ name, in: _in, schema }) => {
+          let _type = 'unknown'
           if ('$ref' in schema) {
-            const ref = schema.$ref;
-            _type = lookup[ref];
-            importedParamTypes.push(_type);
-            const refName = ref.split('/').pop() as string;
+            const ref = schema.$ref
+            _type = lookup[ref]
+            importedParamTypes.push(_type)
+            const refName = ref.split('/').pop() as string
             const reffedSchemaRaw = spec.components.schemas[refName] as
               | OpenAPIV3.ReferenceObject
-              | OpenAPIV3.SchemaObject;
+              | OpenAPIV3.SchemaObject
             if ('$ref' in reffedSchemaRaw) {
               // Nested $ref not expected; fallback to 'unknown'.
-              _type = 'unknown';
+              _type = 'unknown'
             } else {
-              const reffedSchema = reffedSchemaRaw as OpenAPIV3.SchemaObject;
+              const reffedSchema = reffedSchemaRaw as OpenAPIV3.SchemaObject
               if (reffedSchema.type === 'string' && reffedSchema.enum) {
                 if (operationId.includes('file') && name === 'src_format') {
                   const input =
                     reffedSchema.enum.find((fmt) => fmt === 'obj') ||
-                    reffedSchema.enum.find((fmt) => fmt === 'svg');
-                  inputParamsExamples.push(`${name}: '${input}'`);
+                    reffedSchema.enum.find((fmt) => fmt === 'svg')
+                  inputParamsExamples.push(`${name}: '${input}'`)
                 } else if (name === 'output_format') {
-                  inputParamsExamples.push(
-                    `${name}: '${reffedSchema.enum[0]}'`,
-                  );
+                  inputParamsExamples.push(`${name}: '${reffedSchema.enum[0]}'`)
                 } else {
-                  inputParamsExamples.push(
-                    `${name}: '${reffedSchema.enum[1]}'`,
-                  );
+                  inputParamsExamples.push(`${name}: '${reffedSchema.enum[1]}'`)
                 }
               } else if (reffedSchema.oneOf) {
-                const isOutput = ['output_unit', 'output_format'].includes(
-                  name,
-                );
+                const isOutput = ['output_unit', 'output_format'].includes(name)
                 const input = (reffedSchema.oneOf?.find(
                   (_input: OpenAPIV3.SchemaObject) =>
                     (_input?.enum?.[0] === 'obj' && !isOutput) ||
                     _input?.enum?.[0] === 'svg' ||
-                    _input?.enum?.[0] === 'stl',
+                    _input?.enum?.[0] === 'stl'
                 ) ||
                   reffedSchema.oneOf?.[
                     isOutput ? 1 : 0
-                  ]) as OpenAPIV3.SchemaObject;
-                inputParamsExamples.push(`${name}: '${input?.enum?.[0]}'`);
+                  ]) as OpenAPIV3.SchemaObject
+                inputParamsExamples.push(`${name}: '${input?.enum?.[0]}'`)
               } else if (
                 reffedSchema.type === 'string' &&
                 reffedSchema.format === 'uuid'
               ) {
                 inputParamsExamples.push(
-                  `${name}: '${'00000000-0000-0000-0000-000000000000'}'`,
-                );
+                  `${name}: '${'00000000-0000-0000-0000-000000000000'}'`
+                )
               } else if (
                 reffedSchema.type === 'string' &&
                 refName == 'ServiceAccountUuid'
               ) {
                 inputParamsExamples.push(
-                  `${name}: '${'svc-00000000-0000-0000-0000-000000000000'}'`,
-                );
+                  `${name}: '${'svc-00000000-0000-0000-0000-000000000000'}'`
+                )
               } else if (
                 reffedSchema.type === 'string' &&
                 refName == 'SessionUuid'
               ) {
                 inputParamsExamples.push(
-                  `${name}: '${'ses-00000000-0000-0000-0000-000000000000'}'`,
-                );
+                  `${name}: '${'ses-00000000-0000-0000-0000-000000000000'}'`
+                )
               } else if (
                 reffedSchema.type === 'string' &&
                 refName == 'ApiTokenUuid'
               ) {
                 inputParamsExamples.push(
-                  `${name}: '${'api-00000000-0000-0000-0000-000000000000'}'`,
-                );
+                  `${name}: '${'api-00000000-0000-0000-0000-000000000000'}'`
+                )
               } else if (
                 reffedSchema.type === 'string' &&
                 refName == 'DeviceAccessTokenUuid'
               ) {
                 inputParamsExamples.push(
-                  `${name}: '${'dev-00000000-0000-0000-0000-000000000000'}'`,
-                );
+                  `${name}: '${'dev-00000000-0000-0000-0000-000000000000'}'`
+                )
               } else if (
                 reffedSchema.type === 'string' &&
                 refName == 'UserIdentifier'
               ) {
-                inputParamsExamples.push(`${name}: '${'31337'}'`);
+                inputParamsExamples.push(`${name}: '${'31337'}'`)
               } else if (
                 reffedSchema.type === 'string' &&
                 refName == 'CodeLanguage'
               ) {
-                inputParamsExamples.push(`${name}: '${'node'}'`);
+                inputParamsExamples.push(`${name}: '${'node'}'`)
               }
             }
           } else {
             if (schema.type === 'number' || schema.type === 'integer') {
-              _type = 'number';
-              inputParamsExamples.push(`${name}: ${7}`);
+              _type = 'number'
+              inputParamsExamples.push(`${name}: ${7}`)
             } else if (schema.type === 'string' || schema.type === 'boolean') {
               inputParamsExamples.push(
-                `${name}: ${schema.type === 'string' ? "'string'" : 'true'}`,
-              );
-              _type = schema.type;
+                `${name}: ${schema.type === 'string' ? "'string'" : 'true'}`
+              )
+              _type = schema.type
             }
           }
-          inputTypes.push(`${name}: ${_type}`);
+          inputTypes.push(`${name}: ${_type}`)
           if (!name) {
-            return;
+            return
           }
-          inputParams.push(name);
+          inputParams.push(name)
           if (_in === 'path') {
             urlPathParams = urlPathParams.map((p) => {
               if (p === `{${name}}`) {
-                return `\${${name}}`;
+                return `\${${name}}`
               }
-              return p;
-            });
+              return p
+            })
           } else {
-            urlQueryParams.push(`${name}=\${${name}}`);
+            urlQueryParams.push(`${name}=\${${name}}`)
           }
-        });
+        })
         const templateUrlPath = wrapInBacktics(
           `${urlPathParams.join('/')}${
             urlQueryParams.length ? `?${urlQueryParams.join('&')}` : ''
-          }`,
-        );
+          }`
+        )
         const requestBodyRaw = operation.specSection?.requestBody as
           | OpenAPIV3.RequestBodyObject
           | OpenAPIV3.ReferenceObject
-          | undefined;
+          | undefined
         const requestBody =
           requestBodyRaw && '$ref' in requestBodyRaw
             ? undefined
-            : (requestBodyRaw as OpenAPIV3.RequestBodyObject | undefined);
+            : (requestBodyRaw as OpenAPIV3.RequestBodyObject | undefined)
 
         const contentType = !isWebSocket
-          ? (
-              (requestBody && Object.keys(requestBody.content ?? {})[0]) ||
-              'text/plain'
-            ).replaceAll(' ', '')
-          : '';
+          ? (() => {
+              if (isMultipart) return 'multipart/form-data'
+              const ct = requestBody?.content || {}
+              if ('application/json' in ct) return 'application/json'
+              if ('application/x-www-form-urlencoded' in ct)
+                return 'application/x-www-form-urlencoded'
+              return (Object.keys(ct)[0] || 'text/plain').replaceAll(' ', '')
+            })()
+          : ''
 
-        const jsonSchema = requestBody?.content?.['application/json']?.schema;
-        const formSchema =
-          requestBody?.content?.['multipart/form-data']?.schema;
+        const jsonSchema = requestBody?.content?.['application/json']?.schema
+        const formSchema = requestBody?.content?.['multipart/form-data']?.schema
         if (
           (!isWebSocket && jsonSchema && '$ref' in jsonSchema) ||
           (formSchema && '$ref' in formSchema)
@@ -264,53 +261,53 @@ export default async function apiGen(lookup: Record<string, string>) {
           const schemaRef =
             formSchema && '$ref' in formSchema
               ? formSchema.$ref
-              : (jsonSchema as OpenAPIV3.ReferenceObject).$ref;
-          const ref = schemaRef;
-          const typeReference = lookup[ref];
-          importedParamTypes.push(typeReference);
-          inputTypes.push(`body: ${typeReference}`);
-          inputParams.push('body');
+              : (jsonSchema as OpenAPIV3.ReferenceObject).$ref
+          const ref = schemaRef
+          const typeReference = lookup[ref]
+          importedParamTypes.push(typeReference)
+          inputTypes.push(`body: ${typeReference}`)
+          inputParams.push('body')
 
           const mapOverProperties = (rawRef: string): string => {
             const refSchema = spec.components.schemas[
               rawRef.split('/').pop()
-            ] as OpenAPIV3.SchemaObject;
+            ] as OpenAPIV3.SchemaObject
             const returnExample = (
-              refSchema: OpenAPIV3.SchemaObject,
+              refSchema: OpenAPIV3.SchemaObject
             ): string => {
               if ('type' in refSchema && !refSchema.properties) {
                 if (refSchema.type === 'string') {
                   return `"${
                     refSchema.description.replaceAll('"', ',') || 'string'
-                  }"`;
+                  }"`
                 }
                 if (refSchema.type === 'number') {
-                  return `7`;
+                  return `7`
                 }
                 if (refSchema.type === 'boolean') {
-                  return `true`;
+                  return `true`
                 }
               }
               if ('oneOf' in refSchema) {
-                const oneOf = refSchema.oneOf;
+                const oneOf = refSchema.oneOf
                 if ('enum' in oneOf[0]) {
-                  return `'${oneOf[0].enum[0]}'`;
+                  return `'${oneOf[0].enum[0]}'`
                 } else if ('type' in oneOf[0]) {
-                  return returnExample(oneOf[0]);
+                  return returnExample(oneOf[0])
                 }
               }
               if (!refSchema.properties) {
-                return '';
+                return ''
               }
-              const requiredProperties = Object.entries(refSchema.properties);
+              const requiredProperties = Object.entries(refSchema.properties)
               if (!requiredProperties.length) {
-                return '';
+                return ''
               }
               return `{${requiredProperties
                 .map(([key, value]) => {
                   if ('$ref' in value) {
                     // TODO
-                    return '';
+                    return ''
                   }
                   // Handle object properties, including index signatures
                   if (
@@ -318,62 +315,62 @@ export default async function apiGen(lookup: Record<string, string>) {
                     'additionalProperties' in (value as any)
                   ) {
                     const addProps = (value as any)
-                      .additionalProperties as OpenAPIV3.SchemaObject;
+                      .additionalProperties as OpenAPIV3.SchemaObject
                     // If the index signature is strings, provide a minimal example
                     if ((addProps as any).type === 'string') {
-                      return `${key}: {}`;
+                      return `${key}: {}`
                     }
                     // Fallback to an empty object for other cases
-                    return `${key}: {}`;
+                    return `${key}: {}`
                   }
                   if (value.type === 'string' && 'enum' in value) {
-                    return `${key}: '${value.enum[0]}'`;
+                    return `${key}: '${value.enum[0]}'`
                   }
                   if (value.type === 'string') {
                     return `${key}: "${
                       (value.description || '').replaceAll('"', "'") || 'string'
-                    }"`;
+                    }"`
                   }
                   if (value.type === 'number' || value.type === 'integer') {
-                    return `${key}: 7`;
+                    return `${key}: 7`
                   }
                   if (value.type === 'boolean') {
-                    return `${key}: true`;
+                    return `${key}: true`
                   }
                   if (
                     'allOf' in value &&
                     value.allOf.length === 1 &&
                     '$ref' in value.allOf[0]
                   ) {
-                    const ref = value.allOf[0].$ref;
-                    return `${key}: ${mapOverProperties(ref)}`;
+                    const ref = value.allOf[0].$ref
+                    return `${key}: ${mapOverProperties(ref)}`
                   }
                   if (
                     value.type === 'array' &&
                     'type' in value.items &&
                     value.items.type === 'string'
                   ) {
-                    return `${key}: ['string']`;
+                    return `${key}: ['string']`
                   }
                   if (value.type === 'array' && '$ref' in value.items) {
                     // assuming text to cad iteration for now
-                    return `${key}: []`;
+                    return `${key}: []`
                   }
                   if (value.type === 'object') {
                     // generic nested object; provide minimal example
-                    return `${key}: {}`;
+                    return `${key}: {}`
                   }
-                  return '';
+                  return ''
                 })
                 .filter(Boolean)
-                .join(', ')}}`;
-            };
-            return returnExample(refSchema);
-          };
+                .join(', ')}}`
+            }
+            return returnExample(refSchema)
+          }
 
-          const theStr = mapOverProperties(ref);
+          const theStr = mapOverProperties(ref)
           if (theStr) {
-            inputParamsExamples.push(`body: ${theStr}`);
+            inputParamsExamples.push(`body: ${theStr}`)
           }
 
           // JSON body will be included via the Handlebars template context.
@@ -382,76 +379,76 @@ export default async function apiGen(lookup: Record<string, string>) {
           requestBody?.content?.['application/octet-stream']
         ) {
           const octetSchema = requestBody.content['application/octet-stream']
-            .schema as OpenAPIV3.SchemaObject;
+            .schema as OpenAPIV3.SchemaObject
           if (octetSchema?.type !== 'string') {
             // Fallback to string body
           }
-          inputTypes.push('body: string');
-          inputParams.push('body');
+          inputTypes.push('body: string')
+          inputParams.push('body')
 
-          let exampleFile = 'example';
+          let exampleFile = 'example'
 
           // For requests depending on a model file
           const modelFmts = inputParamsExamples.find((str) => {
-            return str.startsWith('src_format:');
-          });
+            return str.startsWith('src_format:')
+          })
           if (modelFmts) {
             exampleFile = modelFmts.includes('obj')
               ? 'example.obj'
-              : 'example.svg';
+              : 'example.svg'
           }
 
           // For requests depending on a source code file
           const langFmts = inputParamsExamples.find((str) => {
-            return str.startsWith('lang:');
-          });
+            return str.startsWith('lang:')
+          })
           if (langFmts) {
             exampleFile = `example.${langFmts.replace(
               /lang: '([a-z]+)'/,
-              '$1',
-            )}`;
+              '$1'
+            )}`
           }
 
           inputParamsExamples.push(
-            `body: await fsp.readFile('./${exampleFile}', 'base64')`,
-          );
-          needsFsImport = true;
+            `body: await fsp.readFile('./${exampleFile}', 'base64')`
+          )
+          needsFsImport = true
           // Binary body will be included via the Handlebars template context.
         } else {
           // No body content; nothing to add to context.
         }
 
         // No-op: Handlebars template handles optional params signature.
-        const importedTypes: string[] = [];
+        const importedTypes: string[] = []
         if (!isWebSocket) {
           Object.values(operation.specSection?.responses).forEach(
             (response) => {
               const schema = (response as any)?.content?.['application/json']
-                ?.schema as OpenAPIV3.SchemaObject;
+                ?.schema as OpenAPIV3.SchemaObject
               if (!schema) {
-                let ref = (response as any)?.$ref || '';
-                ref = ref.replace('responses', 'schemas');
-                const typeReference = lookup[ref];
+                let ref = (response as any)?.$ref || ''
+                ref = ref.replace('responses', 'schemas')
+                const typeReference = lookup[ref]
 
                 if (
                   typeReference &&
                   typeReference !== 'Error_type' &&
                   !importedTypes.includes(typeReference)
                 ) {
-                  importedTypes.push(typeReference);
+                  importedTypes.push(typeReference)
                 }
               } else if (
                 (response as any)?.content['application/json']?.schema?.$ref
               ) {
                 const ref = (response as any)?.content['application/json']
-                  ?.schema?.$ref;
-                const typeReference = lookup[ref];
+                  ?.schema?.$ref
+                const typeReference = lookup[ref]
                 if (
                   typeReference &&
                   typeReference !== 'Error_type' &&
                   !importedTypes.includes(typeReference)
                 ) {
-                  importedTypes.push(typeReference);
+                  importedTypes.push(typeReference)
                 }
               } else if (
                 Object.keys(schema).length === 0 ||
@@ -459,50 +456,50 @@ export default async function apiGen(lookup: Record<string, string>) {
               ) {
                 // do nothing
               } else if (schema.type === 'array') {
-                const items = schema.items as OpenAPIV3.SchemaObject;
+                const items = schema.items as OpenAPIV3.SchemaObject
                 if ((items as any).$ref) {
-                  const typeReference = lookup[(items as any).$ref];
+                  const typeReference = lookup[(items as any).$ref]
                   if (
                     typeReference &&
                     typeReference !== 'Error_type' &&
                     !importedTypes.includes(typeReference + '[]')
                   ) {
-                    importedTypes.push(typeReference + '[]');
+                    importedTypes.push(typeReference + '[]')
                   }
                 } else if (items.type === 'string') {
                   // do nothing
                 } else {
                   // Fallback: accept unknown[] for unhandled array response shapes
-                  importedTypes.push('unknown[]');
+                  importedTypes.push('unknown[]')
                 }
               } else if (
                 schema.type === 'object' &&
                 'additionalProperties' in schema
               ) {
-                schema.additionalProperties;
+                schema.additionalProperties
                 const addProps =
-                  schema.additionalProperties as OpenAPIV3.SchemaObject;
+                  schema.additionalProperties as OpenAPIV3.SchemaObject
                 if (addProps.type === 'array' && '$ref' in addProps.items) {
-                  const typeReference = lookup[addProps.items.$ref];
+                  const typeReference = lookup[addProps.items.$ref]
                   if (
                     typeReference &&
                     typeReference !== 'Error_type' &&
                     !importedTypes.includes(typeReference + '[]')
                   ) {
-                    importedTypes.push(typeReference + '[]');
+                    importedTypes.push(typeReference + '[]')
                   }
                 }
               } else {
                 // Fallback: accept unknown for unhandled response shapes
-                importedTypes.push('unknown');
+                importedTypes.push('unknown')
               }
-            },
-          );
+            }
+          )
         }
 
         // Render with Handlebars
         const render = async (path: string, ctx: Record<string, unknown>) => {
-          const raw = await fsp.readFile(path, 'utf8');
+          const raw = await fsp.readFile(path, 'utf8')
           // Debug: if rendering example templates, ensure we see the correct version
           if (path.includes('example')) {
             // eslint-disable-next-line no-console
@@ -510,41 +507,41 @@ export default async function apiGen(lookup: Record<string, string>) {
               'rendering',
               path,
               'preview:',
-              raw.split('\n').slice(0, 3),
-            );
+              raw.split('\n').slice(0, 3)
+            )
           }
-          const tpl = Handlebars.compile(raw);
-          return tpl(ctx);
-        };
+          const tpl = Handlebars.compile(raw)
+          return tpl(ctx)
+        }
 
-        let template = '';
+        let template = ''
         if (!isWebSocket) {
-          const pascalName = toPascalCase(operationId);
+          const pascalName = toPascalCase(operationId)
           const returnTyping = `type ${pascalName}Return = ${
             importedTypes.length ? importedTypes.join(' | ') : 'unknown'
-          }`;
-          const paramsInterfaceName = `${pascalName}Params`;
+          }`
+          const paramsInterfaceName = `${pascalName}Params`
           const paramsInterface = `interface ${paramsInterfaceName} { ${inputTypes.join(
-            '; ',
-          )} }`;
+            '; '
+          )} }`
           let paramsSignature = `{${inputParams
             .filter((a) => a)
-            .join(', ')}}: ${paramsInterfaceName}`;
+            .join(', ')}}: ${paramsInterfaceName}`
           if (inputParams.filter(Boolean).length === 1) {
-            paramsSignature += ` = {} as ${paramsInterfaceName}`;
+            paramsSignature += ` = {} as ${paramsInterfaceName}`
           }
           const importsModels = `import {${[
             ...new Set([...importedTypes, ...importedParamTypes]),
           ]
             .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
-            .join(', ')}} from '../../models.js';`;
-          let bodyLine = '';
-          const methodUpper = operation.method.toUpperCase();
-          const allowBody = !['GET', 'DELETE'].includes(methodUpper);
+            .join(', ')}} from '../../models.js';`
+          let bodyLine = ''
+          const methodUpper = operation.method.toUpperCase()
+          const allowBody = !['GET', 'DELETE'].includes(methodUpper)
           if (allowBody && requestBody?.content?.['application/json'])
-            bodyLine = 'body: JSON.stringify(body)';
+            bodyLine = 'body: JSON.stringify(body)'
           if (allowBody && requestBody?.content?.['application/octet-stream'])
-            bodyLine = 'body';
+            bodyLine = 'body'
           const ctx = {
             importsModels,
             paramsInterface,
@@ -560,43 +557,43 @@ export default async function apiGen(lookup: Record<string, string>) {
             multipartAppendBody: inputParams.includes('body')
               ? "formData.append('event', JSON.stringify(body))"
               : '',
-          };
-          template = await render(templatePath, ctx);
+          }
+          template = await render(templatePath, ctx)
         } else {
           // Collect WS request/response types for the template context.
-          let wsReqType: string = 'unknown';
-          let wsRespType: string = 'unknown';
+          let wsReqType = 'unknown'
+          let wsRespType = 'unknown'
           const reqSchema = (
             requestBody as OpenAPIV3.RequestBodyObject | undefined
-          )?.content?.['application/json']?.schema;
+          )?.content?.['application/json']?.schema
           if (isRef(reqSchema)) {
-            wsReqType = lookup[reqSchema.$ref];
-            importedTypes.push(wsReqType);
+            wsReqType = lookup[reqSchema.$ref]
+            importedTypes.push(wsReqType)
           }
           const wsDefaultResp = (operation.specSection?.responses as any)?.[
             'default'
-          ];
+          ]
           const respSchema = wsDefaultResp?.content?.['application/json']
             ?.schema as
             | OpenAPIV3.ReferenceObject
             | OpenAPIV3.SchemaObject
-            | undefined;
+            | undefined
           if (isRef(respSchema)) {
-            wsRespType = lookup[respSchema.$ref];
-            importedTypes.push(wsRespType);
+            wsRespType = lookup[respSchema.$ref]
+            importedTypes.push(wsRespType)
           }
-          const className = toWsClassName(operationId);
-          const paramsName = `${className}Params`;
+          const className = toWsClassName(operationId)
+          const paramsName = `${className}Params`
           const importsModels = `import {${[
             ...new Set([...importedParamTypes, ...importedTypes]),
           ]
             .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
-            .join(', ')}} from '../../models.js';`;
-          const paramsFields = inputTypes.join('; ');
+            .join(', ')}} from '../../models.js';`
+          const paramsFields = inputTypes.join('; ')
           const wsUrlExpr = templateUrlPath.replaceAll(
             '${',
-            '${this.functionNameParams.',
-          );
+            '${this.functionNameParams.'
+          )
           const ctx = {
             importsModels,
             className,
@@ -605,23 +602,23 @@ export default async function apiGen(lookup: Record<string, string>) {
             urlExpr: wsUrlExpr,
             wsReqType: wsReqType || 'unknown',
             wsRespType: wsRespType || 'unknown',
-          };
-          template = await render(templatePath, ctx);
+          }
+          template = await render(templatePath, ctx)
         }
 
-        const tag = operation.specSection?.tags?.[0] || 'err';
-        const safeTag = tag.replaceAll('-', '_');
+        const tag = operation.specSection?.tags?.[0] || 'err'
+        const safeTag = tag.replaceAll('-', '_')
         {
-          const paramsStr = inputParamsExamples.filter((a) => a).join(', ');
-          const hasParams = Boolean(paramsStr);
+          const paramsStr = inputParamsExamples.filter((a) => a).join(', ')
+          const hasParams = Boolean(paramsStr)
           const expectThrow =
             !isWebSocket &&
-            testsExpectedToThrow.includes(toTestPathString(tag, operationId));
+            testsExpectedToThrow.includes(toTestPathString(tag, operationId))
           // Prefer explicit throw assertions over timeout when both are listed
           const expectTimeout =
             !isWebSocket &&
             !expectThrow &&
-            expectedToTimeout.includes(toTestPathString(tag, operationId));
+            expectedToTimeout.includes(toTestPathString(tag, operationId))
           exampleTemplate = await render(exampleTplPath, {
             tag: safeTag,
             operationId,
@@ -630,13 +627,13 @@ export default async function apiGen(lookup: Record<string, string>) {
             importFs: needsFsImport,
             expectThrow,
             expectTimeout,
-          });
+          })
         }
-        let genTest = exampleTemplate;
+        let genTest = exampleTemplate
 
         genTest = replacer(genTest, [
           ['console.log(JSON.stringify(response, null, 2));', ''],
-        ]);
+        ])
         // If this test is a timeout-only check, drop unused ApiError import
         if (
           !isWebSocket &&
@@ -646,28 +643,28 @@ export default async function apiGen(lookup: Record<string, string>) {
           genTest = genTest
             .replace(/,\s*ApiError\s*\}/, ' }')
             .replace(/ApiError\s*,\s*/g, '')
-            .replace(/,\s*ApiError/g, '');
+            .replace(/,\s*ApiError/g, '')
         }
         const genTestsWritePromise = !operationsToNotGenerateTestsFor.includes(
-          operationId,
+          operationId
         )
           ? fsp.writeFile(
               `./__tests__/gen/${tag}-${operationId}.test.ts`,
               genTest,
-              'utf8',
+              'utf8'
             )
-          : Promise.resolve();
+          : Promise.resolve()
         if (!isWebSocket) {
           exampleTemplate = replacer(exampleTemplate, [
             ["from '../../src/index.js'", "from '@kittycad/lib'"],
             [/describe\('Testing(.|\n)+?(}\);)(.|\n)+?(}\);)/g, ''],
             [/.+return response;\n/g, ''],
-          ]);
+          ])
           // Ensure ApiError is imported in the docs example
           exampleTemplate = exampleTemplate.replace(
             new RegExp(`import \{\\s*${safeTag}\\s*\} from '@kittycad/lib';`),
-            `import { ${safeTag}, ApiError } from '@kittycad/lib';`,
-          );
+            `import { ${safeTag}, ApiError } from '@kittycad/lib';`
+          )
           // Append error-handling snippet for docs readers
           exampleTemplate += [
             '',
@@ -683,12 +680,12 @@ export default async function apiGen(lookup: Record<string, string>) {
             '    throw e',
             '  }',
             '}',
-          ].join('\n');
+          ].join('\n')
         } else {
           exampleTemplate = replacer(exampleTemplate, [
             ["from '../../src/index.js'", "from '@kittycad/lib'"],
             [/describe\('Testing(.|\n)+?(}\);)(.|\n)+?(}\);)/g, ''],
-          ]);
+          ])
         }
         spec.paths[operation.path][operation.method]['x-typescript'] = {
           example: format(exampleTemplate, {
@@ -700,69 +697,69 @@ export default async function apiGen(lookup: Record<string, string>) {
             trailingComma: 'es5',
           }),
           libDocsLink: '',
-        };
+        }
 
         if (!indexFile[safeTag]) {
           indexFile[safeTag] = {
             importsStr: [],
             exportsStr: [],
-          };
+          }
         }
         if (isWebSocket) {
-          const className = toWsClassName(operationId);
+          const className = toWsClassName(operationId)
           indexFile[safeTag].importsStr.push(
-            `import ${className} from './api/${tag}/${operationId}.js';`,
-          );
+            `import ${className} from './api/${tag}/${operationId}.js';`
+          )
           indexFile[safeTag].exportsStr.push(
-            `${operationId}: (params) => new ${className}(params)`,
-          );
+            `${operationId}: (params) => new ${className}(params)`
+          )
         } else {
           indexFile[safeTag].importsStr.push(
-            `import ${operationId} from './api/${tag}/${operationId}.js';`,
-          );
-          indexFile[safeTag].exportsStr.push(operationId);
+            `import ${operationId} from './api/${tag}/${operationId}.js';`
+          )
+          indexFile[safeTag].exportsStr.push(operationId)
         }
         const libWritePromise = fsp.writeFile(
           `./src/api/${tag}/${operationId}.ts`,
           template,
-          'utf8',
-        );
-        return [genTestsWritePromise, libWritePromise];
+          'utf8'
+        )
+        return [genTestsWritePromise, libWritePromise]
       } catch (e) {
-        console.error('apiGen failure for', operationId, e);
-        throw e;
+        console.error('apiGen failure for', operationId, e)
+        throw e
       }
-    },
-  );
-  await Promise.all(writePromises.flat());
-  let indexFileString = '';
+    }
+  )
+  await Promise.all(writePromises.flat())
+  let indexFileString = ''
   // sorts are added to keep a consistent order since awaiting the promises has non-deterministic order
   Object.entries(indexFile)
     .sort(([a], [b]) => (a > b ? 1 : -1))
     .forEach(([tag, { importsStr: imports, exportsStr: exports }]) => {
-      if (exports.length === 0) return;
-      indexFileString += imports.sort().join('\n') + '\n';
+      if (exports.length === 0) return
+      indexFileString += imports.sort().join('\n') + '\n'
       indexFileString += `export const ${tag} = { ${exports
         .sort()
-        .join(', ')} };\n\n`;
-    });
-  indexFileString += `export type { Models } from './models.js';\n`;
-  indexFileString += `export { Client} from './client.js';\n`;
-  indexFileString += `export { ApiError } from './errors.js';\n`;
-  await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8');
+        .join(', ')} };\n\n`
+    })
+  indexFileString += `export type { Models } from './models.js';\n`
+  indexFileString += `export { Client} from './client.js';\n`
+  indexFileString += `export { ApiError } from './errors.js';\n`
+  await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8')
 
   // Build a concise WS usage snippet if the spec has any WS endpoints
   const wsOps = Object.entries(operations).filter(([, op]) =>
-    Boolean((op.specSection as any)['x-dropshot-websocket']),
-  );
-  let wsSnippet = '';
+    Boolean((op.specSection as any)['x-dropshot-websocket'])
+  )
+  let wsSnippet = ''
   if (wsOps.length) {
-    const prefer = ['ml_copilot_ws', 'modeling_commands_ws', 'ml_reasoning_ws'];
-    const preferred = wsOps.find(([id]) => prefer.includes(id)) || wsOps[0];
-    const [sampleId, sampleOp] = preferred;
+    const prefer = ['ml_copilot_ws', 'modeling_commands_ws', 'ml_reasoning_ws']
+    const preferred = wsOps.find(([id]) => prefer.includes(id)) || wsOps[0]
+    const [sampleId, sampleOp] = preferred
     const sampleTag = (sampleOp.specSection?.tags?.[0] || 'api')
       .toString()
-      .replaceAll('-', '_');
+      .replaceAll('-', '_')
     wsSnippet = [
       `// WebSocket usage`,
       `async function ExampleWs() {`,
@@ -779,7 +776,7 @@ export default async function apiGen(lookup: Record<string, string>) {
       `  }`,
       `  conn.close();`,
       `}`,
-    ].join('\n');
+    ].join('\n')
   }
 
   spec.info['x-typescript'] = {
@@ -804,17 +801,17 @@ export default async function apiGen(lookup: Record<string, string>) {
     ].join('\n'),
     install: 'npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib',
     ...(wsSnippet ? { ws: wsSnippet } : {}),
-  };
-  const patch = generate(observer);
+  }
+  const patch = generate(observer)
   await fsp.writeFile(
     `./kittycad.ts.patch.json`,
     JSON.stringify(patch, null, 2),
-    'utf8',
-  );
+    'utf8'
+  )
 }
 
 function wrapInBacktics(str: string) {
-  return `\`${str}\``;
+  return `\`${str}\``
 }
 
 function replacer(
@@ -822,17 +819,17 @@ function replacer(
   replaceList: (
     | [string | RegExp, string]
     | [string | RegExp, string, boolean]
-  )[],
+  )[]
 ): string {
-  let result = template;
+  let result = template
   replaceList.forEach(([search, newVal, debug]) => {
     if (debug) {
-      const newTemplate = result.replace(search, newVal);
-      console.log({ old: result, newTemplate });
+      const newTemplate = result.replace(search, newVal)
+      console.log({ old: result, newTemplate })
     }
-    result = result.replaceAll(search, newVal);
-  });
-  return result;
+    result = result.replaceAll(search, newVal)
+  })
+  return result
 }
 
 export function isObj(obj: any) {
@@ -841,7 +838,7 @@ export function isObj(obj: any) {
     obj !== null &&
     !Array.isArray(obj) &&
     Object.keys(obj).length
-  );
+  )
 }
 
 function isRef(schema: unknown): schema is OpenAPIV3.ReferenceObject {
@@ -849,7 +846,7 @@ function isRef(schema: unknown): schema is OpenAPIV3.ReferenceObject {
     typeof schema === 'object' &&
     schema !== null &&
     '$ref' in (schema as Record<string, unknown>)
-  );
+  )
 }
 
 function toPascalCase(str: string): string {
@@ -857,10 +854,10 @@ function toPascalCase(str: string): string {
     .split(/[^a-zA-Z0-9]+/)
     .filter(Boolean)
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    .join('');
+    .join('')
 }
 function toWsClassName(opId: string): string {
-  let id = opId || '';
-  if (id.startsWith('create_')) id = id.slice('create_'.length);
-  return toPascalCase(id);
+  let id = opId || ''
+  if (id.startsWith('create_')) id = id.slice('create_'.length)
+  return toPascalCase(id)
 }

@@ -1,4 +1,4 @@
-import { orgs, ApiError } from '../../src/index.js';
+import { orgs, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await orgs.create_org_member({
@@ -6,16 +6,16 @@ async function example() {
       email: 'The email address of the user to add to the org.',
       role: 'admin',
     },
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing orgs.create_org_member', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

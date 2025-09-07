@@ -29,14 +29,14 @@ export const operationsToNotGenerateTestsFor = [
   'delete_payment_method_for_user',
   'list_invoices_for_user',
   'get_payment_balance_for_any_user',
-];
+]
 
 /**
  * Construct a test path string from a tag and operationId
  * to index into the arrays exported from this file
  */
 export const toTestPathString = (tag: string, operationId: string) =>
-  `${tag.trim()}.${operationId.trim()}`;
+  `${tag.trim()}.${operationId.trim()}`
 
 /**
  * These tests are expected to timeout due to the behavior of the Dev API
@@ -49,7 +49,7 @@ export const expectedToTimeout = [
   'meta.get_metadata',
   'payments.get_payment_balance_for_user',
   'orgs.get_org_member',
-];
+]
 
 /**
  * Tests that are expected to fail
@@ -178,4 +178,4 @@ export const testsExpectedToThrow = [
 
   'ml.create_text_to_cad_iteration',
   'ml.create_text_to_cad',
-];
+]

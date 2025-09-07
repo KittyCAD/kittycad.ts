@@ -1,5 +1,5 @@
-import https from 'node:https'
 import fs from 'node:fs'
+import https from 'node:https'
 
 const port = 4443
 const host = '127.0.0.1'
@@ -14,4 +14,3 @@ const server = https.createServer({ pfx, passphrase }, (req, res) => {
 server.listen(port, host, () => {
   console.log(`https server listening at https://${host}:${port}`)
 })
-

@@ -1,196 +1,196 @@
-import fsp from 'fs/promises';
-import { OpenAPIV3 } from 'openapi-types';
-import apiGen from './apiGen.js';
+import fsp from 'fs/promises'
+import type { OpenAPIV3 } from 'openapi-types'
+import apiGen from './apiGen.js'
 
 main().catch((e) => {
   // Provide a stack trace for easier debugging in CI and locally.
-  console.error(e instanceof Error ? e.stack : e);
-  process.exit(1);
-});
+  console.error(e instanceof Error ? e.stack : e)
+  process.exit(1)
+})
 
 async function main() {
   const spec: OpenAPIV3.Document = JSON.parse(
-    await fsp.readFile('./spec.json', 'utf8'),
-  );
+    await fsp.readFile('./spec.json', 'utf8')
+  )
   const schemas = spec.components.schemas as {
-    [key: string]: OpenAPIV3.SchemaObject;
-  };
-  const typeReference: { [key: string]: string } = {};
-  const typeNameReference: { [key: string]: string } = {};
-  let template = '';
+    [key: string]: OpenAPIV3.SchemaObject
+  }
+  const typeReference: { [key: string]: string } = {}
+  const typeNameReference: { [key: string]: string } = {}
+  let template = ''
 
   const addTypeName = ($ref: string, name: string) => {
-    typeNameReference[$ref] = name;
-  };
+    typeNameReference[$ref] = name
+  }
 
   const makeTypeStringForNode = (
     schema: OpenAPIV3.SchemaObject,
     name = '',
     isRoot = false,
-    forceOptional = false,
+    forceOptional = false
   ): string => {
-    const optional = forceOptional || !!schema.nullable;
-    const namePart = name ? `${name}${optional ? '?' : ''}:` : '';
+    const optional = forceOptional || !!schema.nullable
+    const namePart = name ? `${name}${optional ? '?' : ''}:` : ''
     if (schema.type === 'number' && schema.format === 'double' && isRoot) {
-      return `${namePart} number /* use-type */`;
+      return `${namePart} number /* use-type */`
     }
     if (schema.type === 'string' && schema.enum) {
       return [
         addCommentInfo(
           schema,
-          `${namePart} ${schema.enum.map((e) => `'${e}'`).join(' | ')}`,
+          `${namePart} ${schema.enum.map((e) => `'${e}'`).join(' | ')}`
         ),
         '/* use-type */',
-      ].join('\n');
+      ].join('\n')
     }
     if (schema.type === 'string' || schema.type === 'boolean') {
       return addCommentInfo(
         schema,
         `${namePart} ${schema.type} ${
           !namePart && isRoot ? '/* use-type */' : ''
-        }`,
-      );
+        }`
+      )
     }
     if (schema.type === 'number' || schema.type === 'integer') {
-      return addCommentInfo(schema, `${namePart} number`);
+      return addCommentInfo(schema, `${namePart} number`)
     }
     if (schema.type === 'object' && schema.properties) {
-      const requiredSet = new Set((schema as any).required || []);
+      const requiredSet = new Set((schema as any).required || [])
       const objectInner = Object.entries(schema.properties)
         .map(([key, subSchema]: [string, OpenAPIV3.SchemaObject]) => {
           if (!(subSchema.type === 'array') && !(subSchema.type === 'object')) {
             if (subSchema.allOf) {
-              const ref = (subSchema.allOf[0] as any).$ref;
+              const ref = (subSchema.allOf[0] as any).$ref
               return addCommentInfo(
                 subSchema,
                 `${key}${requiredSet.has(key) ? '' : '?'}: ${
                   typeNameReference[ref]
-                }`,
-              );
+                }`
+              )
             }
             if ((subSchema as any).$ref) {
-              const ref = (subSchema as any).$ref;
+              const ref = (subSchema as any).$ref
               return addCommentInfo(
                 subSchema,
                 `${key}${requiredSet.has(key) ? '' : '?'}: ${
                   typeNameReference[ref]
-                }`,
-              );
+                }`
+              )
             }
             return makeTypeStringForNode(
               subSchema,
               key,
               false,
-              !requiredSet.has(key),
-            );
+              !requiredSet.has(key)
+            )
           } else if (subSchema.type === 'array') {
-            const items = subSchema.items;
+            const items = subSchema.items
             if ((items as any).$ref) {
-              const ref = (items as any).$ref;
+              const ref = (items as any).$ref
               return addCommentInfo(
                 subSchema,
                 `${key}${requiredSet.has(key) ? '' : '?'}: ${
                   typeNameReference[ref]
-                }[]`,
-              );
+                }[]`
+              )
             }
             return `${makeTypeStringForNode(
               items as OpenAPIV3.SchemaObject,
               key,
               false,
-              !requiredSet.has(key),
-            )}[]`;
+              !requiredSet.has(key)
+            )}[]`
           } else if (
             subSchema.type === 'object' &&
             subSchema.additionalProperties
           ) {
             if ((subSchema.additionalProperties as any).$ref) {
-              const ref = (subSchema.additionalProperties as any).$ref;
+              const ref = (subSchema.additionalProperties as any).$ref
               return addCommentInfo(
                 subSchema,
                 `${key}${requiredSet.has(key) ? '' : '?'}: {[key: string] : ${
                   typeNameReference[ref]
-                }}`,
-              );
+                }}`
+              )
             }
             // Handle array index signatures
             if ((subSchema.additionalProperties as any).type === 'array') {
               return `${key}${
                 requiredSet.has(key) ? '' : '?'
               }: {[key: string] : ${makeTypeStringForNode(
-                subSchema.additionalProperties as any,
-              )}}`;
+                subSchema.additionalProperties as any
+              )}}`
             }
             return `${key}${
               requiredSet.has(key) ? '' : '?'
             }: {[key: string] : ${makeTypeStringForNode(
-              subSchema.additionalProperties as any,
-            )}}`;
+              subSchema.additionalProperties as any
+            )}}`
           }
           if (subSchema.type === 'object' && (subSchema as any).properties) {
             return `${key}${
               requiredSet.has(key) ? '' : '?'
-            }: ${makeTypeStringForNode(subSchema)}`;
+            }: ${makeTypeStringForNode(subSchema)}`
           } else if (subSchema.type === 'object') {
-            return `${key}${requiredSet.has(key) ? '' : '?'}: object`;
+            return `${key}${requiredSet.has(key) ? '' : '?'}: object`
           }
           // Fallback for uncommon shapes
-          return `${key}${requiredSet.has(key) ? '' : '?'}: any`;
+          return `${key}${requiredSet.has(key) ? '' : '?'}: any`
         })
-        .join('; ');
-      return `{${objectInner}}`;
+        .join('; ')
+      return `{${objectInner}}`
     }
 
     // An empty object
     if (schema.type === 'object' && !schema.properties) {
-      return `${namePart} {} /* Empty object */`;
+      return `${namePart} {} /* Empty object */`
     }
     if (
       JSON.stringify(Object.keys(schema)) === '["description"]' ||
       JSON.stringify(Object.keys(schema)) === '["description","nullable"]'
     ) {
-      return `${namePart} string`;
+      return `${namePart} string`
     }
     if (schema.oneOf) {
       const unionParts = schema.oneOf.map(
         (subSchema: OpenAPIV3.SchemaObject) => {
           if (subSchema.type === 'string') {
-            return `'${subSchema.enum?.[0]}'`;
+            return `'${subSchema.enum?.[0]}'`
           } else if (
             !(subSchema.type === 'array') &&
             !(subSchema.type === 'object')
           ) {
             if (subSchema.allOf) {
-              const ref = (subSchema.allOf[0] as any).$ref;
-              return typeReference[ref];
+              const ref = (subSchema.allOf[0] as any).$ref
+              return typeReference[ref]
             }
-            return makeTypeStringForNode(subSchema);
+            return makeTypeStringForNode(subSchema)
           } else if (subSchema.type === 'array') {
-            const items = subSchema.items;
+            const items = subSchema.items
             if ((items as any).$ref) {
-              const ref = (items as any).$ref;
-              return `${typeReference[ref]}[]`;
+              const ref = (items as any).$ref
+              return `${typeReference[ref]}[]`
             }
           } else if (subSchema.type === 'object') {
-            return makeTypeStringForNode(subSchema);
+            return makeTypeStringForNode(subSchema)
           }
-          return 'any';
-        },
-      );
-      return `${namePart} ${unionParts.join(' | ')} /* use-type */`;
+          return 'any'
+        }
+      )
+      return `${namePart} ${unionParts.join(' | ')} /* use-type */`
     }
     if (schema.anyOf) {
       const unionParts = schema.anyOf.map((subSchema: OpenAPIV3.SchemaObject) =>
-        makeTypeStringForNode(subSchema),
-      );
-      return `${namePart} ${unionParts.join(' | ')} /* use-type */`;
+        makeTypeStringForNode(subSchema)
+      )
+      return `${namePart} ${unionParts.join(' | ')} /* use-type */`
     }
     if (schema.allOf) {
-      const ref = (schema.allOf[0] as any).$ref;
-      return `${namePart} ${typeReference[ref]}`;
+      const ref = (schema.allOf[0] as any).$ref
+      return `${namePart} ${typeReference[ref]}`
     }
     if (schema.type === 'array') {
-      return `${namePart} ${makeTypeStringForNode(schema.items as any)}[]`;
+      return `${namePart} ${makeTypeStringForNode(schema.items as any)}[]`
     }
     // Object only has $ref inside
     if (
@@ -200,51 +200,51 @@ async function main() {
       '$ref' in schema &&
       typeof schema['$ref'] === 'string'
     ) {
-      const ref = schema['$ref'];
+      const ref = schema['$ref']
       // if `name` is empty, just pass back the looked-up type
       const typeString =
         (name ? `${name}: ` : '') +
-        (ref in typeNameReference ? typeNameReference[ref] : 'any');
-      return typeString;
+        (ref in typeNameReference ? typeNameReference[ref] : 'any')
+      return typeString
     }
     if (typeof schema.type === 'undefined') {
-      return `${name}: any`;
+      return `${name}: any`
     }
     // Fallback for unsupported schema shapes
-    return `${namePart} any`;
-  };
+    return `${namePart} any`
+  }
 
-  const componentRef = (key: string): string => '#/components/schemas/' + key;
+  const componentRef = (key: string): string => '#/components/schemas/' + key
   for (const key of Object.keys(schemas)) {
-    addTypeName(componentRef(key), key + '_type');
+    addTypeName(componentRef(key), key + '_type')
   }
   // Always regenerate models from spec to keep typings accurate
-  const modelsExportParts = [];
+  const modelsExportParts = []
   for (const [key, schema] of Object.entries(schemas)) {
-    const typeName = typeNameReference[componentRef(key)];
+    const typeName = typeNameReference[componentRef(key)]
     try {
-      const typeBody = makeTypeStringForNode(schema, '', true);
-      typeReference[componentRef(key)] = typeBody;
-      modelsExportParts.push(typeName);
+      const typeBody = makeTypeStringForNode(schema, '', true)
+      typeReference[componentRef(key)] = typeBody
+      modelsExportParts.push(typeName)
 
       if (typeBody.includes('/* use-type */')) {
         template += `export type ${typeName} = ${typeBody.replaceAll(
           '/* use-type */',
-          '',
-        )}\n\n`;
+          ''
+        )}\n\n`
       } else {
-        template += `export interface ${typeName} ${typeBody}\n\n`;
+        template += `export interface ${typeName} ${typeBody}\n\n`
       }
     } catch (e) {
       // Be resilient to odd schemas so apiGen can proceed.
-      typeReference[componentRef(key)] = 'any';
-      modelsExportParts.push(typeName);
-      template += `export type ${typeName} = any\n\n`;
+      typeReference[componentRef(key)] = 'any'
+      modelsExportParts.push(typeName)
+      template += `export type ${typeName} = any\n\n`
     }
   }
   template += `export interface Models {\n${modelsExportParts
     .map((name) => `${name}: ${name}`)
-    .join(';\n')}\n}\n\n`;
+    .join(';\n')}\n}\n\n`
 
   // openApi spec doesn't support a boolean that always false or always true
   // however union types with forced booleans are very valuable for type
@@ -253,14 +253,14 @@ async function main() {
   // Note this relies on the addCommentInfo function to add the "Always false"
   // comments from spec descriptions in the typescript, if these descriptions
   // change in the spec, this will need to be updated
-  template = template.replaceAll(/boolean.+\/\* Always false \*\//g, 'false');
-  template = template.replaceAll(/boolean.+\/\* Always true \*\//g, 'true');
+  template = template.replaceAll(/boolean.+\/\* Always false \*\//g, 'false')
+  template = template.replaceAll(/boolean.+\/\* Always true \*\//g, 'true')
 
   // Add a file type to the Models interface.
-  template += `export type File =  {  readonly name: string;readonly data:Blob;  }\n\n`;
+  template += `export type File =  {  readonly name: string;readonly data:Blob;  }\n\n`
 
-  await fsp.writeFile(`./src/models.ts`, template, 'utf8');
-  await apiGen(typeNameReference);
+  await fsp.writeFile(`./src/models.ts`, template, 'utf8')
+  await apiGen(typeNameReference)
 }
 
 function addCommentInfo(schema: any, typeString: string) {
@@ -273,18 +273,18 @@ function addCommentInfo(schema: any, typeString: string) {
     additionalProperties,
     description,
     ...newSchema
-  } = schema;
+  } = schema
   if (!Object.keys(newSchema).length && !description) {
-    return typeString;
+    return typeString
   } else if (!Object.keys(newSchema).length && description) {
     if (
       typeString.includes('\n') ||
       typeString.includes('|') ||
       description.includes('\n')
     ) {
-      return `\n/* ${description} */\n${typeString}`;
+      return `\n/* ${description} */\n${typeString}`
     }
-    return `${typeString} /* ${description} */`;
+    return `${typeString} /* ${description} */`
   } else if (Object.keys(newSchema).length <= 2 && description?.length < 50) {
     return `\n/* ${JSON.stringify({
       ...newSchema,
@@ -292,11 +292,11 @@ function addCommentInfo(schema: any, typeString: string) {
     })
       .slice(1, -1)
       .replaceAll(',"', ', "')
-      .replaceAll('"', '')} */\n${typeString}`;
+      .replaceAll('"', '')} */\n${typeString}`
   }
   return `\n/*${JSON.stringify(
     { ...newSchema, description },
     null,
-    2,
-  )}*/\n${typeString}`;
+    2
+  )}*/\n${typeString}`
 }

@@ -1,21 +1,21 @@
-import { Client } from '../../client.js';
-import { throwIfNotOk } from '../../errors.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
 import {
   AsyncApiCallResultsPage_type,
   CreatedAtSortMode_type,
   ApiCallStatus_type,
-} from '../../models.js';
+} from '../../models.js'
 
 interface ListAsyncOperationsParams {
-  client?: Client;
-  limit: number;
-  page_token: string;
-  sort_by: CreatedAtSortMode_type;
-  status: ApiCallStatus_type;
+  client?: Client
+  limit: number
+  page_token: string
+  sort_by: CreatedAtSortMode_type
+  status: ApiCallStatus_type
 }
 
-type ListAsyncOperationsReturn = AsyncApiCallResultsPage_type;
+type ListAsyncOperationsReturn = AsyncApiCallResultsPage_type
 
 export default async function list_async_operations({
   client,
@@ -24,13 +24,13 @@ export default async function list_async_operations({
   sort_by,
   status,
 }: ListAsyncOperationsParams): Promise<ListAsyncOperationsReturn> {
-  const url = `/async/operations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&status=${status}`;
+  const url = `/async/operations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&status=${status}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -40,16 +40,16 @@ export default async function list_async_operations({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
+      ''
   const headers: Record<string, string> = {
     Authorization: `Bearer ${kittycadToken}`,
-  };
+  }
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  await throwIfNotOk(response);
-  const result = (await response.json()) as ListAsyncOperationsReturn;
-  return result;
+  }
+  const response = await fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as ListAsyncOperationsReturn
+  return result
 }

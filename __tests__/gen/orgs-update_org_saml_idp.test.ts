@@ -1,4 +1,4 @@
-import { orgs, ApiError } from '../../src/index.js';
+import { orgs, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await orgs.update_org_saml_idp({
@@ -15,16 +15,16 @@ async function example() {
       technical_contact_email:
         'The technical contact email address for the SAML identity provider.',
     },
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing orgs.update_org_saml_idp', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

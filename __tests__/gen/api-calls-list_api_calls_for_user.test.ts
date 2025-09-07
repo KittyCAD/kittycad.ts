@@ -1,4 +1,4 @@
-import { api_calls, ApiError } from '../../src/index.js';
+import { api_calls, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await api_calls.list_api_calls_for_user({
@@ -6,16 +6,16 @@ async function example() {
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing api_calls.list_api_calls_for_user', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

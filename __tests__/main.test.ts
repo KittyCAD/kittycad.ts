@@ -1,7 +1,7 @@
-import { file, Client } from '../src/index.js';
-import fsp from 'fs/promises';
+import fsp from 'fs/promises'
+import { Client, file } from '../src/index.js'
 
-const client = new Client(null);
+const client = new Client(null)
 
 describe('Testing create_file_mass', () => {
   it("shouldn't throw", async () => {
@@ -11,14 +11,14 @@ describe('Testing create_file_mass', () => {
       output_unit: 'g',
       material_density: 0.007,
       body: await fsp.readFile('./example.obj', 'base64'),
-    });
-    if ('error_code' in response) throw 'error' + JSON.stringify(response);
+    })
+    if ('error_code' in response) throw 'error' + JSON.stringify(response)
 
-    const { status, mass } = response;
-    console.log(mass);
-    expect(status).toBe('completed');
-    expect(mass).toBe(1.0375403388552853e-7);
-  });
+    const { status, mass } = response
+    console.log(mass)
+    expect(status).toBe('completed')
+    expect(mass).toBe(1.0375403388552853e-7)
+  })
   it("shouldn't throw when using a client", async () => {
     const response = await file.create_file_mass({
       client,
@@ -27,11 +27,11 @@ describe('Testing create_file_mass', () => {
       output_unit: 'g',
       material_density: 0.007,
       body: await fsp.readFile('./example.obj', 'base64'),
-    });
-    if ('error_code' in response) throw 'error' + JSON.stringify(response);
+    })
+    if ('error_code' in response) throw 'error' + JSON.stringify(response)
 
-    const { status, mass } = response;
-    expect(status).toBe('completed');
-    expect(mass).toBe(1.0375403388552853e-7);
-  });
-});
+    const { status, mass } = response
+    expect(status).toBe('completed')
+    expect(mass).toBe(1.0375403388552853e-7)
+  })
+})

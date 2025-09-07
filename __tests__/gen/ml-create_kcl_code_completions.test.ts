@@ -1,4 +1,4 @@
-import { ml } from '../../src/index.js';
+import { ml } from '../../src/index.js'
 
 async function example() {
   const response = await ml.create_kcl_code_completions({
@@ -20,12 +20,12 @@ async function example() {
       temperature: 7,
       top_p: 7,
     },
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing ml.create_kcl_code_completions', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
-  });
-});
+    expect(await example()).toBeTruthy()
+  })
+})

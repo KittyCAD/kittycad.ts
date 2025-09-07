@@ -9,4 +9,3 @@ if (!res.ok) throw new Error(`unexpected status ${res.status}`)
 const text = await res.text()
 if (text !== 'ok') throw new Error(`unexpected body ${text}`)
 console.log('win-ca smoke OK')
-

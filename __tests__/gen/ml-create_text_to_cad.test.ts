@@ -1,4 +1,4 @@
-import { ml, ApiError } from '../../src/index.js';
+import { ml, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await ml.create_text_to_cad({
@@ -11,16 +11,16 @@ async function example() {
         'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',
       prompt: 'The prompt for the model.',
     },
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing ml.create_text_to_cad', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

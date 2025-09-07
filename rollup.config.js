@@ -1,13 +1,13 @@
-import { babel } from '@rollup/plugin-babel';
-import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
-import pkg from './package.json';
+import { babel } from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
+import { terser } from 'rollup-plugin-terser'
+import pkg from './package.json'
 
-const extensions = ['.js', '.ts'];
-const deps = Object.keys(pkg.dependencies || {});
-const peers = Object.keys(pkg.peerDependencies || {});
+const extensions = ['.js', '.ts']
+const deps = Object.keys(pkg.dependencies || {})
+const peers = Object.keys(pkg.peerDependencies || {})
 
 const makePlugins = (browser) => [
   json(),
@@ -15,7 +15,7 @@ const makePlugins = (browser) => [
   commonjs(),
   babel({ extensions }),
   terser(),
-];
+]
 
 // Node-targeted ESM + CJS (externalize all deps; Node loads them)
 const nodeBundle = {
@@ -26,10 +26,10 @@ const nodeBundle = {
     { file: pkg.main.replace('.js', '.cjs'), format: 'cjs' },
   ],
   plugins: makePlugins(false),
-};
+}
 
 // Browser-targeted UMD (bundle cross-fetch polyfill; leave bson external)
-const browserExternals = deps.filter((d) => d !== 'cross-fetch').concat(peers);
+const browserExternals = deps.filter((d) => d !== 'cross-fetch').concat(peers)
 const browserBundle = {
   input: 'src/index.ts',
   external: browserExternals,
@@ -42,6 +42,6 @@ const browserBundle = {
     },
   ],
   plugins: makePlugins(true),
-};
+}
 
-export default [nodeBundle, browserBundle];
+export default [nodeBundle, browserBundle]

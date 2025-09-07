@@ -1,20 +1,20 @@
-import { service_accounts, ApiError } from '../../src/index.js';
+import { service_accounts, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await service_accounts.list_service_accounts_for_org({
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing service_accounts.list_service_accounts_for_org', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

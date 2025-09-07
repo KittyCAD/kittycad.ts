@@ -1,4 +1,4 @@
-import { meta, ApiError } from '../../src/index.js';
+import { meta, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await meta.create_event({
@@ -20,16 +20,16 @@ async function example() {
       type: 'modeling_app_event',
       user_id: 'An anonymous user id generated client-side.',
     },
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing meta.create_event', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

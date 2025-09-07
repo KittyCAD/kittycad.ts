@@ -1,4 +1,4 @@
-import { file, ApiError } from '../../src/index.js';
+import { file, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await file.create_file_conversion_options({
@@ -16,16 +16,16 @@ async function example() {
       },
       src_format: { type: 'fbx' },
     },
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing file.create_file_conversion_options', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

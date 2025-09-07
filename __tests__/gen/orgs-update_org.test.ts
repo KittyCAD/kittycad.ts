@@ -1,4 +1,4 @@
-import { orgs, ApiError } from '../../src/index.js';
+import { orgs, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await orgs.update_org({
@@ -10,16 +10,16 @@ async function example() {
       name: 'The name of the org.',
       phone: "The org's phone number.",
     },
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing orgs.update_org', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

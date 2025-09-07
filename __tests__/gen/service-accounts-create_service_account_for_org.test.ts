@@ -1,18 +1,18 @@
-import { service_accounts, ApiError } from '../../src/index.js';
+import { service_accounts, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await service_accounts.create_service_account_for_org({
     label: 'string',
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing service_accounts.create_service_account_for_org', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

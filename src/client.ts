@@ -1,8 +1,8 @@
-import 'cross-fetch/polyfill';
+import 'cross-fetch/polyfill'
 
 export class Client {
   constructor(readonly token: string) {
-    this.token = token;
+    this.token = token
   }
 }
 
@@ -16,9 +16,9 @@ try {
   ) {
     // Dynamic import via indirection to avoid Rollup code-splitting.
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    const din: any = new Function('m', 'return import(m)');
+    const din: any = new Function('m', 'return import(m)')
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    din('win-ca');
+    din('win-ca')
   }
 } catch {
   // ignore if not available

@@ -1,4 +1,4 @@
-import { payments, ApiError } from '../../src/index.js';
+import { payments, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await payments.create_payment_information_for_user({
@@ -14,16 +14,16 @@ async function example() {
       name: 'The name of the customer.',
       phone: 'The phone for the customer.',
     },
-  });
-  return response;
+  })
+  return response
 }
 
 describe('Testing payments.create_payment_information_for_user', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeInstanceOf(ApiError);
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})
