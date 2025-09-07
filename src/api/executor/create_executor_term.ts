@@ -5,11 +5,11 @@ import { BSON } from 'bson';
 // Types for requests/responses are injected by apiGen
 // import { any, any } from '../../models.js';
 
-interface Create_executor_term_params {
+interface CreateExecutorTermParams {
   client?: Client;
 }
 
-export default class Create_executor_termClass<Req = any, Res = any> {
+export default class CreateExecutorTerm<Req = any, Res = any> {
   private ws: any;
 
   private constructor(wsImpl: any) {
@@ -18,7 +18,7 @@ export default class Create_executor_termClass<Req = any, Res = any> {
 
   static async connect({
     client,
-  }: Create_executor_term_params): Promise<Create_executor_termClass> {
+  }: CreateExecutorTermParams): Promise<CreateExecutorTerm> {
     const url = `/ws/executor/term`;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
@@ -75,7 +75,7 @@ export default class Create_executor_termClass<Req = any, Res = any> {
       } catch {}
     }
 
-    return new Create_executor_termClass(ws);
+    return new CreateExecutorTerm(ws);
   }
 
   send(data: Req): void {

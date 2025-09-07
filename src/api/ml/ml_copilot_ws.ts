@@ -8,11 +8,11 @@ import { BSON } from 'bson';
 // Types for requests/responses are injected by apiGen
 // import { MlCopilotClientMessage_type, MlCopilotServerMessage_type } from '../../models.js';
 
-interface Ml_copilot_ws_params {
+interface MlCopilotWsParams {
   client?: Client;
 }
 
-export default class Ml_copilot_wsClass<
+export default class MlCopilotWs<
   Req = MlCopilotClientMessage_type,
   Res = MlCopilotServerMessage_type,
 > {
@@ -22,9 +22,7 @@ export default class Ml_copilot_wsClass<
     this.ws = wsImpl;
   }
 
-  static async connect({
-    client,
-  }: Ml_copilot_ws_params): Promise<Ml_copilot_wsClass> {
+  static async connect({ client }: MlCopilotWsParams): Promise<MlCopilotWs> {
     const url = `/ws/ml/copilot`;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
@@ -81,7 +79,7 @@ export default class Ml_copilot_wsClass<
       } catch {}
     }
 
-    return new Ml_copilot_wsClass(ws);
+    return new MlCopilotWs(ws);
   }
 
   send(data: Req): void {

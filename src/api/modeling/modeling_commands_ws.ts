@@ -9,7 +9,7 @@ import { BSON } from 'bson';
 // Types for requests/responses are injected by apiGen
 // import { WebSocketRequest_type, WebSocketResponse_type } from '../../models.js';
 
-interface Modeling_commands_ws_params {
+interface ModelingCommandsWsParams {
   client?: Client;
   api_call_id: string;
   fps: number;
@@ -23,7 +23,7 @@ interface Modeling_commands_ws_params {
   webrtc: boolean;
 }
 
-export default class Modeling_commands_wsClass<
+export default class ModelingCommandsWs<
   Req = WebSocketRequest_type,
   Res = WebSocketResponse_type,
 > {
@@ -45,7 +45,7 @@ export default class Modeling_commands_wsClass<
     video_res_height,
     video_res_width,
     webrtc,
-  }: Modeling_commands_ws_params): Promise<Modeling_commands_wsClass> {
+  }: ModelingCommandsWsParams): Promise<ModelingCommandsWs> {
     const url = `/ws/modeling/commands?api_call_id=${api_call_id}&fps=${fps}&pool=${pool}&post_effect=${post_effect}&replay=${replay}&show_grid=${show_grid}&unlocked_framerate=${unlocked_framerate}&video_res_height=${video_res_height}&video_res_width=${video_res_width}&webrtc=${webrtc}`;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
@@ -102,7 +102,7 @@ export default class Modeling_commands_wsClass<
       } catch {}
     }
 
-    return new Modeling_commands_wsClass(ws);
+    return new ModelingCommandsWs(ws);
   }
 
   send(data: Req): void {

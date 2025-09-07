@@ -8,12 +8,12 @@ import { BSON } from 'bson';
 // Types for requests/responses are injected by apiGen
 // import { MlCopilotClientMessage_type, MlCopilotServerMessage_type } from '../../models.js';
 
-interface Ml_reasoning_ws_params {
+interface MlReasoningWsParams {
   client?: Client;
   id: string;
 }
 
-export default class Ml_reasoning_wsClass<
+export default class MlReasoningWs<
   Req = MlCopilotClientMessage_type,
   Res = MlCopilotServerMessage_type,
 > {
@@ -26,7 +26,7 @@ export default class Ml_reasoning_wsClass<
   static async connect({
     client,
     id,
-  }: Ml_reasoning_ws_params): Promise<Ml_reasoning_wsClass> {
+  }: MlReasoningWsParams): Promise<MlReasoningWs> {
     const url = `/ws/ml/reasoning/${id}`;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
@@ -83,7 +83,7 @@ export default class Ml_reasoning_wsClass<
       } catch {}
     }
 
-    return new Ml_reasoning_wsClass(ws);
+    return new MlReasoningWs(ws);
   }
 
   send(data: Req): void {

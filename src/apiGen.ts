@@ -523,20 +523,20 @@ export default async function apiGen(lookup: any) {
         }
 
         // Replace placeholders in WS template
+        const className = toWsClassName(operationId);
+        const paramsName = `${className}Params`;
         template = replacer(template, [
           [
             /interface FunctionNameParams(.|\n)+?}/g,
-            `interface ${FC(operationId)}_params {\n${inputTypes.join(
-              '; ',
-            )}\n}`,
+            `interface ${paramsName} {\n${inputTypes.join('; ')}\n}`,
           ],
-          [/class FunctionNameClass/g, `class ${FC(operationId)}Class`],
+          [/class FunctionNameClass/g, `class ${className}`],
           [
             /export default class FunctionNameClass/g,
-            `export default class ${FC(operationId)}Class`,
+            `export default class ${className}`,
           ],
-          [/FunctionNameClass/g, `${FC(operationId)}Class`],
-          [/FunctionNameParams/g, `${FC(operationId)}_params`],
+          [/FunctionNameClass/g, `${className}`],
+          [/FunctionNameParams/g, `${paramsName}`],
           [
             `import { Client } from '../../client.js';`,
             `import { Client } from '../../client.js';\nimport {${[
@@ -577,10 +577,12 @@ export default async function apiGen(lookup: any) {
         ]);
       } else {
         // ws-specific: ensure params typing and object destructuring
+        const className = toWsClassName(operationId);
+        const paramsName = `${className}Params`;
         template = replacer(template, [
           [
             `functionNameParams: FunctionNameParams,`,
-            `functionNameParams: ${FC(operationId)}_params,`,
+            `functionNameParams: ${paramsName},`,
           ],
           [
             `functionNameParams:`,
@@ -801,4 +803,12 @@ export function isObj(obj: any) {
 
 function FC(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function toPascalCase(str: string): string {
+  return (str || '')
+    .split(/[^a-zA-Z0-9]+/)
+    .filter(Boolean)
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join('');
 }
