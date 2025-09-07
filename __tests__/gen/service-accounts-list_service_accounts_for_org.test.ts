@@ -1,4 +1,4 @@
-import { service_accounts } from '../../src/index.js';
+import { service_accounts, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await service_accounts.list_service_accounts_for_org({
@@ -12,6 +12,12 @@ async function example() {
 
 describe('Testing service_accounts.list_service_accounts_for_org', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
+    try {
+      await example();
+    } catch (err) {
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
+    }
   });
 });

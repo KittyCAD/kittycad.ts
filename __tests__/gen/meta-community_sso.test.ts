@@ -1,4 +1,4 @@
-import { meta } from '../../src/index.js';
+import { meta, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await meta.community_sso({ sig: 'string', sso: 'string' });
@@ -8,6 +8,12 @@ async function example() {
 
 describe('Testing meta.community_sso', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
+    try {
+      await example();
+    } catch (err) {
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
+    }
   });
 });

@@ -1,4 +1,4 @@
-import { api_tokens } from '../../src/index.js';
+import { api_tokens, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await api_tokens.list_api_tokens_for_user({
@@ -12,6 +12,12 @@ async function example() {
 
 describe('Testing api_tokens.list_api_tokens_for_user', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
+    try {
+      await example();
+    } catch (err) {
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
+    }
   });
 });

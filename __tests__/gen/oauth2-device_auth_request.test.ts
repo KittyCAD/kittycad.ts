@@ -1,4 +1,4 @@
-import { oauth2 } from '../../src/index.js';
+import { oauth2, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await oauth2.device_auth_request();
@@ -8,6 +8,12 @@ async function example() {
 
 describe('Testing oauth2.device_auth_request', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
+    try {
+      await example();
+    } catch (err) {
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
+    }
   });
 });

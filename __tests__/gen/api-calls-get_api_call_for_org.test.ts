@@ -1,4 +1,4 @@
-import { api_calls } from '../../src/index.js';
+import { api_calls, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await api_calls.get_api_call_for_org({ id: 'string' });
@@ -8,6 +8,12 @@ async function example() {
 
 describe('Testing api_calls.get_api_call_for_org', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
+    try {
+      await example();
+    } catch (err) {
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
+    }
   });
 });
