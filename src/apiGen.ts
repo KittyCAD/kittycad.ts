@@ -804,11 +804,15 @@ export function isObj(obj: any) {
 function FC(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
 function toPascalCase(str: string): string {
   return (str || '')
     .split(/[^a-zA-Z0-9]+/)
     .filter(Boolean)
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join('');
+}
+function toWsClassName(opId: string): string {
+  let id = opId || '';
+  if (id.startsWith('create_')) id = id.slice('create_'.length);
+  return toPascalCase(id);
 }

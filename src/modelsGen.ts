@@ -130,8 +130,8 @@ async function main() {
           } else if (subSchema.type === 'object') {
             return `${key}${requiredSet.has(key) ? '' : '?'}: object`;
           }
-          console.log(subSchema, key);
-          throw 'subSchema not implemented ' + subSchema.type;
+          // Fallback for uncommon shapes
+          return `${key}${requiredSet.has(key) ? '' : '?'}: any`;
         })
         .join('; ');
       return `{${objectInner}}`;
@@ -206,8 +206,8 @@ async function main() {
     if (typeof schema.type === 'undefined') {
       return `${name}: any`;
     }
-    console.log('modelsGen', schema);
-    throw 'not implemented';
+    // Fallback for unsupported schema shapes
+    return `${namePart} any`;
   };
 
   const componentRef = (key: string): string => '#/components/schemas/' + key;

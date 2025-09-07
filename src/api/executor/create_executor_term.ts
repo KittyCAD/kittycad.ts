@@ -5,20 +5,18 @@ import { BSON } from 'bson';
 // Types for requests/responses are injected by apiGen
 // import { any, any } from '../../models.js';
 
-interface CreateExecutorTermParams {
+interface ExecutorTermParams {
   client?: Client;
 }
 
-export default class CreateExecutorTerm<Req = any, Res = any> {
+export default class ExecutorTerm<Req = any, Res = any> {
   private ws: any;
 
   private constructor(wsImpl: any) {
     this.ws = wsImpl;
   }
 
-  static async connect({
-    client,
-  }: CreateExecutorTermParams): Promise<CreateExecutorTerm> {
+  static async connect({ client }: ExecutorTermParams): Promise<ExecutorTerm> {
     const url = `/ws/executor/term`;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
@@ -75,7 +73,7 @@ export default class CreateExecutorTerm<Req = any, Res = any> {
       } catch {}
     }
 
-    return new CreateExecutorTerm(ws);
+    return new ExecutorTerm(ws);
   }
 
   send(data: Req): void {
