@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { MlPrompt_type } from '../../models.js'
+import type { MlPrompt_type } from '../../models.js'
 
 interface GetMlPromptParams {
   client?: Client

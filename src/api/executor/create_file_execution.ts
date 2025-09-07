@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { CodeOutput_type, CodeLanguage_type } from '../../models.js'
+import type { CodeLanguage_type, CodeOutput_type } from '../../models.js'
 
 interface CreateFileExecutionParams {
   client?: Client

@@ -740,7 +740,7 @@ export interface CameraDragMove_type {
   settings: CameraSettings_type /* Camera settings */
 }
 
-export interface CameraDragStart_type {} /* Empty object */
+export type CameraDragStart_type = {} /* Empty object */
 
 export type CameraMovement_type = 'vantage' | 'none'
 
@@ -1102,7 +1102,7 @@ export interface CurveGetType_type {
   curve_type: CurveType_type /* Curve type */
 }
 
-export interface CurveSetConstraint_type {} /* Empty object */
+export type CurveSetConstraint_type = {} /* Empty object */
 
 export type CurveType_type =
   /* The type of Curve (embedded within path) */
@@ -1197,11 +1197,11 @@ export type CutStrategy_type = 'basic' | 'csg' | 'automatic'
 
 export type CutType_type = 'fillet' | 'chamfer'
 
-export interface DefaultCameraCenterToScene_type {} /* Empty object */
+export type DefaultCameraCenterToScene_type = {} /* Empty object */
 
-export interface DefaultCameraCenterToSelection_type {} /* Empty object */
+export type DefaultCameraCenterToSelection_type = {} /* Empty object */
 
-export interface DefaultCameraFocusOn_type {} /* Empty object */
+export type DefaultCameraFocusOn_type = {} /* Empty object */
 
 export interface DefaultCameraGetSettings_type {
   settings: CameraSettings_type /* Camera settings */
@@ -1211,15 +1211,15 @@ export interface DefaultCameraGetView_type {
   view: CameraViewState_type /* Camera view state */
 }
 
-export interface DefaultCameraLookAt_type {} /* Empty object */
+export type DefaultCameraLookAt_type = {} /* Empty object */
 
-export interface DefaultCameraPerspectiveSettings_type {} /* Empty object */
+export type DefaultCameraPerspectiveSettings_type = {} /* Empty object */
 
-export interface DefaultCameraSetOrthographic_type {} /* Empty object */
+export type DefaultCameraSetOrthographic_type = {} /* Empty object */
 
-export interface DefaultCameraSetPerspective_type {} /* Empty object */
+export type DefaultCameraSetPerspective_type = {} /* Empty object */
 
-export interface DefaultCameraSetView_type {} /* Empty object */
+export type DefaultCameraSetView_type = {} /* Empty object */
 
 export interface DefaultCameraZoom_type {
   settings: CameraSettings_type /* Camera settings */
@@ -1264,7 +1264,7 @@ export interface DeviceAuthRequestForm_type {
 
 export type Direction_type = 'positive' | 'negative'
 
-export interface DisableDryRun_type {} /* Empty object */
+export type DisableDryRun_type = {} /* Empty object */
 
 export interface Discount_type {
   coupon: Coupon_type /* The coupon that applied to create this discount. */
@@ -1293,7 +1293,7 @@ export interface EdgeInfo_type {
   faces: string[]
 }
 
-export interface EdgeLinesVisible_type {} /* Empty object */
+export type EdgeLinesVisible_type = {} /* Empty object */
 
 export interface EmailAuthenticationForm_type {
   /*{
@@ -1306,9 +1306,9 @@ export interface EmailAuthenticationForm_type {
   email: string
 }
 
-export interface EnableDryRun_type {} /* Empty object */
+export type EnableDryRun_type = {} /* Empty object */
 
-export interface EnableSketchMode_type {} /* Empty object */
+export type EnableSketchMode_type = {} /* Empty object */
 
 export interface EngineUtilEvaluatePath_type {
   pos: Point3d_type /* The evaluated path curve position */
@@ -1336,7 +1336,7 @@ export interface EntityClone_type {
   face_edge_ids?: FaceEdgeInfo_type[] /* The Face and Edge Ids of the cloned entity. */
 }
 
-export interface EntityFade_type {} /* Empty object */
+export type EntityFade_type = {} /* Empty object */
 
 export interface EntityGetAllChildUuids_type {
   /*{
@@ -1380,11 +1380,11 @@ export interface EntityLinearPatternTransform_type {
   entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */
 }
 
-export interface EntityMakeHelix_type {} /* Empty object */
+export type EntityMakeHelix_type = {} /* Empty object */
 
-export interface EntityMakeHelixFromEdge_type {} /* Empty object */
+export type EntityMakeHelixFromEdge_type = {} /* Empty object */
 
-export interface EntityMakeHelixFromParams_type {} /* Empty object */
+export type EntityMakeHelixFromParams_type = {} /* Empty object */
 
 export interface EntityMirror_type {
   entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */
@@ -1394,7 +1394,7 @@ export interface EntityMirrorAcrossEdge_type {
   entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */
 }
 
-export interface EntitySetOpacity_type {} /* Empty object */
+export type EntitySetOpacity_type = {} /* Empty object */
 
 export type EntityType_type =
   /* The type of entity */
@@ -1469,7 +1469,7 @@ export interface ExportFile_type {
   name: string /* The name of the file. */
 }
 
-export interface ExtendPath_type {} /* Empty object */
+export type ExtendPath_type = {} /* Empty object */
 
 export interface ExtendedUser_type {
   /* nullable:true, description:If the user should be blocked and the reason why. */
@@ -1535,7 +1535,7 @@ export interface ExtendedUserResultsPage_type {
   next_page?: string
 }
 
-export interface Extrude_type {} /* Empty object */
+export type Extrude_type = {} /* Empty object */
 
 export type ExtrudeMethod_type = 'new' | 'merge'
 
@@ -1868,13 +1868,13 @@ export type GltfPresentation_type = 'compact' | 'pretty'
 
 export type GltfStorage_type = 'binary' | 'standard' | 'embedded'
 
-export interface HandleMouseDragEnd_type {} /* Empty object */
+export type HandleMouseDragEnd_type = {} /* Empty object */
 
-export interface HandleMouseDragMove_type {} /* Empty object */
+export type HandleMouseDragMove_type = {} /* Empty object */
 
-export interface HandleMouseDragStart_type {} /* Empty object */
+export type HandleMouseDragStart_type = {} /* Empty object */
 
-export interface HighlightSetEntities_type {} /* Empty object */
+export type HighlightSetEntities_type = {} /* Empty object */
 
 export interface HighlightSetEntity_type {
   /* nullable:true, format:uuid, description:The UUID of the entity that was highlighted. */
@@ -2284,7 +2284,7 @@ export interface Loft_type {
   solid_id: string
 }
 
-export interface MakeAxesGizmo_type {} /* Empty object */
+export type MakeAxesGizmo_type = {} /* Empty object */
 
 export interface MakeOffsetPath_type {
   /*{
@@ -2293,7 +2293,7 @@ export interface MakeOffsetPath_type {
   entity_ids: string[]
 }
 
-export interface MakePlane_type {} /* Empty object */
+export type MakePlane_type = {} /* Empty object */
 
 export interface Mass_type {
   /* format:double, description:The mass. */
@@ -3596,11 +3596,11 @@ export interface MouseClick_type {
   entities_selected: string[]
 }
 
-export interface MouseMove_type {} /* Empty object */
+export type MouseMove_type = {} /* Empty object */
 
-export interface MovePathPen_type {} /* Empty object */
+export type MovePathPen_type = {} /* Empty object */
 
-export interface NewAnnotation_type {} /* Empty object */
+export type NewAnnotation_type = {} /* Empty object */
 
 export interface OAuth2ClientInfo_type {
   csrf_token?: string /* Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */
@@ -3617,11 +3617,11 @@ export interface OAuth2ClientInfo_type {
 export type OAuth2GrantType_type =
   'urn:ietf:params:oauth:grant-type:device_code'
 
-export interface ObjectBringToFront_type {} /* Empty object */
+export type ObjectBringToFront_type = {} /* Empty object */
 
-export interface ObjectSetMaterialParamsPbr_type {} /* Empty object */
+export type ObjectSetMaterialParamsPbr_type = {} /* Empty object */
 
-export interface ObjectVisible_type {} /* Empty object */
+export type ObjectVisible_type = {} /* Empty object */
 
 export type OkModelingCmdResponse_type =
   | { type: 'empty' }
@@ -5031,7 +5031,7 @@ export interface PlaneIntersectAndProject_type {
   plane_coordinates?: Point2d_type
 }
 
-export interface PlaneSetColor_type {} /* Empty object */
+export type PlaneSetColor_type = {} /* Empty object */
 
 export type PlyStorage_type =
   | 'ascii'
@@ -5144,15 +5144,15 @@ export type ReasoningMessage_type =
     }
   | { file_name: string /* The file name. */; type: 'deleted_kcl_file' }
 
-export interface ReconfigureStream_type {} /* Empty object */
+export type ReconfigureStream_type = {} /* Empty object */
 
 export type RelativeTo_type = 'sketch_plane' | 'trajectory_curve'
 
-export interface RemoveSceneObjects_type {} /* Empty object */
+export type RemoveSceneObjects_type = {} /* Empty object */
 
-export interface Revolve_type {} /* Empty object */
+export type Revolve_type = {} /* Empty object */
 
-export interface RevolveAboutEdge_type {} /* Empty object */
+export type RevolveAboutEdge_type = {} /* Empty object */
 
 export interface Rotation_type {
   angle: Angle_type /* Rotate this far about the rotation axis. Defaults to zero (i.e. no rotation). */
@@ -5247,7 +5247,7 @@ export interface SamlIdentityProviderCreate_type {
   technical_contact_email?: string
 }
 
-export interface SceneClearAll_type {} /* Empty object */
+export type SceneClearAll_type = {} /* Empty object */
 
 export type SceneSelectionType_type = 'replace' | 'add' | 'remove'
 
@@ -5261,9 +5261,9 @@ export type SceneToolType_type =
   | 'sketch_curve'
   | 'sketch_curve_mod'
 
-export interface SelectAdd_type {} /* Empty object */
+export type SelectAdd_type = {} /* Empty object */
 
-export interface SelectClear_type {} /* Empty object */
+export type SelectClear_type = {} /* Empty object */
 
 export interface SelectGet_type {
   /*{
@@ -5272,9 +5272,9 @@ export interface SelectGet_type {
   entity_ids: string[]
 }
 
-export interface SelectRemove_type {} /* Empty object */
+export type SelectRemove_type = {} /* Empty object */
 
-export interface SelectReplace_type {} /* Empty object */
+export type SelectReplace_type = {} /* Empty object */
 
 export interface SelectWithPoint_type {
   /* nullable:true, format:uuid, description:The UUID of the entity that was selected. */
@@ -5296,7 +5296,7 @@ export type Selection_type =
     }
   | { name: string /* The name. */; type: 'mesh_by_name' }
 
-export interface SendObject_type {} /* Empty object */
+export type SendObject_type = {} /* Empty object */
 
 export interface ServiceAccount_type {
   /* title:DateTime, format:date-time, description:The date and time the API token was created. */
@@ -5338,27 +5338,27 @@ export interface Session_type {
 export type SessionUuid_type =
   string /* An auth token. A uuid with a prefix of ses- */
 
-export interface SetBackgroundColor_type {} /* Empty object */
+export type SetBackgroundColor_type = {} /* Empty object */
 
-export interface SetCurrentToolProperties_type {} /* Empty object */
+export type SetCurrentToolProperties_type = {} /* Empty object */
 
-export interface SetDefaultSystemProperties_type {} /* Empty object */
+export type SetDefaultSystemProperties_type = {} /* Empty object */
 
-export interface SetGridAutoScale_type {} /* Empty object */
+export type SetGridAutoScale_type = {} /* Empty object */
 
-export interface SetGridReferencePlane_type {} /* Empty object */
+export type SetGridReferencePlane_type = {} /* Empty object */
 
-export interface SetGridScale_type {} /* Empty object */
+export type SetGridScale_type = {} /* Empty object */
 
-export interface SetObjectTransform_type {} /* Empty object */
+export type SetObjectTransform_type = {} /* Empty object */
 
-export interface SetSceneUnits_type {} /* Empty object */
+export type SetSceneUnits_type = {} /* Empty object */
 
-export interface SetSelectionFilter_type {} /* Empty object */
+export type SetSelectionFilter_type = {} /* Empty object */
 
-export interface SetSelectionType_type {} /* Empty object */
+export type SetSelectionType_type = {} /* Empty object */
 
-export interface SetTool_type {} /* Empty object */
+export type SetTool_type = {} /* Empty object */
 
 export interface Shortlink_type {
   /* title:DateTime, format:date-time, description:The date and time the shortlink was created. */
@@ -5397,11 +5397,11 @@ export interface SideFace_type {
   path_id: string
 }
 
-export interface SketchModeDisable_type {} /* Empty object */
+export type SketchModeDisable_type = {} /* Empty object */
 
-export interface Solid2dAddHole_type {} /* Empty object */
+export type Solid2dAddHole_type = {} /* Empty object */
 
-export interface Solid3dFilletEdge_type {} /* Empty object */
+export type Solid3dFilletEdge_type = {} /* Empty object */
 
 export interface Solid3dGetAdjacencyInfo_type {
   edges: AdjacencyInfo_type[] /* Details of each edge. */
@@ -5445,7 +5445,7 @@ export interface Solid3dGetPrevAdjacentEdge_type {
   edge?: string
 }
 
-export interface Solid3dShellFace_type {} /* Empty object */
+export type Solid3dShellFace_type = {} /* Empty object */
 
 export interface SourcePosition_type {
   /* format:uint32, minimum:0, description:The column number. */
@@ -5469,7 +5469,7 @@ export interface SourceRangePrompt_type {
   range: SourceRange_type /* The range of the source code to change. If you want to apply the prompt to the whole file, set the start to 0 and the end to the end of the file. */
 }
 
-export interface StartPath_type {} /* Empty object */
+export type StartPath_type = {} /* Empty object */
 
 export type StlStorage_type = 'ascii' | 'binary'
 
@@ -5538,7 +5538,7 @@ export interface SurfaceArea_type {
   surface_area: number
 }
 
-export interface Sweep_type {} /* Empty object */
+export type Sweep_type = {} /* Empty object */
 
 export interface System_type {
   forward: AxisDirectionPair_type /* Axis the front face of a model looks along. */
@@ -5989,7 +5989,7 @@ export interface TransformByForPoint4d_type {
   set: boolean /* If true, overwrite the previous value with this. If false, the previous value will be modified. E.g. when translating, `set=true` will set a new location, and `set=false` will translate the current location by the given X/Y/Z. */
 }
 
-export interface TwistExtrude_type {} /* Empty object */
+export type TwistExtrude_type = {} /* Empty object */
 
 export type UnitAngle_type = 'degrees' | 'radians'
 
@@ -6534,7 +6534,7 @@ This is the same as the API call ID. */
   user_id: Uuid_type /* The user ID of the user who created the API call. */
 }
 
-export interface UpdateAnnotation_type {} /* Empty object */
+export type UpdateAnnotation_type = {} /* Empty object */
 
 export interface UpdateMemberToOrgBody_type {
   role: UserOrgRole_type /* The organization role to give the user. */

@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  OrgMemberResultsPage_type,
+import type {
   CreatedAtSortMode_type,
+  OrgMemberResultsPage_type,
   UserOrgRole_type,
 } from '../../models.js'
 

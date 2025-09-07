@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ExtendedUserResultsPage_type,
+import type {
   CreatedAtSortMode_type,
+  ExtendedUserResultsPage_type,
 } from '../../models.js'
 
 interface ListUsersExtendedParams {

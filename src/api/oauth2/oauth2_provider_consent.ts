@@ -1,7 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { OAuth2ClientInfo_type, AccountProvider_type } from '../../models.js'
+import type {
+  AccountProvider_type,
+  OAuth2ClientInfo_type,
+} from '../../models.js'
 
 interface Oauth2ProviderConsentParams {
   client?: Client

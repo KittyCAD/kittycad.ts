@@ -1,8 +1,8 @@
-import { File } from '../../models.js'
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import type { File } from '../../models.js'
 
-import { Event_type } from '../../models.js'
+import type { Event_type } from '../../models.js'
 
 interface CreateEventParams {
   client?: Client

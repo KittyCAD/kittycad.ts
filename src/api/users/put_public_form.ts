@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { InquiryForm_type } from '../../models.js'
+import type { InquiryForm_type } from '../../models.js'
 
 interface PutPublicFormParams {
   client?: Client

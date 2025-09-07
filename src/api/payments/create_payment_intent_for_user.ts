@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { PaymentIntent_type } from '../../models.js'
+import type { PaymentIntent_type } from '../../models.js'
 
 interface CreatePaymentIntentForUserParams {
   client?: Client

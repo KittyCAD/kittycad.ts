@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { PrivacySettings_type } from '../../models.js'
+import type { PrivacySettings_type } from '../../models.js'
 
 interface GetOrgPrivacySettingsParams {
   client?: Client

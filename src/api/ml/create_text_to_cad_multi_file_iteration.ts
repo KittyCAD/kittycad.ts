@@ -1,10 +1,10 @@
-import { File } from '../../models.js'
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import type { File } from '../../models.js'
 
-import {
-  TextToCadMultiFileIteration_type,
+import type {
   TextToCadMultiFileIterationBody_type,
+  TextToCadMultiFileIteration_type,
 } from '../../models.js'
 
 interface CreateTextToCadMultiFileIterationParams {

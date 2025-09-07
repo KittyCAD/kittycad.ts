@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Session_type, SessionUuid_type } from '../../models.js'
+import type { SessionUuid_type, Session_type } from '../../models.js'
 
 interface GetSessionForUserParams {
   client?: Client

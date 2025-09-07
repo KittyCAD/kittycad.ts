@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UpdateShortlinkRequest_type } from '../../models.js'
+import type { UpdateShortlinkRequest_type } from '../../models.js'
 
 interface UpdateUserShortlinkParams {
   client?: Client

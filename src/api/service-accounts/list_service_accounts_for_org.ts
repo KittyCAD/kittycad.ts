@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ServiceAccountResultsPage_type,
+import type {
   CreatedAtSortMode_type,
+  ServiceAccountResultsPage_type,
 } from '../../models.js'
 
 interface ListServiceAccountsForOrgParams {

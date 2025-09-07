@@ -1,10 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
+import type {
   FileCenterOfMass_type,
-  UnitLength_type,
   FileImportFormat_type,
+  UnitLength_type,
 } from '../../models.js'
 
 interface CreateFileCenterOfMassParams {

@@ -1,4 +1,4 @@
-import { payments, ApiError } from '../../src/index.js'
+import { ApiError, payments } from '../../src/index.js'
 
 async function example() {
   const response = await payments.get_payment_balance_for_any_org({

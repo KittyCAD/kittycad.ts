@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  TextToCadIteration_type,
+import type {
   TextToCadIterationBody_type,
+  TextToCadIteration_type,
 } from '../../models.js'
 
 interface CreateTextToCadIterationParams {

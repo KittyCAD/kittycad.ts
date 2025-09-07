@@ -1,10 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
+import type {
   ApiCallWithPriceResultsPage_type,
-  UserIdentifier_type,
   CreatedAtSortMode_type,
+  UserIdentifier_type,
 } from '../../models.js'
 
 interface ListApiCallsForUserParams {

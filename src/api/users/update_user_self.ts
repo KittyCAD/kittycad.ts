@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { User_type, UpdateUser_type } from '../../models.js'
+import type { UpdateUser_type, User_type } from '../../models.js'
 
 interface UpdateUserSelfParams {
   client?: Client

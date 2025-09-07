@@ -1,4 +1,4 @@
-import { apps, ApiError } from '../../src/index.js'
+import { ApiError, apps } from '../../src/index.js'
 
 async function example() {
   const response = await apps.apps_github_callback()

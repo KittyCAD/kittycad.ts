@@ -1,7 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UnitEnergyConversion_type, UnitEnergy_type } from '../../models.js'
+import type {
+  UnitEnergyConversion_type,
+  UnitEnergy_type,
+} from '../../models.js'
 
 interface GetEnergyUnitConversionParams {
   client?: Client

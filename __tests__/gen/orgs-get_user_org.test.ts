@@ -1,4 +1,4 @@
-import { orgs, ApiError } from '../../src/index.js'
+import { ApiError, orgs } from '../../src/index.js'
 
 async function example() {
   const response = await orgs.get_user_org()

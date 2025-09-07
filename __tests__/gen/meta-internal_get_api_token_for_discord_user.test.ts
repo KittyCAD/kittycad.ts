@@ -1,4 +1,4 @@
-import { meta, ApiError } from '../../src/index.js'
+import { ApiError, meta } from '../../src/index.js'
 
 async function example() {
   const response = await meta.internal_get_api_token_for_discord_user({

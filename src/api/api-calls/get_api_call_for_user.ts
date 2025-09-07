@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ApiCallWithPrice_type } from '../../models.js'
+import type { ApiCallWithPrice_type } from '../../models.js'
 
 interface GetApiCallForUserParams {
   client?: Client

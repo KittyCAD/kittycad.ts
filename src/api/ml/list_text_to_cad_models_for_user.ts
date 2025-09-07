@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  TextToCadResponseResultsPage_type,
+import type {
   CreatedAtSortMode_type,
+  TextToCadResponseResultsPage_type,
   Uuid_type,
 } from '../../models.js'
 

@@ -1,7 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UserResultsPage_type, CreatedAtSortMode_type } from '../../models.js'
+import type {
+  CreatedAtSortMode_type,
+  UserResultsPage_type,
+} from '../../models.js'
 
 interface ListUsersParams {
   client?: Client

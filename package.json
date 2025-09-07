@@ -76,7 +76,7 @@
     "gen": "node --loader ts-node/esm ./src/modelsGen.ts && yarn fmt",
     "test": "vitest",
     "tsc": "tsc",
-    "fmt": "biome format --write src __tests__ *.json"
+    "fmt": "biome format --write ."
   },
   "author": "Kurt Hutten <kurt@zoo.dev>",
   "license": "MIT",

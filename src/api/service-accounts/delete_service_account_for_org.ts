@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ServiceAccountUuid_type } from '../../models.js'
+import type { ServiceAccountUuid_type } from '../../models.js'
 
 interface DeleteServiceAccountForOrgParams {
   client?: Client

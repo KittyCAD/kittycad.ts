@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { DeviceAuthConfirmParams_type } from '../../models.js'
+import type { DeviceAuthConfirmParams_type } from '../../models.js'
 
 interface DeviceAuthConfirmParams {
   client?: Client

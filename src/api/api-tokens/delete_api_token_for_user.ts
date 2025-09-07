@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ApiTokenUuid_type } from '../../models.js'
+import type { ApiTokenUuid_type } from '../../models.js'
 
 interface DeleteApiTokenForUserParams {
   client?: Client

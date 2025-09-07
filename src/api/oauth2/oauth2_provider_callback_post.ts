@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { AccountProvider_type } from '../../models.js'
+import type { AccountProvider_type } from '../../models.js'
 
 interface Oauth2ProviderCallbackPostParams {
   client?: Client

@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ApiCallQueryGroup_type,
+import type {
   ApiCallQueryGroupBy_type,
+  ApiCallQueryGroup_type,
 } from '../../models.js'
 
 interface GetApiCallMetricsParams {

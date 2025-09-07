@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ApiToken_type } from '../../models.js'
+import type { ApiToken_type } from '../../models.js'
 
 interface InternalGetApiTokenForDiscordUserParams {
   client?: Client

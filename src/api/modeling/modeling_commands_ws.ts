@@ -1,6 +1,6 @@
-import { Client } from '../../client.js'
 import { BSON } from 'bson'
-import {
+import type { Client } from '../../client.js'
+import type {
   PostEffectType_type,
   WebSocketRequest_type,
   WebSocketResponse_type,

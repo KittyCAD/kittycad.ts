@@ -641,7 +641,7 @@ export default async function apiGen(lookup: Record<string, string>) {
           !testsExpectedToThrow.includes(toTestPathString(tag, operationId))
         ) {
           genTest = genTest
-            .replace(/,\s*ApiError\s*\}/, ' }')
+            .replace(/,\s*ApiError\s*}/, ' }')
             .replace(/ApiError\s*,\s*/g, '')
             .replace(/,\s*ApiError/g, '')
         }
@@ -662,7 +662,7 @@ export default async function apiGen(lookup: Record<string, string>) {
           ])
           // Ensure ApiError is imported in the docs example
           exampleTemplate = exampleTemplate.replace(
-            new RegExp(`import \{\\s*${safeTag}\\s*\} from '@kittycad/lib';`),
+            new RegExp(`import \{\\s*${safeTag}\\s*} from '@kittycad/lib';`),
             `import { ${safeTag}, ApiError } from '@kittycad/lib';`
           )
           // Append error-handling snippet for docs readers

@@ -1,8 +1,11 @@
-import { File } from '../../models.js'
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import type { File } from '../../models.js'
 
-import { FileConversion_type, ConversionParams_type } from '../../models.js'
+import type {
+  ConversionParams_type,
+  FileConversion_type,
+} from '../../models.js'
 
 interface CreateFileConversionOptionsParams {
   client?: Client

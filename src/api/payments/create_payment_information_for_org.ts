@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Customer_type, BillingInfo_type } from '../../models.js'
+import type { BillingInfo_type, Customer_type } from '../../models.js'
 
 interface CreatePaymentInformationForOrgParams {
   client?: Client

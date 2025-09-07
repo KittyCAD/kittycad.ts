@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { AsyncApiCallOutput_type } from '../../models.js'
+import type { AsyncApiCallOutput_type } from '../../models.js'
 
 interface GetAsyncOperationParams {
   client?: Client

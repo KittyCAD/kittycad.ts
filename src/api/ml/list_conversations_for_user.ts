@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
+import type {
   ConversationResultsPage_type,
   CreatedAtSortMode_type,
 } from '../../models.js'

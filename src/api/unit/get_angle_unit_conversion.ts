@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UnitAngleConversion_type, UnitAngle_type } from '../../models.js'
+import type { UnitAngleConversion_type, UnitAngle_type } from '../../models.js'
 
 interface GetAngleUnitConversionParams {
   client?: Client

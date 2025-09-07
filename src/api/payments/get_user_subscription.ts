@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ZooProductSubscriptions_type } from '../../models.js'
+import type { ZooProductSubscriptions_type } from '../../models.js'
 
 interface GetUserSubscriptionParams {
   client?: Client

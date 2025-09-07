@@ -1,7 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UnitVolumeConversion_type, UnitVolume_type } from '../../models.js'
+import type {
+  UnitVolumeConversion_type,
+  UnitVolume_type,
+} from '../../models.js'
 
 interface GetVolumeUnitConversionParams {
   client?: Client

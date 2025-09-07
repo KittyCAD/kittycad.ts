@@ -1,7 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UnitTorqueConversion_type, UnitTorque_type } from '../../models.js'
+import type {
+  UnitTorqueConversion_type,
+  UnitTorque_type,
+} from '../../models.js'
 
 interface GetTorqueUnitConversionParams {
   client?: Client

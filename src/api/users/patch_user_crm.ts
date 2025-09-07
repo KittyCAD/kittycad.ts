@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { CrmData_type } from '../../models.js'
+import type { CrmData_type } from '../../models.js'
 
 interface PatchUserCrmParams {
   client?: Client

@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UnitForceConversion_type, UnitForce_type } from '../../models.js'
+import type { UnitForceConversion_type, UnitForce_type } from '../../models.js'
 
 interface GetForceUnitConversionParams {
   client?: Client

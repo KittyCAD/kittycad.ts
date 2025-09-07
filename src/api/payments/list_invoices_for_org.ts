@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Invoice_type } from '../../models.js'
+import type { Invoice_type } from '../../models.js'
 
 interface ListInvoicesForOrgParams {
   client?: Client

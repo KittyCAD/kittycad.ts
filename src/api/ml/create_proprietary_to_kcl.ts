@@ -1,8 +1,8 @@
-import { File } from '../../models.js'
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import type { File } from '../../models.js'
 
-import { KclModel_type, CodeOption_type } from '../../models.js'
+import type { CodeOption_type, KclModel_type } from '../../models.js'
 
 interface CreateProprietaryToKclParams {
   client?: Client

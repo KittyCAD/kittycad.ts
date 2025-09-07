@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  CreateShortlinkResponse_type,
+import type {
   CreateShortlinkRequest_type,
+  CreateShortlinkResponse_type,
 } from '../../models.js'
 
 interface CreateUserShortlinkParams {

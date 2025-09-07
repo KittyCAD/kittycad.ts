@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Uuid_type } from '../../models.js'
+import type { Uuid_type } from '../../models.js'
 
 interface DeleteOrgMemberParams {
   client?: Client

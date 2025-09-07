@@ -1,7 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UnitLengthConversion_type, UnitLength_type } from '../../models.js'
+import type {
+  UnitLengthConversion_type,
+  UnitLength_type,
+} from '../../models.js'
 
 interface GetLengthUnitConversionParams {
   client?: Client

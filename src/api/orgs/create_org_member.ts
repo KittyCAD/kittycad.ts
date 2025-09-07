@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { OrgMember_type, AddOrgMember_type } from '../../models.js'
+import type { AddOrgMember_type, OrgMember_type } from '../../models.js'
 
 interface CreateOrgMemberParams {
   client?: Client

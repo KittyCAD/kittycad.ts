@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  KclCodeCompletionResponse_type,
+import type {
   KclCodeCompletionRequest_type,
+  KclCodeCompletionResponse_type,
 } from '../../models.js'
 
 interface CreateKclCodeCompletionsParams {

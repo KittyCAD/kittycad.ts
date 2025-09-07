@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { AppClientInfo_type } from '../../models.js'
+import type { AppClientInfo_type } from '../../models.js'
 
 interface AppsGithubConsentParams {
   client?: Client

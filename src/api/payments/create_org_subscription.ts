@@ -1,9 +1,9 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions_type,
+import type {
   ZooProductSubscriptionsOrgRequest_type,
+  ZooProductSubscriptions_type,
 } from '../../models.js'
 
 interface CreateOrgSubscriptionParams {

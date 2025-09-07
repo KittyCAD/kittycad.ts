@@ -1,10 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
+import type {
+  FileImportFormat_type,
   FileSurfaceArea_type,
   UnitArea_type,
-  FileImportFormat_type,
 } from '../../models.js'
 
 interface CreateFileSurfaceAreaParams {

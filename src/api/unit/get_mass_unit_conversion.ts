@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UnitMassConversion_type, UnitMass_type } from '../../models.js'
+import type { UnitMassConversion_type, UnitMass_type } from '../../models.js'
 
 interface GetMassUnitConversionParams {
   client?: Client

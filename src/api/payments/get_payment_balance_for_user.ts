@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { CustomerBalance_type } from '../../models.js'
+import type { CustomerBalance_type } from '../../models.js'
 
 interface GetPaymentBalanceForUserParams {
   client?: Client

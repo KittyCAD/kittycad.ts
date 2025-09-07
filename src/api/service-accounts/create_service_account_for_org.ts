@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ServiceAccount_type } from '../../models.js'
+import type { ServiceAccount_type } from '../../models.js'
 
 interface CreateServiceAccountForOrgParams {
   client?: Client

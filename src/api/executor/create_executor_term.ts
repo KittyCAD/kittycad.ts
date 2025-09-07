@@ -1,5 +1,5 @@
-import { Client } from '../../client.js'
 import { BSON } from 'bson'
+import type { Client } from '../../client.js'
 import {} from '../../models.js'
 
 interface ExecutorTermParams {

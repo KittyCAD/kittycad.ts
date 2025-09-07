@@ -1,4 +1,4 @@
-import { api_tokens, ApiError } from '../../src/index.js'
+import { ApiError, api_tokens } from '../../src/index.js'
 
 async function example() {
   const response = await api_tokens.delete_api_token_for_user({

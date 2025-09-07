@@ -1,10 +1,10 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  TextToCad_type,
+import type {
   FileExportFormat_type,
   TextToCadCreateBody_type,
+  TextToCad_type,
 } from '../../models.js'
 
 interface CreateTextToCadParams {

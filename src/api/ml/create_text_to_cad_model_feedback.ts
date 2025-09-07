@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { MlFeedback_type } from '../../models.js'
+import type { MlFeedback_type } from '../../models.js'
 
 interface CreateTextToCadModelFeedbackParams {
   client?: Client

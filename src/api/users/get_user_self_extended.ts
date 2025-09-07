@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ExtendedUser_type } from '../../models.js'
+import type { ExtendedUser_type } from '../../models.js'
 
 interface GetUserSelfExtendedParams {
   client?: Client

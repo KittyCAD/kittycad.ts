@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { UnitAreaConversion_type, UnitArea_type } from '../../models.js'
+import type { UnitAreaConversion_type, UnitArea_type } from '../../models.js'
 
 interface GetAreaUnitConversionParams {
   client?: Client

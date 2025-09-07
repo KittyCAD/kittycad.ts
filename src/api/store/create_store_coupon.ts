@@ -1,7 +1,7 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { DiscountCode_type, StoreCouponParams_type } from '../../models.js'
+import type { DiscountCode_type, StoreCouponParams_type } from '../../models.js'
 
 interface CreateStoreCouponParams {
   client?: Client

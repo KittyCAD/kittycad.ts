@@ -1,11 +1,11 @@
-import { Client } from '../../client.js'
+import type { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
+import type {
   FileDensity_type,
-  UnitMass_type,
-  UnitDensity_type,
   FileImportFormat_type,
+  UnitDensity_type,
+  UnitMass_type,
 } from '../../models.js'
 
 interface CreateFileDensityParams {

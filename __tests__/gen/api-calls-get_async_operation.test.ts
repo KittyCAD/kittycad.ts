@@ -1,4 +1,4 @@
-import { api_calls, ApiError } from '../../src/index.js'
+import { ApiError, api_calls } from '../../src/index.js'
 
 async function example() {
   const response = await api_calls.get_async_operation({ id: 'string' })
