@@ -1,4 +1,4 @@
-import { payments } from '../../src/index.js';
+import { payments, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await payments.list_payment_methods_for_org();
@@ -11,7 +11,9 @@ describe('Testing payments.list_payment_methods_for_org', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
     }
   });
 });

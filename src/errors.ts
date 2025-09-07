@@ -6,11 +6,7 @@ export class ApiError extends Error {
   request_id?: string;
   body?: Partial<Error_type>;
 
-  constructor(
-    status: number,
-    body?: Partial<Error_type>,
-    message?: string,
-  ) {
+  constructor(status: number, body?: Partial<Error_type>, message?: string) {
     super(message || body?.message || `HTTP ${status}`);
     this.name = 'ApiError';
     this.status = status;
@@ -34,8 +30,4 @@ export async function throwIfNotOk(res: Response): Promise<void> {
     }
   }
   throw new ApiError(res.status, body);
-}
-
-export function isApiError(err: unknown): err is ApiError {
-  return err instanceof ApiError;
 }

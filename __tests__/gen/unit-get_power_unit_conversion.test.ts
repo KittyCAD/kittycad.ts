@@ -1,4 +1,4 @@
-import { unit } from '../../src/index.js';
+import { unit, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await unit.get_power_unit_conversion({
@@ -15,7 +15,9 @@ describe('Testing unit.get_power_unit_conversion', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
     }
   });
 });

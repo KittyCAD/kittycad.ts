@@ -1,4 +1,4 @@
-import { orgs } from '../../src/index.js';
+import { orgs, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await orgs.update_org_privacy_settings({
@@ -13,7 +13,9 @@ describe('Testing orgs.update_org_privacy_settings', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
     }
   });
 });

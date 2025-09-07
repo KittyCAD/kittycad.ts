@@ -1,4 +1,4 @@
-import { users } from '../../src/index.js';
+import { users, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await users.patch_user_crm({
@@ -17,7 +17,9 @@ describe('Testing users.patch_user_crm', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
     }
   });
 });

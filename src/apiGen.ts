@@ -609,6 +609,14 @@ export default async function apiGen(lookup: any) {
           [`param: 'param'`, inputParamsExamples.filter((a) => a).join(', ')],
           ['{ api }', `{ ${safeTag} }`],
           ['api.section', `${safeTag}.${operationId}`],
+          [
+            "import { api, ApiError } from '../../src/index.js';",
+            `import { ${safeTag}, ApiError } from '../../src/index.js';`,
+          ],
+          [
+            "import { api } from '../../src/index.js';",
+            `import { ${safeTag} } from '../../src/index.js';`,
+          ],
         ]);
       }
       if (
@@ -619,6 +627,18 @@ export default async function apiGen(lookup: any) {
         exampleTemplate = replacer(exampleTemplate, [
           ['expect(await example()).toBeTruthy();', ''],
           [/const examplePromise = example(.|\n)+?.toBe\('timeout'\)/g, ''],
+          [
+            `import { ${safeTag} } from '../../src/index.js';`,
+            `import { ${safeTag}, ApiError } from '../../src/index.js';`,
+          ],
+          [
+            "import { api } from '../../src/index.js';",
+            `import { ${safeTag}, ApiError } from '../../src/index.js';`,
+          ],
+          [
+            /expect\(err\)\.toBeInstanceOf\(Error\);/g,
+            'expect(err).toBeInstanceOf(ApiError);',
+          ],
         ]);
       } else if (
         !isWebSocket &&

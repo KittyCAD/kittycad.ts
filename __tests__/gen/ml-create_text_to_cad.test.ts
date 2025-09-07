@@ -1,4 +1,4 @@
-import { ml } from '../../src/index.js';
+import { ml, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await ml.create_text_to_cad({
@@ -21,7 +21,9 @@ describe('Testing ml.create_text_to_cad', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
     }
   });
 });

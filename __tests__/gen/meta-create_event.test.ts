@@ -1,4 +1,4 @@
-import { meta } from '../../src/index.js';
+import { meta, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await meta.create_event({
@@ -30,7 +30,9 @@ describe('Testing meta.create_event', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
     }
   });
 });

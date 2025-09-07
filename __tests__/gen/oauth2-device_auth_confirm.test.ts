@@ -1,4 +1,4 @@
-import { oauth2 } from '../../src/index.js';
+import { oauth2, ApiError } from '../../src/index.js';
 
 async function example() {
   const response = await oauth2.device_auth_confirm({
@@ -13,7 +13,9 @@ describe('Testing oauth2.device_auth_confirm', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(ApiError);
     }
   });
 });

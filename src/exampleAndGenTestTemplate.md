@@ -13,7 +13,9 @@ describe('Testing api.section', () => {
     try {
       await example();
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      // Only present in tests expected to throw
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      expect(err).toBeInstanceOf(Error);
     }
     const examplePromise = example();
     const timeoutPromise = new Promise((r) =>
