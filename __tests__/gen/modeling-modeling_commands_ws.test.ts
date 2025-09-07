@@ -1,7 +1,7 @@
 import { modeling, Client } from '../../src/index.js';
 
 async function example() {
-  const response = await modeling.modeling_commands_ws.connect({
+  const response = await new modeling.modeling_commands_ws({
     client: new Client(process.env.KITTYCAD_TOKEN),
     api_call_id: 'string',
     fps: 7,
@@ -13,7 +13,7 @@ async function example() {
     video_res_height: 7,
     video_res_width: 7,
     webrtc: true,
-  });
+  }).connect();
   response.close();
   return true;
 }

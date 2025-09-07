@@ -15,23 +15,21 @@ export default class FunctionNameClass<
 > {
   private ws: any;
 
-  private constructor(wsImpl: any) {
-    this.ws = wsImpl;
-  }
+  constructor(private readonly functionNameParams: FunctionNameParams) {}
 
-  static async connect(
-    functionNameParams: FunctionNameParams,
-  ): Promise<FunctionNameClass> {
-    const url = 'string' + functionNameParams.exampleParam;
+  async connect(): Promise<this> {
+    const url = 'string' + this.functionNameParams.exampleParam;
     const urlBase =
       process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
     const httpUrl = urlBase + url;
     const wsUrl = httpUrl.replace(/^http/, 'ws');
 
-    // Resolve a WebSocket implementation for both browser and Node.js
-    const WSImpl: any =
-      (globalThis as any).WebSocket || (await import('ws')).default;
-
+    const WSImpl: any = (globalThis as any).WebSocket;
+    if (!WSImpl) {
+      throw new Error(
+        'WebSocket global is not available. Add a WebSocket polyfill.',
+      );
+    }
     const ws: any = new WSImpl(wsUrl);
 
     await new Promise<void>((resolve, reject) => {
@@ -62,8 +60,10 @@ export default class FunctionNameClass<
     });
 
     // Send auth headers as a message immediately after connect (browser-safe)
-    const kittycadToken = client
-      ? client.token || process.env.ZOO_API_TOKEN || ''
+    const kittycadToken = (this.functionNameParams as any)?.client
+      ? (this.functionNameParams as any).client?.token ||
+        process.env.ZOO_API_TOKEN ||
+        ''
       : process.env.KITTYCAD_TOKEN ||
         process.env.KITTYCAD_API_TOKEN ||
         process.env.ZOO_API_TOKEN ||
@@ -78,7 +78,8 @@ export default class FunctionNameClass<
       } catch {}
     }
 
-    return new FunctionNameClass(ws);
+    this.ws = ws;
+    return this;
   }
 
   send(data: Req): void {
@@ -136,62 +137,6 @@ export default class FunctionNameClass<
         this.ws.on('error', onError);
       }
     });
-  }
-
-  async *[Symbol.asyncIterator](): AsyncGenerator<Res> {
-    const queue: any[] = [];
-    let deferredResolve: (() => void) | undefined;
-    let ended = false;
-
-    const onMessage = (evOrData: any) => {
-      try {
-        queue.push(this.parseMessage(evOrData));
-      } catch (e) {
-        queue.push(e);
-      }
-      deferredResolve?.();
-    };
-    const onClose = () => {
-      ended = true;
-      deferredResolve?.();
-    };
-    const onError = (err: any) => {
-      queue.push(err instanceof Error ? err : new Error('WebSocket error'));
-      deferredResolve?.();
-    };
-
-    if ('addEventListener' in this.ws) {
-      this.ws.addEventListener('message', onMessage as any);
-      this.ws.addEventListener('close', onClose);
-      this.ws.addEventListener('error', onError);
-    } else if ('on' in this.ws) {
-      this.ws.on('message', (data: any) => onMessage({ data }));
-      this.ws.on('close', onClose);
-      this.ws.on('error', onError);
-    }
-
-    try {
-      while (!ended || queue.length) {
-        if (!queue.length) {
-          await new Promise<void>((r) => (deferredResolve = r));
-          deferredResolve = undefined;
-          continue;
-        }
-        const item = queue.shift();
-        if (item instanceof Error) throw item;
-        yield item as Res;
-      }
-    } finally {
-      if ('removeEventListener' in this.ws) {
-        this.ws.removeEventListener('message', onMessage as any);
-        this.ws.removeEventListener('close', onClose);
-        this.ws.removeEventListener('error', onError);
-      } else if ('off' in this.ws) {
-        this.ws.off('message', onMessage as any);
-        this.ws.off('close', onClose);
-        this.ws.off('error', onError);
-      }
-    }
   }
 
   close(): void {

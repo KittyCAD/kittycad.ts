@@ -525,6 +525,10 @@ export default async function apiGen(lookup: any) {
         // Replace placeholders in WS template
         const className = toWsClassName(operationId);
         const paramsName = `${className}Params`;
+        const wsUrlPath = templateUrlPath.replaceAll(
+          '${',
+          '${this.functionNameParams.',
+        );
         template = replacer(template, [
           [
             /interface FunctionNameParams(.|\n)+?}/g,
@@ -545,7 +549,8 @@ export default async function apiGen(lookup: any) {
               .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
               .join(', ')}} from '../../models.js';`,
           ],
-          [`'string' + functionNameParams.exampleParam`, templateUrlPath],
+          [`'string' + functionNameParams.exampleParam`, wsUrlPath],
+          [`'string' + this.functionNameParams.exampleParam`, wsUrlPath],
           [/RequestTypeName/g, wsReqType],
           [/ResponseTypeName/g, wsRespType],
         ]);
@@ -576,17 +581,13 @@ export default async function apiGen(lookup: any) {
           ],
         ]);
       } else {
-        // ws-specific: ensure params typing and object destructuring
+        // ws-specific: ensure params typing
         const className = toWsClassName(operationId);
         const paramsName = `${className}Params`;
         template = replacer(template, [
           [
-            `functionNameParams: FunctionNameParams,`,
-            `functionNameParams: ${paramsName},`,
-          ],
-          [
-            `functionNameParams:`,
-            `{${inputParams.filter((a) => a).join(', ')}}:`,
+            `functionNameParams: FunctionNameParams`,
+            `functionNameParams: ${paramsName}`,
           ],
         ]);
       }

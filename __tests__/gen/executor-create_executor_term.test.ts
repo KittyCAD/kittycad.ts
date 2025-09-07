@@ -1,9 +1,9 @@
 import { executor, Client } from '../../src/index.js';
 
 async function example() {
-  const response = await executor.create_executor_term.connect({
+  const response = await new executor.create_executor_term({
     client: new Client(process.env.KITTYCAD_TOKEN),
-  });
+  }).connect();
   response.close();
   return true;
 }
