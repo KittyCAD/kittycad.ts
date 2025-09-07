@@ -29,9 +29,7 @@ const nodeBundle = {
 };
 
 // Browser-targeted UMD (bundle cross-fetch polyfill; leave bson external)
-const browserExternals = deps
-  .filter((d) => d !== 'cross-fetch')
-  .concat(peers);
+const browserExternals = deps.filter((d) => d !== 'cross-fetch').concat(peers);
 const browserBundle = {
   input: 'src/index.ts',
   external: browserExternals,

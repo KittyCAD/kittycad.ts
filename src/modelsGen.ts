@@ -23,9 +23,10 @@ async function main() {
     schema: OpenAPIV3.SchemaObject,
     name = '',
     isRoot = false,
+    forceOptional = false,
   ): string => {
-    const separator = schema.nullable ? '?:' : ':';
-    const namePart = name ? `${name}${separator}` : '';
+    const optional = forceOptional || !!schema.nullable;
+    const namePart = name ? `${name}${optional ? '?' : ''}:` : '';
     if (schema.type === 'number' && schema.format === 'double' && isRoot) {
       return `${namePart} number /* use-type */`;
     }
@@ -50,37 +51,50 @@ async function main() {
       return addCommentInfo(schema, `${namePart} number`);
     }
     if (schema.type === 'object' && schema.properties) {
+      const requiredSet = new Set((schema as any).required || []);
       const objectInner = Object.entries(schema.properties)
         .map(([key, subSchema]: [string, OpenAPIV3.SchemaObject]) => {
           if (!(subSchema.type === 'array') && !(subSchema.type === 'object')) {
             if (subSchema.allOf) {
               const ref = (subSchema.allOf[0] as any).$ref;
-              const nullableQuestionMark = subSchema.nullable ? '?' : '';
               return addCommentInfo(
                 subSchema,
-                `${key}${nullableQuestionMark}: ${typeNameReference[ref]}`,
+                `${key}${requiredSet.has(key) ? '' : '?'}: ${
+                  typeNameReference[ref]
+                }`,
               );
             }
             if ((subSchema as any).$ref) {
               const ref = (subSchema as any).$ref;
               return addCommentInfo(
                 subSchema,
-                `${key}: ${typeNameReference[ref]}`,
+                `${key}${requiredSet.has(key) ? '' : '?'}: ${
+                  typeNameReference[ref]
+                }`,
               );
             }
-            return makeTypeStringForNode(subSchema, key);
+            return makeTypeStringForNode(
+              subSchema,
+              key,
+              false,
+              !requiredSet.has(key),
+            );
           } else if (subSchema.type === 'array') {
             const items = subSchema.items;
             if ((items as any).$ref) {
               const ref = (items as any).$ref;
               return addCommentInfo(
                 subSchema,
-                `${key}: ${typeNameReference[ref]}[]`,
+                `${key}${requiredSet.has(key) ? '' : '?'}: ${
+                  typeNameReference[ref]
+                }[]`,
               );
             }
             return `${makeTypeStringForNode(
               items as OpenAPIV3.SchemaObject,
               key,
+              false,
+              !requiredSet.has(key),
             )}[]`;
           } else if (
             subSchema.type === 'object' &&
@@ -90,23 +104,31 @@ async function main() {
               const ref = (subSchema.additionalProperties as any).$ref;
               return addCommentInfo(
                 subSchema,
-                `${key}: {[key: string] : ${typeNameReference[ref]}}`,
+                `${key}${requiredSet.has(key) ? '' : '?'}: {[key: string] : ${
+                  typeNameReference[ref]
+                }}`,
               );
             }
-            // Avoids nested colons (:)
+            // Handle array index signatures
             if ((subSchema.additionalProperties as any).type === 'array') {
-              return `${key}: {[key: string] ${makeTypeStringForNode(
+              return `${key}${
+                requiredSet.has(key) ? '' : '?'
+              }: {[key: string] : ${makeTypeStringForNode(
                 subSchema.additionalProperties as any,
               )}}`;
             }
-            return `${key}: {[key: string] : ${makeTypeStringForNode(
+            return `${key}${
+              requiredSet.has(key) ? '' : '?'
+            }: {[key: string] : ${makeTypeStringForNode(
               subSchema.additionalProperties as any,
             )}}`;
           }
           if (subSchema.type === 'object' && (subSchema as any).properties) {
-            return `${key}: ${makeTypeStringForNode(subSchema, key)}`;
+            return `${key}${
+              requiredSet.has(key) ? '' : '?'
+            }: ${makeTypeStringForNode(subSchema)}`;
           } else if (subSchema.type === 'object') {
-            return `${key}: object`;
+            return `${key}${requiredSet.has(key) ? '' : '?'}: object`;
           }
           console.log(subSchema, key);
           throw 'subSchema not implemented ' + subSchema.type;
@@ -164,7 +186,7 @@ async function main() {
       return `${namePart} ${typeReference[ref]}`;
     }
     if (schema.type === 'array') {
-      return `${name}: ${makeTypeStringForNode(schema.items as any)}[]`;
+      return `${namePart} ${makeTypeStringForNode(schema.items as any)}[]`;
     }
     // Object only has $ref inside
     if (
@@ -192,12 +214,7 @@ async function main() {
   for (const key of Object.keys(schemas)) {
     addTypeName(componentRef(key), key + '_type');
   }
-  // Fast path: if models already exist, skip regenerating them and proceed to API
-  try {
-    await fsp.stat('./src/models.ts');
-    await apiGen(typeNameReference);
-    return;
-  } catch {}
+  // Always regenerate models from spec to keep typings accurate
   const modelsExportParts = [];
   for (const [key, schema] of Object.entries(schemas)) {
     const typeName = typeNameReference[componentRef(key)];

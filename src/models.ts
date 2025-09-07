@@ -21,12 +21,12 @@ export interface AddOrgMember_type {
 }
 
 export interface AddressDetails_type {
-  city: string /* The city component. */;
+  city?: string /* The city component. */;
   country: CountryCode_type /* The country component. This is a two-letter ISO country code. */;
-  state: string /* The state component. */;
-  street1: string /* The first street component. */;
-  street2: string /* The second street component. */;
-  zip: string /* The zip component. */;
+  state?: string /* The state component. */;
+  street1?: string /* The first street component. */;
+  street2?: string /* The second street component. */;
+  zip?: string /* The zip component. */;
 }
 
 export interface AdjacencyInfo_type {
@@ -128,8 +128,8 @@ export interface ApiCallWithPrice_type {
 }*/
   duration?: number;
   /* format:email, description:The user's email address. */
-  email: string;
-  endpoint: string /* The endpoint requested by the API call. */;
+  email?: string;
+  endpoint?: string /* The endpoint requested by the API call. */;
   id: Uuid_type /* The unique identifier for the API call. */;
   /*{
   "title": "String",
@@ -137,7 +137,7 @@ export interface ApiCallWithPrice_type {
   "format": "ip",
   "description": "The ip address of the origin."
 }*/
-  ip_address: string;
+  ip_address?: string;
   method: Method_type /* The HTTP method requested by the API call. */;
   /*{
   "nullable": true,
@@ -150,7 +150,7 @@ export interface ApiCallWithPrice_type {
   "description": "The organization ID of the API call if it is billable through an organization."
 }*/
   org_id?: Uuid_type;
-  origin: string /* The origin of the API call. */;
+  origin?: string /* The origin of the API call. */;
   /*{
   "nullable": true,
   "title": "double",
@@ -160,7 +160,7 @@ export interface ApiCallWithPrice_type {
   price?: number;
   /* nullable:true, description:The request body sent by the API call. */
   request_body?: string;
-  request_query_params: string /* The request query params sent by the API call. */;
+  request_query_params?: string /* The request query params sent by the API call. */;
   /*{
   "nullable": true,
   "description": "The response body returned by the API call. We do not store this information if it is above a certain size."
@@ -180,7 +180,7 @@ export interface ApiCallWithPrice_type {
   "description": "The status code returned by the API call."
 }*/
   status_code?: number;
-  stripe_invoice_item_id: string /* The Stripe invoice item ID of the API call if it is billable. */;
+  stripe_invoice_item_id?: string /* The Stripe invoice item ID of the API call if it is billable. */;
   token: Uuid_type /* The API token that made the API call. */;
   /* title:DateTime, format:date-time, description:The date and time the API call was last updated. */
   updated_at: string;
@@ -230,7 +230,7 @@ export type ApiTokenUuid_type =
   string; /* An auth token. A uuid with a prefix of api- */
 
 export interface AppClientInfo_type {
-  url: string /* The URL for consent. */;
+  url?: string /* The URL for consent. */;
 }
 
 export interface AsyncApiCall_type {
@@ -239,7 +239,7 @@ export interface AsyncApiCall_type {
   "format": "int16",
   "description": "The number of times we've attempted to process this job."
 }*/
-  attempts: number;
+  attempts?: number;
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -255,7 +255,7 @@ export interface AsyncApiCall_type {
 
 This is the same as the API call ID. */
   id: Uuid_type;
-  input: string;
+  input?: string;
   output: any;
   /*{
   "nullable": true,
@@ -273,7 +273,7 @@ This is the same as the API call ID. */
 }*/
   updated_at: string;
   user_id: Uuid_type /* The user ID of the user who created the async API call. */;
-  worker: string /* The worker node that is performing or performed the async API call. */;
+  worker?: string /* The worker node that is performing or performed the async API call. */;
 }
 
 export type AsyncApiCallOutput_type =
@@ -296,7 +296,7 @@ This is the same as the API call ID. */
       output_format: FileExportFormat_type /* The output format of the file conversion. */;
       /* nullable:true, description:The output format options of the file conversion. */
       output_format_options?: OutputFormat3d_type;
-      outputs: {
+      outputs?: {
         [key: string]: /*{
   "title": "String",
   "format": "byte"
@@ -371,7 +371,7 @@ This is the same as the API call ID. */
       /* nullable:true, format:double, description:The resulting mass. */
       mass?: number;
       /* default:0, format:double, description:The material density as denoted by the user. */
-      material_density: number;
+      material_density?: number;
       material_density_unit: UnitDensity_type /* The material density unit. */;
       output_unit: UnitMass_type /* The output unit for the mass. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
@@ -440,7 +440,7 @@ This is the same as the API call ID. */
 This is the same as the API call ID. */
       id: Uuid_type;
       /* default:0, format:double, description:The material mass as denoted by the user. */
-      material_mass: number;
+      material_mass?: number;
       material_mass_unit: UnitMass_type /* The material mass unit. */;
       output_unit: UnitDensity_type /* The output unit for the density. */;
       src_format: FileImportFormat_type /* The source format of the file. */;
@@ -519,7 +519,7 @@ This is the same as the API call ID. */
       model: TextToCadModel_type /* The model being used. */;
       model_version: string /* The version of the model. */;
       output_format: FileExportFormat_type /* The output format of the model. */;
-      outputs: {
+      outputs?: {
         [key: string]: /*{
   "title": "String",
   "format": "byte"
@@ -608,7 +608,7 @@ This is the same as the API call ID. */
       kcl_version?: string;
       model: TextToCadModel_type /* The model being used. */;
       model_version: string /* The version of the model. */;
-      outputs: { [key: string]: string };
+      outputs?: { [key: string]: string };
       /*{
   "nullable": true,
   "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
@@ -659,13 +659,13 @@ export interface AuthApiKeyResponse_type {
 }
 
 export interface AuthCallback_type {
-  code: string /* The authorization code. */;
+  code?: string /* The authorization code. */;
   /*{
   "nullable": true,
   "description": "For Apple only, a JSON web token containing the user’s identity information."
 }*/
   id_token?: string;
-  state: string /* The state that we had passed in through the user consent URL. */;
+  state?: string /* The state that we had passed in through the user consent URL. */;
   /*{
   "nullable": true,
   "description": "For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ \"name\": { \"firstName\": string, \"lastName\": string }, \"email\": string }`"
@@ -691,14 +691,14 @@ export type BatchResponse_type =
 export interface BillingInfo_type {
   /* nullable:true, description:The address of the customer. */
   address?: AddressDetails_type;
-  name: string /* The name of the customer. */;
+  name?: string /* The name of the customer. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The phone for the customer."
 }*/
-  phone: string;
+  phone?: string;
 }
 
 export type BlockReason_type =
@@ -709,21 +709,21 @@ export interface BooleanIntersection_type {
   /*{
   "format": "uuid"
 }*/
-  extra_solid_ids: string[];
+  extra_solid_ids?: string[];
 }
 
 export interface BooleanSubtract_type {
   /*{
   "format": "uuid"
 }*/
-  extra_solid_ids: string[];
+  extra_solid_ids?: string[];
 }
 
 export interface BooleanUnion_type {
   /*{
   "format": "uuid"
 }*/
-  extra_solid_ids: string[];
+  extra_solid_ids?: string[];
 }
 
 export interface CameraDragEnd_type {
@@ -793,28 +793,28 @@ export interface CardDetails_type {
   /* Card brand.
 
 Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
-  brand: string;
+  brand?: string;
   /* default:{}, description:Checks on Card address and CVC if provided. */
-  checks: PaymentMethodCardChecks_type;
-  country: string /* Two-letter ISO code representing the country of the card. */;
+  checks?: PaymentMethodCardChecks_type;
+  country?: string /* Two-letter ISO code representing the country of the card. */;
   /*{
   "default": 0,
   "format": "int64",
   "description": "Two-digit number representing the card's expiration month."
 }*/
-  exp_month: number;
+  exp_month?: number;
   /*{
   "default": 0,
   "format": "int64",
   "description": "Four-digit number representing the card's expiration year."
 }*/
-  exp_year: number;
-  fingerprint: string /* Uniquely identifies this particular card number. */;
+  exp_year?: number;
+  fingerprint?: string /* Uniquely identifies this particular card number. */;
   /* Card funding type.
 
 Can be `credit`, `debit`, `prepaid`, or `unknown`. */
-  funding: string;
-  last4: string /* The last four digits of the card. */;
+  funding?: string;
+  last4?: string /* The last four digits of the card. */;
 }
 
 export interface CenterOfMass_type {
@@ -945,11 +945,11 @@ export type CodeOption_type =
   'parse' | 'execute' | 'cleanup' | 'mock_execute';
 
 export interface CodeOutput_type {
-  output_files: OutputFile_type[] /* The contents of the files requested if they were passed. */;
+  output_files?: OutputFile_type[] /* The contents of the files requested if they were passed. */;
   /* default:, description:The stderr of the code. */
-  stderr: string;
+  stderr?: string;
   /* default:, description:The stdout of the code. */
-  stdout: string;
+  stdout?: string;
 }
 
 export interface Color_type {
@@ -1033,9 +1033,9 @@ export interface Coupon_type {
 }*/
   amount_off?: number;
   /* default:false, description:Always true for a deleted object. */
-  deleted: boolean;
-  id: string /* Unique identifier for the object. */;
-  metadata: { [key: string]: string };
+  deleted?: boolean;
+  id?: string /* Unique identifier for the object. */;
+  metadata?: { [key: string]: string };
   /*{
   "nullable": true,
   "description": "Name of the coupon displayed to customers on, for instance invoices, or receipts.\n\nBy default the `id` is shown if `name` is not set."
@@ -1059,7 +1059,7 @@ export interface CreateShortlinkRequest_type {
   "default": false,
   "description": "If the shortlink should be restricted to the user's organization to view. This only applies to org shortlinks. If you are creating a user shortlink and you are not a member of a team or enterprise and you try to set this to true, it will fail."
 }*/
-  restrict_to_org: boolean;
+  restrict_to_org?: boolean;
   /* format:uri, description:The URL to redirect back to. */
   url: string;
 }
@@ -1117,31 +1117,31 @@ export interface Customer_type {
   "format": "money-usd",
   "description": "Current balance, if any, being stored on the customer in the payments service.\n\nIf negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that will be added to their next invoice. The balance does not refer to any unpaid invoices; it solely takes into account amounts that have yet to be successfully applied to any invoice. This balance is only taken into account as invoices are finalized."
 }*/
-  balance: number;
+  balance?: number;
   /* format:date-time, description:Time at which the object was created. */
   created_at: string;
   /*{
   "default": "usd",
   "description": "Three-letter ISO code for the currency the customer can be charged in for recurring billing purposes."
 }*/
-  currency: Currency_type;
+  currency?: Currency_type;
   /*{
   "default": false,
   "description": "When the customer's latest invoice is billed by charging automatically, `delinquent` is `true` if the invoice's latest charge failed.\n\nWhen the customer's latest invoice is billed by sending an invoice, `delinquent` is `true` if the invoice isn't paid by its due date.  If an invoice is marked uncollectible by dunning, `delinquent` doesn't get reset to `false`."
 }*/
-  delinquent: boolean;
+  delinquent?: boolean;
   /* format:email, description:The customer's email address. */
-  email: string;
-  id: string /* Unique identifier for the object. */;
-  metadata: { [key: string]: string };
-  name: string /* The customer's full name or business name. */;
+  email?: string;
+  id?: string /* Unique identifier for the object. */;
+  metadata?: { [key: string]: string };
+  name?: string /* The customer's full name or business name. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The customer's phone number."
 }*/
-  phone: string;
+  phone?: string;
 }
 
 export interface CustomerBalance_type {
@@ -1329,11 +1329,11 @@ export type EnterpriseSubscriptionTierPrice_type =
     };
 
 export interface EntityCircularPattern_type {
-  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
+  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
 }
 
 export interface EntityClone_type {
-  face_edge_ids: FaceEdgeInfo_type[] /* The Face and Edge Ids of the cloned entity. */;
+  face_edge_ids?: FaceEdgeInfo_type[] /* The Face and Edge Ids of the cloned entity. */;
 }
 
 export interface EntityFade_type {} /* Empty object */
@@ -1373,11 +1373,11 @@ export interface EntityGetSketchPaths_type {
 }
 
 export interface EntityLinearPattern_type {
-  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
+  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
 }
 
 export interface EntityLinearPatternTransform_type {
-  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
+  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
 }
 
 export interface EntityMakeHelix_type {} /* Empty object */
@@ -1387,11 +1387,11 @@ export interface EntityMakeHelixFromEdge_type {} /* Empty object */
 export interface EntityMakeHelixFromParams_type {} /* Empty object */
 
 export interface EntityMirror_type {
-  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
+  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
 }
 
 export interface EntityMirrorAcrossEdge_type {
-  entity_face_edge_ids: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
+  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */;
 }
 
 export interface EntitySetOpacity_type {} /* Empty object */
@@ -1410,7 +1410,7 @@ export type EntityType_type =
   | 'vertex';
 
 export interface Error_type {
-  error_code: string;
+  error_code?: string;
   message: string;
   request_id: string;
 }
@@ -1478,15 +1478,15 @@ export interface ExtendedUser_type {
   "default": false,
   "description": "If we can train on the user's data. If the user is a member of an organization, the organization's setting will override this."
 }*/
-  can_train_on_data: boolean;
-  company: string /* The user's company. */;
+  can_train_on_data?: boolean;
+  company?: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
   /* default:false, description:If the user is scheduled for deletion */
-  deletion_scheduled: boolean;
-  discord: string /* The user's Discord handle. */;
+  deletion_scheduled?: boolean;
+  discord?: string /* The user's Discord handle. */;
   /* format:email, description:The email address of the user. */
-  email: string;
+  email?: string;
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1494,8 +1494,8 @@ export interface ExtendedUser_type {
   "description": "The date and time the email address was verified."
 }*/
   email_verified?: string;
-  first_name: string /* The user's first name. */;
-  github: string /* The user's GitHub handle. */;
+  first_name?: string /* The user's first name. */;
+  github?: string /* The user's GitHub handle. */;
   /*{
   "nullable": true,
   "description": "The user's Hubspot ID. This is mostly used for internal mapping."
@@ -1505,18 +1505,18 @@ export interface ExtendedUser_type {
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
   /* default:false, description:If the user has finished onboarding. */
-  is_onboarded: boolean;
+  is_onboarded?: boolean;
   /* default:false, description:If the user is tied to a service account. */
-  is_service_account: boolean;
-  last_name: string /* The user's last name. */;
-  name: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
+  is_service_account?: boolean;
+  last_name?: string /* The user's last name. */;
+  name?: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The user's phone number."
 }*/
-  phone: string;
+  phone?: string;
   /*{
   "nullable": true,
   "description": "The user's Stripe ID. This is mostly used for internal mapping."
@@ -1667,7 +1667,7 @@ This is the same as the API call ID. */
   output_format: FileExportFormat_type /* The output format of the file conversion. */;
   /* nullable:true, description:The output format options of the file conversion. */
   output_format_options?: OutputFormat3d_type;
-  outputs: {
+  outputs?: {
     [key: string]: /*{
   "title": "String",
   "format": "byte"
@@ -1709,7 +1709,7 @@ export interface FileDensity_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The material mass as denoted by the user. */
-  material_mass: number;
+  material_mass?: number;
   material_mass_unit: UnitMass_type /* The material mass unit. */;
   output_unit: UnitDensity_type /* The output unit for the density. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
@@ -1763,7 +1763,7 @@ This is the same as the API call ID. */
   /* nullable:true, format:double, description:The resulting mass. */
   mass?: number;
   /* default:0, format:double, description:The material density as denoted by the user. */
-  material_density: number;
+  material_density?: number;
   material_density_unit: UnitDensity_type /* The material density unit. */;
   output_unit: UnitMass_type /* The output unit for the mass. */;
   src_format: FileImportFormat_type /* The source format of the file. */;
@@ -1976,7 +1976,7 @@ Defaults to millimeters. */
   "default": false,
   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
 }*/
-      split_closed_faces: boolean;
+      split_closed_faces?: boolean;
       type: 'sldprt';
     }
   | {
@@ -1984,7 +1984,7 @@ Defaults to millimeters. */
   "default": false,
   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
 }*/
-      split_closed_faces: boolean;
+      split_closed_faces?: boolean;
       type: 'step';
     }
   | {
@@ -2035,65 +2035,65 @@ export interface Invoice_type {
   "format": "money-usd",
   "description": "Final amount due at this time for this invoice.\n\nIf the invoice's total is smaller than the minimum charge amount, for example, or if there is account credit that can be applied to the invoice, the `amount_due` may be 0. If there is a positive `starting_balance` for the invoice (the customer owes money), the `amount_due` will also take that into account. The charge that gets generated for the invoice will be for the amount specified in `amount_due`."
 }*/
-  amount_due: number;
+  amount_due?: number;
   /*{
   "title": "double",
   "default": 0,
   "format": "money-usd",
   "description": "The amount, in USD, that was paid."
 }*/
-  amount_paid: number;
+  amount_paid?: number;
   /*{
   "title": "double",
   "default": 0,
   "format": "money-usd",
   "description": "The amount remaining, in USD, that is due."
 }*/
-  amount_remaining: number;
+  amount_remaining?: number;
   /*{
   "default": 0,
   "format": "uint64",
   "minimum": 0,
   "description": "Number of payment attempts made for this invoice, from the perspective of the payment retry schedule.\n\nAny payment attempt counts as the first attempt, and subsequently only automatic retries increment the attempt count. In other words, manual payment attempts after the first attempt do not affect the retry schedule."
 }*/
-  attempt_count: number;
+  attempt_count?: number;
   /*{
   "default": false,
   "description": "Whether an attempt has been made to pay the invoice.\n\nAn invoice is not attempted until 1 hour after the `invoice.created` webhook, for example, so you might not want to display that invoice as unpaid to your users."
 }*/
-  attempted: boolean;
+  attempted?: boolean;
   /* format:date-time, description:Time at which the object was created. */
   created_at: string;
   /*{
   "default": "usd",
   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
 }*/
-  currency: Currency_type;
+  currency?: Currency_type;
   /*{
   "format": "email",
   "description": "The email address for the customer. Until the invoice is finalized, this field will equal customer.email. Once the invoice is finalized, this field will no longer be updated."
 }*/
-  customer_email: string;
-  customer_id: string /* Customer ID. The unique identifier for the customer this invoice belongs to. This is the customer ID in the payments service, not our database customer ID. */;
-  default_payment_method: string /* Default payment method. */;
-  description: string /* Description of the invoice. */;
-  discounts: Discount_type[] /* The discounts applied to the invoice. This is an array of discount objects. */;
-  id: string /* Unique identifier for the object. */;
+  customer_email?: string;
+  customer_id?: string /* Customer ID. The unique identifier for the customer this invoice belongs to. This is the customer ID in the payments service, not our database customer ID. */;
+  default_payment_method?: string /* Default payment method. */;
+  description?: string /* Description of the invoice. */;
+  discounts?: Discount_type[] /* The discounts applied to the invoice. This is an array of discount objects. */;
+  id?: string /* Unique identifier for the object. */;
   /* The individual line items that make up the invoice.
 
 `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any. */
-  lines: InvoiceLineItem_type[];
-  metadata: { [key: string]: string };
-  number: string /* A unique, identifying string that appears on emails sent to the customer for this invoice. */;
+  lines?: InvoiceLineItem_type[];
+  metadata?: { [key: string]: string };
+  number?: string /* A unique, identifying string that appears on emails sent to the customer for this invoice. */;
   /*{
   "default": false,
   "description": "Whether payment was successfully collected for this invoice.\n\nAn invoice can be paid (most commonly) with a charge or with credit from the customer's account balance."
 }*/
-  paid: boolean;
+  paid?: boolean;
   /* nullable:true, format:uri, description:The link to download the PDF for the invoice. */
   pdf?: string;
-  receipt_number: string /* This is the transaction number that appears on email receipts sent for this invoice. */;
-  statement_descriptor: string /* Extra information about an invoice for the customer's credit card statement. */;
+  receipt_number?: string /* This is the transaction number that appears on email receipts sent for this invoice. */;
+  statement_descriptor?: string /* Extra information about an invoice for the customer's credit card statement. */;
   /*{
   "nullable": true,
   "description": "The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`."
@@ -2105,21 +2105,21 @@ export interface Invoice_type {
   "format": "money-usd",
   "description": "Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or tax is applied.\n\nItem discounts are already incorporated."
 }*/
-  subtotal: number;
+  subtotal?: number;
   /*{
   "title": "double",
   "default": 0,
   "format": "money-usd",
   "description": "The amount of tax on this invoice.\n\nThis is the sum of all the tax amounts on this invoice."
 }*/
-  tax: number;
+  tax?: number;
   /*{
   "title": "double",
   "default": 0,
   "format": "money-usd",
   "description": "Total after discounts and taxes."
 }*/
-  total: number;
+  total?: number;
   /*{
   "nullable": true,
   "format": "uri",
@@ -2135,16 +2135,16 @@ export interface InvoiceLineItem_type {
   "format": "money-usd",
   "description": "The amount, in USD."
 }*/
-  amount: number;
+  amount?: number;
   /*{
   "default": "usd",
   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
 }*/
-  currency: Currency_type;
-  description: string /* The description. */;
-  id: string /* Unique identifier for the object. */;
-  invoice_item: string /* The ID of the invoice item associated with this line item if any. */;
-  metadata: { [key: string]: string };
+  currency?: Currency_type;
+  description?: string /* The description. */;
+  id?: string /* Unique identifier for the object. */;
+  invoice_item?: string /* The ID of the invoice item associated with this line item if any. */;
+  metadata?: { [key: string]: string };
 }
 
 export type InvoiceStatus_type =
@@ -2179,7 +2179,7 @@ export interface IpAddrInfo_type {
   "format": "ip",
   "description": "IP address of the user."
 }*/
-  ip: string;
+  ip?: string;
   /*{
   "nullable": true,
   "description": "Flag indicating whether the country is in the European Union."
@@ -2205,7 +2205,7 @@ export interface IpAddrInfo_type {
 
 export interface KclCodeCompletionParams_type {
   /* default:, description:The language of the code. */
-  language: string;
+  language?: string;
   /*{
   "nullable": true,
   "format": "uint8",
@@ -2228,12 +2228,12 @@ export interface KclCodeCompletionParams_type {
 }*/
   suffix_tokens?: number;
   /* default:false, description:If we should trim by indentation. */
-  trim_by_indentation: boolean;
+  trim_by_indentation?: boolean;
 }
 
 export interface KclCodeCompletionRequest_type {
   /* default:{language:, trim_by_indentation:false}, description:Extra parameters for the completions. */
-  extra: KclCodeCompletionParams_type;
+  extra?: KclCodeCompletionParams_type;
   /*{
   "nullable": true,
   "format": "uint16",
@@ -2254,15 +2254,15 @@ export interface KclCodeCompletionRequest_type {
 }*/
   nwo?: string;
   /* default:, description:The prompt for the model. */
-  prompt: string;
-  stop: string[];
+  prompt?: string;
+  stop?: string[];
   /*{
   "default": false,
   "description": "If set, partial message deltas will be sent, like in ChatGPT or OpenAPI. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message."
 }*/
-  stream: boolean;
+  stream?: boolean;
   /* default:, description:The suffix for the model. */
-  suffix: string;
+  suffix?: string;
   /* nullable:true, format:float, description:The temperature for the model. */
   temperature?: number;
   /* nullable:true, format:float, description:The top p for the model. */
@@ -2317,7 +2317,7 @@ export type MlCopilotClientMessage_type =
   | { headers: { [key: string]: string }; type: 'headers' }
   | {
       content: string /* The content of the user's message. */;
-      current_files: {
+      current_files?: {
         [key: string]: /*{
   "format": "uint8",
   "minimum": 0
@@ -2329,7 +2329,7 @@ export type MlCopilotClientMessage_type =
   "description": "The project name, if any. This can be used to associate the message with a specific project."
 }*/
       project_name?: string;
-      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */;
+      source_ranges?: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */;
       type: 'user';
     }
   | {
@@ -2429,7 +2429,7 @@ export interface MlPromptMetadata_type {
   code?: string;
   /* nullable:true, description:The original source code for the model. */
   original_source_code?: string;
-  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
+  source_ranges?: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */;
 }
 
 export interface MlPromptResultsPage_type {
@@ -2454,7 +2454,7 @@ export type MlToolResult_type =
   "description": "Any error that occurred during the tool execution."
 }*/
       error?: string;
-      outputs: { [key: string]: string };
+      outputs?: { [key: string]: string };
       /* nullable:true, description:The name of the project, if any. */
       project_name?: string;
       /* title:int32, format:int32, description:The status code of the tool execution. */
@@ -2467,7 +2467,7 @@ export type MlToolResult_type =
   "description": "Any error that occurred during the tool execution."
 }*/
       error?: string;
-      outputs: { [key: string]: string };
+      outputs?: { [key: string]: string };
       /* nullable:true, description:The name of the project, if any. */
       project_name?: string;
       /* title:int32, format:int32, description:The status code of the tool execution. */
@@ -2503,16 +2503,16 @@ export interface ModelingAppSubscriptionTier_type {
 }*/
   annual_discount?: number;
   description: string /* A description of the tier. */;
-  endpoints_included: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */;
+  endpoints_included?: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */;
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
-  features: SubscriptionTierFeature_type[];
+  features?: SubscriptionTierFeature_type[];
   /*{
   "default": 0,
   "format": "uint64",
   "minimum": 0,
   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month. This is equivalent to the monetary value divided by the price of an API credit."
 }*/
-  monthly_pay_as_you_go_api_credits: number;
+  monthly_pay_as_you_go_api_credits?: number;
   /*{
   "title": "double",
   "format": "money-usd",
@@ -2526,13 +2526,13 @@ export interface ModelingAppSubscriptionTier_type {
   "format": "money-usd",
   "description": "The price of an API credit (meaning 1 credit = 1 minute of API usage)."
 }*/
-  pay_as_you_go_api_credit_price: number;
+  pay_as_you_go_api_credit_price?: number;
   price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */;
-  share_links: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */;
+  share_links?: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */;
   support_tier: SupportTier_type /* The support tier the subscription provides. */;
   training_data_behavior: SubscriptionTrainingDataBehavior_type /* The behavior of the users data (can it be used for training, etc). */;
   type: SubscriptionTierType_type /* If the tier is offered for an individual or an org. */;
-  zoo_tools_included: ZooTool_type[] /* The Zoo tools that you can call unlimited times with this tier. */;
+  zoo_tools_included?: ZooTool_type[] /* The Zoo tools that you can call unlimited times with this tier. */;
 }
 
 export type ModelingAppSubscriptionTierName_type =
@@ -2569,7 +2569,7 @@ export type ModelingCmd_type =
   "default": "merge",
   "description": "Should the extrusion create a new object or be part of the existing object."
 }*/
-      extrude_method: ExtrudeMethod_type;
+      extrude_method?: ExtrudeMethod_type;
       /*{
   "nullable": true,
   "description": "Which IDs should the new faces have? If this isn't given, the engine will generate IDs."
@@ -2579,7 +2579,7 @@ export type ModelingCmd_type =
   "default": "None",
   "description": "Should the extrusion also extrude in the opposite direction? If so, this specifies its distance."
 }*/
-      opposite: OppositeForLengthUnit_type;
+      opposite?: OppositeForLengthUnit_type;
       target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */;
       type: 'extrude';
     }
@@ -2591,9 +2591,9 @@ export type ModelingCmd_type =
   },
   "description": "Angle step interval (converted to whole number degrees and bounded between 4° and 90°)"
 }*/
-      angle_step_size: Angle_type;
+      angle_step_size?: Angle_type;
       /* default:{x:0, y:0}, description:Center to twist about (relative to 2D sketch) */
-      center_2d: Point2d_type;
+      center_2d?: Point2d_type;
       distance: LengthUnit_type /* How far off the plane to extrude */;
       /*{
   "nullable": true,
@@ -2607,7 +2607,7 @@ export type ModelingCmd_type =
     }
   | {
       /* default:sketch_plane, description:What is this sweep relative to? */
-      relative_to: RelativeTo_type;
+      relative_to?: RelativeTo_type;
       sectional: boolean /* If true, the sweep will be broken up into sub-sweeps (extrusions, revolves, sweeps) based on the trajectory path components. */;
       target: ModelingCmdId_type /* Which sketch to sweep. Must be a closed 2D solid. */;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
@@ -2622,7 +2622,7 @@ export type ModelingCmd_type =
   "default": "None",
   "description": "Should the revolution also revolve in the opposite direction along the given axis? If so, this specifies its angle."
 }*/
-      opposite: OppositeForAngle_type;
+      opposite?: OppositeForAngle_type;
       origin: Point3d_type /* The origin of the extrusion axis */;
       target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
@@ -2637,7 +2637,7 @@ export type ModelingCmd_type =
   "default": false,
   "description": "If true, the Solid3D is made hollow instead of removing the selected faces"
 }*/
-      hollow: boolean;
+      hollow?: boolean;
       /* format:uuid, description:Which Solid3D is being shelled. */
       object_id: string;
       shell_thickness: LengthUnit_type /* How thick the shell should be. Smaller values mean a thinner shell. */;
@@ -2654,7 +2654,7 @@ export type ModelingCmd_type =
   "default": "None",
   "description": "Should the revolution also revolve in the opposite direction along the given axis? If so, this specifies its angle."
 }*/
-      opposite: OppositeForAngle_type;
+      opposite?: OppositeForAngle_type;
       target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */;
       type: 'revolve_about_edge';
@@ -2829,8 +2829,8 @@ export type ModelingCmd_type =
   "default": [],
   "description": "How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list."
 }*/
-      transform: Transform_type[];
-      transforms: Transform_type[][];
+      transform?: Transform_type[];
+      transforms?: Transform_type[][];
       type: 'entity_linear_pattern_transform';
     }
   | {
@@ -2865,7 +2865,7 @@ export type ModelingCmd_type =
       /* format:double, description:Number of revolutions. */
       revolutions: number;
       /* default:{unit:degrees, value:0}, description:Start angle. */
-      start_angle: Angle_type;
+      start_angle?: Angle_type;
       type: 'entity_make_helix';
     }
   | {
@@ -2877,7 +2877,7 @@ export type ModelingCmd_type =
       /* format:double, description:Number of revolutions. */
       revolutions: number;
       /* default:{unit:degrees, value:0}, description:Start angle. */
-      start_angle: Angle_type;
+      start_angle?: Angle_type;
       type: 'entity_make_helix_from_params';
     }
   | {
@@ -2893,7 +2893,7 @@ export type ModelingCmd_type =
       /* format:double, description:Number of revolutions. */
       revolutions: number;
       /* default:{unit:degrees, value:0}, description:Start angle. */
-      start_angle: Angle_type;
+      start_angle?: Angle_type;
       type: 'entity_make_helix_from_edge';
     }
   | {
@@ -3082,22 +3082,22 @@ export type ModelingCmd_type =
     }
   | {
       /* default:fillet, description:How to apply the cut. */
-      cut_type: CutType_type;
+      cut_type?: CutType_type;
       /* nullable:true, format:uuid, description:Which edge you want to fillet. */
       edge_id?: string;
       /*{
   "format": "uuid"
 }*/
-      edge_ids: string[];
+      edge_ids?: string[];
       /*{
   "format": "uuid"
 }*/
-      extra_face_ids: string[];
+      extra_face_ids?: string[];
       /* format:uuid, description:Which object is being filletted. */
       object_id: string;
       radius: LengthUnit_type /* The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero). */;
       /* default:automatic, description:Which cutting algorithm to use. */
-      strategy: CutStrategy_type;
+      strategy?: CutStrategy_type;
       tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the filleted surfaces. Must be positive (i.e. greater than zero). */;
       type: 'solid3d_fillet_edge';
     }
@@ -3141,7 +3141,7 @@ export type ModelingCmd_type =
     }
   | {
       /* default:0.4, format:double, description:How many seconds the animation should take. */
-      duration_seconds: number;
+      duration_seconds?: number;
       /* format:uuid, description:Which entity is being changed. */
       entity_id: string;
       fade_in: boolean /* Fade in = true, fade out = false. */;
@@ -3424,7 +3424,7 @@ export type ModelingCmd_type =
   "default": "vantage",
   "description": "Dictates whether or not the camera position should be adjusted during this operation If no movement is requested, the camera will orbit around the new center from its current position"
 }*/
-      camera_movement: CameraMovement_type;
+      camera_movement?: CameraMovement_type;
       type: 'default_camera_center_to_selection';
     }
   | {
@@ -3432,22 +3432,22 @@ export type ModelingCmd_type =
   "default": "vantage",
   "description": "Dictates whether or not the camera position should be adjusted during this operation If no movement is requested, the camera will orbit around the new center from its current position"
 }*/
-      camera_movement: CameraMovement_type;
+      camera_movement?: CameraMovement_type;
       type: 'default_camera_center_to_scene';
     }
   | {
       /* default:false, description:Whether or not to animate the camera movement. */
-      animated: boolean;
+      animated?: boolean;
       /*{
   "format": "uuid"
 }*/
-      object_ids: string[];
+      object_ids?: string[];
       /*{
   "default": 0,
   "format": "float",
   "description": "How much to pad the view frame by, as a fraction of the object(s) bounding box size. Negative padding will crop the view of the object proportionally. e.g. padding = 0.2 means the view will span 120% of the object(s) bounding box, and padding = -0.2 means the view will span 80% of the object(s) bounding box."
 }*/
-      padding: number;
+      padding?: number;
       type: 'zoom_to_fit';
     }
   | {
@@ -3455,7 +3455,7 @@ export type ModelingCmd_type =
   "default": false,
   "description": "Whether or not to animate the camera movement. (Animation is currently not supported.)"
 }*/
-      animated: boolean;
+      animated?: boolean;
       /*{
   "format": "uuid",
   "description": "Which face to orient camera to. If the face is not planar, no action will occur."
@@ -3466,7 +3466,7 @@ export type ModelingCmd_type =
   "format": "float",
   "description": "How much to pad the view frame by, as a fraction of the face bounding box size. Negative padding will crop the view of the face proportionally. e.g. padding = 0.2 means the view will span 120% of the face bounding box, and padding = -0.2 means the view will span 80% of the face bounding box."
 }*/
-      padding: number;
+      padding?: number;
       type: 'orient_to_face';
     }
   | {
@@ -3475,7 +3475,7 @@ export type ModelingCmd_type =
   "format": "float",
   "description": "How much to pad the view frame by, as a fraction of the object(s) bounding box size. Negative padding will crop the view of the object proportionally. e.g. padding = 0.2 means the view will span 120% of the object(s) bounding box, and padding = -0.2 means the view will span 80% of the object(s) bounding box."
 }*/
-      padding: number;
+      padding?: number;
       type: 'view_isometric';
     }
   | {
@@ -3608,7 +3608,7 @@ export interface MovePathPen_type {} /* Empty object */
 export interface NewAnnotation_type {} /* Empty object */
 
 export interface OAuth2ClientInfo_type {
-  csrf_token: string /* Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */;
+  csrf_token?: string /* Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */;
   /* nullable:true, description:Nonce required for OIDC flows. */
   oidc_nonce?: string;
   /*{
@@ -3616,7 +3616,7 @@ export interface OAuth2ClientInfo_type {
   "description": "Code Verifier used for [PKCE]((https://tools.ietf.org/html/rfc7636)) protection via the `code_verifier` parameter. The value must have a minimum length of 43 characters and a maximum length of 128 characters.  Each character must be ASCII alphanumeric or one of the characters \"-\" / \".\" / \"_\" / \"~\"."
 }*/
   pkce_code_verifier?: string;
-  url: string /* The URL for consent. */;
+  url?: string /* The URL for consent. */;
 }
 
 export type OAuth2GrantType_type =
@@ -4671,7 +4671,7 @@ export interface Org_type {
   "default": false,
   "description": "If we can train on the orgs's data. This value overrides any individual user's `can_train_on_data` value if they are a member of the org."
 }*/
-  can_train_on_data: boolean;
+  can_train_on_data?: boolean;
   /* title:DateTime, format:date-time, description:The date and time the org was created. */
   created_at: string;
   /* nullable:true, description:The org's domain. */
@@ -4684,14 +4684,14 @@ export interface Org_type {
   "description": "The image for the org. This is a URL."
 }*/
   image?: string;
-  name: string /* The name of the org. */;
+  name?: string /* The name of the org. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The org's phone number."
 }*/
-  phone: string;
+  phone?: string;
   /* nullable:true, description:The org's stripe id. */
   stripe_id?: string;
   /* title:DateTime, format:date-time, description:The date and time the org was last updated. */
@@ -4705,7 +4705,7 @@ export interface OrgDetails_type {
 }*/
   allow_users_in_domain_to_auto_join?: boolean;
   /* format:email, description:The billing email address of the org. */
-  billing_email: string;
+  billing_email?: string;
   /* nullable:true, description:The org's domain. */
   domain?: string;
   /*{
@@ -4715,23 +4715,23 @@ export interface OrgDetails_type {
   "description": "The image for the org. This is a URL."
 }*/
   image?: string;
-  name: string /* The name of the org. */;
+  name?: string /* The name of the org. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The org's phone number."
 }*/
-  phone: string;
+  phone?: string;
 }
 
 export interface OrgMember_type {
-  company: string /* The user's company. */;
+  company?: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
-  discord: string /* The user's Discord handle. */;
+  discord?: string /* The user's Discord handle. */;
   /* format:email, description:The email address of the user. */
-  email: string;
+  email?: string;
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -4739,20 +4739,20 @@ export interface OrgMember_type {
   "description": "The date and time the email address was verified."
 }*/
   email_verified?: string;
-  first_name: string /* The user's first name. */;
-  github: string /* The user's GitHub handle. */;
+  first_name?: string /* The user's first name. */;
+  github?: string /* The user's GitHub handle. */;
   id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
-  last_name: string /* The user's last name. */;
-  name: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
+  last_name?: string /* The user's last name. */;
+  name?: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The user's phone number."
 }*/
-  phone: string;
+  phone?: string;
   role: OrgRole_type /* The user's role in the org. */;
   /* title:DateTime, format:date-time, description:The date and time the user was last updated. */
   updated_at: string;
@@ -4794,7 +4794,7 @@ export interface OutputFile_type {
 }*/
   contents?: string;
   /* default:, description:The name of the file. */
-  name: string;
+  name?: string;
 }
 
 export type OutputFormat2d_type = {
@@ -4999,15 +4999,15 @@ export interface PaymentMethod_type {
   card?: CardDetails_type;
   /* format:date-time, description:Time at which the object was created. */
   created_at: string;
-  id: string /* Unique identifier for the object. */;
-  metadata: { [key: string]: string };
+  id?: string /* Unique identifier for the object. */;
+  metadata?: { [key: string]: string };
   type: PaymentMethodType_type /* The type of payment method. */;
 }
 
 export interface PaymentMethodCardChecks_type {
-  address_line1_check: string /* If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */;
-  address_postal_code_check: string /* If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */;
-  cvc_check: string /* If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */;
+  address_line1_check?: string /* If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */;
+  address_postal_code_check?: string /* If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */;
+  cvc_check?: string /* If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */;
 }
 
 export type PaymentMethodType_type = 'card';
@@ -5208,8 +5208,8 @@ export interface SamlIdentityProvider_type {
 }*/
   created_at: string;
   id: Uuid_type /* The unique identifier for the SAML identity provider. */;
-  idp_entity_id: string /* The entity ID of the SAML identity provider. */;
-  idp_metadata_document_string: string /* The metadata document as a string. */;
+  idp_entity_id?: string /* The entity ID of the SAML identity provider. */;
+  idp_metadata_document_string?: string /* The metadata document as a string. */;
   org_id: Uuid_type /* The organization ID the SAML identity provider belongs to. */;
   /*{
   "nullable": true,
@@ -5231,7 +5231,7 @@ export interface SamlIdentityProvider_type {
   "format": "email",
   "description": "The technical contact email address for the SAML identity provider."
 }*/
-  technical_contact_email: string;
+  technical_contact_email?: string;
   /*{
   "title": "DateTime",
   "format": "date-time",
@@ -5241,7 +5241,7 @@ export interface SamlIdentityProvider_type {
 }
 
 export interface SamlIdentityProviderCreate_type {
-  idp_entity_id: string /* The entity ID of the SAML identity provider. */;
+  idp_entity_id?: string /* The entity ID of the SAML identity provider. */;
   idp_metadata_source: IdpMetadataSource_type /* The source of an identity provider metadata descriptor. */;
   /* nullable:true, description:The request signing key pair. */
   signing_keypair?: DerEncodedKeyPair_type;
@@ -5249,7 +5249,7 @@ export interface SamlIdentityProviderCreate_type {
   "format": "email",
   "description": "The technical contact email address for the SAML identity provider."
 }*/
-  technical_contact_email: string;
+  technical_contact_email?: string;
 }
 
 export interface SceneClearAll_type {} /* Empty object */
@@ -5378,7 +5378,7 @@ export interface Shortlink_type {
   "default": false,
   "description": "If the shortlink should be restricted to the organization. This only applies to org shortlinks. If you are creating a user shortlink and you are not a member of a team or enterprise and you try to set this to true, it will fail."
 }*/
-  restrict_to_org: boolean;
+  restrict_to_org?: boolean;
   /* title:DateTime, format:date-time, description:The date and time the shortlink was last updated. */
   updated_at: string;
   user_id: Uuid_type /* The ID of the user that made the shortlink. */;
@@ -5584,7 +5584,7 @@ This is the same as the API call ID. */
   model: TextToCadModel_type /* The model being used. */;
   model_version: string /* The version of the model. */;
   output_format: FileExportFormat_type /* The output format of the model. */;
-  outputs: {
+  outputs?: {
     [key: string]: /*{
   "title": "String",
   "format": "byte"
@@ -5709,7 +5709,7 @@ This is the same as the API call ID. */
   kcl_version?: string;
   model: TextToCadModel_type /* The model being used. */;
   model_version: string /* The version of the model. */;
-  outputs: { [key: string]: string };
+  outputs?: { [key: string]: string };
   /*{
   "nullable": true,
   "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
@@ -5755,7 +5755,7 @@ export interface TextToCadMultiFileIterationBody_type {
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files. If you want to apply a prompt to just a single file, use the source_ranges field and you can leave this empty."
 }*/
   prompt?: string;
-  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */;
+  source_ranges?: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */;
 }
 
 export type TextToCadResponse_type =
@@ -5788,7 +5788,7 @@ This is the same as the API call ID. */
       model: TextToCadModel_type /* The model being used. */;
       model_version: string /* The version of the model. */;
       output_format: FileExportFormat_type /* The output format of the model. */;
-      outputs: {
+      outputs?: {
         [key: string]: /*{
   "title": "String",
   "format": "byte"
@@ -5877,7 +5877,7 @@ This is the same as the API call ID. */
       kcl_version?: string;
       model: TextToCadModel_type /* The model being used. */;
       model_version: string /* The version of the model. */;
-      outputs: { [key: string]: string };
+      outputs?: { [key: string]: string };
       /*{
   "nullable": true,
   "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
@@ -5925,7 +5925,7 @@ export interface Transform_type {
   "default": true,
   "description": "Whether to replicate the original solid in this instance."
 }*/
-  replicate: boolean;
+  replicate?: boolean;
   /*{
   "default": {
     "angle": {
@@ -5943,7 +5943,7 @@ export interface Transform_type {
   },
   "description": "Rotate the replica about the specified rotation axis and origin. Defaults to no rotation."
 }*/
-  rotation: Rotation_type;
+  rotation?: Rotation_type;
   /*{
   "default": {
     "x": 1,
@@ -5952,7 +5952,7 @@ export interface Transform_type {
   },
   "description": "Scale the replica's size along each axis. Defaults to (1, 1, 1) (i.e. the same size as the original)."
 }*/
-  scale: Point3d_type;
+  scale?: Point3d_type;
   /*{
   "default": {
     "x": 0,
@@ -5961,7 +5961,7 @@ export interface Transform_type {
   },
   "description": "Translate the replica this far along each dimension. Defaults to zero vector (i.e. same position as the original)."
 }*/
-  translate: Point3d_type;
+  translate?: Point3d_type;
 }
 
 export interface TransformByForPoint3d_type {
@@ -6015,7 +6015,7 @@ export interface UnitAngleConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitAngle_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6060,7 +6060,7 @@ export interface UnitAreaConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitArea_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6101,7 +6101,7 @@ export interface UnitCurrentConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitCurrent_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6146,7 +6146,7 @@ export interface UnitEnergyConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitEnergy_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6190,7 +6190,7 @@ export interface UnitForceConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitForce_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6235,7 +6235,7 @@ export interface UnitFrequencyConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitFrequency_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6272,7 +6272,7 @@ export interface UnitLengthConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitLength_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6309,7 +6309,7 @@ export interface UnitMassConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitMass_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6353,7 +6353,7 @@ export interface UnitPowerConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitPower_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6397,7 +6397,7 @@ export interface UnitPressureConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitPressure_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6438,7 +6438,7 @@ export interface UnitTemperatureConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitTemperature_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6475,7 +6475,7 @@ export interface UnitTorqueConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitTorque_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6521,7 +6521,7 @@ export interface UnitVolumeConversion_type {
 This is the same as the API call ID. */
   id: Uuid_type;
   /* default:0, format:double, description:The input value. */
-  input: number;
+  input?: number;
   input_unit: UnitVolume_type /* The source format of the unit conversion. */;
   /* nullable:true, format:double, description:The resulting value. */
   output?: number;
@@ -6572,10 +6572,10 @@ export interface UpdateShortlinkRequest_type {
 }
 
 export interface UpdateUser_type {
-  company: string /* The user's company. */;
-  discord: string /* The user's Discord handle. */;
-  first_name: string /* The user's first name. */;
-  github: string /* The user's GitHub handle. */;
+  company?: string /* The user's company. */;
+  discord?: string /* The user's Discord handle. */;
+  first_name?: string /* The user's first name. */;
+  github?: string /* The user's GitHub handle. */;
   /*{
   "title": "String",
   "format": "uri",
@@ -6584,14 +6584,14 @@ export interface UpdateUser_type {
   image: string;
   /* nullable:true, description:If the user is now onboarded. */
   is_onboarded?: boolean;
-  last_name: string /* The user's last name. */;
+  last_name?: string /* The user's last name. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The user's phone number."
 }*/
-  phone: string;
+  phone?: string;
 }
 
 export interface User_type {
@@ -6601,15 +6601,15 @@ export interface User_type {
   "default": false,
   "description": "If we can train on the user's data. If the user is a member of an organization, the organization's setting will override this."
 }*/
-  can_train_on_data: boolean;
-  company: string /* The user's company. */;
+  can_train_on_data?: boolean;
+  company?: string /* The user's company. */;
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string;
   /* default:false, description:If the user is scheduled for deletion. */
-  deletion_scheduled: boolean;
-  discord: string /* The user's Discord handle. */;
+  deletion_scheduled?: boolean;
+  discord?: string /* The user's Discord handle. */;
   /* format:email, description:The email address of the user. */
-  email: string;
+  email?: string;
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6617,24 +6617,24 @@ export interface User_type {
   "description": "The date and time the email address was verified."
 }*/
   email_verified?: string;
-  first_name: string /* The user's first name. */;
-  github: string /* The user's GitHub handle. */;
+  first_name?: string /* The user's first name. */;
+  github?: string /* The user's GitHub handle. */;
   id: Uuid_type /* The unique identifier for the user. */;
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string;
   /* default:false, description:If the user has finished onboarding. */
-  is_onboarded: boolean;
+  is_onboarded?: boolean;
   /* default:false, description:If the user is tied to a service account. */
-  is_service_account: boolean;
-  last_name: string /* The user's last name. */;
-  name: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
+  is_service_account?: boolean;
+  last_name?: string /* The user's last name. */;
+  name?: string /* The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The user's phone number."
 }*/
-  phone: string;
+  phone?: string;
   /* title:DateTime, format:date-time, description:The date and time the user was last updated. */
   updated_at: string;
 }
@@ -6648,7 +6648,7 @@ export interface UserOrgInfo_type {
 }*/
   allow_users_in_domain_to_auto_join?: boolean;
   /* format:email, description:The billing email address of the org. */
-  billing_email: string;
+  billing_email?: string;
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6670,14 +6670,14 @@ export interface UserOrgInfo_type {
   "description": "The image for the org. This is a URL."
 }*/
   image?: string;
-  name: string /* The name of the org. */;
+  name?: string /* The name of the org. */;
   /*{
   "title": "String",
   "default": "",
   "format": "phone",
   "description": "The org's phone number."
 }*/
-  phone: string;
+  phone?: string;
   role: OrgRole_type /* The user's role in the org. */;
   /* nullable:true, description:The org's stripe id. */
   stripe_id?: string;
@@ -6714,7 +6714,7 @@ export interface VerificationTokenResponse_type {
   "format": "email",
   "description": "The identifier for the user. This is typically the user's email address since that is what we are verifying."
 }*/
-  identifier: string;
+  identifier?: string;
   /*{
   "nullable": true,
   "title": "String",
@@ -6761,7 +6761,7 @@ export type WebSocketRequest_type =
   "default": false,
   "description": "If false or omitted, responses to each batch command will just be Ok(()). If true, responses will be the actual response data for that modeling command."
 }*/
-      responses: boolean;
+      responses?: boolean;
       type: 'modeling_cmd_batch_req';
     }
   | { type: 'ping' }
@@ -6806,16 +6806,16 @@ export type ZooProductSubscription_type = {
 }*/
   annual_discount?: number;
   description: string /* A description of the tier. */;
-  endpoints_included: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */;
+  endpoints_included?: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */;
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
-  features: SubscriptionTierFeature_type[];
+  features?: SubscriptionTierFeature_type[];
   /*{
   "default": 0,
   "format": "uint64",
   "minimum": 0,
   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month. This is equivalent to the monetary value divided by the price of an API credit."
 }*/
-  monthly_pay_as_you_go_api_credits: number;
+  monthly_pay_as_you_go_api_credits?: number;
   /*{
   "title": "double",
   "format": "money-usd",
@@ -6829,13 +6829,13 @@ export type ZooProductSubscription_type = {
   "format": "money-usd",
   "description": "The price of an API credit (meaning 1 credit = 1 minute of API usage)."
 }*/
-  pay_as_you_go_api_credit_price: number;
+  pay_as_you_go_api_credit_price?: number;
   price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */;
-  share_links: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */;
+  share_links?: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */;
   support_tier: SupportTier_type /* The support tier the subscription provides. */;
   training_data_behavior: SubscriptionTrainingDataBehavior_type /* The behavior of the users data (can it be used for training, etc). */;
   type: SubscriptionTierType_type /* If the tier is offered for an individual or an org. */;
-  zoo_tools_included: ZooTool_type[] /* The Zoo tools that you can call unlimited times with this tier. */;
+  zoo_tools_included?: ZooTool_type[] /* The Zoo tools that you can call unlimited times with this tier. */;
 };
 
 export interface ZooProductSubscriptions_type {
@@ -6844,7 +6844,7 @@ export interface ZooProductSubscriptions_type {
 
 export interface ZooProductSubscriptionsOrgRequest_type {
   /* default:team, description:A modeling app subscription. */
-  modeling_app: ModelingAppOrganizationSubscriptionTier_type;
+  modeling_app?: ModelingAppOrganizationSubscriptionTier_type;
   /*{
   "nullable": true,
   "description": "If the customer chooses to pay annually or monthly, we can add that here. The annual discount will apply if there is a discount for the subscription."
@@ -6854,7 +6854,7 @@ export interface ZooProductSubscriptionsOrgRequest_type {
 
 export interface ZooProductSubscriptionsUserRequest_type {
   /* default:free, description:A modeling app subscription. */
-  modeling_app: ModelingAppIndividualSubscriptionTier_type;
+  modeling_app?: ModelingAppIndividualSubscriptionTier_type;
   /*{
   "nullable": true,
   "description": "If the customer chooses to pay annually or monthly, we can add that here. The annual discount will apply if there is a discount for the subscription."
