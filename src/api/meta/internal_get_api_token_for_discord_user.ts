@@ -1,14 +1,13 @@
-import { ApiToken_type, Error_type } from '../../models.js';
+import { ApiToken_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Internal_get_api_token_for_discord_user_params {
   client?: Client;
   discord_id: string;
 }
 
-type Internal_get_api_token_for_discord_user_return =
-  | ApiToken_type
-  | Error_type;
+type Internal_get_api_token_for_discord_user_return = ApiToken_type;
 
 export default async function internal_get_api_token_for_discord_user({
   client,
@@ -40,6 +39,7 @@ export default async function internal_get_api_token_for_discord_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Internal_get_api_token_for_discord_user_return;
   return result;

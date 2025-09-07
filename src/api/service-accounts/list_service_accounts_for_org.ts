@@ -1,9 +1,9 @@
 import {
   ServiceAccountResultsPage_type,
-  Error_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_service_accounts_for_org_params {
   client?: Client;
@@ -12,9 +12,7 @@ interface List_service_accounts_for_org_params {
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_service_accounts_for_org_return =
-  | ServiceAccountResultsPage_type
-  | Error_type;
+type List_service_accounts_for_org_return = ServiceAccountResultsPage_type;
 
 export default async function list_service_accounts_for_org({
   client,
@@ -48,6 +46,7 @@ export default async function list_service_accounts_for_org({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as List_service_accounts_for_org_return;
   return result;

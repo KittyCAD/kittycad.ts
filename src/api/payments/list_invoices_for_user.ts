@@ -1,11 +1,12 @@
-import { Invoice_type, Error_type } from '../../models.js';
+import { Invoice_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_invoices_for_user_params {
   client?: Client;
 }
 
-type List_invoices_for_user_return = Invoice_type[] | Error_type;
+type List_invoices_for_user_return = Invoice_type[];
 
 export default async function list_invoices_for_user({
   client,
@@ -36,6 +37,7 @@ export default async function list_invoices_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as List_invoices_for_user_return;
   return result;
 }

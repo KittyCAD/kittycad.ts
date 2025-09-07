@@ -439,7 +439,11 @@ export default async function apiGen(lookup: any) {
             ref = ref.replace('responses', 'schemas');
             const typeReference = lookup[ref];
 
-            if (!importedTypes.includes(typeReference) && ref) {
+            if (
+              typeReference &&
+              typeReference !== 'Error_type' &&
+              !importedTypes.includes(typeReference)
+            ) {
               importedTypes.push(typeReference);
             }
           } else if (
@@ -448,7 +452,11 @@ export default async function apiGen(lookup: any) {
             const ref = (response as any)?.content['application/json']?.schema
               ?.$ref;
             const typeReference = lookup[ref];
-            if (!importedTypes.includes(typeReference)) {
+            if (
+              typeReference &&
+              typeReference !== 'Error_type' &&
+              !importedTypes.includes(typeReference)
+            ) {
               importedTypes.push(typeReference);
             }
           } else if (
@@ -460,7 +468,11 @@ export default async function apiGen(lookup: any) {
             const items = schema.items as OpenAPIV3.SchemaObject;
             if ((items as any).$ref) {
               const typeReference = lookup[(items as any).$ref];
-              if (!importedTypes.includes(typeReference + '[]')) {
+              if (
+                typeReference &&
+                typeReference !== 'Error_type' &&
+                !importedTypes.includes(typeReference + '[]')
+              ) {
                 importedTypes.push(typeReference + '[]');
               }
             } else if (items.type === 'string') {
@@ -478,7 +490,11 @@ export default async function apiGen(lookup: any) {
               schema.additionalProperties as OpenAPIV3.SchemaObject;
             if (addProps.type === 'array' && '$ref' in addProps.items) {
               const typeReference = lookup[addProps.items.$ref];
-              if (!importedTypes.includes(typeReference + '[]')) {
+              if (
+                typeReference &&
+                typeReference !== 'Error_type' &&
+                !importedTypes.includes(typeReference + '[]')
+              ) {
                 importedTypes.push(typeReference + '[]');
               }
             }
@@ -687,6 +703,7 @@ export default async function apiGen(lookup: any) {
     });
   indexFileString += `export type { Models } from './models.js';\n`;
   indexFileString += `export { Client} from './client.js';\n`;
+  indexFileString += `export { ApiError } from './errors.js';\n`;
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8');
 
   // Build a concise WS usage snippet if the spec has any WS endpoints

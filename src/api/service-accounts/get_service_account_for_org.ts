@@ -1,16 +1,13 @@
-import {
-  ServiceAccount_type,
-  Error_type,
-  ServiceAccountUuid_type,
-} from '../../models.js';
+import { ServiceAccount_type, ServiceAccountUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_service_account_for_org_params {
   client?: Client;
   token: ServiceAccountUuid_type;
 }
 
-type Get_service_account_for_org_return = ServiceAccount_type | Error_type;
+type Get_service_account_for_org_return = ServiceAccount_type;
 
 export default async function get_service_account_for_org({
   client,
@@ -42,6 +39,7 @@ export default async function get_service_account_for_org({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_service_account_for_org_return;
   return result;
 }

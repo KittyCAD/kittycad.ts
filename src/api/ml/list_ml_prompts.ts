@@ -1,9 +1,9 @@
 import {
   MlPromptResultsPage_type,
-  Error_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_ml_prompts_params {
   client?: Client;
@@ -12,7 +12,7 @@ interface List_ml_prompts_params {
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_ml_prompts_return = MlPromptResultsPage_type | Error_type;
+type List_ml_prompts_return = MlPromptResultsPage_type;
 
 export default async function list_ml_prompts({
   client,
@@ -46,6 +46,7 @@ export default async function list_ml_prompts({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as List_ml_prompts_return;
   return result;
 }

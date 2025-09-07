@@ -21,7 +21,6 @@ async function example() {
       user_id: 'An anonymous user id generated client-side.',
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

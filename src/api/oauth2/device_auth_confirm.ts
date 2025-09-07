@@ -1,12 +1,13 @@
-import { Error_type, DeviceAuthConfirmParams_type } from '../../models.js';
+import { DeviceAuthConfirmParams_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Device_auth_confirm_params {
   client?: Client;
   body: DeviceAuthConfirmParams_type;
 }
 
-type Device_auth_confirm_return = Error_type;
+type Device_auth_confirm_return = any;
 
 export default async function device_auth_confirm({
   client,
@@ -39,6 +40,7 @@ export default async function device_auth_confirm({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Device_auth_confirm_return;
   return result;
 }

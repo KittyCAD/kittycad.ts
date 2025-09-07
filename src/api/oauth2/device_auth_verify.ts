@@ -1,5 +1,6 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Device_auth_verify_params {
   client?: Client;
@@ -7,7 +8,7 @@ interface Device_auth_verify_params {
   user_code: string;
 }
 
-type Device_auth_verify_return = Error_type;
+type Device_auth_verify_return = any;
 
 export default async function device_auth_verify({
   client,
@@ -40,6 +41,7 @@ export default async function device_auth_verify({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Device_auth_verify_return;
   return result;
 }

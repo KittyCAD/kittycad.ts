@@ -9,7 +9,6 @@ async function example() {
       },
     ],
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

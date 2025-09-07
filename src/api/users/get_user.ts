@@ -1,12 +1,13 @@
-import { User_type, Error_type, UserIdentifier_type } from '../../models.js';
+import { User_type, UserIdentifier_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_user_params {
   client?: Client;
   id: UserIdentifier_type;
 }
 
-type Get_user_return = User_type | Error_type;
+type Get_user_return = User_type;
 
 export default async function get_user({
   client,
@@ -38,6 +39,7 @@ export default async function get_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_user_return;
   return result;
 }

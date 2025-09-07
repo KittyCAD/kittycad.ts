@@ -8,7 +8,6 @@ async function example() {
     conversation_id: '00000000-0000-0000-0000-000000000000',
     no_models: true,
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

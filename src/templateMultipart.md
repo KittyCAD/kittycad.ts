@@ -2,6 +2,7 @@
 import * as types from './src/models.ts';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface FunctionNameParams {
   exampleParam: string;
@@ -49,6 +50,7 @@ export default async function functionName(
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as FunctionNameReturn;
   return result;
 }

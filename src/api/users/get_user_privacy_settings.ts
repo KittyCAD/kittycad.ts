@@ -1,11 +1,12 @@
-import { PrivacySettings_type, Error_type } from '../../models.js';
+import { PrivacySettings_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_user_privacy_settings_params {
   client?: Client;
 }
 
-type Get_user_privacy_settings_return = PrivacySettings_type | Error_type;
+type Get_user_privacy_settings_return = PrivacySettings_type;
 
 export default async function get_user_privacy_settings({
   client,
@@ -36,6 +37,7 @@ export default async function get_user_privacy_settings({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_user_privacy_settings_return;
   return result;
 }

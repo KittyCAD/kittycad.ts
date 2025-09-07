@@ -1,9 +1,6 @@
-import {
-  UnitCurrentConversion_type,
-  Error_type,
-  UnitCurrent_type,
-} from '../../models.js';
+import { UnitCurrentConversion_type, UnitCurrent_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_current_unit_conversion_params {
   client?: Client;
@@ -12,9 +9,7 @@ interface Get_current_unit_conversion_params {
   value: number;
 }
 
-type Get_current_unit_conversion_return =
-  | UnitCurrentConversion_type
-  | Error_type;
+type Get_current_unit_conversion_return = UnitCurrentConversion_type;
 
 export default async function get_current_unit_conversion({
   client,
@@ -48,6 +43,7 @@ export default async function get_current_unit_conversion({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_current_unit_conversion_return;
   return result;
 }

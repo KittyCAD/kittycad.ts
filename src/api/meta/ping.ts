@@ -1,11 +1,12 @@
-import { Pong_type, Error_type } from '../../models.js';
+import { Pong_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Ping_params {
   client?: Client;
 }
 
-type Ping_return = Pong_type | Error_type;
+type Ping_return = Pong_type;
 
 export default async function ping({
   client,
@@ -36,6 +37,7 @@ export default async function ping({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Ping_return;
   return result;
 }

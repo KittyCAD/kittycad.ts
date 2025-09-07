@@ -17,7 +17,6 @@ async function example() {
       src_format: { type: 'fbx' },
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

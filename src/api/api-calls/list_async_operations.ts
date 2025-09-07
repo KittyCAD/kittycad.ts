@@ -1,10 +1,10 @@
 import {
   AsyncApiCallResultsPage_type,
-  Error_type,
   CreatedAtSortMode_type,
   ApiCallStatus_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_async_operations_params {
   client?: Client;
@@ -14,7 +14,7 @@ interface List_async_operations_params {
   status: ApiCallStatus_type;
 }
 
-type List_async_operations_return = AsyncApiCallResultsPage_type | Error_type;
+type List_async_operations_return = AsyncApiCallResultsPage_type;
 
 export default async function list_async_operations({
   client,
@@ -49,6 +49,7 @@ export default async function list_async_operations({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as List_async_operations_return;
   return result;
 }

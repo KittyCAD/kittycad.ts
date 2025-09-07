@@ -5,7 +5,6 @@ async function example() {
     user_id: '00000000-0000-0000-0000-000000000000',
     body: { role: 'admin' },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

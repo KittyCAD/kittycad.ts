@@ -1,11 +1,12 @@
-import { PaymentMethod_type, Error_type } from '../../models.js';
+import { PaymentMethod_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_payment_methods_for_user_params {
   client?: Client;
 }
 
-type List_payment_methods_for_user_return = PaymentMethod_type[] | Error_type;
+type List_payment_methods_for_user_return = PaymentMethod_type[];
 
 export default async function list_payment_methods_for_user({
   client,
@@ -36,6 +37,7 @@ export default async function list_payment_methods_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as List_payment_methods_for_user_return;
   return result;

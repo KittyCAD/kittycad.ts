@@ -4,7 +4,6 @@ async function example() {
   const response = await payments.delete_payment_method_for_org({
     id: 'string',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

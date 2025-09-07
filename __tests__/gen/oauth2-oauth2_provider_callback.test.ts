@@ -8,7 +8,6 @@ async function example() {
     state: 'string',
     user: 'string',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

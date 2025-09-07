@@ -1,12 +1,13 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Apps_github_webhook_params {
   client?: Client;
   body: string;
 }
 
-type Apps_github_webhook_return = Error_type;
+type Apps_github_webhook_return = any;
 
 export default async function apps_github_webhook({
   client,
@@ -39,6 +40,7 @@ export default async function apps_github_webhook({
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Apps_github_webhook_return;
   return result;
 }

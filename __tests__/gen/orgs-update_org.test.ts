@@ -11,7 +11,6 @@ async function example() {
       phone: "The org's phone number.",
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

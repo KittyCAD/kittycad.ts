@@ -1,11 +1,12 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Apps_github_callback_params {
   client?: Client;
 }
 
-type Apps_github_callback_return = Error_type;
+type Apps_github_callback_return = any;
 
 export default async function apps_github_callback({
   client,
@@ -36,6 +37,7 @@ export default async function apps_github_callback({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Apps_github_callback_return;
   return result;
 }

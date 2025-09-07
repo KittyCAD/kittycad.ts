@@ -1,12 +1,13 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Delete_payment_method_for_user_params {
   client?: Client;
   id: string;
 }
 
-type Delete_payment_method_for_user_return = Error_type;
+type Delete_payment_method_for_user_return = any;
 
 export default async function delete_payment_method_for_user({
   client,
@@ -38,6 +39,7 @@ export default async function delete_payment_method_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Delete_payment_method_for_user_return;
   return result;

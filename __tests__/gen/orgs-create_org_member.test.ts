@@ -7,7 +7,6 @@ async function example() {
       role: 'admin',
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

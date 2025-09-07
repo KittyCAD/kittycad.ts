@@ -6,7 +6,6 @@ async function example() {
     output_unit: 'electronvolts',
     value: 7,
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

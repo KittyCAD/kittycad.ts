@@ -10,7 +10,6 @@ async function example() {
     ],
     code_option: 'execute',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

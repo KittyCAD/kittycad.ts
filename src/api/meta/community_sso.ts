@@ -1,5 +1,6 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Community_sso_params {
   client?: Client;
@@ -7,7 +8,7 @@ interface Community_sso_params {
   sso: string;
 }
 
-type Community_sso_return = Error_type;
+type Community_sso_return = any;
 
 export default async function community_sso({
   client,
@@ -40,6 +41,7 @@ export default async function community_sso({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Community_sso_return;
   return result;
 }

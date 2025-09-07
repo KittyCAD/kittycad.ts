@@ -6,7 +6,6 @@ async function example() {
     page_token: 'string',
     sort_by: 'created_at_ascending',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

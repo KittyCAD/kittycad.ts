@@ -1,9 +1,6 @@
-import {
-  UnitTorqueConversion_type,
-  Error_type,
-  UnitTorque_type,
-} from '../../models.js';
+import { UnitTorqueConversion_type, UnitTorque_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_torque_unit_conversion_params {
   client?: Client;
@@ -12,7 +9,7 @@ interface Get_torque_unit_conversion_params {
   value: number;
 }
 
-type Get_torque_unit_conversion_return = UnitTorqueConversion_type | Error_type;
+type Get_torque_unit_conversion_return = UnitTorqueConversion_type;
 
 export default async function get_torque_unit_conversion({
   client,
@@ -46,6 +43,7 @@ export default async function get_torque_unit_conversion({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_torque_unit_conversion_return;
   return result;
 }

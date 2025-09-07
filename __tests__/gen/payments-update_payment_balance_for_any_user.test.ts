@@ -9,7 +9,6 @@ async function example() {
       stable_api_credits_remaining_monetary_value: 7,
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

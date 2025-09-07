@@ -14,7 +14,6 @@ async function example() {
       phone: "The user's phone number.",
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

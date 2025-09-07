@@ -1,9 +1,9 @@
 import {
   ApiTokenResultsPage_type,
-  Error_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_api_tokens_for_user_params {
   client?: Client;
@@ -12,7 +12,7 @@ interface List_api_tokens_for_user_params {
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_api_tokens_for_user_return = ApiTokenResultsPage_type | Error_type;
+type List_api_tokens_for_user_return = ApiTokenResultsPage_type;
 
 export default async function list_api_tokens_for_user({
   client,
@@ -46,6 +46,7 @@ export default async function list_api_tokens_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as List_api_tokens_for_user_return;
   return result;
 }

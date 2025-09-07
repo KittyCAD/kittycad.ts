@@ -16,7 +16,6 @@ async function example() {
         'The technical contact email address for the SAML identity provider.',
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

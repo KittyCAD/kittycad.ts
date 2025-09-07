@@ -1,18 +1,16 @@
 import {
   KclCodeCompletionResponse_type,
-  Error_type,
   KclCodeCompletionRequest_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_kcl_code_completions_params {
   client?: Client;
   body: KclCodeCompletionRequest_type;
 }
 
-type Create_kcl_code_completions_return =
-  | KclCodeCompletionResponse_type
-  | Error_type;
+type Create_kcl_code_completions_return = KclCodeCompletionResponse_type;
 
 export default async function create_kcl_code_completions({
   client,
@@ -45,6 +43,7 @@ export default async function create_kcl_code_completions({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_kcl_code_completions_return;
   return result;
 }

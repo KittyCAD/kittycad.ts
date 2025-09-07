@@ -1,12 +1,13 @@
-import { Error_type, ServiceAccountUuid_type } from '../../models.js';
+import { ServiceAccountUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Delete_service_account_for_org_params {
   client?: Client;
   token: ServiceAccountUuid_type;
 }
 
-type Delete_service_account_for_org_return = Error_type;
+type Delete_service_account_for_org_return = any;
 
 export default async function delete_service_account_for_org({
   client,
@@ -38,6 +39,7 @@ export default async function delete_service_account_for_org({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Delete_service_account_for_org_return;
   return result;

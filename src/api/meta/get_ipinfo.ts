@@ -1,11 +1,12 @@
-import { IpAddrInfo_type, Error_type } from '../../models.js';
+import { IpAddrInfo_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_ipinfo_params {
   client?: Client;
 }
 
-type Get_ipinfo_return = IpAddrInfo_type | Error_type;
+type Get_ipinfo_return = IpAddrInfo_type;
 
 export default async function get_ipinfo({
   client,
@@ -36,6 +37,7 @@ export default async function get_ipinfo({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_ipinfo_return;
   return result;
 }

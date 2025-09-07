@@ -1,16 +1,13 @@
-import {
-  DiscountCode_type,
-  Error_type,
-  StoreCouponParams_type,
-} from '../../models.js';
+import { DiscountCode_type, StoreCouponParams_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_store_coupon_params {
   client?: Client;
   body: StoreCouponParams_type;
 }
 
-type Create_store_coupon_return = DiscountCode_type | Error_type;
+type Create_store_coupon_return = DiscountCode_type;
 
 export default async function create_store_coupon({
   client,
@@ -43,6 +40,7 @@ export default async function create_store_coupon({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_store_coupon_return;
   return result;
 }

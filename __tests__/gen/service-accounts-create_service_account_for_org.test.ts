@@ -4,7 +4,6 @@ async function example() {
   const response = await service_accounts.create_service_account_for_org({
     label: 'string',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

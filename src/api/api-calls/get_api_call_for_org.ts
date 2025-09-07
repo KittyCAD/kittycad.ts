@@ -1,12 +1,13 @@
-import { ApiCallWithPrice_type, Error_type } from '../../models.js';
+import { ApiCallWithPrice_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_api_call_for_org_params {
   client?: Client;
   id: string;
 }
 
-type Get_api_call_for_org_return = ApiCallWithPrice_type | Error_type;
+type Get_api_call_for_org_return = ApiCallWithPrice_type;
 
 export default async function get_api_call_for_org({
   client,
@@ -38,6 +39,7 @@ export default async function get_api_call_for_org({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_api_call_for_org_return;
   return result;
 }

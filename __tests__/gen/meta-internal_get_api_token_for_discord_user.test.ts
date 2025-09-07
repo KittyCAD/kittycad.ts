@@ -4,7 +4,6 @@ async function example() {
   const response = await meta.internal_get_api_token_for_discord_user({
     discord_id: 'string',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

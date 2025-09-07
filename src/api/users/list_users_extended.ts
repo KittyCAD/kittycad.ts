@@ -1,9 +1,9 @@
 import {
   ExtendedUserResultsPage_type,
-  Error_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_users_extended_params {
   client?: Client;
@@ -12,7 +12,7 @@ interface List_users_extended_params {
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_users_extended_return = ExtendedUserResultsPage_type | Error_type;
+type List_users_extended_return = ExtendedUserResultsPage_type;
 
 export default async function list_users_extended({
   client,
@@ -46,6 +46,7 @@ export default async function list_users_extended({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as List_users_extended_return;
   return result;
 }

@@ -1,13 +1,14 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_debug_uploads_params {
   client?: Client;
   files: File[];
 }
 
-type Create_debug_uploads_return = Error_type;
+type Create_debug_uploads_return = any;
 
 export default async function create_debug_uploads({
   client,
@@ -46,6 +47,7 @@ export default async function create_debug_uploads({
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_debug_uploads_return;
   return result;
 }

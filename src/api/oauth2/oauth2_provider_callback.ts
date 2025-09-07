@@ -1,5 +1,6 @@
-import { Error_type, AccountProvider_type } from '../../models.js';
+import { AccountProvider_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Oauth2_provider_callback_params {
   client?: Client;
@@ -10,7 +11,7 @@ interface Oauth2_provider_callback_params {
   user: string;
 }
 
-type Oauth2_provider_callback_return = Error_type;
+type Oauth2_provider_callback_return = any;
 
 export default async function oauth2_provider_callback({
   client,
@@ -46,6 +47,7 @@ export default async function oauth2_provider_callback({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Oauth2_provider_callback_return;
   return result;
 }

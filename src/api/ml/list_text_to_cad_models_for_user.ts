@@ -1,10 +1,10 @@
 import {
   TextToCadResponseResultsPage_type,
-  Error_type,
   CreatedAtSortMode_type,
   Uuid_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_text_to_cad_models_for_user_params {
   client?: Client;
@@ -16,8 +16,7 @@ interface List_text_to_cad_models_for_user_params {
 }
 
 type List_text_to_cad_models_for_user_return =
-  | TextToCadResponseResultsPage_type
-  | Error_type;
+  TextToCadResponseResultsPage_type;
 
 export default async function list_text_to_cad_models_for_user({
   client,
@@ -53,6 +52,7 @@ export default async function list_text_to_cad_models_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as List_text_to_cad_models_for_user_return;
   return result;

@@ -328,3 +328,4 @@ export const users = {
 
 export type { Models } from './models.js';
 export { Client } from './client.js';
+export { ApiError } from './errors.js';

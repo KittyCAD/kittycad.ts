@@ -8,7 +8,6 @@ async function example() {
       number_of_cad_users: 'The user count of the user.',
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

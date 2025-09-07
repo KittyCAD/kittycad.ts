@@ -1,6 +1,7 @@
-import { Error_type, Event_type } from '../../models.js';
+import { Event_type } from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_event_params {
   client?: Client;
@@ -8,7 +9,7 @@ interface Create_event_params {
   files: File[];
 }
 
-type Create_event_return = Error_type;
+type Create_event_return = any;
 
 export default async function create_event({
   client,
@@ -49,6 +50,7 @@ export default async function create_event({
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_event_return;
   return result;
 }

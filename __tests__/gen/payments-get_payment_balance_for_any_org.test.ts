@@ -5,7 +5,6 @@ async function example() {
     include_total_due: true,
     id: '00000000-0000-0000-0000-000000000000',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

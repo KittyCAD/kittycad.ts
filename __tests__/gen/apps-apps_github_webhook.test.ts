@@ -5,7 +5,6 @@ async function example() {
   const response = await apps.apps_github_webhook({
     body: await fsp.readFile('./example', 'base64'),
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

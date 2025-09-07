@@ -1,16 +1,16 @@
 import {
   ApiCallQueryGroup_type,
-  Error_type,
   ApiCallQueryGroupBy_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_api_call_metrics_params {
   client?: Client;
   group_by: ApiCallQueryGroupBy_type;
 }
 
-type Get_api_call_metrics_return = ApiCallQueryGroup_type[] | Error_type;
+type Get_api_call_metrics_return = ApiCallQueryGroup_type[];
 
 export default async function get_api_call_metrics({
   client,
@@ -42,6 +42,7 @@ export default async function get_api_call_metrics({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_api_call_metrics_return;
   return result;
 }

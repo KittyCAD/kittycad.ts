@@ -1,5 +1,6 @@
-import { Error_type, UpdateShortlinkRequest_type } from '../../models.js';
+import { UpdateShortlinkRequest_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Update_user_shortlink_params {
   client?: Client;
@@ -7,7 +8,7 @@ interface Update_user_shortlink_params {
   body: UpdateShortlinkRequest_type;
 }
 
-type Update_user_shortlink_return = Error_type;
+type Update_user_shortlink_return = any;
 
 export default async function update_user_shortlink({
   client,
@@ -41,6 +42,7 @@ export default async function update_user_shortlink({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Update_user_shortlink_return;
   return result;
 }

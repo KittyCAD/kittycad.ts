@@ -1,11 +1,11 @@
 import {
   FileDensity_type,
-  Error_type,
   UnitMass_type,
   UnitDensity_type,
   FileImportFormat_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_file_density_params {
   client?: Client;
@@ -16,7 +16,7 @@ interface Create_file_density_params {
   body: string;
 }
 
-type Create_file_density_return = FileDensity_type | Error_type;
+type Create_file_density_return = FileDensity_type;
 
 export default async function create_file_density({
   client,
@@ -53,6 +53,7 @@ export default async function create_file_density({
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_file_density_return;
   return result;
 }

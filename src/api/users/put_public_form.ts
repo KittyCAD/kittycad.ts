@@ -1,12 +1,13 @@
-import { Error_type, InquiryForm_type } from '../../models.js';
+import { InquiryForm_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Put_public_form_params {
   client?: Client;
   body: InquiryForm_type;
 }
 
-type Put_public_form_return = Error_type;
+type Put_public_form_return = any;
 
 export default async function put_public_form({
   client,
@@ -39,6 +40,7 @@ export default async function put_public_form({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Put_public_form_return;
   return result;
 }

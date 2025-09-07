@@ -1,11 +1,12 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Delete_org_saml_idp_params {
   client?: Client;
 }
 
-type Delete_org_saml_idp_return = Error_type;
+type Delete_org_saml_idp_return = any;
 
 export default async function delete_org_saml_idp({
   client,
@@ -36,6 +37,7 @@ export default async function delete_org_saml_idp({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Delete_org_saml_idp_return;
   return result;
 }

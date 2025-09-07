@@ -1,10 +1,10 @@
 import {
   CustomerBalance_type,
-  Error_type,
   Uuid_type,
   UpdatePaymentBalance_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Update_payment_balance_for_any_org_params {
   client?: Client;
@@ -13,9 +13,7 @@ interface Update_payment_balance_for_any_org_params {
   body: UpdatePaymentBalance_type;
 }
 
-type Update_payment_balance_for_any_org_return =
-  | CustomerBalance_type
-  | Error_type;
+type Update_payment_balance_for_any_org_return = CustomerBalance_type;
 
 export default async function update_payment_balance_for_any_org({
   client,
@@ -50,6 +48,7 @@ export default async function update_payment_balance_for_any_org({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Update_payment_balance_for_any_org_return;
   return result;

@@ -1,12 +1,13 @@
-import { Org_type, Error_type, Uuid_type } from '../../models.js';
+import { Org_type, Uuid_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_any_org_params {
   client?: Client;
   id: Uuid_type;
 }
 
-type Get_any_org_return = Org_type | Error_type;
+type Get_any_org_return = Org_type;
 
 export default async function get_any_org({
   client,
@@ -38,6 +39,7 @@ export default async function get_any_org({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_any_org_return;
   return result;
 }

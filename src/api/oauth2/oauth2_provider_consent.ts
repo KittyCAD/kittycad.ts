@@ -1,9 +1,6 @@
-import {
-  OAuth2ClientInfo_type,
-  Error_type,
-  AccountProvider_type,
-} from '../../models.js';
+import { OAuth2ClientInfo_type, AccountProvider_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Oauth2_provider_consent_params {
   client?: Client;
@@ -11,7 +8,7 @@ interface Oauth2_provider_consent_params {
   callback_url: string;
 }
 
-type Oauth2_provider_consent_return = OAuth2ClientInfo_type | Error_type;
+type Oauth2_provider_consent_return = OAuth2ClientInfo_type;
 
 export default async function oauth2_provider_consent({
   client,
@@ -44,6 +41,7 @@ export default async function oauth2_provider_consent({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Oauth2_provider_consent_return;
   return result;
 }

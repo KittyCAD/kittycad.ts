@@ -1,10 +1,10 @@
 import {
   TextToCad_type,
-  Error_type,
   FileExportFormat_type,
   TextToCadCreateBody_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_text_to_cad_params {
   client?: Client;
@@ -13,7 +13,7 @@ interface Create_text_to_cad_params {
   body: TextToCadCreateBody_type;
 }
 
-type Create_text_to_cad_return = TextToCad_type | Error_type;
+type Create_text_to_cad_return = TextToCad_type;
 
 export default async function create_text_to_cad({
   client,
@@ -48,6 +48,7 @@ export default async function create_text_to_cad({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_text_to_cad_return;
   return result;
 }

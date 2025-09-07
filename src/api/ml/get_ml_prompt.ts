@@ -1,12 +1,13 @@
-import { MlPrompt_type, Error_type } from '../../models.js';
+import { MlPrompt_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_ml_prompt_params {
   client?: Client;
   id: string;
 }
 
-type Get_ml_prompt_return = MlPrompt_type | Error_type;
+type Get_ml_prompt_return = MlPrompt_type;
 
 export default async function get_ml_prompt({
   client,
@@ -38,6 +39,7 @@ export default async function get_ml_prompt({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_ml_prompt_return;
   return result;
 }

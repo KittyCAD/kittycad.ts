@@ -1,12 +1,13 @@
-import { Error_type, InquiryForm_type } from '../../models.js';
+import { InquiryForm_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Put_user_form_self_params {
   client?: Client;
   body: InquiryForm_type;
 }
 
-type Put_user_form_self_return = Error_type;
+type Put_user_form_self_return = any;
 
 export default async function put_user_form_self({
   client,
@@ -39,6 +40,7 @@ export default async function put_user_form_self({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Put_user_form_self_return;
   return result;
 }

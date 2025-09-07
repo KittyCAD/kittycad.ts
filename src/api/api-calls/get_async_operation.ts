@@ -1,12 +1,13 @@
-import { AsyncApiCallOutput_type, Error_type } from '../../models.js';
+import { AsyncApiCallOutput_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_async_operation_params {
   client?: Client;
   id: string;
 }
 
-type Get_async_operation_return = AsyncApiCallOutput_type | Error_type;
+type Get_async_operation_return = AsyncApiCallOutput_type;
 
 export default async function get_async_operation({
   client,
@@ -38,6 +39,7 @@ export default async function get_async_operation({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_async_operation_return;
   return result;
 }

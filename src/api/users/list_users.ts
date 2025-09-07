@@ -1,9 +1,6 @@
-import {
-  UserResultsPage_type,
-  Error_type,
-  CreatedAtSortMode_type,
-} from '../../models.js';
+import { UserResultsPage_type, CreatedAtSortMode_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_users_params {
   client?: Client;
@@ -12,7 +9,7 @@ interface List_users_params {
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_users_return = UserResultsPage_type | Error_type;
+type List_users_return = UserResultsPage_type;
 
 export default async function list_users({
   client,
@@ -46,6 +43,7 @@ export default async function list_users({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as List_users_return;
   return result;
 }

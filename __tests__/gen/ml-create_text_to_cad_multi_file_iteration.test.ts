@@ -19,7 +19,6 @@ async function example() {
       source_ranges: [],
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

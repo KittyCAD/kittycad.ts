@@ -13,7 +13,6 @@ async function example() {
       phone: 'The phone number of the user.',
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

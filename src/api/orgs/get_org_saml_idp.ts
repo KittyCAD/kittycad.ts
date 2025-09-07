@@ -1,11 +1,12 @@
-import { SamlIdentityProvider_type, Error_type } from '../../models.js';
+import { SamlIdentityProvider_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_org_saml_idp_params {
   client?: Client;
 }
 
-type Get_org_saml_idp_return = SamlIdentityProvider_type | Error_type;
+type Get_org_saml_idp_return = SamlIdentityProvider_type;
 
 export default async function get_org_saml_idp({
   client,
@@ -36,6 +37,7 @@ export default async function get_org_saml_idp({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_org_saml_idp_return;
   return result;
 }

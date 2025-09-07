@@ -1,11 +1,12 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Delete_user_self_params {
   client?: Client;
 }
 
-type Delete_user_self_return = Error_type;
+type Delete_user_self_return = any;
 
 export default async function delete_user_self({
   client,
@@ -36,6 +37,7 @@ export default async function delete_user_self({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Delete_user_self_return;
   return result;
 }

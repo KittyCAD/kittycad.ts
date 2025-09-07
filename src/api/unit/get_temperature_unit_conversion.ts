@@ -1,9 +1,9 @@
 import {
   UnitTemperatureConversion_type,
-  Error_type,
   UnitTemperature_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_temperature_unit_conversion_params {
   client?: Client;
@@ -12,9 +12,7 @@ interface Get_temperature_unit_conversion_params {
   value: number;
 }
 
-type Get_temperature_unit_conversion_return =
-  | UnitTemperatureConversion_type
-  | Error_type;
+type Get_temperature_unit_conversion_return = UnitTemperatureConversion_type;
 
 export default async function get_temperature_unit_conversion({
   client,
@@ -48,6 +46,7 @@ export default async function get_temperature_unit_conversion({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Get_temperature_unit_conversion_return;
   return result;

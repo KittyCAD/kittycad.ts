@@ -7,7 +7,6 @@ async function example() {
     sort_by: 'created_at_ascending',
     status: 'queued',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

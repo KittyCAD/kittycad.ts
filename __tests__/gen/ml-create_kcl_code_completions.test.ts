@@ -21,7 +21,6 @@ async function example() {
       top_p: 7,
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

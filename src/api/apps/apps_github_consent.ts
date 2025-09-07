@@ -1,11 +1,12 @@
-import { AppClientInfo_type, Error_type } from '../../models.js';
+import { AppClientInfo_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Apps_github_consent_params {
   client?: Client;
 }
 
-type Apps_github_consent_return = AppClientInfo_type | Error_type;
+type Apps_github_consent_return = AppClientInfo_type;
 
 export default async function apps_github_consent({
   client,
@@ -36,6 +37,7 @@ export default async function apps_github_consent({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Apps_github_consent_return;
   return result;
 }

@@ -1,9 +1,6 @@
-import {
-  UnitAngleConversion_type,
-  Error_type,
-  UnitAngle_type,
-} from '../../models.js';
+import { UnitAngleConversion_type, UnitAngle_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_angle_unit_conversion_params {
   client?: Client;
@@ -12,7 +9,7 @@ interface Get_angle_unit_conversion_params {
   value: number;
 }
 
-type Get_angle_unit_conversion_return = UnitAngleConversion_type | Error_type;
+type Get_angle_unit_conversion_return = UnitAngleConversion_type;
 
 export default async function get_angle_unit_conversion({
   client,
@@ -46,6 +43,7 @@ export default async function get_angle_unit_conversion({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_angle_unit_conversion_return;
   return result;
 }

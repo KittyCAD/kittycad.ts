@@ -1,9 +1,9 @@
 import {
   UnitPressureConversion_type,
-  Error_type,
   UnitPressure_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_pressure_unit_conversion_params {
   client?: Client;
@@ -12,9 +12,7 @@ interface Get_pressure_unit_conversion_params {
   value: number;
 }
 
-type Get_pressure_unit_conversion_return =
-  | UnitPressureConversion_type
-  | Error_type;
+type Get_pressure_unit_conversion_return = UnitPressureConversion_type;
 
 export default async function get_pressure_unit_conversion({
   client,
@@ -48,6 +46,7 @@ export default async function get_pressure_unit_conversion({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_pressure_unit_conversion_return;
   return result;
 }

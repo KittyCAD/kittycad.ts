@@ -4,7 +4,6 @@ async function example() {
   const response = await api_tokens.get_api_token_for_user({
     token: 'api-00000000-0000-0000-0000-000000000000',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

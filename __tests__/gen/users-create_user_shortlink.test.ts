@@ -9,7 +9,6 @@ async function example() {
       url: 'The URL to redirect back to.',
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

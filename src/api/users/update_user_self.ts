@@ -1,12 +1,13 @@
-import { User_type, Error_type, UpdateUser_type } from '../../models.js';
+import { User_type, UpdateUser_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Update_user_self_params {
   client?: Client;
   body: UpdateUser_type;
 }
 
-type Update_user_self_return = User_type | Error_type;
+type Update_user_self_return = User_type;
 
 export default async function update_user_self({
   client,
@@ -39,6 +40,7 @@ export default async function update_user_self({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Update_user_self_return;
   return result;
 }

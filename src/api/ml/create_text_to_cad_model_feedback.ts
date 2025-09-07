@@ -1,5 +1,6 @@
-import { Error_type, MlFeedback_type } from '../../models.js';
+import { MlFeedback_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_text_to_cad_model_feedback_params {
   client?: Client;
@@ -7,7 +8,7 @@ interface Create_text_to_cad_model_feedback_params {
   feedback: MlFeedback_type;
 }
 
-type Create_text_to_cad_model_feedback_return = Error_type;
+type Create_text_to_cad_model_feedback_return = any;
 
 export default async function create_text_to_cad_model_feedback({
   client,
@@ -40,6 +41,7 @@ export default async function create_text_to_cad_model_feedback({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Create_text_to_cad_model_feedback_return;
   return result;

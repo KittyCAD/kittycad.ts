@@ -1,12 +1,13 @@
-import { Error_type, Subscribe_type } from '../../models.js';
+import { Subscribe_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Put_public_subscribe_params {
   client?: Client;
   body: Subscribe_type;
 }
 
-type Put_public_subscribe_return = Error_type;
+type Put_public_subscribe_return = any;
 
 export default async function put_public_subscribe({
   client,
@@ -39,6 +40,7 @@ export default async function put_public_subscribe({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Put_public_subscribe_return;
   return result;
 }

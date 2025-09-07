@@ -1,12 +1,13 @@
-import { ApiToken_type, Error_type, ApiTokenUuid_type } from '../../models.js';
+import { ApiToken_type, ApiTokenUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_api_token_for_user_params {
   client?: Client;
   token: ApiTokenUuid_type;
 }
 
-type Get_api_token_for_user_return = ApiToken_type | Error_type;
+type Get_api_token_for_user_return = ApiToken_type;
 
 export default async function get_api_token_for_user({
   client,
@@ -38,6 +39,7 @@ export default async function get_api_token_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_api_token_for_user_return;
   return result;
 }

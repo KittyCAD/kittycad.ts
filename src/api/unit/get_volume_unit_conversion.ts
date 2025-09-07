@@ -1,9 +1,6 @@
-import {
-  UnitVolumeConversion_type,
-  Error_type,
-  UnitVolume_type,
-} from '../../models.js';
+import { UnitVolumeConversion_type, UnitVolume_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_volume_unit_conversion_params {
   client?: Client;
@@ -12,7 +9,7 @@ interface Get_volume_unit_conversion_params {
   value: number;
 }
 
-type Get_volume_unit_conversion_return = UnitVolumeConversion_type | Error_type;
+type Get_volume_unit_conversion_return = UnitVolumeConversion_type;
 
 export default async function get_volume_unit_conversion({
   client,
@@ -46,6 +43,7 @@ export default async function get_volume_unit_conversion({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_volume_unit_conversion_return;
   return result;
 }

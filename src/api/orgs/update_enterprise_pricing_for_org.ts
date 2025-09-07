@@ -1,10 +1,10 @@
 import {
   ZooProductSubscriptions_type,
-  Error_type,
   Uuid_type,
   EnterpriseSubscriptionTierPrice_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Update_enterprise_pricing_for_org_params {
   client?: Client;
@@ -12,9 +12,7 @@ interface Update_enterprise_pricing_for_org_params {
   body: EnterpriseSubscriptionTierPrice_type;
 }
 
-type Update_enterprise_pricing_for_org_return =
-  | ZooProductSubscriptions_type
-  | Error_type;
+type Update_enterprise_pricing_for_org_return = ZooProductSubscriptions_type;
 
 export default async function update_enterprise_pricing_for_org({
   client,
@@ -48,6 +46,7 @@ export default async function update_enterprise_pricing_for_org({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Update_enterprise_pricing_for_org_return;
   return result;

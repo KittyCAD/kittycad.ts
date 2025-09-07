@@ -1,5 +1,6 @@
 import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Device_access_token_params {
   client?: Client;
@@ -36,6 +37,7 @@ export default async function device_access_token({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Device_access_token_return;
   return result;
 }

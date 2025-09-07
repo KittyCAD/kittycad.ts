@@ -1,6 +1,7 @@
-import { KclModel_type, Error_type, CodeOption_type } from '../../models.js';
+import { KclModel_type, CodeOption_type } from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_proprietary_to_kcl_params {
   client?: Client;
@@ -8,7 +9,7 @@ interface Create_proprietary_to_kcl_params {
   files: File[];
 }
 
-type Create_proprietary_to_kcl_return = KclModel_type | Error_type;
+type Create_proprietary_to_kcl_return = KclModel_type;
 
 export default async function create_proprietary_to_kcl({
   client,
@@ -48,6 +49,7 @@ export default async function create_proprietary_to_kcl({
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_proprietary_to_kcl_return;
   return result;
 }

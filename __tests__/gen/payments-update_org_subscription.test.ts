@@ -4,7 +4,6 @@ async function example() {
   const response = await payments.update_org_subscription({
     body: { modeling_app: 'team', pay_annually: true },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

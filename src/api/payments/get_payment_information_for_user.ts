@@ -1,11 +1,12 @@
-import { Customer_type, Error_type } from '../../models.js';
+import { Customer_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_payment_information_for_user_params {
   client?: Client;
 }
 
-type Get_payment_information_for_user_return = Customer_type | Error_type;
+type Get_payment_information_for_user_return = Customer_type;
 
 export default async function get_payment_information_for_user({
   client,
@@ -36,6 +37,7 @@ export default async function get_payment_information_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Get_payment_information_for_user_return;
   return result;

@@ -9,7 +9,6 @@ async function example() {
       restrict_to_org: true,
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

@@ -1,13 +1,12 @@
-import { ZooProductSubscription_type, Error_type } from '../../models.js';
+import { ZooProductSubscription_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_pricing_subscriptions_params {
   client?: Client;
 }
 
-type Get_pricing_subscriptions_return =
-  | ZooProductSubscription_type[]
-  | Error_type;
+type Get_pricing_subscriptions_return = ZooProductSubscription_type[];
 
 export default async function get_pricing_subscriptions({
   client,
@@ -38,6 +37,7 @@ export default async function get_pricing_subscriptions({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_pricing_subscriptions_return;
   return result;
 }

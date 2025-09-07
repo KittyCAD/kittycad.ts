@@ -5,7 +5,6 @@ async function example() {
     app_name: 'string',
     user_code: 'string',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

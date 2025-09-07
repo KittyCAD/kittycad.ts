@@ -1,9 +1,6 @@
-import {
-  UnitMassConversion_type,
-  Error_type,
-  UnitMass_type,
-} from '../../models.js';
+import { UnitMassConversion_type, UnitMass_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_mass_unit_conversion_params {
   client?: Client;
@@ -12,7 +9,7 @@ interface Get_mass_unit_conversion_params {
   value: number;
 }
 
-type Get_mass_unit_conversion_return = UnitMassConversion_type | Error_type;
+type Get_mass_unit_conversion_return = UnitMassConversion_type;
 
 export default async function get_mass_unit_conversion({
   client,
@@ -46,6 +43,7 @@ export default async function get_mass_unit_conversion({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_mass_unit_conversion_return;
   return result;
 }

@@ -1,10 +1,10 @@
 import {
   OrgMemberResultsPage_type,
-  Error_type,
   CreatedAtSortMode_type,
   UserOrgRole_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_org_members_params {
   client?: Client;
@@ -14,7 +14,7 @@ interface List_org_members_params {
   role: UserOrgRole_type;
 }
 
-type List_org_members_return = OrgMemberResultsPage_type | Error_type;
+type List_org_members_return = OrgMemberResultsPage_type;
 
 export default async function list_org_members({
   client,
@@ -49,6 +49,7 @@ export default async function list_org_members({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as List_org_members_return;
   return result;
 }

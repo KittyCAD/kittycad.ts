@@ -1,9 +1,6 @@
-import {
-  CodeOutput_type,
-  Error_type,
-  CodeLanguage_type,
-} from '../../models.js';
+import { CodeOutput_type, CodeLanguage_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_file_execution_params {
   client?: Client;
@@ -12,7 +9,7 @@ interface Create_file_execution_params {
   body: string;
 }
 
-type Create_file_execution_return = CodeOutput_type | Error_type;
+type Create_file_execution_return = CodeOutput_type;
 
 export default async function create_file_execution({
   client,
@@ -47,6 +44,7 @@ export default async function create_file_execution({
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_file_execution_return;
   return result;
 }

@@ -1,10 +1,7 @@
-import {
-  FileConversion_type,
-  Error_type,
-  ConversionParams_type,
-} from '../../models.js';
+import { FileConversion_type, ConversionParams_type } from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_file_conversion_options_params {
   client?: Client;
@@ -12,7 +9,7 @@ interface Create_file_conversion_options_params {
   files: File[];
 }
 
-type Create_file_conversion_options_return = FileConversion_type | Error_type;
+type Create_file_conversion_options_return = FileConversion_type;
 
 export default async function create_file_conversion_options({
   client,
@@ -53,6 +50,7 @@ export default async function create_file_conversion_options({
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Create_file_conversion_options_return;
   return result;

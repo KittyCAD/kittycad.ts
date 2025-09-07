@@ -4,7 +4,6 @@ async function example() {
   const response = await orgs.update_org_privacy_settings({
     body: { can_train_on_data: true },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

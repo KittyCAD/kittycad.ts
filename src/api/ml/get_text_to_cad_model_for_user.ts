@@ -1,14 +1,13 @@
-import { TextToCadResponse_type, Error_type } from '../../models.js';
+import { TextToCadResponse_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_text_to_cad_model_for_user_params {
   client?: Client;
   id: string;
 }
 
-type Get_text_to_cad_model_for_user_return =
-  | TextToCadResponse_type
-  | Error_type;
+type Get_text_to_cad_model_for_user_return = TextToCadResponse_type;
 
 export default async function get_text_to_cad_model_for_user({
   client,
@@ -40,6 +39,7 @@ export default async function get_text_to_cad_model_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Get_text_to_cad_model_for_user_return;
   return result;

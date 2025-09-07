@@ -1,18 +1,16 @@
 import {
   ZooProductSubscriptions_type,
-  Error_type,
   ZooProductSubscriptionsUserRequest_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Update_user_subscription_params {
   client?: Client;
   body: ZooProductSubscriptionsUserRequest_type;
 }
 
-type Update_user_subscription_return =
-  | ZooProductSubscriptions_type
-  | Error_type;
+type Update_user_subscription_return = ZooProductSubscriptions_type;
 
 export default async function update_user_subscription({
   client,
@@ -45,6 +43,7 @@ export default async function update_user_subscription({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Update_user_subscription_return;
   return result;
 }

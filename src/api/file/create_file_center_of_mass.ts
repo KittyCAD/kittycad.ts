@@ -1,10 +1,10 @@
 import {
   FileCenterOfMass_type,
-  Error_type,
   UnitLength_type,
   FileImportFormat_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_file_center_of_mass_params {
   client?: Client;
@@ -13,7 +13,7 @@ interface Create_file_center_of_mass_params {
   body: string;
 }
 
-type Create_file_center_of_mass_return = FileCenterOfMass_type | Error_type;
+type Create_file_center_of_mass_return = FileCenterOfMass_type;
 
 export default async function create_file_center_of_mass({
   client,
@@ -48,6 +48,7 @@ export default async function create_file_center_of_mass({
     body,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_file_center_of_mass_return;
   return result;
 }

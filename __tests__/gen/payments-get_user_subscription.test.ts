@@ -2,7 +2,6 @@ import { payments } from '../../src/index.js';
 
 async function example() {
   const response = await payments.get_user_subscription();
-  if ('error_code' in response) throw response;
 
   return response;
 }

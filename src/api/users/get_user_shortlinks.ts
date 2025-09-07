@@ -1,9 +1,9 @@
 import {
   ShortlinkResultsPage_type,
-  Error_type,
   CreatedAtSortMode_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_user_shortlinks_params {
   client?: Client;
@@ -12,7 +12,7 @@ interface Get_user_shortlinks_params {
   sort_by: CreatedAtSortMode_type;
 }
 
-type Get_user_shortlinks_return = ShortlinkResultsPage_type | Error_type;
+type Get_user_shortlinks_return = ShortlinkResultsPage_type;
 
 export default async function get_user_shortlinks({
   client,
@@ -46,6 +46,7 @@ export default async function get_user_shortlinks({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_user_shortlinks_return;
   return result;
 }

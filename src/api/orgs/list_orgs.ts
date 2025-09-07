@@ -1,9 +1,6 @@
-import {
-  OrgResultsPage_type,
-  Error_type,
-  CreatedAtSortMode_type,
-} from '../../models.js';
+import { OrgResultsPage_type, CreatedAtSortMode_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface List_orgs_params {
   client?: Client;
@@ -12,7 +9,7 @@ interface List_orgs_params {
   sort_by: CreatedAtSortMode_type;
 }
 
-type List_orgs_return = OrgResultsPage_type | Error_type;
+type List_orgs_return = OrgResultsPage_type;
 
 export default async function list_orgs({
   client,
@@ -46,6 +43,7 @@ export default async function list_orgs({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as List_orgs_return;
   return result;
 }

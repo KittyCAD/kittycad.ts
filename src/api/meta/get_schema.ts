@@ -1,11 +1,12 @@
-import { Error_type } from '../../models.js';
+import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_schema_params {
   client?: Client;
 }
 
-type Get_schema_return = Error_type;
+type Get_schema_return = any;
 
 export default async function get_schema({
   client,
@@ -36,6 +37,7 @@ export default async function get_schema({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_schema_return;
   return result;
 }

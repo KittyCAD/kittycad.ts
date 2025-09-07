@@ -1,12 +1,13 @@
-import { Org_type, Error_type, OrgDetails_type } from '../../models.js';
+import { Org_type, OrgDetails_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_org_params {
   client?: Client;
   body: OrgDetails_type;
 }
 
-type Create_org_return = Org_type | Error_type;
+type Create_org_return = Org_type;
 
 export default async function create_org({
   client,
@@ -39,6 +40,7 @@ export default async function create_org({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_org_return;
   return result;
 }

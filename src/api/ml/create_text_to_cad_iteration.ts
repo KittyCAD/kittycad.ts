@@ -1,16 +1,16 @@
 import {
   TextToCadIteration_type,
-  Error_type,
   TextToCadIterationBody_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_text_to_cad_iteration_params {
   client?: Client;
   body: TextToCadIterationBody_type;
 }
 
-type Create_text_to_cad_iteration_return = TextToCadIteration_type | Error_type;
+type Create_text_to_cad_iteration_return = TextToCadIteration_type;
 
 export default async function create_text_to_cad_iteration({
   client,
@@ -43,6 +43,7 @@ export default async function create_text_to_cad_iteration({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_text_to_cad_iteration_return;
   return result;
 }

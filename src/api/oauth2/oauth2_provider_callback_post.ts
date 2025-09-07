@@ -1,12 +1,13 @@
-import { Error_type, AccountProvider_type } from '../../models.js';
+import { AccountProvider_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Oauth2_provider_callback_post_params {
   client?: Client;
   provider: AccountProvider_type;
 }
 
-type Oauth2_provider_callback_post_return = Error_type;
+type Oauth2_provider_callback_post_return = any;
 
 export default async function oauth2_provider_callback_post({
   client,
@@ -38,6 +39,7 @@ export default async function oauth2_provider_callback_post({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Oauth2_provider_callback_post_return;
   return result;

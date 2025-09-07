@@ -1,16 +1,16 @@
 import {
   CreateShortlinkResponse_type,
-  Error_type,
   CreateShortlinkRequest_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_user_shortlink_params {
   client?: Client;
   body: CreateShortlinkRequest_type;
 }
 
-type Create_user_shortlink_return = CreateShortlinkResponse_type | Error_type;
+type Create_user_shortlink_return = CreateShortlinkResponse_type;
 
 export default async function create_user_shortlink({
   client,
@@ -43,6 +43,7 @@ export default async function create_user_shortlink({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Create_user_shortlink_return;
   return result;
 }

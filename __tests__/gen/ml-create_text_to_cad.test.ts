@@ -12,7 +12,6 @@ async function example() {
       prompt: 'The prompt for the model.',
     },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

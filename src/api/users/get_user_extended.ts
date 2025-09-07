@@ -1,16 +1,13 @@
-import {
-  ExtendedUser_type,
-  Error_type,
-  UserIdentifier_type,
-} from '../../models.js';
+import { ExtendedUser_type, UserIdentifier_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Get_user_extended_params {
   client?: Client;
   id: UserIdentifier_type;
 }
 
-type Get_user_extended_return = ExtendedUser_type | Error_type;
+type Get_user_extended_return = ExtendedUser_type;
 
 export default async function get_user_extended({
   client,
@@ -42,6 +39,7 @@ export default async function get_user_extended({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Get_user_extended_return;
   return result;
 }

@@ -1,12 +1,13 @@
-import { Error_type, Uuid_type } from '../../models.js';
+import { Uuid_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Delete_org_member_params {
   client?: Client;
   user_id: Uuid_type;
 }
 
-type Delete_org_member_return = Error_type;
+type Delete_org_member_return = any;
 
 export default async function delete_org_member({
   client,
@@ -38,6 +39,7 @@ export default async function delete_org_member({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Delete_org_member_return;
   return result;
 }

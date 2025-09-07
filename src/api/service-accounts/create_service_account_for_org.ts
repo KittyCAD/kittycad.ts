@@ -1,12 +1,13 @@
-import { ServiceAccount_type, Error_type } from '../../models.js';
+import { ServiceAccount_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_service_account_for_org_params {
   client?: Client;
   label: string;
 }
 
-type Create_service_account_for_org_return = ServiceAccount_type | Error_type;
+type Create_service_account_for_org_return = ServiceAccount_type;
 
 export default async function create_service_account_for_org({
   client,
@@ -38,6 +39,7 @@ export default async function create_service_account_for_org({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Create_service_account_for_org_return;
   return result;

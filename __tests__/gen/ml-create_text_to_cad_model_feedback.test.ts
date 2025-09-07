@@ -5,7 +5,6 @@ async function example() {
     id: 'string',
     feedback: 'thumbs_up',
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

@@ -1,5 +1,6 @@
 import {} from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Oauth2_token_revoke_params {
   client?: Client;
@@ -36,6 +37,7 @@ export default async function oauth2_token_revoke({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Oauth2_token_revoke_return;
   return result;
 }

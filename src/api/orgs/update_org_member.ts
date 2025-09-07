@@ -1,10 +1,10 @@
 import {
   OrgMember_type,
-  Error_type,
   Uuid_type,
   UpdateMemberToOrgBody_type,
 } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Update_org_member_params {
   client?: Client;
@@ -12,7 +12,7 @@ interface Update_org_member_params {
   body: UpdateMemberToOrgBody_type;
 }
 
-type Update_org_member_return = OrgMember_type | Error_type;
+type Update_org_member_return = OrgMember_type;
 
 export default async function update_org_member({
   client,
@@ -46,6 +46,7 @@ export default async function update_org_member({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Update_org_member_return;
   return result;
 }

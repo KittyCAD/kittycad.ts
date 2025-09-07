@@ -1,12 +1,13 @@
-import { Error_type, CrmData_type } from '../../models.js';
+import { CrmData_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Patch_user_crm_params {
   client?: Client;
   body: CrmData_type;
 }
 
-type Patch_user_crm_return = Error_type;
+type Patch_user_crm_return = any;
 
 export default async function patch_user_crm({
   client,
@@ -39,6 +40,7 @@ export default async function patch_user_crm({
     body: JSON.stringify(body),
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Patch_user_crm_return;
   return result;
 }

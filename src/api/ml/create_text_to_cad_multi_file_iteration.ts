@@ -1,10 +1,10 @@
 import {
   TextToCadMultiFileIteration_type,
-  Error_type,
   TextToCadMultiFileIterationBody_type,
 } from '../../models.js';
 import { File } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_text_to_cad_multi_file_iteration_params {
   client?: Client;
@@ -13,8 +13,7 @@ interface Create_text_to_cad_multi_file_iteration_params {
 }
 
 type Create_text_to_cad_multi_file_iteration_return =
-  | TextToCadMultiFileIteration_type
-  | Error_type;
+  TextToCadMultiFileIteration_type;
 
 export default async function create_text_to_cad_multi_file_iteration({
   client,
@@ -55,6 +54,7 @@ export default async function create_text_to_cad_multi_file_iteration({
     body: formData,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Create_text_to_cad_multi_file_iteration_return;
   return result;

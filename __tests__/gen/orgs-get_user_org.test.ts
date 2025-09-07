@@ -2,7 +2,6 @@ import { orgs } from '../../src/index.js';
 
 async function example() {
   const response = await orgs.get_user_org();
-  if ('error_code' in response) throw response;
 
   return response;
 }

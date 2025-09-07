@@ -4,7 +4,6 @@ async function example() {
   const response = await users.put_public_subscribe({
     body: { email: 'The email' },
   });
-  if ('error_code' in response) throw response;
 
   return response;
 }

@@ -1,11 +1,12 @@
-import { PaymentIntent_type, Error_type } from '../../models.js';
+import { PaymentIntent_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Create_payment_intent_for_user_params {
   client?: Client;
 }
 
-type Create_payment_intent_for_user_return = PaymentIntent_type | Error_type;
+type Create_payment_intent_for_user_return = PaymentIntent_type;
 
 export default async function create_payment_intent_for_user({
   client,
@@ -36,6 +37,7 @@ export default async function create_payment_intent_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result =
     (await response.json()) as Create_payment_intent_for_user_return;
   return result;

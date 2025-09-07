@@ -1,12 +1,13 @@
-import { Error_type, ApiTokenUuid_type } from '../../models.js';
+import { ApiTokenUuid_type } from '../../models.js';
 import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
 
 interface Delete_api_token_for_user_params {
   client?: Client;
   token: ApiTokenUuid_type;
 }
 
-type Delete_api_token_for_user_return = Error_type;
+type Delete_api_token_for_user_return = any;
 
 export default async function delete_api_token_for_user({
   client,
@@ -38,6 +39,7 @@ export default async function delete_api_token_for_user({
     headers,
   };
   const response = await fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
   const result = (await response.json()) as Delete_api_token_for_user_return;
   return result;
 }
