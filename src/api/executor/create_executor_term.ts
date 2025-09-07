@@ -28,9 +28,9 @@ export default class ExecutorTerm<Req = any, Res = any> {
         remove();
         resolve();
       };
-      const onError = (ev: any) => {
+      const onError = (_ev: Event) => {
         remove();
-        reject(ev?.error || new Error('WebSocket error'));
+        reject(new Error('WebSocket error'));
       };
       const remove = () => {
         ws.removeEventListener('open', onOpen);
@@ -84,9 +84,9 @@ export default class ExecutorTerm<Req = any, Res = any> {
         reject(new Error('timeout'));
       }, timeoutMs);
 
-      const onError = (ev: any) => {
+      const onError = (_ev: Event) => {
         cleanup();
-        reject(ev?.error || new Error('WebSocket error'));
+        reject(new Error('WebSocket error'));
       };
 
       const onMessage = (ev: MessageEvent) => {
@@ -101,11 +101,11 @@ export default class ExecutorTerm<Req = any, Res = any> {
 
       const cleanup = () => {
         clearTimeout(timer);
-        this.ws.removeEventListener('message', onMessage as EventListener);
+        this.ws.removeEventListener('message', onMessage);
         this.ws.removeEventListener('error', onError);
       };
 
-      this.ws.addEventListener('message', onMessage as EventListener);
+      this.ws.addEventListener('message', onMessage);
       this.ws.addEventListener('error', onError);
     });
   }
