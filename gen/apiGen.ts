@@ -72,17 +72,17 @@ export default async function apiGen(lookup: Record<string, string>) {
           (operation.specSection as any)['x-dropshot-websocket']
         )
         const exampleTplPath = isWebSocket
-          ? './src/templates/exampleWs.hbs'
-          : './src/templates/exampleRest.hbs'
+          ? './gen/templates/exampleWs.hbs'
+          : './gen/templates/exampleRest.hbs'
         let exampleTemplate = ''
 
         const templatePath = isWebSocket
-          ? './src/templates/ws.hbs'
+          ? './gen/templates/ws.hbs'
           : (operation.specSection?.requestBody as any)?.content?.[
                 'multipart/form-data'
               ]?.schema
-            ? './src/templates/multipart.hbs'
-            : './src/templates/rest.hbs'
+            ? './gen/templates/multipart.hbs'
+            : './gen/templates/rest.hbs'
 
         const inputTypes: string[] = ['client?: Client']
         const inputParams: string[] = ['client']

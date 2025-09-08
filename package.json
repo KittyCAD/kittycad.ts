@@ -73,7 +73,7 @@
     "build:js": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "build": "rimraf dist && npm run build:types && npm run build:js",
-    "gen": "node --loader ts-node/esm ./src/modelsGen.ts && yarn fmt",
+    "gen": "node --loader ts-node/esm ./gen/modelsGen.ts && yarn fmt",
     "test": "vitest",
     "tsc": "tsc",
     "fmt": "biome format --write ."

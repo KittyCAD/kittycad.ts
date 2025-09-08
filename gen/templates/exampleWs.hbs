@@ -1,0 +1,13 @@
+import { {{tag}}, Client } from '../../src/index.js';
+
+async function example() {
+  const client = new Client('your-token');
+  const conn = await {{tag}}.{{operationId}}.connect({ client });
+}
+
+describe('Testing {{tag}}.{{operationId}}', () => {
+  it('should be truthy or throw', async () => {
+    expect(true).toBeTruthy()
+  })
+})
+

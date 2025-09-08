@@ -110,7 +110,7 @@ $serverParams = @{
   TextExtension     = @(
     '2.5.29.19={text}CA=0',
     '2.5.29.37={text}1.3.6.1.5.5.7.3.1',
-    '2.5.29.17={text}dns=localhost&ip=127.0.0.1&ip=::1'
+    '2.5.29.17={text}DNS=localhost&IPAddress=127.0.0.1&IPAddress=::1'
   )
 }
 $sw.Restart()
