@@ -14,6 +14,9 @@ if (-not $PfxPassword) { $PfxPassword = 'pass' }
 
 Write-Host "Creating local root CA and server cert..."
 
+# Enum alias for readability
+$Ku = [Microsoft.CertificateServices.Commands.KeyUsage]
+
 # Create a root CA in CurrentUser store (use splatting for reliability)
 $rootParams = @{
   Type              = 'Custom'
@@ -23,7 +26,7 @@ $rootParams = @{
   HashAlgorithm     = 'sha256'
   KeyLength         = 2048
   CertStoreLocation = 'Cert:\CurrentUser\My'
-  KeyUsage          = 'CertSign,CRLSign,DigitalSignature'
+  KeyUsage          = @($Ku::CertSign, $Ku::CRLSign, $Ku::DigitalSignature)
   NotAfter          = (Get-Date).AddMonths(3)
   TextExtension     = @('2.5.29.19={text}CA=1&pathlength=3')
 }
@@ -38,7 +41,7 @@ $serverParams = @{
   HashAlgorithm     = 'sha256'
   KeyLength         = 2048
   CertStoreLocation = 'Cert:\CurrentUser\My'
-  KeyUsage          = 'DigitalSignature,KeyEncipherment'
+  KeyUsage          = @($Ku::DigitalSignature, $Ku::KeyEncipherment)
   Signer            = $root
   TextExtension     = @('2.5.29.19={text}CA=0')
 }
