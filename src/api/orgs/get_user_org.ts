@@ -20,7 +20,9 @@ type GetUserOrgReturn = UserOrgInfo
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<GetUserOrgReturn>} successful operation
+ *
+ * Possible return types: UserOrgInfo
  */
 export default async function get_user_org(
   { client }: GetUserOrgInput = {} as GetUserOrgInput

@@ -24,7 +24,9 @@ type GetPressureUnitConversionReturn = UnitPressureConversion
  * @property {UnitPressure} input_unit The source format of the unit. (path)
  * @property {UnitPressure} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetPressureUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitPressureConversion
  */
 export default async function get_pressure_unit_conversion({
   client,

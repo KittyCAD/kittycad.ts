@@ -20,7 +20,9 @@ type GetApiCallMetricsReturn = ApiCallQueryGroup[]
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {ApiCallQueryGroupBy} group_by What field to group the metrics by. (query)
- * @returns successful operation
+ * @returns {Promise<GetApiCallMetricsReturn>} successful operation
+ *
+ * Possible return types: ApiCallQueryGroup[]
  */
 export default async function get_api_call_metrics({
   client,

@@ -20,7 +20,9 @@ type Oauth2ProviderConsentReturn = OAuth2ClientInfo
  * @property {Client} [client] Optional client with auth token.
  * @property {AccountProvider} provider The provider. (path)
  * @property {string} callback_url The URL to redirect back to after we have authenticated. (query)
- * @returns successful operation
+ * @returns {Promise<Oauth2ProviderConsentReturn>} successful operation
+ *
+ * Possible return types: OAuth2ClientInfo
  */
 export default async function oauth2_provider_consent({
   client,

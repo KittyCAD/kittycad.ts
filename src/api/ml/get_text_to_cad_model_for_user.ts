@@ -20,7 +20,9 @@ type GetTextToCadModelForUserReturn = TextToCadResponse
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} id The id of the model to give feedback to. (path)
- * @returns successful operation
+ * @returns {Promise<GetTextToCadModelForUserReturn>} successful operation
+ *
+ * Possible return types: TextToCadResponse
  */
 export default async function get_text_to_cad_model_for_user({
   client,

@@ -21,7 +21,7 @@ type CreateDebugUploadsReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {File[]} files Files attached as multipart/form-data.
- * @returns successful creation
+ * @returns {Promise<CreateDebugUploadsReturn>} successful creation
  */
 export default async function create_debug_uploads({
   client,

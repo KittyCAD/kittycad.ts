@@ -24,7 +24,9 @@ type GetAngleUnitConversionReturn = UnitAngleConversion
  * @property {UnitAngle} input_unit The source format of the unit. (path)
  * @property {UnitAngle} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetAngleUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitAngleConversion
  */
 export default async function get_angle_unit_conversion({
   client,

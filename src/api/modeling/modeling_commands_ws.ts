@@ -64,6 +64,10 @@ export default class ModelingCommandsWs<
     )
   }
 
+  /**
+   * Establish the WebSocket connection and perform optional header auth.
+   * @returns {Promise<this>} WebSocket instance after the connection opens.
+   */
   async connect(): Promise<this> {
     const url = `/ws/modeling/commands?api_call_id=${this.functionNameParams.api_call_id}&fps=${this.functionNameParams.fps}&pool=${this.functionNameParams.pool}&post_effect=${this.functionNameParams.post_effect}&replay=${this.functionNameParams.replay}&show_grid=${this.functionNameParams.show_grid}&unlocked_framerate=${this.functionNameParams.unlocked_framerate}&video_res_height=${this.functionNameParams.video_res_height}&video_res_width=${this.functionNameParams.video_res_width}&webrtc=${this.functionNameParams.webrtc}`
     // Backwards compatible for the BASE_URL env variable
@@ -117,9 +121,17 @@ export default class ModelingCommandsWs<
     return this
   }
 
+  /**
+   * Send a JSON-encoded message.
+   * @param {Req} data Message payload.
+   */
   send(data: Req): void {
     this.ws.send(JSON.stringify(data))
   }
+  /**
+   * Send a BSON-encoded binary message, falling back to JSON if needed.
+   * @param {Req} data Message payload.
+   */
   sendBinary(data: Req): void {
     try {
       const bytes = BSON.serialize(data as unknown as Document)
@@ -129,6 +141,11 @@ export default class ModelingCommandsWs<
     }
   }
 
+  /**
+   * Receive a single message or reject on timeout.
+   * @param {number} [timeoutMs=60000] Milliseconds to wait before timing out.
+   * @returns {Promise<Res>} Parsed response message.
+   */
   recv(timeoutMs = 60000): Promise<Res> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
@@ -158,10 +175,16 @@ export default class ModelingCommandsWs<
     })
   }
 
+  /** Close the WebSocket connection. */
   close(): void {
     this.ws.close()
   }
 
+  /**
+   * Parse an incoming browser MessageEvent into a typed response.
+   * @param {MessageEvent} ev Event from the WebSocket.
+   * @returns {Res} Parsed payload.
+   */
   private parseMessage(ev: MessageEvent): Res {
     const data = ev?.data as unknown
     if (typeof data === 'string') return JSON.parse(data)

@@ -26,7 +26,9 @@ type UpdateSubscriptionForUserReturn = ZooProductSubscriptions
  * @property {Client} [client] Optional client with auth token.
  * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
  * @property {ZooProductSubscriptionsUserRequest} body Request body payload
- * @returns successful operation
+ * @returns {Promise<UpdateSubscriptionForUserReturn>} successful operation
+ *
+ * Possible return types: ZooProductSubscriptions
  */
 export default async function update_subscription_for_user({
   client,

@@ -24,7 +24,7 @@ type CreateTextToCadModelFeedbackReturn = unknown
  * @property {Client} [client] Optional client with auth token.
  * @property {string} id The id of the model to give feedback to. (path)
  * @property {MlFeedback} feedback The feedback. (query)
- * @returns resource updated
+ * @returns {Promise<CreateTextToCadModelFeedbackReturn>} resource updated
  */
 export default async function create_text_to_cad_model_feedback({
   client,

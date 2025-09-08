@@ -20,7 +20,9 @@ type GetMlPromptReturn = MlPrompt
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} id The id of the model to give feedback to. (path)
- * @returns successful operation
+ * @returns {Promise<GetMlPromptReturn>} successful operation
+ *
+ * Possible return types: MlPrompt
  */
 export default async function get_ml_prompt({
   client,

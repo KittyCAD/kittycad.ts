@@ -18,7 +18,7 @@ type PutPublicSubscribeReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Subscribe} body Request body payload
- * @returns successful operation, no content
+ * @returns {Promise<PutPublicSubscribeReturn>} successful operation, no content
  */
 export default async function put_public_subscribe({
   client,

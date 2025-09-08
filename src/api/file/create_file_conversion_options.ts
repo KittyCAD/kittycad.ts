@@ -27,7 +27,9 @@ type CreateFileConversionOptionsReturn = FileConversion
  * @property {Client} [client] Optional client with auth token.
  * @property {File[]} files Files attached as multipart/form-data.
  * @property {ConversionParams} body Convert files to other formats
- * @returns successful creation
+ * @returns {Promise<CreateFileConversionOptionsReturn>} successful creation
+ *
+ * Possible return types: FileConversion
  */
 export default async function create_file_conversion_options({
   client,

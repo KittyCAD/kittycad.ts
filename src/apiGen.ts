@@ -539,6 +539,7 @@ export default async function apiGen(lookup: Record<string, string>) {
             importedTypes.length ? importedTypes.join(' | ') : 'unknown'
           }`
           const paramsInterfaceName = `${pascalName}Input`
+          const returnTypeName = `${pascalName}Return`
           const paramsInterface = `interface ${paramsInterfaceName} { ${inputTypes.join(
             '; '
           )} }`
@@ -564,7 +565,7 @@ export default async function apiGen(lookup: Record<string, string>) {
             importsModels,
             paramsInterface,
             returnType: returnTyping,
-            returnTypeName: `${pascalName}Return`,
+            returnTypeName,
             functionName: operationId,
             paramsSignature,
             urlExpr: templateUrlPath,
@@ -583,6 +584,8 @@ export default async function apiGen(lookup: Record<string, string>) {
               paramTypeMap,
               paramRequiredMap,
               bodyTypeName,
+              returnTypeName,
+              importedReturnTypes: importedTypes,
             }),
           }
           template = await render(templatePath, ctx)
@@ -933,6 +936,8 @@ function buildOperationJsDoc(
     paramTypeMap: Record<string, string>
     paramRequiredMap: Record<string, boolean>
     bodyTypeName?: string
+    returnTypeName: string
+    importedReturnTypes: string[]
   }
 ): string {
   const lines: string[] = []
@@ -990,7 +995,17 @@ function buildOperationJsDoc(
     const anyResp = Object.values(responses)[0] as any
     retDesc = anyResp?.description || ''
   }
-  if (retDesc) lines.push(`@returns ${sanitizeForJsDoc(retDesc)}`)
+  const returnsType = `Promise<${opts.returnTypeName}>`
+  if (retDesc)
+    lines.push(`@returns {${returnsType}} ${sanitizeForJsDoc(retDesc)}`)
+  else lines.push(`@returns {${returnsType}} Response payload.`)
+
+  if ((opts.importedReturnTypes || []).length) {
+    lines.push(
+      '',
+      `Possible return types: ${(opts.importedReturnTypes || []).join(' | ')}`
+    )
+  }
   return wrapJsDoc(lines)
 }
 

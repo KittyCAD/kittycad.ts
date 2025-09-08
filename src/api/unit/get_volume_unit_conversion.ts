@@ -24,7 +24,9 @@ type GetVolumeUnitConversionReturn = UnitVolumeConversion
  * @property {UnitVolume} input_unit The source format of the unit. (path)
  * @property {UnitVolume} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetVolumeUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitVolumeConversion
  */
 export default async function get_volume_unit_conversion({
   client,

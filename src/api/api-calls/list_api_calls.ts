@@ -24,7 +24,9 @@ type ListApiCallsReturn = ApiCallWithPriceResultsPage
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {CreatedAtSortMode} sort_by (query)
- * @returns successful operation
+ * @returns {Promise<ListApiCallsReturn>} successful operation
+ *
+ * Possible return types: ApiCallWithPriceResultsPage
  */
 export default async function list_api_calls({
   client,

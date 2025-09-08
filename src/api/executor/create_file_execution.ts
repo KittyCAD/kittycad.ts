@@ -22,7 +22,9 @@ type CreateFileExecutionReturn = CodeOutput
  * @property {CodeLanguage} lang The language of the code. (path)
  * @property {string} output The output file we want to get the contents for (the paths are relative to where in litterbox it is being run). You can denote more than one file with a comma separated list of string paths. (query)
  * @property {string} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateFileExecutionReturn>} successful creation
+ *
+ * Possible return types: CodeOutput
  */
 export default async function create_file_execution({
   client,

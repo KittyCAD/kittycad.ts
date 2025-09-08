@@ -22,7 +22,9 @@ type CreatePaymentInformationForOrgReturn = Customer
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {BillingInfo} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreatePaymentInformationForOrgReturn>} successful creation
+ *
+ * Possible return types: Customer
  */
 export default async function create_payment_information_for_org({
   client,

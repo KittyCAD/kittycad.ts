@@ -20,7 +20,7 @@ type DeleteUserShortlinkReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} key The key of the shortlink. (path)
- * @returns resource updated
+ * @returns {Promise<DeleteUserShortlinkReturn>} resource updated
  */
 export default async function delete_user_shortlink({
   client,

@@ -24,7 +24,9 @@ type GetCurrentUnitConversionReturn = UnitCurrentConversion
  * @property {UnitCurrent} input_unit The source format of the unit. (path)
  * @property {UnitCurrent} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetCurrentUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitCurrentConversion
  */
 export default async function get_current_unit_conversion({
   client,

@@ -22,7 +22,7 @@ type DeleteOrgReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful deletion
+ * @returns {Promise<DeleteOrgReturn>} successful deletion
  */
 export default async function delete_org(
   { client }: DeleteOrgInput = {} as DeleteOrgInput

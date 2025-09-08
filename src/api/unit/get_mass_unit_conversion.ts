@@ -24,7 +24,9 @@ type GetMassUnitConversionReturn = UnitMassConversion
  * @property {UnitMass} input_unit The source format of the unit. (path)
  * @property {UnitMass} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetMassUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitMassConversion
  */
 export default async function get_mass_unit_conversion({
   client,

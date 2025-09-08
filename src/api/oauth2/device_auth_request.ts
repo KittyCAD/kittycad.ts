@@ -18,6 +18,7 @@ type DeviceAuthRequestReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @returns {Promise<DeviceAuthRequestReturn>} Response payload.
  */
 export default async function device_auth_request(
   { client }: DeviceAuthRequestInput = {} as DeviceAuthRequestInput

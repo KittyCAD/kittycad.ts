@@ -20,7 +20,7 @@ type PutUserFormSelfReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {InquiryForm} body Request body payload
- * @returns successful operation, no content
+ * @returns {Promise<PutUserFormSelfReturn>} successful operation, no content
  */
 export default async function put_user_form_self({
   client,

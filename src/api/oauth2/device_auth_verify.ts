@@ -22,7 +22,7 @@ type DeviceAuthVerifyReturn = unknown
  * @property {Client} [client] Optional client with auth token.
  * @property {string} app_name The originating app's name (query)
  * @property {string} user_code The user code. (query)
- * @returns Temporary Redirect
+ * @returns {Promise<DeviceAuthVerifyReturn>} Temporary Redirect
  */
 export default async function device_auth_verify({
   client,

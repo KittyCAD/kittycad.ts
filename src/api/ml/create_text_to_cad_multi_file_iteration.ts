@@ -34,7 +34,9 @@ type CreateTextToCadMultiFileIterationReturn = TextToCadMultiFileIteration
  * @property {Client} [client] Optional client with auth token.
  * @property {File[]} files Files attached as multipart/form-data.
  * @property {TextToCadMultiFileIterationBody} body Iteration on a multi-file CAD model
- * @returns successful creation
+ * @returns {Promise<CreateTextToCadMultiFileIterationReturn>} successful creation
+ *
+ * Possible return types: TextToCadMultiFileIteration
  */
 export default async function create_text_to_cad_multi_file_iteration({
   client,

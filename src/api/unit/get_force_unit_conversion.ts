@@ -24,7 +24,9 @@ type GetForceUnitConversionReturn = UnitForceConversion
  * @property {UnitForce} input_unit The source format of the unit. (path)
  * @property {UnitForce} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetForceUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitForceConversion
  */
 export default async function get_force_unit_conversion({
   client,

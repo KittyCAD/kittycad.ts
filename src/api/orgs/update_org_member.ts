@@ -22,7 +22,9 @@ type UpdateOrgMemberReturn = OrgMember
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} user_id The user id of the org member. (path)
  * @property {UpdateMemberToOrgBody} body Request body payload
- * @returns successful operation
+ * @returns {Promise<UpdateOrgMemberReturn>} successful operation
+ *
+ * Possible return types: OrgMember
  */
 export default async function update_org_member({
   client,

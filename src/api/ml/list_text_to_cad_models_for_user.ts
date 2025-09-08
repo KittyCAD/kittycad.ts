@@ -36,7 +36,9 @@ type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage
  * @property {CreatedAtSortMode} sort_by (query)
  * @property {Uuid} conversation_id If specified, only return the prompts for the conversation id given. (query)
  * @property {boolean} no_models If we should return the model file contents or just the metadata. (query)
- * @returns successful operation
+ * @returns {Promise<ListTextToCadModelsForUserReturn>} successful operation
+ *
+ * Possible return types: TextToCadResponseResultsPage
  */
 export default async function list_text_to_cad_models_for_user({
   client,

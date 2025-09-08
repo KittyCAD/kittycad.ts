@@ -23,7 +23,7 @@ type CreateEventReturn = unknown
  * @property {Client} [client] Optional client with auth token.
  * @property {File[]} files Files attached as multipart/form-data.
  * @property {Event} body Telemetry requests
- * @returns resource updated
+ * @returns {Promise<CreateEventReturn>} resource updated
  */
 export default async function create_event({
   client,

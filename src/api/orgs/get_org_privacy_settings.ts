@@ -18,7 +18,9 @@ type GetOrgPrivacySettingsReturn = PrivacySettings
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<GetOrgPrivacySettingsReturn>} successful operation
+ *
+ * Possible return types: PrivacySettings
  */
 export default async function get_org_privacy_settings(
   { client }: GetOrgPrivacySettingsInput = {} as GetOrgPrivacySettingsInput

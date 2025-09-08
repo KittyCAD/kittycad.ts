@@ -24,7 +24,9 @@ type GetTorqueUnitConversionReturn = UnitTorqueConversion
  * @property {UnitTorque} input_unit The source format of the unit. (path)
  * @property {UnitTorque} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetTorqueUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitTorqueConversion
  */
 export default async function get_torque_unit_conversion({
   client,

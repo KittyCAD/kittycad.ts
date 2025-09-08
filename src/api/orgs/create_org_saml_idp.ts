@@ -23,7 +23,9 @@ type CreateOrgSamlIdpReturn = SamlIdentityProvider
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {SamlIdentityProviderCreate} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateOrgSamlIdpReturn>} successful creation
+ *
+ * Possible return types: SamlIdentityProvider
  */
 export default async function create_org_saml_idp({
   client,

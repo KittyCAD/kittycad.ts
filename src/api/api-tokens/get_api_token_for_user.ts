@@ -20,7 +20,9 @@ type GetApiTokenForUserReturn = ApiToken
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {ApiTokenUuid} token The API token. (path)
- * @returns successful operation
+ * @returns {Promise<GetApiTokenForUserReturn>} successful operation
+ *
+ * Possible return types: ApiToken
  */
 export default async function get_api_token_for_user({
   client,

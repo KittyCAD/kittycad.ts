@@ -20,7 +20,9 @@ type CreateApiTokenForUserReturn = ApiToken
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} label An optional label for the API token. (query)
- * @returns successful creation
+ * @returns {Promise<CreateApiTokenForUserReturn>} successful creation
+ *
+ * Possible return types: ApiToken
  */
 export default async function create_api_token_for_user({
   client,

@@ -20,7 +20,7 @@ type Oauth2ProviderCallbackPostReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {AccountProvider} provider The provider. (path)
- * @returns Temporary Redirect
+ * @returns {Promise<Oauth2ProviderCallbackPostReturn>} Temporary Redirect
  */
 export default async function oauth2_provider_callback_post({
   client,

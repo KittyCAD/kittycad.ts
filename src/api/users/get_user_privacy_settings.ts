@@ -18,7 +18,9 @@ type GetUserPrivacySettingsReturn = PrivacySettings
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<GetUserPrivacySettingsReturn>} successful operation
+ *
+ * Possible return types: PrivacySettings
  */
 export default async function get_user_privacy_settings(
   { client }: GetUserPrivacySettingsInput = {} as GetUserPrivacySettingsInput

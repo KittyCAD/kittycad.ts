@@ -26,7 +26,9 @@ type UserListApiCallsReturn = ApiCallWithPriceResultsPage
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {CreatedAtSortMode} sort_by (query)
- * @returns successful operation
+ * @returns {Promise<UserListApiCallsReturn>} successful operation
+ *
+ * Possible return types: ApiCallWithPriceResultsPage
  */
 export default async function user_list_api_calls({
   client,

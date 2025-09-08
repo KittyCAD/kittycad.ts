@@ -20,7 +20,9 @@ type CreateStoreCouponReturn = DiscountCode
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {StoreCouponParams} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateStoreCouponReturn>} successful creation
+ *
+ * Possible return types: DiscountCode
  */
 export default async function create_store_coupon({
   client,

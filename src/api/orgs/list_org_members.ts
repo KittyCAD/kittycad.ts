@@ -30,7 +30,9 @@ type ListOrgMembersReturn = OrgMemberResultsPage
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {CreatedAtSortMode} sort_by (query)
  * @property {UserOrgRole} role The organization role to filter by. (query)
- * @returns successful operation
+ * @returns {Promise<ListOrgMembersReturn>} successful operation
+ *
+ * Possible return types: OrgMemberResultsPage
  */
 export default async function list_org_members({
   client,

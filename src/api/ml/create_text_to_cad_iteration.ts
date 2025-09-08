@@ -26,7 +26,9 @@ type CreateTextToCadIterationReturn = TextToCadIteration
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {TextToCadIterationBody} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateTextToCadIterationReturn>} successful creation
+ *
+ * Possible return types: TextToCadIteration
  */
 export default async function create_text_to_cad_iteration({
   client,

@@ -24,7 +24,7 @@ type UpdateUserShortlinkReturn = unknown
  * @property {Client} [client] Optional client with auth token.
  * @property {string} key The key of the shortlink. (path)
  * @property {UpdateShortlinkRequest} body Request body payload
- * @returns resource updated
+ * @returns {Promise<UpdateUserShortlinkReturn>} resource updated
  */
 export default async function update_user_shortlink({
   client,

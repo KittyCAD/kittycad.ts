@@ -20,7 +20,9 @@ type UpdateOrgPrivacySettingsReturn = PrivacySettings
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {PrivacySettings} body Request body payload
- * @returns successful operation
+ * @returns {Promise<UpdateOrgPrivacySettingsReturn>} successful operation
+ *
+ * Possible return types: PrivacySettings
  */
 export default async function update_org_privacy_settings({
   client,

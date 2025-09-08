@@ -24,7 +24,9 @@ type GetEnergyUnitConversionReturn = UnitEnergyConversion
  * @property {UnitEnergy} input_unit The source format of the unit. (path)
  * @property {UnitEnergy} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetEnergyUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitEnergyConversion
  */
 export default async function get_energy_unit_conversion({
   client,

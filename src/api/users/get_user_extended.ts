@@ -22,7 +22,9 @@ type GetUserExtendedReturn = ExtendedUser
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
- * @returns successful operation
+ * @returns {Promise<GetUserExtendedReturn>} successful operation
+ *
+ * Possible return types: ExtendedUser
  */
 export default async function get_user_extended({
   client,

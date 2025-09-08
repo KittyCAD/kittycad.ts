@@ -32,7 +32,9 @@ type CreateTextToCadReturn = TextToCad
  * @property {FileExportFormat} output_format The format the output file should be converted to. (path)
  * @property {boolean} kcl If we should output the kcl for the model. (query)
  * @property {TextToCadCreateBody} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateTextToCadReturn>} successful creation
+ *
+ * Possible return types: TextToCad
  */
 export default async function create_text_to_cad({
   client,

@@ -20,7 +20,7 @@ type CommunitySsoReturn = unknown
  * @property {Client} [client] Optional client with auth token.
  * @property {string} sig The signature for the given payload (query)
  * @property {string} sso The nonce and redirect URL sent to us by Discourse (query)
- * @returns Temporary Redirect
+ * @returns {Promise<CommunitySsoReturn>} Temporary Redirect
  */
 export default async function community_sso({
   client,

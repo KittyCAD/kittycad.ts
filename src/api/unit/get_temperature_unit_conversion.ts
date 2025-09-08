@@ -24,7 +24,9 @@ type GetTemperatureUnitConversionReturn = UnitTemperatureConversion
  * @property {UnitTemperature} input_unit The source format of the unit. (path)
  * @property {UnitTemperature} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetTemperatureUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitTemperatureConversion
  */
 export default async function get_temperature_unit_conversion({
   client,

@@ -20,7 +20,7 @@ type DeviceAuthConfirmReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {DeviceAuthConfirmParams} body Request body payload
- * @returns successful operation, no content
+ * @returns {Promise<DeviceAuthConfirmReturn>} successful operation, no content
  */
 export default async function device_auth_confirm({
   client,

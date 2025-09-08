@@ -32,7 +32,9 @@ type ListAsyncOperationsReturn = AsyncApiCallResultsPage
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {CreatedAtSortMode} sort_by (query)
  * @property {ApiCallStatus} status The status to filter by. (query)
- * @returns successful operation
+ * @returns {Promise<ListAsyncOperationsReturn>} successful operation
+ *
+ * Possible return types: AsyncApiCallResultsPage
  */
 export default async function list_async_operations({
   client,

@@ -32,7 +32,9 @@ type CreateFileCenterOfMassReturn = FileCenterOfMass
  * @property {UnitLength} output_unit The output unit for the center of mass. (query)
  * @property {FileImportFormat} src_format The format of the file. (query)
  * @property {string} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateFileCenterOfMassReturn>} successful creation
+ *
+ * Possible return types: FileCenterOfMass
  */
 export default async function create_file_center_of_mass({
   client,

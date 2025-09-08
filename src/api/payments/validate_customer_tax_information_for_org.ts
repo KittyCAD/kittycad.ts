@@ -18,7 +18,7 @@ type ValidateCustomerTaxInformationForOrgReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation, no content
+ * @returns {Promise<ValidateCustomerTaxInformationForOrgReturn>} successful operation, no content
  */
 export default async function validate_customer_tax_information_for_org(
   {

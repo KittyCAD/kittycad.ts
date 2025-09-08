@@ -20,7 +20,7 @@ type DeleteUserSelfReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful deletion
+ * @returns {Promise<DeleteUserSelfReturn>} successful deletion
  */
 export default async function delete_user_self(
   { client }: DeleteUserSelfInput = {} as DeleteUserSelfInput

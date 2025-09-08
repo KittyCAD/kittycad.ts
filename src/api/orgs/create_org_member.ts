@@ -28,7 +28,9 @@ type CreateOrgMemberReturn = OrgMember
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {AddOrgMember} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateOrgMemberReturn>} successful creation
+ *
+ * Possible return types: OrgMember
  */
 export default async function create_org_member({
   client,

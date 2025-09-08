@@ -26,7 +26,9 @@ type GetAsyncOperationReturn = AsyncApiCallOutput
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} id The ID of the async operation. (path)
- * @returns successful operation
+ * @returns {Promise<GetAsyncOperationReturn>} successful operation
+ *
+ * Possible return types: AsyncApiCallOutput
  */
 export default async function get_async_operation({
   client,

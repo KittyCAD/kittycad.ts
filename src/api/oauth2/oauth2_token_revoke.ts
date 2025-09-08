@@ -18,6 +18,7 @@ type Oauth2TokenRevokeReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @returns {Promise<Oauth2TokenRevokeReturn>} Response payload.
  */
 export default async function oauth2_token_revoke(
   { client }: Oauth2TokenRevokeInput = {} as Oauth2TokenRevokeInput

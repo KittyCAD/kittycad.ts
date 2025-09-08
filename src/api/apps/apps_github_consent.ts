@@ -20,7 +20,9 @@ type AppsGithubConsentReturn = AppClientInfo
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<AppsGithubConsentReturn>} successful operation
+ *
+ * Possible return types: AppClientInfo
  */
 export default async function apps_github_consent(
   { client }: AppsGithubConsentInput = {} as AppsGithubConsentInput

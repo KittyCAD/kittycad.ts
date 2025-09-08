@@ -22,7 +22,9 @@ type GetUserReturn = User
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
- * @returns successful operation
+ * @returns {Promise<GetUserReturn>} successful operation
+ *
+ * Possible return types: User
  */
 export default async function get_user({
   client,

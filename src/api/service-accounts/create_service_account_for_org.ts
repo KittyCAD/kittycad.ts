@@ -20,7 +20,9 @@ type CreateServiceAccountForOrgReturn = ServiceAccount
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} label An optional label for the service account. (query)
- * @returns successful creation
+ * @returns {Promise<CreateServiceAccountForOrgReturn>} successful creation
+ *
+ * Possible return types: ServiceAccount
  */
 export default async function create_service_account_for_org({
   client,

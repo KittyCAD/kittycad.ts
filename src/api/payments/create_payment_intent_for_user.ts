@@ -18,7 +18,9 @@ type CreatePaymentIntentForUserReturn = PaymentIntent
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful creation
+ * @returns {Promise<CreatePaymentIntentForUserReturn>} successful creation
+ *
+ * Possible return types: PaymentIntent
  */
 export default async function create_payment_intent_for_user(
   {

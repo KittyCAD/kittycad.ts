@@ -26,7 +26,7 @@ type Oauth2ProviderCallbackReturn = unknown
  * @property {string} id_token For Apple only, a JSON web token containing the user’s identity information. (query)
  * @property {string} state The state that we had passed in through the user consent URL. (query)
  * @property {string} user For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ "name": { "firstName": string, "lastName": string }, "email": string }` (query)
- * @returns Temporary Redirect
+ * @returns {Promise<Oauth2ProviderCallbackReturn>} Temporary Redirect
  */
 export default async function oauth2_provider_callback({
   client,

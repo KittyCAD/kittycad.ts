@@ -18,7 +18,7 @@ type PatchUserCrmReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {CrmData} body Request body payload
- * @returns successful operation, no content
+ * @returns {Promise<PatchUserCrmReturn>} successful operation, no content
  */
 export default async function patch_user_crm({
   client,

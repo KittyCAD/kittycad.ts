@@ -24,7 +24,9 @@ type GetFrequencyUnitConversionReturn = UnitFrequencyConversion
  * @property {UnitFrequency} input_unit The source format of the unit. (path)
  * @property {UnitFrequency} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetFrequencyUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitFrequencyConversion
  */
 export default async function get_frequency_unit_conversion({
   client,

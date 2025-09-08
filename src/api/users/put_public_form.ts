@@ -20,7 +20,7 @@ type PutPublicFormReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {InquiryForm} body Request body payload
- * @returns successful operation, no content
+ * @returns {Promise<PutPublicFormReturn>} successful operation, no content
  */
 export default async function put_public_form({
   client,

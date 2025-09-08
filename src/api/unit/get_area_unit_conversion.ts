@@ -24,7 +24,9 @@ type GetAreaUnitConversionReturn = UnitAreaConversion
  * @property {UnitArea} input_unit The source format of the unit. (path)
  * @property {UnitArea} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetAreaUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitAreaConversion
  */
 export default async function get_area_unit_conversion({
   client,

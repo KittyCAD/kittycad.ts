@@ -23,7 +23,9 @@ type UpdateUserSubscriptionReturn = ZooProductSubscriptions
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {ZooProductSubscriptionsUserRequest} body Request body payload
- * @returns successful operation
+ * @returns {Promise<UpdateUserSubscriptionReturn>} successful operation
+ *
+ * Possible return types: ZooProductSubscriptions
  */
 export default async function update_user_subscription({
   client,

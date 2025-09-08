@@ -20,7 +20,9 @@ type GetPaymentInformationForUserReturn = Customer
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<GetPaymentInformationForUserReturn>} successful operation
+ *
+ * Possible return types: Customer
  */
 export default async function get_payment_information_for_user(
   {

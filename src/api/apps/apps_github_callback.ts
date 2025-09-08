@@ -20,7 +20,7 @@ type AppsGithubCallbackReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation, no content
+ * @returns {Promise<AppsGithubCallbackReturn>} successful operation, no content
  */
 export default async function apps_github_callback(
   { client }: AppsGithubCallbackInput = {} as AppsGithubCallbackInput

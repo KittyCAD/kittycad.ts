@@ -16,7 +16,7 @@ type GetSchemaReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<GetSchemaReturn>} successful operation
  */
 export default async function get_schema(
   { client }: GetSchemaInput = {} as GetSchemaInput

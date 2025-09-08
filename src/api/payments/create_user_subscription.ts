@@ -23,7 +23,9 @@ type CreateUserSubscriptionReturn = ZooProductSubscriptions
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {ZooProductSubscriptionsUserRequest} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateUserSubscriptionReturn>} successful creation
+ *
+ * Possible return types: ZooProductSubscriptions
  */
 export default async function create_user_subscription({
   client,

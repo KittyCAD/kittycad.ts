@@ -20,7 +20,9 @@ type GetOrgMemberReturn = OrgMember
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} user_id The user id of the org member. (path)
- * @returns successful operation
+ * @returns {Promise<GetOrgMemberReturn>} successful operation
+ *
+ * Possible return types: OrgMember
  */
 export default async function get_org_member({
   client,

@@ -20,7 +20,9 @@ type GetAnyOrgReturn = Org
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The organization ID. (path)
- * @returns successful operation
+ * @returns {Promise<GetAnyOrgReturn>} successful operation
+ *
+ * Possible return types: Org
  */
 export default async function get_any_org({
   client,

@@ -22,7 +22,7 @@ type DeleteApiTokenForUserReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {ApiTokenUuid} token The API token. (path)
- * @returns successful deletion
+ * @returns {Promise<DeleteApiTokenForUserReturn>} successful deletion
  */
 export default async function delete_api_token_for_user({
   client,

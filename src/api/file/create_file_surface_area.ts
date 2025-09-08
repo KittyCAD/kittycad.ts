@@ -32,7 +32,9 @@ type CreateFileSurfaceAreaReturn = FileSurfaceArea
  * @property {UnitArea} output_unit The output unit for the surface area. (query)
  * @property {FileImportFormat} src_format The format of the file. (query)
  * @property {string} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateFileSurfaceAreaReturn>} successful creation
+ *
+ * Possible return types: FileSurfaceArea
  */
 export default async function create_file_surface_area({
   client,

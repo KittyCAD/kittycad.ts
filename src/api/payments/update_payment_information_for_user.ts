@@ -22,7 +22,9 @@ type UpdatePaymentInformationForUserReturn = Customer
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {BillingInfo} body Request body payload
- * @returns successful operation
+ * @returns {Promise<UpdatePaymentInformationForUserReturn>} successful operation
+ *
+ * Possible return types: Customer
  */
 export default async function update_payment_information_for_user({
   client,

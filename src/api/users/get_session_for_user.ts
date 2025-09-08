@@ -20,7 +20,9 @@ type GetSessionForUserReturn = Session
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {SessionUuid} token The API token. (path)
- * @returns successful operation
+ * @returns {Promise<GetSessionForUserReturn>} successful operation
+ *
+ * Possible return types: Session
  */
 export default async function get_session_for_user({
   client,

@@ -18,7 +18,9 @@ type GetOrgSamlIdpReturn = SamlIdentityProvider
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<GetOrgSamlIdpReturn>} successful operation
+ *
+ * Possible return types: SamlIdentityProvider
  */
 export default async function get_org_saml_idp(
   { client }: GetOrgSamlIdpInput = {} as GetOrgSamlIdpInput

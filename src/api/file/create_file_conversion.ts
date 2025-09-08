@@ -34,7 +34,9 @@ type CreateFileConversionReturn = FileConversion
  * @property {FileExportFormat} output_format The format the file should be converted to. (path)
  * @property {FileImportFormat} src_format The format of the file to convert. (path)
  * @property {string} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateFileConversionReturn>} successful creation
+ *
+ * Possible return types: FileConversion
  */
 export default async function create_file_conversion({
   client,

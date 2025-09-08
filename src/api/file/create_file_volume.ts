@@ -32,7 +32,9 @@ type CreateFileVolumeReturn = FileVolume
  * @property {UnitVolume} output_unit The output unit for the volume. (query)
  * @property {FileImportFormat} src_format The format of the file. (query)
  * @property {string} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateFileVolumeReturn>} successful creation
+ *
+ * Possible return types: FileVolume
  */
 export default async function create_file_volume({
   client,

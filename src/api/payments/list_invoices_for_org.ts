@@ -18,7 +18,9 @@ type ListInvoicesForOrgReturn = Invoice[]
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<ListInvoicesForOrgReturn>} successful operation
+ *
+ * Possible return types: Invoice[]
  */
 export default async function list_invoices_for_org(
   { client }: ListInvoicesForOrgInput = {} as ListInvoicesForOrgInput

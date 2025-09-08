@@ -20,7 +20,9 @@ type GetApiCallForUserReturn = ApiCallWithPrice
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} id The ID of the API call. (path)
- * @returns successful operation
+ * @returns {Promise<GetApiCallForUserReturn>} successful operation
+ *
+ * Possible return types: ApiCallWithPrice
  */
 export default async function get_api_call_for_user({
   client,

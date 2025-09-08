@@ -20,7 +20,7 @@ type DeletePaymentInformationForOrgReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful deletion
+ * @returns {Promise<DeletePaymentInformationForOrgReturn>} successful deletion
  */
 export default async function delete_payment_information_for_org(
   {

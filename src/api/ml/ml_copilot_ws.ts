@@ -38,6 +38,10 @@ export default class MlCopilotWs<
     )
   }
 
+  /**
+   * Establish the WebSocket connection and perform optional header auth.
+   * @returns {Promise<this>} WebSocket instance after the connection opens.
+   */
   async connect(): Promise<this> {
     const url = `/ws/ml/copilot`
     // Backwards compatible for the BASE_URL env variable
@@ -91,9 +95,17 @@ export default class MlCopilotWs<
     return this
   }
 
+  /**
+   * Send a JSON-encoded message.
+   * @param {Req} data Message payload.
+   */
   send(data: Req): void {
     this.ws.send(JSON.stringify(data))
   }
+  /**
+   * Send a BSON-encoded binary message, falling back to JSON if needed.
+   * @param {Req} data Message payload.
+   */
   sendBinary(data: Req): void {
     try {
       const bytes = BSON.serialize(data as unknown as Document)
@@ -103,6 +115,11 @@ export default class MlCopilotWs<
     }
   }
 
+  /**
+   * Receive a single message or reject on timeout.
+   * @param {number} [timeoutMs=60000] Milliseconds to wait before timing out.
+   * @returns {Promise<Res>} Parsed response message.
+   */
   recv(timeoutMs = 60000): Promise<Res> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
@@ -132,10 +149,16 @@ export default class MlCopilotWs<
     })
   }
 
+  /** Close the WebSocket connection. */
   close(): void {
     this.ws.close()
   }
 
+  /**
+   * Parse an incoming browser MessageEvent into a typed response.
+   * @param {MessageEvent} ev Event from the WebSocket.
+   * @returns {Res} Parsed payload.
+   */
   private parseMessage(ev: MessageEvent): Res {
     const data = ev?.data as unknown
     if (typeof data === 'string') return JSON.parse(data)

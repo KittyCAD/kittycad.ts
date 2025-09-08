@@ -27,7 +27,9 @@ type CreateProprietaryToKclReturn = KclModel
  * @property {Client} [client] Optional client with auth token.
  * @property {CodeOption} code_option The options to run on the code. By default this is set to `execute`. (query)
  * @property {File[]} files Files attached as multipart/form-data.
- * @returns successful creation
+ * @returns {Promise<CreateProprietaryToKclReturn>} successful creation
+ *
+ * Possible return types: KclModel
  */
 export default async function create_proprietary_to_kcl({
   client,

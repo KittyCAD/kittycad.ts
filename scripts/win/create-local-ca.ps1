@@ -2,7 +2,10 @@ param(
   [string]$RootCN,
   [string]$ServerCN,
   [string]$PfxPath,
-  [string]$PfxPassword
+  [string]$PfxPassword,
+  [ValidateSet('CurrentUser','LocalMachine')]
+  [string]$TrustScope,
+  [switch]$NoTrust
 )
 
 $ErrorActionPreference = 'Stop'
@@ -11,6 +14,19 @@ if (-not $RootCN) { $RootCN = 'KittyCAD-Test-Root' }
 if (-not $ServerCN) { $ServerCN = 'localhost' }
 if (-not $PfxPath) { $PfxPath = 'servercert.pfx' }
 if (-not $PfxPassword) { $PfxPassword = 'pass' }
+
+# Pick trust scope:
+# - In CI (e.g., GitHub Actions), prefer LocalMachine to avoid UI prompts on CurrentUser\Root
+# - Otherwise default to CurrentUser for least privilege
+if (-not $TrustScope) {
+  if ($env:ZOO_CA_TRUST_SCOPE) {
+    $TrustScope = $env:ZOO_CA_TRUST_SCOPE
+  } elseif ($env:GITHUB_ACTIONS -eq 'true' -or $env:CI -eq 'true') {
+    $TrustScope = 'LocalMachine'
+  } else {
+    $TrustScope = 'CurrentUser'
+  }
+}
 
 function Log([string]$msg) {
   $ts = Get-Date -Format 'HH:mm:ss'
@@ -45,7 +61,12 @@ function Invoke-ProcessWithTimeout([string]$File, [string]$Arguments, [int]$Time
   if ($p.WaitForExit($TimeoutSeconds * 1000)) {
     $stdout = $p.StandardOutput.ReadToEnd()
     $stderr = $p.StandardError.ReadToEnd()
-    if ($p.ExitCode -ne 0) { throw "Process failed ($File): $($p.ExitCode) `n$stderr" }
+    if ($p.ExitCode -ne 0) {
+      $msg = "Process failed ($File): $($p.ExitCode)"
+      if ($stderr) { $msg += "`nSTDERR:`n$stderr" }
+      if ($stdout) { $msg += "`nSTDOUT:`n$stdout" }
+      throw $msg
+    }
     return $stdout
   } else {
     try { $p.Kill() } catch {}
@@ -92,31 +113,33 @@ $sw.Restart()
 $server = New-SelfSignedCertificate @serverParams
 Log "Server cert created in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
-# Trust the root CA in CurrentUser\Root store. Prefer .NET APIs to avoid any UI.
+# Optionally trust the root CA. Scope is configurable.
 $rootCer = Join-Path $PWD 'root.cer'
 $sw.Restart()
 Export-Certificate -Cert $root -FilePath $rootCer | Out-Null
 Log "Root exported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
 $timeout = [int]([Environment]::GetEnvironmentVariable('ZOO_CA_IMPORT_TIMEOUT') ?? '120')
-Log "Importing root into CurrentUser\\Root (timeout ${timeout}s)..."
-$sw.Restart()
-try {
-  Invoke-With-Timeout {
-    param($path)
-    $ErrorActionPreference = 'Stop'
-    $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($path)
-    $store = New-Object System.Security.Cryptography.X509Certificates.X509Store('Root',[System.Security.Cryptography.X509Certificates.StoreLocation]::CurrentUser)
+if ($NoTrust) {
+  Log "Skipping trust import (NoTrust specified)."
+} else {
+  Log "Importing root into $TrustScope\\Root (timeout ${timeout}s)..."
+  $sw.Restart()
+  # Try .NET X509Store import synchronously first
+  try {
+    $storeLocation = if ($TrustScope -eq 'LocalMachine') { [System.Security.Cryptography.X509Certificates.StoreLocation]::LocalMachine } else { [System.Security.Cryptography.X509Certificates.StoreLocation]::CurrentUser }
+    $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($rootCer)
+    $store = [System.Security.Cryptography.X509Certificates.X509Store]::new('Root', $storeLocation)
     $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]::ReadWrite)
     try { $store.Add($cert) } finally { $store.Close() }
-  } $timeout @($rootCer)
-  Log "Root imported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
-} catch {
-  Log ".NET store import failed or timed out: $($_.Exception.Message). Falling back to certutil..."
-  $sw.Restart()
-  # Use force (-f) and quiet (-q) to avoid UI prompts in non-interactive sessions
-  Invoke-ProcessWithTimeout 'certutil' "-user -f -q -addstore Root `"$rootCer`"" $timeout | Out-Null
-  Log "certutil import completed in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
+    Log "Root imported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
+  } catch {
+    Log ".NET store import failed: $($_.Exception.GetType().FullName): $($_.Exception.Message). Falling back to certutil..."
+    $sw.Restart()
+    $args = if ($TrustScope -eq 'LocalMachine') { "-f -q -addstore Root `"$rootCer`"" } else { "-user -f -q -addstore Root `"$rootCer`"" }
+    Invoke-ProcessWithTimeout 'certutil' $args $timeout | Out-Null
+    Log "certutil import completed in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
+  }
 }
 
 # Export server cert as PFX for the Node HTTPS server
@@ -125,4 +148,8 @@ $sw.Restart()
 Export-PfxCertificate -Cert $server -FilePath $PfxPath -Password $pwd | Out-Null
 Log "PFX exported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
-Log "Local CA created and trusted. PFX at $PfxPath"
+if ($NoTrust) {
+  Log "Local CA created. Trust import skipped. PFX at $PfxPath"
+} else {
+  Log "Local CA created and trusted. PFX at $PfxPath"
+}

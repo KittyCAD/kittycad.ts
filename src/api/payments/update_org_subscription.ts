@@ -23,7 +23,9 @@ type UpdateOrgSubscriptionReturn = ZooProductSubscriptions
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {ZooProductSubscriptionsOrgRequest} body Request body payload
- * @returns successful operation
+ * @returns {Promise<UpdateOrgSubscriptionReturn>} successful operation
+ *
+ * Possible return types: ZooProductSubscriptions
  */
 export default async function update_org_subscription({
   client,

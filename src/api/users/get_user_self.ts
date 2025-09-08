@@ -20,7 +20,9 @@ type GetUserSelfReturn = User
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns successful operation
+ * @returns {Promise<GetUserSelfReturn>} successful operation
+ *
+ * Possible return types: User
  */
 export default async function get_user_self(
   { client }: GetUserSelfInput = {} as GetUserSelfInput

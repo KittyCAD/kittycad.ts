@@ -24,7 +24,9 @@ type GetLengthUnitConversionReturn = UnitLengthConversion
  * @property {UnitLength} input_unit The source format of the unit. (path)
  * @property {UnitLength} output_unit The output format of the unit. (path)
  * @property {number} value The initial value. (query)
- * @returns successful operation
+ * @returns {Promise<GetLengthUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitLengthConversion
  */
 export default async function get_length_unit_conversion({
   client,

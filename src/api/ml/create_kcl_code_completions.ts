@@ -21,7 +21,9 @@ type CreateKclCodeCompletionsReturn = KclCodeCompletionResponse
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {KclCodeCompletionRequest} body Request body payload
- * @returns successful creation
+ * @returns {Promise<CreateKclCodeCompletionsReturn>} successful creation
+ *
+ * Possible return types: KclCodeCompletionResponse
  */
 export default async function create_kcl_code_completions({
   client,
