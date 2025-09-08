@@ -137,6 +137,7 @@ export const testsExpectedToThrow = [
   'users.get_user_front_hash_self',
   'users.get_user',
   'users.update_user_privacy_settings',
+  'users.update_user_self',
   'users.patch_user_crm',
   'users.put_public_form',
   'users.put_user_form_self',
