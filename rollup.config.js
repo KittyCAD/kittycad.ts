@@ -19,7 +19,8 @@ const plugins = [
 
 // ESM + CJS only; no UMD bundle
 const externals = [deps, peers].flat()
-const isExternal = (id) => externals.some((d) => id === d || id.startsWith(`${d}/`))
+const isExternal = (id) =>
+  externals.some((d) => id === d || id.startsWith(`${d}/`))
 
 export default {
   input: 'src/index.ts',
