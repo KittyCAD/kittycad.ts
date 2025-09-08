@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { UnitAngleConversion, UnitAngle } from '../../models.js'
@@ -34,7 +34,9 @@ export default async function get_angle_unit_conversion({
   output_unit,
   value,
 }: GetAngleUnitConversionInput): Promise<GetAngleUnitConversionReturn> {
-  const url = `/unit/conversion/angle/${input_unit}/${output_unit}?value=${value}`
+  const path = `/unit/conversion/angle/${input_unit}/${output_unit}`
+  const qs = buildQuery({ value: value })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { Subscribe } from '../../models.js'
@@ -24,7 +24,9 @@ export default async function put_public_subscribe({
   client,
   body,
 }: PutPublicSubscribeInput): Promise<PutPublicSubscribeReturn> {
-  const url = `/website/subscribe`
+  const path = `/website/subscribe`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

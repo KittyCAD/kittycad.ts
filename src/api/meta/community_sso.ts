@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
@@ -27,7 +27,9 @@ export default async function community_sso({
   sig,
   sso,
 }: CommunitySsoInput): Promise<CommunitySsoReturn> {
-  const url = `/community/sso?sig=${sig}&sso=${sso}`
+  const path = `/community/sso`
+  const qs = buildQuery({ sig: sig, sso: sso })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

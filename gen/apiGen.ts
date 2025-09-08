@@ -119,6 +119,7 @@ export default async function apiGen(lookup: Record<string, string>) {
         // (REST, multipart, or websocket) after Handlebars rendering.
         let urlPathParams: string[] = path.split('/')
         const urlQueryParams: string[] = []
+        const urlQueryParamNames: string[] = []
         ;(params || []).forEach(({ name, in: _in, schema, required }) => {
           let _type = 'unknown'
           if ('$ref' in schema) {
@@ -215,9 +216,12 @@ export default async function apiGen(lookup: Record<string, string>) {
               _type = schema.type
             }
           }
-          inputTypes.push(`${name}: ${_type}`)
+          // Path params are always required; others follow the spec's required flag
+          const isPath = _in === 'path'
+          const isRequired = isPath || !!required
+          inputTypes.push(`${name}${isRequired ? '' : '?'}: ${_type}`)
           paramTypeMap[name] = _type
-          paramRequiredMap[name] = !!required
+          paramRequiredMap[name] = isRequired
           if (!name) {
             return
           }
@@ -231,13 +235,13 @@ export default async function apiGen(lookup: Record<string, string>) {
             })
           } else {
             urlQueryParams.push(`${name}=\${${name}}`)
+            urlQueryParamNames.push(name)
           }
         })
-        const templateUrlPath = wrapInBacktics(
-          `${urlPathParams.join('/')}${
-            urlQueryParams.length ? `?${urlQueryParams.join('&')}` : ''
-          }`
-        )
+        const templateUrlOnlyPath = wrapInBacktics(`${urlPathParams.join('/')}`)
+        const queryObjectExpr = `{ ${urlQueryParamNames
+          .map((n) => `${n}: ${n}`)
+          .join(', ')} }`
         const requestBodyRaw = operation.specSection?.requestBody as
           | OpenAPIV3.RequestBodyObject
           | OpenAPIV3.ReferenceObject
@@ -612,7 +616,8 @@ export default async function apiGen(lookup: Record<string, string>) {
             returnTypeName,
             functionName: operationId,
             paramsSignature,
-            urlExpr: templateUrlPath,
+            urlPathExpr: templateUrlOnlyPath,
+            queryObjectExpr,
             httpMethod: methodUpper,
             contentType,
             omitContentType: isMultipart || bodyLine === '',
@@ -668,16 +673,20 @@ export default async function apiGen(lookup: Record<string, string>) {
             .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
             .join(', ')}} from '../../models.js';`
           const paramsFields = inputTypes.join('; ')
-          const wsUrlExpr = templateUrlPath.replaceAll(
+          const wsUrlPathExpr = templateUrlOnlyPath.replaceAll(
             '${',
             '${this.functionNameParams.'
           )
+          const wsQueryObjectExpr = `{ ${urlQueryParamNames
+            .map((n) => `${n}: this.functionNameParams.${n}`)
+            .join(', ')} }`
           const ctx = {
             importsModels,
             className,
             paramsInterfaceName: paramsName,
             paramsFields,
-            urlExpr: wsUrlExpr,
+            urlPathExpr: wsUrlPathExpr,
+            queryObjectExpr: wsQueryObjectExpr,
             wsReqType: wsReqType || 'unknown',
             wsRespType: wsRespType || 'unknown',
             fnJsDoc: buildWsJsDoc(operation.specSection, {

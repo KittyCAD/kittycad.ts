@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
@@ -23,7 +23,9 @@ type Oauth2TokenRevokeReturn = unknown
 export default async function oauth2_token_revoke(
   { client }: Oauth2TokenRevokeInput = {} as Oauth2TokenRevokeInput
 ): Promise<Oauth2TokenRevokeReturn> {
-  const url = `/oauth2/token/revoke`
+  const path = `/oauth2/token/revoke`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

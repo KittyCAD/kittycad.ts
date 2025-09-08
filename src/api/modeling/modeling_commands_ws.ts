@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { BSON } from 'bson'
 import type { Document } from 'bson'
 import { isArrayBufferViewLike } from '../../ws-utils.js'
@@ -10,16 +10,16 @@ import {
 
 interface ModelingCommandsWsParams {
   client?: Client
-  api_call_id: string
-  fps: number
-  pool: string
-  post_effect: PostEffectType
-  replay: string
-  show_grid: boolean
-  unlocked_framerate: boolean
-  video_res_height: number
-  video_res_width: number
-  webrtc: boolean
+  api_call_id?: string
+  fps?: number
+  pool?: string
+  post_effect?: PostEffectType
+  replay?: string
+  show_grid?: boolean
+  unlocked_framerate?: boolean
+  video_res_height?: number
+  video_res_width?: number
+  webrtc?: boolean
 }
 
 /**
@@ -57,7 +57,20 @@ export default class ModelingCommandsWs<
    * @returns {Promise<this>} WebSocket instance after the connection opens.
    */
   async connect(): Promise<this> {
-    const url = `/ws/modeling/commands?api_call_id=${this.functionNameParams.api_call_id}&fps=${this.functionNameParams.fps}&pool=${this.functionNameParams.pool}&post_effect=${this.functionNameParams.post_effect}&replay=${this.functionNameParams.replay}&show_grid=${this.functionNameParams.show_grid}&unlocked_framerate=${this.functionNameParams.unlocked_framerate}&video_res_height=${this.functionNameParams.video_res_height}&video_res_width=${this.functionNameParams.video_res_width}&webrtc=${this.functionNameParams.webrtc}`
+    const path = `/ws/modeling/commands`
+    const qs = buildQuery({
+      api_call_id: this.functionNameParams.api_call_id,
+      fps: this.functionNameParams.fps,
+      pool: this.functionNameParams.pool,
+      post_effect: this.functionNameParams.post_effect,
+      replay: this.functionNameParams.replay,
+      show_grid: this.functionNameParams.show_grid,
+      unlocked_framerate: this.functionNameParams.unlocked_framerate,
+      video_res_height: this.functionNameParams.video_res_height,
+      video_res_width: this.functionNameParams.video_res_width,
+      webrtc: this.functionNameParams.webrtc,
+    })
+    const url = path + qs
     // Backwards compatible for the BASE_URL env variable
     // That used to exist in only this lib, ZOO_HOST exists in the all the other
     // sdks and the CLI.

@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {
@@ -31,7 +31,9 @@ export default async function create_org_subscription({
   client,
   body,
 }: CreateOrgSubscriptionInput): Promise<CreateOrgSubscriptionReturn> {
-  const url = `/org/payment/subscriptions`
+  const path = `/org/payment/subscriptions`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

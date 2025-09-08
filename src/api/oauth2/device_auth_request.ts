@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
@@ -23,7 +23,9 @@ type DeviceAuthRequestReturn = unknown
 export default async function device_auth_request(
   { client }: DeviceAuthRequestInput = {} as DeviceAuthRequestInput
 ): Promise<DeviceAuthRequestReturn> {
-  const url = `/oauth2/device/auth`
+  const path = `/oauth2/device/auth`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

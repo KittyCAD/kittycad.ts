@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
@@ -10,9 +10,9 @@ import {
 
 interface ListApiTokensForUserInput {
   client?: Client
-  limit: number
-  page_token: string
-  sort_by: CreatedAtSortMode
+  limit?: number
+  page_token?: string
+  sort_by?: CreatedAtSortMode
 }
 
 type ListApiTokensForUserReturn = ApiTokenResultsPage
@@ -41,7 +41,13 @@ export default async function list_api_tokens_for_user({
   page_token,
   sort_by,
 }: ListApiTokensForUserInput): Promise<ListApiTokensForUserReturn> {
-  const url = `/user/api-tokens?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
+  const path = `/user/api-tokens`
+  const qs = buildQuery({
+    limit: limit,
+    page_token: page_token,
+    sort_by: sort_by,
+  })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

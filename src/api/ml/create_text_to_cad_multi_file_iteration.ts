@@ -1,5 +1,5 @@
 import { File } from '../../models.js'
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {
@@ -43,7 +43,9 @@ export default async function create_text_to_cad_multi_file_iteration({
   files,
   body,
 }: CreateTextToCadMultiFileIterationInput): Promise<CreateTextToCadMultiFileIterationReturn> {
-  const url = `/ml/text-to-cad/multi-file/iteration`
+  const path = `/ml/text-to-cad/multi-file/iteration`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

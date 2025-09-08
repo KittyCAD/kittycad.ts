@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
@@ -11,10 +11,10 @@ import {
 
 interface ListAsyncOperationsInput {
   client?: Client
-  limit: number
-  page_token: string
-  sort_by: CreatedAtSortMode
-  status: ApiCallStatus
+  limit?: number
+  page_token?: string
+  sort_by?: CreatedAtSortMode
+  status?: ApiCallStatus
 }
 
 type ListAsyncOperationsReturn = AsyncApiCallResultsPage
@@ -45,7 +45,14 @@ export default async function list_async_operations({
   sort_by,
   status,
 }: ListAsyncOperationsInput): Promise<ListAsyncOperationsReturn> {
-  const url = `/async/operations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&status=${status}`
+  const path = `/async/operations`
+  const qs = buildQuery({
+    limit: limit,
+    page_token: page_token,
+    sort_by: sort_by,
+    status: status,
+  })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

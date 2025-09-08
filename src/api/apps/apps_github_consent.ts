@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { AppClientInfo } from '../../models.js'
@@ -27,7 +27,9 @@ type AppsGithubConsentReturn = AppClientInfo
 export default async function apps_github_consent(
   { client }: AppsGithubConsentInput = {} as AppsGithubConsentInput
 ): Promise<AppsGithubConsentReturn> {
-  const url = `/apps/github/consent`
+  const path = `/apps/github/consent`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

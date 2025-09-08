@@ -39,6 +39,24 @@ export class Client {
   }
 }
 
+/**
+ * Build a URL query string from a map of params, skipping undefined values.
+ * Arrays append multiple entries with the same key. Returns '' when empty.
+ */
+export function buildQuery(params: Record<string, unknown>): string {
+  const search = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined) continue
+    if (Array.isArray(value)) {
+      for (const v of value) search.append(key, String(v))
+    } else {
+      search.append(key, String(value))
+    }
+  }
+  const qs = search.toString()
+  return qs ? `?${qs}` : ''
+}
+
 // On Windows + Node, load system CAs so TLS works behind enterprise roots.
 // This is a no-op on non-Windows platforms and in browsers.
 try {

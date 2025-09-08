@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { BSON } from 'bson'
 import type { Document } from 'bson'
 import { isArrayBufferViewLike } from '../../ws-utils.js'
@@ -31,7 +31,9 @@ export default class MlCopilotWs<
    * @returns {Promise<this>} WebSocket instance after the connection opens.
    */
   async connect(): Promise<this> {
-    const url = `/ws/ml/copilot`
+    const path = `/ws/ml/copilot`
+    const qs = buildQuery({})
+    const url = path + qs
     // Backwards compatible for the BASE_URL env variable
     // That used to exist in only this lib, ZOO_HOST exists in the all the other
     // sdks and the CLI.

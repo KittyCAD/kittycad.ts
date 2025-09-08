@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
@@ -10,9 +10,9 @@ import {
 
 interface ListMlPromptsInput {
   client?: Client
-  limit: number
-  page_token: string
-  sort_by: CreatedAtSortMode
+  limit?: number
+  page_token?: string
+  sort_by?: CreatedAtSortMode
 }
 
 type ListMlPromptsReturn = MlPromptResultsPage
@@ -43,7 +43,13 @@ export default async function list_ml_prompts({
   page_token,
   sort_by,
 }: ListMlPromptsInput): Promise<ListMlPromptsReturn> {
-  const url = `/ml-prompts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
+  const path = `/ml-prompts`
+  const qs = buildQuery({
+    limit: limit,
+    page_token: page_token,
+    sort_by: sort_by,
+  })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

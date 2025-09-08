@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {
@@ -11,8 +11,8 @@ import {
 interface CreateFileMassInput {
   client?: Client
   material_density: number
-  material_density_unit: UnitDensity
-  output_unit: UnitMass
+  material_density_unit?: UnitDensity
+  output_unit?: UnitMass
   src_format: FileImportFormat
   body: string
 }
@@ -53,7 +53,14 @@ export default async function create_file_mass({
   src_format,
   body,
 }: CreateFileMassInput): Promise<CreateFileMassReturn> {
-  const url = `/file/mass?material_density=${material_density}&material_density_unit=${material_density_unit}&output_unit=${output_unit}&src_format=${src_format}`
+  const path = `/file/mass`
+  const qs = buildQuery({
+    material_density: material_density,
+    material_density_unit: material_density_unit,
+    output_unit: output_unit,
+    src_format: src_format,
+  })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
