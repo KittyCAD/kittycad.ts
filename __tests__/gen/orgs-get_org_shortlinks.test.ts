@@ -10,7 +10,7 @@ async function example() {
 }
 
 // Pagination example (not executed in tests; for docs only)
-async function example_pager() {
+export async function example_pager() {
   const pager = orgs.get_org_shortlinks_pager({
     limit: 7,
     page_token: 'string',

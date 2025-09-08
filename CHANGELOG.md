@@ -4,20 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## v3.0.0
 
-This documents all changes currently on the `improvements` branch relative to
-`main` (commit f5897f2, “Update api spec (#352)”). Dates are in UTC.
-
-### Breaking Changes
-
-- Type strictness: remove explicit `any` from generated and template code.
-  - Models generator now falls back to `unknown` (not `any`) for ambiguous
-    OpenAPI shapes, and uses `Record<string, unknown>` instead of bare
-    `object` for index signatures. (src/modelsGen.ts)
-  - WebSocket template no longer uses `any` internally; it narrows binary
-    payloads and returns `Res` with typed parsing. (src/templates/ws.hbs)
-
 ### Features
 
+- Pagination helpers: generate snake_case pager helpers for list endpoints
+  that return `*ResultsPage` with `items` and `next_page`.
+  - New helpers: `<operationId>_pager(params)` under each tag, e.g.
+    `users.list_users_pager`, `api_calls.list_api_calls_pager`.
+  - Generic utilities exported from root: `Pager` and `createPager`.
+  - Examples: generated example files now include an `example_pager()` usage
+    snippet (type-checked by `tsc`).
 - WebSocket endpoints: add generated clients for
   `ml_copilot_ws`, `ml_reasoning_ws`, and `modeling_commands_ws`.
 - Handlebars templates: migrate generator to Handlebars-based templates for
@@ -33,6 +28,13 @@ This documents all changes currently on the `improvements` branch relative to
 
 ### Improvements
 
+- Client injection: REST and WS code now honor `client.baseUrl` and
+  `client.fetch` (useful in SSR/Next.js). Falls back to env and global fetch.
+- JSDoc: add rich JSDoc to generated functions and models, including
+  `@property` docs for params and typed `@returns`.
+- 204 responses: endpoints declaring `204` are typed as `void` and skip
+  JSON parsing.
+- Pager naming: use snake_case for helper names to match the rest of the SDK.
 - Windows TLS root CAs: refine dynamic import for `win-ca` with typed
   indirection and `NodeJS.Process` narrowing. (src/client.ts)
 - WebSocket binary parsing: add robust ArrayBufferView detection and safer BSON
@@ -40,6 +42,15 @@ This documents all changes currently on the `improvements` branch relative to
 - Generator resiliency: better request/response type collection, multipart
   handling, and spec patch emission. (src/apiGen.ts)
 - Formatting and linting: apply Biome formatting across generated sources.
+
+### Breaking Changes
+
+- Type strictness: remove explicit `any` from generated and template code.
+  - Models generator now falls back to `unknown` (not `any`) for ambiguous
+    OpenAPI shapes, and uses `Record<string, unknown>` instead of bare
+    `object` for index signatures. (src/modelsGen.ts)
+  - WebSocket template no longer uses `any` internally; it narrows binary
+    payloads and returns `Res` with typed parsing. (src/templates/ws.hbs)
 
 ### Regenerated SDK
 

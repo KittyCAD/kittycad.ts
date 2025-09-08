@@ -11,7 +11,7 @@ async function example() {
 }
 
 // Pagination example (not executed in tests; for docs only)
-async function example_pager() {
+export async function example_pager() {
   const pager = api_calls.list_api_calls_for_user_pager({
     id: '31337',
     limit: 7,

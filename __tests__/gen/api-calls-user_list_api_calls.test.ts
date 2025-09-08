@@ -10,7 +10,7 @@ async function example() {
 }
 
 // Pagination example (not executed in tests; for docs only)
-async function example_pager() {
+export async function example_pager() {
   const pager = api_calls.user_list_api_calls_pager({
     limit: 7,
     page_token: 'string',

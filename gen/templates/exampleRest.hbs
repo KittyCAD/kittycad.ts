@@ -8,7 +8,7 @@ async function example() {
 
 {{#if pager}}
 // Pagination example (not executed in tests; for docs only)
-async function example_pager() {
+export async function example_pager() {
   const pager = {{tag}}.{{pagerFnName}}({{#if hasParams}}{ {{{params}}} }{{/if}});
   let total = 0;
   // Pull up to two pages just to illustrate usage
