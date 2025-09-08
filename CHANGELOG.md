@@ -26,6 +26,10 @@ This documents all changes currently on the `improvements` branch relative to
   REST and WS endpoints.
 - Error handling helpers: introduce `ApiError` and `throwIfNotOk` utilities for
   consistent HTTP error surfaces. (src/errors.ts)
+- Top-level types: re-export all schema types from the package root so you can
+  `import type { User } from '@kittycad/lib'` instead of `Models['User']`.
+  - Aliases to avoid name collisions: `ApiError` (model) → `ApiErrorModel`,
+    and `Error` (error-body model) → `ApiErrorBody`.
 
 ### Improvements
 
@@ -62,6 +66,17 @@ This documents all changes currently on the `improvements` branch relative to
   // `output` is now unknown
   const out = resp.output as { foo: string }
   doStuff(out.foo)
+  ```
+
+- You can now import types directly from the root:
+
+  ```ts
+  // Before
+  import type { Models } from '@kittycad/lib'
+  type User = Models['User']
+
+  // After
+  import type { User, ApiErrorModel, ApiErrorBody } from '@kittycad/lib'
   ```
 
 - WebSocket usage still uses generics to control payload shapes:

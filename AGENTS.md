@@ -17,3 +17,5 @@ We also try to write simple and idiomatic Typescript in the generation logic.
 As you make changes run `yarn gen` to generate a new sdk and make sure you didn't break anything. And make sure `yarn tsc` still works as well.
 
 If you make a breaking change add it to the CHANGELOG.md with a guide for users as to how to migrate.
+
+Always from `yarn fmt` after you make changes.

@@ -749,7 +749,24 @@ export default async function apiGen(lookup: Record<string, string>) {
         .sort()
         .join(', ')} };\n\n`
     })
-  indexFileString += `export type { Models } from './models.js';\n`
+  // Re-export all model types at the top level so users can `import type { X } from '@kittycad/lib'`.
+  {
+    const allNames = Array.from(new Set(Object.values(lookup))).filter(
+      (n) => typeof n === 'string' && /^[A-Za-z_][A-Za-z0-9_]*$/.test(n)
+    )
+    const rename = {
+      Error: 'ApiErrorBody',
+      ApiError: 'ApiErrorModel',
+    } as Record<string, string>
+    const specifiers = allNames
+      .map((n) => (rename[n] ? `${n} as ${rename[n]}` : n))
+      .sort()
+    if (specifiers.length) {
+      indexFileString += `export type { ${specifiers.join(
+        ', '
+      )} } from './models.js';\n`
+    }
+  }
   indexFileString += `export { Client} from './client.js';\n`
   indexFileString += `export { ApiError } from './errors.js';\n`
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8')
