@@ -132,10 +132,12 @@ async function main() {
               requiredSet.has(key) ? '' : '?'
             }: ${makeTypeStringForNode(subSchema)}`
           } else if (subSchema.type === 'object') {
-            return `${key}${requiredSet.has(key) ? '' : '?'}: object`
+            return `${key}${
+              requiredSet.has(key) ? '' : '?'
+            }: Record<string, unknown>`
           }
           // Fallback for uncommon shapes
-          return `${key}${requiredSet.has(key) ? '' : '?'}: any`
+          return `${key}${requiredSet.has(key) ? '' : '?'}: unknown`
         })
         .join('; ')
       return `{${objectInner}}`
@@ -174,7 +176,7 @@ async function main() {
           } else if (subSchema.type === 'object') {
             return makeTypeStringForNode(subSchema)
           }
-          return 'any'
+          return 'unknown'
         }
       )
       return `${namePart} ${unionParts.join(' | ')} /* use-type */`
@@ -204,14 +206,14 @@ async function main() {
       // if `name` is empty, just pass back the looked-up type
       const typeString =
         (name ? `${name}: ` : '') +
-        (ref in typeNameReference ? typeNameReference[ref] : 'any')
+        (ref in typeNameReference ? typeNameReference[ref] : 'unknown')
       return typeString
     }
     if (typeof schema.type === 'undefined') {
-      return `${name}: any`
+      return `${name}: unknown`
     }
     // Fallback for unsupported schema shapes
-    return `${namePart} any`
+    return `${namePart} unknown`
   }
 
   const componentRef = (key: string): string => '#/components/schemas/' + key
@@ -237,9 +239,9 @@ async function main() {
       }
     } catch (e) {
       // Be resilient to odd schemas so apiGen can proceed.
-      typeReference[componentRef(key)] = 'any'
+      typeReference[componentRef(key)] = 'unknown'
       modelsExportParts.push(typeName)
-      template += `export type ${typeName} = any\n\n`
+      template += `export type ${typeName} = unknown\n\n`
     }
   }
   template += `export interface Models {\n${modelsExportParts

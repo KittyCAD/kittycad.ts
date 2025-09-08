@@ -29,68 +29,13 @@ jobs:
         run: yarn pack --filename pkg.tgz
 
       - name: Node ESM import smoke
-        shell: bash
-        run: |
-          mkdir -p /tmp/esm && cd /tmp/esm
-          yarn init -y >/dev/null 2>&1
-          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.type='module';fs.writeFileSync('package.json',JSON.stringify(p,null,2));"
-          yarn add ../../pkg.tgz >/dev/null 2>&1
-          cat > test.mjs << 'JS'
-          import { Client, meta } from '@kittycad/lib'
-          console.log(typeof Client === 'function' && typeof meta === 'object' ? 'ok' : 'bad')
-          // Basic no-auth request to ensure runtime works in ESM
-          try {
-            const res = await meta.ping()
-            console.log(res ? 'ok' : 'bad')
-          } catch (e) {
-            console.log('bad')
-          }
-          JS
-          node test.mjs
+        run: node scripts/smoke/node-esm.mjs pkg.tgz
 
       - name: Node CJS require smoke
-        shell: bash
-        run: |
-          mkdir -p /tmp/cjs && cd /tmp/cjs
-          yarn init -y >/dev/null 2>&1
-          yarn add ../../pkg.tgz >/dev/null 2>&1
-          node -e "const lib=require('@kittycad/lib'); console.log(typeof lib.meta==='object'?'ok':'bad')"
-          node -e "(async()=>{const lib=require('@kittycad/lib'); try{const r=await lib.meta.ping(); console.log(r?'ok':'bad')}catch(e){console.log('bad')}})()"
+        run: node scripts/smoke/node-cjs.cjs pkg.tgz
 
       - name: Browser bundling (esbuild) smoke
-        shell: bash
-        run: |
-          mkdir -p /tmp/browser && cd /tmp/browser
-          yarn init -y >/dev/null 2>&1
-          yarn add esbuild ../../pkg.tgz >/dev/null 2>&1
-          cat > entry.ts << 'TS'
-          import { Client, meta } from '@kittycad/lib'
-          void new Client('test')
-          void meta
-          TS
-          npx esbuild entry.ts --bundle --platform=browser --format=esm --outfile=out.mjs
-          node -e "require('fs').statSync('out.mjs'); console.log('ok')"
+        run: node scripts/smoke/esbuild.mjs pkg.tgz
 
       - name: Browser bundling (Vite) smoke
-        shell: bash
-        run: |
-          mkdir -p /tmp/vite && cd /tmp/vite
-          yarn init -y >/dev/null 2>&1
-          yarn add -D vite >/dev/null 2>&1
-          yarn add ../../pkg.tgz >/dev/null 2>&1
-          mkdir -p src
-          cat > index.html << 'HTML'
-          <!doctype html>
-          <html>
-            <head><meta charset="utf-8" /><title>smoke</title></head>
-            <body>
-              <script type="module" src="/src/main.ts"></script>
-            </body>
-          </html>
-          HTML
-          cat > src/main.ts << 'TS'
-          import { Client, meta } from '@kittycad/lib'
-          console.log(typeof Client === 'function' && typeof meta === 'object' ? 'ok' : 'bad')
-          TS
-          npx vite build --logLevel warn
-          [ -d dist ] && echo ok
+        run: node scripts/smoke/vite.mjs pkg.tgz

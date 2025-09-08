@@ -256,7 +256,7 @@ export interface AsyncApiCall {
 This is the same as the API call ID. */
   id: Uuid
   input?: string
-  output: any
+  output: unknown
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -4598,14 +4598,14 @@ export type OkWebSocketResponseData =
       type: 'modeling_batch'
     }
   | { data: { files: RawFile[] /* The exported files */ }; type: 'export' }
-  | { data: object; type: 'metrics_request' }
+  | { data: Record<string, unknown>; type: 'metrics_request' }
   | {
       data: {
         session: ModelingSessionData /* Data about the Modeling Session (application-level). */
       }
       type: 'modeling_session_data'
     }
-  | { data: object; type: 'pong' }
+  | { data: Record<string, unknown>; type: 'pong' }
   | {
       data: {
         name: string /* Instance name. This may or may not mean something. */

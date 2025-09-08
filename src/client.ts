@@ -11,12 +11,14 @@ export class Client {
 try {
   if (
     typeof process !== 'undefined' &&
-    (process as any).versions?.node &&
-    (process as any).platform === 'win32'
+    (process as unknown as NodeJS.Process).versions?.node &&
+    (process as unknown as NodeJS.Process).platform === 'win32'
   ) {
     // Dynamic import via indirection to avoid Rollup code-splitting.
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    const din: any = new Function('m', 'return import(m)')
+    const din = new Function('m', 'return import(m)') as (
+      m: string
+    ) => Promise<unknown>
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     din('win-ca')
   }

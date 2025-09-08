@@ -1,5 +1,6 @@
 import { Client } from '../../client.js'
 import { BSON } from 'bson'
+import type { Document } from 'bson'
 import { MlCopilotClientMessage, MlCopilotServerMessage } from '../../models.js'
 
 interface MlCopilotWsParams {
@@ -13,6 +14,19 @@ export default class MlCopilotWs<
   private ws!: WebSocket
 
   constructor(private readonly functionNameParams: MlCopilotWsParams) {}
+
+  private isArrayBufferViewLike(
+    v: unknown
+  ): v is { buffer: ArrayBuffer; byteOffset: number; byteLength: number } {
+    return (
+      !!v &&
+      typeof v === 'object' &&
+      'buffer' in (v as Record<string, unknown>) &&
+      (v as { buffer: unknown }).buffer instanceof ArrayBuffer &&
+      typeof (v as { byteOffset?: unknown }).byteOffset === 'number' &&
+      typeof (v as { byteLength?: unknown }).byteLength === 'number'
+    )
+  }
 
   async connect(): Promise<this> {
     const url = `/ws/ml/copilot`
@@ -46,20 +60,19 @@ export default class MlCopilotWs<
     // backwards compatibility, but the new standard is ZOO_API_TOKEN.
     // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
     // check for that as well.
-    const kittycadToken = (this.functionNameParams as any)?.client
-      ? (this.functionNameParams as any).client?.token ||
-        process.env.ZOO_API_TOKEN ||
-        ''
+    const kittycadToken = this.functionNameParams?.client
+      ? this.functionNameParams.client?.token || process.env.ZOO_API_TOKEN || ''
       : process.env.KITTYCAD_TOKEN ||
         process.env.KITTYCAD_API_TOKEN ||
         process.env.ZOO_API_TOKEN ||
         ''
     if (kittycadToken) {
       try {
-        const headersMsg: any = {
-          type: 'headers',
-          headers: { Authorization: `Bearer ${kittycadToken}` },
-        }
+        const headersMsg: { type: 'headers'; headers: Record<string, string> } =
+          {
+            type: 'headers',
+            headers: { Authorization: `Bearer ${kittycadToken}` },
+          }
         ws.send(JSON.stringify(headersMsg))
       } catch {}
     }
@@ -73,7 +86,7 @@ export default class MlCopilotWs<
   }
   sendBinary(data: Req): void {
     try {
-      const bytes = BSON.serialize(data as any)
+      const bytes = BSON.serialize(data as unknown as Document)
       this.ws.send(bytes)
     } catch {
       this.ws.send(JSON.stringify(data))
@@ -114,17 +127,16 @@ export default class MlCopilotWs<
   }
 
   private parseMessage(ev: MessageEvent): Res {
-    const data: any = ev?.data
+    const data = ev?.data as unknown
     if (typeof data === 'string') return JSON.parse(data)
-    if ((globalThis as any).Buffer && (Buffer as any).isBuffer?.(data)) {
+    if (typeof Buffer !== 'undefined' && Buffer.isBuffer?.(data)) {
       const buf = data as Buffer
       try {
         return JSON.parse(buf.toString('utf8'))
       } catch {}
-      const out: any = BSON.deserialize(buf)
-      return out
+      return BSON.deserialize(buf) as unknown as Res
     }
-    if (data instanceof ArrayBuffer || data?.buffer instanceof ArrayBuffer) {
+    if (data instanceof ArrayBuffer || this.isArrayBufferViewLike(data)) {
       const bytes =
         data instanceof ArrayBuffer
           ? new Uint8Array(data)
@@ -133,9 +145,8 @@ export default class MlCopilotWs<
         const text = new TextDecoder().decode(bytes)
         return JSON.parse(text)
       } catch {}
-      const out: any = BSON.deserialize(bytes)
-      return out
+      return BSON.deserialize(bytes) as unknown as Res
     }
-    return data
+    return data as Res
   }
 }

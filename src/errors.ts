@@ -10,8 +10,8 @@ export class ApiError extends Error {
     super(message || body?.message || `HTTP ${status}`)
     this.name = 'ApiError'
     this.status = status
-    this.error_code = (body as any)?.error_code
-    this.request_id = (body as any)?.request_id
+    this.error_code = body?.error_code
+    this.request_id = body?.request_id
     this.body = body
   }
 }
