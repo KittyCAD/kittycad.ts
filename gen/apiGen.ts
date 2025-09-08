@@ -263,17 +263,22 @@ export default async function apiGen(lookup: Record<string, string>) {
           : ''
 
         const jsonSchema = requestBody?.content?.['application/json']?.schema
+        const urlEncodedSchema =
+          requestBody?.content?.['application/x-www-form-urlencoded']?.schema
         let bodyTypeName: string | undefined
         let bodyIsRequired = false
         const formSchema = requestBody?.content?.['multipart/form-data']?.schema
         if (
           (!isWebSocket && jsonSchema && '$ref' in jsonSchema) ||
-          (formSchema && '$ref' in formSchema)
+          (formSchema && '$ref' in formSchema) ||
+          (urlEncodedSchema && '$ref' in urlEncodedSchema)
         ) {
           const schemaRef =
             formSchema && '$ref' in formSchema
               ? formSchema.$ref
-              : (jsonSchema as OpenAPIV3.ReferenceObject).$ref
+              : jsonSchema && '$ref' in jsonSchema
+                ? (jsonSchema as OpenAPIV3.ReferenceObject).$ref
+                : (urlEncodedSchema as OpenAPIV3.ReferenceObject).$ref
           const ref = schemaRef
           const typeReference = lookup[ref]
           importedParamTypes.push(typeReference)
@@ -608,6 +613,12 @@ export default async function apiGen(lookup: Record<string, string>) {
             bodyLine = 'body: JSON.stringify(body)'
           if (allowBody && requestBody?.content?.['application/octet-stream'])
             bodyLine = 'body'
+          if (
+            allowBody &&
+            requestBody?.content?.['application/x-www-form-urlencoded']
+          )
+            bodyLine =
+              'body: buildForm(body as unknown as Record<string, unknown>)'
           const ctx = {
             importsModels,
             paramsInterface,
@@ -640,6 +651,7 @@ export default async function apiGen(lookup: Record<string, string>) {
             pager: Boolean(pagerItemTypeName),
             pagerItemTypeName: pagerItemTypeName || 'unknown',
             pagerFnName: `${operationId}_pager`,
+            isUrlEncoded: contentType === 'application/x-www-form-urlencoded',
           }
           template = await render(templatePath, ctx)
         } else {

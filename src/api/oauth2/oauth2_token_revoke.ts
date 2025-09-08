@@ -1,10 +1,11 @@
-import { Client, buildQuery } from '../../client.js'
+import { Client, buildQuery, buildForm } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {} from '../../models.js'
+import { TokenRevokeRequestForm } from '../../models.js'
 
 interface Oauth2TokenRevokeInput {
   client?: Client
+  body: TokenRevokeRequestForm
 }
 
 type Oauth2TokenRevokeReturn = unknown
@@ -18,11 +19,13 @@ type Oauth2TokenRevokeReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {TokenRevokeRequestForm} body Request body payload
  * @returns {Promise<Oauth2TokenRevokeReturn>} Response payload.
  */
-export default async function oauth2_token_revoke(
-  { client }: Oauth2TokenRevokeInput = {} as Oauth2TokenRevokeInput
-): Promise<Oauth2TokenRevokeReturn> {
+export default async function oauth2_token_revoke({
+  client,
+  body,
+}: Oauth2TokenRevokeInput): Promise<Oauth2TokenRevokeReturn> {
   const path = `/oauth2/token/revoke`
   const qs = buildQuery({})
   const url = path + qs
@@ -47,9 +50,11 @@ export default async function oauth2_token_revoke(
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/x-www-form-urlencoded'
   const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
+    body: buildForm(body as unknown as Record<string, unknown>),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)

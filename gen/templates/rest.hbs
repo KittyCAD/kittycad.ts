@@ -1,4 +1,4 @@
-import { Client, buildQuery } from '../../client.js';
+import { Client, buildQuery{{#if isUrlEncoded}}, buildForm{{/if}} } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 {{#if pager}}
 import { Pager, createPager } from '../../pagination.js';

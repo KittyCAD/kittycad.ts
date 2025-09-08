@@ -57,6 +57,23 @@ export function buildQuery(params: Record<string, unknown>): string {
   return qs ? `?${qs}` : ''
 }
 
+/**
+ * Build an application/x-www-form-urlencoded body from a params map,
+ * skipping undefined and expanding arrays as repeated keys.
+ */
+export function buildForm(params: Record<string, unknown>): URLSearchParams {
+  const search = new URLSearchParams()
+  for (const [key, value] of Object.entries(params || {})) {
+    if (value === undefined) continue
+    if (Array.isArray(value)) {
+      for (const v of value) search.append(key, String(v))
+    } else {
+      search.append(key, String(value))
+    }
+  }
+  return search
+}
+
 // On Windows + Node, load system CAs so TLS works behind enterprise roots.
 // This is a no-op on non-Windows platforms and in browsers.
 try {

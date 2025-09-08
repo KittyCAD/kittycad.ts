@@ -1,11 +1,12 @@
-import { Client, buildQuery } from '../../client.js'
+import { Client, buildQuery, buildForm } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { AccountProvider } from '../../models.js'
+import { AccountProvider, AuthCallback } from '../../models.js'
 
 interface Oauth2ProviderCallbackPostInput {
   client?: Client
   provider: AccountProvider
+  body: AuthCallback
 }
 
 type Oauth2ProviderCallbackPostReturn = unknown
@@ -20,11 +21,13 @@ type Oauth2ProviderCallbackPostReturn = unknown
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {AccountProvider} provider The provider. (path)
+ * @property {AuthCallback} body Request body payload
  * @returns {Promise<Oauth2ProviderCallbackPostReturn>} Temporary Redirect
  */
 export default async function oauth2_provider_callback_post({
   client,
   provider,
+  body,
 }: Oauth2ProviderCallbackPostInput): Promise<Oauth2ProviderCallbackPostReturn> {
   const path = `/oauth2/provider/${provider}/callback`
   const qs = buildQuery({})
@@ -50,9 +53,11 @@ export default async function oauth2_provider_callback_post({
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/x-www-form-urlencoded'
   const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
+    body: buildForm(body as unknown as Record<string, unknown>),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)

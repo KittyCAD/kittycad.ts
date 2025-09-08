@@ -1,7 +1,13 @@
 import { oauth2, ApiError } from '../../src/index.js'
 
 async function example() {
-  const response = await oauth2.device_access_token()
+  const response = await oauth2.device_access_token({
+    body: {
+      client_id: 'The client ID.',
+      device_code: 'The device code.',
+      grant_type: 'urn:ietf:params:oauth:grant-type:device_code',
+    },
+  })
   return response
 }
 
