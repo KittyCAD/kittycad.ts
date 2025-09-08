@@ -29,13 +29,7 @@ jobs:
       - name: Create and trust local root CA and server cert
         shell: pwsh
         run: |
-          $ErrorActionPreference = 'Stop'
-          $root = New-SelfSignedCertificate -Type Custom -KeySpec Signature -Subject "CN=KittyCAD-Test-Root" -KeyExportPolicy Exportable -HashAlgorithm sha256 -KeyLength 2048 -CertStoreLocation "Cert:\CurrentUser\My" -KeyUsage CertSign,CRLSign,DigitalSignature -NotAfter (Get-Date).AddYears(1) -TextExtension @("2.5.29.19={text}CA=1&pathlength=3")
-          $server = New-SelfSignedCertificate -Type Custom -DnsName "localhost","127.0.0.1" -Subject "CN=localhost" -KeyExportPolicy Exportable -HashAlgorithm sha256 -KeyLength 2048 -CertStoreLocation "Cert:\CurrentUser\My" -KeyUsage DigitalSignature,KeyEncipherment -Signer $root -TextExtension @("2.5.29.19={text}CA=0")
-          Export-Certificate -Cert $root -FilePath root.cer | Out-Null
-          certutil -user -addstore Root root.cer | Out-Null
-          $pwd = ConvertTo-SecureString -String "pass" -Force -AsPlainText
-          Export-PfxCertificate -Cert $server -FilePath servercert.pfx -Password $pwd | Out-Null
+          ./scripts/win/create-local-ca.ps1 -PfxPath servercert.pfx -PfxPassword 'pass'
       - name: Start HTTPS test server
         shell: pwsh
         run: |
@@ -48,4 +42,11 @@ jobs:
         shell: pwsh
         run: |
           Get-Job -Name https | Stop-Job -PassThru | Remove-Job
-
+      - name: Cleanup local certs
+        if: always()
+        shell: pwsh
+        run: |
+          try {
+            Get-ChildItem -Path Cert:\CurrentUser\Root | Where-Object { $_.Subject -eq 'CN=KittyCAD-Test-Root' } | Remove-Item -Force -ErrorAction SilentlyContinue
+            Get-ChildItem -Path Cert:\CurrentUser\My | Where-Object { $_.Subject -match 'CN=KittyCAD-Test-Root|CN=localhost' } | Remove-Item -Force -ErrorAction SilentlyContinue
+          } catch {}
