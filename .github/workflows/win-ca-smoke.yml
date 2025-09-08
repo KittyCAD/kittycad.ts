@@ -30,29 +30,33 @@ jobs:
         shell: pwsh
         run: |
           ./scripts/win/create-local-ca.ps1 -PfxPath servercert.pfx -PfxPassword 'pass'
-      - name: Start HTTPS test server
+      - name: HTTPS smoke (start server and test in one step)
         shell: pwsh
         run: |
-          Start-Job -Name https -ScriptBlock { node scripts/https-server.mjs } | Out-Null
-          # Wait for port 4443 to be ready (max 20s)
-          $deadline = (Get-Date).AddSeconds(20)
-          do {
-            $ok = Test-NetConnection -ComputerName 127.0.0.1 -Port 4443 -WarningAction SilentlyContinue -InformationLevel Quiet
-            if (-not $ok) { Start-Sleep -Milliseconds 200 }
-          } while (-not $ok -and (Get-Date) -lt $deadline)
-          if (-not $ok) { throw 'HTTPS server did not become ready in time' }
-      - name: Smoke test (TLS with win-ca)
-        run: node scripts/win-ca-smoke.mjs
-      - name: Stop HTTPS server
-        if: always()
-        shell: pwsh
-        run: |
-          Get-Job -Name https | Stop-Job -PassThru | Remove-Job
+          $job = Start-Job -ScriptBlock { node scripts/https-server.mjs }
+          try {
+            # Wait for port 4443 to be ready (max 30s)
+            $deadline = (Get-Date).AddSeconds(30)
+            do {
+              $ok = Test-NetConnection -ComputerName 127.0.0.1 -Port 4443 -WarningAction SilentlyContinue -InformationLevel Quiet
+              if (-not $ok) { Start-Sleep -Milliseconds 200 }
+            } while (-not $ok -and (Get-Date) -lt $deadline)
+            if (-not $ok) { throw 'HTTPS server did not become ready in time' }
+            node scripts/win-ca-smoke.mjs
+          } finally {
+            Get-Job $job | Stop-Job -PassThru | Remove-Job
+          }
       - name: Cleanup local certs
         if: always()
         shell: pwsh
         run: |
           try {
+            # CurrentUser cleanup
             Get-ChildItem -Path Cert:\CurrentUser\Root | Where-Object { $_.Subject -eq 'CN=KittyCAD-Test-Root' } | Remove-Item -Force -ErrorAction SilentlyContinue
             Get-ChildItem -Path Cert:\CurrentUser\My | Where-Object { $_.Subject -match 'CN=KittyCAD-Test-Root|CN=localhost' } | Remove-Item -Force -ErrorAction SilentlyContinue
+          } catch {}
+          try {
+            # LocalMachine cleanup (default trust scope in CI)
+            Get-ChildItem -Path Cert:\LocalMachine\Root | Where-Object { $_.Subject -eq 'CN=KittyCAD-Test-Root' } | Remove-Item -Force -ErrorAction SilentlyContinue
+            Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object { $_.Subject -match 'CN=KittyCAD-Test-Root|CN=localhost' } | Remove-Item -Force -ErrorAction SilentlyContinue
           } catch {}
