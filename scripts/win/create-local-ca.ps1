@@ -14,31 +14,35 @@ if (-not $PfxPassword) { $PfxPassword = 'pass' }
 
 Write-Host "Creating local root CA and server cert..."
 
-# Create a root CA in CurrentUser store
-$root = New-SelfSignedCertificate \
-  -Type Custom \
-  -KeySpec Signature \
-  -Subject "CN=$RootCN" \
-  -KeyExportPolicy Exportable \
-  -HashAlgorithm sha256 \
-  -KeyLength 2048 \
-  -CertStoreLocation "Cert:\CurrentUser\My" \
-  -KeyUsage CertSign,CRLSign,DigitalSignature \
-  -NotAfter (Get-Date).AddMonths(3) \
-  -TextExtension @("2.5.29.19={text}CA=1&pathlength=3")
+# Create a root CA in CurrentUser store (use splatting for reliability)
+$rootParams = @{
+  Type              = 'Custom'
+  KeySpec           = 'Signature'
+  Subject           = "CN=$RootCN"
+  KeyExportPolicy   = 'Exportable'
+  HashAlgorithm     = 'sha256'
+  KeyLength         = 2048
+  CertStoreLocation = 'Cert:\CurrentUser\My'
+  KeyUsage          = 'CertSign,CRLSign,DigitalSignature'
+  NotAfter          = (Get-Date).AddMonths(3)
+  TextExtension     = @('2.5.29.19={text}CA=1&pathlength=3')
+}
+$root = New-SelfSignedCertificate @rootParams
 
 # Create a server cert signed by the root
-$server = New-SelfSignedCertificate \
-  -Type Custom \
-  -DnsName "localhost","127.0.0.1" \
-  -Subject "CN=$ServerCN" \
-  -KeyExportPolicy Exportable \
-  -HashAlgorithm sha256 \
-  -KeyLength 2048 \
-  -CertStoreLocation "Cert:\CurrentUser\My" \
-  -KeyUsage DigitalSignature,KeyEncipherment \
-  -Signer $root \
-  -TextExtension @("2.5.29.19={text}CA=0")
+$serverParams = @{
+  Type              = 'Custom'
+  DnsName           = @('localhost', '127.0.0.1')
+  Subject           = "CN=$ServerCN"
+  KeyExportPolicy   = 'Exportable'
+  HashAlgorithm     = 'sha256'
+  KeyLength         = 2048
+  CertStoreLocation = 'Cert:\CurrentUser\My'
+  KeyUsage          = 'DigitalSignature,KeyEncipherment'
+  Signer            = $root
+  TextExtension     = @('2.5.29.19={text}CA=0')
+}
+$server = New-SelfSignedCertificate @serverParams
 
 # Trust the root CA in CurrentUser\Root store using Import-Certificate (avoids certutil hangs)
 $rootCer = Join-Path $PWD 'root.cer'
