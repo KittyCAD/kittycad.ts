@@ -9,39 +9,21 @@ const extensions = ['.js', '.ts']
 const deps = Object.keys(pkg.dependencies || {})
 const peers = Object.keys(pkg.peerDependencies || {})
 
-const makePlugins = (browser) => [
+const plugins = [
   json(),
-  nodeResolve({ extensions, browser, preferBuiltins: !browser }),
+  nodeResolve({ extensions, browser: false, preferBuiltins: true }),
   commonjs(),
   babel({ extensions }),
   terser(),
 ]
 
-// Node-targeted ESM + CJS (externalize all deps; Node loads them)
-const nodeBundle = {
+// ESM + CJS only; no UMD bundle
+export default {
   input: 'src/index.ts',
   external: [deps, peers].flat(),
   output: [
     { file: pkg.module, format: 'esm' },
-    { file: pkg.main.replace('.js', '.cjs'), format: 'cjs' },
+    { file: pkg.main, format: 'cjs' },
   ],
-  plugins: makePlugins(false),
+  plugins,
 }
-
-// Browser-targeted UMD (bundle cross-fetch polyfill; leave bson external)
-const browserExternals = deps.filter((d) => d !== 'cross-fetch').concat(peers)
-const browserBundle = {
-  input: 'src/index.ts',
-  external: browserExternals,
-  output: [
-    {
-      name: pkg.name,
-      file: pkg.browser,
-      format: 'umd',
-      globals: { bson: 'BSON' },
-    },
-  ],
-  plugins: makePlugins(true),
-}
-
-export default [nodeBundle, browserBundle]
