@@ -92,26 +92,30 @@ $sw.Restart()
 $server = New-SelfSignedCertificate @serverParams
 Log "Server cert created in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
-# Trust the root CA in CurrentUser\Root store using Import-Certificate (avoids certutil hangs)
+# Trust the root CA in CurrentUser\Root store. Prefer .NET APIs to avoid any UI.
 $rootCer = Join-Path $PWD 'root.cer'
 $sw.Restart()
 Export-Certificate -Cert $root -FilePath $rootCer | Out-Null
 Log "Root exported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
-$timeout = [int]([Environment]::GetEnvironmentVariable('ZOO_CA_IMPORT_TIMEOUT') ?? '30')
+$timeout = [int]([Environment]::GetEnvironmentVariable('ZOO_CA_IMPORT_TIMEOUT') ?? '120')
 Log "Importing root into CurrentUser\\Root (timeout ${timeout}s)..."
 $sw.Restart()
 try {
   Invoke-With-Timeout {
     param($path)
     $ErrorActionPreference = 'Stop'
-    Import-Certificate -FilePath $path -CertStoreLocation 'Cert:\\CurrentUser\\Root' | Out-Null
+    $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($path)
+    $store = New-Object System.Security.Cryptography.X509Certificates.X509Store('Root',[System.Security.Cryptography.X509Certificates.StoreLocation]::CurrentUser)
+    $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]::ReadWrite)
+    try { $store.Add($cert) } finally { $store.Close() }
   } $timeout @($rootCer)
   Log "Root imported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 } catch {
-  Log "Import-Certificate failed or timed out: $($_.Exception.Message). Falling back to certutil..."
+  Log ".NET store import failed or timed out: $($_.Exception.Message). Falling back to certutil..."
   $sw.Restart()
-  Invoke-ProcessWithTimeout 'certutil' "-user -addstore Root `"$rootCer`"" $timeout | Out-Null
+  # Use force (-f) and quiet (-q) to avoid UI prompts in non-interactive sessions
+  Invoke-ProcessWithTimeout 'certutil' "-user -f -q -addstore Root `"$rootCer`"" $timeout | Out-Null
   Log "certutil import completed in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 }
 
