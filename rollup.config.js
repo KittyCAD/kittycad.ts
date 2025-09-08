@@ -18,9 +18,12 @@ const plugins = [
 ]
 
 // ESM + CJS only; no UMD bundle
+const externals = [deps, peers].flat()
+const isExternal = (id) => externals.some((d) => id === d || id.startsWith(`${d}/`))
+
 export default {
   input: 'src/index.ts',
-  external: [deps, peers].flat(),
+  external: isExternal,
   output: [
     { file: pkg.module, format: 'esm' },
     { file: pkg.main, format: 'cjs' },

@@ -1,11 +1,16 @@
 $ErrorActionPreference = 'Stop'
 
 param(
-  [string]$RootCN = 'KittyCAD-Test-Root',
-  [string]$ServerCN = 'localhost',
-  [string]$PfxPath = 'servercert.pfx',
-  [string]$PfxPassword = 'pass'
+  [string]$RootCN,
+  [string]$ServerCN,
+  [string]$PfxPath,
+  [string]$PfxPassword
 )
+
+if (-not $RootCN) { $RootCN = 'KittyCAD-Test-Root' }
+if (-not $ServerCN) { $ServerCN = 'localhost' }
+if (-not $PfxPath) { $PfxPath = 'servercert.pfx' }
+if (-not $PfxPassword) { $PfxPassword = 'pass' }
 
 Write-Host "Creating local root CA and server cert..."
 
@@ -45,4 +50,3 @@ $pwd = ConvertTo-SecureString -String $PfxPassword -Force -AsPlainText
 Export-PfxCertificate -Cert $server -FilePath $PfxPath -Password $pwd | Out-Null
 
 Write-Host "Local CA created and trusted. PFX at $PfxPath"
-
