@@ -26,7 +26,9 @@ async function hasCmd(cmd) {
 }
 
 async function main() {
-  const tarball = path.resolve(process.argv[2] || 'pkg.tgz')
+  let tarball = path.resolve(process.argv[2] || 'pkg.tgz')
+  const yarnSpec = process.platform === 'win32' ? tarball.replace(/\\/g, '/') : tarball
+  const fileSpec = yarnSpec.startsWith('file:') ? yarnSpec : `file:${yarnSpec}`
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'kittycad-esm-'))
   process.chdir(dir)
 
@@ -35,7 +37,7 @@ async function main() {
 
   const useYarn = await hasCmd('yarn')
   if (useYarn) {
-    await run('yarn', ['add', tarball])
+    await run('yarn', ['add', fileSpec])
   } else {
     await run('npm', ['install', tarball])
   }
