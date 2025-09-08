@@ -34,7 +34,13 @@ jobs:
         shell: pwsh
         run: |
           Start-Job -Name https -ScriptBlock { node scripts/https-server.mjs } | Out-Null
-          Start-Sleep -Seconds 2
+          # Wait for port 4443 to be ready (max 20s)
+          $deadline = (Get-Date).AddSeconds(20)
+          do {
+            $ok = Test-NetConnection -ComputerName 127.0.0.1 -Port 4443 -WarningAction SilentlyContinue -InformationLevel Quiet
+            if (-not $ok) { Start-Sleep -Milliseconds 200 }
+          } while (-not $ok -and (Get-Date) -lt $deadline)
+          if (-not $ok) { throw 'HTTPS server did not become ready in time' }
       - name: Smoke test (TLS with win-ca)
         run: node scripts/win-ca-smoke.mjs
       - name: Stop HTTPS server
