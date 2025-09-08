@@ -12,6 +12,19 @@ interface ListUsersInput {
 
 type ListUsersReturn = UserResultsPage
 
+/**
+ * List users.
+ *
+ * This endpoint requires authentication by a Zoo employee. The users are returned in order of creation, with the most recently created users first.
+ *
+ * Tags: users, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function list_users({
   client,
   limit,

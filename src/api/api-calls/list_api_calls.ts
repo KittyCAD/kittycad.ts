@@ -12,6 +12,19 @@ interface ListApiCallsInput {
 
 type ListApiCallsReturn = ApiCallWithPriceResultsPage
 
+/**
+ * List API calls.
+ *
+ * This endpoint requires authentication by a Zoo employee. The API calls are returned in order of creation, with the most recently created API calls first.
+ *
+ * Tags: api-calls, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function list_api_calls({
   client,
   limit,

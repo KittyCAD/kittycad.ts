@@ -15,6 +15,18 @@ interface UpdateEnterprisePricingForOrgInput {
 
 type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
 
+/**
+ * Set the enterprise price for an organization.
+ *
+ * You must be a Zoo admin to perform this request.
+ *
+ * Tags: orgs, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The organization ID. (path)
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_enterprise_pricing_for_org({
   client,
   id,

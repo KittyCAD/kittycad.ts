@@ -10,6 +10,19 @@ interface DeleteServiceAccountForOrgInput {
 
 type DeleteServiceAccountForOrgReturn = unknown
 
+/**
+ * Delete an service account for your org.
+ *
+ * This endpoint requires authentication by an org admin. It deletes the requested service account for the organization.
+ *
+ * This endpoint does not actually delete the service account from the database. It merely marks the token as invalid. We still want to keep the service account in the database for historical purposes.
+ *
+ * Tags: service-accounts
+ *
+ * @param client Optional client with auth token.
+ * @param token The service account. (path)
+ * @returns successful deletion
+ */
 export default async function delete_service_account_for_org({
   client,
   token,

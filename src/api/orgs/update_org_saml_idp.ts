@@ -13,6 +13,17 @@ interface UpdateOrgSamlIdpInput {
 
 type UpdateOrgSamlIdpReturn = SamlIdentityProvider
 
+/**
+ * Update the SAML identity provider.
+ *
+ * This endpoint requires authentication by an org admin.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_org_saml_idp({
   client,
   body,

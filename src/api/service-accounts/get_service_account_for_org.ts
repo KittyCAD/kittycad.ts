@@ -10,6 +10,17 @@ interface GetServiceAccountForOrgInput {
 
 type GetServiceAccountForOrgReturn = ServiceAccount
 
+/**
+ * Get an service account for your org.
+ *
+ * This endpoint requires authentication by an org admin. It returns details of the requested service account for the organization.
+ *
+ * Tags: service-accounts
+ *
+ * @param client Optional client with auth token.
+ * @param token The service account. (path)
+ * @returns successful operation
+ */
 export default async function get_service_account_for_org({
   client,
   token,

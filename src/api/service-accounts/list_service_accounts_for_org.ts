@@ -12,6 +12,21 @@ interface ListServiceAccountsForOrgInput {
 
 type ListServiceAccountsForOrgReturn = ServiceAccountResultsPage
 
+/**
+ * List service accounts for your org.
+ *
+ * This endpoint requires authentication by an org admin. It returns the service accounts for the organization.
+ *
+ * The service accounts are returned in order of creation, with the most recently created service accounts first.
+ *
+ * Tags: service-accounts
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function list_service_accounts_for_org({
   client,
   limit,

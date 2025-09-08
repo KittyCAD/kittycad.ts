@@ -11,6 +11,16 @@ interface CommunitySsoInput {
 
 type CommunitySsoReturn = unknown
 
+/**
+ * Authorize an inbound auth request from our Community page.
+ *
+ * Tags: meta, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param sig The signature for the given payload (query)
+ * @param sso The nonce and redirect URL sent to us by Discourse (query)
+ * @returns Temporary Redirect
+ */
 export default async function community_sso({
   client,
   sig,

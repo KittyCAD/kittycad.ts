@@ -10,6 +10,17 @@ interface UpdateOrgPrivacySettingsInput {
 
 type UpdateOrgPrivacySettingsReturn = PrivacySettings
 
+/**
+ * Update the privacy settings for an org.
+ *
+ * This endpoint requires authentication by an org admin. It updates the privacy settings for the authenticated user's org.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_org_privacy_settings({
   client,
   body,

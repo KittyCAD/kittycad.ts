@@ -18,6 +18,25 @@ interface ListTextToCadModelsForUserInput {
 
 type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage
 
+/**
+ * List text-to-CAD models you've generated.
+ *
+ * This will always return the STEP file contents as well as the format the user originally requested.
+ *
+ * This endpoint requires authentication by any Zoo user. It returns the text-to-CAD models for the authenticated user.
+ *
+ * The text-to-CAD models are returned in order of creation, with the most recently created text-to-CAD models first.
+ *
+ * Tags: ml
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @param conversation_id If specified, only return the prompts for the conversation id given. (query)
+ * @param no_models If we should return the model file contents or just the metadata. (query)
+ * @returns successful operation
+ */
 export default async function list_text_to_cad_models_for_user({
   client,
   limit,

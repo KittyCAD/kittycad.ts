@@ -10,6 +10,17 @@ interface UpdateUserSelfInput {
 
 type UpdateUserSelfReturn = User
 
+/**
+ * Update your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It updates information about the authenticated user.
+ *
+ * Tags: users
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_user_self({
   client,
   body,

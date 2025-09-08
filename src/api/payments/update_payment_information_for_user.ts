@@ -10,6 +10,19 @@ interface UpdatePaymentInformationForUserInput {
 
 type UpdatePaymentInformationForUserReturn = Customer
 
+/**
+ * Update payment info for your user.
+ *
+ * This includes billing address, phone, and name.
+ *
+ * This endpoint requires authentication by any Zoo user. It updates the payment information for the authenticated user.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_payment_information_for_user({
   client,
   body,

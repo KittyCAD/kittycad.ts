@@ -9,6 +9,16 @@ interface GetOrgInput {
 
 type GetOrgReturn = Org
 
+/**
+ * Get an org.
+ *
+ * This endpoint requires authentication by an org admin. It gets the authenticated user's org.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_org(
   { client }: GetOrgInput = {} as GetOrgInput
 ): Promise<GetOrgReturn> {

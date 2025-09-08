@@ -9,6 +9,16 @@ interface ValidateCustomerTaxInformationForOrgInput {
 
 type ValidateCustomerTaxInformationForOrgReturn = unknown
 
+/**
+ * Validate an orgs's information is correct and valid for automatic tax.
+ *
+ * This endpoint requires authentication by an org admin. It will return an error if the org's information is not valid for automatic tax. Otherwise, it will return an empty successful response.
+ *
+ * Tags: payments, hidden
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation, no content
+ */
 export default async function validate_customer_tax_information_for_org(
   {
     client,

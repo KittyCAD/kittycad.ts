@@ -10,6 +10,17 @@ interface DeleteOrgMemberInput {
 
 type DeleteOrgMemberReturn = unknown
 
+/**
+ * Remove a member from your org.
+ *
+ * This endpoint requires authentication by an org admin. It removes the specified member from the authenticated user's org.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @param user_id The user id of the org member. (path)
+ * @returns successful deletion
+ */
 export default async function delete_org_member({
   client,
   user_id,

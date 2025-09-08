@@ -9,6 +9,18 @@ interface GetUserOrgInput {
 
 type GetUserOrgReturn = UserOrgInfo
 
+/**
+ * Get a user's org.
+ *
+ * This endpoint requires authentication by any Zoo user. It gets the authenticated user's org.
+ *
+ * If the user is not a member of an org, this endpoint will return a 404.
+ *
+ * Tags: orgs, users
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_user_org(
   { client }: GetUserOrgInput = {} as GetUserOrgInput
 ): Promise<GetUserOrgReturn> {

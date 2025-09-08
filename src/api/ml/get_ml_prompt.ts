@@ -10,6 +10,17 @@ interface GetMlPromptInput {
 
 type GetMlPromptReturn = MlPrompt
 
+/**
+ * Get a ML prompt.
+ *
+ * This endpoint requires authentication by a Zoo employee.
+ *
+ * Tags: ml, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The id of the model to give feedback to. (path)
+ * @returns successful operation
+ */
 export default async function get_ml_prompt({
   client,
   id,

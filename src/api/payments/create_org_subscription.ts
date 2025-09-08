@@ -13,6 +13,17 @@ interface CreateOrgSubscriptionInput {
 
 type CreateOrgSubscriptionReturn = ZooProductSubscriptions
 
+/**
+ * Create the subscription for an org.
+ *
+ * This endpoint requires authentication by an org admin. It creates the subscription for the authenticated user's org.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_org_subscription({
   client,
   body,

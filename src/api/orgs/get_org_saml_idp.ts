@@ -9,6 +9,16 @@ interface GetOrgSamlIdpInput {
 
 type GetOrgSamlIdpReturn = SamlIdentityProvider
 
+/**
+ * Get the SAML identity provider.
+ *
+ * This endpoint requires authentication by an org admin.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_org_saml_idp(
   { client }: GetOrgSamlIdpInput = {} as GetOrgSamlIdpInput
 ): Promise<GetOrgSamlIdpReturn> {

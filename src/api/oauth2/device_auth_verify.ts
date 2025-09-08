@@ -11,6 +11,18 @@ interface DeviceAuthVerifyInput {
 
 type DeviceAuthVerifyReturn = unknown
 
+/**
+ * Verify an OAuth 2.0 Device Authorization Grant.
+ *
+ * This endpoint should be accessed in a full user agent (e.g., a browser). If the user is not logged in, we redirect them to the login page and use the `callback_url` parameter to get them to the UI verification form upon logging in. If they are logged in, we redirect them to the UI verification form on the website.
+ *
+ * Tags: oauth2, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param app_name The originating app's name (query)
+ * @param user_code The user code. (query)
+ * @returns Temporary Redirect
+ */
 export default async function device_auth_verify({
   client,
   app_name,

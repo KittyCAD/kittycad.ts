@@ -10,6 +10,17 @@ interface DeletePaymentMethodForUserInput {
 
 type DeletePaymentMethodForUserReturn = unknown
 
+/**
+ * Delete a payment method for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It deletes the specified payment method for the authenticated user.
+ *
+ * Tags: payments, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The ID of the payment method. (path)
+ * @returns successful deletion
+ */
 export default async function delete_payment_method_for_user({
   client,
   id,

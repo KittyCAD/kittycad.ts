@@ -17,6 +17,20 @@ interface ListOrgMembersInput {
 
 type ListOrgMembersReturn = OrgMemberResultsPage
 
+/**
+ * List members of your org.
+ *
+ * This endpoint requires authentication by an org admin. It lists the members of the authenticated user's org.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @param role The organization role to filter by. (query)
+ * @returns successful operation
+ */
 export default async function list_org_members({
   client,
   limit,

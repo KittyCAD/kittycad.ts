@@ -9,6 +9,18 @@ interface GetUserSelfInput {
 
 type GetUserSelfReturn = User
 
+/**
+ * Get your user.
+ *
+ * Get the user information for the authenticated user.
+ *
+ * Alternatively, you can also use the `/users/me` endpoint.
+ *
+ * Tags: users
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_user_self(
   { client }: GetUserSelfInput = {} as GetUserSelfInput
 ): Promise<GetUserSelfReturn> {

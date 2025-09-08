@@ -9,6 +9,16 @@ interface DeleteOrgSamlIdpInput {
 
 type DeleteOrgSamlIdpReturn = unknown
 
+/**
+ * Delete an SAML identity provider.
+ *
+ * This endpoint requires authentication by an org admin.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @returns successful deletion
+ */
 export default async function delete_org_saml_idp(
   { client }: DeleteOrgSamlIdpInput = {} as DeleteOrgSamlIdpInput
 ): Promise<DeleteOrgSamlIdpReturn> {

@@ -10,6 +10,17 @@ interface GetOrgMemberInput {
 
 type GetOrgMemberReturn = OrgMember
 
+/**
+ * Get a member of your org.
+ *
+ * This endpoint requires authentication by an org admin. It gets the specified member of the authenticated user's org.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @param user_id The user id of the org member. (path)
+ * @returns successful operation
+ */
 export default async function get_org_member({
   client,
   user_id,

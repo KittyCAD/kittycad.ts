@@ -9,6 +9,18 @@ interface DeletePaymentInformationForOrgInput {
 
 type DeletePaymentInformationForOrgReturn = unknown
 
+/**
+ * Delete payment info for your org.
+ *
+ * This includes billing address, phone, and name.
+ *
+ * This endpoint requires authentication by an org admin. It deletes the payment information for the authenticated user's org.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful deletion
+ */
 export default async function delete_payment_information_for_org(
   {
     client,

@@ -9,6 +9,20 @@ interface DeleteOrgInput {
 
 type DeleteOrgReturn = unknown
 
+/**
+ * Delete an org.
+ *
+ * In order to delete an org, you must first delete all of its members, except yourself.
+ *
+ * You must also have no outstanding invoices or unpaid balances.
+ *
+ * This endpoint requires authentication by an org admin. It deletes the authenticated user's org.
+ *
+ * Tags: orgs, hidden
+ *
+ * @param client Optional client with auth token.
+ * @returns successful deletion
+ */
 export default async function delete_org(
   { client }: DeleteOrgInput = {} as DeleteOrgInput
 ): Promise<DeleteOrgReturn> {

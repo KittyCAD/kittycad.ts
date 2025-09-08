@@ -12,6 +12,22 @@ interface CreateFileConversionOptionsInput {
 
 type CreateFileConversionOptionsReturn = FileConversion
 
+/**
+ * Convert CAD file from one format to another.
+ *
+ * This takes a HTTP multipart body with these fields in any order:
+ *
+ *  - The input and output format options (as JSON), name is 'body'.  - The files to convert, in raw binary. Must supply filenames.
+ *
+ * This starts a conversion job and returns the `id` of the operation. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.
+ *
+ * Tags: file
+ *
+ * @param client Optional client with auth token.
+ * @param files Files attached as multipart/form-data.
+ * @param body Convert files to other formats
+ * @returns successful creation
+ */
 export default async function create_file_conversion_options({
   client,
   files,

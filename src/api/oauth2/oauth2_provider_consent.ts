@@ -11,6 +11,16 @@ interface Oauth2ProviderConsentInput {
 
 type Oauth2ProviderConsentReturn = OAuth2ClientInfo
 
+/**
+ * Get the consent URL and other information for the OAuth 2.0 provider.
+ *
+ * Tags: oauth2, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param provider The provider. (path)
+ * @param callback_url The URL to redirect back to after we have authenticated. (query)
+ * @returns successful operation
+ */
 export default async function oauth2_provider_consent({
   client,
   provider,

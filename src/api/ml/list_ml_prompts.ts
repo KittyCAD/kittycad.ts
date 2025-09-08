@@ -12,6 +12,23 @@ interface ListMlPromptsInput {
 
 type ListMlPromptsReturn = MlPromptResultsPage
 
+/**
+ * List all ML prompts.
+ *
+ * For text-to-cad prompts, this will always return the STEP file contents as well as the format the user originally requested.
+ *
+ * This endpoint requires authentication by a Zoo employee.
+ *
+ * The ML prompts are returned in order of creation, with the most recently created ML prompts first.
+ *
+ * Tags: ml, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function list_ml_prompts({
   client,
   limit,

@@ -9,6 +9,15 @@ interface DeviceAuthRequestInput {
 
 type DeviceAuthRequestReturn = unknown
 
+/**
+ * Start an OAuth 2.0 Device Authorization Grant.
+ *
+ * This endpoint is designed to be accessed from an *unauthenticated* API client. It generates and records a `device_code` and `user_code` which must be verified and confirmed prior to a token being granted.
+ *
+ * Tags: oauth2, hidden
+ *
+ * @param client Optional client with auth token.
+ */
 export default async function device_auth_request(
   { client }: DeviceAuthRequestInput = {} as DeviceAuthRequestInput
 ): Promise<DeviceAuthRequestReturn> {

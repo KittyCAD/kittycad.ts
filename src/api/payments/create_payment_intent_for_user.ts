@@ -9,6 +9,16 @@ interface CreatePaymentIntentForUserInput {
 
 type CreatePaymentIntentForUserReturn = PaymentIntent
 
+/**
+ * Create a payment intent for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It creates a new payment intent for the authenticated user.
+ *
+ * Tags: payments, hidden
+ *
+ * @param client Optional client with auth token.
+ * @returns successful creation
+ */
 export default async function create_payment_intent_for_user(
   {
     client,

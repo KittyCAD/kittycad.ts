@@ -12,6 +12,19 @@ interface ListOrgsInput {
 
 type ListOrgsReturn = OrgResultsPage
 
+/**
+ * List orgs.
+ *
+ * This endpoint requires authentication by a Zoo employee. The orgs are returned in order of creation, with the most recently created orgs first.
+ *
+ * Tags: orgs, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function list_orgs({
   client,
   limit,

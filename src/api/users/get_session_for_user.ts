@@ -10,6 +10,17 @@ interface GetSessionForUserInput {
 
 type GetSessionForUserReturn = Session
 
+/**
+ * Get a session for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It returns details of the requested API token for the user.
+ *
+ * Tags: users
+ *
+ * @param client Optional client with auth token.
+ * @param token The API token. (path)
+ * @returns successful operation
+ */
 export default async function get_session_for_user({
   client,
   token,

@@ -10,6 +10,15 @@ interface PatchUserCrmInput {
 
 type PatchUserCrmReturn = unknown
 
+/**
+ * Update properties in the CRM
+ *
+ * Tags: users, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation, no content
+ */
 export default async function patch_user_crm({
   client,
   body,

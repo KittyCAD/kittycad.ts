@@ -9,6 +9,16 @@ interface ListInvoicesForOrgInput {
 
 type ListInvoicesForOrgReturn = Invoice[]
 
+/**
+ * List invoices for your org.
+ *
+ * This endpoint requires authentication by an org admin. It lists invoices for the authenticated user's org.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function list_invoices_for_org(
   { client }: ListInvoicesForOrgInput = {} as ListInvoicesForOrgInput
 ): Promise<ListInvoicesForOrgReturn> {

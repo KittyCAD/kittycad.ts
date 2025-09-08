@@ -17,6 +17,26 @@ interface ListApiCallsForUserInput {
 
 type ListApiCallsForUserReturn = ApiCallWithPriceResultsPage
 
+/**
+ * List API calls for a user.
+ *
+ * This endpoint requires authentication by any Zoo user. It returns the API calls for the authenticated user if "me" is passed as the user id.
+ *
+ * Alternatively, you can use the `/user/api-calls` endpoint to get the API calls for your user.
+ *
+ * If the authenticated user is a Zoo employee, then the API calls are returned for the user specified by the user id.
+ *
+ * The API calls are returned in order of creation, with the most recently created API calls first.
+ *
+ * Tags: api-calls, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The user's identifier (uuid or email). (path)
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function list_api_calls_for_user({
   client,
   id,

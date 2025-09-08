@@ -13,6 +13,17 @@ interface UpdateUserSubscriptionInput {
 
 type UpdateUserSubscriptionReturn = ZooProductSubscriptions
 
+/**
+ * Update the user's subscription.
+ *
+ * This endpoint requires authentication by any Zoo user. It updates the subscription for the user.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_user_subscription({
   client,
   body,

@@ -9,6 +9,14 @@ interface GetIpinfoInput {
 
 type GetIpinfoReturn = IpAddrInfo
 
+/**
+ * Get ip address information.
+ *
+ * Tags: meta, hidden
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_ipinfo(
   { client }: GetIpinfoInput = {} as GetIpinfoInput
 ): Promise<GetIpinfoReturn> {

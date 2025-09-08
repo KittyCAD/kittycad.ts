@@ -7,6 +7,7 @@ interface {{paramsInterfaceName}} {
   {{{paramsFields}}}
 }
 
+{{{fnJsDoc}}}
 export default class {{className}}<Req = {{{wsReqType}}}, Res = {{{wsRespType}}}> {
   private ws!: WebSocket;
 

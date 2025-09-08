@@ -9,6 +9,18 @@ interface GetPaymentInformationForUserInput {
 
 type GetPaymentInformationForUserReturn = Customer
 
+/**
+ * Get payment info about your user.
+ *
+ * This includes billing address, phone, and name.
+ *
+ * This endpoint requires authentication by any Zoo user. It gets the payment information for the authenticated user.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_payment_information_for_user(
   {
     client,

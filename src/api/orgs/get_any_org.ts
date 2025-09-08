@@ -10,6 +10,17 @@ interface GetAnyOrgInput {
 
 type GetAnyOrgReturn = Org
 
+/**
+ * Get an org.
+ *
+ * This endpoint requires authentication by a Zoo employee. It gets the information for the specified org.
+ *
+ * Tags: orgs, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The organization ID. (path)
+ * @returns successful operation
+ */
 export default async function get_any_org({
   client,
   id,

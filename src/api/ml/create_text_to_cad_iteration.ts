@@ -10,6 +10,23 @@ interface CreateTextToCadIterationInput {
 
 type CreateTextToCadIterationReturn = TextToCadIteration
 
+/**
+ * Iterate on a CAD model with a prompt.
+ *
+ * Even if you give specific ranges to edit, the model might change more than just those in order to make the changes you requested without breaking the code.
+ *
+ * You always get the whole code back, even if you only changed a small part of it.
+ *
+ * This operation is performed asynchronously, the `id` of the operation will be returned. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.
+ *
+ * This endpoint will soon be deprecated in favor of the `/ml/text-to-cad/multi-file/iteration` endpoint. In that the endpoint path will remain but it will have the same behavior as `ml/text-to-cad/multi-file/iteration`.
+ *
+ * Tags: ml
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_text_to_cad_iteration({
   client,
   body,

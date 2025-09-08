@@ -10,6 +10,17 @@ interface PutUserFormSelfInput {
 
 type PutUserFormSelfReturn = unknown
 
+/**
+ * Create a new support/sales ticket from the website contact form. This endpoint is authenticated.
+ *
+ * It gets attached to the user's account.
+ *
+ * Tags: users, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation, no content
+ */
 export default async function put_user_form_self({
   client,
   body,

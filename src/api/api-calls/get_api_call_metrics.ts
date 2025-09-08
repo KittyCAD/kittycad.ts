@@ -10,6 +10,17 @@ interface GetApiCallMetricsInput {
 
 type GetApiCallMetricsReturn = ApiCallQueryGroup[]
 
+/**
+ * Get API call metrics.
+ *
+ * This endpoint requires authentication by a Zoo employee. The API calls are grouped by the parameter passed.
+ *
+ * Tags: api-calls, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param group_by What field to group the metrics by. (query)
+ * @returns successful operation
+ */
 export default async function get_api_call_metrics({
   client,
   group_by,

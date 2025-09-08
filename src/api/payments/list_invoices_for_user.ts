@@ -9,6 +9,16 @@ interface ListInvoicesForUserInput {
 
 type ListInvoicesForUserReturn = Invoice[]
 
+/**
+ * List invoices for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It lists invoices for the authenticated user.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function list_invoices_for_user(
   { client }: ListInvoicesForUserInput = {} as ListInvoicesForUserInput
 ): Promise<ListInvoicesForUserReturn> {

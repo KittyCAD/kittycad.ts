@@ -12,6 +12,21 @@ interface UserListApiCallsInput {
 
 type UserListApiCallsReturn = ApiCallWithPriceResultsPage
 
+/**
+ * List API calls for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It returns the API calls for the authenticated user.
+ *
+ * The API calls are returned in order of creation, with the most recently created API calls first.
+ *
+ * Tags: api-calls
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function user_list_api_calls({
   client,
   limit,

@@ -12,6 +12,19 @@ interface GetUserShortlinksInput {
 
 type GetUserShortlinksReturn = ShortlinkResultsPage
 
+/**
+ * Get the shortlinks for a user.
+ *
+ * This endpoint requires authentication by any Zoo user. It gets the shortlinks for the user.
+ *
+ * Tags: users, shortlinks
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function get_user_shortlinks({
   client,
   limit,

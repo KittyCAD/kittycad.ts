@@ -10,6 +10,19 @@ interface DeleteApiTokenForUserInput {
 
 type DeleteApiTokenForUserReturn = unknown
 
+/**
+ * Delete an API token for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It deletes the requested API token for the user.
+ *
+ * This endpoint does not actually delete the API token from the database. It merely marks the token as invalid. We still want to keep the token in the database for historical purposes.
+ *
+ * Tags: api-tokens
+ *
+ * @param client Optional client with auth token.
+ * @param token The API token. (path)
+ * @returns successful deletion
+ */
 export default async function delete_api_token_for_user({
   client,
   token,

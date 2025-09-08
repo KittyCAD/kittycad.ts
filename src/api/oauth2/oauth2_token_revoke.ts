@@ -9,6 +9,15 @@ interface Oauth2TokenRevokeInput {
 
 type Oauth2TokenRevokeReturn = unknown
 
+/**
+ * Revoke an OAuth2 token.
+ *
+ * This endpoint is designed to be accessed from an *unauthenticated* API client.
+ *
+ * Tags: oauth2, hidden
+ *
+ * @param client Optional client with auth token.
+ */
 export default async function oauth2_token_revoke(
   { client }: Oauth2TokenRevokeInput = {} as Oauth2TokenRevokeInput
 ): Promise<Oauth2TokenRevokeReturn> {

@@ -9,6 +9,16 @@ interface ListPaymentMethodsForOrgInput {
 
 type ListPaymentMethodsForOrgReturn = PaymentMethod[]
 
+/**
+ * List payment methods for your org.
+ *
+ * This endpoint requires authentication by an org admin. It lists payment methods for the authenticated user's org.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function list_payment_methods_for_org(
   {
     client,

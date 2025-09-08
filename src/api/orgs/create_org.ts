@@ -10,6 +10,17 @@ interface CreateOrgInput {
 
 type CreateOrgReturn = Org
 
+/**
+ * Create an org.
+ *
+ * This endpoint requires authentication by a Zoo user that is not already in an org. It creates a new org for the authenticated user and makes them an admin.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_org({
   client,
   body,

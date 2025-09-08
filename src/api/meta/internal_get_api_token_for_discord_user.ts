@@ -10,6 +10,19 @@ interface InternalGetApiTokenForDiscordUserInput {
 
 type InternalGetApiTokenForDiscordUserReturn = ApiToken
 
+/**
+ * Get an API token for a user by their discord id.
+ *
+ * This endpoint allows us to run API calls from our discord bot on behalf of a user. The user must have a discord account linked to their Zoo Account via oauth2 for this to work.
+ *
+ * You must be a Zoo admin to use this endpoint.
+ *
+ * Tags: meta, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param discord_id The user's discord ID. (path)
+ * @returns successful operation
+ */
 export default async function internal_get_api_token_for_discord_user({
   client,
   discord_id,

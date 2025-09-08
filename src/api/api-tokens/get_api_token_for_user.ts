@@ -10,6 +10,17 @@ interface GetApiTokenForUserInput {
 
 type GetApiTokenForUserReturn = ApiToken
 
+/**
+ * Get an API token for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It returns details of the requested API token for the user.
+ *
+ * Tags: api-tokens
+ *
+ * @param client Optional client with auth token.
+ * @param token The API token. (path)
+ * @returns successful operation
+ */
 export default async function get_api_token_for_user({
   client,
   token,

@@ -9,6 +9,16 @@ interface GetUserSubscriptionInput {
 
 type GetUserSubscriptionReturn = ZooProductSubscriptions
 
+/**
+ * Get the subscription for a user.
+ *
+ * This endpoint requires authentication by any Zoo user. It gets the subscription for the user.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_user_subscription(
   { client }: GetUserSubscriptionInput = {} as GetUserSubscriptionInput
 ): Promise<GetUserSubscriptionReturn> {

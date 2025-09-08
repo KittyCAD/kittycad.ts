@@ -9,6 +9,18 @@ interface GetUserSelfExtendedInput {
 
 type GetUserSelfExtendedReturn = ExtendedUser
 
+/**
+ * Get extended information about your user.
+ *
+ * Get the user information for the authenticated user.
+ *
+ * Alternatively, you can also use the `/users-extended/me` endpoint.
+ *
+ * Tags: users
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_user_self_extended(
   { client }: GetUserSelfExtendedInput = {} as GetUserSelfExtendedInput
 ): Promise<GetUserSelfExtendedReturn> {

@@ -7,6 +7,17 @@ interface ExecutorTermParams {
   client?: Client
 }
 
+/**
+ * Create a terminal.
+ *
+ * Attach to a docker container to create an interactive terminal.
+ *
+ * Tags: executor, hidden
+ *
+ * @template Req WebSocket request message type
+ * @template Res WebSocket response message type
+ * @param functionNameParams Parameters for URL templating and auth
+ */
 export default class ExecutorTerm<Req = unknown, Res = unknown> {
   private ws!: WebSocket
 

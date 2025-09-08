@@ -12,6 +12,19 @@ interface GetEnergyUnitConversionInput {
 
 type GetEnergyUnitConversionReturn = UnitEnergyConversion
 
+/**
+ * Convert energy units.
+ *
+ * Convert a energy unit value to another energy unit value. This is a nice endpoint to use for helper functions.
+ *
+ * Tags: unit
+ *
+ * @param client Optional client with auth token.
+ * @param input_unit The source format of the unit. (path)
+ * @param output_unit The output format of the unit. (path)
+ * @param value The initial value. (query)
+ * @returns successful operation
+ */
 export default async function get_energy_unit_conversion({
   client,
   input_unit,

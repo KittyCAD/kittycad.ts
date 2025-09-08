@@ -9,6 +9,15 @@ interface DeviceAccessTokenInput {
 
 type DeviceAccessTokenReturn = unknown
 
+/**
+ * Request a device access token.
+ *
+ * This endpoint should be polled by the client until the user code is verified and the grant is confirmed.
+ *
+ * Tags: oauth2, hidden
+ *
+ * @param client Optional client with auth token.
+ */
 export default async function device_access_token(
   { client }: DeviceAccessTokenInput = {} as DeviceAccessTokenInput
 ): Promise<DeviceAccessTokenReturn> {

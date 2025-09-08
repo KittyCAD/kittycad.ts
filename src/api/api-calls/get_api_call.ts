@@ -10,6 +10,21 @@ interface GetApiCallInput {
 
 type GetApiCallReturn = ApiCallWithPrice
 
+/**
+ * Get details of an API call.
+ *
+ * This endpoint requires authentication by any Zoo user. It returns details of the requested API call for the user.
+ *
+ * If the user is not authenticated to view the specified API call, then it is not returned.
+ *
+ * Only Zoo employees can view API calls for other users.
+ *
+ * Tags: api-calls, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The ID of the API call. (path)
+ * @returns successful operation
+ */
 export default async function get_api_call({
   client,
   id,

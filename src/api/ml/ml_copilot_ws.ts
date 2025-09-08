@@ -7,6 +7,15 @@ interface MlCopilotWsParams {
   client?: Client
 }
 
+/**
+ * Open a websocket to prompt the ML copilot.
+ *
+ * Tags: ml
+ *
+ * @template Req WebSocket request message type
+ * @template Res WebSocket response message type
+ * @param functionNameParams Parameters for URL templating and auth
+ */
 export default class MlCopilotWs<
   Req = MlCopilotClientMessage,
   Res = MlCopilotServerMessage,

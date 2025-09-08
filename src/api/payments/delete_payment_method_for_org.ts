@@ -10,6 +10,17 @@ interface DeletePaymentMethodForOrgInput {
 
 type DeletePaymentMethodForOrgReturn = unknown
 
+/**
+ * Delete a payment method for your org.
+ *
+ * This endpoint requires authentication by an org admin. It deletes the specified payment method for the authenticated user's org.
+ *
+ * Tags: payments, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The ID of the payment method. (path)
+ * @returns successful deletion
+ */
 export default async function delete_payment_method_for_org({
   client,
   id,

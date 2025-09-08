@@ -10,6 +10,23 @@ interface GetAsyncOperationInput {
 
 type GetAsyncOperationReturn = AsyncApiCallOutput
 
+/**
+ * Get an async operation.
+ *
+ * Get the status and output of an async operation.
+ *
+ * This endpoint requires authentication by any Zoo user. It returns details of the requested async operation for the user.
+ *
+ * If the user is not authenticated to view the specified async operation, then it is not returned.
+ *
+ * Only Zoo employees with the proper access can view async operations for other users.
+ *
+ * Tags: api-calls
+ *
+ * @param client Optional client with auth token.
+ * @param id The ID of the async operation. (path)
+ * @returns successful operation
+ */
 export default async function get_async_operation({
   client,
   id,

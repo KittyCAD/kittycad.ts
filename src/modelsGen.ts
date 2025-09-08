@@ -279,26 +279,30 @@ function addCommentInfo(schema: any, typeString: string) {
   if (!Object.keys(newSchema).length && !description) {
     return typeString
   } else if (!Object.keys(newSchema).length && description) {
-    if (
-      typeString.includes('\n') ||
-      typeString.includes('|') ||
-      description.includes('\n')
-    ) {
-      return `\n/* ${description} */\n${typeString}`
-    }
-    return `${typeString} /* ${description} */`
+    const desc = sanitizeForJsDoc(description)
+    return `\n/** ${desc} */\n${typeString}`
   } else if (Object.keys(newSchema).length <= 2 && description?.length < 50) {
-    return `\n/* ${JSON.stringify({
-      ...newSchema,
-      description,
-    })
+    const meta = JSON.stringify({ ...newSchema, description })
       .slice(1, -1)
       .replaceAll(',"', ', "')
-      .replaceAll('"', '')} */\n${typeString}`
+      .replaceAll('"', '')
+    return `\n/** ${sanitizeForJsDoc(meta)} */\n${typeString}`
   }
-  return `\n/*${JSON.stringify(
-    { ...newSchema, description },
-    null,
-    2
-  )}*/\n${typeString}`
+  return `\n/**\n${indentBlock(
+    JSON.stringify({ ...newSchema, description }, null, 2)
+      .split('\n')
+      .map(sanitizeForJsDoc)
+      .join('\n')
+  )}\n*/\n${typeString}`
+}
+
+function sanitizeForJsDoc(str: string): string {
+  return String(str).replaceAll('*/', '*/')
+}
+
+function indentBlock(s: string, indent = ' * '): string {
+  return s
+    .split('\n')
+    .map((l) => `${indent}${l}`)
+    .join('\n')
 }

@@ -12,6 +12,21 @@ interface ListConversationsForUserInput {
 
 type ListConversationsForUserReturn = ConversationResultsPage
 
+/**
+ * List conversations
+ *
+ * This endpoint requires authentication by any Zoo user. It returns the conversations for the authenticated user.
+ *
+ * The conversations are returned in order of creation, with the most recently created conversations first.
+ *
+ * Tags: ml
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function list_conversations_for_user({
   client,
   limit,

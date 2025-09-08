@@ -9,6 +9,14 @@ interface PingInput {
 
 type PingReturn = Pong
 
+/**
+ * Return pong.
+ *
+ * Tags: meta
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function ping(
   { client }: PingInput = {} as PingInput
 ): Promise<PingReturn> {

@@ -9,6 +9,16 @@ interface GetOrgSubscriptionInput {
 
 type GetOrgSubscriptionReturn = ZooProductSubscriptions
 
+/**
+ * Get the subscription for an org.
+ *
+ * This endpoint requires authentication by an org admin. It gets the subscription for the authenticated user's org.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_org_subscription(
   { client }: GetOrgSubscriptionInput = {} as GetOrgSubscriptionInput
 ): Promise<GetOrgSubscriptionReturn> {

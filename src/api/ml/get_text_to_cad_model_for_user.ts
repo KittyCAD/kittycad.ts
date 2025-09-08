@@ -10,6 +10,17 @@ interface GetTextToCadModelForUserInput {
 
 type GetTextToCadModelForUserReturn = TextToCadResponse
 
+/**
+ * Get a text-to-CAD response.
+ *
+ * This endpoint requires authentication by any Zoo user. The user must be the owner of the text-to-CAD model.
+ *
+ * Tags: ml
+ *
+ * @param client Optional client with auth token.
+ * @param id The id of the model to give feedback to. (path)
+ * @returns successful operation
+ */
 export default async function get_text_to_cad_model_for_user({
   client,
   id,

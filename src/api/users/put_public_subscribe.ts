@@ -10,6 +10,15 @@ interface PutPublicSubscribeInput {
 
 type PutPublicSubscribeReturn = unknown
 
+/**
+ * Subscribes a user to the newsletter.
+ *
+ * Tags: users, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation, no content
+ */
 export default async function put_public_subscribe({
   client,
   body,

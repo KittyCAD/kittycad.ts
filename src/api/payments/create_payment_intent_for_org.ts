@@ -9,6 +9,16 @@ interface CreatePaymentIntentForOrgInput {
 
 type CreatePaymentIntentForOrgReturn = PaymentIntent
 
+/**
+ * Create a payment intent for your org.
+ *
+ * This endpoint requires authentication by the org admin. It creates a new payment intent for the authenticated user's org's org.
+ *
+ * Tags: payments, hidden
+ *
+ * @param client Optional client with auth token.
+ * @returns successful creation
+ */
 export default async function create_payment_intent_for_org(
   {
     client,

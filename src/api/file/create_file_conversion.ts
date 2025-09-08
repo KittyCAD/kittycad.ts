@@ -16,6 +16,25 @@ interface CreateFileConversionInput {
 
 type CreateFileConversionReturn = FileConversion
 
+/**
+ * Convert CAD file with defaults.
+ *
+ * If you wish to specify the conversion options, use the `/file/conversion` endpoint instead.
+ *
+ * Convert a CAD file from one format to another. If the file being converted is larger than 25MB, it will be performed asynchronously.
+ *
+ * If the conversion is performed synchronously, the contents of the converted file (`output`) will be returned as a base64 encoded string.
+ *
+ * If the operation is performed asynchronously, the `id` of the operation will be returned. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.
+ *
+ * Tags: file
+ *
+ * @param client Optional client with auth token.
+ * @param output_format The format the file should be converted to. (path)
+ * @param src_format The format of the file to convert. (path)
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_file_conversion({
   client,
   output_format,

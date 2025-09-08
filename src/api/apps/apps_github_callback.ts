@@ -9,6 +9,18 @@ interface AppsGithubCallbackInput {
 
 type AppsGithubCallbackReturn = unknown
 
+/**
+ * Listen for callbacks to GitHub app authentication.
+ *
+ * This is different than OAuth 2.0 authentication for users. This endpoint grants access for Zoo to access user's repos.
+ *
+ * The user doesn't need Zoo OAuth authorization for this endpoint, this is purely for the GitHub permissions to access repos.
+ *
+ * Tags: apps, hidden
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation, no content
+ */
 export default async function apps_github_callback(
   { client }: AppsGithubCallbackInput = {} as AppsGithubCallbackInput
 ): Promise<AppsGithubCallbackReturn> {

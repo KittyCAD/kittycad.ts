@@ -12,6 +12,19 @@ interface GetTemperatureUnitConversionInput {
 
 type GetTemperatureUnitConversionReturn = UnitTemperatureConversion
 
+/**
+ * Convert temperature units.
+ *
+ * Convert a temperature unit value to another temperature unit value. This is a nice endpoint to use for helper functions.
+ *
+ * Tags: unit
+ *
+ * @param client Optional client with auth token.
+ * @param input_unit The source format of the unit. (path)
+ * @param output_unit The output format of the unit. (path)
+ * @param value The initial value. (query)
+ * @returns successful operation
+ */
 export default async function get_temperature_unit_conversion({
   client,
   input_unit,

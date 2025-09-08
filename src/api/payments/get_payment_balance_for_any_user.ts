@@ -11,6 +11,18 @@ interface GetPaymentBalanceForAnyUserInput {
 
 type GetPaymentBalanceForAnyUserReturn = CustomerBalance
 
+/**
+ * Get balance for an user.
+ *
+ * This endpoint requires authentication by a Zoo employee. It gets the balance information for the specified user.
+ *
+ * Tags: payments, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The user's identifier (uuid or email). (path)
+ * @param include_total_due If you would like to return the total due for a user. This makes the API call take longer so it is off by default. (query)
+ * @returns successful operation
+ */
 export default async function get_payment_balance_for_any_user({
   client,
   id,

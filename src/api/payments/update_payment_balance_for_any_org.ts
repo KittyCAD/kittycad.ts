@@ -12,6 +12,19 @@ interface UpdatePaymentBalanceForAnyOrgInput {
 
 type UpdatePaymentBalanceForAnyOrgReturn = CustomerBalance
 
+/**
+ * Update balance for an org.
+ *
+ * This endpoint requires authentication by a Zoo employee. It updates the balance information for the specified org.
+ *
+ * Tags: payments, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The organization ID. (path)
+ * @param include_total_due If you would like to return the total due for a user. This makes the API call take longer so it is off by default. (query)
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_payment_balance_for_any_org({
   client,
   id,

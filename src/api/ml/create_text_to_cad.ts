@@ -16,6 +16,23 @@ interface CreateTextToCadInput {
 
 type CreateTextToCadReturn = TextToCad
 
+/**
+ * Generate a CAD model from text.
+ *
+ * Because our source of truth for the resulting model is a STEP file, you will always have STEP file contents when you list your generated models. Any other formats you request here will also be returned when you list your generated models.
+ *
+ * This operation is performed asynchronously, the `id` of the operation will be returned. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.
+ *
+ * One thing to note, if you hit the cache, this endpoint will return right away. So you only have to wait if the status is not `Completed` or `Failed`.
+ *
+ * Tags: ml
+ *
+ * @param client Optional client with auth token.
+ * @param output_format The format the output file should be converted to. (path)
+ * @param kcl If we should output the kcl for the model. (query)
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_text_to_cad({
   client,
   output_format,

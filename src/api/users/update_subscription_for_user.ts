@@ -15,6 +15,18 @@ interface UpdateSubscriptionForUserInput {
 
 type UpdateSubscriptionForUserReturn = ZooProductSubscriptions
 
+/**
+ * Update a subscription for a user.
+ *
+ * You must be a Zoo admin to perform this request.
+ *
+ * Tags: users, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The user's identifier (uuid or email). (path)
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_subscription_for_user({
   client,
   id,

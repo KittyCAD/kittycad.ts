@@ -10,6 +10,17 @@ interface CreateServiceAccountForOrgInput {
 
 type CreateServiceAccountForOrgReturn = ServiceAccount
 
+/**
+ * Create a new service account for your org.
+ *
+ * This endpoint requires authentication by an org admin. It creates a new service account for the organization.
+ *
+ * Tags: service-accounts
+ *
+ * @param client Optional client with auth token.
+ * @param label An optional label for the service account. (query)
+ * @returns successful creation
+ */
 export default async function create_service_account_for_org({
   client,
   label,

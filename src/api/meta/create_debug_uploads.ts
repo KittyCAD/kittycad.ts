@@ -11,6 +11,17 @@ interface CreateDebugUploadsInput {
 
 type CreateDebugUploadsReturn = unknown
 
+/**
+ * Uploads files to public blob storage for debugging purposes.
+ *
+ * Do NOT send files here that you don't want to be public.
+ *
+ * Tags: meta, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param files Files attached as multipart/form-data.
+ * @returns successful creation
+ */
 export default async function create_debug_uploads({
   client,
   files,

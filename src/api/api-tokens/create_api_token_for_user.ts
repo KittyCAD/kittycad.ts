@@ -10,6 +10,17 @@ interface CreateApiTokenForUserInput {
 
 type CreateApiTokenForUserReturn = ApiToken
 
+/**
+ * Create a new API token for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It creates a new API token for the authenticated user.
+ *
+ * Tags: api-tokens
+ *
+ * @param client Optional client with auth token.
+ * @param label An optional label for the API token. (query)
+ * @returns successful creation
+ */
 export default async function create_api_token_for_user({
   client,
   label,

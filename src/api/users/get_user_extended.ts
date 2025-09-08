@@ -10,6 +10,19 @@ interface GetUserExtendedInput {
 
 type GetUserExtendedReturn = ExtendedUser
 
+/**
+ * Get extended information about a user.
+ *
+ * To get information about yourself, use `/users-extended/me` as the endpoint. By doing so you will get the user information for the authenticated user.
+ *
+ * Alternatively, to get information about the authenticated user, use `/user/extended` endpoint.
+ *
+ * Tags: users, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param id The user's identifier (uuid or email). (path)
+ * @returns successful operation
+ */
 export default async function get_user_extended({
   client,
   id,

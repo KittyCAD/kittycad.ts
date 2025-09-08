@@ -13,6 +13,17 @@ interface UpdateOrgSubscriptionInput {
 
 type UpdateOrgSubscriptionReturn = ZooProductSubscriptions
 
+/**
+ * Update the subscription for an org.
+ *
+ * This endpoint requires authentication by an org admin. It updates the subscription for the authenticated user's org.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_org_subscription({
   client,
   body,

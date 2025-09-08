@@ -12,6 +12,19 @@ interface GetCurrentUnitConversionInput {
 
 type GetCurrentUnitConversionReturn = UnitCurrentConversion
 
+/**
+ * Convert current units.
+ *
+ * Convert a current unit value to another current unit value. This is a nice endpoint to use for helper functions.
+ *
+ * Tags: unit
+ *
+ * @param client Optional client with auth token.
+ * @param input_unit The source format of the unit. (path)
+ * @param output_unit The output format of the unit. (path)
+ * @param value The initial value. (query)
+ * @returns successful operation
+ */
 export default async function get_current_unit_conversion({
   client,
   input_unit,

@@ -8,6 +8,16 @@ interface MlReasoningWsParams {
   id: string
 }
 
+/**
+ * Open a websocket to prompt the ML copilot.
+ *
+ * Tags: ml
+ *
+ * @template Req WebSocket request message type
+ * @template Res WebSocket response message type
+ * @param functionNameParams Parameters for URL templating and auth
+ * @param id The ID of the async operation. (path)
+ */
 export default class MlReasoningWs<
   Req = MlCopilotClientMessage,
   Res = MlCopilotServerMessage,

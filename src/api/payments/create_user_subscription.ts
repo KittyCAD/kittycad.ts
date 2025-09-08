@@ -13,6 +13,17 @@ interface CreateUserSubscriptionInput {
 
 type CreateUserSubscriptionReturn = ZooProductSubscriptions
 
+/**
+ * Create the subscription for a user.
+ *
+ * This endpoint requires authentication by any Zoo user. It creates the subscription for the user.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_user_subscription({
   client,
   body,

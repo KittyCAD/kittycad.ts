@@ -17,6 +17,22 @@ interface ListAsyncOperationsInput {
 
 type ListAsyncOperationsReturn = AsyncApiCallResultsPage
 
+/**
+ * List async operations.
+ *
+ * For async file conversion operations, this endpoint does not return the contents of converted files (`output`). To get the contents use the `/async/operations/{id}` endpoint.
+ *
+ * This endpoint requires authentication by a Zoo employee.
+ *
+ * Tags: api-calls, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @param status The status to filter by. (query)
+ * @returns successful operation
+ */
 export default async function list_async_operations({
   client,
   limit,

@@ -9,6 +9,18 @@ interface DeleteUserSelfInput {
 
 type DeleteUserSelfReturn = unknown
 
+/**
+ * Delete your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It deletes the authenticated user from Zoo's database.
+ *
+ * This call will only succeed if all invoices associated with the user have been paid in full and there is no outstanding balance.
+ *
+ * Tags: users
+ *
+ * @param client Optional client with auth token.
+ * @returns successful deletion
+ */
 export default async function delete_user_self(
   { client }: DeleteUserSelfInput = {} as DeleteUserSelfInput
 ): Promise<DeleteUserSelfReturn> {

@@ -9,6 +9,18 @@ interface GetPaymentInformationForOrgInput {
 
 type GetPaymentInformationForOrgReturn = Customer
 
+/**
+ * Get payment info about your org.
+ *
+ * This includes billing address, phone, and name.
+ *
+ * This endpoint requires authentication by an org admin. It gets the payment information for the authenticated user's org.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_payment_information_for_org(
   {
     client,

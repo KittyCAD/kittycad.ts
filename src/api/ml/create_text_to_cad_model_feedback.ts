@@ -11,6 +11,20 @@ interface CreateTextToCadModelFeedbackInput {
 
 type CreateTextToCadModelFeedbackReturn = unknown
 
+/**
+ * Give feedback to a specific ML response.
+ *
+ * This can be a text-to-CAD creation or iteration.
+ *
+ * This endpoint requires authentication by any Zoo user. The user must be the owner of the ML response, in order to give feedback.
+ *
+ * Tags: ml
+ *
+ * @param client Optional client with auth token.
+ * @param id The id of the model to give feedback to. (path)
+ * @param feedback The feedback. (query)
+ * @returns resource updated
+ */
 export default async function create_text_to_cad_model_feedback({
   client,
   id,

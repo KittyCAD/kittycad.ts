@@ -12,6 +12,21 @@ interface ListApiTokensForUserInput {
 
 type ListApiTokensForUserReturn = ApiTokenResultsPage
 
+/**
+ * List API tokens for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It returns the API tokens for the authenticated user.
+ *
+ * The API tokens are returned in order of creation, with the most recently created API tokens first.
+ *
+ * Tags: api-tokens
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function list_api_tokens_for_user({
   client,
   limit,

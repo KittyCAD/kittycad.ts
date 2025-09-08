@@ -13,6 +13,17 @@ interface CreateOrgSamlIdpInput {
 
 type CreateOrgSamlIdpReturn = SamlIdentityProvider
 
+/**
+ * Create a SAML identity provider.
+ *
+ * This endpoint requires authentication by an org admin.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_org_saml_idp({
   client,
   body,

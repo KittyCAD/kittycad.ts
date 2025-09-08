@@ -9,6 +9,16 @@ interface ListPaymentMethodsForUserInput {
 
 type ListPaymentMethodsForUserReturn = PaymentMethod[]
 
+/**
+ * List payment methods for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It lists payment methods for the authenticated user.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function list_payment_methods_for_user(
   {
     client,

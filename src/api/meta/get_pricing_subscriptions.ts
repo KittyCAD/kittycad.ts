@@ -9,6 +9,16 @@ interface GetPricingSubscriptionsInput {
 
 type GetPricingSubscriptionsReturn = ZooProductSubscription[]
 
+/**
+ * Get the pricing for our subscriptions.
+ *
+ * This is the ultimate source of truth for the pricing of our subscriptions.
+ *
+ * Tags: meta, hidden
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_pricing_subscriptions(
   { client }: GetPricingSubscriptionsInput = {} as GetPricingSubscriptionsInput
 ): Promise<GetPricingSubscriptionsReturn> {

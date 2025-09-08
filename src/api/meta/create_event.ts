@@ -12,6 +12,18 @@ interface CreateEventInput {
 
 type CreateEventReturn = unknown
 
+/**
+ * Creates an internal telemetry event.
+ *
+ * We collect anonymous telemetry data for improving our product.
+ *
+ * Tags: meta, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param files Files attached as multipart/form-data.
+ * @param body Telemetry requests
+ * @returns resource updated
+ */
 export default async function create_event({
   client,
   files,

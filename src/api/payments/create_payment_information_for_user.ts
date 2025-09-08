@@ -10,6 +10,19 @@ interface CreatePaymentInformationForUserInput {
 
 type CreatePaymentInformationForUserReturn = Customer
 
+/**
+ * Create payment info for your user.
+ *
+ * This includes billing address, phone, and name.
+ *
+ * This endpoint requires authentication by any Zoo user. It creates the payment information for the authenticated user.
+ *
+ * Tags: payments
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_payment_information_for_user({
   client,
   body,

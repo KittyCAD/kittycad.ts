@@ -9,6 +9,16 @@ interface GetUserPrivacySettingsInput {
 
 type GetUserPrivacySettingsReturn = PrivacySettings
 
+/**
+ * Get the privacy settings for a user.
+ *
+ * This endpoint requires authentication by any Zoo user. It gets the privacy settings for the user.
+ *
+ * Tags: users
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_user_privacy_settings(
   { client }: GetUserPrivacySettingsInput = {} as GetUserPrivacySettingsInput
 ): Promise<GetUserPrivacySettingsReturn> {

@@ -13,6 +13,15 @@ interface CreateKclCodeCompletionsInput {
 
 type CreateKclCodeCompletionsReturn = KclCodeCompletionResponse
 
+/**
+ * Generate code completions for KCL.
+ *
+ * Tags: ml, beta
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_kcl_code_completions({
   client,
   body,

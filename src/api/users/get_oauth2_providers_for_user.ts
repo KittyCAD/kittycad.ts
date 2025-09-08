@@ -9,6 +9,18 @@ interface GetOauth2ProvidersForUserInput {
 
 type GetOauth2ProvidersForUserReturn = AccountProvider[]
 
+/**
+ * Get the OAuth2 providers for your user.
+ *
+ * If this returns an empty array, then the user has not connected any OAuth2 providers and uses raw email authentication.
+ *
+ * This endpoint requires authentication by any Zoo user. It gets the providers for the authenticated user.
+ *
+ * Tags: users
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_oauth2_providers_for_user(
   {
     client,

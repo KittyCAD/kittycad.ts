@@ -11,6 +11,18 @@ interface UpdateOrgMemberInput {
 
 type UpdateOrgMemberReturn = OrgMember
 
+/**
+ * Update a member of your org.
+ *
+ * This endpoint requires authentication by an org admin. It updates the specified member of the authenticated user's org.
+ *
+ * Tags: orgs
+ *
+ * @param client Optional client with auth token.
+ * @param user_id The user id of the org member. (path)
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_org_member({
   client,
   user_id,

@@ -13,6 +13,17 @@ interface CreateUserShortlinkInput {
 
 type CreateUserShortlinkReturn = CreateShortlinkResponse
 
+/**
+ * Create a shortlink for a user.
+ *
+ * This endpoint requires authentication by any Zoo user. It creates a shortlink for the user.
+ *
+ * Tags: users, shortlinks
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_user_shortlink({
   client,
   body,

@@ -12,6 +12,23 @@ interface OrgListApiCallsInput {
 
 type OrgListApiCallsReturn = ApiCallWithPriceResultsPage
 
+/**
+ * List API calls for your org.
+ *
+ * This includes all API calls that were made by users in the org.
+ *
+ * This endpoint requires authentication by an org admin. It returns the API calls for the authenticated user's org.
+ *
+ * The API calls are returned in order of creation, with the most recently created API calls first.
+ *
+ * Tags: api-calls
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function org_list_api_calls({
   client,
   limit,

@@ -10,6 +10,17 @@ interface GetApiCallForOrgInput {
 
 type GetApiCallForOrgReturn = ApiCallWithPrice
 
+/**
+ * Get an API call for an org.
+ *
+ * This endpoint requires authentication by an org admin. It returns details of the requested API call for the user's org.
+ *
+ * Tags: api-calls
+ *
+ * @param client Optional client with auth token.
+ * @param id The ID of the API call. (path)
+ * @returns successful operation
+ */
 export default async function get_api_call_for_org({
   client,
   id,

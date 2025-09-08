@@ -10,6 +10,17 @@ interface DeleteUserShortlinkInput {
 
 type DeleteUserShortlinkReturn = unknown
 
+/**
+ * Delete a shortlink for a user.
+ *
+ * This endpoint requires authentication by any Zoo user. It deletes a shortlink for the user.
+ *
+ * Tags: users, shortlinks
+ *
+ * @param client Optional client with auth token.
+ * @param key The key of the shortlink. (path)
+ * @returns resource updated
+ */
 export default async function delete_user_shortlink({
   client,
   key,

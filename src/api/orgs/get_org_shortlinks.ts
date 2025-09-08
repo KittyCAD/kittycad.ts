@@ -12,6 +12,19 @@ interface GetOrgShortlinksInput {
 
 type GetOrgShortlinksReturn = ShortlinkResultsPage
 
+/**
+ * Get the shortlinks for an org.
+ *
+ * This endpoint requires authentication by an org admin. It gets the shortlinks for the authenticated user's org.
+ *
+ * Tags: orgs, shortlinks
+ *
+ * @param client Optional client with auth token.
+ * @param limit Maximum number of items returned by a single call (query)
+ * @param page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @param sort_by (query)
+ * @returns successful operation
+ */
 export default async function get_org_shortlinks({
   client,
   limit,

@@ -10,6 +10,17 @@ interface DeviceAuthConfirmInput {
 
 type DeviceAuthConfirmReturn = unknown
 
+/**
+ * Confirm an OAuth 2.0 Device Authorization Grant.
+ *
+ * This endpoint is designed to be accessed by the user agent (browser), not the client requesting the token. So we do not actually return the token here; it will be returned in response to the poll on `/oauth2/device/token`.
+ *
+ * Tags: oauth2, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation, no content
+ */
 export default async function device_auth_confirm({
   client,
   body,

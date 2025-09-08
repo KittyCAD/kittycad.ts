@@ -12,6 +12,27 @@ interface CreateFileVolumeInput {
 
 type CreateFileVolumeReturn = FileVolume
 
+/**
+ * Get CAD file volume.
+ *
+ * We assume any file given to us has one consistent unit throughout. We also assume the file is at the proper scale.
+ *
+ * This endpoint returns the cubic measure units.
+ *
+ * In the future, we will use the units inside the file if they are given and do any conversions if necessary for the calculation. But currently, that is not supported.
+ *
+ * Get the volume of an object in a CAD file. If the file is larger than 25MB, it will be performed asynchronously.
+ *
+ * If the operation is performed asynchronously, the `id` of the operation will be returned. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.
+ *
+ * Tags: file
+ *
+ * @param client Optional client with auth token.
+ * @param output_unit The output unit for the volume. (query)
+ * @param src_format The format of the file. (query)
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_file_volume({
   client,
   output_unit,

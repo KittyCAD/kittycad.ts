@@ -10,6 +10,17 @@ interface CreateStoreCouponInput {
 
 type CreateStoreCouponReturn = DiscountCode
 
+/**
+ * Create a new store coupon.
+ *
+ * This endpoint requires authentication by a Zoo employee. It creates a new store coupon.
+ *
+ * Tags: store, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful creation
+ */
 export default async function create_store_coupon({
   client,
   body,

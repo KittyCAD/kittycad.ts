@@ -10,6 +10,17 @@ interface UpdateUserPrivacySettingsInput {
 
 type UpdateUserPrivacySettingsReturn = PrivacySettings
 
+/**
+ * Update the user's privacy settings.
+ *
+ * This endpoint requires authentication by any Zoo user. It updates the privacy settings for the user.
+ *
+ * Tags: users
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation
+ */
 export default async function update_user_privacy_settings({
   client,
   body,

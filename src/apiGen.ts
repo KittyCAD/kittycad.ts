@@ -557,6 +557,12 @@ export default async function apiGen(lookup: Record<string, string>) {
             multipartAppendBody: inputParams.includes('body')
               ? "formData.append('event', JSON.stringify(body))"
               : '',
+            fnJsDoc: buildOperationJsDoc(operation.specSection, {
+              operationId,
+              params: params,
+              isMultipart,
+              hasBody: inputParams.includes('body'),
+            }),
           }
           template = await render(templatePath, ctx)
         } else {
@@ -602,6 +608,10 @@ export default async function apiGen(lookup: Record<string, string>) {
             urlExpr: wsUrlExpr,
             wsReqType: wsReqType || 'unknown',
             wsRespType: wsRespType || 'unknown',
+            fnJsDoc: buildWsJsDoc(operation.specSection, {
+              operationId,
+              params: params,
+            }),
           }
           template = await render(templatePath, ctx)
         }
@@ -888,4 +898,107 @@ function toWsClassName(opId: string): string {
   let id = opId || ''
   if (id.startsWith('create_')) id = id.slice('create_'.length)
   return toPascalCase(id)
+}
+
+function buildOperationJsDoc(
+  spec: OpenAPIV3.OperationObject,
+  opts: {
+    operationId: string
+    params: OpenAPIV3.ParameterObject[] | undefined
+    isMultipart: boolean
+    hasBody: boolean
+  }
+): string {
+  const lines: string[] = []
+  const summary = (spec.summary || '').trim()
+  const desc = (spec.description || '').trim()
+  const tags = (spec.tags || []).join(', ')
+  if (summary) lines.push(summary)
+  if (desc) lines.push('', ...desc.split('\n'))
+  if (tags) lines.push('', `Tags: ${tags}`)
+
+  // @param client doc
+  lines.push('', '@param client Optional client with auth token.')
+  // Params
+  for (const p of opts.params || []) {
+    const name = p.name
+    const d = (p.description || '').toString().trim()
+    const where = p.in ? ` (${p.in})` : ''
+    lines.push(`@param ${name} ${sanitizeForJsDoc(`${d}${where}`.trim())}`)
+  }
+  // Multipart files
+  if (opts.isMultipart) {
+    lines.push('@param files Files attached as multipart/form-data.')
+  }
+  // Body
+  if (opts.hasBody) {
+    const body = spec.requestBody as
+      | OpenAPIV3.RequestBodyObject
+      | OpenAPIV3.ReferenceObject
+      | undefined
+    const bodyDesc =
+      body && !('$ref' in (body || {}))
+        ? (body as OpenAPIV3.RequestBodyObject).description || ''
+        : ''
+    lines.push(
+      `@param body ${sanitizeForJsDoc((bodyDesc || 'Request body payload').toString())}`
+    )
+  }
+  // @returns – prefer 200/201/2xx
+  const responses = spec.responses || {}
+  const preferred = ['200', '201', '204']
+  let retDesc = ''
+  for (const code of preferred) {
+    const r = (responses as any)[code]
+    if (r && r.description) {
+      retDesc = String(r.description)
+      break
+    }
+  }
+  if (!retDesc) {
+    const anyResp = Object.values(responses)[0] as any
+    retDesc = anyResp?.description || ''
+  }
+  if (retDesc) lines.push(`@returns ${sanitizeForJsDoc(retDesc)}`)
+  return wrapJsDoc(lines)
+}
+
+function buildWsJsDoc(
+  spec: OpenAPIV3.OperationObject,
+  opts: {
+    operationId: string
+    params: OpenAPIV3.ParameterObject[] | undefined
+  }
+): string {
+  const lines: string[] = []
+  const summary = (spec.summary || '').trim()
+  const desc = (spec.description || '').trim()
+  const tags = (spec.tags || []).join(', ')
+  if (summary) lines.push(summary)
+  if (desc) lines.push('', ...desc.split('\n'))
+  if (tags) lines.push('', `Tags: ${tags}`)
+  lines.push('', '@template Req WebSocket request message type')
+  lines.push('@template Res WebSocket response message type')
+  lines.push('@param functionNameParams Parameters for URL templating and auth')
+  for (const p of opts.params || []) {
+    const name = p.name
+    const d = (p.description || '').toString().trim()
+    const where = p.in ? ` (${p.in})` : ''
+    lines.push(`@param ${name} ${sanitizeForJsDoc(`${d}${where}`.trim())}`)
+  }
+  return wrapJsDoc(lines)
+}
+
+function wrapJsDoc(lines: string[]): string {
+  const body = lines
+    .filter((l) => typeof l === 'string')
+    .join('\n')
+    .split('\n')
+    .map((l) => ` * ${l}`)
+    .join('\n')
+  return ['/**', body, ' */'].join('\n')
+}
+
+function sanitizeForJsDoc(str: string): string {
+  return String(str).replaceAll('*/', '*/')
 }

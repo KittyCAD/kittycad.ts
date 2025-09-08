@@ -10,6 +10,17 @@ interface Oauth2ProviderCallbackPostInput {
 
 type Oauth2ProviderCallbackPostReturn = unknown
 
+/**
+ * Listen for callbacks for the OAuth 2.0 provider.
+ *
+ * This specific endpoint listens for posts of form data.
+ *
+ * Tags: oauth2, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param provider The provider. (path)
+ * @returns Temporary Redirect
+ */
 export default async function oauth2_provider_callback_post({
   client,
   provider,

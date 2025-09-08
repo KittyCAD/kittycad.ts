@@ -10,6 +10,17 @@ interface PutPublicFormInput {
 
 type PutPublicFormReturn = unknown
 
+/**
+ * Creates a new support/sales ticket from the website contact form. This endpoint is for untrusted
+ *
+ * users and is not authenticated.
+ *
+ * Tags: users, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param body Request body payload
+ * @returns successful operation, no content
+ */
 export default async function put_public_form({
   client,
   body,

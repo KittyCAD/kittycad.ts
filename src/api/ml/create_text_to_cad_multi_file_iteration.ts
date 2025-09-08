@@ -15,6 +15,26 @@ interface CreateTextToCadMultiFileIterationInput {
 
 type CreateTextToCadMultiFileIterationReturn = TextToCadMultiFileIteration
 
+/**
+ * Iterate on a multi-file CAD model with a prompt.
+ *
+ * This endpoint can iterate on multi-file models.
+ *
+ * Even if you give specific ranges to edit, the model might change more than just those in order to make the changes you requested without breaking the code.
+ *
+ * You always get the whole code back, even if you only changed a small part of it. This endpoint will always return all the code back, including files that were not changed. If your original source code imported a stl/gltf/step/etc file, the output will not include that file since the model will never change non-kcl files. The endpoint will only return the kcl files that were changed.
+ *
+ * This operation is performed asynchronously, the `id` of the operation will be returned. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.
+ *
+ * Input filepaths will be normalized and re-canonicalized to be under the current working directory -- so returned paths may differ from provided paths, and care must be taken when handling user provided paths.
+ *
+ * Tags: ml
+ *
+ * @param client Optional client with auth token.
+ * @param files Files attached as multipart/form-data.
+ * @param body Iteration on a multi-file CAD model
+ * @returns successful creation
+ */
 export default async function create_text_to_cad_multi_file_iteration({
   client,
   files,

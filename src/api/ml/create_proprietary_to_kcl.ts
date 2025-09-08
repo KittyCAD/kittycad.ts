@@ -12,6 +12,22 @@ interface CreateProprietaryToKclInput {
 
 type CreateProprietaryToKclReturn = KclModel
 
+/**
+ * Converts a proprietary CAD format to KCL.
+ *
+ * This endpoint is used to convert a proprietary CAD format to KCL. The file passed MUST have feature tree data.
+ *
+ * A STEP file does not have feature tree data, so it will not work. A sldprt file does have feature tree data, so it will work.
+ *
+ * Input filepaths will be normalized and re-canonicalized to be under the current working directory -- so returned paths may differ from provided paths, and care must be taken when handling user provided paths.
+ *
+ * Tags: ml, hidden
+ *
+ * @param client Optional client with auth token.
+ * @param code_option The options to run on the code. By default this is set to `execute`. (query)
+ * @param files Files attached as multipart/form-data.
+ * @returns successful creation
+ */
 export default async function create_proprietary_to_kcl({
   client,
   files,

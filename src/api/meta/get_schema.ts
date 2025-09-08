@@ -9,6 +9,14 @@ interface GetSchemaInput {
 
 type GetSchemaReturn = unknown
 
+/**
+ * Get OpenAPI schema.
+ *
+ * Tags: meta
+ *
+ * @param client Optional client with auth token.
+ * @returns successful operation
+ */
 export default async function get_schema(
   { client }: GetSchemaInput = {} as GetSchemaInput
 ): Promise<GetSchemaReturn> {
