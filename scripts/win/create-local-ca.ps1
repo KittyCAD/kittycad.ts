@@ -98,7 +98,6 @@ Log "Root created in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 # Create a server cert signed by the root
 $serverParams = @{
   Type              = 'Custom'
-  DnsName           = @('localhost', '127.0.0.1')
   Subject           = "CN=$ServerCN"
   KeyExportPolicy   = 'Exportable'
   HashAlgorithm     = 'sha256'
@@ -107,7 +106,12 @@ $serverParams = @{
   # Pass as string array
   KeyUsage          = @('DigitalSignature','KeyEncipherment')
   Signer            = $root
-  TextExtension     = @('2.5.29.19={text}CA=0')
+  # BasicConstraints CA=0, EKU=Server Authentication, SAN: dns=localhost, ip=127.0.0.1
+  TextExtension     = @(
+    '2.5.29.19={text}CA=0',
+    '2.5.29.37={text}1.3.6.1.5.5.7.3.1',
+    '2.5.29.17={text}dns=localhost&ip=127.0.0.1&ip=::1'
+  )
 }
 $sw.Restart()
 $server = New-SelfSignedCertificate @serverParams

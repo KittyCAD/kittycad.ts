@@ -17,9 +17,25 @@ try {
   // ignore if not available
 }
 
+export interface ClientOptions {
+  token?: string
+  baseUrl?: string
+  fetch?: typeof fetch
+}
+
 export class Client {
-  constructor(readonly token: string) {
-    this.token = token
+  token?: string
+  baseUrl?: string
+  fetch?: typeof fetch
+
+  constructor(tokenOrOpts?: string | ClientOptions) {
+    if (typeof tokenOrOpts === 'string') {
+      this.token = tokenOrOpts
+    } else if (tokenOrOpts && typeof tokenOrOpts === 'object') {
+      this.token = tokenOrOpts.token
+      this.baseUrl = tokenOrOpts.baseUrl
+      this.fetch = tokenOrOpts.fetch
+    }
   }
 }
 

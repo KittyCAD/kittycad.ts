@@ -38,7 +38,10 @@ export default class MlReasoningWs<
     // That used to exist in only this lib, ZOO_HOST exists in the all the other
     // sdks and the CLI.
     const urlBase =
-      process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev'
+      this.functionNameParams?.client?.baseUrl ||
+      process?.env?.ZOO_HOST ||
+      process?.env?.BASE_URL ||
+      'https://api.zoo.dev'
     const httpUrl = urlBase + url
     const wsUrl = httpUrl.replace(/^http/, 'ws')
 

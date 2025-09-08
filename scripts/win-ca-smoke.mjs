@@ -15,7 +15,7 @@ try {
 import { Client } from '../dist/mjs/index.js'
 new Client('')
 
-const target = process.env.SMOKE_URL || 'https://127.0.0.1:4443/'
+const target = process.env.SMOKE_URL || 'https://localhost:4443/'
 
 async function retry(fn, { attempts = 60, delayMs = 500 } = {}) {
   let lastErr

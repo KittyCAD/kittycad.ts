@@ -1,26 +1,33 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { users } from '../../src/index.js'
+import { ml } from '../../src/index.js'
 
 const iso = '2023-01-01T00:00:00Z'
 
-function mkUser(i: number) {
-  const pad = String(i).padStart(12, '0')
+function mkT2C(idNum) {
+  const pad = String(idNum).padStart(12, '0')
   return {
-    id: `00000000-0000-0000-0000-${pad}`,
-    image: 'https://example.com/a.png',
+    conversation_id: '00000000-0000-0000-0000-000000000000',
     created_at: iso,
+    id: `11111111-1111-1111-1111-${pad}`,
+    model: 'cad',
+    model_version: 'v1',
+    output_format: 'step',
+    prompt: 'test',
+    status: 'completed',
+    type: 'text_to_cad',
     updated_at: iso,
+    user_id: '22222222-2222-2222-2222-222222222222',
   }
 }
 
-function makeRes(body: unknown): Response {
+function makeRes(body) {
   return new Response(JSON.stringify(body), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   })
 }
 
-describe('pagination users.list_usersPager', () => {
+describe('pagination ml.list_text_to_cad_models_for_userPager', () => {
   const originalFetch = globalThis.fetch
   beforeEach(() => {
     vi.restoreAllMocks()
@@ -30,35 +37,35 @@ describe('pagination users.list_usersPager', () => {
   })
 
   it('walks two pages and yields unique items', async () => {
-    // Mock two pages
     const page1 = {
-      items: Array.from({ length: 10 }, (_, i) => mkUser(i + 1)),
+      items: Array.from({ length: 10 }, (_, i) => mkT2C(i + 1)),
       next_page: 'tok2',
     }
     const page2 = {
-      items: [mkUser(11), mkUser(12)],
+      items: [mkT2C(11), mkT2C(12)],
       next_page: null,
     }
     const mock = vi
       .fn()
       .mockResolvedValueOnce(makeRes(page1))
       .mockResolvedValueOnce(makeRes(page2))
-    // @ts-expect-error override fetch for test
     globalThis.fetch = mock
 
-    const pager = users.list_usersPager({
+    const pager = ml.list_text_to_cad_models_for_userPager({
       limit: 10,
       page_token: '',
       sort_by: 'created_at_ascending',
+      conversation_id: '00000000-0000-0000-0000-000000000000',
+      no_models: true,
     })
 
     let count = 0
-    const ids = new Set<string>()
+    const ids = new Set()
 
     while (pager.hasNext()) {
       const chunk = await pager.next()
-      for (const u of chunk) {
-        ids.add(u.id)
+      for (const x of chunk) {
+        ids.add(x.id)
         count++
         if (count >= 12) break
       }
@@ -67,10 +74,9 @@ describe('pagination users.list_usersPager', () => {
 
     expect(count).toBe(12)
     expect(ids.size).toBe(12)
-    // Exhausted now
     expect(pager.hasNext()).toBe(false)
     expect(await pager.next()).toEqual([])
-    // Ensure two HTTP calls were made
     expect(mock).toHaveBeenCalledTimes(2)
   })
 })
+

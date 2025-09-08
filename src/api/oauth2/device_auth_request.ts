@@ -28,7 +28,10 @@ export default async function device_auth_request(
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev'
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
   const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
@@ -46,7 +49,8 @@ export default async function device_auth_request(
     method: 'POST',
     headers,
   }
-  const response = await fetch(fullUrl, fetchOptions)
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
   const result = (await response.json()) as DeviceAuthRequestReturn
   return result
