@@ -22,9 +22,10 @@ type UpdateSubscriptionForUserReturn = ZooProductSubscriptions
  *
  * Tags: users, hidden
  *
- * @param client Optional client with auth token.
- * @param id The user's identifier (uuid or email). (path)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
+ * @property {ZooProductSubscriptionsUserRequest} body Request body payload
  * @returns successful operation
  */
 export default async function update_subscription_for_user({

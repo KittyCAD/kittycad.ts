@@ -19,8 +19,9 @@ type GetUserExtendedReturn = ExtendedUser
  *
  * Tags: users, hidden
  *
- * @param client Optional client with auth token.
- * @param id The user's identifier (uuid or email). (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
  * @returns successful operation
  */
 export default async function get_user_extended({

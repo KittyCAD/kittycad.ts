@@ -17,8 +17,9 @@ type GetMlPromptReturn = MlPrompt
  *
  * Tags: ml, hidden
  *
- * @param client Optional client with auth token.
- * @param id The id of the model to give feedback to. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} id The id of the model to give feedback to. (path)
  * @returns successful operation
  */
 export default async function get_ml_prompt({

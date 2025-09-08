@@ -24,11 +24,12 @@ type ListOrgMembersReturn = OrgMemberResultsPage
  *
  * Tags: orgs
  *
- * @param client Optional client with auth token.
- * @param limit Maximum number of items returned by a single call (query)
- * @param page_token Token returned by previous call to retrieve the subsequent page (query)
- * @param sort_by (query)
- * @param role The organization role to filter by. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {number} limit Maximum number of items returned by a single call (query)
+ * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @property {CreatedAtSortMode} sort_by (query)
+ * @property {UserOrgRole} role The organization role to filter by. (query)
  * @returns successful operation
  */
 export default async function list_org_members({

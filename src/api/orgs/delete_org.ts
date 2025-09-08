@@ -20,7 +20,8 @@ type DeleteOrgReturn = unknown
  *
  * Tags: orgs, hidden
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful deletion
  */
 export default async function delete_org(

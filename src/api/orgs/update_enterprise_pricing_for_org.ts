@@ -22,9 +22,10 @@ type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
  *
  * Tags: orgs, hidden
  *
- * @param client Optional client with auth token.
- * @param id The organization ID. (path)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {Uuid} id The organization ID. (path)
+ * @property {EnterpriseSubscriptionTierPrice} body Request body payload
  * @returns successful operation
  */
 export default async function update_enterprise_pricing_for_org({

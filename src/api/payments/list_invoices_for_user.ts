@@ -16,7 +16,8 @@ type ListInvoicesForUserReturn = Invoice[]
  *
  * Tags: payments
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful operation
  */
 export default async function list_invoices_for_user(

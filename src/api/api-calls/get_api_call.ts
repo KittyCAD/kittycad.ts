@@ -21,8 +21,9 @@ type GetApiCallReturn = ApiCallWithPrice
  *
  * Tags: api-calls, hidden
  *
- * @param client Optional client with auth token.
- * @param id The ID of the API call. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} id The ID of the API call. (path)
  * @returns successful operation
  */
 export default async function get_api_call({

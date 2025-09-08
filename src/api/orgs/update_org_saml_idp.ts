@@ -20,8 +20,9 @@ type UpdateOrgSamlIdpReturn = SamlIdentityProvider
  *
  * Tags: orgs
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {SamlIdentityProviderCreate} body Request body payload
  * @returns successful operation
  */
 export default async function update_org_saml_idp({

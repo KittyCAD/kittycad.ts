@@ -18,8 +18,9 @@ type CreateKclCodeCompletionsReturn = KclCodeCompletionResponse
  *
  * Tags: ml, beta
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {KclCodeCompletionRequest} body Request body payload
  * @returns successful creation
  */
 export default async function create_kcl_code_completions({

@@ -34,12 +34,13 @@ type CreateFileMassReturn = FileMass
  *
  * Tags: file
  *
- * @param client Optional client with auth token.
- * @param material_density The material density. (query)
- * @param material_density_unit The unit of the material density. (query)
- * @param output_unit The output unit for the mass. (query)
- * @param src_format The format of the file. (query)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {number} material_density The material density. (query)
+ * @property {UnitDensity} material_density_unit The unit of the material density. (query)
+ * @property {UnitMass} output_unit The output unit for the mass. (query)
+ * @property {FileImportFormat} src_format The format of the file. (query)
+ * @property {string} body Request body payload
  * @returns successful creation
  */
 export default async function create_file_mass({

@@ -23,8 +23,9 @@ type CreateTextToCadIterationReturn = TextToCadIteration
  *
  * Tags: ml
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {TextToCadIterationBody} body Request body payload
  * @returns successful creation
  */
 export default async function create_text_to_cad_iteration({

@@ -19,8 +19,9 @@ type DeleteServiceAccountForOrgReturn = unknown
  *
  * Tags: service-accounts
  *
- * @param client Optional client with auth token.
- * @param token The service account. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {ServiceAccountUuid} token The service account. (path)
  * @returns successful deletion
  */
 export default async function delete_service_account_for_org({

@@ -17,8 +17,9 @@ type GetApiCallMetricsReturn = ApiCallQueryGroup[]
  *
  * Tags: api-calls, hidden
  *
- * @param client Optional client with auth token.
- * @param group_by What field to group the metrics by. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {ApiCallQueryGroupBy} group_by What field to group the metrics by. (query)
  * @returns successful operation
  */
 export default async function get_api_call_metrics({

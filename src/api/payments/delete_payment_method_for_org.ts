@@ -17,8 +17,9 @@ type DeletePaymentMethodForOrgReturn = unknown
  *
  * Tags: payments, hidden
  *
- * @param client Optional client with auth token.
- * @param id The ID of the payment method. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} id The ID of the payment method. (path)
  * @returns successful deletion
  */
 export default async function delete_payment_method_for_org({

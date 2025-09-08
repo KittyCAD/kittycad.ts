@@ -20,9 +20,10 @@ type UpdateUserShortlinkReturn = unknown
  *
  * Tags: users, shortlinks
  *
- * @param client Optional client with auth token.
- * @param key The key of the shortlink. (path)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} key The key of the shortlink. (path)
+ * @property {UpdateShortlinkRequest} body Request body payload
  * @returns resource updated
  */
 export default async function update_user_shortlink({

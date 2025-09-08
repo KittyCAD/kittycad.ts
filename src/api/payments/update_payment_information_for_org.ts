@@ -19,8 +19,9 @@ type UpdatePaymentInformationForOrgReturn = Customer
  *
  * Tags: payments
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {BillingInfo} body Request body payload
  * @returns successful operation
  */
 export default async function update_payment_information_for_org({

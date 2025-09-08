@@ -27,10 +27,11 @@ type CreateFileCenterOfMassReturn = FileCenterOfMass
  *
  * Tags: file
  *
- * @param client Optional client with auth token.
- * @param output_unit The output unit for the center of mass. (query)
- * @param src_format The format of the file. (query)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UnitLength} output_unit The output unit for the center of mass. (query)
+ * @property {FileImportFormat} src_format The format of the file. (query)
+ * @property {string} body Request body payload
  * @returns successful creation
  */
 export default async function create_file_center_of_mass({

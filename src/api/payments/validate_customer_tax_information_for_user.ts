@@ -16,7 +16,8 @@ type ValidateCustomerTaxInformationForUserReturn = unknown
  *
  * Tags: payments, hidden
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful operation, no content
  */
 export default async function validate_customer_tax_information_for_user(

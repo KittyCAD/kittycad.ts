@@ -16,9 +16,10 @@ type CommunitySsoReturn = unknown
  *
  * Tags: meta, hidden
  *
- * @param client Optional client with auth token.
- * @param sig The signature for the given payload (query)
- * @param sso The nonce and redirect URL sent to us by Discourse (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} sig The signature for the given payload (query)
+ * @property {string} sso The nonce and redirect URL sent to us by Discourse (query)
  * @returns Temporary Redirect
  */
 export default async function community_sso({

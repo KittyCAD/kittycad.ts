@@ -86,6 +86,8 @@ export default async function apiGen(lookup: Record<string, string>) {
 
         const inputTypes: string[] = ['client?: Client']
         const inputParams: string[] = ['client']
+        const paramTypeMap: Record<string, string> = { client: 'Client' }
+        const paramRequiredMap: Record<string, boolean> = { client: false }
         const inputParamsExamples: string[] = []
         if (isWebSocket) {
           inputParamsExamples.push(
@@ -101,6 +103,8 @@ export default async function apiGen(lookup: Record<string, string>) {
         if (isMultipart) {
           inputParams.push('files')
           inputTypes.push('files: File[]')
+          paramTypeMap['files'] = 'File[]'
+          paramRequiredMap['files'] = true
           inputParamsExamples.push(
             `files: [{name: "thing.kcl", data: new Blob(['thing = 1'], {type: 'text/plain'})}]`
           )
@@ -115,7 +119,7 @@ export default async function apiGen(lookup: Record<string, string>) {
         // (REST, multipart, or websocket) after Handlebars rendering.
         let urlPathParams: string[] = path.split('/')
         const urlQueryParams: string[] = []
-        ;(params || []).forEach(({ name, in: _in, schema }) => {
+        ;(params || []).forEach(({ name, in: _in, schema, required }) => {
           let _type = 'unknown'
           if ('$ref' in schema) {
             const ref = schema.$ref
@@ -212,6 +216,8 @@ export default async function apiGen(lookup: Record<string, string>) {
             }
           }
           inputTypes.push(`${name}: ${_type}`)
+          paramTypeMap[name] = _type
+          paramRequiredMap[name] = !!required
           if (!name) {
             return
           }
@@ -253,6 +259,8 @@ export default async function apiGen(lookup: Record<string, string>) {
           : ''
 
         const jsonSchema = requestBody?.content?.['application/json']?.schema
+        let bodyTypeName: string | undefined
+        let bodyIsRequired = false
         const formSchema = requestBody?.content?.['multipart/form-data']?.schema
         if (
           (!isWebSocket && jsonSchema && '$ref' in jsonSchema) ||
@@ -267,6 +275,11 @@ export default async function apiGen(lookup: Record<string, string>) {
           importedParamTypes.push(typeReference)
           inputTypes.push(`body: ${typeReference}`)
           inputParams.push('body')
+          paramTypeMap['body'] = typeReference
+          bodyTypeName = typeReference
+          bodyIsRequired = !!(requestBody as OpenAPIV3.RequestBodyObject)
+            ?.required
+          paramRequiredMap['body'] = bodyIsRequired
 
           const mapOverProperties = (rawRef: string): string => {
             const refSchema = spec.components.schemas[
@@ -385,6 +398,11 @@ export default async function apiGen(lookup: Record<string, string>) {
           }
           inputTypes.push('body: string')
           inputParams.push('body')
+          paramTypeMap['body'] = 'string'
+          bodyTypeName = 'string'
+          bodyIsRequired = !!(requestBody as OpenAPIV3.RequestBodyObject)
+            ?.required
+          paramRequiredMap['body'] = bodyIsRequired
 
           let exampleFile = 'example'
 
@@ -562,6 +580,9 @@ export default async function apiGen(lookup: Record<string, string>) {
               params: params,
               isMultipart,
               hasBody: inputParams.includes('body'),
+              paramTypeMap,
+              paramRequiredMap,
+              bodyTypeName,
             }),
           }
           template = await render(templatePath, ctx)
@@ -611,6 +632,8 @@ export default async function apiGen(lookup: Record<string, string>) {
             fnJsDoc: buildWsJsDoc(operation.specSection, {
               operationId,
               params: params,
+              paramTypeMap,
+              paramRequiredMap,
             }),
           }
           template = await render(templatePath, ctx)
@@ -907,6 +930,9 @@ function buildOperationJsDoc(
     params: OpenAPIV3.ParameterObject[] | undefined
     isMultipart: boolean
     hasBody: boolean
+    paramTypeMap: Record<string, string>
+    paramRequiredMap: Record<string, boolean>
+    bodyTypeName?: string
   }
 ): string {
   const lines: string[] = []
@@ -917,20 +943,23 @@ function buildOperationJsDoc(
   if (desc) lines.push('', ...desc.split('\n'))
   if (tags) lines.push('', `Tags: ${tags}`)
 
-  // @param client doc
-  lines.push('', '@param client Optional client with auth token.')
-  // Params
+  // Document the single params object with its properties
+  lines.push('', '@param params Function parameters.')
+  lines.push(`@property {Client} [client] Optional client with auth token.`)
   for (const p of opts.params || []) {
     const name = p.name
     const d = (p.description || '').toString().trim()
     const where = p.in ? ` (${p.in})` : ''
-    lines.push(`@param ${name} ${sanitizeForJsDoc(`${d}${where}`.trim())}`)
+    const t = opts.paramTypeMap[name] || 'unknown'
+    lines.push(
+      `@property {${t}} ${name} ${sanitizeForJsDoc(`${d}${where}`.trim())}`
+    )
   }
-  // Multipart files
   if (opts.isMultipart) {
-    lines.push('@param files Files attached as multipart/form-data.')
+    lines.push(
+      `@property {File[]} files Files attached as multipart/form-data.`
+    )
   }
-  // Body
   if (opts.hasBody) {
     const body = spec.requestBody as
       | OpenAPIV3.RequestBodyObject
@@ -940,8 +969,10 @@ function buildOperationJsDoc(
       body && !('$ref' in (body || {}))
         ? (body as OpenAPIV3.RequestBodyObject).description || ''
         : ''
+    const t = opts.bodyTypeName || 'unknown'
+    const nameOut = opts.paramRequiredMap['body'] ? 'body' : '[body]'
     lines.push(
-      `@param body ${sanitizeForJsDoc((bodyDesc || 'Request body payload').toString())}`
+      `@property {${t}} ${nameOut} ${sanitizeForJsDoc(bodyDesc || 'Request body payload')}`
     )
   }
   // @returns – prefer 200/201/2xx
@@ -968,6 +999,8 @@ function buildWsJsDoc(
   opts: {
     operationId: string
     params: OpenAPIV3.ParameterObject[] | undefined
+    paramTypeMap: Record<string, string>
+    paramRequiredMap: Record<string, boolean>
   }
 ): string {
   const lines: string[] = []
@@ -980,11 +1013,15 @@ function buildWsJsDoc(
   lines.push('', '@template Req WebSocket request message type')
   lines.push('@template Res WebSocket response message type')
   lines.push('@param functionNameParams Parameters for URL templating and auth')
+  lines.push(`@property {Client} [client] Optional client with auth token.`)
   for (const p of opts.params || []) {
     const name = p.name
     const d = (p.description || '').toString().trim()
     const where = p.in ? ` (${p.in})` : ''
-    lines.push(`@param ${name} ${sanitizeForJsDoc(`${d}${where}`.trim())}`)
+    const t = opts.paramTypeMap[name] || 'unknown'
+    lines.push(
+      `@property {${t}} ${name} ${sanitizeForJsDoc(`${d}${where}`.trim())}`
+    )
   }
   return wrapJsDoc(lines)
 }
@@ -1000,5 +1037,5 @@ function wrapJsDoc(lines: string[]): string {
 }
 
 function sanitizeForJsDoc(str: string): string {
-  return String(str).replaceAll('*/', '*/')
+  return String(str).replaceAll('*/', '*\\/')
 }

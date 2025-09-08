@@ -17,6 +17,7 @@ interface ExecutorTermParams {
  * @template Req WebSocket request message type
  * @template Res WebSocket response message type
  * @param functionNameParams Parameters for URL templating and auth
+ * @property {Client} [client] Optional client with auth token.
  */
 export default class ExecutorTerm<Req = unknown, Res = unknown> {
   private ws!: WebSocket

@@ -18,7 +18,8 @@ type AppsGithubCallbackReturn = unknown
  *
  * Tags: apps, hidden
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful operation, no content
  */
 export default async function apps_github_callback(

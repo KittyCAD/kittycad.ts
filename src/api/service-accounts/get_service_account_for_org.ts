@@ -17,8 +17,9 @@ type GetServiceAccountForOrgReturn = ServiceAccount
  *
  * Tags: service-accounts
  *
- * @param client Optional client with auth token.
- * @param token The service account. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {ServiceAccountUuid} token The service account. (path)
  * @returns successful operation
  */
 export default async function get_service_account_for_org({

@@ -16,7 +16,8 @@ type Oauth2TokenRevokeReturn = unknown
  *
  * Tags: oauth2, hidden
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  */
 export default async function oauth2_token_revoke(
   { client }: Oauth2TokenRevokeInput = {} as Oauth2TokenRevokeInput

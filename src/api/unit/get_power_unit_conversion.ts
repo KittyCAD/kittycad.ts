@@ -19,10 +19,11 @@ type GetPowerUnitConversionReturn = UnitPowerConversion
  *
  * Tags: unit
  *
- * @param client Optional client with auth token.
- * @param input_unit The source format of the unit. (path)
- * @param output_unit The output format of the unit. (path)
- * @param value The initial value. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UnitPower} input_unit The source format of the unit. (path)
+ * @property {UnitPower} output_unit The output format of the unit. (path)
+ * @property {number} value The initial value. (query)
  * @returns successful operation
  */
 export default async function get_power_unit_conversion({

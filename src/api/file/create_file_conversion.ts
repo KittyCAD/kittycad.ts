@@ -29,10 +29,11 @@ type CreateFileConversionReturn = FileConversion
  *
  * Tags: file
  *
- * @param client Optional client with auth token.
- * @param output_format The format the file should be converted to. (path)
- * @param src_format The format of the file to convert. (path)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {FileExportFormat} output_format The format the file should be converted to. (path)
+ * @property {FileImportFormat} src_format The format of the file to convert. (path)
+ * @property {string} body Request body payload
  * @returns successful creation
  */
 export default async function create_file_conversion({

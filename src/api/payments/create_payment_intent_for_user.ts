@@ -16,7 +16,8 @@ type CreatePaymentIntentForUserReturn = PaymentIntent
  *
  * Tags: payments, hidden
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful creation
  */
 export default async function create_payment_intent_for_user(

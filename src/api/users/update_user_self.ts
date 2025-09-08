@@ -17,8 +17,9 @@ type UpdateUserSelfReturn = User
  *
  * Tags: users
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UpdateUser} body Request body payload
  * @returns successful operation
  */
 export default async function update_user_self({

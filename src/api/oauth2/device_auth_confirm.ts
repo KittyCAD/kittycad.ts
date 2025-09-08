@@ -17,8 +17,9 @@ type DeviceAuthConfirmReturn = unknown
  *
  * Tags: oauth2, hidden
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {DeviceAuthConfirmParams} body Request body payload
  * @returns successful operation, no content
  */
 export default async function device_auth_confirm({

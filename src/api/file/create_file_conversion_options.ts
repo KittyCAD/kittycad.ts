@@ -23,9 +23,10 @@ type CreateFileConversionOptionsReturn = FileConversion
  *
  * Tags: file
  *
- * @param client Optional client with auth token.
- * @param files Files attached as multipart/form-data.
- * @param body Convert files to other formats
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {File[]} files Files attached as multipart/form-data.
+ * @property {ConversionParams} body Convert files to other formats
  * @returns successful creation
  */
 export default async function create_file_conversion_options({

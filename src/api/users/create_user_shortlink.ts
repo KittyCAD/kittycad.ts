@@ -20,8 +20,9 @@ type CreateUserShortlinkReturn = CreateShortlinkResponse
  *
  * Tags: users, shortlinks
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {CreateShortlinkRequest} body Request body payload
  * @returns successful creation
  */
 export default async function create_user_shortlink({

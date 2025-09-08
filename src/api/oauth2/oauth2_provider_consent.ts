@@ -16,9 +16,10 @@ type Oauth2ProviderConsentReturn = OAuth2ClientInfo
  *
  * Tags: oauth2, hidden
  *
- * @param client Optional client with auth token.
- * @param provider The provider. (path)
- * @param callback_url The URL to redirect back to after we have authenticated. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {AccountProvider} provider The provider. (path)
+ * @property {string} callback_url The URL to redirect back to after we have authenticated. (query)
  * @returns successful operation
  */
 export default async function oauth2_provider_consent({

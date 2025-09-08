@@ -17,10 +17,11 @@ type CreateFileExecutionReturn = CodeOutput
  *
  * Tags: executor, hidden
  *
- * @param client Optional client with auth token.
- * @param lang The language of the code. (path)
- * @param output The output file we want to get the contents for (the paths are relative to where in litterbox it is being run). You can denote more than one file with a comma separated list of string paths. (query)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {CodeLanguage} lang The language of the code. (path)
+ * @property {string} output The output file we want to get the contents for (the paths are relative to where in litterbox it is being run). You can denote more than one file with a comma separated list of string paths. (query)
+ * @property {string} body Request body payload
  * @returns successful creation
  */
 export default async function create_file_execution({

@@ -17,8 +17,9 @@ type GetAnyOrgReturn = Org
  *
  * Tags: orgs, hidden
  *
- * @param client Optional client with auth token.
- * @param id The organization ID. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {Uuid} id The organization ID. (path)
  * @returns successful operation
  */
 export default async function get_any_org({

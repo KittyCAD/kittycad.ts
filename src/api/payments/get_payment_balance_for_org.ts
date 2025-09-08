@@ -17,8 +17,9 @@ type GetPaymentBalanceForOrgReturn = CustomerBalance
  *
  * Tags: payments
  *
- * @param client Optional client with auth token.
- * @param include_total_due If you would like to return the total due for a user. This makes the API call take longer so it is off by default. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {boolean} include_total_due If you would like to return the total due for a user. This makes the API call take longer so it is off by default. (query)
  * @returns successful operation
  */
 export default async function get_payment_balance_for_org({

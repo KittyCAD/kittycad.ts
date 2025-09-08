@@ -19,10 +19,11 @@ type GetLengthUnitConversionReturn = UnitLengthConversion
  *
  * Tags: unit
  *
- * @param client Optional client with auth token.
- * @param input_unit The source format of the unit. (path)
- * @param output_unit The output format of the unit. (path)
- * @param value The initial value. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UnitLength} input_unit The source format of the unit. (path)
+ * @property {UnitLength} output_unit The output format of the unit. (path)
+ * @property {number} value The initial value. (query)
  * @returns successful operation
  */
 export default async function get_length_unit_conversion({

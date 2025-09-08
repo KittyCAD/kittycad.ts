@@ -17,8 +17,9 @@ type UpdateOrgReturn = Org
  *
  * Tags: orgs
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {OrgDetails} body Request body payload
  * @returns successful operation
  */
 export default async function update_org({

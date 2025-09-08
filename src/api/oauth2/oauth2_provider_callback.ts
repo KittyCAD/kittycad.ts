@@ -19,12 +19,13 @@ type Oauth2ProviderCallbackReturn = unknown
  *
  * Tags: oauth2, hidden
  *
- * @param client Optional client with auth token.
- * @param provider The provider. (path)
- * @param code The authorization code. (query)
- * @param id_token For Apple only, a JSON web token containing the user’s identity information. (query)
- * @param state The state that we had passed in through the user consent URL. (query)
- * @param user For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ "name": { "firstName": string, "lastName": string }, "email": string }` (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {AccountProvider} provider The provider. (path)
+ * @property {string} code The authorization code. (query)
+ * @property {string} id_token For Apple only, a JSON web token containing the user’s identity information. (query)
+ * @property {string} state The state that we had passed in through the user consent URL. (query)
+ * @property {string} user For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ "name": { "firstName": string, "lastName": string }, "email": string }` (query)
  * @returns Temporary Redirect
  */
 export default async function oauth2_provider_callback({

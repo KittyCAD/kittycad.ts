@@ -18,7 +18,8 @@ type GetOauth2ProvidersForUserReturn = AccountProvider[]
  *
  * Tags: users
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful operation
  */
 export default async function get_oauth2_providers_for_user(

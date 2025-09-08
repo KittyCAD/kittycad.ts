@@ -15,8 +15,9 @@ type PatchUserCrmReturn = unknown
  *
  * Tags: users, hidden
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {CrmData} body Request body payload
  * @returns successful operation, no content
  */
 export default async function patch_user_crm({

@@ -17,8 +17,9 @@ type DeleteUserShortlinkReturn = unknown
  *
  * Tags: users, shortlinks
  *
- * @param client Optional client with auth token.
- * @param key The key of the shortlink. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} key The key of the shortlink. (path)
  * @returns resource updated
  */
 export default async function delete_user_shortlink({

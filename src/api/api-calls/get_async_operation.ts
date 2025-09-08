@@ -23,8 +23,9 @@ type GetAsyncOperationReturn = AsyncApiCallOutput
  *
  * Tags: api-calls
  *
- * @param client Optional client with auth token.
- * @param id The ID of the async operation. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} id The ID of the async operation. (path)
  * @returns successful operation
  */
 export default async function get_async_operation({

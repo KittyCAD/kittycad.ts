@@ -18,7 +18,8 @@ type DeletePaymentInformationForOrgReturn = unknown
  *
  * Tags: payments
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful deletion
  */
 export default async function delete_payment_information_for_org(

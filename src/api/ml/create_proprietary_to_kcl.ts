@@ -23,9 +23,10 @@ type CreateProprietaryToKclReturn = KclModel
  *
  * Tags: ml, hidden
  *
- * @param client Optional client with auth token.
- * @param code_option The options to run on the code. By default this is set to `execute`. (query)
- * @param files Files attached as multipart/form-data.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {CodeOption} code_option The options to run on the code. By default this is set to `execute`. (query)
+ * @property {File[]} files Files attached as multipart/form-data.
  * @returns successful creation
  */
 export default async function create_proprietary_to_kcl({

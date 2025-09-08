@@ -29,12 +29,13 @@ type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage
  *
  * Tags: ml
  *
- * @param client Optional client with auth token.
- * @param limit Maximum number of items returned by a single call (query)
- * @param page_token Token returned by previous call to retrieve the subsequent page (query)
- * @param sort_by (query)
- * @param conversation_id If specified, only return the prompts for the conversation id given. (query)
- * @param no_models If we should return the model file contents or just the metadata. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {number} limit Maximum number of items returned by a single call (query)
+ * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @property {CreatedAtSortMode} sort_by (query)
+ * @property {Uuid} conversation_id If specified, only return the prompts for the conversation id given. (query)
+ * @property {boolean} no_models If we should return the model file contents or just the metadata. (query)
  * @returns successful operation
  */
 export default async function list_text_to_cad_models_for_user({

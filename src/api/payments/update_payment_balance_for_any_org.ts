@@ -19,10 +19,11 @@ type UpdatePaymentBalanceForAnyOrgReturn = CustomerBalance
  *
  * Tags: payments, hidden
  *
- * @param client Optional client with auth token.
- * @param id The organization ID. (path)
- * @param include_total_due If you would like to return the total due for a user. This makes the API call take longer so it is off by default. (query)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {Uuid} id The organization ID. (path)
+ * @property {boolean} include_total_due If you would like to return the total due for a user. This makes the API call take longer so it is off by default. (query)
+ * @property {UpdatePaymentBalance} body Request body payload
  * @returns successful operation
  */
 export default async function update_payment_balance_for_any_org({

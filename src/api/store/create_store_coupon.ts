@@ -17,8 +17,9 @@ type CreateStoreCouponReturn = DiscountCode
  *
  * Tags: store, hidden
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {StoreCouponParams} body Request body payload
  * @returns successful creation
  */
 export default async function create_store_coupon({

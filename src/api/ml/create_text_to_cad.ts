@@ -27,10 +27,11 @@ type CreateTextToCadReturn = TextToCad
  *
  * Tags: ml
  *
- * @param client Optional client with auth token.
- * @param output_format The format the output file should be converted to. (path)
- * @param kcl If we should output the kcl for the model. (query)
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {FileExportFormat} output_format The format the output file should be converted to. (path)
+ * @property {boolean} kcl If we should output the kcl for the model. (query)
+ * @property {TextToCadCreateBody} body Request body payload
  * @returns successful creation
  */
 export default async function create_text_to_cad({

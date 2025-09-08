@@ -17,8 +17,9 @@ type DeleteOrgMemberReturn = unknown
  *
  * Tags: orgs
  *
- * @param client Optional client with auth token.
- * @param user_id The user id of the org member. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {Uuid} user_id The user id of the org member. (path)
  * @returns successful deletion
  */
 export default async function delete_org_member({

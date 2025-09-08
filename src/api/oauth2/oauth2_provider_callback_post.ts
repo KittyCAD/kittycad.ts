@@ -17,8 +17,9 @@ type Oauth2ProviderCallbackPostReturn = unknown
  *
  * Tags: oauth2, hidden
  *
- * @param client Optional client with auth token.
- * @param provider The provider. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {AccountProvider} provider The provider. (path)
  * @returns Temporary Redirect
  */
 export default async function oauth2_provider_callback_post({

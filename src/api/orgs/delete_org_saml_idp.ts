@@ -16,7 +16,8 @@ type DeleteOrgSamlIdpReturn = unknown
  *
  * Tags: orgs
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful deletion
  */
 export default async function delete_org_saml_idp(

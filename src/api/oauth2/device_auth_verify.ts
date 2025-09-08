@@ -18,9 +18,10 @@ type DeviceAuthVerifyReturn = unknown
  *
  * Tags: oauth2, hidden
  *
- * @param client Optional client with auth token.
- * @param app_name The originating app's name (query)
- * @param user_code The user code. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} app_name The originating app's name (query)
+ * @property {string} user_code The user code. (query)
  * @returns Temporary Redirect
  */
 export default async function device_auth_verify({

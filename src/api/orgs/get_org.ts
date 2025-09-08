@@ -16,7 +16,8 @@ type GetOrgReturn = Org
  *
  * Tags: orgs
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful operation
  */
 export default async function get_org(

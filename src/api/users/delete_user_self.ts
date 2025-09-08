@@ -18,7 +18,8 @@ type DeleteUserSelfReturn = unknown
  *
  * Tags: users
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  * @returns successful deletion
  */
 export default async function delete_user_self(

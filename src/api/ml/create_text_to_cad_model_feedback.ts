@@ -20,9 +20,10 @@ type CreateTextToCadModelFeedbackReturn = unknown
  *
  * Tags: ml
  *
- * @param client Optional client with auth token.
- * @param id The id of the model to give feedback to. (path)
- * @param feedback The feedback. (query)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} id The id of the model to give feedback to. (path)
+ * @property {MlFeedback} feedback The feedback. (query)
  * @returns resource updated
  */
 export default async function create_text_to_cad_model_feedback({

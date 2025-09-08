@@ -19,8 +19,9 @@ type InternalGetApiTokenForDiscordUserReturn = ApiToken
  *
  * Tags: meta, hidden
  *
- * @param client Optional client with auth token.
- * @param discord_id The user's discord ID. (path)
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} discord_id The user's discord ID. (path)
  * @returns successful operation
  */
 export default async function internal_get_api_token_for_discord_user({

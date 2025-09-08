@@ -17,8 +17,9 @@ type AppsGithubWebhookReturn = unknown
  *
  * Tags: apps, hidden
  *
- * @param client Optional client with auth token.
- * @param body Request body payload
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} body Request body payload
  * @returns successful operation, no content
  */
 export default async function apps_github_webhook({

@@ -31,16 +31,17 @@ interface ModelingCommandsWsParams {
  * @template Req WebSocket request message type
  * @template Res WebSocket response message type
  * @param functionNameParams Parameters for URL templating and auth
- * @param api_call_id API Call ID for distributed tracing (query)
- * @param fps Frames per second of the video feed. (query)
- * @param pool An optional identifier for a pool of engine instances. The 'default' pool is used when none is specified. (query)
- * @param post_effect Engine Post effects (such as SSAO) (query)
- * @param replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
- * @param show_grid If true, will show the grid at the start of the session. (query)
- * @param unlocked_framerate If true, engine will render video frames as fast as it can. (query)
- * @param video_res_height Height of the video feed. Must be a multiple of 4. (query)
- * @param video_res_width Width of the video feed. Must be a multiple of 4. (query)
- * @param webrtc If true, will start a webrtc connection. (query)
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} api_call_id API Call ID for distributed tracing (query)
+ * @property {number} fps Frames per second of the video feed. (query)
+ * @property {string} pool An optional identifier for a pool of engine instances. The 'default' pool is used when none is specified. (query)
+ * @property {PostEffectType} post_effect Engine Post effects (such as SSAO) (query)
+ * @property {string} replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
+ * @property {boolean} show_grid If true, will show the grid at the start of the session. (query)
+ * @property {boolean} unlocked_framerate If true, engine will render video frames as fast as it can. (query)
+ * @property {number} video_res_height Height of the video feed. Must be a multiple of 4. (query)
+ * @property {number} video_res_width Width of the video feed. Must be a multiple of 4. (query)
+ * @property {boolean} webrtc If true, will start a webrtc connection. (query)
  */
 export default class ModelingCommandsWs<
   Req = WebSocketRequest,

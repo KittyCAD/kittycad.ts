@@ -16,7 +16,8 @@ type DeviceAuthRequestReturn = unknown
  *
  * Tags: oauth2, hidden
  *
- * @param client Optional client with auth token.
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
  */
 export default async function device_auth_request(
   { client }: DeviceAuthRequestInput = {} as DeviceAuthRequestInput

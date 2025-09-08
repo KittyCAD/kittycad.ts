@@ -19,9 +19,10 @@ type CreateEventReturn = unknown
  *
  * Tags: meta, hidden
  *
- * @param client Optional client with auth token.
- * @param files Files attached as multipart/form-data.
- * @param body Telemetry requests
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {File[]} files Files attached as multipart/form-data.
+ * @property {Event} body Telemetry requests
  * @returns resource updated
  */
 export default async function create_event({
