@@ -49,9 +49,7 @@ export default async function create_debug_uploads({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       ''
-  const headers: Record<string, string> = {
-    'Content-Type': 'multipart/form-data',
-  }
+  const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
 
   const formData = new FormData()
