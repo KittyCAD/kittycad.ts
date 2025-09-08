@@ -49,9 +49,10 @@ async function main() {
   }
 
   const entry = `
-import { Client, meta } from '@kittycad/lib'
-new Client('test')
-void meta
+import { meta } from '@kittycad/lib'
+const res = await meta.ping()
+if (!res) { console.error('bad: no response'); process.exit(1) }
+console.log('esbuild ping OK')
 `
   await fs.writeFile('entry.ts', entry)
   await run('npx', [
@@ -62,9 +63,9 @@ void meta
     '--format=esm',
     '--outfile=out.mjs',
   ])
-  // Verify output
+  // Verify output and runtime by executing bundled file (Node has fetch)
   await fs.stat('out.mjs')
-  console.log('esbuild smoke OK')
+  await run('node', ['out.mjs'])
 }
 
 main().catch((e) => {
