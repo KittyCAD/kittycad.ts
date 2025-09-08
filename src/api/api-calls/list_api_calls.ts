@@ -72,7 +72,7 @@ export default async function list_api_calls({
   return result
 }
 
-export function list_api_callsPager(
+export function list_api_calls_pager(
   params: ListApiCallsInput
 ): Pager<ListApiCallsInput, ListApiCallsReturn, ApiCallWithPrice> {
   return createPager<ListApiCallsInput, ListApiCallsReturn, ApiCallWithPrice>(

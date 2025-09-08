@@ -72,7 +72,7 @@ export default async function get_org_shortlinks({
   return result
 }
 
-export function get_org_shortlinksPager(
+export function get_org_shortlinks_pager(
   params: GetOrgShortlinksInput
 ): Pager<GetOrgShortlinksInput, GetOrgShortlinksReturn, Shortlink> {
   return createPager<GetOrgShortlinksInput, GetOrgShortlinksReturn, Shortlink>(

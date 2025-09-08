@@ -82,7 +82,7 @@ export default async function list_api_calls_for_user({
   return result
 }
 
-export function list_api_calls_for_userPager(
+export function list_api_calls_for_user_pager(
   params: ListApiCallsForUserInput
 ): Pager<
   ListApiCallsForUserInput,

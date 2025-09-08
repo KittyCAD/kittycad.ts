@@ -76,7 +76,7 @@ export default async function list_ml_prompts({
   return result
 }
 
-export function list_ml_promptsPager(
+export function list_ml_prompts_pager(
   params: ListMlPromptsInput
 ): Pager<ListMlPromptsInput, ListMlPromptsReturn, MlPrompt> {
   return createPager<ListMlPromptsInput, ListMlPromptsReturn, MlPrompt>(

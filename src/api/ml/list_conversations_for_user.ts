@@ -74,7 +74,7 @@ export default async function list_conversations_for_user({
   return result
 }
 
-export function list_conversations_for_userPager(
+export function list_conversations_for_user_pager(
   params: ListConversationsForUserInput
 ): Pager<
   ListConversationsForUserInput,

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { users } from '../../src/index.js'
+import { users } from '../../src/index.ts'
 
 const iso = '2023-01-01T00:00:00Z'
 
@@ -20,7 +20,7 @@ function makeRes(body) {
   })
 }
 
-describe('pagination users.list_usersPager', () => {
+describe('pagination users.list_users_pager', () => {
   const originalFetch = globalThis.fetch
   beforeEach(() => {
     vi.restoreAllMocks()
@@ -44,7 +44,7 @@ describe('pagination users.list_usersPager', () => {
       .mockResolvedValueOnce(makeRes(page2))
     globalThis.fetch = mock
 
-    const pager = users.list_usersPager({
+    const pager = users.list_users_pager({
       limit: 10,
       page_token: '',
       sort_by: 'created_at_ascending',
@@ -70,4 +70,3 @@ describe('pagination users.list_usersPager', () => {
     expect(mock).toHaveBeenCalledTimes(2)
   })
 })
-

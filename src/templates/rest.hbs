@@ -54,7 +54,7 @@ export default async function {{functionName}}(
 }
 
 {{#if pager}}
-export function {{functionName}}Pager(
+export function {{pagerFnName}}(
   params: {{paramsInterfaceName}}
 ): Pager<{{paramsInterfaceName}}, {{returnTypeName}}, {{pagerItemTypeName}}> {
   return createPager<{{paramsInterfaceName}}, {{returnTypeName}}, {{pagerItemTypeName}}>(

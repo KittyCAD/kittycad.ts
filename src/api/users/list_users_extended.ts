@@ -72,7 +72,7 @@ export default async function list_users_extended({
   return result
 }
 
-export function list_users_extendedPager(
+export function list_users_extended_pager(
   params: ListUsersExtendedInput
 ): Pager<ListUsersExtendedInput, ListUsersExtendedReturn, ExtendedUser> {
   return createPager<

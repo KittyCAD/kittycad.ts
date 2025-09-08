@@ -634,6 +634,7 @@ export default async function apiGen(lookup: Record<string, string>) {
             noJsonResponse: has204,
             pager: Boolean(pagerItemTypeName),
             pagerItemTypeName: pagerItemTypeName || 'unknown',
+            pagerFnName: `${operationId}_pager`,
           }
           template = await render(templatePath, ctx)
         } else {
@@ -809,9 +810,9 @@ export default async function apiGen(lookup: Record<string, string>) {
           indexFile[safeTag].exportsStr.push(operationId)
           if (pagerItemTypeName) {
             indexFile[safeTag].importsStr.push(
-              `import { ${operationId}Pager } from './api/${tag}/${operationId}.js';`
+              `import { ${operationId}_pager } from './api/${tag}/${operationId}.js';`
             )
-            indexFile[safeTag].exportsStr.push(`${operationId}Pager`)
+            indexFile[safeTag].exportsStr.push(`${operationId}_pager`)
           }
         }
         const libWritePromise = fsp.writeFile(

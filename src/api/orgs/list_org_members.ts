@@ -76,7 +76,7 @@ export default async function list_org_members({
   return result
 }
 
-export function list_org_membersPager(
+export function list_org_members_pager(
   params: ListOrgMembersInput
 ): Pager<ListOrgMembersInput, ListOrgMembersReturn, OrgMember> {
   return createPager<ListOrgMembersInput, ListOrgMembersReturn, OrgMember>(

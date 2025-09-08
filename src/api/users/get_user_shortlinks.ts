@@ -72,7 +72,7 @@ export default async function get_user_shortlinks({
   return result
 }
 
-export function get_user_shortlinksPager(
+export function get_user_shortlinks_pager(
   params: GetUserShortlinksInput
 ): Pager<GetUserShortlinksInput, GetUserShortlinksReturn, Shortlink> {
   return createPager<

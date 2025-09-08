@@ -76,7 +76,7 @@ export default async function org_list_api_calls({
   return result
 }
 
-export function org_list_api_callsPager(
+export function org_list_api_calls_pager(
   params: OrgListApiCallsInput
 ): Pager<OrgListApiCallsInput, OrgListApiCallsReturn, ApiCallWithPrice> {
   return createPager<

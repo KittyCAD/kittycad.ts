@@ -68,7 +68,7 @@ export default async function list_orgs({
   return result
 }
 
-export function list_orgsPager(
+export function list_orgs_pager(
   params: ListOrgsInput
 ): Pager<ListOrgsInput, ListOrgsReturn, Org> {
   return createPager<ListOrgsInput, ListOrgsReturn, Org>(

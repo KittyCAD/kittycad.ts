@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ml } from '../../src/index.js'
+import { ml } from '../../src/index.ts'
 
 const iso = '2023-01-01T00:00:00Z'
 
@@ -27,7 +27,7 @@ function makeRes(body) {
   })
 }
 
-describe('pagination ml.list_text_to_cad_models_for_userPager', () => {
+describe('pagination ml.list_text_to_cad_models_for_user_pager', () => {
   const originalFetch = globalThis.fetch
   beforeEach(() => {
     vi.restoreAllMocks()
@@ -51,7 +51,7 @@ describe('pagination ml.list_text_to_cad_models_for_userPager', () => {
       .mockResolvedValueOnce(makeRes(page2))
     globalThis.fetch = mock
 
-    const pager = ml.list_text_to_cad_models_for_userPager({
+    const pager = ml.list_text_to_cad_models_for_user_pager({
       limit: 10,
       page_token: '',
       sort_by: 'created_at_ascending',
@@ -79,4 +79,3 @@ describe('pagination ml.list_text_to_cad_models_for_userPager', () => {
     expect(mock).toHaveBeenCalledTimes(2)
   })
 })
-

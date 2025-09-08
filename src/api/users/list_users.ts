@@ -68,7 +68,7 @@ export default async function list_users({
   return result
 }
 
-export function list_usersPager(
+export function list_users_pager(
   params: ListUsersInput
 ): Pager<ListUsersInput, ListUsersReturn, User> {
   return createPager<ListUsersInput, ListUsersReturn, User>(

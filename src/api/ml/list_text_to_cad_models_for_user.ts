@@ -83,7 +83,7 @@ export default async function list_text_to_cad_models_for_user({
   return result
 }
 
-export function list_text_to_cad_models_for_userPager(
+export function list_text_to_cad_models_for_user_pager(
   params: ListTextToCadModelsForUserInput
 ): Pager<
   ListTextToCadModelsForUserInput,

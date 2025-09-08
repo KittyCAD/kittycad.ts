@@ -78,7 +78,7 @@ export default async function list_async_operations({
   return result
 }
 
-export function list_async_operationsPager(
+export function list_async_operations_pager(
   params: ListAsyncOperationsInput
 ): Pager<ListAsyncOperationsInput, ListAsyncOperationsReturn, AsyncApiCall> {
   return createPager<

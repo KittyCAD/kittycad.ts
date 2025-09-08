@@ -74,7 +74,7 @@ export default async function list_api_tokens_for_user({
   return result
 }
 
-export function list_api_tokens_for_userPager(
+export function list_api_tokens_for_user_pager(
   params: ListApiTokensForUserInput
 ): Pager<ListApiTokensForUserInput, ListApiTokensForUserReturn, ApiToken> {
   return createPager<

@@ -74,7 +74,7 @@ export default async function list_service_accounts_for_org({
   return result
 }
 
-export function list_service_accounts_for_orgPager(
+export function list_service_accounts_for_org_pager(
   params: ListServiceAccountsForOrgInput
 ): Pager<
   ListServiceAccountsForOrgInput,
