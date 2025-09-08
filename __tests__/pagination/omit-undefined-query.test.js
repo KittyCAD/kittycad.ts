@@ -18,9 +18,9 @@ describe('query building skips undefined params', () => {
   })
 
   it('does not include page_token/conversation_id when undefined', async () => {
-    const mock = vi.fn().mockResolvedValueOnce(
-      makeRes({ items: [], next_page: null })
-    )
+    const mock = vi
+      .fn()
+      .mockResolvedValueOnce(makeRes({ items: [], next_page: null }))
     globalThis.fetch = mock
 
     await ml.list_text_to_cad_models_for_user({
@@ -41,4 +41,3 @@ describe('query building skips undefined params', () => {
     expect(calledUrl).not.toContain('undefined')
   })
 })
-
