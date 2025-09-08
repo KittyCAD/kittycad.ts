@@ -2857,6 +2857,8 @@ export type MlCopilotClientMessage =
          */
         number[]
       }
+      /** The user can force specific tools to be used for this message. */
+      forced_tools?: MlCopilotTool[]
       /**
        * {
        *   "nullable": true,
@@ -2875,6 +2877,12 @@ export type MlCopilotClientMessage =
     }
 
 export type MlCopilotServerMessage =
+  | {
+      conversation_id: {
+        /** The unique identifier for the conversation. */
+        conversation_id: string
+      }
+    }
   | {
       delta: {
         /** The delta text, which is a part of the response that is being streamed. */
@@ -2920,6 +2928,13 @@ export type MlCopilotServerMessage =
     }
 
 export type MlCopilotSystemCommand = 'new' | 'bye'
+
+export type MlCopilotTool =
+  | 'edit_kcl_code'
+  | 'text_to_cad'
+  | 'mechanical_knowledge_base'
+  | 'explain_kcl_file'
+  | 'web_search'
 
 export type MlFeedback = 'thumbs_up' | 'thumbs_down' | 'accepted' | 'rejected'
 
@@ -3051,6 +3066,11 @@ export type MlToolResult =
       /** The response from the mechanical knowledge base. */
       response: string
       type: 'mechanical_knowledge_base'
+    }
+  | {
+      /** The response from explaining the kcl file. */
+      response: string
+      type: 'explain_kcl_file'
     }
 
 export type ModelingAppEventType = 'successful_compile_before_close'
@@ -8775,6 +8795,7 @@ export interface Models {
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotServerMessage: MlCopilotServerMessage
   MlCopilotSystemCommand: MlCopilotSystemCommand
+  MlCopilotTool: MlCopilotTool
   MlFeedback: MlFeedback
   MlPrompt: MlPrompt
   MlPromptMetadata: MlPromptMetadata

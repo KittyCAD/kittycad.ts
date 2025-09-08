@@ -554,6 +554,7 @@ export type {
   MlCopilotClientMessage,
   MlCopilotServerMessage,
   MlCopilotSystemCommand,
+  MlCopilotTool,
   MlFeedback,
   MlPrompt,
   MlPromptMetadata,
