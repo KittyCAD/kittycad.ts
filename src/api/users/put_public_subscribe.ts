@@ -31,10 +31,9 @@ export default async function put_public_subscribe({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       ''
-  const headers: Record<string, string> = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/json',
-  }
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,

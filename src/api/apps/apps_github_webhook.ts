@@ -31,10 +31,9 @@ export default async function apps_github_webhook({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       ''
-  const headers: Record<string, string> = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/octet-stream',
-  }
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/octet-stream'
   const fetchOptions: RequestInit = {
     method: 'POST',
     headers,

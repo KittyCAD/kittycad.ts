@@ -38,9 +38,9 @@ export default async function create_text_to_cad_multi_file_iteration({
       process.env.ZOO_API_TOKEN ||
       ''
   const headers: Record<string, string> = {
-    Authorization: `Bearer ${kittycadToken}`,
     'Content-Type': 'multipart/form-data',
   }
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
 
   const formData = new FormData()
   files.forEach((file) => {

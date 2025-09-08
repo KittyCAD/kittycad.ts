@@ -27,12 +27,11 @@ export default async function {{functionName}}(
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       '';
-  const headers: Record<string, string> = {
-    Authorization: `Bearer ${kittycadToken}`,
-    {{#unless omitContentType}}
-    'Content-Type': '{{contentType}}',
-    {{/unless}}
-  };
+  const headers: Record<string, string> = {};
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`;
+  {{#unless omitContentType}}
+  headers['Content-Type'] = '{{contentType}}';
+  {{/unless}}
   const fetchOptions: RequestInit = {
     method: '{{httpMethod}}',
     headers,

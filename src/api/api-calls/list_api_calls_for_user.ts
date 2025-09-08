@@ -41,9 +41,8 @@ export default async function list_api_calls_for_user({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       ''
-  const headers: Record<string, string> = {
-    Authorization: `Bearer ${kittycadToken}`,
-  }
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
