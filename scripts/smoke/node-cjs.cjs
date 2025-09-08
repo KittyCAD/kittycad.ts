@@ -27,7 +27,8 @@ async function hasCmd(cmd) {
 
 async function main() {
   let tarball = path.resolve(process.argv[2] || 'pkg.tgz')
-  const yarnSpec = process.platform === 'win32' ? tarball.replace(/\\/g, '/') : tarball
+  const yarnSpec =
+    process.platform === 'win32' ? tarball.replace(/\\/g, '/') : tarball
   const fileSpec = yarnSpec.startsWith('file:') ? yarnSpec : `file:${yarnSpec}`
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'kittycad-cjs-'))
   process.chdir(dir)
