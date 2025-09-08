@@ -34,3 +34,4 @@ build/
 .direnv
 scripts/gen.cjs
 pkg.tgz
+*.tgz

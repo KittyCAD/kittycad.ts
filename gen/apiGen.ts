@@ -711,6 +711,8 @@ export default async function apiGen(lookup: Record<string, string>) {
             importFs: needsFsImport,
             expectThrow,
             expectTimeout,
+            pager: Boolean(pagerItemTypeName),
+            pagerFnName: `${operationId}_pager`,
           })
         }
         let genTest = exampleTemplate
