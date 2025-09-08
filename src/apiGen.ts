@@ -661,10 +661,16 @@ export default async function apiGen(lookup: Record<string, string>) {
             [/.+return response;\n/g, ''],
           ])
           // Ensure ApiError is imported in the docs example
-          exampleTemplate = exampleTemplate.replace(
-            new RegExp(`import \{\\s*${safeTag}\\s*} from '@kittycad/lib';`),
-            `import { ${safeTag}, ApiError } from '@kittycad/lib';`
-          )
+          // Avoid "useless escape" on braces by using character classes
+          {
+            const pattern = new RegExp(
+              `import\\s*[{]\\s*${escapeRegExp(safeTag)}\\s*[}]\\s*from\\s*'@kittycad/lib';`
+            )
+            exampleTemplate = exampleTemplate.replace(
+              pattern,
+              `import { ${safeTag}, ApiError } from '@kittycad/lib';`
+            )
+          }
           // Append error-handling snippet for docs readers
           exampleTemplate += [
             '',
@@ -839,6 +845,11 @@ export function isObj(obj: any) {
     !Array.isArray(obj) &&
     Object.keys(obj).length
   )
+}
+
+function escapeRegExp(str: string): string {
+  // Escape special regex characters for safe embedding
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 function isRef(schema: unknown): schema is OpenAPIV3.ReferenceObject {
