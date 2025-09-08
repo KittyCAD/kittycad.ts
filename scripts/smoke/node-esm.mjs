@@ -2,30 +2,48 @@
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { spawn, spawnSync } from 'node:child_process'
 
 const resolveCmd = (cmd) => (process.platform === 'win32' ? `${cmd}.cmd` : cmd)
 
 function run(cmd, args, opts = {}) {
   return new Promise((resolve, reject) => {
-    const p = spawn(resolveCmd(cmd), args, {
-      stdio: 'inherit',
-      shell: false,
-      ...opts,
-    })
-    p.once('error', (e) => reject(e))
-    p.once('exit', (code) =>
-      code === 0
-        ? resolve()
-        : reject(new Error(`${cmd} ${args.join(' ')} -> ${code}`))
-    )
+    const trySpawn = (useShell) => {
+      const p = useShell
+        ? spawn([resolveCmd(cmd), ...args].join(' '), {
+            stdio: 'inherit',
+            shell: true,
+            ...opts,
+          })
+        : spawn(resolveCmd(cmd), args, {
+            stdio: 'inherit',
+            shell: false,
+            ...opts,
+          })
+      p.once('error', (e) => {
+        if (!useShell && (e.code === 'ENOENT' || e.code === 'EINVAL')) {
+          trySpawn(true)
+        } else {
+          reject(e)
+        }
+      })
+      p.once('exit', (code) =>
+        code === 0
+          ? resolve()
+          : reject(new Error(`${cmd} ${args.join(' ')} -> ${code}`))
+      )
+    }
+    trySpawn(false)
   })
 }
 
-async function hasCmd(cmd) {
+function hasCmd(cmd) {
   try {
-    await run(cmd, ['--version'], { stdio: 'ignore' })
-    return true
+    const r = spawnSync(resolveCmd(cmd), ['--version'], {
+      stdio: 'ignore',
+      shell: process.platform === 'win32',
+    })
+    return r.status === 0
   } catch {
     return false
   }
