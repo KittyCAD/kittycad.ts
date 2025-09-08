@@ -3,10 +3,15 @@ const fs = require('node:fs/promises')
 const os = require('node:os')
 const path = require('node:path')
 const { spawn } = require('node:child_process')
+const resolveCmd = (cmd) => (process.platform === 'win32' ? `${cmd}.cmd` : cmd)
 
 function run(cmd, args, opts = {}) {
   return new Promise((resolve, reject) => {
-    const p = spawn(cmd, args, { stdio: 'inherit', shell: false, ...opts })
+    const p = spawn(resolveCmd(cmd), args, {
+      stdio: 'inherit',
+      shell: false,
+      ...opts,
+    })
     p.once('error', (e) => reject(e))
     p.once('exit', (code) =>
       code === 0

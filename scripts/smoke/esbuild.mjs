@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 import { spawn } from 'node:child_process'
+const resolveCmd = (cmd) => (process.platform === 'win32' ? `${cmd}.cmd` : cmd)
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 
 function run(cmd, args, opts = {}) {
   return new Promise((resolve, reject) => {
-    const p = spawn(cmd, args, { stdio: 'inherit', shell: false, ...opts })
+    const p = spawn(resolveCmd(cmd), args, {
+      stdio: 'inherit',
+      shell: false,
+      ...opts,
+    })
     p.once('error', (e) => reject(e))
     p.once('exit', (code) =>
       code === 0
