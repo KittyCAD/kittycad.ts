@@ -1,25 +1,21 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  OrgMember_type,
-  UpdateMemberToOrgBody_type,
-  Uuid_type,
-} from '../../models.js'
+import { OrgMember, Uuid, UpdateMemberToOrgBody } from '../../models.js'
 
-interface UpdateOrgMemberParams {
+interface UpdateOrgMemberInput {
   client?: Client
-  user_id: Uuid_type
-  body: UpdateMemberToOrgBody_type
+  user_id: Uuid
+  body: UpdateMemberToOrgBody
 }
 
-type UpdateOrgMemberReturn = OrgMember_type
+type UpdateOrgMemberReturn = OrgMember
 
 export default async function update_org_member({
   client,
   user_id,
   body,
-}: UpdateOrgMemberParams): Promise<UpdateOrgMemberReturn> {
+}: UpdateOrgMemberInput): Promise<UpdateOrgMemberReturn> {
   const url = `/org/members/${user_id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

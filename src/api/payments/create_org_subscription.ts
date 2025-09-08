@@ -1,22 +1,22 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  ZooProductSubscriptionsOrgRequest_type,
-  ZooProductSubscriptions_type,
+import {
+  ZooProductSubscriptions,
+  ZooProductSubscriptionsOrgRequest,
 } from '../../models.js'
 
-interface CreateOrgSubscriptionParams {
+interface CreateOrgSubscriptionInput {
   client?: Client
-  body: ZooProductSubscriptionsOrgRequest_type
+  body: ZooProductSubscriptionsOrgRequest
 }
 
-type CreateOrgSubscriptionReturn = ZooProductSubscriptions_type
+type CreateOrgSubscriptionReturn = ZooProductSubscriptions
 
 export default async function create_org_subscription({
   client,
   body,
-}: CreateOrgSubscriptionParams): Promise<CreateOrgSubscriptionReturn> {
+}: CreateOrgSubscriptionInput): Promise<CreateOrgSubscriptionReturn> {
   const url = `/org/payment/subscriptions`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

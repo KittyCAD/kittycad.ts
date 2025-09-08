@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { AsyncApiCallOutput_type } from '../../models.js'
+import { AsyncApiCallOutput } from '../../models.js'
 
-interface GetAsyncOperationParams {
+interface GetAsyncOperationInput {
   client?: Client
   id: string
 }
 
-type GetAsyncOperationReturn = AsyncApiCallOutput_type
+type GetAsyncOperationReturn = AsyncApiCallOutput
 
 export default async function get_async_operation({
   client,
   id,
-}: GetAsyncOperationParams): Promise<GetAsyncOperationReturn> {
+}: GetAsyncOperationInput): Promise<GetAsyncOperationReturn> {
   const url = `/async/operations/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

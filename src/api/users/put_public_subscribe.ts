@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { Subscribe_type } from '../../models.js'
+import { Subscribe } from '../../models.js'
 
-interface PutPublicSubscribeParams {
+interface PutPublicSubscribeInput {
   client?: Client
-  body: Subscribe_type
+  body: Subscribe
 }
 
 type PutPublicSubscribeReturn = unknown
@@ -13,7 +13,7 @@ type PutPublicSubscribeReturn = unknown
 export default async function put_public_subscribe({
   client,
   body,
-}: PutPublicSubscribeParams): Promise<PutPublicSubscribeReturn> {
+}: PutPublicSubscribeInput): Promise<PutPublicSubscribeReturn> {
   const url = `/website/subscribe`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

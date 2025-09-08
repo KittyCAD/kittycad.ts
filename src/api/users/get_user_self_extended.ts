@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { ExtendedUser_type } from '../../models.js'
+import { ExtendedUser } from '../../models.js'
 
-interface GetUserSelfExtendedParams {
+interface GetUserSelfExtendedInput {
   client?: Client
 }
 
-type GetUserSelfExtendedReturn = ExtendedUser_type
+type GetUserSelfExtendedReturn = ExtendedUser
 
 export default async function get_user_self_extended(
-  { client }: GetUserSelfExtendedParams = {} as GetUserSelfExtendedParams
+  { client }: GetUserSelfExtendedInput = {} as GetUserSelfExtendedInput
 ): Promise<GetUserSelfExtendedReturn> {
   const url = `/user/extended`
   // Backwards compatible for the BASE_URL env variable

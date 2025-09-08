@@ -1,27 +1,27 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  FileConversion_type,
-  FileExportFormat_type,
-  FileImportFormat_type,
+import {
+  FileConversion,
+  FileExportFormat,
+  FileImportFormat,
 } from '../../models.js'
 
-interface CreateFileConversionParams {
+interface CreateFileConversionInput {
   client?: Client
-  output_format: FileExportFormat_type
-  src_format: FileImportFormat_type
+  output_format: FileExportFormat
+  src_format: FileImportFormat
   body: string
 }
 
-type CreateFileConversionReturn = FileConversion_type
+type CreateFileConversionReturn = FileConversion
 
 export default async function create_file_conversion({
   client,
   output_format,
   src_format,
   body,
-}: CreateFileConversionParams): Promise<CreateFileConversionReturn> {
+}: CreateFileConversionInput): Promise<CreateFileConversionReturn> {
   const url = `/file/conversion/${src_format}/${output_format}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

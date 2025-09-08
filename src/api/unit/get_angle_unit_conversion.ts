@@ -1,23 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { UnitAngleConversion_type, UnitAngle_type } from '../../models.js'
+import { UnitAngleConversion, UnitAngle } from '../../models.js'
 
-interface GetAngleUnitConversionParams {
+interface GetAngleUnitConversionInput {
   client?: Client
-  input_unit: UnitAngle_type
-  output_unit: UnitAngle_type
+  input_unit: UnitAngle
+  output_unit: UnitAngle
   value: number
 }
 
-type GetAngleUnitConversionReturn = UnitAngleConversion_type
+type GetAngleUnitConversionReturn = UnitAngleConversion
 
 export default async function get_angle_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: GetAngleUnitConversionParams): Promise<GetAngleUnitConversionReturn> {
+}: GetAngleUnitConversionInput): Promise<GetAngleUnitConversionReturn> {
   const url = `/unit/conversion/angle/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

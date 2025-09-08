@@ -1,4 +1,4 @@
-import { ApiError, oauth2 } from '../../src/index.js'
+import { oauth2, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await oauth2.oauth2_provider_callback({

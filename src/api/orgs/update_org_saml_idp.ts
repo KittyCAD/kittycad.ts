@@ -1,22 +1,22 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  SamlIdentityProviderCreate_type,
-  SamlIdentityProvider_type,
+import {
+  SamlIdentityProvider,
+  SamlIdentityProviderCreate,
 } from '../../models.js'
 
-interface UpdateOrgSamlIdpParams {
+interface UpdateOrgSamlIdpInput {
   client?: Client
-  body: SamlIdentityProviderCreate_type
+  body: SamlIdentityProviderCreate
 }
 
-type UpdateOrgSamlIdpReturn = SamlIdentityProvider_type
+type UpdateOrgSamlIdpReturn = SamlIdentityProvider
 
 export default async function update_org_saml_idp({
   client,
   body,
-}: UpdateOrgSamlIdpParams): Promise<UpdateOrgSamlIdpReturn> {
+}: UpdateOrgSamlIdpInput): Promise<UpdateOrgSamlIdpReturn> {
   const url = `/org/saml/idp`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

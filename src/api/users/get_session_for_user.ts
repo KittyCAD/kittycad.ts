@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { SessionUuid_type, Session_type } from '../../models.js'
+import { Session, SessionUuid } from '../../models.js'
 
-interface GetSessionForUserParams {
+interface GetSessionForUserInput {
   client?: Client
-  token: SessionUuid_type
+  token: SessionUuid
 }
 
-type GetSessionForUserReturn = Session_type
+type GetSessionForUserReturn = Session
 
 export default async function get_session_for_user({
   client,
   token,
-}: GetSessionForUserParams): Promise<GetSessionForUserReturn> {
+}: GetSessionForUserInput): Promise<GetSessionForUserReturn> {
   const url = `/user/session/${token}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

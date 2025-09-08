@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { Invoice_type } from '../../models.js'
+import { Invoice } from '../../models.js'
 
-interface ListInvoicesForOrgParams {
+interface ListInvoicesForOrgInput {
   client?: Client
 }
 
-type ListInvoicesForOrgReturn = Invoice_type[]
+type ListInvoicesForOrgReturn = Invoice[]
 
 export default async function list_invoices_for_org(
-  { client }: ListInvoicesForOrgParams = {} as ListInvoicesForOrgParams
+  { client }: ListInvoicesForOrgInput = {} as ListInvoicesForOrgInput
 ): Promise<ListInvoicesForOrgReturn> {
   const url = `/org/payment/invoices`
   // Backwards compatible for the BASE_URL env variable

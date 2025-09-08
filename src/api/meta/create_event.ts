@@ -1,13 +1,13 @@
-import type { Client } from '../../client.js'
+import { File } from '../../models.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
-import type { File } from '../../models.js'
 
-import type { Event_type } from '../../models.js'
+import { Event } from '../../models.js'
 
-interface CreateEventParams {
+interface CreateEventInput {
   client?: Client
   files: File[]
-  body: Event_type
+  body: Event
 }
 
 type CreateEventReturn = unknown
@@ -16,7 +16,7 @@ export default async function create_event({
   client,
   files,
   body,
-}: CreateEventParams): Promise<CreateEventReturn> {
+}: CreateEventInput): Promise<CreateEventReturn> {
   const url = `/events`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

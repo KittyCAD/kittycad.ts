@@ -1,23 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { CodeLanguage_type, CodeOutput_type } from '../../models.js'
+import { CodeOutput, CodeLanguage } from '../../models.js'
 
-interface CreateFileExecutionParams {
+interface CreateFileExecutionInput {
   client?: Client
-  lang: CodeLanguage_type
+  lang: CodeLanguage
   output: string
   body: string
 }
 
-type CreateFileExecutionReturn = CodeOutput_type
+type CreateFileExecutionReturn = CodeOutput
 
 export default async function create_file_execution({
   client,
   lang,
   output,
   body,
-}: CreateFileExecutionParams): Promise<CreateFileExecutionReturn> {
+}: CreateFileExecutionInput): Promise<CreateFileExecutionReturn> {
   const url = `/file/execute/${lang}?output=${output}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

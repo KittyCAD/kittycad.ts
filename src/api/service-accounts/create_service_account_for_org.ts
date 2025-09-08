@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { ServiceAccount_type } from '../../models.js'
+import { ServiceAccount } from '../../models.js'
 
-interface CreateServiceAccountForOrgParams {
+interface CreateServiceAccountForOrgInput {
   client?: Client
   label: string
 }
 
-type CreateServiceAccountForOrgReturn = ServiceAccount_type
+type CreateServiceAccountForOrgReturn = ServiceAccount
 
 export default async function create_service_account_for_org({
   client,
   label,
-}: CreateServiceAccountForOrgParams): Promise<CreateServiceAccountForOrgReturn> {
+}: CreateServiceAccountForOrgInput): Promise<CreateServiceAccountForOrgReturn> {
   const url = `/org/service-accounts?label=${label}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

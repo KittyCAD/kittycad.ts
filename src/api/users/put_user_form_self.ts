@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { InquiryForm_type } from '../../models.js'
+import { InquiryForm } from '../../models.js'
 
-interface PutUserFormSelfParams {
+interface PutUserFormSelfInput {
   client?: Client
-  body: InquiryForm_type
+  body: InquiryForm
 }
 
 type PutUserFormSelfReturn = unknown
@@ -13,7 +13,7 @@ type PutUserFormSelfReturn = unknown
 export default async function put_user_form_self({
   client,
   body,
-}: PutUserFormSelfParams): Promise<PutUserFormSelfReturn> {
+}: PutUserFormSelfInput): Promise<PutUserFormSelfReturn> {
   const url = `/user/form`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

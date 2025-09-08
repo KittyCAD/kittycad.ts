@@ -1,4 +1,4 @@
-export type AccountProvider_type =
+export type AccountProvider =
   | 'apple'
   | 'discord'
   | 'google'
@@ -7,39 +7,39 @@ export type AccountProvider_type =
   | 'saml'
   | 'tencent'
 
-export interface AddHoleFromOffset_type {
+export interface AddHoleFromOffset {
   /*{
   "format": "uuid"
 }*/
   entity_ids: string[]
 }
 
-export interface AddOrgMember_type {
+export interface AddOrgMember {
   /* format:email, description:The email address of the user to add to the org. */
   email: string
-  role: UserOrgRole_type /* The organization role to give the user. */
+  role: UserOrgRole /* The organization role to give the user. */
 }
 
-export interface AddressDetails_type {
+export interface AddressDetails {
   city?: string /* The city component. */
-  country: CountryCode_type /* The country component. This is a two-letter ISO country code. */
+  country: CountryCode /* The country component. This is a two-letter ISO country code. */
   state?: string /* The state component. */
   street1?: string /* The first street component. */
   street2?: string /* The second street component. */
   zip?: string /* The zip component. */
 }
 
-export interface AdjacencyInfo_type {
+export interface AdjacencyInfo {
   /* nullable:true, description:Adjacent edge and face info. */
-  adjacent_info?: EdgeInfo_type
+  adjacent_info?: EdgeInfo
   /* nullable:true, description:Opposite edge and face info. */
-  opposite_info?: EdgeInfo_type
+  opposite_info?: EdgeInfo
   /* nullable:true, description:Original edge id and face info. */
-  original_info?: EdgeInfo_type
+  original_info?: EdgeInfo
 }
 
-export interface Angle_type {
-  unit: UnitAngle_type /* What unit is the measurement? */
+export interface Angle {
+  unit: UnitAngle /* What unit is the measurement? */
   /*{
   "format": "double",
   "description": "The size of the angle, measured in the chosen unit."
@@ -47,47 +47,47 @@ export interface Angle_type {
   value: number
 }
 
-export type AnnotationLineEnd_type =
+export type AnnotationLineEnd =
   /* Annotation line end type */
   'none' | 'arrow'
 
-export interface AnnotationLineEndOptions_type {
-  end: AnnotationLineEnd_type /* How to style the end of the annotation line. */
-  start: AnnotationLineEnd_type /* How to style the start of the annotation line. */
+export interface AnnotationLineEndOptions {
+  end: AnnotationLineEnd /* How to style the end of the annotation line. */
+  start: AnnotationLineEnd /* How to style the start of the annotation line. */
 }
 
-export interface AnnotationOptions_type {
+export interface AnnotationOptions {
   /* nullable:true, description:Color to render the annotation */
-  color?: Color_type
+  color?: Color
   /* nullable:true, description:How to style the start and end of the line */
-  line_ends?: AnnotationLineEndOptions_type
+  line_ends?: AnnotationLineEndOptions
   /* nullable:true, format:float, description:Width of the annotation's line */
   line_width?: number
   /* nullable:true, description:Position to put the annotation */
-  position?: Point3d_type
+  position?: Point3d
   /* nullable:true, description:Text displayed on the annotation */
-  text?: AnnotationTextOptions_type
+  text?: AnnotationTextOptions
 }
 
-export type AnnotationTextAlignmentX_type =
+export type AnnotationTextAlignmentX =
   /* Horizontal Text alignment */
   'left' | 'center' | 'right'
 
-export type AnnotationTextAlignmentY_type =
+export type AnnotationTextAlignmentY =
   /* Vertical Text alignment */
   'bottom' | 'center' | 'top'
 
-export interface AnnotationTextOptions_type {
+export interface AnnotationTextOptions {
   /* format:uint32, minimum:0, description:Text font's point size */
   point_size: number
   text: string /* Text displayed on the annotation */
-  x: AnnotationTextAlignmentX_type /* Alignment along the X axis */
-  y: AnnotationTextAlignmentY_type /* Alignment along the Y axis */
+  x: AnnotationTextAlignmentX /* Alignment along the X axis */
+  y: AnnotationTextAlignmentY /* Alignment along the Y axis */
 }
 
-export type AnnotationType_type = 't2d' | 't3d'
+export type AnnotationType = 't2d' | 't3d'
 
-export interface ApiCallQueryGroup_type {
+export interface ApiCallQueryGroup {
   /*{
   "format": "int64"
 }*/
@@ -95,7 +95,7 @@ export interface ApiCallQueryGroup_type {
   query: string
 }
 
-export type ApiCallQueryGroupBy_type =
+export type ApiCallQueryGroupBy =
   | 'email'
   | 'method'
   | 'endpoint'
@@ -103,14 +103,14 @@ export type ApiCallQueryGroupBy_type =
   | 'origin'
   | 'ip_address'
 
-export type ApiCallStatus_type =
+export type ApiCallStatus =
   | 'queued'
   | 'uploaded'
   | 'in_progress'
   | 'completed'
   | 'failed'
 
-export interface ApiCallWithPrice_type {
+export interface ApiCallWithPrice {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -130,7 +130,7 @@ export interface ApiCallWithPrice_type {
   /* format:email, description:The user's email address. */
   email?: string
   endpoint?: string /* The endpoint requested by the API call. */
-  id: Uuid_type /* The unique identifier for the API call. */
+  id: Uuid /* The unique identifier for the API call. */
   /*{
   "title": "String",
   "default": "",
@@ -138,7 +138,7 @@ export interface ApiCallWithPrice_type {
   "description": "The ip address of the origin."
 }*/
   ip_address?: string
-  method: Method_type /* The HTTP method requested by the API call. */
+  method: Method /* The HTTP method requested by the API call. */
   /*{
   "nullable": true,
   "format": "int32",
@@ -149,7 +149,7 @@ export interface ApiCallWithPrice_type {
   "nullable": true,
   "description": "The organization ID of the API call if it is billable through an organization."
 }*/
-  org_id?: Uuid_type
+  org_id?: Uuid
   origin?: string /* The origin of the API call. */
   /*{
   "nullable": true,
@@ -181,15 +181,15 @@ export interface ApiCallWithPrice_type {
 }*/
   status_code?: number
   stripe_invoice_item_id?: string /* The Stripe invoice item ID of the API call if it is billable. */
-  token: Uuid_type /* The API token that made the API call. */
+  token: Uuid /* The API token that made the API call. */
   /* title:DateTime, format:date-time, description:The date and time the API call was last updated. */
   updated_at: string
   user_agent: string /* The user agent of the request. */
-  user_id: Uuid_type /* The ID of the user that made the API call. */
+  user_id: Uuid /* The ID of the user that made the API call. */
 }
 
-export interface ApiCallWithPriceResultsPage_type {
-  items: ApiCallWithPrice_type[] /* list of items on this page of results */
+export interface ApiCallWithPriceResultsPage {
+  items: ApiCallWithPrice[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -197,28 +197,28 @@ export interface ApiCallWithPriceResultsPage_type {
   next_page?: string
 }
 
-export type ApiEndpoint_type = 'modeling' | 'ml' | 'file'
+export type ApiEndpoint = 'modeling' | 'ml' | 'file'
 
-export interface ApiError_type {
-  error_code: ErrorCode_type /* The error code. */
+export interface ApiError {
+  error_code: ErrorCode /* The error code. */
   message: string /* The error message. */
 }
 
-export interface ApiToken_type {
+export interface ApiToken {
   /* title:DateTime, format:date-time, description:The date and time the API token was created. */
   created_at: string
-  id: Uuid_type /* The unique identifier for the API token. */
+  id: Uuid /* The unique identifier for the API token. */
   is_valid: boolean /* If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token. */
   /* nullable:true, description:An optional label for the API token. */
   label?: string
-  token: ApiTokenUuid_type /* The API token itself. */
+  token: ApiTokenUuid /* The API token itself. */
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The ID of the user that owns the API token. */
+  user_id: Uuid /* The ID of the user that owns the API token. */
 }
 
-export interface ApiTokenResultsPage_type {
-  items: ApiToken_type[] /* list of items on this page of results */
+export interface ApiTokenResultsPage {
+  items: ApiToken[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -226,14 +226,14 @@ export interface ApiTokenResultsPage_type {
   next_page?: string
 }
 
-export type ApiTokenUuid_type =
+export type ApiTokenUuid =
   string /* An auth token. A uuid with a prefix of api- */
 
-export interface AppClientInfo_type {
+export interface AppClientInfo {
   url?: string /* The URL for consent. */
 }
 
-export interface AsyncApiCall_type {
+export interface AsyncApiCall {
   /*{
   "default": 0,
   "format": "int16",
@@ -254,7 +254,7 @@ export interface AsyncApiCall_type {
   /* The unique identifier of the async API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   input?: string
   output: any
   /*{
@@ -264,19 +264,19 @@ This is the same as the API call ID. */
   "description": "The time and date the async API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the async API call. */
-  type: AsyncApiCallType_type /* The type of async API call. */
+  status: ApiCallStatus /* The status of the async API call. */
+  type: AsyncApiCallType /* The type of async API call. */
   /*{
   "title": "DateTime",
   "format": "date-time",
   "description": "The time and date the async API call was last updated."
 }*/
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the async API call. */
+  user_id: Uuid /* The user ID of the user who created the async API call. */
   worker?: string /* The worker node that is performing or performed the async API call. */
 }
 
-export type AsyncApiCallOutput_type =
+export type AsyncApiCallOutput =
   | {
       /*{
   "nullable": true,
@@ -292,10 +292,10 @@ export type AsyncApiCallOutput_type =
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
-      output_format: FileExportFormat_type /* The output format of the file conversion. */
+      id: Uuid
+      output_format: FileExportFormat /* The output format of the file conversion. */
       /* nullable:true, description:The output format options of the file conversion. */
-      output_format_options?: OutputFormat3d_type
+      output_format_options?: OutputFormat3d
       outputs?: {
         [key: string]: /*{
   "title": "String",
@@ -303,9 +303,9 @@ This is the same as the API call ID. */
 }*/
         string
       }
-      src_format: FileImportFormat_type /* The source format of the file conversion. */
+      src_format: FileImportFormat /* The source format of the file conversion. */
       /* nullable:true, description:The source format options of the file conversion. */
-      src_format_options?: InputFormat3d_type
+      src_format_options?: InputFormat3d
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -313,15 +313,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'file_conversion'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       /* nullable:true, description:The resulting center of mass. */
-      center_of_mass?: Point3d_type
+      center_of_mass?: Point3d
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -336,9 +336,9 @@ This is the same as the API call ID. */
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
-      output_unit: UnitLength_type /* The output unit for the center of mass. */
-      src_format: FileImportFormat_type /* The source format of the file. */
+      id: Uuid
+      output_unit: UnitLength /* The output unit for the center of mass. */
+      src_format: FileImportFormat /* The source format of the file. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -346,11 +346,11 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'file_center_of_mass'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       /*{
@@ -367,14 +367,14 @@ This is the same as the API call ID. */
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
+      id: Uuid
       /* nullable:true, format:double, description:The resulting mass. */
       mass?: number
       /* default:0, format:double, description:The material density as denoted by the user. */
       material_density?: number
-      material_density_unit: UnitDensity_type /* The material density unit. */
-      output_unit: UnitMass_type /* The output unit for the mass. */
-      src_format: FileImportFormat_type /* The source format of the file. */
+      material_density_unit: UnitDensity /* The material density unit. */
+      output_unit: UnitMass /* The output unit for the mass. */
+      src_format: FileImportFormat /* The source format of the file. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -382,11 +382,11 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'file_mass'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       /*{
@@ -403,9 +403,9 @@ This is the same as the API call ID. */
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
-      output_unit: UnitVolume_type /* The output unit for the volume. */
-      src_format: FileImportFormat_type /* The source format of the file. */
+      id: Uuid
+      output_unit: UnitVolume /* The output unit for the volume. */
+      src_format: FileImportFormat /* The source format of the file. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -413,11 +413,11 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'file_volume'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
       /* nullable:true, format:double, description:The resulting volume. */
       volume?: number
     }
@@ -438,12 +438,12 @@ This is the same as the API call ID. */
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
+      id: Uuid
       /* default:0, format:double, description:The material mass as denoted by the user. */
       material_mass?: number
-      material_mass_unit: UnitMass_type /* The material mass unit. */
-      output_unit: UnitDensity_type /* The output unit for the density. */
-      src_format: FileImportFormat_type /* The source format of the file. */
+      material_mass_unit: UnitMass /* The material mass unit. */
+      output_unit: UnitDensity /* The output unit for the density. */
+      src_format: FileImportFormat /* The source format of the file. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -451,11 +451,11 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'file_density'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       /*{
@@ -472,9 +472,9 @@ This is the same as the API call ID. */
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
-      output_unit: UnitArea_type /* The output unit for the surface area. */
-      src_format: FileImportFormat_type /* The source format of the file. */
+      id: Uuid
+      output_unit: UnitArea /* The output unit for the surface area. */
+      src_format: FileImportFormat /* The source format of the file. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -482,13 +482,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       /* nullable:true, format:double, description:The resulting surface area. */
       surface_area?: number
       type: 'file_surface_area'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       /*{
@@ -503,22 +503,22 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string
-      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+      conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string
       /* nullable:true, description:The error the function returned, if any. */
       error?: string
       /* nullable:true, description:Feedback from the user, if any. */
-      feedback?: MlFeedback_type
+      feedback?: MlFeedback
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
+      id: Uuid
       /* nullable:true, description:The version of kcl requested. */
       kcl_version?: string
-      model: TextToCadModel_type /* The model being used. */
+      model: TextToCadModel /* The model being used. */
       model_version: string /* The version of the model. */
-      output_format: FileExportFormat_type /* The output format of the model. */
+      output_format: FileExportFormat /* The output format of the model. */
       outputs?: {
         [key: string]: /*{
   "title": "String",
@@ -534,11 +534,11 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'text_to_cad'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       code: string /* The code for the new model. */
@@ -549,18 +549,18 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string
-      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+      conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string
       /* nullable:true, description:The error the function returned, if any. */
       error?: string
       /* nullable:true, description:Feedback from the user, if any. */
-      feedback?: MlFeedback_type
+      feedback?: MlFeedback
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
-      model: TextToCadModel_type /* The model being used. */
+      id: Uuid
+      model: TextToCadModel /* The model being used. */
       model_version: string /* The version of the model. */
       original_source_code: string /* The original source code for the model, previous to the changes. */
       /*{
@@ -568,7 +568,7 @@ This is the same as the API call ID. */
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges."
 }*/
       prompt?: string
-      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */
+      source_ranges: SourceRangePrompt[] /* The source ranges the user suggested to change. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -576,11 +576,11 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'text_to_cad_iteration'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       /*{
@@ -590,23 +590,23 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string
-      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+      conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string
       /* nullable:true, description:The error the function returned, if any. */
       error?: string
       /* nullable:true, description:Feedback from the user, if any. */
-      feedback?: MlFeedback_type
+      feedback?: MlFeedback
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
+      id: Uuid
       /*{
   "nullable": true,
   "description": "The version of kcl to use. If empty, the latest version will be used."
 }*/
       kcl_version?: string
-      model: TextToCadModel_type /* The model being used. */
+      model: TextToCadModel /* The model being used. */
       model_version: string /* The version of the model. */
       outputs?: { [key: string]: string }
       /*{
@@ -619,7 +619,7 @@ This is the same as the API call ID. */
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files."
 }*/
       prompt?: string
-      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */
+      source_ranges: SourceRangePrompt[] /* The source ranges the user suggested to change. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -627,15 +627,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'text_to_cad_multi_file_iteration'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
 
-export interface AsyncApiCallResultsPage_type {
-  items: AsyncApiCall_type[] /* list of items on this page of results */
+export interface AsyncApiCallResultsPage {
+  items: AsyncApiCall[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -643,7 +643,7 @@ export interface AsyncApiCallResultsPage_type {
   next_page?: string
 }
 
-export type AsyncApiCallType_type =
+export type AsyncApiCallType =
   | 'file_conversion'
   | 'file_volume'
   | 'file_center_of_mass'
@@ -654,11 +654,11 @@ export type AsyncApiCallType_type =
   | 'text_to_cad_iteration'
   | 'text_to_cad_multi_file_iteration'
 
-export interface AuthApiKeyResponse_type {
+export interface AuthApiKeyResponse {
   session_token: string /* The session token */
 }
 
-export interface AuthCallback_type {
+export interface AuthCallback {
   code?: string /* The authorization code. */
   /*{
   "nullable": true,
@@ -673,24 +673,22 @@ export interface AuthCallback_type {
   user?: string
 }
 
-export type Axis_type = 'y' | 'z'
+export type Axis = 'y' | 'z'
 
-export interface AxisDirectionPair_type {
-  axis: Axis_type /* Axis specifier. */
-  direction: Direction_type /* Specifies which direction the axis is pointing. */
+export interface AxisDirectionPair {
+  axis: Axis /* Axis specifier. */
+  direction: Direction /* Specifies which direction the axis is pointing. */
 }
 
-export type BatchResponse_type =
+export type BatchResponse =
+  | { response: OkModelingCmdResponse /* Response to the modeling command. */ }
   | {
-      response: OkModelingCmdResponse_type /* Response to the modeling command. */
-    }
-  | {
-      errors: ApiError_type[] /* Errors that occurred during the modeling command. */
+      errors: ApiError[] /* Errors that occurred during the modeling command. */
     }
 
-export interface BillingInfo_type {
+export interface BillingInfo {
   /* nullable:true, description:The address of the customer. */
-  address?: AddressDetails_type
+  address?: AddressDetails
   name?: string /* The name of the customer. */
   /*{
   "title": "String",
@@ -701,54 +699,52 @@ export interface BillingInfo_type {
   phone?: string
 }
 
-export type BlockReason_type =
-  | 'missing_payment_method'
-  | 'payment_method_failed'
+export type BlockReason = 'missing_payment_method' | 'payment_method_failed'
 
-export interface BooleanIntersection_type {
+export interface BooleanIntersection {
   /*{
   "format": "uuid"
 }*/
   extra_solid_ids?: string[]
 }
 
-export interface BooleanSubtract_type {
+export interface BooleanSubtract {
   /*{
   "format": "uuid"
 }*/
   extra_solid_ids?: string[]
 }
 
-export interface BooleanUnion_type {
+export interface BooleanUnion {
   /*{
   "format": "uuid"
 }*/
   extra_solid_ids?: string[]
 }
 
-export interface CameraDragEnd_type {
-  settings: CameraSettings_type /* Camera settings */
+export interface CameraDragEnd {
+  settings: CameraSettings /* Camera settings */
 }
 
-export type CameraDragInteractionType_type =
+export type CameraDragInteractionType =
   | 'pan'
   | 'rotate'
   | 'rotatetrackball'
   | 'zoom'
 
-export interface CameraDragMove_type {
-  settings: CameraSettings_type /* Camera settings */
+export interface CameraDragMove {
+  settings: CameraSettings /* Camera settings */
 }
 
-export type CameraDragStart_type = {} /* Empty object */
+export interface CameraDragStart {} /* Empty object */
 
-export type CameraMovement_type = 'vantage' | 'none'
+export type CameraMovement = 'vantage' | 'none'
 
-export interface CameraSettings_type {
-  center: Point3d_type /* Camera's look-at center (center-pos gives viewing vector) */
+export interface CameraSettings {
+  center: Point3d /* Camera's look-at center (center-pos gives viewing vector) */
   /* nullable:true, format:float, description:Camera's field-of-view angle (if ortho is false) */
   fov_y?: number
-  orientation: Point4d_type /* The Camera's orientation (in the form of a quaternion) */
+  orientation: Point4d /* The Camera's orientation (in the form of a quaternion) */
   ortho: boolean /* Whether or not the camera is in ortho mode */
   /*{
   "nullable": true,
@@ -756,11 +752,11 @@ export interface CameraSettings_type {
   "description": "The camera's ortho scale (derived from viewing distance if ortho is true)"
 }*/
   ortho_scale?: number
-  pos: Point3d_type /* Camera position (vantage) */
-  up: Point3d_type /* Camera's world-space up vector */
+  pos: Point3d /* Camera position (vantage) */
+  up: Point3d /* Camera's world-space up vector */
 }
 
-export interface CameraViewState_type {
+export interface CameraViewState {
   /*{
   "format": "float"
 }*/
@@ -778,24 +774,24 @@ export interface CameraViewState_type {
   /*{
   "$ref": "#/components/schemas/Point3d"
 }*/
-  pivot_position: Point3d_type
+  pivot_position: Point3d
   /*{
   "$ref": "#/components/schemas/Point4d"
 }*/
-  pivot_rotation: Point4d_type
+  pivot_rotation: Point4d
   /*{
   "$ref": "#/components/schemas/WorldCoordinateSystem"
 }*/
-  world_coord_system: WorldCoordinateSystem_type
+  world_coord_system: WorldCoordinateSystem
 }
 
-export interface CardDetails_type {
+export interface CardDetails {
   /* Card brand.
 
 Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
   brand?: string
   /* default:{}, description:Checks on Card address and CVC if provided. */
-  checks?: PaymentMethodCardChecks_type
+  checks?: PaymentMethodCardChecks
   country?: string /* Two-letter ISO code representing the country of the card. */
   /*{
   "default": 0,
@@ -817,12 +813,12 @@ Can be `credit`, `debit`, `prepaid`, or `unknown`. */
   last4?: string /* The last four digits of the card. */
 }
 
-export interface CenterOfMass_type {
-  center_of_mass: Point3d_type /* The center of mass. */
-  output_unit: UnitLength_type /* The output unit for the center of mass. */
+export interface CenterOfMass {
+  center_of_mass: Point3d /* The center of mass. */
+  output_unit: UnitLength /* The output unit for the center of mass. */
 }
 
-export interface ClientMetrics_type {
+export interface ClientMetrics {
   /*{
   "nullable": true,
   "format": "uint32",
@@ -926,7 +922,7 @@ export interface ClientMetrics_type {
   rtc_total_pauses_duration_sec?: number
 }
 
-export interface ClosePath_type {
+export interface ClosePath {
   /*{
   "format": "uuid",
   "description": "The UUID of the lone face of the resulting solid2D."
@@ -934,9 +930,9 @@ export interface ClosePath_type {
   face_id: string
 }
 
-export type CodeLanguage_type = 'go' | 'python' | 'node'
+export type CodeLanguage = 'go' | 'python' | 'node'
 
-export type CodeOption_type =
+export type CodeOption =
   /* Code option for running and verifying kcl.
 
 <details><summary>JSON schema</summary>
@@ -944,15 +940,15 @@ export type CodeOption_type =
 ```json { "title": "CodeOption", "description": "Code option for running and verifying kcl.", "type": "string", "enum": [ "parse", "execute", "cleanup", "mock_execute" ] } ``` </details> */
   'parse' | 'execute' | 'cleanup' | 'mock_execute'
 
-export interface CodeOutput_type {
-  output_files?: OutputFile_type[] /* The contents of the files requested if they were passed. */
+export interface CodeOutput {
+  output_files?: OutputFile[] /* The contents of the files requested if they were passed. */
   /* default:, description:The stderr of the code. */
   stderr?: string
   /* default:, description:The stdout of the code. */
   stdout?: string
 }
 
-export interface Color_type {
+export interface Color {
   /* format:float, description:Alpha */
   a: number
   /* format:float, description:Blue */
@@ -963,7 +959,7 @@ export interface Color_type {
   r: number
 }
 
-export interface ComplementaryEdges_type {
+export interface ComplementaryEdges {
   /*{
   "format": "uuid"
 }*/
@@ -976,39 +972,39 @@ export interface ComplementaryEdges_type {
   opposite_id?: string
 }
 
-export interface ComponentTransform_type {
+export interface ComponentTransform {
   /*{
   "nullable": true,
   "description": "Rotate component of the transform. The rotation is specified as an axis and an angle (xyz are the components of the axis, w is the angle in degrees)."
 }*/
-  rotate_angle_axis?: TransformByForPoint4d_type
+  rotate_angle_axis?: TransformByForPoint4d
   /*{
   "nullable": true,
   "description": "Rotate component of the transform. The rotation is specified as a roll, pitch, yaw."
 }*/
-  rotate_rpy?: TransformByForPoint3d_type
+  rotate_rpy?: TransformByForPoint3d
   /* nullable:true, description:Scale component of the transform. */
-  scale?: TransformByForPoint3d_type
+  scale?: TransformByForPoint3d
   /* nullable:true, description:Translate component of the transform. */
-  translate?: TransformByForPoint3d_type
+  translate?: TransformByForPoint3d
 }
 
-export interface Conversation_type {
+export interface Conversation {
   /* title:DateTime, format:date-time, description:The date and time the conversation was created. */
   created_at: string
   first_prompt: string /* The prompt that started this conversation. */
-  id: Uuid_type /* The unique identifier for the conversation. */
+  id: Uuid /* The unique identifier for the conversation. */
   /*{
   "title": "DateTime",
   "format": "date-time",
   "description": "The date and time the conversation was last updated."
 }*/
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the conversation. */
+  user_id: Uuid /* The user ID of the user who created the conversation. */
 }
 
-export interface ConversationResultsPage_type {
-  items: Conversation_type[] /* list of items on this page of results */
+export interface ConversationResultsPage {
+  items: Conversation[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -1016,15 +1012,15 @@ export interface ConversationResultsPage_type {
   next_page?: string
 }
 
-export interface ConversionParams_type {
-  output_format: OutputFormat3d_type /* Describes the output file(s). */
-  src_format: InputFormat3d_type /* Describes the input file(s). */
+export interface ConversionParams {
+  output_format: OutputFormat3d /* Describes the output file(s). */
+  src_format: InputFormat3d /* Describes the input file(s). */
 }
 
-export type CountryCode_type =
+export type CountryCode =
   string /* An ISO-3166 alpha-2 country code. Always uppercase. */
 
-export interface Coupon_type {
+export interface Coupon {
   /*{
   "nullable": true,
   "title": "double",
@@ -1049,7 +1045,7 @@ export interface Coupon_type {
   percent_off?: number
 }
 
-export interface CreateShortlinkRequest_type {
+export interface CreateShortlinkRequest {
   /*{
   "nullable": true,
   "description": "The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here."
@@ -1064,17 +1060,15 @@ export interface CreateShortlinkRequest_type {
   url: string
 }
 
-export interface CreateShortlinkResponse_type {
+export interface CreateShortlinkResponse {
   key: string /* The key for this url. This is what you use to update or delete the specific shortlink. */
   /* format:uri, description:The shortened url. */
   url: string
 }
 
-export type CreatedAtSortMode_type =
-  | 'created_at_ascending'
-  | 'created_at_descending'
+export type CreatedAtSortMode = 'created_at_ascending' | 'created_at_descending'
 
-export interface CrmData_type {
+export interface CrmData {
   /* nullable:true, description:The industry of the user. */
   cad_industry?: string
   /* nullable:true, description:The user type. */
@@ -1083,34 +1077,34 @@ export interface CrmData_type {
   number_of_cad_users?: string
 }
 
-export type Currency_type =
+export type Currency =
   /* Currency is the list of supported currencies. Always lowercase.
 
 This comes from the Stripe API docs: For more details see <https://support.stripe.com/questions/which-currencies-does-stripe-support>. */
   string
 
-export interface CurveGetControlPoints_type {
-  control_points: Point3d_type[] /* Control points in the curve. */
+export interface CurveGetControlPoints {
+  control_points: Point3d[] /* Control points in the curve. */
 }
 
-export interface CurveGetEndPoints_type {
-  end: Point3d_type /* End */
-  start: Point3d_type /* Start */
+export interface CurveGetEndPoints {
+  end: Point3d /* End */
+  start: Point3d /* Start */
 }
 
-export interface CurveGetType_type {
-  curve_type: CurveType_type /* Curve type */
+export interface CurveGetType {
+  curve_type: CurveType /* Curve type */
 }
 
-export type CurveSetConstraint_type = {} /* Empty object */
+export interface CurveSetConstraint {} /* Empty object */
 
-export type CurveType_type =
+export type CurveType =
   /* The type of Curve (embedded within path) */
   'line' | 'arc' | 'nurbs'
 
-export interface Customer_type {
+export interface Customer {
   /* nullable:true, description:The customer's address. */
-  address?: AddressDetails_type
+  address?: AddressDetails
   /*{
   "title": "double",
   "default": 0,
@@ -1124,7 +1118,7 @@ export interface Customer_type {
   "default": "usd",
   "description": "Three-letter ISO code for the currency the customer can be charged in for recurring billing purposes."
 }*/
-  currency?: Currency_type
+  currency?: Currency
   /*{
   "default": false,
   "description": "When the customer's latest invoice is billed by charging automatically, `delinquent` is `true` if the invoice's latest charge failed.\n\nWhen the customer's latest invoice is billed by sending an invoice, `delinquent` is `true` if the invoice isn't paid by its due date.  If an invoice is marked uncollectible by dunning, `delinquent` doesn't get reset to `false`."
@@ -1144,16 +1138,16 @@ export interface Customer_type {
   phone?: string
 }
 
-export interface CustomerBalance_type {
+export interface CustomerBalance {
   /* title:DateTime, format:date-time, description:The date and time the balance was created. */
   created_at: string
-  id: Uuid_type /* The unique identifier for the balance. */
-  map_id: Uuid_type /* The mapping id of the user or org. */
+  id: Uuid /* The unique identifier for the balance. */
+  map_id: Uuid /* The mapping id of the user or org. */
   /*{
   "nullable": true,
   "description": "The enterprise price for the Modeling App subscription, if they are on the enterprise plan."
 }*/
-  modeling_app_enterprise_price?: SubscriptionTierPrice_type
+  modeling_app_enterprise_price?: SubscriptionTierPrice
   /*{
   "format": "uint64",
   "minimum": 0,
@@ -1179,7 +1173,7 @@ export interface CustomerBalance_type {
 }*/
   stable_api_credits_remaining_monetary_value: number
   /* nullable:true, description:Details about the subscription. */
-  subscription_details?: ZooProductSubscriptions_type
+  subscription_details?: ZooProductSubscriptions
   /* nullable:true, description:The subscription ID for the user. */
   subscription_id?: string
   /*{
@@ -1193,45 +1187,45 @@ export interface CustomerBalance_type {
   updated_at: string
 }
 
-export type CutStrategy_type = 'basic' | 'csg' | 'automatic'
+export type CutStrategy = 'basic' | 'csg' | 'automatic'
 
-export type CutType_type = 'fillet' | 'chamfer'
+export type CutType = 'fillet' | 'chamfer'
 
-export type DefaultCameraCenterToScene_type = {} /* Empty object */
+export interface DefaultCameraCenterToScene {} /* Empty object */
 
-export type DefaultCameraCenterToSelection_type = {} /* Empty object */
+export interface DefaultCameraCenterToSelection {} /* Empty object */
 
-export type DefaultCameraFocusOn_type = {} /* Empty object */
+export interface DefaultCameraFocusOn {} /* Empty object */
 
-export interface DefaultCameraGetSettings_type {
-  settings: CameraSettings_type /* Camera settings */
+export interface DefaultCameraGetSettings {
+  settings: CameraSettings /* Camera settings */
 }
 
-export interface DefaultCameraGetView_type {
-  view: CameraViewState_type /* Camera view state */
+export interface DefaultCameraGetView {
+  view: CameraViewState /* Camera view state */
 }
 
-export type DefaultCameraLookAt_type = {} /* Empty object */
+export interface DefaultCameraLookAt {} /* Empty object */
 
-export type DefaultCameraPerspectiveSettings_type = {} /* Empty object */
+export interface DefaultCameraPerspectiveSettings {} /* Empty object */
 
-export type DefaultCameraSetOrthographic_type = {} /* Empty object */
+export interface DefaultCameraSetOrthographic {} /* Empty object */
 
-export type DefaultCameraSetPerspective_type = {} /* Empty object */
+export interface DefaultCameraSetPerspective {} /* Empty object */
 
-export type DefaultCameraSetView_type = {} /* Empty object */
+export interface DefaultCameraSetView {} /* Empty object */
 
-export interface DefaultCameraZoom_type {
-  settings: CameraSettings_type /* Camera settings */
+export interface DefaultCameraZoom {
+  settings: CameraSettings /* Camera settings */
 }
 
-export interface Density_type {
+export interface Density {
   /* format:double, description:The density. */
   density: number
-  output_unit: UnitDensity_type /* The output unit for the density. */
+  output_unit: UnitDensity /* The output unit for the density. */
 }
 
-export interface DerEncodedKeyPair_type {
+export interface DerEncodedKeyPair {
   /* title:String, format:byte, description:The request signing private key (pem file). */
   private_key: string
   /*{
@@ -1242,35 +1236,35 @@ export interface DerEncodedKeyPair_type {
   public_cert: string
 }
 
-export interface DeviceAccessTokenRequestForm_type {
+export interface DeviceAccessTokenRequestForm {
   /* format:uuid, description:The client ID. */
   client_id: string
   /* format:uuid, description:The device code. */
   device_code: string
-  grant_type: OAuth2GrantType_type /* The grant type. */
+  grant_type: OAuth2GrantType /* The grant type. */
 }
 
-export type DeviceAccessTokenUuid_type =
+export type DeviceAccessTokenUuid =
   string /* An auth token. A uuid with a prefix of dev- */
 
-export interface DeviceAuthConfirmParams_type {
+export interface DeviceAuthConfirmParams {
   user_code: string /* The user code. */
 }
 
-export interface DeviceAuthRequestForm_type {
+export interface DeviceAuthRequestForm {
   /* format:uuid, description:The client ID. */
   client_id: string
 }
 
-export type Direction_type = 'positive' | 'negative'
+export type Direction = 'positive' | 'negative'
 
-export type DisableDryRun_type = {} /* Empty object */
+export interface DisableDryRun {} /* Empty object */
 
-export interface Discount_type {
-  coupon: Coupon_type /* The coupon that applied to create this discount. */
+export interface Discount {
+  coupon: Coupon /* The coupon that applied to create this discount. */
 }
 
-export interface DiscountCode_type {
+export interface DiscountCode {
   code: string /* The code for the discount. */
   /* nullable:true, format:date-time, description:The date the discount code expires. */
   expires_at?: string
@@ -1278,13 +1272,13 @@ export interface DiscountCode_type {
   percent_off: number
 }
 
-export type DistanceType_type =
+export type DistanceType =
   | { type: 'euclidean' }
-  | { axis: GlobalAxis_type /* Global axis */; type: 'on_axis' }
+  | { axis: GlobalAxis /* Global axis */; type: 'on_axis' }
 
-export type DxfStorage_type = 'ascii' | 'binary'
+export type DxfStorage = 'ascii' | 'binary'
 
-export interface EdgeInfo_type {
+export interface EdgeInfo {
   /* format:uuid, description:The UUID of the id. */
   edge_id: string
   /*{
@@ -1293,9 +1287,9 @@ export interface EdgeInfo_type {
   faces: string[]
 }
 
-export type EdgeLinesVisible_type = {} /* Empty object */
+export interface EdgeLinesVisible {} /* Empty object */
 
-export interface EmailAuthenticationForm_type {
+export interface EmailAuthenticationForm {
   /*{
   "nullable": true,
   "format": "uri",
@@ -1306,97 +1300,97 @@ export interface EmailAuthenticationForm_type {
   email: string
 }
 
-export type EnableDryRun_type = {} /* Empty object */
+export interface EnableDryRun {} /* Empty object */
 
-export type EnableSketchMode_type = {} /* Empty object */
+export interface EnableSketchMode {} /* Empty object */
 
-export interface EngineUtilEvaluatePath_type {
-  pos: Point3d_type /* The evaluated path curve position */
+export interface EngineUtilEvaluatePath {
+  pos: Point3d /* The evaluated path curve position */
 }
 
-export type EnterpriseSubscriptionTierPrice_type =
+export type EnterpriseSubscriptionTierPrice =
   | {
-      interval: PlanInterval_type /* The interval the price is charged. */
+      interval: PlanInterval /* The interval the price is charged. */
       /* title:double, format:money-usd, description:The price. */
       price: number
       type: 'flat'
     }
   | {
-      interval: PlanInterval_type /* The interval the price is charged. */
+      interval: PlanInterval /* The interval the price is charged. */
       /* title:double, format:money-usd, description:The price. */
       price: number
       type: 'per_user'
     }
 
-export interface EntityCircularPattern_type {
-  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */
+export interface EntityCircularPattern {
+  entity_face_edge_ids?: FaceEdgeInfo[] /* The Face, edge, and entity ids of the patterned entities. */
 }
 
-export interface EntityClone_type {
-  face_edge_ids?: FaceEdgeInfo_type[] /* The Face and Edge Ids of the cloned entity. */
+export interface EntityClone {
+  face_edge_ids?: FaceEdgeInfo[] /* The Face and Edge Ids of the cloned entity. */
 }
 
-export type EntityFade_type = {} /* Empty object */
+export interface EntityFade {} /* Empty object */
 
-export interface EntityGetAllChildUuids_type {
+export interface EntityGetAllChildUuids {
   /*{
   "format": "uuid"
 }*/
   entity_ids: string[]
 }
 
-export interface EntityGetChildUuid_type {
+export interface EntityGetChildUuid {
   /* format:uuid, description:The UUID of the child entity. */
   entity_id: string
 }
 
-export interface EntityGetDistance_type {
-  max_distance: LengthUnit_type /* The maximum distance between the input entities. */
-  min_distance: LengthUnit_type /* The minimum distance between the input entities. */
+export interface EntityGetDistance {
+  max_distance: LengthUnit /* The maximum distance between the input entities. */
+  min_distance: LengthUnit /* The minimum distance between the input entities. */
 }
 
-export interface EntityGetNumChildren_type {
+export interface EntityGetNumChildren {
   /* format:uint32, minimum:0, description:The number of children the entity has. */
   num: number
 }
 
-export interface EntityGetParentId_type {
+export interface EntityGetParentId {
   /* format:uuid, description:The UUID of the parent entity. */
   entity_id: string
 }
 
-export interface EntityGetSketchPaths_type {
+export interface EntityGetSketchPaths {
   /*{
   "format": "uuid"
 }*/
   entity_ids: string[]
 }
 
-export interface EntityLinearPattern_type {
-  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */
+export interface EntityLinearPattern {
+  entity_face_edge_ids?: FaceEdgeInfo[] /* The Face, edge, and entity ids of the patterned entities. */
 }
 
-export interface EntityLinearPatternTransform_type {
-  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */
+export interface EntityLinearPatternTransform {
+  entity_face_edge_ids?: FaceEdgeInfo[] /* The Face, edge, and entity ids of the patterned entities. */
 }
 
-export type EntityMakeHelix_type = {} /* Empty object */
+export interface EntityMakeHelix {} /* Empty object */
 
-export type EntityMakeHelixFromEdge_type = {} /* Empty object */
+export interface EntityMakeHelixFromEdge {} /* Empty object */
 
-export type EntityMakeHelixFromParams_type = {} /* Empty object */
+export interface EntityMakeHelixFromParams {} /* Empty object */
 
-export interface EntityMirror_type {
-  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */
+export interface EntityMirror {
+  entity_face_edge_ids?: FaceEdgeInfo[] /* The Face, edge, and entity ids of the patterned entities. */
 }
 
-export interface EntityMirrorAcrossEdge_type {
-  entity_face_edge_ids?: FaceEdgeInfo_type[] /* The Face, edge, and entity ids of the patterned entities. */
+export interface EntityMirrorAcrossEdge {
+  entity_face_edge_ids?: FaceEdgeInfo[] /* The Face, edge, and entity ids of the patterned entities. */
 }
 
-export type EntitySetOpacity_type = {} /* Empty object */
+export interface EntitySetOpacity {} /* Empty object */
 
-export type EntityType_type =
+export type EntityType =
   /* The type of entity */
   | 'entity'
   | 'object'
@@ -1409,13 +1403,13 @@ export type EntityType_type =
   | 'plane'
   | 'vertex'
 
-export interface Error_type {
+export interface Error {
   error_code?: string
   message: string
   request_id: string
 }
 
-export type ErrorCode_type =
+export type ErrorCode =
   | 'internal_engine'
   | 'internal_api'
   | 'bad_request'
@@ -1428,7 +1422,7 @@ export type ErrorCode_type =
   | 'message_type_not_accepted'
   | 'message_type_not_accepted_for_web_r_t_c'
 
-export type Event_type = {
+export type Event = {
   /*{
   "nullable": true,
   "description": "Attachment URI for where the attachment is stored."
@@ -1436,7 +1430,7 @@ export type Event_type = {
   attachment_uri?: string
   /* format:date-time, description:Time this event was created. */
   created_at: string
-  event_type: ModelingAppEventType_type /* The specific event type from the modeling app. */
+  event_type: ModelingAppEventType /* The specific event type from the modeling app. */
   /* nullable:true, format:date-time, description:Time the associated attachment was last compiled. */
   last_compiled_at?: string
   /* nullable:true, description:Project descriptino as given by the user. */
@@ -1451,29 +1445,29 @@ export type Event_type = {
   user_id: string /* An anonymous user id generated client-side. */
 }
 
-export interface Export_type {
-  files: ExportFile_type[] /* The files that were exported. */
+export interface Export {
+  files: ExportFile[] /* The files that were exported. */
 }
 
-export interface Export2d_type {
-  files: ExportFile_type[] /* The files that were exported. */
+export interface Export2d {
+  files: ExportFile[] /* The files that were exported. */
 }
 
-export interface Export3d_type {
-  files: ExportFile_type[] /* The files that were exported. */
+export interface Export3d {
+  files: ExportFile[] /* The files that were exported. */
 }
 
-export interface ExportFile_type {
+export interface ExportFile {
   /* title:String, format:byte, description:The contents of the file, base64 encoded. */
   contents: string
   name: string /* The name of the file. */
 }
 
-export type ExtendPath_type = {} /* Empty object */
+export interface ExtendPath {} /* Empty object */
 
-export interface ExtendedUser_type {
+export interface ExtendedUser {
   /* nullable:true, description:If the user should be blocked and the reason why. */
-  block?: BlockReason_type
+  block?: BlockReason
   /*{
   "default": false,
   "description": "If we can train on the user's data. If the user is a member of an organization, the organization's setting will override this."
@@ -1501,7 +1495,7 @@ export interface ExtendedUser_type {
   "description": "The user's Hubspot ID. This is mostly used for internal mapping."
 }*/
   hubspot_contact_id?: string
-  id: Uuid_type /* The unique identifier for the user. */
+  id: Uuid /* The unique identifier for the user. */
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string
   /* default:false, description:If the user has finished onboarding. */
@@ -1526,8 +1520,8 @@ export interface ExtendedUser_type {
   updated_at: string
 }
 
-export interface ExtendedUserResultsPage_type {
-  items: ExtendedUser_type[] /* list of items on this page of results */
+export interface ExtendedUserResultsPage {
+  items: ExtendedUser[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -1535,18 +1529,18 @@ export interface ExtendedUserResultsPage_type {
   next_page?: string
 }
 
-export type Extrude_type = {} /* Empty object */
+export interface Extrude {} /* Empty object */
 
-export type ExtrudeMethod_type = 'new' | 'merge'
+export type ExtrudeMethod = 'new' | 'merge'
 
-export interface ExtrudedFaceInfo_type {
+export interface ExtrudedFaceInfo {
   /*{
   "nullable": true,
   "format": "uuid",
   "description": "The face made from the original 2D shape being extruded. If the solid is extruded from a shape which already has an ID (e.g. extruding something which was sketched on a face), this doesn't need to be sent."
 }*/
   bottom?: string
-  sides: SideFace_type[] /* Any intermediate sides between the top and bottom. */
+  sides: SideFace[] /* Any intermediate sides between the top and bottom. */
   /*{
   "format": "uuid",
   "description": "Top face of the extrusion (parallel and further away from the original 2D shape being extruded)."
@@ -1554,17 +1548,17 @@ export interface ExtrudedFaceInfo_type {
   top: string
 }
 
-export type ExtrusionFaceCapType_type = 'none' | 'top' | 'bottom' | 'both'
+export type ExtrusionFaceCapType = 'none' | 'top' | 'bottom' | 'both'
 
-export interface ExtrusionFaceInfo_type {
-  cap: ExtrusionFaceCapType_type /* Whether or not this extrusion face is a top/bottom cap face or not. Note that top/bottom cap faces will not have associated curve IDs. */
+export interface ExtrusionFaceInfo {
+  cap: ExtrusionFaceCapType /* Whether or not this extrusion face is a top/bottom cap face or not. Note that top/bottom cap faces will not have associated curve IDs. */
   /* nullable:true, format:uuid, description:Path component (curve) UUID. */
   curve_id?: string
   /* nullable:true, format:uuid, description:Face uuid. */
   face_id?: string
 }
 
-export interface FaceEdgeInfo_type {
+export interface FaceEdgeInfo {
   /*{
   "format": "uuid"
 }*/
@@ -1577,33 +1571,33 @@ export interface FaceEdgeInfo_type {
   object_id: string
 }
 
-export interface FaceGetCenter_type {
-  pos: Point3d_type /* The 3D position on the surface center of mass */
+export interface FaceGetCenter {
+  pos: Point3d /* The 3D position on the surface center of mass */
 }
 
-export interface FaceGetGradient_type {
-  df_du: Point3d_type /* dFdu */
-  df_dv: Point3d_type /* dFdv */
-  normal: Point3d_type /* Normal (||dFdu x dFdv||) */
+export interface FaceGetGradient {
+  df_du: Point3d /* dFdu */
+  df_dv: Point3d /* dFdv */
+  normal: Point3d /* Normal (||dFdu x dFdv||) */
 }
 
-export interface FaceGetPosition_type {
-  pos: Point3d_type /* The 3D position on the surface that was evaluated */
+export interface FaceGetPosition {
+  pos: Point3d /* The 3D position on the surface that was evaluated */
 }
 
-export interface FaceIsPlanar_type {
+export interface FaceIsPlanar {
   /* nullable:true, description:plane's origin */
-  origin?: Point3d_type
+  origin?: Point3d
   /* nullable:true, description:plane's local x-axis */
-  x_axis?: Point3d_type
+  x_axis?: Point3d
   /* nullable:true, description:plane's local y-axis */
-  y_axis?: Point3d_type
+  y_axis?: Point3d
   /* nullable:true, description:plane's local z-axis (normal) */
-  z_axis?: Point3d_type
+  z_axis?: Point3d
 }
 
-export interface FailureWebSocketResponse_type {
-  errors: ApiError_type[] /* The errors that occurred. */
+export interface FailureWebSocketResponse {
+  errors: ApiError[] /* The errors that occurred. */
   /*{
   "nullable": true,
   "format": "uuid",
@@ -1613,11 +1607,11 @@ export interface FailureWebSocketResponse_type {
   success: false
 }
 
-export type FbxStorage_type = 'ascii' | 'binary'
+export type FbxStorage = 'ascii' | 'binary'
 
-export interface FileCenterOfMass_type {
+export interface FileCenterOfMass {
   /* nullable:true, description:The resulting center of mass. */
-  center_of_mass?: Point3d_type
+  center_of_mass?: Point3d
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1632,9 +1626,9 @@ export interface FileCenterOfMass_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
-  output_unit: UnitLength_type /* The output unit for the center of mass. */
-  src_format: FileImportFormat_type /* The source format of the file. */
+  id: Uuid
+  output_unit: UnitLength /* The output unit for the center of mass. */
+  src_format: FileImportFormat /* The source format of the file. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1642,13 +1636,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export interface FileConversion_type {
+export interface FileConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1663,10 +1657,10 @@ export interface FileConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
-  output_format: FileExportFormat_type /* The output format of the file conversion. */
+  id: Uuid
+  output_format: FileExportFormat /* The output format of the file conversion. */
   /* nullable:true, description:The output format options of the file conversion. */
-  output_format_options?: OutputFormat3d_type
+  output_format_options?: OutputFormat3d
   outputs?: {
     [key: string]: /*{
   "title": "String",
@@ -1674,9 +1668,9 @@ This is the same as the API call ID. */
 }*/
     string
   }
-  src_format: FileImportFormat_type /* The source format of the file conversion. */
+  src_format: FileImportFormat /* The source format of the file conversion. */
   /* nullable:true, description:The source format options of the file conversion. */
-  src_format_options?: InputFormat3d_type
+  src_format_options?: InputFormat3d
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1684,13 +1678,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export interface FileDensity_type {
+export interface FileDensity {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1707,12 +1701,12 @@ export interface FileDensity_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The material mass as denoted by the user. */
   material_mass?: number
-  material_mass_unit: UnitMass_type /* The material mass unit. */
-  output_unit: UnitDensity_type /* The output unit for the density. */
-  src_format: FileImportFormat_type /* The source format of the file. */
+  material_mass_unit: UnitMass /* The material mass unit. */
+  output_unit: UnitDensity /* The output unit for the density. */
+  src_format: FileImportFormat /* The source format of the file. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1720,13 +1714,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type FileExportFormat_type =
+export type FileExportFormat =
   | 'fbx'
   | 'glb'
   | 'gltf'
@@ -1735,7 +1729,7 @@ export type FileExportFormat_type =
   | 'step'
   | 'stl'
 
-export type FileImportFormat_type =
+export type FileImportFormat =
   | 'fbx'
   | 'gltf'
   | 'obj'
@@ -1744,7 +1738,7 @@ export type FileImportFormat_type =
   | 'step'
   | 'stl'
 
-export interface FileMass_type {
+export interface FileMass {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1759,14 +1753,14 @@ export interface FileMass_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* nullable:true, format:double, description:The resulting mass. */
   mass?: number
   /* default:0, format:double, description:The material density as denoted by the user. */
   material_density?: number
-  material_density_unit: UnitDensity_type /* The material density unit. */
-  output_unit: UnitMass_type /* The output unit for the mass. */
-  src_format: FileImportFormat_type /* The source format of the file. */
+  material_density_unit: UnitDensity /* The material density unit. */
+  output_unit: UnitMass /* The output unit for the mass. */
+  src_format: FileImportFormat /* The source format of the file. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1774,13 +1768,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export interface FileSurfaceArea_type {
+export interface FileSurfaceArea {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1795,9 +1789,9 @@ export interface FileSurfaceArea_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
-  output_unit: UnitArea_type /* The output unit for the surface area. */
-  src_format: FileImportFormat_type /* The source format of the file. */
+  id: Uuid
+  output_unit: UnitArea /* The output unit for the surface area. */
+  src_format: FileImportFormat /* The source format of the file. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1805,15 +1799,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* nullable:true, format:double, description:The resulting surface area. */
   surface_area?: number
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export interface FileVolume_type {
+export interface FileVolume {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1828,9 +1822,9 @@ export interface FileVolume_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
-  output_unit: UnitVolume_type /* The output unit for the volume. */
-  src_format: FileImportFormat_type /* The source format of the file. */
+  id: Uuid
+  output_unit: UnitVolume /* The output unit for the volume. */
+  src_format: FileImportFormat /* The source format of the file. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -1838,45 +1832,45 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
   /* nullable:true, format:double, description:The resulting volume. */
   volume?: number
 }
 
-export interface GetEntityType_type {
-  entity_type: EntityType_type /* The type of the entity. */
+export interface GetEntityType {
+  entity_type: EntityType /* The type of the entity. */
 }
 
-export interface GetNumObjects_type {
+export interface GetNumObjects {
   /* format:uint32, minimum:0, description:The number of objects in the scene. */
   num_objects: number
 }
 
-export interface GetSketchModePlane_type {
-  origin: Point3d_type /* The origin. */
-  x_axis: Point3d_type /* The x axis. */
-  y_axis: Point3d_type /* The y axis. */
-  z_axis: Point3d_type /* The z axis (normal). */
+export interface GetSketchModePlane {
+  origin: Point3d /* The origin. */
+  x_axis: Point3d /* The x axis. */
+  y_axis: Point3d /* The y axis. */
+  z_axis: Point3d /* The z axis (normal). */
 }
 
-export type GlobalAxis_type = 'x' | 'y' | 'z'
+export type GlobalAxis = 'x' | 'y' | 'z'
 
-export type GltfPresentation_type = 'compact' | 'pretty'
+export type GltfPresentation = 'compact' | 'pretty'
 
-export type GltfStorage_type = 'binary' | 'standard' | 'embedded'
+export type GltfStorage = 'binary' | 'standard' | 'embedded'
 
-export type HandleMouseDragEnd_type = {} /* Empty object */
+export interface HandleMouseDragEnd {} /* Empty object */
 
-export type HandleMouseDragMove_type = {} /* Empty object */
+export interface HandleMouseDragMove {} /* Empty object */
 
-export type HandleMouseDragStart_type = {} /* Empty object */
+export interface HandleMouseDragStart {} /* Empty object */
 
-export type HighlightSetEntities_type = {} /* Empty object */
+export interface HighlightSetEntities {} /* Empty object */
 
-export interface HighlightSetEntity_type {
+export interface HighlightSetEntity {
   /* nullable:true, format:uuid, description:The UUID of the entity that was highlighted. */
   entity_id?: string
   /*{
@@ -1888,7 +1882,7 @@ export interface HighlightSetEntity_type {
   sequence?: number
 }
 
-export interface IceServer_type {
+export interface IceServer {
   /* nullable:true, description:Credentials for a given TURN server. */
   credential?: string
   urls: string[]
@@ -1896,7 +1890,7 @@ export interface IceServer_type {
   username?: string
 }
 
-export type IdpMetadataSource_type =
+export type IdpMetadataSource =
   | {
       type: 'url'
       /*{
@@ -1916,9 +1910,9 @@ export type IdpMetadataSource_type =
       type: 'base64_encoded_xml'
     }
 
-export type ImageFormat_type = 'png' | 'jpeg'
+export type ImageFormat = 'png' | 'jpeg'
 
-export interface ImportFile_type {
+export interface ImportFile {
   /*{
   "format": "uint8",
   "minimum": 0
@@ -1927,18 +1921,18 @@ export interface ImportFile_type {
   path: string /* The file's full path, including file extension. */
 }
 
-export interface ImportFiles_type {
+export interface ImportFiles {
   /* format:uuid, description:ID of the imported 3D models within the scene. */
   object_id: string
 }
 
-export interface ImportedGeometry_type {
+export interface ImportedGeometry {
   /* format:uuid, description:ID of the imported 3D models within the scene. */
   id: string
   value: string[]
 }
 
-export type InputFormat3d_type =
+export type InputFormat3d =
   | { type: 'fbx' }
   | { type: 'gltf' }
   | {
@@ -1947,14 +1941,14 @@ export type InputFormat3d_type =
 Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System_type
+      coords: System
       type: 'obj'
       /* The units of the input data.
 
 This is very important for correct scaling and when calculating physics properties like mass, etc.
 
 Defaults to millimeters. */
-      units: UnitLength_type
+      units: UnitLength
     }
   | {
       /* Co-ordinate system of input data.
@@ -1962,14 +1956,14 @@ Defaults to millimeters. */
 Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System_type
+      coords: System
       type: 'ply'
       /* The units of the input data.
 
 This is very important for correct scaling and when calculating physics properties like mass, etc.
 
 Defaults to millimeters. */
-      units: UnitLength_type
+      units: UnitLength
     }
   | {
       /*{
@@ -1993,17 +1987,17 @@ Defaults to millimeters. */
 Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System_type
+      coords: System
       type: 'stl'
       /* The units of the input data.
 
 This is very important for correct scaling and when calculating physics properties like mass, etc.
 
 Defaults to millimeters. */
-      units: UnitLength_type
+      units: UnitLength
     }
 
-export interface InquiryForm_type {
+export interface InquiryForm {
   /* nullable:true, description:The company name. */
   company?: string
   /* format:email, description:The email address of the user. */
@@ -2011,14 +2005,14 @@ export interface InquiryForm_type {
   first_name: string /* The first name of the user. */
   /* nullable:true, description:The industry of the user. */
   industry?: string
-  inquiry_type: InquiryType_type /* The type of inquiry. */
+  inquiry_type: InquiryType /* The type of inquiry. */
   last_name: string /* The last name of the user. */
   message: string /* The message content. */
   /* nullable:true, description:The phone number of the user. */
   phone?: string
 }
 
-export type InquiryType_type =
+export type InquiryType =
   | 'general_inquiry'
   | 'sales_question'
   | 'developer_inquiry'
@@ -2028,7 +2022,7 @@ export type InquiryType_type =
   | 'account_management'
   | 'other_support_inquiry'
 
-export interface Invoice_type {
+export interface Invoice {
   /*{
   "title": "double",
   "default": 0,
@@ -2068,7 +2062,7 @@ export interface Invoice_type {
   "default": "usd",
   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
 }*/
-  currency?: Currency_type
+  currency?: Currency
   /*{
   "format": "email",
   "description": "The email address for the customer. Until the invoice is finalized, this field will equal customer.email. Once the invoice is finalized, this field will no longer be updated."
@@ -2077,12 +2071,12 @@ export interface Invoice_type {
   customer_id?: string /* Customer ID. The unique identifier for the customer this invoice belongs to. This is the customer ID in the payments service, not our database customer ID. */
   default_payment_method?: string /* Default payment method. */
   description?: string /* Description of the invoice. */
-  discounts?: Discount_type[] /* The discounts applied to the invoice. This is an array of discount objects. */
+  discounts?: Discount[] /* The discounts applied to the invoice. This is an array of discount objects. */
   id?: string /* Unique identifier for the object. */
   /* The individual line items that make up the invoice.
 
 `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any. */
-  lines?: InvoiceLineItem_type[]
+  lines?: InvoiceLineItem[]
   metadata?: { [key: string]: string }
   number?: string /* A unique, identifying string that appears on emails sent to the customer for this invoice. */
   /*{
@@ -2098,7 +2092,7 @@ export interface Invoice_type {
   "nullable": true,
   "description": "The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`."
 }*/
-  status?: InvoiceStatus_type
+  status?: InvoiceStatus
   /*{
   "title": "double",
   "default": 0,
@@ -2128,7 +2122,7 @@ export interface Invoice_type {
   url?: string
 }
 
-export interface InvoiceLineItem_type {
+export interface InvoiceLineItem {
   /*{
   "title": "double",
   "default": 0,
@@ -2140,21 +2134,16 @@ export interface InvoiceLineItem_type {
   "default": "usd",
   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
 }*/
-  currency?: Currency_type
+  currency?: Currency
   description?: string /* The description. */
   id?: string /* Unique identifier for the object. */
   invoice_item?: string /* The ID of the invoice item associated with this line item if any. */
   metadata?: { [key: string]: string }
 }
 
-export type InvoiceStatus_type =
-  | 'draft'
-  | 'open'
-  | 'paid'
-  | 'uncollectible'
-  | 'void'
+export type InvoiceStatus = 'draft' | 'open' | 'paid' | 'uncollectible' | 'void'
 
-export interface IpAddrInfo_type {
+export interface IpAddrInfo {
   /* nullable:true, format:int64, description:Autonomous System Number. */
   asn?: number
   /* nullable:true, description:City name. */
@@ -2167,7 +2156,7 @@ export interface IpAddrInfo_type {
   "nullable": true,
   "description": "Two-letter country code (e.g., \"NL\" for Netherlands)."
 }*/
-  country_code?: CountryCode_type
+  country_code?: CountryCode
   /*{
   "nullable": true,
   "description": "Three-letter country code (e.g., \"NLD\" for Netherlands)."
@@ -2203,7 +2192,7 @@ export interface IpAddrInfo_type {
   timezone?: string
 }
 
-export interface KclCodeCompletionParams_type {
+export interface KclCodeCompletionParams {
   /* default:, description:The language of the code. */
   language?: string
   /*{
@@ -2231,9 +2220,9 @@ export interface KclCodeCompletionParams_type {
   trim_by_indentation?: boolean
 }
 
-export interface KclCodeCompletionRequest_type {
+export interface KclCodeCompletionRequest {
   /* default:{language:, trim_by_indentation:false}, description:Extra parameters for the completions. */
-  extra?: KclCodeCompletionParams_type
+  extra?: KclCodeCompletionParams
   /*{
   "nullable": true,
   "format": "uint16",
@@ -2269,39 +2258,39 @@ export interface KclCodeCompletionRequest_type {
   top_p?: number
 }
 
-export interface KclCodeCompletionResponse_type {
+export interface KclCodeCompletionResponse {
   completions: string[]
 }
 
-export interface KclModel_type {
+export interface KclModel {
   code: string /* The KCL code. */
 }
 
-export type LengthUnit_type = number
+export type LengthUnit = number
 
-export interface Loft_type {
+export interface Loft {
   /* format:uuid, description:The UUID of the newly created solid loft. */
   solid_id: string
 }
 
-export type MakeAxesGizmo_type = {} /* Empty object */
+export interface MakeAxesGizmo {} /* Empty object */
 
-export interface MakeOffsetPath_type {
+export interface MakeOffsetPath {
   /*{
   "format": "uuid"
 }*/
   entity_ids: string[]
 }
 
-export type MakePlane_type = {} /* Empty object */
+export interface MakePlane {} /* Empty object */
 
-export interface Mass_type {
+export interface Mass {
   /* format:double, description:The mass. */
   mass: number
-  output_unit: UnitMass_type /* The output unit for the mass. */
+  output_unit: UnitMass /* The output unit for the mass. */
 }
 
-export type Method_type =
+export type Method =
   | 'OPTIONS'
   | 'GET'
   | 'POST'
@@ -2313,7 +2302,7 @@ export type Method_type =
   | 'PATCH'
   | 'EXTENSION'
 
-export type MlCopilotClientMessage_type =
+export type MlCopilotClientMessage =
   | { headers: { [key: string]: string }; type: 'headers' }
   | {
       content: string /* The content of the user's message. */
@@ -2329,32 +2318,28 @@ export type MlCopilotClientMessage_type =
   "description": "The project name, if any. This can be used to associate the message with a specific project."
 }*/
       project_name?: string
-      source_ranges?: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */
+      source_ranges?: SourceRangePrompt[] /* The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */
       type: 'user'
     }
   | {
-      command: MlCopilotSystemCommand_type /* The content of the system message. */
+      command: MlCopilotSystemCommand /* The content of the system message. */
       type: 'system'
     }
 
-export type MlCopilotServerMessage_type =
+export type MlCopilotServerMessage =
   | {
       delta: {
         delta: string /* The delta text, which is a part of the response that is being streamed. */
       }
     }
-  | {
-      tool_output: {
-        result: MlToolResult_type /* The result of the tool call. */
-      }
-    }
+  | { tool_output: { result: MlToolResult /* The result of the tool call. */ } }
   | { error: { detail: string /* The error message. */ } }
   | { info: { text: string /* The informational text. */ } }
   | {
       /*{
   "$ref": "#/components/schemas/ReasoningMessage"
 }*/
-      reasoning: ReasoningMessage_type
+      reasoning: ReasoningMessage
     }
   | {
       end_of_stream: {
@@ -2366,15 +2351,11 @@ export type MlCopilotServerMessage_type =
       }
     }
 
-export type MlCopilotSystemCommand_type = 'new' | 'bye'
+export type MlCopilotSystemCommand = 'new' | 'bye'
 
-export type MlFeedback_type =
-  | 'thumbs_up'
-  | 'thumbs_down'
-  | 'accepted'
-  | 'rejected'
+export type MlFeedback = 'thumbs_up' | 'thumbs_down' | 'accepted' | 'rejected'
 
-export interface MlPrompt_type {
+export interface MlPrompt {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -2386,18 +2367,18 @@ export interface MlPrompt_type {
   "nullable": true,
   "description": "The id for the conversation related to this prompt."
 }*/
-  conversation_id?: Uuid_type
+  conversation_id?: Uuid
   /* title:DateTime, format:date-time, description:The date and time the ML prompt was created. */
   created_at: string
   /* nullable:true, description:The error message if the prompt failed. */
   error?: string
   /* nullable:true, description:Feedback from the user, if any. */
-  feedback?: MlFeedback_type
-  id: Uuid_type /* The unique identifier for the ML prompt. */
+  feedback?: MlFeedback
+  id: Uuid /* The unique identifier for the ML prompt. */
   /* nullable:true, description:The KCL version being used. */
   kcl_version?: string
   /* nullable:true, description:The metadata for the prompt. */
-  metadata?: MlPromptMetadata_type
+  metadata?: MlPromptMetadata
   model_version: string /* The version of the model. */
   /*{
   "nullable": true,
@@ -2417,23 +2398,23 @@ export interface MlPrompt_type {
   "description": "When the prompt was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the prompt. */
-  type: MlPromptType_type /* The type of prompt. */
+  status: ApiCallStatus /* The status of the prompt. */
+  type: MlPromptType /* The type of prompt. */
   /* title:DateTime, format:date-time, description:The date and time the ML prompt was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the ML prompt. */
+  user_id: Uuid /* The user ID of the user who created the ML prompt. */
 }
 
-export interface MlPromptMetadata_type {
+export interface MlPromptMetadata {
   /* nullable:true, description:Code for the model. */
   code?: string
   /* nullable:true, description:The original source code for the model. */
   original_source_code?: string
-  source_ranges?: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */
+  source_ranges?: SourceRangePrompt[] /* The source ranges the user suggested to change. */
 }
 
-export interface MlPromptResultsPage_type {
-  items: MlPrompt_type[] /* list of items on this page of results */
+export interface MlPromptResultsPage {
+  items: MlPrompt[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -2441,13 +2422,13 @@ export interface MlPromptResultsPage_type {
   next_page?: string
 }
 
-export type MlPromptType_type =
+export type MlPromptType =
   | 'text_to_cad'
   | 'text_to_kcl'
   | 'text_to_kcl_iteration'
   | 'text_to_kcl_multi_file_iteration'
 
-export type MlToolResult_type =
+export type MlToolResult =
   | {
       /*{
   "nullable": true,
@@ -2479,18 +2460,18 @@ export type MlToolResult_type =
       type: 'mechanical_knowledge_base'
     }
 
-export type ModelingAppEventType_type = 'successful_compile_before_close'
+export type ModelingAppEventType = 'successful_compile_before_close'
 
-export type ModelingAppIndividualSubscriptionTier_type = 'free' | 'plus' | 'pro'
+export type ModelingAppIndividualSubscriptionTier = 'free' | 'plus' | 'pro'
 
-export type ModelingAppOrganizationSubscriptionTier_type = 'team' | 'enterprise'
+export type ModelingAppOrganizationSubscriptionTier = 'team' | 'enterprise'
 
-export type ModelingAppShareLinks_type =
+export type ModelingAppShareLinks =
   | 'public'
   | 'password_protected'
   | 'organization_only'
 
-export interface ModelingAppSubscriptionTier_type {
+export interface ModelingAppSubscriptionTier {
   /*{
   "nullable": true,
   "format": "double",
@@ -2498,9 +2479,9 @@ export interface ModelingAppSubscriptionTier_type {
 }*/
   annual_discount?: number
   description: string /* A description of the tier. */
-  endpoints_included?: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */
+  endpoints_included?: ApiEndpoint[] /* The Zoo API endpoints that are included when through an approved zoo tool. */
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
-  features?: SubscriptionTierFeature_type[]
+  features?: SubscriptionTierFeature[]
   /*{
   "default": 0,
   "format": "uint64",
@@ -2514,7 +2495,7 @@ export interface ModelingAppSubscriptionTier_type {
   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month."
 }*/
   monthly_pay_as_you_go_api_credits_monetary_value: number
-  name: ModelingAppSubscriptionTierName_type /* The name of the tier. */
+  name: ModelingAppSubscriptionTierName /* The name of the tier. */
   /*{
   "title": "double",
   "default": 0,
@@ -2522,22 +2503,22 @@ export interface ModelingAppSubscriptionTier_type {
   "description": "The price of an API credit (meaning 1 credit = 1 minute of API usage)."
 }*/
   pay_as_you_go_api_credit_price?: number
-  price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */
-  share_links?: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */
-  support_tier: SupportTier_type /* The support tier the subscription provides. */
-  training_data_behavior: SubscriptionTrainingDataBehavior_type /* The behavior of the users data (can it be used for training, etc). */
-  type: SubscriptionTierType_type /* If the tier is offered for an individual or an org. */
-  zoo_tools_included?: ZooTool_type[] /* The Zoo tools that you can call unlimited times with this tier. */
+  price: SubscriptionTierPrice /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */
+  share_links?: ModelingAppShareLinks[] /* The options for sharable links through the modeling app. */
+  support_tier: SupportTier /* The support tier the subscription provides. */
+  training_data_behavior: SubscriptionTrainingDataBehavior /* The behavior of the users data (can it be used for training, etc). */
+  type: SubscriptionTierType /* If the tier is offered for an individual or an org. */
+  zoo_tools_included?: ZooTool[] /* The Zoo tools that you can call unlimited times with this tier. */
 }
 
-export type ModelingAppSubscriptionTierName_type =
+export type ModelingAppSubscriptionTierName =
   | 'free'
   | 'plus'
   | 'pro'
   | 'team'
   | 'enterprise'
 
-export type ModelingCmd_type =
+export type ModelingCmd =
   | {
       path_json: string /* The path in json form (the serialized result of the kcl Sketch/Path object */
       /*{
@@ -2549,33 +2530,33 @@ export type ModelingCmd_type =
     }
   | { type: 'start_path' }
   | {
-      path: ModelingCmdId_type /* The ID of the command which created the path. */
-      to: Point3d_type /* Where the path's pen should be. */
+      path: ModelingCmdId /* The ID of the command which created the path. */
+      to: Point3d /* Where the path's pen should be. */
       type: 'move_path_pen'
     }
   | {
-      path: ModelingCmdId_type /* The ID of the command which created the path. */
-      segment: PathSegment_type /* Segment to append to the path. This segment will implicitly begin at the current "pen" location. */
+      path: ModelingCmdId /* The ID of the command which created the path. */
+      segment: PathSegment /* Segment to append to the path. This segment will implicitly begin at the current "pen" location. */
       type: 'extend_path'
     }
   | {
-      distance: LengthUnit_type /* How far off the plane to extrude */
+      distance: LengthUnit /* How far off the plane to extrude */
       /*{
   "default": "merge",
   "description": "Should the extrusion create a new object or be part of the existing object."
 }*/
-      extrude_method?: ExtrudeMethod_type
+      extrude_method?: ExtrudeMethod
       /*{
   "nullable": true,
   "description": "Which IDs should the new faces have? If this isn't given, the engine will generate IDs."
 }*/
-      faces?: ExtrudedFaceInfo_type
+      faces?: ExtrudedFaceInfo
       /*{
   "default": "None",
   "description": "Should the extrusion also extrude in the opposite direction? If so, this specifies its distance."
 }*/
-      opposite?: OppositeForLengthUnit_type
-      target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */
+      opposite?: OppositeForLengthUnit
+      target: ModelingCmdId /* Which sketch to extrude. Must be a closed 2D solid. */
       type: 'extrude'
     }
   | {
@@ -2586,41 +2567,41 @@ export type ModelingCmd_type =
   },
   "description": "Angle step interval (converted to whole number degrees and bounded between 4° and 90°)"
 }*/
-      angle_step_size?: Angle_type
+      angle_step_size?: Angle
       /* default:{x:0, y:0}, description:Center to twist about (relative to 2D sketch) */
-      center_2d?: Point2d_type
-      distance: LengthUnit_type /* How far off the plane to extrude */
+      center_2d?: Point2d
+      distance: LengthUnit /* How far off the plane to extrude */
       /*{
   "nullable": true,
   "description": "Which IDs should the new faces have? If this isn't given, the engine will generate IDs."
 }*/
-      faces?: ExtrudedFaceInfo_type
-      target: ModelingCmdId_type /* Which sketch to extrude. Must be a closed 2D solid. */
-      tolerance: LengthUnit_type /* The twisted surface loft tolerance */
-      total_rotation_angle: Angle_type /* Total rotation of the section */
+      faces?: ExtrudedFaceInfo
+      target: ModelingCmdId /* Which sketch to extrude. Must be a closed 2D solid. */
+      tolerance: LengthUnit /* The twisted surface loft tolerance */
+      total_rotation_angle: Angle /* Total rotation of the section */
       type: 'twist_extrude'
     }
   | {
       /* default:sketch_plane, description:What is this sweep relative to? */
-      relative_to?: RelativeTo_type
+      relative_to?: RelativeTo
       sectional: boolean /* If true, the sweep will be broken up into sub-sweeps (extrusions, revolves, sweeps) based on the trajectory path components. */
-      target: ModelingCmdId_type /* Which sketch to sweep. Must be a closed 2D solid. */
-      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */
-      trajectory: ModelingCmdId_type /* Path along which to sweep. */
+      target: ModelingCmdId /* Which sketch to sweep. Must be a closed 2D solid. */
+      tolerance: LengthUnit /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */
+      trajectory: ModelingCmdId /* Path along which to sweep. */
       type: 'sweep'
     }
   | {
-      angle: Angle_type /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */
-      axis: Point3d_type /* The axis of the extrusion (taken from the origin) */
+      angle: Angle /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */
+      axis: Point3d /* The axis of the extrusion (taken from the origin) */
       axis_is_2d: boolean /* If true, the axis is interpreted within the 2D space of the solid 2D's plane */
       /*{
   "default": "None",
   "description": "Should the revolution also revolve in the opposite direction along the given axis? If so, this specifies its angle."
 }*/
-      opposite?: OppositeForAngle_type
-      origin: Point3d_type /* The origin of the extrusion axis */
-      target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */
-      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */
+      opposite?: OppositeForAngle
+      origin: Point3d /* The origin of the extrusion axis */
+      target: ModelingCmdId /* Which sketch to revolve. Must be a closed 2D solid. */
+      tolerance: LengthUnit /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */
       type: 'revolve'
     }
   | {
@@ -2635,11 +2616,11 @@ export type ModelingCmd_type =
       hollow?: boolean
       /* format:uuid, description:Which Solid3D is being shelled. */
       object_id: string
-      shell_thickness: LengthUnit_type /* How thick the shell should be. Smaller values mean a thinner shell. */
+      shell_thickness: LengthUnit /* How thick the shell should be. Smaller values mean a thinner shell. */
       type: 'solid3d_shell_face'
     }
   | {
-      angle: Angle_type /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */
+      angle: Angle /* The signed angle of revolution (in degrees, must be <= 360 in either direction) */
       /*{
   "format": "uuid",
   "description": "The edge to use as the axis of revolution, must be linear and lie in the plane of the solid"
@@ -2649,9 +2630,9 @@ export type ModelingCmd_type =
   "default": "None",
   "description": "Should the revolution also revolve in the opposite direction along the given axis? If so, this specifies its angle."
 }*/
-      opposite?: OppositeForAngle_type
-      target: ModelingCmdId_type /* Which sketch to revolve. Must be a closed 2D solid. */
-      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */
+      opposite?: OppositeForAngle
+      target: ModelingCmdId /* Which sketch to revolve. Must be a closed 2D solid. */
+      tolerance: LengthUnit /* The maximum acceptable surface gap computed between the revolution surface joints. Must be positive (i.e. greater than zero). */
       type: 'revolve_about_edge'
     }
   | {
@@ -2667,7 +2648,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       section_ids: string[]
-      tolerance: LengthUnit_type /* Tolerance */
+      tolerance: LengthUnit /* Tolerance */
       type: 'loft'
       /*{
   "format": "uint32",
@@ -2682,12 +2663,12 @@ export type ModelingCmd_type =
       type: 'close_path'
     }
   | {
-      interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */
+      interaction: CameraDragInteractionType /* The type of camera drag interaction. */
       type: 'camera_drag_start'
-      window: Point2d_type /* The initial mouse position. */
+      window: Point2d /* The initial mouse position. */
     }
   | {
-      interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */
+      interaction: CameraDragInteractionType /* The type of camera drag interaction. */
       /*{
   "nullable": true,
   "format": "uint32",
@@ -2696,21 +2677,21 @@ export type ModelingCmd_type =
 }*/
       sequence?: number
       type: 'camera_drag_move'
-      window: Point2d_type /* The current mouse position. */
+      window: Point2d /* The current mouse position. */
     }
   | {
-      interaction: CameraDragInteractionType_type /* The type of camera drag interaction. */
+      interaction: CameraDragInteractionType /* The type of camera drag interaction. */
       type: 'camera_drag_end'
-      window: Point2d_type /* The final mouse position. */
+      window: Point2d /* The final mouse position. */
     }
   | { type: 'default_camera_get_settings' }
   | { type: 'default_camera_get_view' }
   | {
       type: 'default_camera_set_view'
-      view: CameraViewState_type /* Camera view state */
+      view: CameraViewState /* Camera view state */
     }
   | {
-      center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */
+      center: Point3d /* What the camera is looking at. Center of the camera's field of vision */
       /*{
   "nullable": true,
   "format": "uint32",
@@ -2719,11 +2700,11 @@ export type ModelingCmd_type =
 }*/
       sequence?: number
       type: 'default_camera_look_at'
-      up: Point3d_type /* Which way is "up", from the camera's point of view. */
-      vantage: Point3d_type /* Where the camera is positioned */
+      up: Point3d /* Which way is "up", from the camera's point of view. */
+      vantage: Point3d /* Where the camera is positioned */
     }
   | {
-      center: Point3d_type /* What the camera is looking at. Center of the camera's field of vision */
+      center: Point3d /* What the camera is looking at. Center of the camera's field of vision */
       /*{
   "nullable": true,
   "format": "float",
@@ -2738,8 +2719,8 @@ export type ModelingCmd_type =
 }*/
       sequence?: number
       type: 'default_camera_perspective_settings'
-      up: Point3d_type /* Which way is "up", from the camera's point of view. */
-      vantage: Point3d_type /* Where the camera is positioned */
+      up: Point3d /* Which way is "up", from the camera's point of view. */
+      vantage: Point3d /* Where the camera is positioned */
       /* nullable:true, format:float, description:The distance to the far clipping plane. */
       z_far?: number
       /* nullable:true, format:float, description:The distance to the near clipping plane. */
@@ -2758,7 +2739,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       entity_ids: string[]
-      format: OutputFormat2d_type /* The file format to export to. */
+      format: OutputFormat2d /* The file format to export to. */
       type: 'export2d'
     }
   | {
@@ -2766,7 +2747,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       entity_ids: string[]
-      format: OutputFormat3d_type /* The file format to export to. */
+      format: OutputFormat3d /* The file format to export to. */
       type: 'export3d'
     }
   | {
@@ -2774,7 +2755,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       entity_ids: string[]
-      format: OutputFormat3d_type /* The file format to export to. */
+      format: OutputFormat3d /* The file format to export to. */
       type: 'export'
     }
   | {
@@ -2805,7 +2786,7 @@ export type ModelingCmd_type =
       type: 'entity_get_sketch_paths'
     }
   | {
-      distance_type: DistanceType_type /* Type of distance to be measured. */
+      distance_type: DistanceType /* Type of distance to be measured. */
       /* format:uuid, description:ID of the first entity being queried. */
       entity_id1: string
       /* format:uuid, description:ID of the second entity being queried. */
@@ -2824,17 +2805,17 @@ export type ModelingCmd_type =
   "default": [],
   "description": "How to transform each repeated solid. The 0th transform will create the first copy of the entity. The total number of (optional) repetitions equals the size of this list."
 }*/
-      transform?: Transform_type[]
-      transforms?: Transform_type[][]
+      transform?: Transform[]
+      transforms?: Transform[][]
       type: 'entity_linear_pattern_transform'
     }
   | {
-      axis: Point3d_type /* Axis along which to make the copies. For Solid2d patterns, the z component is ignored. */
+      axis: Point3d /* Axis along which to make the copies. For Solid2d patterns, the z component is ignored. */
       /* format:uuid, description:ID of the entity being copied. */
       entity_id: string
       /* format:uint32, minimum:0, description:Number of repetitions to make. */
       num_repetitions: number
-      spacing: LengthUnit_type /* Spacing between repetitions. */
+      spacing: LengthUnit /* Spacing between repetitions. */
       type: 'entity_linear_pattern'
     }
   | {
@@ -2843,8 +2824,8 @@ export type ModelingCmd_type =
   "description": "Arc angle (in degrees) to place repetitions along."
 }*/
       arc_degrees: number
-      axis: Point3d_type /* Axis around which to make the copies. For Solid2d patterns, this is ignored. */
-      center: Point3d_type /* Point around which to make the copies. For Solid2d patterns, the z component is ignored. */
+      axis: Point3d /* Axis around which to make the copies. For Solid2d patterns, this is ignored. */
+      center: Point3d /* Point around which to make the copies. For Solid2d patterns, the z component is ignored. */
       /* format:uuid, description:ID of the entity being copied. */
       entity_id: string
       /* format:uint32, minimum:0, description:Number of repetitions to make. */
@@ -2856,23 +2837,23 @@ export type ModelingCmd_type =
       /* format:uuid, description:ID of the cylinder. */
       cylinder_id: string
       is_clockwise: boolean /* Is the helix rotation clockwise? */
-      length: LengthUnit_type /* Length of the helix. */
+      length: LengthUnit /* Length of the helix. */
       /* format:double, description:Number of revolutions. */
       revolutions: number
       /* default:{unit:degrees, value:0}, description:Start angle. */
-      start_angle?: Angle_type
+      start_angle?: Angle
       type: 'entity_make_helix'
     }
   | {
-      axis: Point3d_type /* Axis of the helix. The helix will be created around and in the direction of this axis. */
-      center: Point3d_type /* Center of the helix at the base of the helix. */
+      axis: Point3d /* Axis of the helix. The helix will be created around and in the direction of this axis. */
+      center: Point3d /* Center of the helix at the base of the helix. */
       is_clockwise: boolean /* Is the helix rotation clockwise? */
-      length: LengthUnit_type /* Length of the helix. */
-      radius: LengthUnit_type /* Radius of the helix. */
+      length: LengthUnit /* Length of the helix. */
+      radius: LengthUnit /* Radius of the helix. */
       /* format:double, description:Number of revolutions. */
       revolutions: number
       /* default:{unit:degrees, value:0}, description:Start angle. */
-      start_angle?: Angle_type
+      start_angle?: Angle
       type: 'entity_make_helix_from_params'
     }
   | {
@@ -2883,21 +2864,21 @@ export type ModelingCmd_type =
   "nullable": true,
   "description": "Length of the helix. If None, the length of the edge will be used instead."
 }*/
-      length?: LengthUnit_type
-      radius: LengthUnit_type /* Radius of the helix. */
+      length?: LengthUnit
+      radius: LengthUnit /* Radius of the helix. */
       /* format:double, description:Number of revolutions. */
       revolutions: number
       /* default:{unit:degrees, value:0}, description:Start angle. */
-      start_angle?: Angle_type
+      start_angle?: Angle
       type: 'entity_make_helix_from_edge'
     }
   | {
-      axis: Point3d_type /* Axis to use as mirror. */
+      axis: Point3d /* Axis to use as mirror. */
       /*{
   "format": "uuid"
 }*/
       ids: string[]
-      point: Point3d_type /* Point through which the mirror axis passes. */
+      point: Point3d /* Point through which the mirror axis passes. */
       type: 'entity_mirror'
     }
   | {
@@ -2913,8 +2894,8 @@ export type ModelingCmd_type =
       type: 'entity_mirror_across_edge'
     }
   | {
-      selected_at_window: Point2d_type /* Where in the window was selected */
-      selection_type: SceneSelectionType_type /* What entity was selected? */
+      selected_at_window: Point2d /* Where in the window was selected */
+      selection_type: SceneSelectionType /* What entity was selected? */
       type: 'select_with_point'
     }
   | {
@@ -2940,7 +2921,7 @@ export type ModelingCmd_type =
       type: 'select_replace'
     }
   | {
-      selected_at_window: Point2d_type /* Coordinates of the window being clicked */
+      selected_at_window: Point2d /* Coordinates of the window being clicked */
       /*{
   "nullable": true,
   "format": "uint32",
@@ -2958,15 +2939,15 @@ export type ModelingCmd_type =
       type: 'highlight_set_entities'
     }
   | {
-      annotation_type: AnnotationType_type /* What type of annotation to create. */
+      annotation_type: AnnotationType /* What type of annotation to create. */
       clobber: boolean /* If true, any existing drawables within the obj will be replaced (the object will be reset) */
-      options: AnnotationOptions_type /* What should the annotation contain? */
+      options: AnnotationOptions /* What should the annotation contain? */
       type: 'new_annotation'
     }
   | {
       /* format:uuid, description:Which annotation to update */
       annotation_id: string
-      options: AnnotationOptions_type /* If any of these fields are set, they will overwrite the previous options for the annotation. */
+      options: AnnotationOptions /* If any of these fields are set, they will overwrite the previous options for the annotation. */
       type: 'update_annotation'
     }
   | {
@@ -2987,7 +2968,7 @@ export type ModelingCmd_type =
   | {
       /* format:float, description:Ambient Occlusion of the new material */
       ambient_occlusion: number
-      color: Color_type /* Color of the new material */
+      color: Color /* Color of the new material */
       /* format:float, description:Metalness of the new material */
       metalness: number
       /* format:uuid, description:Which object to change */
@@ -3023,7 +3004,7 @@ export type ModelingCmd_type =
   "nullable": true,
   "description": "If given, only faces parallel to this vector will be considered."
 }*/
-      along_vector?: Point3d_type
+      along_vector?: Point3d
       /* format:uuid, description:Which edge you want the opposites of. */
       edge_id: string
       /* format:uuid, description:Which object is being queried. */
@@ -3077,7 +3058,7 @@ export type ModelingCmd_type =
     }
   | {
       /* default:fillet, description:How to apply the cut. */
-      cut_type?: CutType_type
+      cut_type?: CutType
       /* nullable:true, format:uuid, description:Which edge you want to fillet. */
       edge_id?: string
       /*{
@@ -3090,10 +3071,10 @@ export type ModelingCmd_type =
       extra_face_ids?: string[]
       /* format:uuid, description:Which object is being filletted. */
       object_id: string
-      radius: LengthUnit_type /* The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero). */
+      radius: LengthUnit /* The radius of the fillet. Measured in length (using the same units that the current sketch uses). Must be positive (i.e. greater than zero). */
       /* default:automatic, description:Which cutting algorithm to use. */
-      strategy?: CutStrategy_type
-      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the filleted surfaces. Must be positive (i.e. greater than zero). */
+      strategy?: CutStrategy
+      tolerance: LengthUnit /* The maximum acceptable surface gap computed between the filleted surfaces. Must be positive (i.e. greater than zero). */
       type: 'solid3d_fillet_edge'
     }
   | {
@@ -3105,7 +3086,7 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which face is being queried. */
       object_id: string
       type: 'face_get_position'
-      uv: Point2d_type /* The 2D parameter-space u,v position to evaluate the surface at */
+      uv: Point2d /* The 2D parameter-space u,v position to evaluate the surface at */
     }
   | {
       /* format:uuid, description:Which face is being queried. */
@@ -3116,7 +3097,7 @@ export type ModelingCmd_type =
       /* format:uuid, description:Which face is being queried. */
       object_id: string
       type: 'face_get_gradient'
-      uv: Point2d_type /* The 2D parameter-space u,v position to evaluate the surface at */
+      uv: Point2d /* The 2D parameter-space u,v position to evaluate the surface at */
     }
   | {
       front: boolean /* Bring to front = true, send to back = false. */
@@ -3149,22 +3130,19 @@ export type ModelingCmd_type =
   "description": "If true, the plane will be created but hidden initially."
 }*/
       hide?: boolean
-      origin: Point3d_type /* Origin of the plane */
-      size: LengthUnit_type /* What should the plane's span/extent? When rendered visually, this is both the width and height along X and Y axis respectively. */
+      origin: Point3d /* Origin of the plane */
+      size: LengthUnit /* What should the plane's span/extent? When rendered visually, this is both the width and height along X and Y axis respectively. */
       type: 'make_plane'
-      x_axis: Point3d_type /* What should the plane's X axis be? */
-      y_axis: Point3d_type /* What should the plane's Y axis be? */
+      x_axis: Point3d /* What should the plane's X axis be? */
+      y_axis: Point3d /* What should the plane's Y axis be? */
     }
   | {
-      color: Color_type /* What color it should be. */
+      color: Color /* What color it should be. */
       /* format:uuid, description:Which plane is being changed. */
       plane_id: string
       type: 'plane_set_color'
     }
-  | {
-      tool: SceneToolType_type /* What tool should be active. */
-      type: 'set_tool'
-    }
+  | { tool: SceneToolType /* What tool should be active. */; type: 'set_tool' }
   | {
       /*{
   "nullable": true,
@@ -3174,14 +3152,14 @@ export type ModelingCmd_type =
 }*/
       sequence?: number
       type: 'mouse_move'
-      window: Point2d_type /* Where the mouse is */
+      window: Point2d /* Where the mouse is */
     }
-  | { type: 'mouse_click'; window: Point2d_type /* Where the mouse is */ }
+  | { type: 'mouse_click'; window: Point2d /* Where the mouse is */ }
   | { type: 'sketch_mode_disable' }
   | { type: 'get_sketch_mode_plane' }
   | {
-      constraint_bound: PathComponentConstraintBound_type /* Which constraint to apply. */
-      constraint_type: PathComponentConstraintType_type /* What part of the curve should be constrained. */
+      constraint_bound: PathComponentConstraintBound /* Which constraint to apply. */
+      constraint_type: PathComponentConstraintType /* What part of the curve should be constrained. */
       /* format:uuid, description:Which curve to constrain. */
       object_id: string
       type: 'curve_set_constraint'
@@ -3196,23 +3174,23 @@ export type ModelingCmd_type =
   "nullable": true,
   "description": "If provided, ensures that the normal of the sketch plane must be aligned with this supplied normal (otherwise the camera position will be used to infer the normal to point towards the viewer)"
 }*/
-      planar_normal?: Point3d_type
+      planar_normal?: Point3d
       type: 'enable_sketch_mode'
     }
   | { type: 'enable_dry_run' }
   | { type: 'disable_dry_run' }
   | {
-      color: Color_type /* The color to set the background to. */
+      color: Color /* The color to set the background to. */
       type: 'set_background_color'
     }
   | {
       /* nullable:true, description:The color to set the tool line to. */
-      color?: Color_type
+      color?: Color
       type: 'set_current_tool_properties'
     }
   | {
       /* nullable:true, description:The default system color. */
-      color?: Color_type
+      color?: Color
       type: 'set_default_system_properties'
     }
   | {
@@ -3236,12 +3214,12 @@ export type ModelingCmd_type =
   | {
       /* format:uuid, description:The id of the plane used for the projection. */
       plane_id: string
-      points: Point3d_type[] /* The list of points that will be projected. */
+      points: Point3d[] /* The list of points that will be projected. */
       type: 'project_points_to_plane'
       use_plane_coords: boolean /* If true: the projected points are returned in the plane_id's coordinate sysetm. else: the projected points are returned in the world coordinate system. */
     }
   | {
-      format: ImageFormat_type /* What image format to return. */
+      format: ImageFormat /* What image format to return. */
       type: 'take_snapshot'
     }
   | {
@@ -3286,7 +3264,7 @@ export type ModelingCmd_type =
     }
   | {
       type: 'handle_mouse_drag_start'
-      window: Point2d_type /* The mouse position. */
+      window: Point2d /* The mouse position. */
     }
   | {
       /*{
@@ -3297,12 +3275,9 @@ export type ModelingCmd_type =
 }*/
       sequence?: number
       type: 'handle_mouse_drag_move'
-      window: Point2d_type /* The mouse position. */
+      window: Point2d /* The mouse position. */
     }
-  | {
-      type: 'handle_mouse_drag_end'
-      window: Point2d_type /* The mouse position. */
-    }
+  | { type: 'handle_mouse_drag_end'; window: Point2d /* The mouse position. */ }
   | {
       /*{
   "format": "uuid"
@@ -3314,7 +3289,7 @@ export type ModelingCmd_type =
       /* format:uuid, description:The plane you're intersecting against. */
       plane_id: string
       type: 'plane_intersect_and_project'
-      window: Point2d_type /* Window coordinates where the ray cast should be aimed. */
+      window: Point2d /* Window coordinates where the ray cast should be aimed. */
     }
   | {
       /* format:uuid, description:ID of the curve being queried. */
@@ -3338,13 +3313,13 @@ export type ModelingCmd_type =
       width: number
     }
   | {
-      files: ImportFile_type[] /* Files to import. */
-      format: InputFormat3d_type /* Input file format. */
+      files: ImportFile[] /* Files to import. */
+      format: InputFormat3d /* Input file format. */
       type: 'import_files'
     }
   | {
       type: 'set_scene_units'
-      unit: UnitLength_type /* Which units the scene uses. */
+      unit: UnitLength /* Which units the scene uses. */
     }
   | {
       /*{
@@ -3353,8 +3328,8 @@ export type ModelingCmd_type =
       entity_ids: string[]
       /* format:double, description:The material density. */
       material_density: number
-      material_density_unit: UnitDensity_type /* The material density unit. */
-      output_unit: UnitMass_type /* The output unit for the mass. */
+      material_density_unit: UnitDensity /* The material density unit. */
+      output_unit: UnitMass /* The output unit for the mass. */
       type: 'mass'
     }
   | {
@@ -3364,8 +3339,8 @@ export type ModelingCmd_type =
       entity_ids: string[]
       /* format:double, description:The material mass. */
       material_mass: number
-      material_mass_unit: UnitMass_type /* The material mass unit. */
-      output_unit: UnitDensity_type /* The output unit for the density. */
+      material_mass_unit: UnitMass /* The material mass unit. */
+      output_unit: UnitDensity /* The output unit for the density. */
       type: 'density'
     }
   | {
@@ -3373,7 +3348,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       entity_ids: string[]
-      output_unit: UnitVolume_type /* The output unit for the volume. */
+      output_unit: UnitVolume /* The output unit for the volume. */
       type: 'volume'
     }
   | {
@@ -3381,7 +3356,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       entity_ids: string[]
-      output_unit: UnitLength_type /* The output unit for the center of mass. */
+      output_unit: UnitLength /* The output unit for the center of mass. */
       type: 'center_of_mass'
     }
   | {
@@ -3389,7 +3364,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       entity_ids: string[]
-      output_unit: UnitArea_type /* The output unit for the surface area. */
+      output_unit: UnitArea /* The output unit for the surface area. */
       type: 'surface_area'
     }
   | {
@@ -3398,11 +3373,11 @@ export type ModelingCmd_type =
       uuid: string
     }
   | {
-      selection_type: SceneSelectionType_type /* What type of selection should occur when you select something? */
+      selection_type: SceneSelectionType /* What type of selection should occur when you select something? */
       type: 'set_selection_type'
     }
   | {
-      filter: EntityType_type[] /* If vector is empty, clear all filters. If vector is non-empty, only the given entity types will be selectable. */
+      filter: EntityType[] /* If vector is empty, clear all filters. If vector is non-empty, only the given entity types will be selectable. */
       type: 'set_selection_filter'
     }
   | { type: 'default_camera_set_orthographic' }
@@ -3411,7 +3386,7 @@ export type ModelingCmd_type =
   "nullable": true,
   "description": "If this is not given, use the same parameters as last time the perspective camera was used."
 }*/
-      parameters?: PerspectiveCameraParameters_type
+      parameters?: PerspectiveCameraParameters
       type: 'default_camera_set_perspective'
     }
   | {
@@ -3419,7 +3394,7 @@ export type ModelingCmd_type =
   "default": "vantage",
   "description": "Dictates whether or not the camera position should be adjusted during this operation If no movement is requested, the camera will orbit around the new center from its current position"
 }*/
-      camera_movement?: CameraMovement_type
+      camera_movement?: CameraMovement
       type: 'default_camera_center_to_selection'
     }
   | {
@@ -3427,7 +3402,7 @@ export type ModelingCmd_type =
   "default": "vantage",
   "description": "Dictates whether or not the camera position should be adjusted during this operation If no movement is requested, the camera will orbit around the new center from its current position"
 }*/
-      camera_movement?: CameraMovement_type
+      camera_movement?: CameraMovement
       type: 'default_camera_center_to_scene'
     }
   | {
@@ -3496,7 +3471,7 @@ export type ModelingCmd_type =
   | {
       /* format:uuid, description:Id of the object whose transform is to be set. */
       object_id: string
-      transforms: ComponentTransform_type[] /* List of transforms to be applied to the object. */
+      transforms: ComponentTransform[] /* List of transforms to be applied to the object. */
       type: 'set_object_transform'
     }
   | {
@@ -3504,7 +3479,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       solid_ids: string[]
-      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the joined solids. Must be positive (i.e. greater than zero). */
+      tolerance: LengthUnit /* The maximum acceptable surface gap computed between the joined solids. Must be positive (i.e. greater than zero). */
       type: 'boolean_union'
     }
   | {
@@ -3512,7 +3487,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       solid_ids: string[]
-      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the joined solids. Must be positive (i.e. greater than zero). */
+      tolerance: LengthUnit /* The maximum acceptable surface gap computed between the joined solids. Must be positive (i.e. greater than zero). */
       type: 'boolean_intersection'
     }
   | {
@@ -3520,7 +3495,7 @@ export type ModelingCmd_type =
   "format": "uuid"
 }*/
       target_ids: string[]
-      tolerance: LengthUnit_type /* The maximum acceptable surface gap computed between the target and the solids cut out from it. Must be positive (i.e. greater than zero). */
+      tolerance: LengthUnit /* The maximum acceptable surface gap computed between the target and the solids cut out from it. Must be positive (i.e. greater than zero). */
       /*{
   "format": "uuid"
 }*/
@@ -3539,13 +3514,13 @@ export type ModelingCmd_type =
   "description": "The object that will be offset (can be a path, sketch, or a solid)"
 }*/
       object_id: string
-      offset: LengthUnit_type /* The distance to offset the path (positive for outset, negative for inset) */
+      offset: LengthUnit /* The distance to offset the path (positive for outset, negative for inset) */
       type: 'make_offset_path'
     }
   | {
       /* format:uuid, description:The closed path to add a hole to. */
       object_id: string
-      offset: LengthUnit_type /* The distance to offset the path (positive for outset, negative for inset) */
+      offset: LengthUnit /* The distance to offset the path (positive for outset, negative for inset) */
       type: 'add_hole_from_offset'
     }
   | {
@@ -3560,7 +3535,7 @@ export type ModelingCmd_type =
     }
   | {
       type: 'set_grid_scale'
-      units: UnitLength_type /* Which units the `value` field uses. */
+      units: UnitLength /* Which units the `value` field uses. */
       /*{
   "format": "float",
   "description": "Distance between grid lines represents this much distance."
@@ -3569,23 +3544,23 @@ export type ModelingCmd_type =
     }
   | { type: 'set_grid_auto_scale' }
 
-export type ModelingCmdId_type =
+export type ModelingCmdId =
   /*{
   "format": "uuid",
   "description": "All commands have unique IDs. These should be randomly generated."
 }*/
   string
 
-export interface ModelingCmdReq_type {
-  cmd: ModelingCmd_type /* Which command to submit to the Kittycad engine. */
-  cmd_id: ModelingCmdId_type /* ID of command being submitted. */
+export interface ModelingCmdReq {
+  cmd: ModelingCmd /* Which command to submit to the Kittycad engine. */
+  cmd_id: ModelingCmdId /* ID of command being submitted. */
 }
 
-export interface ModelingSessionData_type {
+export interface ModelingSessionData {
   api_call_id: string /* ID of the API call this modeling session is using. Useful for tracing and debugging. */
 }
 
-export interface MouseClick_type {
+export interface MouseClick {
   /*{
   "format": "uuid"
 }*/
@@ -3596,13 +3571,13 @@ export interface MouseClick_type {
   entities_selected: string[]
 }
 
-export type MouseMove_type = {} /* Empty object */
+export interface MouseMove {} /* Empty object */
 
-export type MovePathPen_type = {} /* Empty object */
+export interface MovePathPen {} /* Empty object */
 
-export type NewAnnotation_type = {} /* Empty object */
+export interface NewAnnotation {} /* Empty object */
 
-export interface OAuth2ClientInfo_type {
+export interface OAuth2ClientInfo {
   csrf_token?: string /* Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */
   /* nullable:true, description:Nonce required for OIDC flows. */
   oidc_nonce?: string
@@ -3614,1022 +3589,1019 @@ export interface OAuth2ClientInfo_type {
   url?: string /* The URL for consent. */
 }
 
-export type OAuth2GrantType_type =
-  'urn:ietf:params:oauth:grant-type:device_code'
+export type OAuth2GrantType = 'urn:ietf:params:oauth:grant-type:device_code'
 
-export type ObjectBringToFront_type = {} /* Empty object */
+export interface ObjectBringToFront {} /* Empty object */
 
-export type ObjectSetMaterialParamsPbr_type = {} /* Empty object */
+export interface ObjectSetMaterialParamsPbr {} /* Empty object */
 
-export type ObjectVisible_type = {} /* Empty object */
+export interface ObjectVisible {} /* Empty object */
 
-export type OkModelingCmdResponse_type =
+export type OkModelingCmdResponse =
   | { type: 'empty' }
   | {
       /*{
   "$ref": "#/components/schemas/EngineUtilEvaluatePath"
 }*/
-      data: EngineUtilEvaluatePath_type
+      data: EngineUtilEvaluatePath
       type: 'engine_util_evaluate_path'
     }
   | {
       /*{
   "$ref": "#/components/schemas/StartPath"
 }*/
-      data: StartPath_type
+      data: StartPath
       type: 'start_path'
     }
   | {
       /*{
   "$ref": "#/components/schemas/MovePathPen"
 }*/
-      data: MovePathPen_type
+      data: MovePathPen
       type: 'move_path_pen'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ExtendPath"
 }*/
-      data: ExtendPath_type
+      data: ExtendPath
       type: 'extend_path'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Extrude"
 }*/
-      data: Extrude_type
+      data: Extrude
       type: 'extrude'
     }
   | {
       /*{
   "$ref": "#/components/schemas/TwistExtrude"
 }*/
-      data: TwistExtrude_type
+      data: TwistExtrude
       type: 'twist_extrude'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Sweep"
 }*/
-      data: Sweep_type
+      data: Sweep
       type: 'sweep'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Revolve"
 }*/
-      data: Revolve_type
+      data: Revolve
       type: 'revolve'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dShellFace"
 }*/
-      data: Solid3dShellFace_type
+      data: Solid3dShellFace
       type: 'solid3d_shell_face'
     }
   | {
       /*{
   "$ref": "#/components/schemas/RevolveAboutEdge"
 }*/
-      data: RevolveAboutEdge_type
+      data: RevolveAboutEdge
       type: 'revolve_about_edge'
     }
   | {
       /*{
   "$ref": "#/components/schemas/CameraDragStart"
 }*/
-      data: CameraDragStart_type
+      data: CameraDragStart
       type: 'camera_drag_start'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraLookAt"
 }*/
-      data: DefaultCameraLookAt_type
+      data: DefaultCameraLookAt
       type: 'default_camera_look_at'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraPerspectiveSettings"
 }*/
-      data: DefaultCameraPerspectiveSettings_type
+      data: DefaultCameraPerspectiveSettings
       type: 'default_camera_perspective_settings'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SelectAdd"
 }*/
-      data: SelectAdd_type
+      data: SelectAdd
       type: 'select_add'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SelectRemove"
 }*/
-      data: SelectRemove_type
+      data: SelectRemove
       type: 'select_remove'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SceneClearAll"
 }*/
-      data: SceneClearAll_type
+      data: SceneClearAll
       type: 'scene_clear_all'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SelectReplace"
 }*/
-      data: SelectReplace_type
+      data: SelectReplace
       type: 'select_replace'
     }
   | {
       /*{
   "$ref": "#/components/schemas/HighlightSetEntities"
 }*/
-      data: HighlightSetEntities_type
+      data: HighlightSetEntities
       type: 'highlight_set_entities'
     }
   | {
       /*{
   "$ref": "#/components/schemas/NewAnnotation"
 }*/
-      data: NewAnnotation_type
+      data: NewAnnotation
       type: 'new_annotation'
     }
   | {
       /*{
   "$ref": "#/components/schemas/UpdateAnnotation"
 }*/
-      data: UpdateAnnotation_type
+      data: UpdateAnnotation
       type: 'update_annotation'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EdgeLinesVisible"
 }*/
-      data: EdgeLinesVisible_type
+      data: EdgeLinesVisible
       type: 'edge_lines_visible'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ObjectVisible"
 }*/
-      data: ObjectVisible_type
+      data: ObjectVisible
       type: 'object_visible'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ObjectBringToFront"
 }*/
-      data: ObjectBringToFront_type
+      data: ObjectBringToFront
       type: 'object_bring_to_front'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ObjectSetMaterialParamsPbr"
 }*/
-      data: ObjectSetMaterialParamsPbr_type
+      data: ObjectSetMaterialParamsPbr
       type: 'object_set_material_params_pbr'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid2dAddHole"
 }*/
-      data: Solid2dAddHole_type
+      data: Solid2dAddHole
       type: 'solid2d_add_hole'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dFilletEdge"
 }*/
-      data: Solid3dFilletEdge_type
+      data: Solid3dFilletEdge
       type: 'solid3d_fillet_edge'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SendObject"
 }*/
-      data: SendObject_type
+      data: SendObject
       type: 'send_object'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntitySetOpacity"
 }*/
-      data: EntitySetOpacity_type
+      data: EntitySetOpacity
       type: 'entity_set_opacity'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityFade"
 }*/
-      data: EntityFade_type
+      data: EntityFade
       type: 'entity_fade'
     }
   | {
       /*{
   "$ref": "#/components/schemas/MakePlane"
 }*/
-      data: MakePlane_type
+      data: MakePlane
       type: 'make_plane'
     }
   | {
       /*{
   "$ref": "#/components/schemas/PlaneSetColor"
 }*/
-      data: PlaneSetColor_type
+      data: PlaneSetColor
       type: 'plane_set_color'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetTool"
 }*/
-      data: SetTool_type
+      data: SetTool
       type: 'set_tool'
     }
   | {
       /*{
   "$ref": "#/components/schemas/MouseMove"
 }*/
-      data: MouseMove_type
+      data: MouseMove
       type: 'mouse_move'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SketchModeDisable"
 }*/
-      data: SketchModeDisable_type
+      data: SketchModeDisable
       type: 'sketch_mode_disable'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EnableDryRun"
 }*/
-      data: EnableDryRun_type
+      data: EnableDryRun
       type: 'enable_dry_run'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DisableDryRun"
 }*/
-      data: DisableDryRun_type
+      data: DisableDryRun
       type: 'disable_dry_run'
     }
   | {
       /*{
   "$ref": "#/components/schemas/CurveSetConstraint"
 }*/
-      data: CurveSetConstraint_type
+      data: CurveSetConstraint
       type: 'curve_set_constraint'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EnableSketchMode"
 }*/
-      data: EnableSketchMode_type
+      data: EnableSketchMode
       type: 'enable_sketch_mode'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetBackgroundColor"
 }*/
-      data: SetBackgroundColor_type
+      data: SetBackgroundColor
       type: 'set_background_color'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetCurrentToolProperties"
 }*/
-      data: SetCurrentToolProperties_type
+      data: SetCurrentToolProperties
       type: 'set_current_tool_properties'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetDefaultSystemProperties"
 }*/
-      data: SetDefaultSystemProperties_type
+      data: SetDefaultSystemProperties
       type: 'set_default_system_properties'
     }
   | {
       /*{
   "$ref": "#/components/schemas/MakeAxesGizmo"
 }*/
-      data: MakeAxesGizmo_type
+      data: MakeAxesGizmo
       type: 'make_axes_gizmo'
     }
   | {
       /*{
   "$ref": "#/components/schemas/HandleMouseDragStart"
 }*/
-      data: HandleMouseDragStart_type
+      data: HandleMouseDragStart
       type: 'handle_mouse_drag_start'
     }
   | {
       /*{
   "$ref": "#/components/schemas/HandleMouseDragMove"
 }*/
-      data: HandleMouseDragMove_type
+      data: HandleMouseDragMove
       type: 'handle_mouse_drag_move'
     }
   | {
       /*{
   "$ref": "#/components/schemas/HandleMouseDragEnd"
 }*/
-      data: HandleMouseDragEnd_type
+      data: HandleMouseDragEnd
       type: 'handle_mouse_drag_end'
     }
   | {
       /*{
   "$ref": "#/components/schemas/RemoveSceneObjects"
 }*/
-      data: RemoveSceneObjects_type
+      data: RemoveSceneObjects
       type: 'remove_scene_objects'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ReconfigureStream"
 }*/
-      data: ReconfigureStream_type
+      data: ReconfigureStream
       type: 'reconfigure_stream'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetSceneUnits"
 }*/
-      data: SetSceneUnits_type
+      data: SetSceneUnits
       type: 'set_scene_units'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetSelectionType"
 }*/
-      data: SetSelectionType_type
+      data: SetSelectionType
       type: 'set_selection_type'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetSelectionFilter"
 }*/
-      data: SetSelectionFilter_type
+      data: SetSelectionFilter
       type: 'set_selection_filter'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraSetOrthographic"
 }*/
-      data: DefaultCameraSetOrthographic_type
+      data: DefaultCameraSetOrthographic
       type: 'default_camera_set_orthographic'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraSetPerspective"
 }*/
-      data: DefaultCameraSetPerspective_type
+      data: DefaultCameraSetPerspective
       type: 'default_camera_set_perspective'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraCenterToSelection"
 }*/
-      data: DefaultCameraCenterToSelection_type
+      data: DefaultCameraCenterToSelection
       type: 'default_camera_center_to_selection'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraCenterToScene"
 }*/
-      data: DefaultCameraCenterToScene_type
+      data: DefaultCameraCenterToScene
       type: 'default_camera_center_to_scene'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SelectClear"
 }*/
-      data: SelectClear_type
+      data: SelectClear
       type: 'select_clear'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Export2d"
 }*/
-      data: Export2d_type
+      data: Export2d
       type: 'export2d'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Export3d"
 }*/
-      data: Export3d_type
+      data: Export3d
       type: 'export3d'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Export"
 }*/
-      data: Export_type
+      data: Export
       type: 'export'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SelectWithPoint"
 }*/
-      data: SelectWithPoint_type
+      data: SelectWithPoint
       type: 'select_with_point'
     }
   | {
       /*{
   "$ref": "#/components/schemas/HighlightSetEntity"
 }*/
-      data: HighlightSetEntity_type
+      data: HighlightSetEntity
       type: 'highlight_set_entity'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityGetChildUuid"
 }*/
-      data: EntityGetChildUuid_type
+      data: EntityGetChildUuid
       type: 'entity_get_child_uuid'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityGetNumChildren"
 }*/
-      data: EntityGetNumChildren_type
+      data: EntityGetNumChildren
       type: 'entity_get_num_children'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityGetParentId"
 }*/
-      data: EntityGetParentId_type
+      data: EntityGetParentId
       type: 'entity_get_parent_id'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityGetAllChildUuids"
 }*/
-      data: EntityGetAllChildUuids_type
+      data: EntityGetAllChildUuids
       type: 'entity_get_all_child_uuids'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityGetSketchPaths"
 }*/
-      data: EntityGetSketchPaths_type
+      data: EntityGetSketchPaths
       type: 'entity_get_sketch_paths'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Loft"
 }*/
-      data: Loft_type
+      data: Loft
       type: 'loft'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ClosePath"
 }*/
-      data: ClosePath_type
+      data: ClosePath
       type: 'close_path'
     }
   | {
       /*{
   "$ref": "#/components/schemas/CameraDragMove"
 }*/
-      data: CameraDragMove_type
+      data: CameraDragMove
       type: 'camera_drag_move'
     }
   | {
       /*{
   "$ref": "#/components/schemas/CameraDragEnd"
 }*/
-      data: CameraDragEnd_type
+      data: CameraDragEnd
       type: 'camera_drag_end'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraGetSettings"
 }*/
-      data: DefaultCameraGetSettings_type
+      data: DefaultCameraGetSettings
       type: 'default_camera_get_settings'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraGetView"
 }*/
-      data: DefaultCameraGetView_type
+      data: DefaultCameraGetView
       type: 'default_camera_get_view'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraSetView"
 }*/
-      data: DefaultCameraSetView_type
+      data: DefaultCameraSetView
       type: 'default_camera_set_view'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraZoom"
 }*/
-      data: DefaultCameraZoom_type
+      data: DefaultCameraZoom
       type: 'default_camera_zoom'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ZoomToFit"
 }*/
-      data: ZoomToFit_type
+      data: ZoomToFit
       type: 'zoom_to_fit'
     }
   | {
       /*{
   "$ref": "#/components/schemas/OrientToFace"
 }*/
-      data: OrientToFace_type
+      data: OrientToFace
       type: 'orient_to_face'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ViewIsometric"
 }*/
-      data: ViewIsometric_type
+      data: ViewIsometric
       type: 'view_isometric'
     }
   | {
       /*{
   "$ref": "#/components/schemas/GetNumObjects"
 }*/
-      data: GetNumObjects_type
+      data: GetNumObjects
       type: 'get_num_objects'
     }
   | {
       /*{
   "$ref": "#/components/schemas/MakeOffsetPath"
 }*/
-      data: MakeOffsetPath_type
+      data: MakeOffsetPath
       type: 'make_offset_path'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetObjectTransform"
 }*/
-      data: SetObjectTransform_type
+      data: SetObjectTransform
       type: 'set_object_transform'
     }
   | {
       /*{
   "$ref": "#/components/schemas/AddHoleFromOffset"
 }*/
-      data: AddHoleFromOffset_type
+      data: AddHoleFromOffset
       type: 'add_hole_from_offset'
     }
   | {
       /*{
   "$ref": "#/components/schemas/DefaultCameraFocusOn"
 }*/
-      data: DefaultCameraFocusOn_type
+      data: DefaultCameraFocusOn
       type: 'default_camera_focus_on'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SelectGet"
 }*/
-      data: SelectGet_type
+      data: SelectGet
       type: 'select_get'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dGetAdjacencyInfo"
 }*/
-      data: Solid3dGetAdjacencyInfo_type
+      data: Solid3dGetAdjacencyInfo
       type: 'solid3d_get_adjacency_info'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dGetAllEdgeFaces"
 }*/
-      data: Solid3dGetAllEdgeFaces_type
+      data: Solid3dGetAllEdgeFaces
       type: 'solid3d_get_all_edge_faces'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dGetAllOppositeEdges"
 }*/
-      data: Solid3dGetAllOppositeEdges_type
+      data: Solid3dGetAllOppositeEdges
       type: 'solid3d_get_all_opposite_edges'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dGetOppositeEdge"
 }*/
-      data: Solid3dGetOppositeEdge_type
+      data: Solid3dGetOppositeEdge
       type: 'solid3d_get_opposite_edge'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dGetNextAdjacentEdge"
 }*/
-      data: Solid3dGetNextAdjacentEdge_type
+      data: Solid3dGetNextAdjacentEdge
       type: 'solid3d_get_next_adjacent_edge'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dGetPrevAdjacentEdge"
 }*/
-      data: Solid3dGetPrevAdjacentEdge_type
+      data: Solid3dGetPrevAdjacentEdge
       type: 'solid3d_get_prev_adjacent_edge'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dGetCommonEdge"
 }*/
-      data: Solid3dGetCommonEdge_type
+      data: Solid3dGetCommonEdge
       type: 'solid3d_get_common_edge'
     }
   | {
       /*{
   "$ref": "#/components/schemas/GetEntityType"
 }*/
-      data: GetEntityType_type
+      data: GetEntityType
       type: 'get_entity_type'
     }
   | {
       /*{
   "$ref": "#/components/schemas/CurveGetControlPoints"
 }*/
-      data: CurveGetControlPoints_type
+      data: CurveGetControlPoints
       type: 'curve_get_control_points'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ProjectEntityToPlane"
 }*/
-      data: ProjectEntityToPlane_type
+      data: ProjectEntityToPlane
       type: 'project_entity_to_plane'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ProjectPointsToPlane"
 }*/
-      data: ProjectPointsToPlane_type
+      data: ProjectPointsToPlane
       type: 'project_points_to_plane'
     }
   | {
       /*{
   "$ref": "#/components/schemas/CurveGetType"
 }*/
-      data: CurveGetType_type
+      data: CurveGetType
       type: 'curve_get_type'
     }
   | {
       /*{
   "$ref": "#/components/schemas/MouseClick"
 }*/
-      data: MouseClick_type
+      data: MouseClick
       type: 'mouse_click'
     }
   | {
       /*{
   "$ref": "#/components/schemas/TakeSnapshot"
 }*/
-      data: TakeSnapshot_type
+      data: TakeSnapshot
       type: 'take_snapshot'
     }
   | {
       /*{
   "$ref": "#/components/schemas/PathGetInfo"
 }*/
-      data: PathGetInfo_type
+      data: PathGetInfo
       type: 'path_get_info'
     }
   | {
       /*{
   "$ref": "#/components/schemas/PathSegmentInfo"
 }*/
-      data: PathSegmentInfo_type
+      data: PathSegmentInfo
       type: 'path_segment_info'
     }
   | {
       /*{
   "$ref": "#/components/schemas/PathGetCurveUuidsForVertices"
 }*/
-      data: PathGetCurveUuidsForVertices_type
+      data: PathGetCurveUuidsForVertices
       type: 'path_get_curve_uuids_for_vertices'
     }
   | {
       /*{
   "$ref": "#/components/schemas/PathGetCurveUuid"
 }*/
-      data: PathGetCurveUuid_type
+      data: PathGetCurveUuid
       type: 'path_get_curve_uuid'
     }
   | {
       /*{
   "$ref": "#/components/schemas/PathGetVertexUuids"
 }*/
-      data: PathGetVertexUuids_type
+      data: PathGetVertexUuids
       type: 'path_get_vertex_uuids'
     }
   | {
       /*{
   "$ref": "#/components/schemas/PathGetSketchTargetUuid"
 }*/
-      data: PathGetSketchTargetUuid_type
+      data: PathGetSketchTargetUuid
       type: 'path_get_sketch_target_uuid'
     }
   | {
       /*{
   "$ref": "#/components/schemas/CurveGetEndPoints"
 }*/
-      data: CurveGetEndPoints_type
+      data: CurveGetEndPoints
       type: 'curve_get_end_points'
     }
   | {
       /*{
   "$ref": "#/components/schemas/FaceIsPlanar"
 }*/
-      data: FaceIsPlanar_type
+      data: FaceIsPlanar
       type: 'face_is_planar'
     }
   | {
       /*{
   "$ref": "#/components/schemas/FaceGetPosition"
 }*/
-      data: FaceGetPosition_type
+      data: FaceGetPosition
       type: 'face_get_position'
     }
   | {
       /*{
   "$ref": "#/components/schemas/FaceGetCenter"
 }*/
-      data: FaceGetCenter_type
+      data: FaceGetCenter
       type: 'face_get_center'
     }
   | {
       /*{
   "$ref": "#/components/schemas/FaceGetGradient"
 }*/
-      data: FaceGetGradient_type
+      data: FaceGetGradient
       type: 'face_get_gradient'
     }
   | {
       /*{
   "$ref": "#/components/schemas/PlaneIntersectAndProject"
 }*/
-      data: PlaneIntersectAndProject_type
+      data: PlaneIntersectAndProject
       type: 'plane_intersect_and_project'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ImportFiles"
 }*/
-      data: ImportFiles_type
+      data: ImportFiles
       type: 'import_files'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ImportedGeometry"
 }*/
-      data: ImportedGeometry_type
+      data: ImportedGeometry
       type: 'imported_geometry'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Mass"
 }*/
-      data: Mass_type
+      data: Mass
       type: 'mass'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Volume"
 }*/
-      data: Volume_type
+      data: Volume
       type: 'volume'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Density"
 }*/
-      data: Density_type
+      data: Density
       type: 'density'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SurfaceArea"
 }*/
-      data: SurfaceArea_type
+      data: SurfaceArea
       type: 'surface_area'
     }
   | {
       /*{
   "$ref": "#/components/schemas/CenterOfMass"
 }*/
-      data: CenterOfMass_type
+      data: CenterOfMass
       type: 'center_of_mass'
     }
   | {
       /*{
   "$ref": "#/components/schemas/GetSketchModePlane"
 }*/
-      data: GetSketchModePlane_type
+      data: GetSketchModePlane
       type: 'get_sketch_mode_plane'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityGetDistance"
 }*/
-      data: EntityGetDistance_type
+      data: EntityGetDistance
       type: 'entity_get_distance'
     }
   | {
       /*{
   "$ref": "#/components/schemas/FaceEdgeInfo"
 }*/
-      data: FaceEdgeInfo_type
+      data: FaceEdgeInfo
       type: 'face_edge_info'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EdgeInfo"
 }*/
-      data: EdgeInfo_type
+      data: EdgeInfo
       type: 'edge_info'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityClone"
 }*/
-      data: EntityClone_type
+      data: EntityClone
       type: 'entity_clone'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityLinearPatternTransform"
 }*/
-      data: EntityLinearPatternTransform_type
+      data: EntityLinearPatternTransform
       type: 'entity_linear_pattern_transform'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityLinearPattern"
 }*/
-      data: EntityLinearPattern_type
+      data: EntityLinearPattern
       type: 'entity_linear_pattern'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityCircularPattern"
 }*/
-      data: EntityCircularPattern_type
+      data: EntityCircularPattern
       type: 'entity_circular_pattern'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityMirror"
 }*/
-      data: EntityMirror_type
+      data: EntityMirror
       type: 'entity_mirror'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityMirrorAcrossEdge"
 }*/
-      data: EntityMirrorAcrossEdge_type
+      data: EntityMirrorAcrossEdge
       type: 'entity_mirror_across_edge'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityMakeHelix"
 }*/
-      data: EntityMakeHelix_type
+      data: EntityMakeHelix
       type: 'entity_make_helix'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityMakeHelixFromParams"
 }*/
-      data: EntityMakeHelixFromParams_type
+      data: EntityMakeHelixFromParams
       type: 'entity_make_helix_from_params'
     }
   | {
       /*{
   "$ref": "#/components/schemas/EntityMakeHelixFromEdge"
 }*/
-      data: EntityMakeHelixFromEdge_type
+      data: EntityMakeHelixFromEdge
       type: 'entity_make_helix_from_edge'
     }
   | {
       /*{
   "$ref": "#/components/schemas/Solid3dGetExtrusionFaceInfo"
 }*/
-      data: Solid3dGetExtrusionFaceInfo_type
+      data: Solid3dGetExtrusionFaceInfo
       type: 'solid3d_get_extrusion_face_info'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ExtrusionFaceInfo"
 }*/
-      data: ExtrusionFaceInfo_type
+      data: ExtrusionFaceInfo
       type: 'extrusion_face_info'
     }
   | {
       /*{
   "$ref": "#/components/schemas/ComplementaryEdges"
 }*/
-      data: ComplementaryEdges_type
+      data: ComplementaryEdges
       type: 'complementary_edges'
     }
   | {
       /*{
   "$ref": "#/components/schemas/AdjacencyInfo"
 }*/
-      data: AdjacencyInfo_type
+      data: AdjacencyInfo
       type: 'adjacency_info'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetGridReferencePlane"
 }*/
-      data: SetGridReferencePlane_type
+      data: SetGridReferencePlane
       type: 'set_grid_reference_plane'
     }
   | {
       /*{
   "$ref": "#/components/schemas/BooleanUnion"
 }*/
-      data: BooleanUnion_type
+      data: BooleanUnion
       type: 'boolean_union'
     }
   | {
       /*{
   "$ref": "#/components/schemas/BooleanIntersection"
 }*/
-      data: BooleanIntersection_type
+      data: BooleanIntersection
       type: 'boolean_intersection'
     }
   | {
       /*{
   "$ref": "#/components/schemas/BooleanSubtract"
 }*/
-      data: BooleanSubtract_type
+      data: BooleanSubtract
       type: 'boolean_subtract'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetGridScale"
 }*/
-      data: SetGridScale_type
+      data: SetGridScale
       type: 'set_grid_scale'
     }
   | {
       /*{
   "$ref": "#/components/schemas/SetGridAutoScale"
 }*/
-      data: SetGridAutoScale_type
+      data: SetGridAutoScale
       type: 'set_grid_auto_scale'
     }
 
-export type OkWebSocketResponseData_type =
+export type OkWebSocketResponseData =
   | {
       data: {
-        ice_servers: IceServer_type[] /* Information about the ICE servers. */
+        ice_servers: IceServer[] /* Information about the ICE servers. */
       }
       type: 'ice_server_info'
     }
   | {
       data: {
-        candidate: RtcIceCandidateInit_type /* Information about the ICE candidate. */
+        candidate: RtcIceCandidateInit /* Information about the ICE candidate. */
       }
       type: 'trickle_ice'
     }
   | {
-      data: {
-        answer: RtcSessionDescription_type /* The session description. */
-      }
+      data: { answer: RtcSessionDescription /* The session description. */ }
       type: 'sdp_answer'
     }
   | {
       data: {
-        modeling_response: OkModelingCmdResponse_type /* The result of the command. */
+        modeling_response: OkModelingCmdResponse /* The result of the command. */
       }
       type: 'modeling'
     }
   | {
       data: {
         responses: {
-          [key: string]: BatchResponse_type
+          [key: string]: BatchResponse
         } /* For each request in the batch, maps its ID to the request's outcome. */
       }
       type: 'modeling_batch'
     }
-  | { data: { files: RawFile_type[] /* The exported files */ }; type: 'export' }
+  | { data: { files: RawFile[] /* The exported files */ }; type: 'export' }
   | { data: object; type: 'metrics_request' }
   | {
       data: {
-        session: ModelingSessionData_type /* Data about the Modeling Session (application-level). */
+        session: ModelingSessionData /* Data about the Modeling Session (application-level). */
       }
       type: 'modeling_session_data'
     }
@@ -4641,11 +4613,11 @@ export type OkWebSocketResponseData_type =
       type: 'debug'
     }
 
-export type OppositeForAngle_type = string
+export type OppositeForAngle = string
 
-export type OppositeForLengthUnit_type = string
+export type OppositeForLengthUnit = string
 
-export interface Org_type {
+export interface Org {
   /*{
   "nullable": true,
   "description": "If we should allow all future users who are created with email addresses from this domain to join the org."
@@ -4661,7 +4633,7 @@ export interface Org_type {
 }*/
   billing_email_verified?: string
   /* nullable:true, description:If the org should be blocked and the reason why. */
-  block?: BlockReason_type
+  block?: BlockReason
   /*{
   "default": false,
   "description": "If we can train on the orgs's data. This value overrides any individual user's `can_train_on_data` value if they are a member of the org."
@@ -4671,7 +4643,7 @@ export interface Org_type {
   created_at: string
   /* nullable:true, description:The org's domain. */
   domain?: string
-  id: Uuid_type /* The unique identifier for the org. */
+  id: Uuid /* The unique identifier for the org. */
   /*{
   "nullable": true,
   "title": "String",
@@ -4693,7 +4665,7 @@ export interface Org_type {
   updated_at: string
 }
 
-export interface OrgDetails_type {
+export interface OrgDetails {
   /*{
   "nullable": true,
   "description": "If we should allow all future users who are created with email addresses from this domain to join the org."
@@ -4720,7 +4692,7 @@ export interface OrgDetails_type {
   phone?: string
 }
 
-export interface OrgMember_type {
+export interface OrgMember {
   company?: string /* The user's company. */
   /* title:DateTime, format:date-time, description:The date and time the user was created. */
   created_at: string
@@ -4736,7 +4708,7 @@ export interface OrgMember_type {
   email_verified?: string
   first_name?: string /* The user's first name. */
   github?: string /* The user's GitHub handle. */
-  id: Uuid_type /* The unique identifier for the user. */
+  id: Uuid /* The unique identifier for the user. */
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string
   last_name?: string /* The user's last name. */
@@ -4748,13 +4720,13 @@ export interface OrgMember_type {
   "description": "The user's phone number."
 }*/
   phone?: string
-  role: OrgRole_type /* The user's role in the org. */
+  role: OrgRole /* The user's role in the org. */
   /* title:DateTime, format:date-time, description:The date and time the user was last updated. */
   updated_at: string
 }
 
-export interface OrgMemberResultsPage_type {
-  items: OrgMember_type[] /* list of items on this page of results */
+export interface OrgMemberResultsPage {
+  items: OrgMember[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -4762,8 +4734,8 @@ export interface OrgMemberResultsPage_type {
   next_page?: string
 }
 
-export interface OrgResultsPage_type {
-  items: Org_type[] /* list of items on this page of results */
+export interface OrgResultsPage {
+  items: Org[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -4771,18 +4743,18 @@ export interface OrgResultsPage_type {
   next_page?: string
 }
 
-export type OrgRole_type = 'admin' | 'member' | 'service_account'
+export type OrgRole = 'admin' | 'member' | 'service_account'
 
-export interface OrientToFace_type {
-  settings: CameraSettings_type /* Camera settings */
+export interface OrientToFace {
+  settings: CameraSettings /* Camera settings */
 }
 
-export type OriginType_type =
+export type OriginType =
   | { type: 'local' }
   | { type: 'global' }
-  | { origin: Point3d_type /* Custom origin point. */; type: 'custom' }
+  | { origin: Point3d /* Custom origin point. */; type: 'custom' }
 
-export interface OutputFile_type {
+export interface OutputFile {
   /*{
   "nullable": true,
   "description": "The contents of the file. This is base64 encoded so we can ensure it is UTF-8 for JSON."
@@ -4792,21 +4764,21 @@ export interface OutputFile_type {
   name?: string
 }
 
-export type OutputFormat2d_type = {
-  storage: DxfStorage_type /* Export storage. */
+export type OutputFormat2d = {
+  storage: DxfStorage /* Export storage. */
   type: 'dxf'
 }
 
-export type OutputFormat3d_type =
+export type OutputFormat3d =
   | {
       /* nullable:true, format:date-time, description:Timestamp override. */
       created?: string
-      storage: FbxStorage_type /* Specifies which kind of FBX will be exported. */
+      storage: FbxStorage /* Specifies which kind of FBX will be exported. */
       type: 'fbx'
     }
   | {
-      presentation: GltfPresentation_type /* Specifies how the JSON will be presented. */
-      storage: GltfStorage_type /* Specifies which kind of glTF 2.0 will be exported. */
+      presentation: GltfPresentation /* Specifies how the JSON will be presented. */
+      storage: GltfStorage /* Specifies which kind of glTF 2.0 will be exported. */
       type: 'gltf'
     }
   | {
@@ -4815,12 +4787,12 @@ export type OutputFormat3d_type =
 Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System_type
+      coords: System
       type: 'obj'
       /* Export length unit.
 
 Defaults to millimeters. */
-      units: UnitLength_type
+      units: UnitLength
     }
   | {
       /* Co-ordinate system of output data.
@@ -4828,14 +4800,14 @@ Defaults to millimeters. */
 Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System_type
-      selection: Selection_type /* Export selection. */
-      storage: PlyStorage_type /* The storage for the output PLY file. */
+      coords: System
+      selection: Selection /* Export selection. */
+      storage: PlyStorage /* The storage for the output PLY file. */
       type: 'ply'
       /* Export length unit.
 
 Defaults to millimeters. */
-      units: UnitLength_type
+      units: UnitLength
     }
   | {
       /* Co-ordinate system of output data.
@@ -4843,7 +4815,7 @@ Defaults to millimeters. */
 Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System_type
+      coords: System
       /* nullable:true, format:date-time, description:Timestamp override. */
       created?: string
       type: 'step'
@@ -4854,25 +4826,25 @@ Defaults to the [KittyCAD co-ordinate system].
 Defaults to the [KittyCAD co-ordinate system].
 
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System_type
-      selection: Selection_type /* Export selection. */
-      storage: StlStorage_type /* Export storage. */
+      coords: System
+      selection: Selection /* Export selection. */
+      storage: StlStorage /* Export storage. */
       type: 'stl'
       /* Export length unit.
 
 Defaults to millimeters. */
-      units: UnitLength_type
+      units: UnitLength
     }
 
-export type PathCommand_type =
+export type PathCommand =
   /* The path component command type (within a Path) */
   'move_to' | 'line_to' | 'bez_curve_to' | 'nurbs_curve_to' | 'add_arc'
 
-export type PathComponentConstraintBound_type =
+export type PathComponentConstraintBound =
   /* The path component constraint bounds type */
   'unconstrained' | 'partially_constrained' | 'fully_constrained'
 
-export type PathComponentConstraintType_type =
+export type PathComponentConstraintType =
   /* The path component constraint type */
   | 'unconstrained'
   | 'vertical'
@@ -4881,133 +4853,133 @@ export type PathComponentConstraintType_type =
   | 'parallel'
   | 'angle_between'
 
-export interface PathGetCurveUuid_type {
+export interface PathGetCurveUuid {
   /* format:uuid, description:The UUID of the curve entity. */
   curve_id: string
 }
 
-export interface PathGetCurveUuidsForVertices_type {
+export interface PathGetCurveUuidsForVertices {
   /*{
   "format": "uuid"
 }*/
   curve_ids: string[]
 }
 
-export interface PathGetInfo_type {
-  segments: PathSegmentInfo_type[] /* All segments in the path, in the order they were added. */
+export interface PathGetInfo {
+  segments: PathSegmentInfo[] /* All segments in the path, in the order they were added. */
 }
 
-export interface PathGetSketchTargetUuid_type {
+export interface PathGetSketchTargetUuid {
   /* nullable:true, format:uuid, description:The UUID of the sketch target. */
   target_id?: string
 }
 
-export interface PathGetVertexUuids_type {
+export interface PathGetVertexUuids {
   /*{
   "format": "uuid"
 }*/
   vertex_ids: string[]
 }
 
-export type PathSegment_type =
+export type PathSegment =
   | {
-      end: Point3d_type /* End point of the line. */
+      end: Point3d /* End point of the line. */
       relative: boolean /* Whether or not this line is a relative offset */
       type: 'line'
     }
   | {
-      center: Point2d_type /* Center of the circle */
-      end: Angle_type /* End of the arc along circle's perimeter. */
-      radius: LengthUnit_type /* Radius of the circle */
+      center: Point2d /* Center of the circle */
+      end: Angle /* End of the arc along circle's perimeter. */
+      radius: LengthUnit /* Radius of the circle */
       relative: boolean /* Whether or not this arc is a relative offset */
-      start: Angle_type /* Start of the arc along circle's perimeter. */
+      start: Angle /* Start of the arc along circle's perimeter. */
       type: 'arc'
     }
   | {
-      control1: Point3d_type /* First control point. */
-      control2: Point3d_type /* Second control point. */
-      end: Point3d_type /* Final control point. */
+      control1: Point3d /* First control point. */
+      control2: Point3d /* Second control point. */
+      end: Point3d /* Final control point. */
       relative: boolean /* Whether or not this bezier is a relative offset */
       type: 'bezier'
     }
   | {
-      offset: Angle_type /* Offset of the arc. Negative values will arc clockwise. */
-      radius: LengthUnit_type /* Radius of the arc. Not to be confused with Raiders of the Lost Ark. */
+      offset: Angle /* Offset of the arc. Negative values will arc clockwise. */
+      radius: LengthUnit /* Radius of the arc. Not to be confused with Raiders of the Lost Ark. */
       type: 'tangential_arc'
     }
   | {
       /* nullable:true, description:0 will be interpreted as none/null. */
-      angle_snap_increment?: Angle_type
-      to: Point3d_type /* Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position. */
+      angle_snap_increment?: Angle
+      to: Point3d /* Where the arc should end. Must lie in the same plane as the current path pen position. Must not be colinear with current path pen position. */
       type: 'tangential_arc_to'
     }
   | {
-      end: Point3d_type /* End point of the arc. */
-      interior: Point3d_type /* Interior point of the arc. */
+      end: Point3d /* End point of the arc. */
+      interior: Point3d /* Interior point of the arc. */
       relative: boolean /* Whether or not interior and end are relative to the previous path position */
       type: 'arc_to'
     }
   | {
-      angle: Angle_type /* The angle to rotate the involute by. A value of zero will produce a curve with a tangent along the x-axis at the start point of the curve. */
-      end_radius: LengthUnit_type /* The involute is described between two circles, end_radius is the radius of the outer circle. */
+      angle: Angle /* The angle to rotate the involute by. A value of zero will produce a curve with a tangent along the x-axis at the start point of the curve. */
+      end_radius: LengthUnit /* The involute is described between two circles, end_radius is the radius of the outer circle. */
       reverse: boolean /* If reverse is true, the segment will start from the end of the involute, otherwise it will start from that start. */
-      start_radius: LengthUnit_type /* The involute is described between two circles, start_radius is the radius of the inner circle. */
+      start_radius: LengthUnit /* The involute is described between two circles, start_radius is the radius of the inner circle. */
       type: 'circular_involute'
     }
   | {
-      center: Point2d_type /* The center point of the ellipse. */
-      end_angle: Angle_type /* End of the path along the perimeter of the ellipse. */
-      major_axis: Point2d_type /* Major axis of the ellipse. */
-      minor_radius: LengthUnit_type /* Minor radius of the ellipse. */
-      start_angle: Angle_type /* Start of the path along the perimeter of the ellipse. */
+      center: Point2d /* The center point of the ellipse. */
+      end_angle: Angle /* End of the path along the perimeter of the ellipse. */
+      major_axis: Point2d /* Major axis of the ellipse. */
+      minor_radius: LengthUnit /* Minor radius of the ellipse. */
+      start_angle: Angle /* Start of the path along the perimeter of the ellipse. */
       type: 'ellipse'
     }
   | {
-      end: Point2d_type /* End point of the conic. */
-      end_tangent: Point2d_type /* Tangent at the end of the conic. */
-      interior: Point2d_type /* Interior point that lies on the conic. */
+      end: Point2d /* End point of the conic. */
+      end_tangent: Point2d /* Tangent at the end of the conic. */
+      interior: Point2d /* Interior point that lies on the conic. */
       relative: boolean /* Whether or not the interior and end points are relative to the previous path position. */
-      start_tangent: Point2d_type /* Tangent at the start of the conic. */
+      start_tangent: Point2d /* Tangent at the start of the conic. */
       type: 'conic_to'
     }
 
-export interface PathSegmentInfo_type {
-  command: PathCommand_type /* What is the path segment? */
+export interface PathSegmentInfo {
+  command: PathCommand /* What is the path segment? */
   /*{
   "nullable": true,
   "description": "Which command created this path? This field is absent if the path command is not actually creating a path segment, e.g. moving the pen doesn't create a path segment."
 }*/
-  command_id?: ModelingCmdId_type
+  command_id?: ModelingCmdId
   relative: boolean /* Whether or not this segment is a relative offset */
 }
 
-export interface PaymentIntent_type {
+export interface PaymentIntent {
   client_secret: string /* The client secret is used for client-side retrieval using a publishable key. The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret. */
 }
 
-export interface PaymentMethod_type {
-  billing_info: BillingInfo_type /* The billing info for the payment method. */
+export interface PaymentMethod {
+  billing_info: BillingInfo /* The billing info for the payment method. */
   /*{
   "nullable": true,
   "description": "The card, if it is one. For our purposes, this is the only type of payment method that we support."
 }*/
-  card?: CardDetails_type
+  card?: CardDetails
   /* format:date-time, description:Time at which the object was created. */
   created_at: string
   id?: string /* Unique identifier for the object. */
   metadata?: { [key: string]: string }
-  type: PaymentMethodType_type /* The type of payment method. */
+  type: PaymentMethodType /* The type of payment method. */
 }
 
-export interface PaymentMethodCardChecks_type {
+export interface PaymentMethodCardChecks {
   address_line1_check?: string /* If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
   address_postal_code_check?: string /* If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
   cvc_check?: string /* If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
 }
 
-export type PaymentMethodType_type = 'card'
+export type PaymentMethodType = 'card'
 
-export interface PerspectiveCameraParameters_type {
+export interface PerspectiveCameraParameters {
   /* nullable:true, format:float, description:Camera frustum vertical field of view. */
   fov_y?: number
   /* nullable:true, format:float, description:Camera frustum far plane. */
@@ -5016,40 +4988,37 @@ export interface PerspectiveCameraParameters_type {
   z_near?: number
 }
 
-export type PlanInterval_type = 'day' | 'month' | 'week' | 'year'
+export type PlanInterval = 'day' | 'month' | 'week' | 'year'
 
-export interface PlanStep_type {
+export interface PlanStep {
   edit_instructions: string /* The edit instructions for the step. */
   filepath_to_edit: string /* The file path it's editing. */
 }
 
-export interface PlaneIntersectAndProject_type {
+export interface PlaneIntersectAndProject {
   /*{
   "nullable": true,
   "description": "Corresponding coordinates of given window coordinates, intersected on given plane."
 }*/
-  plane_coordinates?: Point2d_type
+  plane_coordinates?: Point2d
 }
 
-export type PlaneSetColor_type = {} /* Empty object */
+export interface PlaneSetColor {} /* Empty object */
 
-export type PlyStorage_type =
-  | 'ascii'
-  | 'binary_little_endian'
-  | 'binary_big_endian'
+export type PlyStorage = 'ascii' | 'binary_little_endian' | 'binary_big_endian'
 
-export interface Point2d_type {
+export interface Point2d {
   /*{
   "$ref": "#/components/schemas/LengthUnit"
 }*/
-  x: LengthUnit_type
+  x: LengthUnit
   /*{
   "$ref": "#/components/schemas/LengthUnit"
 }*/
-  y: LengthUnit_type
+  y: LengthUnit
 }
 
-export interface Point3d_type {
+export interface Point3d {
   /*{
   "format": "float"
 }*/
@@ -5064,7 +5033,7 @@ export interface Point3d_type {
   z: number
 }
 
-export interface Point4d_type {
+export interface Point4d {
   /*{
   "format": "float"
 }*/
@@ -5083,27 +5052,27 @@ export interface Point4d_type {
   z: number
 }
 
-export interface Pong_type {
+export interface Pong {
   message: string /* The pong response. */
 }
 
-export type PostEffectType_type =
+export type PostEffectType =
   /* Post effect type */
   'phosphor' | 'ssao' | 'noeffect'
 
-export interface PrivacySettings_type {
+export interface PrivacySettings {
   can_train_on_data: boolean /* If we can train on the data. If the user is a member of an organization, the organization's setting will override this. The organization's setting takes priority. */
 }
 
-export interface ProjectEntityToPlane_type {
-  projected_points: Point3d_type[] /* Projected points. */
+export interface ProjectEntityToPlane {
+  projected_points: Point3d[] /* Projected points. */
 }
 
-export interface ProjectPointsToPlane_type {
-  projected_points: Point3d_type[] /* Projected points. */
+export interface ProjectPointsToPlane {
+  projected_points: Point3d[] /* Projected points. */
 }
 
-export interface RawFile_type {
+export interface RawFile {
   /*{
   "format": "uint8",
   "minimum": 0
@@ -5112,7 +5081,7 @@ export interface RawFile_type {
   name: string /* The name of the file. */
 }
 
-export type ReasoningMessage_type =
+export type ReasoningMessage =
   | { content: string /* The content of the reasoning. */; type: 'text' }
   | { content: string /* The content of the reasoning. */; type: 'kcl_docs' }
   | {
@@ -5124,7 +5093,7 @@ export type ReasoningMessage_type =
       type: 'feature_tree_outline'
     }
   | {
-      steps: PlanStep_type[] /* The steps in the design plan. */
+      steps: PlanStep[] /* The steps in the design plan. */
       type: 'design_plan'
     }
   | {
@@ -5144,23 +5113,23 @@ export type ReasoningMessage_type =
     }
   | { file_name: string /* The file name. */; type: 'deleted_kcl_file' }
 
-export type ReconfigureStream_type = {} /* Empty object */
+export interface ReconfigureStream {} /* Empty object */
 
-export type RelativeTo_type = 'sketch_plane' | 'trajectory_curve'
+export type RelativeTo = 'sketch_plane' | 'trajectory_curve'
 
-export type RemoveSceneObjects_type = {} /* Empty object */
+export interface RemoveSceneObjects {} /* Empty object */
 
-export type Revolve_type = {} /* Empty object */
+export interface Revolve {} /* Empty object */
 
-export type RevolveAboutEdge_type = {} /* Empty object */
+export interface RevolveAboutEdge {} /* Empty object */
 
-export interface Rotation_type {
-  angle: Angle_type /* Rotate this far about the rotation axis. Defaults to zero (i.e. no rotation). */
-  axis: Point3d_type /* Rotation axis. Defaults to (0, 0, 1) (i.e. the Z axis). */
-  origin: OriginType_type /* Origin of the rotation. If one isn't provided, the object will rotate about its own bounding box center. */
+export interface Rotation {
+  angle: Angle /* Rotate this far about the rotation axis. Defaults to zero (i.e. no rotation). */
+  axis: Point3d /* Rotation axis. Defaults to (0, 0, 1) (i.e. the Z axis). */
+  origin: OriginType /* Origin of the rotation. If one isn't provided, the object will rotate about its own bounding box center. */
 }
 
-export interface RtcIceCandidateInit_type {
+export interface RtcIceCandidateInit {
   candidate: string /* The candidate string associated with the object. */
   /*{
   "nullable": true,
@@ -5181,19 +5150,19 @@ export interface RtcIceCandidateInit_type {
   usernameFragment?: string
 }
 
-export type RtcSdpType_type =
+export type RtcSdpType =
   | 'unspecified'
   | 'offer'
   | 'pranswer'
   | 'answer'
   | 'rollback'
 
-export interface RtcSessionDescription_type {
+export interface RtcSessionDescription {
   sdp: string /* SDP string. */
-  type: RtcSdpType_type /* SDP type. */
+  type: RtcSdpType /* SDP type. */
 }
 
-export interface SamlIdentityProvider_type {
+export interface SamlIdentityProvider {
   /* title:String, format:uri, description:The ACS (Assertion Consumer Service) url. */
   acs_url: string
   /*{
@@ -5202,10 +5171,10 @@ export interface SamlIdentityProvider_type {
   "description": "The date and time the SAML identity provider was created."
 }*/
   created_at: string
-  id: Uuid_type /* The unique identifier for the SAML identity provider. */
+  id: Uuid /* The unique identifier for the SAML identity provider. */
   idp_entity_id?: string /* The entity ID of the SAML identity provider. */
   idp_metadata_document_string?: string /* The metadata document as a string. */
-  org_id: Uuid_type /* The organization ID the SAML identity provider belongs to. */
+  org_id: Uuid /* The organization ID the SAML identity provider belongs to. */
   /*{
   "nullable": true,
   "title": "String",
@@ -5235,11 +5204,11 @@ export interface SamlIdentityProvider_type {
   updated_at: string
 }
 
-export interface SamlIdentityProviderCreate_type {
+export interface SamlIdentityProviderCreate {
   idp_entity_id?: string /* The entity ID of the SAML identity provider. */
-  idp_metadata_source: IdpMetadataSource_type /* The source of an identity provider metadata descriptor. */
+  idp_metadata_source: IdpMetadataSource /* The source of an identity provider metadata descriptor. */
   /* nullable:true, description:The request signing key pair. */
-  signing_keypair?: DerEncodedKeyPair_type
+  signing_keypair?: DerEncodedKeyPair
   /*{
   "format": "email",
   "description": "The technical contact email address for the SAML identity provider."
@@ -5247,11 +5216,11 @@ export interface SamlIdentityProviderCreate_type {
   technical_contact_email?: string
 }
 
-export type SceneClearAll_type = {} /* Empty object */
+export interface SceneClearAll {} /* Empty object */
 
-export type SceneSelectionType_type = 'replace' | 'add' | 'remove'
+export type SceneSelectionType = 'replace' | 'add' | 'remove'
 
-export type SceneToolType_type =
+export type SceneToolType =
   /* The type of scene's active tool */
   | 'camera_revolve'
   | 'select'
@@ -5261,27 +5230,27 @@ export type SceneToolType_type =
   | 'sketch_curve'
   | 'sketch_curve_mod'
 
-export type SelectAdd_type = {} /* Empty object */
+export interface SelectAdd {} /* Empty object */
 
-export type SelectClear_type = {} /* Empty object */
+export interface SelectClear {} /* Empty object */
 
-export interface SelectGet_type {
+export interface SelectGet {
   /*{
   "format": "uuid"
 }*/
   entity_ids: string[]
 }
 
-export type SelectRemove_type = {} /* Empty object */
+export interface SelectRemove {} /* Empty object */
 
-export type SelectReplace_type = {} /* Empty object */
+export interface SelectReplace {} /* Empty object */
 
-export interface SelectWithPoint_type {
+export interface SelectWithPoint {
   /* nullable:true, format:uuid, description:The UUID of the entity that was selected. */
   entity_id?: string
 }
 
-export type Selection_type =
+export type Selection =
   | { type: 'default_scene' }
   | {
       /* format:uint, minimum:0, description:The index. */
@@ -5296,23 +5265,23 @@ export type Selection_type =
     }
   | { name: string /* The name. */; type: 'mesh_by_name' }
 
-export type SendObject_type = {} /* Empty object */
+export interface SendObject {} /* Empty object */
 
-export interface ServiceAccount_type {
+export interface ServiceAccount {
   /* title:DateTime, format:date-time, description:The date and time the API token was created. */
   created_at: string
-  id: Uuid_type /* The unique identifier for the API token. */
+  id: Uuid /* The unique identifier for the API token. */
   is_valid: boolean /* If the token is valid. We never delete API tokens, but we can mark them as invalid. We save them for ever to preserve the history of the API token. */
   /* nullable:true, description:An optional label for the API token. */
   label?: string
-  org_id: Uuid_type /* The ID of the organization that owns the API token. */
-  token: ServiceAccountUuid_type /* The API token itself. */
+  org_id: Uuid /* The ID of the organization that owns the API token. */
+  token: ServiceAccountUuid /* The API token itself. */
   /* title:DateTime, format:date-time, description:The date and time the API token was last updated. */
   updated_at: string
 }
 
-export interface ServiceAccountResultsPage_type {
-  items: ServiceAccount_type[] /* list of items on this page of results */
+export interface ServiceAccountResultsPage {
+  items: ServiceAccount[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -5320,53 +5289,53 @@ export interface ServiceAccountResultsPage_type {
   next_page?: string
 }
 
-export type ServiceAccountUuid_type =
+export type ServiceAccountUuid =
   string /* An auth token. A uuid with a prefix of svc- */
 
-export interface Session_type {
+export interface Session {
   /* title:DateTime, format:date-time, description:The date and time the session was created. */
   created_at: string
   /* title:DateTime, format:date-time, description:The date and time the session expires. */
   expires: string
-  id: Uuid_type /* The unique identifier for the session. */
-  session_token: SessionUuid_type /* The session token. */
+  id: Uuid /* The unique identifier for the session. */
+  session_token: SessionUuid /* The session token. */
   /* title:DateTime, format:date-time, description:The date and time the session was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user that the session belongs to. */
+  user_id: Uuid /* The user ID of the user that the session belongs to. */
 }
 
-export type SessionUuid_type =
+export type SessionUuid =
   string /* An auth token. A uuid with a prefix of ses- */
 
-export type SetBackgroundColor_type = {} /* Empty object */
+export interface SetBackgroundColor {} /* Empty object */
 
-export type SetCurrentToolProperties_type = {} /* Empty object */
+export interface SetCurrentToolProperties {} /* Empty object */
 
-export type SetDefaultSystemProperties_type = {} /* Empty object */
+export interface SetDefaultSystemProperties {} /* Empty object */
 
-export type SetGridAutoScale_type = {} /* Empty object */
+export interface SetGridAutoScale {} /* Empty object */
 
-export type SetGridReferencePlane_type = {} /* Empty object */
+export interface SetGridReferencePlane {} /* Empty object */
 
-export type SetGridScale_type = {} /* Empty object */
+export interface SetGridScale {} /* Empty object */
 
-export type SetObjectTransform_type = {} /* Empty object */
+export interface SetObjectTransform {} /* Empty object */
 
-export type SetSceneUnits_type = {} /* Empty object */
+export interface SetSceneUnits {} /* Empty object */
 
-export type SetSelectionFilter_type = {} /* Empty object */
+export interface SetSelectionFilter {} /* Empty object */
 
-export type SetSelectionType_type = {} /* Empty object */
+export interface SetSelectionType {} /* Empty object */
 
-export type SetTool_type = {} /* Empty object */
+export interface SetTool {} /* Empty object */
 
-export interface Shortlink_type {
+export interface Shortlink {
   /* title:DateTime, format:date-time, description:The date and time the shortlink was created. */
   created_at: string
-  id: Uuid_type /* The unique identifier for the shortlink. */
+  id: Uuid /* The unique identifier for the shortlink. */
   key: string /* The key of the shortlink. This is the short part of the URL. */
   /* nullable:true, description:The organization ID of the shortlink. */
-  org_id?: Uuid_type
+  org_id?: Uuid
   /* nullable:true, description:The hash of the password for the shortlink. */
   password_hash?: string
   /*{
@@ -5376,13 +5345,13 @@ export interface Shortlink_type {
   restrict_to_org?: boolean
   /* title:DateTime, format:date-time, description:The date and time the shortlink was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The ID of the user that made the shortlink. */
+  user_id: Uuid /* The ID of the user that made the shortlink. */
   /* title:String, format:uri, description:The URL the shortlink redirects to. */
   value: string
 }
 
-export interface ShortlinkResultsPage_type {
-  items: Shortlink_type[] /* list of items on this page of results */
+export interface ShortlinkResultsPage {
+  items: Shortlink[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -5390,167 +5359,167 @@ export interface ShortlinkResultsPage_type {
   next_page?: string
 }
 
-export interface SideFace_type {
+export interface SideFace {
   /* format:uuid, description:Desired ID for the resulting face. */
   face_id: string
   /* format:uuid, description:ID of the path this face is being extruded from. */
   path_id: string
 }
 
-export type SketchModeDisable_type = {} /* Empty object */
+export interface SketchModeDisable {} /* Empty object */
 
-export type Solid2dAddHole_type = {} /* Empty object */
+export interface Solid2dAddHole {} /* Empty object */
 
-export type Solid3dFilletEdge_type = {} /* Empty object */
+export interface Solid3dFilletEdge {} /* Empty object */
 
-export interface Solid3dGetAdjacencyInfo_type {
-  edges: AdjacencyInfo_type[] /* Details of each edge. */
+export interface Solid3dGetAdjacencyInfo {
+  edges: AdjacencyInfo[] /* Details of each edge. */
 }
 
-export interface Solid3dGetAllEdgeFaces_type {
+export interface Solid3dGetAllEdgeFaces {
   /*{
   "format": "uuid"
 }*/
   faces: string[]
 }
 
-export interface Solid3dGetAllOppositeEdges_type {
+export interface Solid3dGetAllOppositeEdges {
   /*{
   "format": "uuid"
 }*/
   edges: string[]
 }
 
-export interface Solid3dGetCommonEdge_type {
+export interface Solid3dGetCommonEdge {
   /* nullable:true, format:uuid, description:The UUID of the common edge, if any. */
   edge?: string
 }
 
-export interface Solid3dGetExtrusionFaceInfo_type {
-  faces: ExtrusionFaceInfo_type[] /* Details of each face. */
+export interface Solid3dGetExtrusionFaceInfo {
+  faces: ExtrusionFaceInfo[] /* Details of each face. */
 }
 
-export interface Solid3dGetNextAdjacentEdge_type {
+export interface Solid3dGetNextAdjacentEdge {
   /* nullable:true, format:uuid, description:The UUID of the edge. */
   edge?: string
 }
 
-export interface Solid3dGetOppositeEdge_type {
+export interface Solid3dGetOppositeEdge {
   /* format:uuid, description:The UUID of the edge. */
   edge: string
 }
 
-export interface Solid3dGetPrevAdjacentEdge_type {
+export interface Solid3dGetPrevAdjacentEdge {
   /* nullable:true, format:uuid, description:The UUID of the edge. */
   edge?: string
 }
 
-export type Solid3dShellFace_type = {} /* Empty object */
+export interface Solid3dShellFace {} /* Empty object */
 
-export interface SourcePosition_type {
+export interface SourcePosition {
   /* format:uint32, minimum:0, description:The column number. */
   column: number
   /* format:uint32, minimum:0, description:The line number. */
   line: number
 }
 
-export interface SourceRange_type {
-  end: SourcePosition_type /* The end of the range. */
-  start: SourcePosition_type /* The start of the range. */
+export interface SourceRange {
+  end: SourcePosition /* The end of the range. */
+  start: SourcePosition /* The start of the range. */
 }
 
-export interface SourceRangePrompt_type {
+export interface SourceRangePrompt {
   /*{
   "nullable": true,
   "description": "The name of the file the source range applies to. This is the relative path to the file from the root of the project. This only applies to multi-file iterations."
 }*/
   file?: string
   prompt: string /* The prompt for the changes. */
-  range: SourceRange_type /* The range of the source code to change. If you want to apply the prompt to the whole file, set the start to 0 and the end to the end of the file. */
+  range: SourceRange /* The range of the source code to change. If you want to apply the prompt to the whole file, set the start to 0 and the end to the end of the file. */
 }
 
-export type StartPath_type = {} /* Empty object */
+export interface StartPath {} /* Empty object */
 
-export type StlStorage_type = 'ascii' | 'binary'
+export type StlStorage = 'ascii' | 'binary'
 
-export interface StoreCouponParams_type {
+export interface StoreCouponParams {
   /* format:uint32, minimum:0, description:The percentage off. */
   percent_off: number
 }
 
-export interface Subscribe_type {
+export interface Subscribe {
   /* format:email, description:The email */
   email: string
 }
 
-export interface SubscriptionTierFeature_type {
+export interface SubscriptionTierFeature {
   /* minLength:1, maxLength:80, description:Information about the feature. */
   info: string
 }
 
-export type SubscriptionTierPrice_type =
+export type SubscriptionTierPrice =
   | {
-      interval: PlanInterval_type /* The interval the price is charged. */
+      interval: PlanInterval /* The interval the price is charged. */
       /* title:double, format:money-usd, description:The price. */
       price: number
       type: 'flat'
     }
   | {
-      interval: PlanInterval_type /* The interval the price is charged. */
+      interval: PlanInterval /* The interval the price is charged. */
       /* title:double, format:money-usd, description:The price. */
       price: number
       type: 'per_user'
     }
   | { type: 'enterprise' }
 
-export type SubscriptionTierType_type =
+export type SubscriptionTierType =
   | { type: 'individual' }
   | {
       saml_sso: boolean /* Whether or not the subscription type supports SAML SSO. */
       type: 'organization'
     }
 
-export type SubscriptionTrainingDataBehavior_type =
+export type SubscriptionTrainingDataBehavior =
   | 'always'
   | 'default_on'
   | 'default_off'
 
-export interface SuccessWebSocketResponse_type {
+export interface SuccessWebSocketResponse {
   /*{
   "nullable": true,
   "format": "uuid",
   "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
 }*/
   request_id?: string
-  resp: OkWebSocketResponseData_type /* The data sent with a successful response. This will be flattened into a 'type' and 'data' field. */
+  resp: OkWebSocketResponseData /* The data sent with a successful response. This will be flattened into a 'type' and 'data' field. */
   success: true
 }
 
-export type SupportTier_type =
+export type SupportTier =
   | 'community'
   | 'standard_email'
   | 'priority_email'
   | 'premium'
 
-export interface SurfaceArea_type {
-  output_unit: UnitArea_type /* The output unit for the surface area. */
+export interface SurfaceArea {
+  output_unit: UnitArea /* The output unit for the surface area. */
   /* format:double, description:The surface area. */
   surface_area: number
 }
 
-export type Sweep_type = {} /* Empty object */
+export interface Sweep {} /* Empty object */
 
-export interface System_type {
-  forward: AxisDirectionPair_type /* Axis the front face of a model looks along. */
-  up: AxisDirectionPair_type /* Axis pointing up and away from a model. */
+export interface System {
+  forward: AxisDirectionPair /* Axis the front face of a model looks along. */
+  up: AxisDirectionPair /* Axis pointing up and away from a model. */
 }
 
-export interface TakeSnapshot_type {
+export interface TakeSnapshot {
   /* title:String, format:byte, description:Contents of the image. */
   contents: string
 }
 
-export interface TextToCad_type {
+export interface TextToCad {
   /*{
   "nullable": true,
   "description": "The code for the model. This is optional but will be required in the future once we are at v1."
@@ -5563,22 +5532,22 @@ export interface TextToCad_type {
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string
-  conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+  conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
   /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string
   /* nullable:true, description:The error the function returned, if any. */
   error?: string
   /* nullable:true, description:Feedback from the user, if any. */
-  feedback?: MlFeedback_type
+  feedback?: MlFeedback
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* nullable:true, description:The version of kcl requested. */
   kcl_version?: string
-  model: TextToCadModel_type /* The model being used. */
+  model: TextToCadModel /* The model being used. */
   model_version: string /* The version of the model. */
-  output_format: FileExportFormat_type /* The output format of the model. */
+  output_format: FileExportFormat /* The output format of the model. */
   outputs?: {
     [key: string]: /*{
   "title": "String",
@@ -5594,13 +5563,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export interface TextToCadCreateBody_type {
+export interface TextToCadCreateBody {
   /*{
   "nullable": true,
   "description": "The version of kcl to use. If empty, the latest version will be used."
@@ -5614,7 +5583,7 @@ export interface TextToCadCreateBody_type {
   prompt: string /* The prompt for the model. */
 }
 
-export interface TextToCadIteration_type {
+export interface TextToCadIteration {
   code: string /* The code for the new model. */
   /*{
   "nullable": true,
@@ -5623,18 +5592,18 @@ export interface TextToCadIteration_type {
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string
-  conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+  conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
   /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string
   /* nullable:true, description:The error the function returned, if any. */
   error?: string
   /* nullable:true, description:Feedback from the user, if any. */
-  feedback?: MlFeedback_type
+  feedback?: MlFeedback
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
-  model: TextToCadModel_type /* The model being used. */
+  id: Uuid
+  model: TextToCadModel /* The model being used. */
   model_version: string /* The version of the model. */
   original_source_code: string /* The original source code for the model, previous to the changes. */
   /*{
@@ -5642,7 +5611,7 @@ This is the same as the API call ID. */
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges."
 }*/
   prompt?: string
-  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */
+  source_ranges: SourceRangePrompt[] /* The source ranges the user suggested to change. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -5650,13 +5619,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export interface TextToCadIterationBody_type {
+export interface TextToCadIterationBody {
   /*{
   "nullable": true,
   "description": "The version of kcl to use. If empty, the latest version will be used."
@@ -5673,12 +5642,12 @@ export interface TextToCadIterationBody_type {
   "description": "The prompt for the model, if not using source ranges."
 }*/
   prompt?: string
-  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */
+  source_ranges: SourceRangePrompt[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */
 }
 
-export type TextToCadModel_type = 'cad' | 'kcl' | 'kcl_iteration'
+export type TextToCadModel = 'cad' | 'kcl' | 'kcl_iteration'
 
-export interface TextToCadMultiFileIteration_type {
+export interface TextToCadMultiFileIteration {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -5686,23 +5655,23 @@ export interface TextToCadMultiFileIteration_type {
   "description": "The time and date the API call was completed."
 }*/
   completed_at?: string
-  conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+  conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
   /* title:DateTime, format:date-time, description:The time and date the API call was created. */
   created_at: string
   /* nullable:true, description:The error the function returned, if any. */
   error?: string
   /* nullable:true, description:Feedback from the user, if any. */
-  feedback?: MlFeedback_type
+  feedback?: MlFeedback
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /*{
   "nullable": true,
   "description": "The version of kcl to use. If empty, the latest version will be used."
 }*/
   kcl_version?: string
-  model: TextToCadModel_type /* The model being used. */
+  model: TextToCadModel /* The model being used. */
   model_version: string /* The version of the model. */
   outputs?: { [key: string]: string }
   /*{
@@ -5715,7 +5684,7 @@ This is the same as the API call ID. */
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files."
 }*/
   prompt?: string
-  source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */
+  source_ranges: SourceRangePrompt[] /* The source ranges the user suggested to change. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -5723,18 +5692,18 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export interface TextToCadMultiFileIterationBody_type {
+export interface TextToCadMultiFileIterationBody {
   /*{
   "nullable": true,
   "description": "The conversation ID Conversations group different prompts together. This should be omitted when starting a new conversation. The conversation_id returned in the response should be used to link future messages in the same conversation."
 }*/
-  conversation_id?: Uuid_type
+  conversation_id?: Uuid
   /*{
   "nullable": true,
   "description": "The version of kcl to use. If empty, the latest version will be used."
@@ -5750,10 +5719,10 @@ export interface TextToCadMultiFileIterationBody_type {
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files. If you want to apply a prompt to just a single file, use the source_ranges field and you can leave this empty."
 }*/
   prompt?: string
-  source_ranges?: SourceRangePrompt_type[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */
+  source_ranges?: SourceRangePrompt[] /* The source ranges the user suggested to change. If empty, the prompt will be used and is required. */
 }
 
-export type TextToCadResponse_type =
+export type TextToCadResponse =
   | {
       /*{
   "nullable": true,
@@ -5767,22 +5736,22 @@ export type TextToCadResponse_type =
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string
-      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+      conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string
       /* nullable:true, description:The error the function returned, if any. */
       error?: string
       /* nullable:true, description:Feedback from the user, if any. */
-      feedback?: MlFeedback_type
+      feedback?: MlFeedback
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
+      id: Uuid
       /* nullable:true, description:The version of kcl requested. */
       kcl_version?: string
-      model: TextToCadModel_type /* The model being used. */
+      model: TextToCadModel /* The model being used. */
       model_version: string /* The version of the model. */
-      output_format: FileExportFormat_type /* The output format of the model. */
+      output_format: FileExportFormat /* The output format of the model. */
       outputs?: {
         [key: string]: /*{
   "title": "String",
@@ -5798,11 +5767,11 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'text_to_cad'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       code: string /* The code for the new model. */
@@ -5813,18 +5782,18 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string
-      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+      conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string
       /* nullable:true, description:The error the function returned, if any. */
       error?: string
       /* nullable:true, description:Feedback from the user, if any. */
-      feedback?: MlFeedback_type
+      feedback?: MlFeedback
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
-      model: TextToCadModel_type /* The model being used. */
+      id: Uuid
+      model: TextToCadModel /* The model being used. */
       model_version: string /* The version of the model. */
       original_source_code: string /* The original source code for the model, previous to the changes. */
       /*{
@@ -5832,7 +5801,7 @@ This is the same as the API call ID. */
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges."
 }*/
       prompt?: string
-      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */
+      source_ranges: SourceRangePrompt[] /* The source ranges the user suggested to change. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -5840,11 +5809,11 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'text_to_cad_iteration'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
   | {
       /*{
@@ -5854,23 +5823,23 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was completed."
 }*/
       completed_at?: string
-      conversation_id: Uuid_type /* The conversation ID Conversations group different prompts together. */
+      conversation_id: Uuid /* The conversation ID Conversations group different prompts together. */
       /* title:DateTime, format:date-time, description:The time and date the API call was created. */
       created_at: string
       /* nullable:true, description:The error the function returned, if any. */
       error?: string
       /* nullable:true, description:Feedback from the user, if any. */
-      feedback?: MlFeedback_type
+      feedback?: MlFeedback
       /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-      id: Uuid_type
+      id: Uuid
       /*{
   "nullable": true,
   "description": "The version of kcl to use. If empty, the latest version will be used."
 }*/
       kcl_version?: string
-      model: TextToCadModel_type /* The model being used. */
+      model: TextToCadModel /* The model being used. */
       model_version: string /* The version of the model. */
       outputs?: { [key: string]: string }
       /*{
@@ -5883,7 +5852,7 @@ This is the same as the API call ID. */
   "description": "The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files."
 }*/
       prompt?: string
-      source_ranges: SourceRangePrompt_type[] /* The source ranges the user suggested to change. */
+      source_ranges: SourceRangePrompt[] /* The source ranges the user suggested to change. */
       /*{
   "nullable": true,
   "title": "DateTime",
@@ -5891,15 +5860,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
       started_at?: string
-      status: ApiCallStatus_type /* The status of the API call. */
+      status: ApiCallStatus /* The status of the API call. */
       type: 'text_to_cad_multi_file_iteration'
       /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
       updated_at: string
-      user_id: Uuid_type /* The user ID of the user who created the API call. */
+      user_id: Uuid /* The user ID of the user who created the API call. */
     }
 
-export interface TextToCadResponseResultsPage_type {
-  items: TextToCadResponse_type[] /* list of items on this page of results */
+export interface TextToCadResponseResultsPage {
+  items: TextToCadResponse[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -5907,15 +5876,15 @@ export interface TextToCadResponseResultsPage_type {
   next_page?: string
 }
 
-export interface TokenRevokeRequestForm_type {
+export interface TokenRevokeRequestForm {
   /* format:uuid, description:The client ID. */
   client_id: string
   /* nullable:true, description:The client secret. */
   client_secret?: string
-  token: DeviceAccessTokenUuid_type /* The token to revoke. */
+  token: DeviceAccessTokenUuid /* The token to revoke. */
 }
 
-export interface Transform_type {
+export interface Transform {
   /*{
   "default": true,
   "description": "Whether to replicate the original solid in this instance."
@@ -5938,7 +5907,7 @@ export interface Transform_type {
   },
   "description": "Rotate the replica about the specified rotation axis and origin. Defaults to no rotation."
 }*/
-  rotation?: Rotation_type
+  rotation?: Rotation
   /*{
   "default": {
     "x": 1,
@@ -5947,7 +5916,7 @@ export interface Transform_type {
   },
   "description": "Scale the replica's size along each axis. Defaults to (1, 1, 1) (i.e. the same size as the original)."
 }*/
-  scale?: Point3d_type
+  scale?: Point3d
   /*{
   "default": {
     "x": 0,
@@ -5956,10 +5925,10 @@ export interface Transform_type {
   },
   "description": "Translate the replica this far along each dimension. Defaults to zero vector (i.e. same position as the original)."
 }*/
-  translate?: Point3d_type
+  translate?: Point3d
 }
 
-export interface TransformByForPoint3d_type {
+export interface TransformByForPoint3d {
   /*{
   "deprecated": true,
   "description": "If true, the transform is applied in local space. If false, the transform is applied in global space."
@@ -5969,12 +5938,12 @@ export interface TransformByForPoint3d_type {
   "nullable": true,
   "description": "What to use as the origin for the transformation. If not provided, will fall back to local or global origin, depending on whatever the `is_local` field was set to."
 }*/
-  origin?: OriginType_type
-  property: Point3d_type /* The scale, or rotation, or translation. */
+  origin?: OriginType
+  property: Point3d /* The scale, or rotation, or translation. */
   set: boolean /* If true, overwrite the previous value with this. If false, the previous value will be modified. E.g. when translating, `set=true` will set a new location, and `set=false` will translate the current location by the given X/Y/Z. */
 }
 
-export interface TransformByForPoint4d_type {
+export interface TransformByForPoint4d {
   /*{
   "deprecated": true,
   "description": "If true, the transform is applied in local space. If false, the transform is applied in global space."
@@ -5984,16 +5953,16 @@ export interface TransformByForPoint4d_type {
   "nullable": true,
   "description": "What to use as the origin for the transformation. If not provided, will fall back to local or global origin, depending on whatever the `is_local` field was set to."
 }*/
-  origin?: OriginType_type
-  property: Point4d_type /* The scale, or rotation, or translation. */
+  origin?: OriginType
+  property: Point4d /* The scale, or rotation, or translation. */
   set: boolean /* If true, overwrite the previous value with this. If false, the previous value will be modified. E.g. when translating, `set=true` will set a new location, and `set=false` will translate the current location by the given X/Y/Z. */
 }
 
-export type TwistExtrude_type = {} /* Empty object */
+export interface TwistExtrude {} /* Empty object */
 
-export type UnitAngle_type = 'degrees' | 'radians'
+export type UnitAngle = 'degrees' | 'radians'
 
-export interface UnitAngleConversion_type {
+export interface UnitAngleConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6008,13 +5977,13 @@ export interface UnitAngleConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitAngle_type /* The source format of the unit conversion. */
+  input_unit: UnitAngle /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitAngle_type /* The output format of the unit conversion. */
+  output_unit: UnitAngle /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6022,13 +5991,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitArea_type =
+export type UnitArea =
   | 'cm2'
   | 'dm2'
   | 'ft2'
@@ -6038,7 +6007,7 @@ export type UnitArea_type =
   | 'mm2'
   | 'yd2'
 
-export interface UnitAreaConversion_type {
+export interface UnitAreaConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6053,13 +6022,13 @@ export interface UnitAreaConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitArea_type /* The source format of the unit conversion. */
+  input_unit: UnitArea /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitArea_type /* The output format of the unit conversion. */
+  output_unit: UnitArea /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6067,19 +6036,19 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitCurrent_type =
+export type UnitCurrent =
   | 'amperes'
   | 'microamperes'
   | 'milliamperes'
   | 'nanoamperes'
 
-export interface UnitCurrentConversion_type {
+export interface UnitCurrentConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6094,13 +6063,13 @@ export interface UnitCurrentConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitCurrent_type /* The source format of the unit conversion. */
+  input_unit: UnitCurrent /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitCurrent_type /* The output format of the unit conversion. */
+  output_unit: UnitCurrent /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6108,15 +6077,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitDensity_type = 'lb:ft3' | 'kg:m3'
+export type UnitDensity = 'lb:ft3' | 'kg:m3'
 
-export type UnitEnergy_type =
+export type UnitEnergy =
   | 'btu'
   | 'electronvolts'
   | 'joules'
@@ -6124,7 +6093,7 @@ export type UnitEnergy_type =
   | 'kilowatt_hours'
   | 'watt_hours'
 
-export interface UnitEnergyConversion_type {
+export interface UnitEnergyConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6139,13 +6108,13 @@ export interface UnitEnergyConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitEnergy_type /* The source format of the unit conversion. */
+  input_unit: UnitEnergy /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitEnergy_type /* The output format of the unit conversion. */
+  output_unit: UnitEnergy /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6153,13 +6122,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitForce_type =
+export type UnitForce =
   | 'dynes'
   | 'kiloponds'
   | 'micronewtons'
@@ -6168,7 +6137,7 @@ export type UnitForce_type =
   | 'poundals'
   | 'pounds'
 
-export interface UnitForceConversion_type {
+export interface UnitForceConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6183,13 +6152,13 @@ export interface UnitForceConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitForce_type /* The source format of the unit conversion. */
+  input_unit: UnitForce /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitForce_type /* The output format of the unit conversion. */
+  output_unit: UnitForce /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6197,13 +6166,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitFrequency_type =
+export type UnitFrequency =
   | 'gigahertz'
   | 'hertz'
   | 'kilohertz'
@@ -6213,7 +6182,7 @@ export type UnitFrequency_type =
   | 'nanohertz'
   | 'terahertz'
 
-export interface UnitFrequencyConversion_type {
+export interface UnitFrequencyConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6228,13 +6197,13 @@ export interface UnitFrequencyConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitFrequency_type /* The source format of the unit conversion. */
+  input_unit: UnitFrequency /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitFrequency_type /* The output format of the unit conversion. */
+  output_unit: UnitFrequency /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6242,15 +6211,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitLength_type = 'cm' | 'ft' | 'in' | 'm' | 'mm' | 'yd'
+export type UnitLength = 'cm' | 'ft' | 'in' | 'm' | 'mm' | 'yd'
 
-export interface UnitLengthConversion_type {
+export interface UnitLengthConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6265,13 +6234,13 @@ export interface UnitLengthConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitLength_type /* The source format of the unit conversion. */
+  input_unit: UnitLength /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitLength_type /* The output format of the unit conversion. */
+  output_unit: UnitLength /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6279,15 +6248,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitMass_type = 'g' | 'kg' | 'lb'
+export type UnitMass = 'g' | 'kg' | 'lb'
 
-export interface UnitMassConversion_type {
+export interface UnitMassConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6302,13 +6271,13 @@ export interface UnitMassConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitMass_type /* The source format of the unit conversion. */
+  input_unit: UnitMass /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitMass_type /* The output format of the unit conversion. */
+  output_unit: UnitMass /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6316,13 +6285,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitPower_type =
+export type UnitPower =
   | 'btu_per_minute'
   | 'horsepower'
   | 'kilowatts'
@@ -6331,7 +6300,7 @@ export type UnitPower_type =
   | 'milliwatts'
   | 'watts'
 
-export interface UnitPowerConversion_type {
+export interface UnitPowerConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6346,13 +6315,13 @@ export interface UnitPowerConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitPower_type /* The source format of the unit conversion. */
+  input_unit: UnitPower /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitPower_type /* The output format of the unit conversion. */
+  output_unit: UnitPower /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6360,13 +6329,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitPressure_type =
+export type UnitPressure =
   | 'atmospheres'
   | 'bars'
   | 'hectopascals'
@@ -6375,7 +6344,7 @@ export type UnitPressure_type =
   | 'pascals'
   | 'psi'
 
-export interface UnitPressureConversion_type {
+export interface UnitPressureConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6390,13 +6359,13 @@ export interface UnitPressureConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitPressure_type /* The source format of the unit conversion. */
+  input_unit: UnitPressure /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitPressure_type /* The output format of the unit conversion. */
+  output_unit: UnitPressure /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6404,19 +6373,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitTemperature_type =
-  | 'celsius'
-  | 'fahrenheit'
-  | 'kelvin'
-  | 'rankine'
+export type UnitTemperature = 'celsius' | 'fahrenheit' | 'kelvin' | 'rankine'
 
-export interface UnitTemperatureConversion_type {
+export interface UnitTemperatureConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6431,13 +6396,13 @@ export interface UnitTemperatureConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitTemperature_type /* The source format of the unit conversion. */
+  input_unit: UnitTemperature /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitTemperature_type /* The output format of the unit conversion. */
+  output_unit: UnitTemperature /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6445,15 +6410,15 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitTorque_type = 'newton_metres' | 'pound_foot'
+export type UnitTorque = 'newton_metres' | 'pound_foot'
 
-export interface UnitTorqueConversion_type {
+export interface UnitTorqueConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6468,13 +6433,13 @@ export interface UnitTorqueConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitTorque_type /* The source format of the unit conversion. */
+  input_unit: UnitTorque /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitTorque_type /* The output format of the unit conversion. */
+  output_unit: UnitTorque /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6482,13 +6447,13 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UnitVolume_type =
+export type UnitVolume =
   | 'cm3'
   | 'ft3'
   | 'in3'
@@ -6499,7 +6464,7 @@ export type UnitVolume_type =
   | 'l'
   | 'ml'
 
-export interface UnitVolumeConversion_type {
+export interface UnitVolumeConversion {
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6514,13 +6479,13 @@ export interface UnitVolumeConversion_type {
   /* The unique identifier of the API call.
 
 This is the same as the API call ID. */
-  id: Uuid_type
+  id: Uuid
   /* default:0, format:double, description:The input value. */
   input?: number
-  input_unit: UnitVolume_type /* The source format of the unit conversion. */
+  input_unit: UnitVolume /* The source format of the unit conversion. */
   /* nullable:true, format:double, description:The resulting value. */
   output?: number
-  output_unit: UnitVolume_type /* The output format of the unit conversion. */
+  output_unit: UnitVolume /* The output format of the unit conversion. */
   /*{
   "nullable": true,
   "title": "DateTime",
@@ -6528,19 +6493,19 @@ This is the same as the API call ID. */
   "description": "The time and date the API call was started."
 }*/
   started_at?: string
-  status: ApiCallStatus_type /* The status of the API call. */
+  status: ApiCallStatus /* The status of the API call. */
   /* title:DateTime, format:date-time, description:The time and date the API call was last updated. */
   updated_at: string
-  user_id: Uuid_type /* The user ID of the user who created the API call. */
+  user_id: Uuid /* The user ID of the user who created the API call. */
 }
 
-export type UpdateAnnotation_type = {} /* Empty object */
+export interface UpdateAnnotation {} /* Empty object */
 
-export interface UpdateMemberToOrgBody_type {
-  role: UserOrgRole_type /* The organization role to give the user. */
+export interface UpdateMemberToOrgBody {
+  role: UserOrgRole /* The organization role to give the user. */
 }
 
-export interface UpdatePaymentBalance_type {
+export interface UpdatePaymentBalance {
   /*{
   "nullable": true,
   "title": "double",
@@ -6557,7 +6522,7 @@ export interface UpdatePaymentBalance_type {
   stable_api_credits_remaining_monetary_value?: number
 }
 
-export interface UpdateShortlinkRequest_type {
+export interface UpdateShortlinkRequest {
   /*{
   "nullable": true,
   "description": "The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here."
@@ -6566,7 +6531,7 @@ export interface UpdateShortlinkRequest_type {
   restrict_to_org: boolean /* If the shortlink should be restricted to the user's organization to view. This only applies to org shortlinks. If you are creating a user shortlink and you are not a member of a team or enterprise and you try to set this to true, it will fail. */
 }
 
-export interface UpdateUser_type {
+export interface UpdateUser {
   company?: string /* The user's company. */
   discord?: string /* The user's Discord handle. */
   first_name?: string /* The user's first name. */
@@ -6589,9 +6554,9 @@ export interface UpdateUser_type {
   phone?: string
 }
 
-export interface User_type {
+export interface User {
   /* nullable:true, description:If the user should be blocked and the reason why. */
-  block?: BlockReason_type
+  block?: BlockReason
   /*{
   "default": false,
   "description": "If we can train on the user's data. If the user is a member of an organization, the organization's setting will override this."
@@ -6614,7 +6579,7 @@ export interface User_type {
   email_verified?: string
   first_name?: string /* The user's first name. */
   github?: string /* The user's GitHub handle. */
-  id: Uuid_type /* The unique identifier for the user. */
+  id: Uuid /* The unique identifier for the user. */
   /* title:String, format:uri, description:The image avatar for the user. This is a URL. */
   image: string
   /* default:false, description:If the user has finished onboarding. */
@@ -6634,9 +6599,9 @@ export interface User_type {
   updated_at: string
 }
 
-export type UserIdentifier_type = string
+export type UserIdentifier = string
 
-export interface UserOrgInfo_type {
+export interface UserOrgInfo {
   /*{
   "nullable": true,
   "description": "If we should allow all future users who are created with email addresses from this domain to join the org."
@@ -6652,12 +6617,12 @@ export interface UserOrgInfo_type {
 }*/
   billing_email_verified?: string
   /* nullable:true, description:If the org should be blocked and the reason why. */
-  block?: BlockReason_type
+  block?: BlockReason
   /* title:DateTime, format:date-time, description:The date and time the org was created. */
   created_at: string
   /* nullable:true, description:The org's domain. */
   domain?: string
-  id: Uuid_type /* The unique identifier for the org. */
+  id: Uuid /* The unique identifier for the org. */
   /*{
   "nullable": true,
   "title": "String",
@@ -6673,17 +6638,17 @@ export interface UserOrgInfo_type {
   "description": "The org's phone number."
 }*/
   phone?: string
-  role: OrgRole_type /* The user's role in the org. */
+  role: OrgRole /* The user's role in the org. */
   /* nullable:true, description:The org's stripe id. */
   stripe_id?: string
   /* title:DateTime, format:date-time, description:The date and time the org was last updated. */
   updated_at: string
 }
 
-export type UserOrgRole_type = 'admin' | 'member'
+export type UserOrgRole = 'admin' | 'member'
 
-export interface UserResultsPage_type {
-  items: User_type[] /* list of items on this page of results */
+export interface UserResultsPage {
+  items: User[] /* list of items on this page of results */
   /*{
   "nullable": true,
   "description": "token used to fetch the next page of results (if any)"
@@ -6691,11 +6656,11 @@ export interface UserResultsPage_type {
   next_page?: string
 }
 
-export type Uuid_type =
+export type Uuid =
   /* format:uuid, description:A UUID usually v4 or v7 */
   string
 
-export interface VerificationTokenResponse_type {
+export interface VerificationTokenResponse {
   /*{
   "title": "DateTime",
   "format": "date-time",
@@ -6704,7 +6669,7 @@ export interface VerificationTokenResponse_type {
   created_at: string
   /* title:DateTime, format:date-time, description:The date and time the verification token expires. */
   expires: string
-  id: Uuid_type /* The token used for verification. This is used as the id for the table since it is unique per record. */
+  id: Uuid /* The token used for verification. This is used as the id for the table since it is unique per record. */
   /*{
   "format": "email",
   "description": "The identifier for the user. This is typically the user's email address since that is what we are verifying."
@@ -6725,33 +6690,33 @@ export interface VerificationTokenResponse_type {
   updated_at: string
 }
 
-export interface ViewIsometric_type {
-  settings: CameraSettings_type /* Camera settings */
+export interface ViewIsometric {
+  settings: CameraSettings /* Camera settings */
 }
 
-export interface Volume_type {
-  output_unit: UnitVolume_type /* The output unit for the volume. */
+export interface Volume {
+  output_unit: UnitVolume /* The output unit for the volume. */
   /* format:double, description:The volume. */
   volume: number
 }
 
-export type WebSocketRequest_type =
+export type WebSocketRequest =
   | {
-      candidate: RtcIceCandidateInit_type /* Information about the ICE candidate. */
+      candidate: RtcIceCandidateInit /* Information about the ICE candidate. */
       type: 'trickle_ice'
     }
   | {
-      offer: RtcSessionDescription_type /* The session description. */
+      offer: RtcSessionDescription /* The session description. */
       type: 'sdp_offer'
     }
   | {
-      cmd: ModelingCmd_type /* Which command to submit to the Kittycad engine. */
-      cmd_id: ModelingCmdId_type /* ID of command being submitted. */
+      cmd: ModelingCmd /* Which command to submit to the Kittycad engine. */
+      cmd_id: ModelingCmdId /* ID of command being submitted. */
       type: 'modeling_cmd_req'
     }
   | {
-      batch_id: ModelingCmdId_type /* ID of batch being submitted. Each request has their own individual ModelingCmdId, but this is the ID of the overall batch. */
-      requests: ModelingCmdReq_type[] /* A sequence of modeling requests. If any request fails, following requests will not be tried. */
+      batch_id: ModelingCmdId /* ID of batch being submitted. Each request has their own individual ModelingCmdId, but this is the ID of the overall batch. */
+      requests: ModelingCmdReq[] /* A sequence of modeling requests. If any request fails, following requests will not be tried. */
       /*{
   "default": false,
   "description": "If false or omitted, responses to each batch command will just be Ok(()). If true, responses will be the actual response data for that modeling command."
@@ -6761,13 +6726,13 @@ export type WebSocketRequest_type =
     }
   | { type: 'ping' }
   | {
-      metrics: ClientMetrics_type /* Collected metrics from the Client's end of the engine connection. */
+      metrics: ClientMetrics /* Collected metrics from the Client's end of the engine connection. */
       type: 'metrics_response'
     }
   | { type: 'debug' }
   | { headers: { [key: string]: string }; type: 'headers' }
 
-export type WebSocketResponse_type =
+export type WebSocketResponse =
   | {
       /*{
   "nullable": true,
@@ -6775,11 +6740,11 @@ export type WebSocketResponse_type =
   "description": "Which request this is a response to. If the request was a modeling command, this is the modeling command ID. If no request ID was sent, this will be null."
 }*/
       request_id?: string
-      resp: OkWebSocketResponseData_type /* The data sent with a successful response. This will be flattened into a 'type' and 'data' field. */
+      resp: OkWebSocketResponseData /* The data sent with a successful response. This will be flattened into a 'type' and 'data' field. */
       success: true
     }
   | {
-      errors: ApiError_type[] /* The errors that occurred. */
+      errors: ApiError[] /* The errors that occurred. */
       /*{
   "nullable": true,
   "format": "uuid",
@@ -6789,11 +6754,9 @@ export type WebSocketResponse_type =
       success: false
     }
 
-export type WorldCoordinateSystem_type =
-  | 'right_handed_up_z'
-  | 'right_handed_up_y'
+export type WorldCoordinateSystem = 'right_handed_up_z' | 'right_handed_up_y'
 
-export type ZooProductSubscription_type = {
+export type ZooProductSubscription = {
   /*{
   "nullable": true,
   "format": "double",
@@ -6801,9 +6764,9 @@ export type ZooProductSubscription_type = {
 }*/
   annual_discount?: number
   description: string /* A description of the tier. */
-  endpoints_included?: ApiEndpoint_type[] /* The Zoo API endpoints that are included when through an approved zoo tool. */
+  endpoints_included?: ApiEndpoint[] /* The Zoo API endpoints that are included when through an approved zoo tool. */
   /* minItems:0, maxItems:15, description:Features that are included in the subscription. */
-  features?: SubscriptionTierFeature_type[]
+  features?: SubscriptionTierFeature[]
   /*{
   "default": 0,
   "format": "uint64",
@@ -6817,7 +6780,7 @@ export type ZooProductSubscription_type = {
   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month."
 }*/
   monthly_pay_as_you_go_api_credits_monetary_value: number
-  name: ModelingAppSubscriptionTierName_type /* The name of the tier. */
+  name: ModelingAppSubscriptionTierName /* The name of the tier. */
   /*{
   "title": "double",
   "default": 0,
@@ -6825,21 +6788,21 @@ export type ZooProductSubscription_type = {
   "description": "The price of an API credit (meaning 1 credit = 1 minute of API usage)."
 }*/
   pay_as_you_go_api_credit_price?: number
-  price: SubscriptionTierPrice_type /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */
-  share_links?: ModelingAppShareLinks_type[] /* The options for sharable links through the modeling app. */
-  support_tier: SupportTier_type /* The support tier the subscription provides. */
-  training_data_behavior: SubscriptionTrainingDataBehavior_type /* The behavior of the users data (can it be used for training, etc). */
-  type: SubscriptionTierType_type /* If the tier is offered for an individual or an org. */
-  zoo_tools_included?: ZooTool_type[] /* The Zoo tools that you can call unlimited times with this tier. */
+  price: SubscriptionTierPrice /* The price of the tier per month. If this is for an individual, this is the price they pay. If this is for an organization, this is the price the organization pays per member in the org. This is in USD. */
+  share_links?: ModelingAppShareLinks[] /* The options for sharable links through the modeling app. */
+  support_tier: SupportTier /* The support tier the subscription provides. */
+  training_data_behavior: SubscriptionTrainingDataBehavior /* The behavior of the users data (can it be used for training, etc). */
+  type: SubscriptionTierType /* If the tier is offered for an individual or an org. */
+  zoo_tools_included?: ZooTool[] /* The Zoo tools that you can call unlimited times with this tier. */
 }
 
-export interface ZooProductSubscriptions_type {
-  modeling_app: ModelingAppSubscriptionTier_type /* A modeling app subscription. */
+export interface ZooProductSubscriptions {
+  modeling_app: ModelingAppSubscriptionTier /* A modeling app subscription. */
 }
 
-export interface ZooProductSubscriptionsOrgRequest_type {
+export interface ZooProductSubscriptionsOrgRequest {
   /* default:team, description:A modeling app subscription. */
-  modeling_app?: ModelingAppOrganizationSubscriptionTier_type
+  modeling_app?: ModelingAppOrganizationSubscriptionTier
   /*{
   "nullable": true,
   "description": "If the customer chooses to pay annually or monthly, we can add that here. The annual discount will apply if there is a discount for the subscription."
@@ -6847,9 +6810,9 @@ export interface ZooProductSubscriptionsOrgRequest_type {
   pay_annually?: boolean
 }
 
-export interface ZooProductSubscriptionsUserRequest_type {
+export interface ZooProductSubscriptionsUserRequest {
   /* default:free, description:A modeling app subscription. */
-  modeling_app?: ModelingAppIndividualSubscriptionTier_type
+  modeling_app?: ModelingAppIndividualSubscriptionTier
   /*{
   "nullable": true,
   "description": "If the customer chooses to pay annually or monthly, we can add that here. The annual discount will apply if there is a discount for the subscription."
@@ -6857,410 +6820,407 @@ export interface ZooProductSubscriptionsUserRequest_type {
   pay_annually?: boolean
 }
 
-export type ZooTool_type =
-  | 'modeling_app'
-  | 'diff_chrome_extension'
-  | 'text_to_cad'
+export type ZooTool = 'modeling_app' | 'diff_chrome_extension' | 'text_to_cad'
 
-export interface ZoomToFit_type {
-  settings: CameraSettings_type /* Camera settings */
+export interface ZoomToFit {
+  settings: CameraSettings /* Camera settings */
 }
 
 export interface Models {
-  AccountProvider_type: AccountProvider_type
-  AddHoleFromOffset_type: AddHoleFromOffset_type
-  AddOrgMember_type: AddOrgMember_type
-  AddressDetails_type: AddressDetails_type
-  AdjacencyInfo_type: AdjacencyInfo_type
-  Angle_type: Angle_type
-  AnnotationLineEnd_type: AnnotationLineEnd_type
-  AnnotationLineEndOptions_type: AnnotationLineEndOptions_type
-  AnnotationOptions_type: AnnotationOptions_type
-  AnnotationTextAlignmentX_type: AnnotationTextAlignmentX_type
-  AnnotationTextAlignmentY_type: AnnotationTextAlignmentY_type
-  AnnotationTextOptions_type: AnnotationTextOptions_type
-  AnnotationType_type: AnnotationType_type
-  ApiCallQueryGroup_type: ApiCallQueryGroup_type
-  ApiCallQueryGroupBy_type: ApiCallQueryGroupBy_type
-  ApiCallStatus_type: ApiCallStatus_type
-  ApiCallWithPrice_type: ApiCallWithPrice_type
-  ApiCallWithPriceResultsPage_type: ApiCallWithPriceResultsPage_type
-  ApiEndpoint_type: ApiEndpoint_type
-  ApiError_type: ApiError_type
-  ApiToken_type: ApiToken_type
-  ApiTokenResultsPage_type: ApiTokenResultsPage_type
-  ApiTokenUuid_type: ApiTokenUuid_type
-  AppClientInfo_type: AppClientInfo_type
-  AsyncApiCall_type: AsyncApiCall_type
-  AsyncApiCallOutput_type: AsyncApiCallOutput_type
-  AsyncApiCallResultsPage_type: AsyncApiCallResultsPage_type
-  AsyncApiCallType_type: AsyncApiCallType_type
-  AuthApiKeyResponse_type: AuthApiKeyResponse_type
-  AuthCallback_type: AuthCallback_type
-  Axis_type: Axis_type
-  AxisDirectionPair_type: AxisDirectionPair_type
-  BatchResponse_type: BatchResponse_type
-  BillingInfo_type: BillingInfo_type
-  BlockReason_type: BlockReason_type
-  BooleanIntersection_type: BooleanIntersection_type
-  BooleanSubtract_type: BooleanSubtract_type
-  BooleanUnion_type: BooleanUnion_type
-  CameraDragEnd_type: CameraDragEnd_type
-  CameraDragInteractionType_type: CameraDragInteractionType_type
-  CameraDragMove_type: CameraDragMove_type
-  CameraDragStart_type: CameraDragStart_type
-  CameraMovement_type: CameraMovement_type
-  CameraSettings_type: CameraSettings_type
-  CameraViewState_type: CameraViewState_type
-  CardDetails_type: CardDetails_type
-  CenterOfMass_type: CenterOfMass_type
-  ClientMetrics_type: ClientMetrics_type
-  ClosePath_type: ClosePath_type
-  CodeLanguage_type: CodeLanguage_type
-  CodeOption_type: CodeOption_type
-  CodeOutput_type: CodeOutput_type
-  Color_type: Color_type
-  ComplementaryEdges_type: ComplementaryEdges_type
-  ComponentTransform_type: ComponentTransform_type
-  Conversation_type: Conversation_type
-  ConversationResultsPage_type: ConversationResultsPage_type
-  ConversionParams_type: ConversionParams_type
-  CountryCode_type: CountryCode_type
-  Coupon_type: Coupon_type
-  CreateShortlinkRequest_type: CreateShortlinkRequest_type
-  CreateShortlinkResponse_type: CreateShortlinkResponse_type
-  CreatedAtSortMode_type: CreatedAtSortMode_type
-  CrmData_type: CrmData_type
-  Currency_type: Currency_type
-  CurveGetControlPoints_type: CurveGetControlPoints_type
-  CurveGetEndPoints_type: CurveGetEndPoints_type
-  CurveGetType_type: CurveGetType_type
-  CurveSetConstraint_type: CurveSetConstraint_type
-  CurveType_type: CurveType_type
-  Customer_type: Customer_type
-  CustomerBalance_type: CustomerBalance_type
-  CutStrategy_type: CutStrategy_type
-  CutType_type: CutType_type
-  DefaultCameraCenterToScene_type: DefaultCameraCenterToScene_type
-  DefaultCameraCenterToSelection_type: DefaultCameraCenterToSelection_type
-  DefaultCameraFocusOn_type: DefaultCameraFocusOn_type
-  DefaultCameraGetSettings_type: DefaultCameraGetSettings_type
-  DefaultCameraGetView_type: DefaultCameraGetView_type
-  DefaultCameraLookAt_type: DefaultCameraLookAt_type
-  DefaultCameraPerspectiveSettings_type: DefaultCameraPerspectiveSettings_type
-  DefaultCameraSetOrthographic_type: DefaultCameraSetOrthographic_type
-  DefaultCameraSetPerspective_type: DefaultCameraSetPerspective_type
-  DefaultCameraSetView_type: DefaultCameraSetView_type
-  DefaultCameraZoom_type: DefaultCameraZoom_type
-  Density_type: Density_type
-  DerEncodedKeyPair_type: DerEncodedKeyPair_type
-  DeviceAccessTokenRequestForm_type: DeviceAccessTokenRequestForm_type
-  DeviceAccessTokenUuid_type: DeviceAccessTokenUuid_type
-  DeviceAuthConfirmParams_type: DeviceAuthConfirmParams_type
-  DeviceAuthRequestForm_type: DeviceAuthRequestForm_type
-  Direction_type: Direction_type
-  DisableDryRun_type: DisableDryRun_type
-  Discount_type: Discount_type
-  DiscountCode_type: DiscountCode_type
-  DistanceType_type: DistanceType_type
-  DxfStorage_type: DxfStorage_type
-  EdgeInfo_type: EdgeInfo_type
-  EdgeLinesVisible_type: EdgeLinesVisible_type
-  EmailAuthenticationForm_type: EmailAuthenticationForm_type
-  EnableDryRun_type: EnableDryRun_type
-  EnableSketchMode_type: EnableSketchMode_type
-  EngineUtilEvaluatePath_type: EngineUtilEvaluatePath_type
-  EnterpriseSubscriptionTierPrice_type: EnterpriseSubscriptionTierPrice_type
-  EntityCircularPattern_type: EntityCircularPattern_type
-  EntityClone_type: EntityClone_type
-  EntityFade_type: EntityFade_type
-  EntityGetAllChildUuids_type: EntityGetAllChildUuids_type
-  EntityGetChildUuid_type: EntityGetChildUuid_type
-  EntityGetDistance_type: EntityGetDistance_type
-  EntityGetNumChildren_type: EntityGetNumChildren_type
-  EntityGetParentId_type: EntityGetParentId_type
-  EntityGetSketchPaths_type: EntityGetSketchPaths_type
-  EntityLinearPattern_type: EntityLinearPattern_type
-  EntityLinearPatternTransform_type: EntityLinearPatternTransform_type
-  EntityMakeHelix_type: EntityMakeHelix_type
-  EntityMakeHelixFromEdge_type: EntityMakeHelixFromEdge_type
-  EntityMakeHelixFromParams_type: EntityMakeHelixFromParams_type
-  EntityMirror_type: EntityMirror_type
-  EntityMirrorAcrossEdge_type: EntityMirrorAcrossEdge_type
-  EntitySetOpacity_type: EntitySetOpacity_type
-  EntityType_type: EntityType_type
-  Error_type: Error_type
-  ErrorCode_type: ErrorCode_type
-  Event_type: Event_type
-  Export_type: Export_type
-  Export2d_type: Export2d_type
-  Export3d_type: Export3d_type
-  ExportFile_type: ExportFile_type
-  ExtendPath_type: ExtendPath_type
-  ExtendedUser_type: ExtendedUser_type
-  ExtendedUserResultsPage_type: ExtendedUserResultsPage_type
-  Extrude_type: Extrude_type
-  ExtrudeMethod_type: ExtrudeMethod_type
-  ExtrudedFaceInfo_type: ExtrudedFaceInfo_type
-  ExtrusionFaceCapType_type: ExtrusionFaceCapType_type
-  ExtrusionFaceInfo_type: ExtrusionFaceInfo_type
-  FaceEdgeInfo_type: FaceEdgeInfo_type
-  FaceGetCenter_type: FaceGetCenter_type
-  FaceGetGradient_type: FaceGetGradient_type
-  FaceGetPosition_type: FaceGetPosition_type
-  FaceIsPlanar_type: FaceIsPlanar_type
-  FailureWebSocketResponse_type: FailureWebSocketResponse_type
-  FbxStorage_type: FbxStorage_type
-  FileCenterOfMass_type: FileCenterOfMass_type
-  FileConversion_type: FileConversion_type
-  FileDensity_type: FileDensity_type
-  FileExportFormat_type: FileExportFormat_type
-  FileImportFormat_type: FileImportFormat_type
-  FileMass_type: FileMass_type
-  FileSurfaceArea_type: FileSurfaceArea_type
-  FileVolume_type: FileVolume_type
-  GetEntityType_type: GetEntityType_type
-  GetNumObjects_type: GetNumObjects_type
-  GetSketchModePlane_type: GetSketchModePlane_type
-  GlobalAxis_type: GlobalAxis_type
-  GltfPresentation_type: GltfPresentation_type
-  GltfStorage_type: GltfStorage_type
-  HandleMouseDragEnd_type: HandleMouseDragEnd_type
-  HandleMouseDragMove_type: HandleMouseDragMove_type
-  HandleMouseDragStart_type: HandleMouseDragStart_type
-  HighlightSetEntities_type: HighlightSetEntities_type
-  HighlightSetEntity_type: HighlightSetEntity_type
-  IceServer_type: IceServer_type
-  IdpMetadataSource_type: IdpMetadataSource_type
-  ImageFormat_type: ImageFormat_type
-  ImportFile_type: ImportFile_type
-  ImportFiles_type: ImportFiles_type
-  ImportedGeometry_type: ImportedGeometry_type
-  InputFormat3d_type: InputFormat3d_type
-  InquiryForm_type: InquiryForm_type
-  InquiryType_type: InquiryType_type
-  Invoice_type: Invoice_type
-  InvoiceLineItem_type: InvoiceLineItem_type
-  InvoiceStatus_type: InvoiceStatus_type
-  IpAddrInfo_type: IpAddrInfo_type
-  KclCodeCompletionParams_type: KclCodeCompletionParams_type
-  KclCodeCompletionRequest_type: KclCodeCompletionRequest_type
-  KclCodeCompletionResponse_type: KclCodeCompletionResponse_type
-  KclModel_type: KclModel_type
-  LengthUnit_type: LengthUnit_type
-  Loft_type: Loft_type
-  MakeAxesGizmo_type: MakeAxesGizmo_type
-  MakeOffsetPath_type: MakeOffsetPath_type
-  MakePlane_type: MakePlane_type
-  Mass_type: Mass_type
-  Method_type: Method_type
-  MlCopilotClientMessage_type: MlCopilotClientMessage_type
-  MlCopilotServerMessage_type: MlCopilotServerMessage_type
-  MlCopilotSystemCommand_type: MlCopilotSystemCommand_type
-  MlFeedback_type: MlFeedback_type
-  MlPrompt_type: MlPrompt_type
-  MlPromptMetadata_type: MlPromptMetadata_type
-  MlPromptResultsPage_type: MlPromptResultsPage_type
-  MlPromptType_type: MlPromptType_type
-  MlToolResult_type: MlToolResult_type
-  ModelingAppEventType_type: ModelingAppEventType_type
-  ModelingAppIndividualSubscriptionTier_type: ModelingAppIndividualSubscriptionTier_type
-  ModelingAppOrganizationSubscriptionTier_type: ModelingAppOrganizationSubscriptionTier_type
-  ModelingAppShareLinks_type: ModelingAppShareLinks_type
-  ModelingAppSubscriptionTier_type: ModelingAppSubscriptionTier_type
-  ModelingAppSubscriptionTierName_type: ModelingAppSubscriptionTierName_type
-  ModelingCmd_type: ModelingCmd_type
-  ModelingCmdId_type: ModelingCmdId_type
-  ModelingCmdReq_type: ModelingCmdReq_type
-  ModelingSessionData_type: ModelingSessionData_type
-  MouseClick_type: MouseClick_type
-  MouseMove_type: MouseMove_type
-  MovePathPen_type: MovePathPen_type
-  NewAnnotation_type: NewAnnotation_type
-  OAuth2ClientInfo_type: OAuth2ClientInfo_type
-  OAuth2GrantType_type: OAuth2GrantType_type
-  ObjectBringToFront_type: ObjectBringToFront_type
-  ObjectSetMaterialParamsPbr_type: ObjectSetMaterialParamsPbr_type
-  ObjectVisible_type: ObjectVisible_type
-  OkModelingCmdResponse_type: OkModelingCmdResponse_type
-  OkWebSocketResponseData_type: OkWebSocketResponseData_type
-  OppositeForAngle_type: OppositeForAngle_type
-  OppositeForLengthUnit_type: OppositeForLengthUnit_type
-  Org_type: Org_type
-  OrgDetails_type: OrgDetails_type
-  OrgMember_type: OrgMember_type
-  OrgMemberResultsPage_type: OrgMemberResultsPage_type
-  OrgResultsPage_type: OrgResultsPage_type
-  OrgRole_type: OrgRole_type
-  OrientToFace_type: OrientToFace_type
-  OriginType_type: OriginType_type
-  OutputFile_type: OutputFile_type
-  OutputFormat2d_type: OutputFormat2d_type
-  OutputFormat3d_type: OutputFormat3d_type
-  PathCommand_type: PathCommand_type
-  PathComponentConstraintBound_type: PathComponentConstraintBound_type
-  PathComponentConstraintType_type: PathComponentConstraintType_type
-  PathGetCurveUuid_type: PathGetCurveUuid_type
-  PathGetCurveUuidsForVertices_type: PathGetCurveUuidsForVertices_type
-  PathGetInfo_type: PathGetInfo_type
-  PathGetSketchTargetUuid_type: PathGetSketchTargetUuid_type
-  PathGetVertexUuids_type: PathGetVertexUuids_type
-  PathSegment_type: PathSegment_type
-  PathSegmentInfo_type: PathSegmentInfo_type
-  PaymentIntent_type: PaymentIntent_type
-  PaymentMethod_type: PaymentMethod_type
-  PaymentMethodCardChecks_type: PaymentMethodCardChecks_type
-  PaymentMethodType_type: PaymentMethodType_type
-  PerspectiveCameraParameters_type: PerspectiveCameraParameters_type
-  PlanInterval_type: PlanInterval_type
-  PlanStep_type: PlanStep_type
-  PlaneIntersectAndProject_type: PlaneIntersectAndProject_type
-  PlaneSetColor_type: PlaneSetColor_type
-  PlyStorage_type: PlyStorage_type
-  Point2d_type: Point2d_type
-  Point3d_type: Point3d_type
-  Point4d_type: Point4d_type
-  Pong_type: Pong_type
-  PostEffectType_type: PostEffectType_type
-  PrivacySettings_type: PrivacySettings_type
-  ProjectEntityToPlane_type: ProjectEntityToPlane_type
-  ProjectPointsToPlane_type: ProjectPointsToPlane_type
-  RawFile_type: RawFile_type
-  ReasoningMessage_type: ReasoningMessage_type
-  ReconfigureStream_type: ReconfigureStream_type
-  RelativeTo_type: RelativeTo_type
-  RemoveSceneObjects_type: RemoveSceneObjects_type
-  Revolve_type: Revolve_type
-  RevolveAboutEdge_type: RevolveAboutEdge_type
-  Rotation_type: Rotation_type
-  RtcIceCandidateInit_type: RtcIceCandidateInit_type
-  RtcSdpType_type: RtcSdpType_type
-  RtcSessionDescription_type: RtcSessionDescription_type
-  SamlIdentityProvider_type: SamlIdentityProvider_type
-  SamlIdentityProviderCreate_type: SamlIdentityProviderCreate_type
-  SceneClearAll_type: SceneClearAll_type
-  SceneSelectionType_type: SceneSelectionType_type
-  SceneToolType_type: SceneToolType_type
-  SelectAdd_type: SelectAdd_type
-  SelectClear_type: SelectClear_type
-  SelectGet_type: SelectGet_type
-  SelectRemove_type: SelectRemove_type
-  SelectReplace_type: SelectReplace_type
-  SelectWithPoint_type: SelectWithPoint_type
-  Selection_type: Selection_type
-  SendObject_type: SendObject_type
-  ServiceAccount_type: ServiceAccount_type
-  ServiceAccountResultsPage_type: ServiceAccountResultsPage_type
-  ServiceAccountUuid_type: ServiceAccountUuid_type
-  Session_type: Session_type
-  SessionUuid_type: SessionUuid_type
-  SetBackgroundColor_type: SetBackgroundColor_type
-  SetCurrentToolProperties_type: SetCurrentToolProperties_type
-  SetDefaultSystemProperties_type: SetDefaultSystemProperties_type
-  SetGridAutoScale_type: SetGridAutoScale_type
-  SetGridReferencePlane_type: SetGridReferencePlane_type
-  SetGridScale_type: SetGridScale_type
-  SetObjectTransform_type: SetObjectTransform_type
-  SetSceneUnits_type: SetSceneUnits_type
-  SetSelectionFilter_type: SetSelectionFilter_type
-  SetSelectionType_type: SetSelectionType_type
-  SetTool_type: SetTool_type
-  Shortlink_type: Shortlink_type
-  ShortlinkResultsPage_type: ShortlinkResultsPage_type
-  SideFace_type: SideFace_type
-  SketchModeDisable_type: SketchModeDisable_type
-  Solid2dAddHole_type: Solid2dAddHole_type
-  Solid3dFilletEdge_type: Solid3dFilletEdge_type
-  Solid3dGetAdjacencyInfo_type: Solid3dGetAdjacencyInfo_type
-  Solid3dGetAllEdgeFaces_type: Solid3dGetAllEdgeFaces_type
-  Solid3dGetAllOppositeEdges_type: Solid3dGetAllOppositeEdges_type
-  Solid3dGetCommonEdge_type: Solid3dGetCommonEdge_type
-  Solid3dGetExtrusionFaceInfo_type: Solid3dGetExtrusionFaceInfo_type
-  Solid3dGetNextAdjacentEdge_type: Solid3dGetNextAdjacentEdge_type
-  Solid3dGetOppositeEdge_type: Solid3dGetOppositeEdge_type
-  Solid3dGetPrevAdjacentEdge_type: Solid3dGetPrevAdjacentEdge_type
-  Solid3dShellFace_type: Solid3dShellFace_type
-  SourcePosition_type: SourcePosition_type
-  SourceRange_type: SourceRange_type
-  SourceRangePrompt_type: SourceRangePrompt_type
-  StartPath_type: StartPath_type
-  StlStorage_type: StlStorage_type
-  StoreCouponParams_type: StoreCouponParams_type
-  Subscribe_type: Subscribe_type
-  SubscriptionTierFeature_type: SubscriptionTierFeature_type
-  SubscriptionTierPrice_type: SubscriptionTierPrice_type
-  SubscriptionTierType_type: SubscriptionTierType_type
-  SubscriptionTrainingDataBehavior_type: SubscriptionTrainingDataBehavior_type
-  SuccessWebSocketResponse_type: SuccessWebSocketResponse_type
-  SupportTier_type: SupportTier_type
-  SurfaceArea_type: SurfaceArea_type
-  Sweep_type: Sweep_type
-  System_type: System_type
-  TakeSnapshot_type: TakeSnapshot_type
-  TextToCad_type: TextToCad_type
-  TextToCadCreateBody_type: TextToCadCreateBody_type
-  TextToCadIteration_type: TextToCadIteration_type
-  TextToCadIterationBody_type: TextToCadIterationBody_type
-  TextToCadModel_type: TextToCadModel_type
-  TextToCadMultiFileIteration_type: TextToCadMultiFileIteration_type
-  TextToCadMultiFileIterationBody_type: TextToCadMultiFileIterationBody_type
-  TextToCadResponse_type: TextToCadResponse_type
-  TextToCadResponseResultsPage_type: TextToCadResponseResultsPage_type
-  TokenRevokeRequestForm_type: TokenRevokeRequestForm_type
-  Transform_type: Transform_type
-  TransformByForPoint3d_type: TransformByForPoint3d_type
-  TransformByForPoint4d_type: TransformByForPoint4d_type
-  TwistExtrude_type: TwistExtrude_type
-  UnitAngle_type: UnitAngle_type
-  UnitAngleConversion_type: UnitAngleConversion_type
-  UnitArea_type: UnitArea_type
-  UnitAreaConversion_type: UnitAreaConversion_type
-  UnitCurrent_type: UnitCurrent_type
-  UnitCurrentConversion_type: UnitCurrentConversion_type
-  UnitDensity_type: UnitDensity_type
-  UnitEnergy_type: UnitEnergy_type
-  UnitEnergyConversion_type: UnitEnergyConversion_type
-  UnitForce_type: UnitForce_type
-  UnitForceConversion_type: UnitForceConversion_type
-  UnitFrequency_type: UnitFrequency_type
-  UnitFrequencyConversion_type: UnitFrequencyConversion_type
-  UnitLength_type: UnitLength_type
-  UnitLengthConversion_type: UnitLengthConversion_type
-  UnitMass_type: UnitMass_type
-  UnitMassConversion_type: UnitMassConversion_type
-  UnitPower_type: UnitPower_type
-  UnitPowerConversion_type: UnitPowerConversion_type
-  UnitPressure_type: UnitPressure_type
-  UnitPressureConversion_type: UnitPressureConversion_type
-  UnitTemperature_type: UnitTemperature_type
-  UnitTemperatureConversion_type: UnitTemperatureConversion_type
-  UnitTorque_type: UnitTorque_type
-  UnitTorqueConversion_type: UnitTorqueConversion_type
-  UnitVolume_type: UnitVolume_type
-  UnitVolumeConversion_type: UnitVolumeConversion_type
-  UpdateAnnotation_type: UpdateAnnotation_type
-  UpdateMemberToOrgBody_type: UpdateMemberToOrgBody_type
-  UpdatePaymentBalance_type: UpdatePaymentBalance_type
-  UpdateShortlinkRequest_type: UpdateShortlinkRequest_type
-  UpdateUser_type: UpdateUser_type
-  User_type: User_type
-  UserIdentifier_type: UserIdentifier_type
-  UserOrgInfo_type: UserOrgInfo_type
-  UserOrgRole_type: UserOrgRole_type
-  UserResultsPage_type: UserResultsPage_type
-  Uuid_type: Uuid_type
-  VerificationTokenResponse_type: VerificationTokenResponse_type
-  ViewIsometric_type: ViewIsometric_type
-  Volume_type: Volume_type
-  WebSocketRequest_type: WebSocketRequest_type
-  WebSocketResponse_type: WebSocketResponse_type
-  WorldCoordinateSystem_type: WorldCoordinateSystem_type
-  ZooProductSubscription_type: ZooProductSubscription_type
-  ZooProductSubscriptions_type: ZooProductSubscriptions_type
-  ZooProductSubscriptionsOrgRequest_type: ZooProductSubscriptionsOrgRequest_type
-  ZooProductSubscriptionsUserRequest_type: ZooProductSubscriptionsUserRequest_type
-  ZooTool_type: ZooTool_type
-  ZoomToFit_type: ZoomToFit_type
+  AccountProvider: AccountProvider
+  AddHoleFromOffset: AddHoleFromOffset
+  AddOrgMember: AddOrgMember
+  AddressDetails: AddressDetails
+  AdjacencyInfo: AdjacencyInfo
+  Angle: Angle
+  AnnotationLineEnd: AnnotationLineEnd
+  AnnotationLineEndOptions: AnnotationLineEndOptions
+  AnnotationOptions: AnnotationOptions
+  AnnotationTextAlignmentX: AnnotationTextAlignmentX
+  AnnotationTextAlignmentY: AnnotationTextAlignmentY
+  AnnotationTextOptions: AnnotationTextOptions
+  AnnotationType: AnnotationType
+  ApiCallQueryGroup: ApiCallQueryGroup
+  ApiCallQueryGroupBy: ApiCallQueryGroupBy
+  ApiCallStatus: ApiCallStatus
+  ApiCallWithPrice: ApiCallWithPrice
+  ApiCallWithPriceResultsPage: ApiCallWithPriceResultsPage
+  ApiEndpoint: ApiEndpoint
+  ApiError: ApiError
+  ApiToken: ApiToken
+  ApiTokenResultsPage: ApiTokenResultsPage
+  ApiTokenUuid: ApiTokenUuid
+  AppClientInfo: AppClientInfo
+  AsyncApiCall: AsyncApiCall
+  AsyncApiCallOutput: AsyncApiCallOutput
+  AsyncApiCallResultsPage: AsyncApiCallResultsPage
+  AsyncApiCallType: AsyncApiCallType
+  AuthApiKeyResponse: AuthApiKeyResponse
+  AuthCallback: AuthCallback
+  Axis: Axis
+  AxisDirectionPair: AxisDirectionPair
+  BatchResponse: BatchResponse
+  BillingInfo: BillingInfo
+  BlockReason: BlockReason
+  BooleanIntersection: BooleanIntersection
+  BooleanSubtract: BooleanSubtract
+  BooleanUnion: BooleanUnion
+  CameraDragEnd: CameraDragEnd
+  CameraDragInteractionType: CameraDragInteractionType
+  CameraDragMove: CameraDragMove
+  CameraDragStart: CameraDragStart
+  CameraMovement: CameraMovement
+  CameraSettings: CameraSettings
+  CameraViewState: CameraViewState
+  CardDetails: CardDetails
+  CenterOfMass: CenterOfMass
+  ClientMetrics: ClientMetrics
+  ClosePath: ClosePath
+  CodeLanguage: CodeLanguage
+  CodeOption: CodeOption
+  CodeOutput: CodeOutput
+  Color: Color
+  ComplementaryEdges: ComplementaryEdges
+  ComponentTransform: ComponentTransform
+  Conversation: Conversation
+  ConversationResultsPage: ConversationResultsPage
+  ConversionParams: ConversionParams
+  CountryCode: CountryCode
+  Coupon: Coupon
+  CreateShortlinkRequest: CreateShortlinkRequest
+  CreateShortlinkResponse: CreateShortlinkResponse
+  CreatedAtSortMode: CreatedAtSortMode
+  CrmData: CrmData
+  Currency: Currency
+  CurveGetControlPoints: CurveGetControlPoints
+  CurveGetEndPoints: CurveGetEndPoints
+  CurveGetType: CurveGetType
+  CurveSetConstraint: CurveSetConstraint
+  CurveType: CurveType
+  Customer: Customer
+  CustomerBalance: CustomerBalance
+  CutStrategy: CutStrategy
+  CutType: CutType
+  DefaultCameraCenterToScene: DefaultCameraCenterToScene
+  DefaultCameraCenterToSelection: DefaultCameraCenterToSelection
+  DefaultCameraFocusOn: DefaultCameraFocusOn
+  DefaultCameraGetSettings: DefaultCameraGetSettings
+  DefaultCameraGetView: DefaultCameraGetView
+  DefaultCameraLookAt: DefaultCameraLookAt
+  DefaultCameraPerspectiveSettings: DefaultCameraPerspectiveSettings
+  DefaultCameraSetOrthographic: DefaultCameraSetOrthographic
+  DefaultCameraSetPerspective: DefaultCameraSetPerspective
+  DefaultCameraSetView: DefaultCameraSetView
+  DefaultCameraZoom: DefaultCameraZoom
+  Density: Density
+  DerEncodedKeyPair: DerEncodedKeyPair
+  DeviceAccessTokenRequestForm: DeviceAccessTokenRequestForm
+  DeviceAccessTokenUuid: DeviceAccessTokenUuid
+  DeviceAuthConfirmParams: DeviceAuthConfirmParams
+  DeviceAuthRequestForm: DeviceAuthRequestForm
+  Direction: Direction
+  DisableDryRun: DisableDryRun
+  Discount: Discount
+  DiscountCode: DiscountCode
+  DistanceType: DistanceType
+  DxfStorage: DxfStorage
+  EdgeInfo: EdgeInfo
+  EdgeLinesVisible: EdgeLinesVisible
+  EmailAuthenticationForm: EmailAuthenticationForm
+  EnableDryRun: EnableDryRun
+  EnableSketchMode: EnableSketchMode
+  EngineUtilEvaluatePath: EngineUtilEvaluatePath
+  EnterpriseSubscriptionTierPrice: EnterpriseSubscriptionTierPrice
+  EntityCircularPattern: EntityCircularPattern
+  EntityClone: EntityClone
+  EntityFade: EntityFade
+  EntityGetAllChildUuids: EntityGetAllChildUuids
+  EntityGetChildUuid: EntityGetChildUuid
+  EntityGetDistance: EntityGetDistance
+  EntityGetNumChildren: EntityGetNumChildren
+  EntityGetParentId: EntityGetParentId
+  EntityGetSketchPaths: EntityGetSketchPaths
+  EntityLinearPattern: EntityLinearPattern
+  EntityLinearPatternTransform: EntityLinearPatternTransform
+  EntityMakeHelix: EntityMakeHelix
+  EntityMakeHelixFromEdge: EntityMakeHelixFromEdge
+  EntityMakeHelixFromParams: EntityMakeHelixFromParams
+  EntityMirror: EntityMirror
+  EntityMirrorAcrossEdge: EntityMirrorAcrossEdge
+  EntitySetOpacity: EntitySetOpacity
+  EntityType: EntityType
+  Error: Error
+  ErrorCode: ErrorCode
+  Event: Event
+  Export: Export
+  Export2d: Export2d
+  Export3d: Export3d
+  ExportFile: ExportFile
+  ExtendPath: ExtendPath
+  ExtendedUser: ExtendedUser
+  ExtendedUserResultsPage: ExtendedUserResultsPage
+  Extrude: Extrude
+  ExtrudeMethod: ExtrudeMethod
+  ExtrudedFaceInfo: ExtrudedFaceInfo
+  ExtrusionFaceCapType: ExtrusionFaceCapType
+  ExtrusionFaceInfo: ExtrusionFaceInfo
+  FaceEdgeInfo: FaceEdgeInfo
+  FaceGetCenter: FaceGetCenter
+  FaceGetGradient: FaceGetGradient
+  FaceGetPosition: FaceGetPosition
+  FaceIsPlanar: FaceIsPlanar
+  FailureWebSocketResponse: FailureWebSocketResponse
+  FbxStorage: FbxStorage
+  FileCenterOfMass: FileCenterOfMass
+  FileConversion: FileConversion
+  FileDensity: FileDensity
+  FileExportFormat: FileExportFormat
+  FileImportFormat: FileImportFormat
+  FileMass: FileMass
+  FileSurfaceArea: FileSurfaceArea
+  FileVolume: FileVolume
+  GetEntityType: GetEntityType
+  GetNumObjects: GetNumObjects
+  GetSketchModePlane: GetSketchModePlane
+  GlobalAxis: GlobalAxis
+  GltfPresentation: GltfPresentation
+  GltfStorage: GltfStorage
+  HandleMouseDragEnd: HandleMouseDragEnd
+  HandleMouseDragMove: HandleMouseDragMove
+  HandleMouseDragStart: HandleMouseDragStart
+  HighlightSetEntities: HighlightSetEntities
+  HighlightSetEntity: HighlightSetEntity
+  IceServer: IceServer
+  IdpMetadataSource: IdpMetadataSource
+  ImageFormat: ImageFormat
+  ImportFile: ImportFile
+  ImportFiles: ImportFiles
+  ImportedGeometry: ImportedGeometry
+  InputFormat3d: InputFormat3d
+  InquiryForm: InquiryForm
+  InquiryType: InquiryType
+  Invoice: Invoice
+  InvoiceLineItem: InvoiceLineItem
+  InvoiceStatus: InvoiceStatus
+  IpAddrInfo: IpAddrInfo
+  KclCodeCompletionParams: KclCodeCompletionParams
+  KclCodeCompletionRequest: KclCodeCompletionRequest
+  KclCodeCompletionResponse: KclCodeCompletionResponse
+  KclModel: KclModel
+  LengthUnit: LengthUnit
+  Loft: Loft
+  MakeAxesGizmo: MakeAxesGizmo
+  MakeOffsetPath: MakeOffsetPath
+  MakePlane: MakePlane
+  Mass: Mass
+  Method: Method
+  MlCopilotClientMessage: MlCopilotClientMessage
+  MlCopilotServerMessage: MlCopilotServerMessage
+  MlCopilotSystemCommand: MlCopilotSystemCommand
+  MlFeedback: MlFeedback
+  MlPrompt: MlPrompt
+  MlPromptMetadata: MlPromptMetadata
+  MlPromptResultsPage: MlPromptResultsPage
+  MlPromptType: MlPromptType
+  MlToolResult: MlToolResult
+  ModelingAppEventType: ModelingAppEventType
+  ModelingAppIndividualSubscriptionTier: ModelingAppIndividualSubscriptionTier
+  ModelingAppOrganizationSubscriptionTier: ModelingAppOrganizationSubscriptionTier
+  ModelingAppShareLinks: ModelingAppShareLinks
+  ModelingAppSubscriptionTier: ModelingAppSubscriptionTier
+  ModelingAppSubscriptionTierName: ModelingAppSubscriptionTierName
+  ModelingCmd: ModelingCmd
+  ModelingCmdId: ModelingCmdId
+  ModelingCmdReq: ModelingCmdReq
+  ModelingSessionData: ModelingSessionData
+  MouseClick: MouseClick
+  MouseMove: MouseMove
+  MovePathPen: MovePathPen
+  NewAnnotation: NewAnnotation
+  OAuth2ClientInfo: OAuth2ClientInfo
+  OAuth2GrantType: OAuth2GrantType
+  ObjectBringToFront: ObjectBringToFront
+  ObjectSetMaterialParamsPbr: ObjectSetMaterialParamsPbr
+  ObjectVisible: ObjectVisible
+  OkModelingCmdResponse: OkModelingCmdResponse
+  OkWebSocketResponseData: OkWebSocketResponseData
+  OppositeForAngle: OppositeForAngle
+  OppositeForLengthUnit: OppositeForLengthUnit
+  Org: Org
+  OrgDetails: OrgDetails
+  OrgMember: OrgMember
+  OrgMemberResultsPage: OrgMemberResultsPage
+  OrgResultsPage: OrgResultsPage
+  OrgRole: OrgRole
+  OrientToFace: OrientToFace
+  OriginType: OriginType
+  OutputFile: OutputFile
+  OutputFormat2d: OutputFormat2d
+  OutputFormat3d: OutputFormat3d
+  PathCommand: PathCommand
+  PathComponentConstraintBound: PathComponentConstraintBound
+  PathComponentConstraintType: PathComponentConstraintType
+  PathGetCurveUuid: PathGetCurveUuid
+  PathGetCurveUuidsForVertices: PathGetCurveUuidsForVertices
+  PathGetInfo: PathGetInfo
+  PathGetSketchTargetUuid: PathGetSketchTargetUuid
+  PathGetVertexUuids: PathGetVertexUuids
+  PathSegment: PathSegment
+  PathSegmentInfo: PathSegmentInfo
+  PaymentIntent: PaymentIntent
+  PaymentMethod: PaymentMethod
+  PaymentMethodCardChecks: PaymentMethodCardChecks
+  PaymentMethodType: PaymentMethodType
+  PerspectiveCameraParameters: PerspectiveCameraParameters
+  PlanInterval: PlanInterval
+  PlanStep: PlanStep
+  PlaneIntersectAndProject: PlaneIntersectAndProject
+  PlaneSetColor: PlaneSetColor
+  PlyStorage: PlyStorage
+  Point2d: Point2d
+  Point3d: Point3d
+  Point4d: Point4d
+  Pong: Pong
+  PostEffectType: PostEffectType
+  PrivacySettings: PrivacySettings
+  ProjectEntityToPlane: ProjectEntityToPlane
+  ProjectPointsToPlane: ProjectPointsToPlane
+  RawFile: RawFile
+  ReasoningMessage: ReasoningMessage
+  ReconfigureStream: ReconfigureStream
+  RelativeTo: RelativeTo
+  RemoveSceneObjects: RemoveSceneObjects
+  Revolve: Revolve
+  RevolveAboutEdge: RevolveAboutEdge
+  Rotation: Rotation
+  RtcIceCandidateInit: RtcIceCandidateInit
+  RtcSdpType: RtcSdpType
+  RtcSessionDescription: RtcSessionDescription
+  SamlIdentityProvider: SamlIdentityProvider
+  SamlIdentityProviderCreate: SamlIdentityProviderCreate
+  SceneClearAll: SceneClearAll
+  SceneSelectionType: SceneSelectionType
+  SceneToolType: SceneToolType
+  SelectAdd: SelectAdd
+  SelectClear: SelectClear
+  SelectGet: SelectGet
+  SelectRemove: SelectRemove
+  SelectReplace: SelectReplace
+  SelectWithPoint: SelectWithPoint
+  Selection: Selection
+  SendObject: SendObject
+  ServiceAccount: ServiceAccount
+  ServiceAccountResultsPage: ServiceAccountResultsPage
+  ServiceAccountUuid: ServiceAccountUuid
+  Session: Session
+  SessionUuid: SessionUuid
+  SetBackgroundColor: SetBackgroundColor
+  SetCurrentToolProperties: SetCurrentToolProperties
+  SetDefaultSystemProperties: SetDefaultSystemProperties
+  SetGridAutoScale: SetGridAutoScale
+  SetGridReferencePlane: SetGridReferencePlane
+  SetGridScale: SetGridScale
+  SetObjectTransform: SetObjectTransform
+  SetSceneUnits: SetSceneUnits
+  SetSelectionFilter: SetSelectionFilter
+  SetSelectionType: SetSelectionType
+  SetTool: SetTool
+  Shortlink: Shortlink
+  ShortlinkResultsPage: ShortlinkResultsPage
+  SideFace: SideFace
+  SketchModeDisable: SketchModeDisable
+  Solid2dAddHole: Solid2dAddHole
+  Solid3dFilletEdge: Solid3dFilletEdge
+  Solid3dGetAdjacencyInfo: Solid3dGetAdjacencyInfo
+  Solid3dGetAllEdgeFaces: Solid3dGetAllEdgeFaces
+  Solid3dGetAllOppositeEdges: Solid3dGetAllOppositeEdges
+  Solid3dGetCommonEdge: Solid3dGetCommonEdge
+  Solid3dGetExtrusionFaceInfo: Solid3dGetExtrusionFaceInfo
+  Solid3dGetNextAdjacentEdge: Solid3dGetNextAdjacentEdge
+  Solid3dGetOppositeEdge: Solid3dGetOppositeEdge
+  Solid3dGetPrevAdjacentEdge: Solid3dGetPrevAdjacentEdge
+  Solid3dShellFace: Solid3dShellFace
+  SourcePosition: SourcePosition
+  SourceRange: SourceRange
+  SourceRangePrompt: SourceRangePrompt
+  StartPath: StartPath
+  StlStorage: StlStorage
+  StoreCouponParams: StoreCouponParams
+  Subscribe: Subscribe
+  SubscriptionTierFeature: SubscriptionTierFeature
+  SubscriptionTierPrice: SubscriptionTierPrice
+  SubscriptionTierType: SubscriptionTierType
+  SubscriptionTrainingDataBehavior: SubscriptionTrainingDataBehavior
+  SuccessWebSocketResponse: SuccessWebSocketResponse
+  SupportTier: SupportTier
+  SurfaceArea: SurfaceArea
+  Sweep: Sweep
+  System: System
+  TakeSnapshot: TakeSnapshot
+  TextToCad: TextToCad
+  TextToCadCreateBody: TextToCadCreateBody
+  TextToCadIteration: TextToCadIteration
+  TextToCadIterationBody: TextToCadIterationBody
+  TextToCadModel: TextToCadModel
+  TextToCadMultiFileIteration: TextToCadMultiFileIteration
+  TextToCadMultiFileIterationBody: TextToCadMultiFileIterationBody
+  TextToCadResponse: TextToCadResponse
+  TextToCadResponseResultsPage: TextToCadResponseResultsPage
+  TokenRevokeRequestForm: TokenRevokeRequestForm
+  Transform: Transform
+  TransformByForPoint3d: TransformByForPoint3d
+  TransformByForPoint4d: TransformByForPoint4d
+  TwistExtrude: TwistExtrude
+  UnitAngle: UnitAngle
+  UnitAngleConversion: UnitAngleConversion
+  UnitArea: UnitArea
+  UnitAreaConversion: UnitAreaConversion
+  UnitCurrent: UnitCurrent
+  UnitCurrentConversion: UnitCurrentConversion
+  UnitDensity: UnitDensity
+  UnitEnergy: UnitEnergy
+  UnitEnergyConversion: UnitEnergyConversion
+  UnitForce: UnitForce
+  UnitForceConversion: UnitForceConversion
+  UnitFrequency: UnitFrequency
+  UnitFrequencyConversion: UnitFrequencyConversion
+  UnitLength: UnitLength
+  UnitLengthConversion: UnitLengthConversion
+  UnitMass: UnitMass
+  UnitMassConversion: UnitMassConversion
+  UnitPower: UnitPower
+  UnitPowerConversion: UnitPowerConversion
+  UnitPressure: UnitPressure
+  UnitPressureConversion: UnitPressureConversion
+  UnitTemperature: UnitTemperature
+  UnitTemperatureConversion: UnitTemperatureConversion
+  UnitTorque: UnitTorque
+  UnitTorqueConversion: UnitTorqueConversion
+  UnitVolume: UnitVolume
+  UnitVolumeConversion: UnitVolumeConversion
+  UpdateAnnotation: UpdateAnnotation
+  UpdateMemberToOrgBody: UpdateMemberToOrgBody
+  UpdatePaymentBalance: UpdatePaymentBalance
+  UpdateShortlinkRequest: UpdateShortlinkRequest
+  UpdateUser: UpdateUser
+  User: User
+  UserIdentifier: UserIdentifier
+  UserOrgInfo: UserOrgInfo
+  UserOrgRole: UserOrgRole
+  UserResultsPage: UserResultsPage
+  Uuid: Uuid
+  VerificationTokenResponse: VerificationTokenResponse
+  ViewIsometric: ViewIsometric
+  Volume: Volume
+  WebSocketRequest: WebSocketRequest
+  WebSocketResponse: WebSocketResponse
+  WorldCoordinateSystem: WorldCoordinateSystem
+  ZooProductSubscription: ZooProductSubscription
+  ZooProductSubscriptions: ZooProductSubscriptions
+  ZooProductSubscriptionsOrgRequest: ZooProductSubscriptionsOrgRequest
+  ZooProductSubscriptionsUserRequest: ZooProductSubscriptionsUserRequest
+  ZooTool: ZooTool
+  ZoomToFit: ZoomToFit
 }
 
 export type File = { readonly name: string; readonly data: Blob }

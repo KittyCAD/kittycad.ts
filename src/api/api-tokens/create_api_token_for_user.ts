@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { ApiToken_type } from '../../models.js'
+import { ApiToken } from '../../models.js'
 
-interface CreateApiTokenForUserParams {
+interface CreateApiTokenForUserInput {
   client?: Client
   label: string
 }
 
-type CreateApiTokenForUserReturn = ApiToken_type
+type CreateApiTokenForUserReturn = ApiToken
 
 export default async function create_api_token_for_user({
   client,
   label,
-}: CreateApiTokenForUserParams): Promise<CreateApiTokenForUserReturn> {
+}: CreateApiTokenForUserInput): Promise<CreateApiTokenForUserReturn> {
   const url = `/user/api-tokens?label=${label}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

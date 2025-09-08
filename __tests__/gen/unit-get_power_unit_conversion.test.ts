@@ -1,4 +1,4 @@
-import { ApiError, unit } from '../../src/index.js'
+import { unit, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await unit.get_power_unit_conversion({

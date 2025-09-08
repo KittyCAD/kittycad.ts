@@ -1,27 +1,27 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  FileExportFormat_type,
-  TextToCadCreateBody_type,
-  TextToCad_type,
+import {
+  TextToCad,
+  FileExportFormat,
+  TextToCadCreateBody,
 } from '../../models.js'
 
-interface CreateTextToCadParams {
+interface CreateTextToCadInput {
   client?: Client
-  output_format: FileExportFormat_type
+  output_format: FileExportFormat
   kcl: boolean
-  body: TextToCadCreateBody_type
+  body: TextToCadCreateBody
 }
 
-type CreateTextToCadReturn = TextToCad_type
+type CreateTextToCadReturn = TextToCad
 
 export default async function create_text_to_cad({
   client,
   output_format,
   kcl,
   body,
-}: CreateTextToCadParams): Promise<CreateTextToCadReturn> {
+}: CreateTextToCadInput): Promise<CreateTextToCadReturn> {
   const url = `/ai/text-to-cad/${output_format}?kcl=${kcl}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

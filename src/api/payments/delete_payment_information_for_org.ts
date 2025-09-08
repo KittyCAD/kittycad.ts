@@ -1,9 +1,9 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeletePaymentInformationForOrgParams {
+interface DeletePaymentInformationForOrgInput {
   client?: Client
 }
 
@@ -12,7 +12,7 @@ type DeletePaymentInformationForOrgReturn = unknown
 export default async function delete_payment_information_for_org(
   {
     client,
-  }: DeletePaymentInformationForOrgParams = {} as DeletePaymentInformationForOrgParams
+  }: DeletePaymentInformationForOrgInput = {} as DeletePaymentInformationForOrgInput
 ): Promise<DeletePaymentInformationForOrgReturn> {
   const url = `/org/payment`
   // Backwards compatible for the BASE_URL env variable

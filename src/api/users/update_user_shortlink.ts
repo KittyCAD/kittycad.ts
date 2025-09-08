@@ -1,12 +1,12 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { UpdateShortlinkRequest_type } from '../../models.js'
+import { UpdateShortlinkRequest } from '../../models.js'
 
-interface UpdateUserShortlinkParams {
+interface UpdateUserShortlinkInput {
   client?: Client
   key: string
-  body: UpdateShortlinkRequest_type
+  body: UpdateShortlinkRequest
 }
 
 type UpdateUserShortlinkReturn = unknown
@@ -15,7 +15,7 @@ export default async function update_user_shortlink({
   client,
   key,
   body,
-}: UpdateUserShortlinkParams): Promise<UpdateUserShortlinkReturn> {
+}: UpdateUserShortlinkInput): Promise<UpdateUserShortlinkReturn> {
   const url = `/user/shortlinks/${key}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

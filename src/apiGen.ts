@@ -432,7 +432,7 @@ export default async function apiGen(lookup: Record<string, string>) {
 
                 if (
                   typeReference &&
-                  typeReference !== 'Error_type' &&
+                  typeReference !== 'Error' &&
                   !importedTypes.includes(typeReference)
                 ) {
                   importedTypes.push(typeReference)
@@ -445,7 +445,7 @@ export default async function apiGen(lookup: Record<string, string>) {
                 const typeReference = lookup[ref]
                 if (
                   typeReference &&
-                  typeReference !== 'Error_type' &&
+                  typeReference !== 'Error' &&
                   !importedTypes.includes(typeReference)
                 ) {
                   importedTypes.push(typeReference)
@@ -461,7 +461,7 @@ export default async function apiGen(lookup: Record<string, string>) {
                   const typeReference = lookup[(items as any).$ref]
                   if (
                     typeReference &&
-                    typeReference !== 'Error_type' &&
+                    typeReference !== 'Error' &&
                     !importedTypes.includes(typeReference + '[]')
                   ) {
                     importedTypes.push(typeReference + '[]')
@@ -483,7 +483,7 @@ export default async function apiGen(lookup: Record<string, string>) {
                   const typeReference = lookup[addProps.items.$ref]
                   if (
                     typeReference &&
-                    typeReference !== 'Error_type' &&
+                    typeReference !== 'Error' &&
                     !importedTypes.includes(typeReference + '[]')
                   ) {
                     importedTypes.push(typeReference + '[]')
@@ -520,7 +520,7 @@ export default async function apiGen(lookup: Record<string, string>) {
           const returnTyping = `type ${pascalName}Return = ${
             importedTypes.length ? importedTypes.join(' | ') : 'unknown'
           }`
-          const paramsInterfaceName = `${pascalName}Params`
+          const paramsInterfaceName = `${pascalName}Input`
           const paramsInterface = `interface ${paramsInterfaceName} { ${inputTypes.join(
             '; '
           )} }`

@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface Oauth2TokenRevokeParams {
+interface Oauth2TokenRevokeInput {
   client?: Client
 }
 
 type Oauth2TokenRevokeReturn = unknown
 
 export default async function oauth2_token_revoke(
-  { client }: Oauth2TokenRevokeParams = {} as Oauth2TokenRevokeParams
+  { client }: Oauth2TokenRevokeInput = {} as Oauth2TokenRevokeInput
 ): Promise<Oauth2TokenRevokeReturn> {
   const url = `/oauth2/token/revoke`
   // Backwards compatible for the BASE_URL env variable

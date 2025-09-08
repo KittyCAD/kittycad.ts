@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { PrivacySettings_type } from '../../models.js'
+import { PrivacySettings } from '../../models.js'
 
-interface UpdateUserPrivacySettingsParams {
+interface UpdateUserPrivacySettingsInput {
   client?: Client
-  body: PrivacySettings_type
+  body: PrivacySettings
 }
 
-type UpdateUserPrivacySettingsReturn = PrivacySettings_type
+type UpdateUserPrivacySettingsReturn = PrivacySettings
 
 export default async function update_user_privacy_settings({
   client,
   body,
-}: UpdateUserPrivacySettingsParams): Promise<UpdateUserPrivacySettingsReturn> {
+}: UpdateUserPrivacySettingsInput): Promise<UpdateUserPrivacySettingsReturn> {
   const url = `/user/privacy`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

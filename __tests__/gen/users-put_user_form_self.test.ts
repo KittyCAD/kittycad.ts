@@ -1,4 +1,4 @@
-import { ApiError, users } from '../../src/index.js'
+import { users, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await users.put_user_form_self({

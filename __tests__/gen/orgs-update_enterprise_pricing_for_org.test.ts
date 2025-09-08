@@ -1,4 +1,4 @@
-import { ApiError, orgs } from '../../src/index.js'
+import { orgs, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await orgs.update_enterprise_pricing_for_org({

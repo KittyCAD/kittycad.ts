@@ -1,26 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  ApiCallWithPriceResultsPage_type,
-  CreatedAtSortMode_type,
-} from '../../models.js'
+import { ApiCallWithPriceResultsPage, CreatedAtSortMode } from '../../models.js'
 
-interface UserListApiCallsParams {
+interface UserListApiCallsInput {
   client?: Client
   limit: number
   page_token: string
-  sort_by: CreatedAtSortMode_type
+  sort_by: CreatedAtSortMode
 }
 
-type UserListApiCallsReturn = ApiCallWithPriceResultsPage_type
+type UserListApiCallsReturn = ApiCallWithPriceResultsPage
 
 export default async function user_list_api_calls({
   client,
   limit,
   page_token,
   sort_by,
-}: UserListApiCallsParams): Promise<UserListApiCallsReturn> {
+}: UserListApiCallsInput): Promise<UserListApiCallsReturn> {
   const url = `/user/api-calls?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

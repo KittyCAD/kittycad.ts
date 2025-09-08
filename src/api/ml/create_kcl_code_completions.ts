@@ -1,22 +1,22 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  KclCodeCompletionRequest_type,
-  KclCodeCompletionResponse_type,
+import {
+  KclCodeCompletionResponse,
+  KclCodeCompletionRequest,
 } from '../../models.js'
 
-interface CreateKclCodeCompletionsParams {
+interface CreateKclCodeCompletionsInput {
   client?: Client
-  body: KclCodeCompletionRequest_type
+  body: KclCodeCompletionRequest
 }
 
-type CreateKclCodeCompletionsReturn = KclCodeCompletionResponse_type
+type CreateKclCodeCompletionsReturn = KclCodeCompletionResponse
 
 export default async function create_kcl_code_completions({
   client,
   body,
-}: CreateKclCodeCompletionsParams): Promise<CreateKclCodeCompletionsReturn> {
+}: CreateKclCodeCompletionsInput): Promise<CreateKclCodeCompletionsReturn> {
   const url = `/ml/kcl/completions`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

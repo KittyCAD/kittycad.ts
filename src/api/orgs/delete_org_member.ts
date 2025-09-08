@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { Uuid_type } from '../../models.js'
+import { Uuid } from '../../models.js'
 
-interface DeleteOrgMemberParams {
+interface DeleteOrgMemberInput {
   client?: Client
-  user_id: Uuid_type
+  user_id: Uuid
 }
 
 type DeleteOrgMemberReturn = unknown
@@ -13,7 +13,7 @@ type DeleteOrgMemberReturn = unknown
 export default async function delete_org_member({
   client,
   user_id,
-}: DeleteOrgMemberParams): Promise<DeleteOrgMemberReturn> {
+}: DeleteOrgMemberInput): Promise<DeleteOrgMemberReturn> {
   const url = `/org/members/${user_id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

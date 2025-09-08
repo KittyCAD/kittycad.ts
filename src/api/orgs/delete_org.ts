@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeleteOrgParams {
+interface DeleteOrgInput {
   client?: Client
 }
 
 type DeleteOrgReturn = unknown
 
 export default async function delete_org(
-  { client }: DeleteOrgParams = {} as DeleteOrgParams
+  { client }: DeleteOrgInput = {} as DeleteOrgInput
 ): Promise<DeleteOrgReturn> {
   const url = `/org`
   // Backwards compatible for the BASE_URL env variable

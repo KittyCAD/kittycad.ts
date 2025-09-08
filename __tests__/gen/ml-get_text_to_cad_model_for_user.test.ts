@@ -1,4 +1,4 @@
-import { ApiError, ml } from '../../src/index.js'
+import { ml, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await ml.get_text_to_cad_model_for_user({ id: 'string' })

@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { User_type } from '../../models.js'
+import { User } from '../../models.js'
 
-interface GetUserSelfParams {
+interface GetUserSelfInput {
   client?: Client
 }
 
-type GetUserSelfReturn = User_type
+type GetUserSelfReturn = User
 
 export default async function get_user_self(
-  { client }: GetUserSelfParams = {} as GetUserSelfParams
+  { client }: GetUserSelfInput = {} as GetUserSelfInput
 ): Promise<GetUserSelfReturn> {
   const url = `/user`
   // Backwards compatible for the BASE_URL env variable

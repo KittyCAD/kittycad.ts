@@ -1,18 +1,18 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { AccountProvider_type } from '../../models.js'
+import { AccountProvider } from '../../models.js'
 
-interface GetOauth2ProvidersForUserParams {
+interface GetOauth2ProvidersForUserInput {
   client?: Client
 }
 
-type GetOauth2ProvidersForUserReturn = AccountProvider_type[]
+type GetOauth2ProvidersForUserReturn = AccountProvider[]
 
 export default async function get_oauth2_providers_for_user(
   {
     client,
-  }: GetOauth2ProvidersForUserParams = {} as GetOauth2ProvidersForUserParams
+  }: GetOauth2ProvidersForUserInput = {} as GetOauth2ProvidersForUserInput
 ): Promise<GetOauth2ProvidersForUserReturn> {
   const url = `/user/oauth2/providers`
   // Backwards compatible for the BASE_URL env variable

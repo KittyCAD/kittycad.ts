@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { MlPrompt_type } from '../../models.js'
+import { MlPrompt } from '../../models.js'
 
-interface GetMlPromptParams {
+interface GetMlPromptInput {
   client?: Client
   id: string
 }
 
-type GetMlPromptReturn = MlPrompt_type
+type GetMlPromptReturn = MlPrompt
 
 export default async function get_ml_prompt({
   client,
   id,
-}: GetMlPromptParams): Promise<GetMlPromptReturn> {
+}: GetMlPromptInput): Promise<GetMlPromptReturn> {
   const url = `/ml-prompts/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -1,26 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  ConversationResultsPage_type,
-  CreatedAtSortMode_type,
-} from '../../models.js'
+import { ConversationResultsPage, CreatedAtSortMode } from '../../models.js'
 
-interface ListConversationsForUserParams {
+interface ListConversationsForUserInput {
   client?: Client
   limit: number
   page_token: string
-  sort_by: CreatedAtSortMode_type
+  sort_by: CreatedAtSortMode
 }
 
-type ListConversationsForUserReturn = ConversationResultsPage_type
+type ListConversationsForUserReturn = ConversationResultsPage
 
 export default async function list_conversations_for_user({
   client,
   limit,
   page_token,
   sort_by,
-}: ListConversationsForUserParams): Promise<ListConversationsForUserReturn> {
+}: ListConversationsForUserInput): Promise<ListConversationsForUserReturn> {
   const url = `/ml/conversations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

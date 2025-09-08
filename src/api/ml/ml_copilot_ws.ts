@@ -1,17 +1,14 @@
+import { Client } from '../../client.js'
 import { BSON } from 'bson'
-import type { Client } from '../../client.js'
-import type {
-  MlCopilotClientMessage_type,
-  MlCopilotServerMessage_type,
-} from '../../models.js'
+import { MlCopilotClientMessage, MlCopilotServerMessage } from '../../models.js'
 
 interface MlCopilotWsParams {
   client?: Client
 }
 
 export default class MlCopilotWs<
-  Req = MlCopilotClientMessage_type,
-  Res = MlCopilotServerMessage_type,
+  Req = MlCopilotClientMessage,
+  Res = MlCopilotServerMessage,
 > {
   private ws!: WebSocket
 

@@ -1,22 +1,22 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  CreatedAtSortMode_type,
-  TextToCadResponseResultsPage_type,
-  Uuid_type,
+import {
+  TextToCadResponseResultsPage,
+  CreatedAtSortMode,
+  Uuid,
 } from '../../models.js'
 
-interface ListTextToCadModelsForUserParams {
+interface ListTextToCadModelsForUserInput {
   client?: Client
   limit: number
   page_token: string
-  sort_by: CreatedAtSortMode_type
-  conversation_id: Uuid_type
+  sort_by: CreatedAtSortMode
+  conversation_id: Uuid
   no_models: boolean
 }
 
-type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage_type
+type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage
 
 export default async function list_text_to_cad_models_for_user({
   client,
@@ -25,7 +25,7 @@ export default async function list_text_to_cad_models_for_user({
   sort_by,
   conversation_id,
   no_models,
-}: ListTextToCadModelsForUserParams): Promise<ListTextToCadModelsForUserReturn> {
+}: ListTextToCadModelsForUserInput): Promise<ListTextToCadModelsForUserReturn> {
   const url = `/user/text-to-cad?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&conversation_id=${conversation_id}&no_models=${no_models}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -1,9 +1,9 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeviceAuthVerifyParams {
+interface DeviceAuthVerifyInput {
   client?: Client
   app_name: string
   user_code: string
@@ -15,7 +15,7 @@ export default async function device_auth_verify({
   client,
   app_name,
   user_code,
-}: DeviceAuthVerifyParams): Promise<DeviceAuthVerifyReturn> {
+}: DeviceAuthVerifyInput): Promise<DeviceAuthVerifyReturn> {
   const url = `/oauth2/device/verify?app_name=${app_name}&user_code=${user_code}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

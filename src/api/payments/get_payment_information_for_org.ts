@@ -1,18 +1,18 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { Customer_type } from '../../models.js'
+import { Customer } from '../../models.js'
 
-interface GetPaymentInformationForOrgParams {
+interface GetPaymentInformationForOrgInput {
   client?: Client
 }
 
-type GetPaymentInformationForOrgReturn = Customer_type
+type GetPaymentInformationForOrgReturn = Customer
 
 export default async function get_payment_information_for_org(
   {
     client,
-  }: GetPaymentInformationForOrgParams = {} as GetPaymentInformationForOrgParams
+  }: GetPaymentInformationForOrgInput = {} as GetPaymentInformationForOrgInput
 ): Promise<GetPaymentInformationForOrgReturn> {
   const url = `/org/payment`
   // Backwards compatible for the BASE_URL env variable

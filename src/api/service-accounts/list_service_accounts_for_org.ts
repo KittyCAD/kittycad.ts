@@ -1,26 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  CreatedAtSortMode_type,
-  ServiceAccountResultsPage_type,
-} from '../../models.js'
+import { ServiceAccountResultsPage, CreatedAtSortMode } from '../../models.js'
 
-interface ListServiceAccountsForOrgParams {
+interface ListServiceAccountsForOrgInput {
   client?: Client
   limit: number
   page_token: string
-  sort_by: CreatedAtSortMode_type
+  sort_by: CreatedAtSortMode
 }
 
-type ListServiceAccountsForOrgReturn = ServiceAccountResultsPage_type
+type ListServiceAccountsForOrgReturn = ServiceAccountResultsPage
 
 export default async function list_service_accounts_for_org({
   client,
   limit,
   page_token,
   sort_by,
-}: ListServiceAccountsForOrgParams): Promise<ListServiceAccountsForOrgReturn> {
+}: ListServiceAccountsForOrgInput): Promise<ListServiceAccountsForOrgReturn> {
   const url = `/org/service-accounts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

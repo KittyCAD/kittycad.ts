@@ -1,27 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  FileImportFormat_type,
-  FileVolume_type,
-  UnitVolume_type,
-} from '../../models.js'
+import { FileVolume, UnitVolume, FileImportFormat } from '../../models.js'
 
-interface CreateFileVolumeParams {
+interface CreateFileVolumeInput {
   client?: Client
-  output_unit: UnitVolume_type
-  src_format: FileImportFormat_type
+  output_unit: UnitVolume
+  src_format: FileImportFormat
   body: string
 }
 
-type CreateFileVolumeReturn = FileVolume_type
+type CreateFileVolumeReturn = FileVolume
 
 export default async function create_file_volume({
   client,
   output_unit,
   src_format,
   body,
-}: CreateFileVolumeParams): Promise<CreateFileVolumeReturn> {
+}: CreateFileVolumeInput): Promise<CreateFileVolumeReturn> {
   const url = `/file/volume?output_unit=${output_unit}&src_format=${src_format}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -1,9 +1,9 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeletePaymentMethodForUserParams {
+interface DeletePaymentMethodForUserInput {
   client?: Client
   id: string
 }
@@ -13,7 +13,7 @@ type DeletePaymentMethodForUserReturn = unknown
 export default async function delete_payment_method_for_user({
   client,
   id,
-}: DeletePaymentMethodForUserParams): Promise<DeletePaymentMethodForUserReturn> {
+}: DeletePaymentMethodForUserInput): Promise<DeletePaymentMethodForUserReturn> {
   const url = `/user/payment/methods/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

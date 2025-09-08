@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface AppsGithubCallbackParams {
+interface AppsGithubCallbackInput {
   client?: Client
 }
 
 type AppsGithubCallbackReturn = unknown
 
 export default async function apps_github_callback(
-  { client }: AppsGithubCallbackParams = {} as AppsGithubCallbackParams
+  { client }: AppsGithubCallbackInput = {} as AppsGithubCallbackInput
 ): Promise<AppsGithubCallbackReturn> {
   const url = `/apps/github/callback`
   // Backwards compatible for the BASE_URL env variable

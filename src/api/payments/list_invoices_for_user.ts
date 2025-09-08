@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { Invoice_type } from '../../models.js'
+import { Invoice } from '../../models.js'
 
-interface ListInvoicesForUserParams {
+interface ListInvoicesForUserInput {
   client?: Client
 }
 
-type ListInvoicesForUserReturn = Invoice_type[]
+type ListInvoicesForUserReturn = Invoice[]
 
 export default async function list_invoices_for_user(
-  { client }: ListInvoicesForUserParams = {} as ListInvoicesForUserParams
+  { client }: ListInvoicesForUserInput = {} as ListInvoicesForUserInput
 ): Promise<ListInvoicesForUserReturn> {
   const url = `/user/payment/invoices`
   // Backwards compatible for the BASE_URL env variable

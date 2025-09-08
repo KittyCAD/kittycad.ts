@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { DiscountCode_type, StoreCouponParams_type } from '../../models.js'
+import { DiscountCode, StoreCouponParams } from '../../models.js'
 
-interface CreateStoreCouponParams {
+interface CreateStoreCouponInput {
   client?: Client
-  body: StoreCouponParams_type
+  body: StoreCouponParams
 }
 
-type CreateStoreCouponReturn = DiscountCode_type
+type CreateStoreCouponReturn = DiscountCode
 
 export default async function create_store_coupon({
   client,
   body,
-}: CreateStoreCouponParams): Promise<CreateStoreCouponReturn> {
+}: CreateStoreCouponInput): Promise<CreateStoreCouponReturn> {
   const url = `/store/coupon`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

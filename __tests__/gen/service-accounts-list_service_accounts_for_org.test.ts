@@ -1,4 +1,4 @@
-import { ApiError, service_accounts } from '../../src/index.js'
+import { service_accounts, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await service_accounts.list_service_accounts_for_org({

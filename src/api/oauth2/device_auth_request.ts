@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeviceAuthRequestParams {
+interface DeviceAuthRequestInput {
   client?: Client
 }
 
 type DeviceAuthRequestReturn = unknown
 
 export default async function device_auth_request(
-  { client }: DeviceAuthRequestParams = {} as DeviceAuthRequestParams
+  { client }: DeviceAuthRequestInput = {} as DeviceAuthRequestInput
 ): Promise<DeviceAuthRequestReturn> {
   const url = `/oauth2/device/auth`
   // Backwards compatible for the BASE_URL env variable

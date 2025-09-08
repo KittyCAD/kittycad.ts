@@ -1,9 +1,9 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface AppsGithubWebhookParams {
+interface AppsGithubWebhookInput {
   client?: Client
   body: string
 }
@@ -13,7 +13,7 @@ type AppsGithubWebhookReturn = unknown
 export default async function apps_github_webhook({
   client,
   body,
-}: AppsGithubWebhookParams): Promise<AppsGithubWebhookReturn> {
+}: AppsGithubWebhookInput): Promise<AppsGithubWebhookReturn> {
   const url = `/apps/github/webhook`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

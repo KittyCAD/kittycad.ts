@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { AccountProvider_type } from '../../models.js'
+import { AccountProvider } from '../../models.js'
 
-interface Oauth2ProviderCallbackPostParams {
+interface Oauth2ProviderCallbackPostInput {
   client?: Client
-  provider: AccountProvider_type
+  provider: AccountProvider
 }
 
 type Oauth2ProviderCallbackPostReturn = unknown
@@ -13,7 +13,7 @@ type Oauth2ProviderCallbackPostReturn = unknown
 export default async function oauth2_provider_callback_post({
   client,
   provider,
-}: Oauth2ProviderCallbackPostParams): Promise<Oauth2ProviderCallbackPostReturn> {
+}: Oauth2ProviderCallbackPostInput): Promise<Oauth2ProviderCallbackPostReturn> {
   const url = `/oauth2/provider/${provider}/callback`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -1,9 +1,9 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface ValidateCustomerTaxInformationForOrgParams {
+interface ValidateCustomerTaxInformationForOrgInput {
   client?: Client
 }
 
@@ -12,7 +12,7 @@ type ValidateCustomerTaxInformationForOrgReturn = unknown
 export default async function validate_customer_tax_information_for_org(
   {
     client,
-  }: ValidateCustomerTaxInformationForOrgParams = {} as ValidateCustomerTaxInformationForOrgParams
+  }: ValidateCustomerTaxInformationForOrgInput = {} as ValidateCustomerTaxInformationForOrgInput
 ): Promise<ValidateCustomerTaxInformationForOrgReturn> {
   const url = `/org/payment/tax`
   // Backwards compatible for the BASE_URL env variable

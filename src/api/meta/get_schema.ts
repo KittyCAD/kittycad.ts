@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface GetSchemaParams {
+interface GetSchemaInput {
   client?: Client
 }
 
 type GetSchemaReturn = unknown
 
 export default async function get_schema(
-  { client }: GetSchemaParams = {} as GetSchemaParams
+  { client }: GetSchemaInput = {} as GetSchemaInput
 ): Promise<GetSchemaReturn> {
   const url = `/`
   // Backwards compatible for the BASE_URL env variable

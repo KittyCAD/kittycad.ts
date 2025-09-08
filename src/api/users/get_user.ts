@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { UserIdentifier_type, User_type } from '../../models.js'
+import { User, UserIdentifier } from '../../models.js'
 
-interface GetUserParams {
+interface GetUserInput {
   client?: Client
-  id: UserIdentifier_type
+  id: UserIdentifier
 }
 
-type GetUserReturn = User_type
+type GetUserReturn = User
 
 export default async function get_user({
   client,
   id,
-}: GetUserParams): Promise<GetUserReturn> {
+}: GetUserInput): Promise<GetUserReturn> {
   const url = `/users/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

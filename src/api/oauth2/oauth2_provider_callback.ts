@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { AccountProvider_type } from '../../models.js'
+import { AccountProvider } from '../../models.js'
 
-interface Oauth2ProviderCallbackParams {
+interface Oauth2ProviderCallbackInput {
   client?: Client
-  provider: AccountProvider_type
+  provider: AccountProvider
   code: string
   id_token: string
   state: string
@@ -21,7 +21,7 @@ export default async function oauth2_provider_callback({
   id_token,
   state,
   user,
-}: Oauth2ProviderCallbackParams): Promise<Oauth2ProviderCallbackReturn> {
+}: Oauth2ProviderCallbackInput): Promise<Oauth2ProviderCallbackReturn> {
   const url = `/oauth2/provider/${provider}/callback?code=${code}&id_token=${id_token}&state=${state}&user=${user}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

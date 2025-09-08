@@ -1,26 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  UnitVolumeConversion_type,
-  UnitVolume_type,
-} from '../../models.js'
+import { UnitVolumeConversion, UnitVolume } from '../../models.js'
 
-interface GetVolumeUnitConversionParams {
+interface GetVolumeUnitConversionInput {
   client?: Client
-  input_unit: UnitVolume_type
-  output_unit: UnitVolume_type
+  input_unit: UnitVolume
+  output_unit: UnitVolume
   value: number
 }
 
-type GetVolumeUnitConversionReturn = UnitVolumeConversion_type
+type GetVolumeUnitConversionReturn = UnitVolumeConversion
 
 export default async function get_volume_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: GetVolumeUnitConversionParams): Promise<GetVolumeUnitConversionReturn> {
+}: GetVolumeUnitConversionInput): Promise<GetVolumeUnitConversionReturn> {
   const url = `/unit/conversion/volume/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

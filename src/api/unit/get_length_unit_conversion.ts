@@ -1,26 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  UnitLengthConversion_type,
-  UnitLength_type,
-} from '../../models.js'
+import { UnitLengthConversion, UnitLength } from '../../models.js'
 
-interface GetLengthUnitConversionParams {
+interface GetLengthUnitConversionInput {
   client?: Client
-  input_unit: UnitLength_type
-  output_unit: UnitLength_type
+  input_unit: UnitLength
+  output_unit: UnitLength
   value: number
 }
 
-type GetLengthUnitConversionReturn = UnitLengthConversion_type
+type GetLengthUnitConversionReturn = UnitLengthConversion
 
 export default async function get_length_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: GetLengthUnitConversionParams): Promise<GetLengthUnitConversionReturn> {
+}: GetLengthUnitConversionInput): Promise<GetLengthUnitConversionReturn> {
   const url = `/unit/conversion/length/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

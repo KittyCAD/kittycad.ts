@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { TextToCadResponse_type } from '../../models.js'
+import { TextToCadResponse } from '../../models.js'
 
-interface GetTextToCadModelForUserParams {
+interface GetTextToCadModelForUserInput {
   client?: Client
   id: string
 }
 
-type GetTextToCadModelForUserReturn = TextToCadResponse_type
+type GetTextToCadModelForUserReturn = TextToCadResponse
 
 export default async function get_text_to_cad_model_for_user({
   client,
   id,
-}: GetTextToCadModelForUserParams): Promise<GetTextToCadModelForUserReturn> {
+}: GetTextToCadModelForUserInput): Promise<GetTextToCadModelForUserReturn> {
   const url = `/user/text-to-cad/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { ApiCallWithPrice_type } from '../../models.js'
+import { ApiCallWithPrice } from '../../models.js'
 
-interface GetApiCallForOrgParams {
+interface GetApiCallForOrgInput {
   client?: Client
   id: string
 }
 
-type GetApiCallForOrgReturn = ApiCallWithPrice_type
+type GetApiCallForOrgReturn = ApiCallWithPrice
 
 export default async function get_api_call_for_org({
   client,
   id,
-}: GetApiCallForOrgParams): Promise<GetApiCallForOrgReturn> {
+}: GetApiCallForOrgInput): Promise<GetApiCallForOrgReturn> {
   const url = `/org/api-calls/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

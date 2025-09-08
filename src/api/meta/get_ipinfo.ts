@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { IpAddrInfo_type } from '../../models.js'
+import { IpAddrInfo } from '../../models.js'
 
-interface GetIpinfoParams {
+interface GetIpinfoInput {
   client?: Client
 }
 
-type GetIpinfoReturn = IpAddrInfo_type
+type GetIpinfoReturn = IpAddrInfo
 
 export default async function get_ipinfo(
-  { client }: GetIpinfoParams = {} as GetIpinfoParams
+  { client }: GetIpinfoInput = {} as GetIpinfoInput
 ): Promise<GetIpinfoReturn> {
   const url = `/_meta/ipinfo`
   // Backwards compatible for the BASE_URL env variable

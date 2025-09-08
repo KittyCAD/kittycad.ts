@@ -1,26 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  CreatedAtSortMode_type,
-  ShortlinkResultsPage_type,
-} from '../../models.js'
+import { ShortlinkResultsPage, CreatedAtSortMode } from '../../models.js'
 
-interface GetOrgShortlinksParams {
+interface GetOrgShortlinksInput {
   client?: Client
   limit: number
   page_token: string
-  sort_by: CreatedAtSortMode_type
+  sort_by: CreatedAtSortMode
 }
 
-type GetOrgShortlinksReturn = ShortlinkResultsPage_type
+type GetOrgShortlinksReturn = ShortlinkResultsPage
 
 export default async function get_org_shortlinks({
   client,
   limit,
   page_token,
   sort_by,
-}: GetOrgShortlinksParams): Promise<GetOrgShortlinksReturn> {
+}: GetOrgShortlinksInput): Promise<GetOrgShortlinksReturn> {
   const url = `/org/shortlinks?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

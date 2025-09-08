@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { CrmData_type } from '../../models.js'
+import { CrmData } from '../../models.js'
 
-interface PatchUserCrmParams {
+interface PatchUserCrmInput {
   client?: Client
-  body: CrmData_type
+  body: CrmData
 }
 
 type PatchUserCrmReturn = unknown
@@ -13,7 +13,7 @@ type PatchUserCrmReturn = unknown
 export default async function patch_user_crm({
   client,
   body,
-}: PatchUserCrmParams): Promise<PatchUserCrmReturn> {
+}: PatchUserCrmInput): Promise<PatchUserCrmReturn> {
   const url = `/user/crm`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

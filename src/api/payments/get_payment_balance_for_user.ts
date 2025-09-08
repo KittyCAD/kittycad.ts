@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { CustomerBalance_type } from '../../models.js'
+import { CustomerBalance } from '../../models.js'
 
-interface GetPaymentBalanceForUserParams {
+interface GetPaymentBalanceForUserInput {
   client?: Client
   include_total_due: boolean
 }
 
-type GetPaymentBalanceForUserReturn = CustomerBalance_type
+type GetPaymentBalanceForUserReturn = CustomerBalance
 
 export default async function get_payment_balance_for_user({
   client,
   include_total_due,
-}: GetPaymentBalanceForUserParams): Promise<GetPaymentBalanceForUserReturn> {
+}: GetPaymentBalanceForUserInput): Promise<GetPaymentBalanceForUserReturn> {
   const url = `/user/payment/balance?include_total_due=${include_total_due}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

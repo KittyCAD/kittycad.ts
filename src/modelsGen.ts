@@ -216,7 +216,7 @@ async function main() {
 
   const componentRef = (key: string): string => '#/components/schemas/' + key
   for (const key of Object.keys(schemas)) {
-    addTypeName(componentRef(key), key + '_type')
+    addTypeName(componentRef(key), key)
   }
   // Always regenerate models from spec to keep typings accurate
   const modelsExportParts = []

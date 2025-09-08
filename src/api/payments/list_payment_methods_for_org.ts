@@ -1,18 +1,18 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { PaymentMethod_type } from '../../models.js'
+import { PaymentMethod } from '../../models.js'
 
-interface ListPaymentMethodsForOrgParams {
+interface ListPaymentMethodsForOrgInput {
   client?: Client
 }
 
-type ListPaymentMethodsForOrgReturn = PaymentMethod_type[]
+type ListPaymentMethodsForOrgReturn = PaymentMethod[]
 
 export default async function list_payment_methods_for_org(
   {
     client,
-  }: ListPaymentMethodsForOrgParams = {} as ListPaymentMethodsForOrgParams
+  }: ListPaymentMethodsForOrgInput = {} as ListPaymentMethodsForOrgInput
 ): Promise<ListPaymentMethodsForOrgReturn> {
   const url = `/org/payment/methods`
   // Backwards compatible for the BASE_URL env variable

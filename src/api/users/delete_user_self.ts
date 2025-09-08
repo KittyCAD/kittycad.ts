@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeleteUserSelfParams {
+interface DeleteUserSelfInput {
   client?: Client
 }
 
 type DeleteUserSelfReturn = unknown
 
 export default async function delete_user_self(
-  { client }: DeleteUserSelfParams = {} as DeleteUserSelfParams
+  { client }: DeleteUserSelfInput = {} as DeleteUserSelfInput
 ): Promise<DeleteUserSelfReturn> {
   const url = `/user`
   // Backwards compatible for the BASE_URL env variable

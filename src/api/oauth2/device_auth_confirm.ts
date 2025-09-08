@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { DeviceAuthConfirmParams_type } from '../../models.js'
+import { DeviceAuthConfirmParams } from '../../models.js'
 
-interface DeviceAuthConfirmParams {
+interface DeviceAuthConfirmInput {
   client?: Client
-  body: DeviceAuthConfirmParams_type
+  body: DeviceAuthConfirmParams
 }
 
 type DeviceAuthConfirmReturn = unknown
@@ -13,7 +13,7 @@ type DeviceAuthConfirmReturn = unknown
 export default async function device_auth_confirm({
   client,
   body,
-}: DeviceAuthConfirmParams): Promise<DeviceAuthConfirmReturn> {
+}: DeviceAuthConfirmInput): Promise<DeviceAuthConfirmReturn> {
   const url = `/oauth2/device/confirm`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

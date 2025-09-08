@@ -1,26 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  CreatedAtSortMode_type,
-  MlPromptResultsPage_type,
-} from '../../models.js'
+import { MlPromptResultsPage, CreatedAtSortMode } from '../../models.js'
 
-interface ListMlPromptsParams {
+interface ListMlPromptsInput {
   client?: Client
   limit: number
   page_token: string
-  sort_by: CreatedAtSortMode_type
+  sort_by: CreatedAtSortMode
 }
 
-type ListMlPromptsReturn = MlPromptResultsPage_type
+type ListMlPromptsReturn = MlPromptResultsPage
 
 export default async function list_ml_prompts({
   client,
   limit,
   page_token,
   sort_by,
-}: ListMlPromptsParams): Promise<ListMlPromptsReturn> {
+}: ListMlPromptsInput): Promise<ListMlPromptsReturn> {
   const url = `/ml-prompts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

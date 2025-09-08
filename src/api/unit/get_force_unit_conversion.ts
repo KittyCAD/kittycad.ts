@@ -1,23 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { UnitForceConversion_type, UnitForce_type } from '../../models.js'
+import { UnitForceConversion, UnitForce } from '../../models.js'
 
-interface GetForceUnitConversionParams {
+interface GetForceUnitConversionInput {
   client?: Client
-  input_unit: UnitForce_type
-  output_unit: UnitForce_type
+  input_unit: UnitForce
+  output_unit: UnitForce
   value: number
 }
 
-type GetForceUnitConversionReturn = UnitForceConversion_type
+type GetForceUnitConversionReturn = UnitForceConversion
 
 export default async function get_force_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: GetForceUnitConversionParams): Promise<GetForceUnitConversionReturn> {
+}: GetForceUnitConversionInput): Promise<GetForceUnitConversionReturn> {
   const url = `/unit/conversion/force/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

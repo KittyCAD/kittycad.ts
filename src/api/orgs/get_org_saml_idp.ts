@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { SamlIdentityProvider_type } from '../../models.js'
+import { SamlIdentityProvider } from '../../models.js'
 
-interface GetOrgSamlIdpParams {
+interface GetOrgSamlIdpInput {
   client?: Client
 }
 
-type GetOrgSamlIdpReturn = SamlIdentityProvider_type
+type GetOrgSamlIdpReturn = SamlIdentityProvider
 
 export default async function get_org_saml_idp(
-  { client }: GetOrgSamlIdpParams = {} as GetOrgSamlIdpParams
+  { client }: GetOrgSamlIdpInput = {} as GetOrgSamlIdpInput
 ): Promise<GetOrgSamlIdpReturn> {
   const url = `/org/saml/idp`
   // Backwards compatible for the BASE_URL env variable

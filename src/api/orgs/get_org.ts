@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { Org_type } from '../../models.js'
+import { Org } from '../../models.js'
 
-interface GetOrgParams {
+interface GetOrgInput {
   client?: Client
 }
 
-type GetOrgReturn = Org_type
+type GetOrgReturn = Org
 
 export default async function get_org(
-  { client }: GetOrgParams = {} as GetOrgParams
+  { client }: GetOrgInput = {} as GetOrgInput
 ): Promise<GetOrgReturn> {
   const url = `/org`
   // Backwards compatible for the BASE_URL env variable

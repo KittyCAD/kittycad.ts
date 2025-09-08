@@ -1,23 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  FileDensity_type,
-  FileImportFormat_type,
-  UnitDensity_type,
-  UnitMass_type,
+import {
+  FileDensity,
+  UnitMass,
+  UnitDensity,
+  FileImportFormat,
 } from '../../models.js'
 
-interface CreateFileDensityParams {
+interface CreateFileDensityInput {
   client?: Client
   material_mass: number
-  material_mass_unit: UnitMass_type
-  output_unit: UnitDensity_type
-  src_format: FileImportFormat_type
+  material_mass_unit: UnitMass
+  output_unit: UnitDensity
+  src_format: FileImportFormat
   body: string
 }
 
-type CreateFileDensityReturn = FileDensity_type
+type CreateFileDensityReturn = FileDensity
 
 export default async function create_file_density({
   client,
@@ -26,7 +26,7 @@ export default async function create_file_density({
   output_unit,
   src_format,
   body,
-}: CreateFileDensityParams): Promise<CreateFileDensityReturn> {
+}: CreateFileDensityInput): Promise<CreateFileDensityReturn> {
   const url = `/file/density?material_mass=${material_mass}&material_mass_unit=${material_mass_unit}&output_unit=${output_unit}&src_format=${src_format}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

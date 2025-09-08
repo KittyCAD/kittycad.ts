@@ -1,27 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  FileImportFormat_type,
-  FileSurfaceArea_type,
-  UnitArea_type,
-} from '../../models.js'
+import { FileSurfaceArea, UnitArea, FileImportFormat } from '../../models.js'
 
-interface CreateFileSurfaceAreaParams {
+interface CreateFileSurfaceAreaInput {
   client?: Client
-  output_unit: UnitArea_type
-  src_format: FileImportFormat_type
+  output_unit: UnitArea
+  src_format: FileImportFormat
   body: string
 }
 
-type CreateFileSurfaceAreaReturn = FileSurfaceArea_type
+type CreateFileSurfaceAreaReturn = FileSurfaceArea
 
 export default async function create_file_surface_area({
   client,
   output_unit,
   src_format,
   body,
-}: CreateFileSurfaceAreaParams): Promise<CreateFileSurfaceAreaReturn> {
+}: CreateFileSurfaceAreaInput): Promise<CreateFileSurfaceAreaReturn> {
   const url = `/file/surface-area?output_unit=${output_unit}&src_format=${src_format}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

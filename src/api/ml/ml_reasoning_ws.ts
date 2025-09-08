@@ -1,9 +1,6 @@
+import { Client } from '../../client.js'
 import { BSON } from 'bson'
-import type { Client } from '../../client.js'
-import type {
-  MlCopilotClientMessage_type,
-  MlCopilotServerMessage_type,
-} from '../../models.js'
+import { MlCopilotClientMessage, MlCopilotServerMessage } from '../../models.js'
 
 interface MlReasoningWsParams {
   client?: Client
@@ -11,8 +8,8 @@ interface MlReasoningWsParams {
 }
 
 export default class MlReasoningWs<
-  Req = MlCopilotClientMessage_type,
-  Res = MlCopilotServerMessage_type,
+  Req = MlCopilotClientMessage,
+  Res = MlCopilotServerMessage,
 > {
   private ws!: WebSocket
 

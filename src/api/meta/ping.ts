@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { Pong_type } from '../../models.js'
+import { Pong } from '../../models.js'
 
-interface PingParams {
+interface PingInput {
   client?: Client
 }
 
-type PingReturn = Pong_type
+type PingReturn = Pong
 
 export default async function ping(
-  { client }: PingParams = {} as PingParams
+  { client }: PingInput = {} as PingInput
 ): Promise<PingReturn> {
   const url = `/ping`
   // Backwards compatible for the BASE_URL env variable

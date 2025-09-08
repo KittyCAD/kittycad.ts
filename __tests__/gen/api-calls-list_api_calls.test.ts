@@ -1,4 +1,4 @@
-import { ApiError, api_calls } from '../../src/index.js'
+import { api_calls, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await api_calls.list_api_calls({

@@ -1,9 +1,9 @@
+import { Client } from '../../client.js'
 import { BSON } from 'bson'
-import type { Client } from '../../client.js'
-import type {
-  PostEffectType_type,
-  WebSocketRequest_type,
-  WebSocketResponse_type,
+import {
+  PostEffectType,
+  WebSocketRequest,
+  WebSocketResponse,
 } from '../../models.js'
 
 interface ModelingCommandsWsParams {
@@ -11,7 +11,7 @@ interface ModelingCommandsWsParams {
   api_call_id: string
   fps: number
   pool: string
-  post_effect: PostEffectType_type
+  post_effect: PostEffectType
   replay: string
   show_grid: boolean
   unlocked_framerate: boolean
@@ -21,8 +21,8 @@ interface ModelingCommandsWsParams {
 }
 
 export default class ModelingCommandsWs<
-  Req = WebSocketRequest_type,
-  Res = WebSocketResponse_type,
+  Req = WebSocketRequest,
+  Res = WebSocketResponse,
 > {
   private ws!: WebSocket
 

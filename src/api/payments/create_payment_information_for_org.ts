@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { BillingInfo_type, Customer_type } from '../../models.js'
+import { Customer, BillingInfo } from '../../models.js'
 
-interface CreatePaymentInformationForOrgParams {
+interface CreatePaymentInformationForOrgInput {
   client?: Client
-  body: BillingInfo_type
+  body: BillingInfo
 }
 
-type CreatePaymentInformationForOrgReturn = Customer_type
+type CreatePaymentInformationForOrgReturn = Customer
 
 export default async function create_payment_information_for_org({
   client,
   body,
-}: CreatePaymentInformationForOrgParams): Promise<CreatePaymentInformationForOrgReturn> {
+}: CreatePaymentInformationForOrgInput): Promise<CreatePaymentInformationForOrgReturn> {
   const url = `/org/payment`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -1,9 +1,9 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface CommunitySsoParams {
+interface CommunitySsoInput {
   client?: Client
   sig: string
   sso: string
@@ -15,7 +15,7 @@ export default async function community_sso({
   client,
   sig,
   sso,
-}: CommunitySsoParams): Promise<CommunitySsoReturn> {
+}: CommunitySsoInput): Promise<CommunitySsoReturn> {
   const url = `/community/sso?sig=${sig}&sso=${sso}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

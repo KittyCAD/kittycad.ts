@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { UserOrgInfo_type } from '../../models.js'
+import { UserOrgInfo } from '../../models.js'
 
-interface GetUserOrgParams {
+interface GetUserOrgInput {
   client?: Client
 }
 
-type GetUserOrgReturn = UserOrgInfo_type
+type GetUserOrgReturn = UserOrgInfo
 
 export default async function get_user_org(
-  { client }: GetUserOrgParams = {} as GetUserOrgParams
+  { client }: GetUserOrgInput = {} as GetUserOrgInput
 ): Promise<GetUserOrgReturn> {
   const url = `/user/org`
   // Backwards compatible for the BASE_URL env variable

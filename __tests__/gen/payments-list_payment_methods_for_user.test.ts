@@ -1,4 +1,4 @@
-import { ApiError, payments } from '../../src/index.js'
+import { payments, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await payments.list_payment_methods_for_user()

@@ -1,9 +1,9 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeleteUserShortlinkParams {
+interface DeleteUserShortlinkInput {
   client?: Client
   key: string
 }
@@ -13,7 +13,7 @@ type DeleteUserShortlinkReturn = unknown
 export default async function delete_user_shortlink({
   client,
   key,
-}: DeleteUserShortlinkParams): Promise<DeleteUserShortlinkReturn> {
+}: DeleteUserShortlinkInput): Promise<DeleteUserShortlinkReturn> {
   const url = `/user/shortlinks/${key}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

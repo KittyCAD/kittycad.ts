@@ -1,25 +1,25 @@
-import type { Client } from '../../client.js'
+import { File } from '../../models.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
-import type { File } from '../../models.js'
 
-import type {
-  TextToCadMultiFileIterationBody_type,
-  TextToCadMultiFileIteration_type,
+import {
+  TextToCadMultiFileIteration,
+  TextToCadMultiFileIterationBody,
 } from '../../models.js'
 
-interface CreateTextToCadMultiFileIterationParams {
+interface CreateTextToCadMultiFileIterationInput {
   client?: Client
   files: File[]
-  body: TextToCadMultiFileIterationBody_type
+  body: TextToCadMultiFileIterationBody
 }
 
-type CreateTextToCadMultiFileIterationReturn = TextToCadMultiFileIteration_type
+type CreateTextToCadMultiFileIterationReturn = TextToCadMultiFileIteration
 
 export default async function create_text_to_cad_multi_file_iteration({
   client,
   files,
   body,
-}: CreateTextToCadMultiFileIterationParams): Promise<CreateTextToCadMultiFileIterationReturn> {
+}: CreateTextToCadMultiFileIterationInput): Promise<CreateTextToCadMultiFileIterationReturn> {
   const url = `/ml/text-to-cad/multi-file/iteration`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

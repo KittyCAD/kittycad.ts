@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { UpdateUser_type, User_type } from '../../models.js'
+import { User, UpdateUser } from '../../models.js'
 
-interface UpdateUserSelfParams {
+interface UpdateUserSelfInput {
   client?: Client
-  body: UpdateUser_type
+  body: UpdateUser
 }
 
-type UpdateUserSelfReturn = User_type
+type UpdateUserSelfReturn = User
 
 export default async function update_user_self({
   client,
   body,
-}: UpdateUserSelfParams): Promise<UpdateUserSelfReturn> {
+}: UpdateUserSelfInput): Promise<UpdateUserSelfReturn> {
   const url = `/user`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

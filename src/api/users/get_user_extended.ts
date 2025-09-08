@@ -1,19 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { ExtendedUser_type, UserIdentifier_type } from '../../models.js'
+import { ExtendedUser, UserIdentifier } from '../../models.js'
 
-interface GetUserExtendedParams {
+interface GetUserExtendedInput {
   client?: Client
-  id: UserIdentifier_type
+  id: UserIdentifier
 }
 
-type GetUserExtendedReturn = ExtendedUser_type
+type GetUserExtendedReturn = ExtendedUser
 
 export default async function get_user_extended({
   client,
   id,
-}: GetUserExtendedParams): Promise<GetUserExtendedReturn> {
+}: GetUserExtendedInput): Promise<GetUserExtendedReturn> {
   const url = `/users-extended/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -1,22 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  ApiCallQueryGroupBy_type,
-  ApiCallQueryGroup_type,
-} from '../../models.js'
+import { ApiCallQueryGroup, ApiCallQueryGroupBy } from '../../models.js'
 
-interface GetApiCallMetricsParams {
+interface GetApiCallMetricsInput {
   client?: Client
-  group_by: ApiCallQueryGroupBy_type
+  group_by: ApiCallQueryGroupBy
 }
 
-type GetApiCallMetricsReturn = ApiCallQueryGroup_type[]
+type GetApiCallMetricsReturn = ApiCallQueryGroup[]
 
 export default async function get_api_call_metrics({
   client,
   group_by,
-}: GetApiCallMetricsParams): Promise<GetApiCallMetricsReturn> {
+}: GetApiCallMetricsInput): Promise<GetApiCallMetricsReturn> {
   const url = `/api-call-metrics?group_by=${group_by}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

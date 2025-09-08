@@ -1,23 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { UnitAreaConversion_type, UnitArea_type } from '../../models.js'
+import { UnitAreaConversion, UnitArea } from '../../models.js'
 
-interface GetAreaUnitConversionParams {
+interface GetAreaUnitConversionInput {
   client?: Client
-  input_unit: UnitArea_type
-  output_unit: UnitArea_type
+  input_unit: UnitArea
+  output_unit: UnitArea
   value: number
 }
 
-type GetAreaUnitConversionReturn = UnitAreaConversion_type
+type GetAreaUnitConversionReturn = UnitAreaConversion
 
 export default async function get_area_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: GetAreaUnitConversionParams): Promise<GetAreaUnitConversionReturn> {
+}: GetAreaUnitConversionInput): Promise<GetAreaUnitConversionReturn> {
   const url = `/unit/conversion/area/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

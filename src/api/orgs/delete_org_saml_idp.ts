@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeleteOrgSamlIdpParams {
+interface DeleteOrgSamlIdpInput {
   client?: Client
 }
 
 type DeleteOrgSamlIdpReturn = unknown
 
 export default async function delete_org_saml_idp(
-  { client }: DeleteOrgSamlIdpParams = {} as DeleteOrgSamlIdpParams
+  { client }: DeleteOrgSamlIdpInput = {} as DeleteOrgSamlIdpInput
 ): Promise<DeleteOrgSamlIdpReturn> {
   const url = `/org/saml/idp`
   // Backwards compatible for the BASE_URL env variable

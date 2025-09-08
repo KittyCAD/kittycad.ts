@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { AppClientInfo_type } from '../../models.js'
+import { AppClientInfo } from '../../models.js'
 
-interface AppsGithubConsentParams {
+interface AppsGithubConsentInput {
   client?: Client
 }
 
-type AppsGithubConsentReturn = AppClientInfo_type
+type AppsGithubConsentReturn = AppClientInfo
 
 export default async function apps_github_consent(
-  { client }: AppsGithubConsentParams = {} as AppsGithubConsentParams
+  { client }: AppsGithubConsentInput = {} as AppsGithubConsentInput
 ): Promise<AppsGithubConsentReturn> {
   const url = `/apps/github/consent`
   // Backwards compatible for the BASE_URL env variable

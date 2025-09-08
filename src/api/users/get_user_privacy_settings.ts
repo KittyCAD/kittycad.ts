@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { PrivacySettings_type } from '../../models.js'
+import { PrivacySettings } from '../../models.js'
 
-interface GetUserPrivacySettingsParams {
+interface GetUserPrivacySettingsInput {
   client?: Client
 }
 
-type GetUserPrivacySettingsReturn = PrivacySettings_type
+type GetUserPrivacySettingsReturn = PrivacySettings
 
 export default async function get_user_privacy_settings(
-  { client }: GetUserPrivacySettingsParams = {} as GetUserPrivacySettingsParams
+  { client }: GetUserPrivacySettingsInput = {} as GetUserPrivacySettingsInput
 ): Promise<GetUserPrivacySettingsReturn> {
   const url = `/user/privacy`
   // Backwards compatible for the BASE_URL env variable

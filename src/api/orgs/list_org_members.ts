@@ -1,21 +1,21 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  CreatedAtSortMode_type,
-  OrgMemberResultsPage_type,
-  UserOrgRole_type,
+import {
+  OrgMemberResultsPage,
+  CreatedAtSortMode,
+  UserOrgRole,
 } from '../../models.js'
 
-interface ListOrgMembersParams {
+interface ListOrgMembersInput {
   client?: Client
   limit: number
   page_token: string
-  sort_by: CreatedAtSortMode_type
-  role: UserOrgRole_type
+  sort_by: CreatedAtSortMode
+  role: UserOrgRole
 }
 
-type ListOrgMembersReturn = OrgMemberResultsPage_type
+type ListOrgMembersReturn = OrgMemberResultsPage
 
 export default async function list_org_members({
   client,
@@ -23,7 +23,7 @@ export default async function list_org_members({
   page_token,
   sort_by,
   role,
-}: ListOrgMembersParams): Promise<ListOrgMembersReturn> {
+}: ListOrgMembersInput): Promise<ListOrgMembersReturn> {
   const url = `/org/members?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&role=${role}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

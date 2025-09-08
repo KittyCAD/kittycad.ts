@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { PrivacySettings_type } from '../../models.js'
+import { PrivacySettings } from '../../models.js'
 
-interface GetOrgPrivacySettingsParams {
+interface GetOrgPrivacySettingsInput {
   client?: Client
 }
 
-type GetOrgPrivacySettingsReturn = PrivacySettings_type
+type GetOrgPrivacySettingsReturn = PrivacySettings
 
 export default async function get_org_privacy_settings(
-  { client }: GetOrgPrivacySettingsParams = {} as GetOrgPrivacySettingsParams
+  { client }: GetOrgPrivacySettingsInput = {} as GetOrgPrivacySettingsInput
 ): Promise<GetOrgPrivacySettingsReturn> {
   const url = `/org/privacy`
   // Backwards compatible for the BASE_URL env variable

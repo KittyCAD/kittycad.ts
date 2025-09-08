@@ -1,21 +1,21 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  ApiCallStatus_type,
-  AsyncApiCallResultsPage_type,
-  CreatedAtSortMode_type,
+import {
+  AsyncApiCallResultsPage,
+  CreatedAtSortMode,
+  ApiCallStatus,
 } from '../../models.js'
 
-interface ListAsyncOperationsParams {
+interface ListAsyncOperationsInput {
   client?: Client
   limit: number
   page_token: string
-  sort_by: CreatedAtSortMode_type
-  status: ApiCallStatus_type
+  sort_by: CreatedAtSortMode
+  status: ApiCallStatus
 }
 
-type ListAsyncOperationsReturn = AsyncApiCallResultsPage_type
+type ListAsyncOperationsReturn = AsyncApiCallResultsPage
 
 export default async function list_async_operations({
   client,
@@ -23,7 +23,7 @@ export default async function list_async_operations({
   page_token,
   sort_by,
   status,
-}: ListAsyncOperationsParams): Promise<ListAsyncOperationsReturn> {
+}: ListAsyncOperationsInput): Promise<ListAsyncOperationsReturn> {
   const url = `/async/operations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&status=${status}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

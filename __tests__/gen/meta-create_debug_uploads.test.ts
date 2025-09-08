@@ -1,4 +1,4 @@
-import { ApiError, meta } from '../../src/index.js'
+import { meta, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await meta.create_debug_uploads({

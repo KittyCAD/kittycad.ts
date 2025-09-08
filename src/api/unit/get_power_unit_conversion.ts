@@ -1,23 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { UnitPowerConversion_type, UnitPower_type } from '../../models.js'
+import { UnitPowerConversion, UnitPower } from '../../models.js'
 
-interface GetPowerUnitConversionParams {
+interface GetPowerUnitConversionInput {
   client?: Client
-  input_unit: UnitPower_type
-  output_unit: UnitPower_type
+  input_unit: UnitPower
+  output_unit: UnitPower
   value: number
 }
 
-type GetPowerUnitConversionReturn = UnitPowerConversion_type
+type GetPowerUnitConversionReturn = UnitPowerConversion
 
 export default async function get_power_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: GetPowerUnitConversionParams): Promise<GetPowerUnitConversionReturn> {
+}: GetPowerUnitConversionInput): Promise<GetPowerUnitConversionReturn> {
   const url = `/unit/conversion/power/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

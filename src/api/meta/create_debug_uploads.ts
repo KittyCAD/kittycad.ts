@@ -1,10 +1,10 @@
-import type { Client } from '../../client.js'
+import { File } from '../../models.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
-import type { File } from '../../models.js'
 
 import {} from '../../models.js'
 
-interface CreateDebugUploadsParams {
+interface CreateDebugUploadsInput {
   client?: Client
   files: File[]
 }
@@ -14,7 +14,7 @@ type CreateDebugUploadsReturn = unknown
 export default async function create_debug_uploads({
   client,
   files,
-}: CreateDebugUploadsParams): Promise<CreateDebugUploadsReturn> {
+}: CreateDebugUploadsInput): Promise<CreateDebugUploadsReturn> {
   const url = `/debug/uploads`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

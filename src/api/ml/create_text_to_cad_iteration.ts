@@ -1,22 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  TextToCadIterationBody_type,
-  TextToCadIteration_type,
-} from '../../models.js'
+import { TextToCadIteration, TextToCadIterationBody } from '../../models.js'
 
-interface CreateTextToCadIterationParams {
+interface CreateTextToCadIterationInput {
   client?: Client
-  body: TextToCadIterationBody_type
+  body: TextToCadIterationBody
 }
 
-type CreateTextToCadIterationReturn = TextToCadIteration_type
+type CreateTextToCadIterationReturn = TextToCadIteration
 
 export default async function create_text_to_cad_iteration({
   client,
   body,
-}: CreateTextToCadIterationParams): Promise<CreateTextToCadIterationReturn> {
+}: CreateTextToCadIterationInput): Promise<CreateTextToCadIterationReturn> {
   const url = `/ml/text-to-cad/iteration`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

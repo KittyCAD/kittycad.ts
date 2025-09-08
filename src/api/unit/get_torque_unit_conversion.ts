@@ -1,26 +1,23 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  UnitTorqueConversion_type,
-  UnitTorque_type,
-} from '../../models.js'
+import { UnitTorqueConversion, UnitTorque } from '../../models.js'
 
-interface GetTorqueUnitConversionParams {
+interface GetTorqueUnitConversionInput {
   client?: Client
-  input_unit: UnitTorque_type
-  output_unit: UnitTorque_type
+  input_unit: UnitTorque
+  output_unit: UnitTorque
   value: number
 }
 
-type GetTorqueUnitConversionReturn = UnitTorqueConversion_type
+type GetTorqueUnitConversionReturn = UnitTorqueConversion
 
 export default async function get_torque_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: GetTorqueUnitConversionParams): Promise<GetTorqueUnitConversionReturn> {
+}: GetTorqueUnitConversionInput): Promise<GetTorqueUnitConversionReturn> {
   const url = `/unit/conversion/torque/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

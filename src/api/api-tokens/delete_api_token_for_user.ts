@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { ApiTokenUuid_type } from '../../models.js'
+import { ApiTokenUuid } from '../../models.js'
 
-interface DeleteApiTokenForUserParams {
+interface DeleteApiTokenForUserInput {
   client?: Client
-  token: ApiTokenUuid_type
+  token: ApiTokenUuid
 }
 
 type DeleteApiTokenForUserReturn = unknown
@@ -13,7 +13,7 @@ type DeleteApiTokenForUserReturn = unknown
 export default async function delete_api_token_for_user({
   client,
   token,
-}: DeleteApiTokenForUserParams): Promise<DeleteApiTokenForUserReturn> {
+}: DeleteApiTokenForUserInput): Promise<DeleteApiTokenForUserReturn> {
   const url = `/user/api-tokens/${token}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

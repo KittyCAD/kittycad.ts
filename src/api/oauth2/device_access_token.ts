@@ -1,16 +1,16 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {} from '../../models.js'
 
-interface DeviceAccessTokenParams {
+interface DeviceAccessTokenInput {
   client?: Client
 }
 
 type DeviceAccessTokenReturn = unknown
 
 export default async function device_access_token(
-  { client }: DeviceAccessTokenParams = {} as DeviceAccessTokenParams
+  { client }: DeviceAccessTokenInput = {} as DeviceAccessTokenInput
 ): Promise<DeviceAccessTokenReturn> {
   const url = `/oauth2/device/token`
   // Backwards compatible for the BASE_URL env variable

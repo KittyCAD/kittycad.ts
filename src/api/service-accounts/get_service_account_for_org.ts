@@ -1,22 +1,19 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type {
-  ServiceAccountUuid_type,
-  ServiceAccount_type,
-} from '../../models.js'
+import { ServiceAccount, ServiceAccountUuid } from '../../models.js'
 
-interface GetServiceAccountForOrgParams {
+interface GetServiceAccountForOrgInput {
   client?: Client
-  token: ServiceAccountUuid_type
+  token: ServiceAccountUuid
 }
 
-type GetServiceAccountForOrgReturn = ServiceAccount_type
+type GetServiceAccountForOrgReturn = ServiceAccount
 
 export default async function get_service_account_for_org({
   client,
   token,
-}: GetServiceAccountForOrgParams): Promise<GetServiceAccountForOrgReturn> {
+}: GetServiceAccountForOrgInput): Promise<GetServiceAccountForOrgReturn> {
   const url = `/org/service-accounts/${token}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

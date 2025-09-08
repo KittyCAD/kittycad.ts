@@ -1,11 +1,11 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { InquiryForm_type } from '../../models.js'
+import { InquiryForm } from '../../models.js'
 
-interface PutPublicFormParams {
+interface PutPublicFormInput {
   client?: Client
-  body: InquiryForm_type
+  body: InquiryForm
 }
 
 type PutPublicFormReturn = unknown
@@ -13,7 +13,7 @@ type PutPublicFormReturn = unknown
 export default async function put_public_form({
   client,
   body,
-}: PutPublicFormParams): Promise<PutPublicFormReturn> {
+}: PutPublicFormInput): Promise<PutPublicFormReturn> {
   const url = `/website/form`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

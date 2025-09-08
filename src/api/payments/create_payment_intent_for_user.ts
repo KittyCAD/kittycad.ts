@@ -1,18 +1,18 @@
-import type { Client } from '../../client.js'
+import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import type { PaymentIntent_type } from '../../models.js'
+import { PaymentIntent } from '../../models.js'
 
-interface CreatePaymentIntentForUserParams {
+interface CreatePaymentIntentForUserInput {
   client?: Client
 }
 
-type CreatePaymentIntentForUserReturn = PaymentIntent_type
+type CreatePaymentIntentForUserReturn = PaymentIntent
 
 export default async function create_payment_intent_for_user(
   {
     client,
-  }: CreatePaymentIntentForUserParams = {} as CreatePaymentIntentForUserParams
+  }: CreatePaymentIntentForUserInput = {} as CreatePaymentIntentForUserInput
 ): Promise<CreatePaymentIntentForUserReturn> {
   const url = `/user/payment/intent`
   // Backwards compatible for the BASE_URL env variable
