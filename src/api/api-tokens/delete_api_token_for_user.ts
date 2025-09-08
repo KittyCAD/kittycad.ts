@@ -8,7 +8,7 @@ interface DeleteApiTokenForUserInput {
   token: ApiTokenUuid
 }
 
-type DeleteApiTokenForUserReturn = unknown
+type DeleteApiTokenForUserReturn = void
 
 /**
  * Delete an API token for your user.
@@ -53,6 +53,5 @@ export default async function delete_api_token_for_user({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeleteApiTokenForUserReturn
-  return result
+  return undefined as DeleteApiTokenForUserReturn
 }

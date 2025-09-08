@@ -8,7 +8,7 @@ interface PutPublicSubscribeInput {
   body: Subscribe
 }
 
-type PutPublicSubscribeReturn = unknown
+type PutPublicSubscribeReturn = void
 
 /**
  * Subscribes a user to the newsletter.
@@ -51,6 +51,5 @@ export default async function put_public_subscribe({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as PutPublicSubscribeReturn
-  return result
+  return undefined as PutPublicSubscribeReturn
 }

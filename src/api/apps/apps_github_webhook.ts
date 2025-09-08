@@ -8,7 +8,7 @@ interface AppsGithubWebhookInput {
   body: string
 }
 
-type AppsGithubWebhookReturn = unknown
+type AppsGithubWebhookReturn = void
 
 /**
  * Listen for GitHub webhooks.
@@ -53,6 +53,5 @@ export default async function apps_github_webhook({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as AppsGithubWebhookReturn
-  return result
+  return undefined as AppsGithubWebhookReturn
 }

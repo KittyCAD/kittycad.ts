@@ -1,6 +1,7 @@
 import { Client } from '../../client.js'
 import { BSON } from 'bson'
 import type { Document } from 'bson'
+import { isArrayBufferViewLike } from '../../ws-utils.js'
 import {} from '../../models.js'
 
 interface ExecutorTermParams {
@@ -23,19 +24,6 @@ export default class ExecutorTerm<Req = unknown, Res = unknown> {
   private ws!: WebSocket
 
   constructor(private readonly functionNameParams: ExecutorTermParams) {}
-
-  private isArrayBufferViewLike(
-    v: unknown
-  ): v is { buffer: ArrayBuffer; byteOffset: number; byteLength: number } {
-    return (
-      !!v &&
-      typeof v === 'object' &&
-      'buffer' in (v as Record<string, unknown>) &&
-      (v as { buffer: unknown }).buffer instanceof ArrayBuffer &&
-      typeof (v as { byteOffset?: unknown }).byteOffset === 'number' &&
-      typeof (v as { byteLength?: unknown }).byteLength === 'number'
-    )
-  }
 
   /**
    * Establish the WebSocket connection and perform optional header auth.
@@ -168,11 +156,20 @@ export default class ExecutorTerm<Req = unknown, Res = unknown> {
       } catch {}
       return BSON.deserialize(buf) as unknown as Res
     }
-    if (data instanceof ArrayBuffer || this.isArrayBufferViewLike(data)) {
-      const bytes =
-        data instanceof ArrayBuffer
-          ? new Uint8Array(data)
-          : new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
+    if (data instanceof ArrayBuffer) {
+      const bytes = new Uint8Array(data)
+      try {
+        const text = new TextDecoder().decode(bytes)
+        return JSON.parse(text)
+      } catch {}
+      return BSON.deserialize(bytes) as unknown as Res
+    }
+    if (isArrayBufferViewLike(data)) {
+      const bytes = new Uint8Array(
+        data.buffer,
+        data.byteOffset,
+        data.byteLength
+      )
       try {
         const text = new TextDecoder().decode(bytes)
         return JSON.parse(text)

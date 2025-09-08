@@ -9,7 +9,7 @@ interface UpdateUserShortlinkInput {
   body: UpdateShortlinkRequest
 }
 
-type UpdateUserShortlinkReturn = unknown
+type UpdateUserShortlinkReturn = void
 
 /**
  * Update a shortlink for a user.
@@ -58,6 +58,5 @@ export default async function update_user_shortlink({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateUserShortlinkReturn
-  return result
+  return undefined as UpdateUserShortlinkReturn
 }

@@ -8,7 +8,7 @@ interface PutUserFormSelfInput {
   body: InquiryForm
 }
 
-type PutUserFormSelfReturn = unknown
+type PutUserFormSelfReturn = void
 
 /**
  * Create a new support/sales ticket from the website contact form. This endpoint is authenticated.
@@ -53,6 +53,5 @@ export default async function put_user_form_self({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as PutUserFormSelfReturn
-  return result
+  return undefined as PutUserFormSelfReturn
 }

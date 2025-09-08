@@ -7,7 +7,7 @@ interface DeleteOrgInput {
   client?: Client
 }
 
-type DeleteOrgReturn = unknown
+type DeleteOrgReturn = void
 
 /**
  * Delete an org.
@@ -52,6 +52,5 @@ export default async function delete_org(
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeleteOrgReturn
-  return result
+  return undefined as DeleteOrgReturn
 }

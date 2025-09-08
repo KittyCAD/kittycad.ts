@@ -7,7 +7,7 @@ interface ValidateCustomerTaxInformationForUserInput {
   client?: Client
 }
 
-type ValidateCustomerTaxInformationForUserReturn = unknown
+type ValidateCustomerTaxInformationForUserReturn = void
 
 /**
  * Validate a user's information is correct and valid for automatic tax.
@@ -50,7 +50,5 @@ export default async function validate_customer_tax_information_for_user(
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result =
-    (await response.json()) as ValidateCustomerTaxInformationForUserReturn
-  return result
+  return undefined as ValidateCustomerTaxInformationForUserReturn
 }

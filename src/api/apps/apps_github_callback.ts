@@ -7,7 +7,7 @@ interface AppsGithubCallbackInput {
   client?: Client
 }
 
-type AppsGithubCallbackReturn = unknown
+type AppsGithubCallbackReturn = void
 
 /**
  * Listen for callbacks to GitHub app authentication.
@@ -50,6 +50,5 @@ export default async function apps_github_callback(
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as AppsGithubCallbackReturn
-  return result
+  return undefined as AppsGithubCallbackReturn
 }

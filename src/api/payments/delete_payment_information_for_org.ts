@@ -7,7 +7,7 @@ interface DeletePaymentInformationForOrgInput {
   client?: Client
 }
 
-type DeletePaymentInformationForOrgReturn = unknown
+type DeletePaymentInformationForOrgReturn = void
 
 /**
  * Delete payment info for your org.
@@ -52,6 +52,5 @@ export default async function delete_payment_information_for_org(
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeletePaymentInformationForOrgReturn
-  return result
+  return undefined as DeletePaymentInformationForOrgReturn
 }

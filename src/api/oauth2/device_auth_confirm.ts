@@ -8,7 +8,7 @@ interface DeviceAuthConfirmInput {
   body: DeviceAuthConfirmParams
 }
 
-type DeviceAuthConfirmReturn = unknown
+type DeviceAuthConfirmReturn = void
 
 /**
  * Confirm an OAuth 2.0 Device Authorization Grant.
@@ -53,6 +53,5 @@ export default async function device_auth_confirm({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeviceAuthConfirmReturn
-  return result
+  return undefined as DeviceAuthConfirmReturn
 }

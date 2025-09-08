@@ -49,6 +49,10 @@ export default async function {{functionName}}(
   };
   const response = await fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
+  {{#if noJsonResponse}}
+  return undefined as {{returnTypeName}};
+  {{else}}
   const result = (await response.json()) as {{returnTypeName}};
   return result;
+  {{/if}}
 }

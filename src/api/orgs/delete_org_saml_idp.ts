@@ -7,7 +7,7 @@ interface DeleteOrgSamlIdpInput {
   client?: Client
 }
 
-type DeleteOrgSamlIdpReturn = unknown
+type DeleteOrgSamlIdpReturn = void
 
 /**
  * Delete an SAML identity provider.
@@ -48,6 +48,5 @@ export default async function delete_org_saml_idp(
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeleteOrgSamlIdpReturn
-  return result
+  return undefined as DeleteOrgSamlIdpReturn
 }

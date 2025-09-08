@@ -535,8 +535,16 @@ export default async function apiGen(lookup: Record<string, string>) {
         let template = ''
         if (!isWebSocket) {
           const pascalName = toPascalCase(operationId)
+          const has204 = Object.prototype.hasOwnProperty.call(
+            operation.specSection?.responses || {},
+            '204'
+          )
           const returnTyping = `type ${pascalName}Return = ${
-            importedTypes.length ? importedTypes.join(' | ') : 'unknown'
+            has204
+              ? 'void'
+              : importedTypes.length
+                ? importedTypes.join(' | ')
+                : 'unknown'
           }`
           const paramsInterfaceName = `${pascalName}Input`
           const returnTypeName = `${pascalName}Return`
@@ -587,6 +595,7 @@ export default async function apiGen(lookup: Record<string, string>) {
               returnTypeName,
               importedReturnTypes: importedTypes,
             }),
+            noJsonResponse: has204,
           }
           template = await render(templatePath, ctx)
         } else {

@@ -9,7 +9,7 @@ interface CreateTextToCadModelFeedbackInput {
   feedback: MlFeedback
 }
 
-type CreateTextToCadModelFeedbackReturn = unknown
+type CreateTextToCadModelFeedbackReturn = void
 
 /**
  * Give feedback to a specific ML response.
@@ -56,6 +56,5 @@ export default async function create_text_to_cad_model_feedback({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as CreateTextToCadModelFeedbackReturn
-  return result
+  return undefined as CreateTextToCadModelFeedbackReturn
 }

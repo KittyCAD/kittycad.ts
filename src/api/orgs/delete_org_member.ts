@@ -8,7 +8,7 @@ interface DeleteOrgMemberInput {
   user_id: Uuid
 }
 
-type DeleteOrgMemberReturn = unknown
+type DeleteOrgMemberReturn = void
 
 /**
  * Remove a member from your org.
@@ -51,6 +51,5 @@ export default async function delete_org_member({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeleteOrgMemberReturn
-  return result
+  return undefined as DeleteOrgMemberReturn
 }

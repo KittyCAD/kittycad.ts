@@ -8,7 +8,7 @@ interface DeleteUserShortlinkInput {
   key: string
 }
 
-type DeleteUserShortlinkReturn = unknown
+type DeleteUserShortlinkReturn = void
 
 /**
  * Delete a shortlink for a user.
@@ -51,6 +51,5 @@ export default async function delete_user_shortlink({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeleteUserShortlinkReturn
-  return result
+  return undefined as DeleteUserShortlinkReturn
 }

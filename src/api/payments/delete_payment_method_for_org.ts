@@ -8,7 +8,7 @@ interface DeletePaymentMethodForOrgInput {
   id: string
 }
 
-type DeletePaymentMethodForOrgReturn = unknown
+type DeletePaymentMethodForOrgReturn = void
 
 /**
  * Delete a payment method for your org.
@@ -51,6 +51,5 @@ export default async function delete_payment_method_for_org({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeletePaymentMethodForOrgReturn
-  return result
+  return undefined as DeletePaymentMethodForOrgReturn
 }

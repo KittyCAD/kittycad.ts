@@ -8,7 +8,7 @@ interface DeleteServiceAccountForOrgInput {
   token: ServiceAccountUuid
 }
 
-type DeleteServiceAccountForOrgReturn = unknown
+type DeleteServiceAccountForOrgReturn = void
 
 /**
  * Delete an service account for your org.
@@ -53,6 +53,5 @@ export default async function delete_service_account_for_org({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeleteServiceAccountForOrgReturn
-  return result
+  return undefined as DeleteServiceAccountForOrgReturn
 }

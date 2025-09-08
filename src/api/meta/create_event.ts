@@ -10,7 +10,7 @@ interface CreateEventInput {
   body: Event
 }
 
-type CreateEventReturn = unknown
+type CreateEventReturn = void
 
 /**
  * Creates an internal telemetry event.
@@ -65,6 +65,5 @@ export default async function create_event({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as CreateEventReturn
-  return result
+  return undefined as CreateEventReturn
 }

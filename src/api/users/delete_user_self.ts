@@ -7,7 +7,7 @@ interface DeleteUserSelfInput {
   client?: Client
 }
 
-type DeleteUserSelfReturn = unknown
+type DeleteUserSelfReturn = void
 
 /**
  * Delete your user.
@@ -50,6 +50,5 @@ export default async function delete_user_self(
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeleteUserSelfReturn
-  return result
+  return undefined as DeleteUserSelfReturn
 }

@@ -8,7 +8,7 @@ interface DeletePaymentMethodForUserInput {
   id: string
 }
 
-type DeletePaymentMethodForUserReturn = unknown
+type DeletePaymentMethodForUserReturn = void
 
 /**
  * Delete a payment method for your user.
@@ -51,6 +51,5 @@ export default async function delete_payment_method_for_user({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DeletePaymentMethodForUserReturn
-  return result
+  return undefined as DeletePaymentMethodForUserReturn
 }

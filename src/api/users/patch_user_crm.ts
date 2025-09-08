@@ -8,7 +8,7 @@ interface PatchUserCrmInput {
   body: CrmData
 }
 
-type PatchUserCrmReturn = unknown
+type PatchUserCrmReturn = void
 
 /**
  * Update properties in the CRM
@@ -51,6 +51,5 @@ export default async function patch_user_crm({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as PatchUserCrmReturn
-  return result
+  return undefined as PatchUserCrmReturn
 }

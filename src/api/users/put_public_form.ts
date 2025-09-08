@@ -8,7 +8,7 @@ interface PutPublicFormInput {
   body: InquiryForm
 }
 
-type PutPublicFormReturn = unknown
+type PutPublicFormReturn = void
 
 /**
  * Creates a new support/sales ticket from the website contact form. This endpoint is for untrusted
@@ -53,6 +53,5 @@ export default async function put_public_form({
   }
   const response = await fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as PutPublicFormReturn
-  return result
+  return undefined as PutPublicFormReturn
 }
