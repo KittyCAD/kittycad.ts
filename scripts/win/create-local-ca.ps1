@@ -115,9 +115,19 @@ Log "Server cert created in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
 # Optionally trust the root CA. Scope is configurable.
 $rootCer = Join-Path $PWD 'root.cer'
+$rootPem = Join-Path $PWD 'root.pem'
 $sw.Restart()
 Export-Certificate -Cert $root -FilePath $rootCer | Out-Null
 Log "Root exported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
+
+# Also produce PEM for NODE_EXTRA_CA_CERTS consumers (Node expects PEM)
+try {
+  $sw.Restart()
+  Invoke-ProcessWithTimeout 'certutil' "-encode `"$rootCer`" `"$rootPem`"" 10 | Out-Null
+  Log "PEM exported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
+} catch {
+  Log "PEM export via certutil failed: $($_.Exception.Message)"
+}
 
 $timeout = [int]([Environment]::GetEnvironmentVariable('ZOO_CA_IMPORT_TIMEOUT') ?? '120')
 if ($NoTrust) {

@@ -1,7 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { ShortlinkResultsPage, CreatedAtSortMode } from '../../models.js'
+import {
+  ShortlinkResultsPage,
+  CreatedAtSortMode,
+  Shortlink,
+} from '../../models.js'
 
 interface GetUserShortlinksInput {
   client?: Client
@@ -61,4 +66,14 @@ export default async function get_user_shortlinks({
   await throwIfNotOk(response)
   const result = (await response.json()) as GetUserShortlinksReturn
   return result
+}
+
+export function get_user_shortlinksPager(
+  params: GetUserShortlinksInput
+): Pager<GetUserShortlinksInput, GetUserShortlinksReturn, Shortlink> {
+  return createPager<
+    GetUserShortlinksInput,
+    GetUserShortlinksReturn,
+    Shortlink
+  >(get_user_shortlinks, params, 'page_token')
 }

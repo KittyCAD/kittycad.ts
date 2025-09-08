@@ -1,7 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { ApiCallWithPriceResultsPage, CreatedAtSortMode } from '../../models.js'
+import {
+  ApiCallWithPriceResultsPage,
+  CreatedAtSortMode,
+  ApiCallWithPrice,
+} from '../../models.js'
 
 interface ListApiCallsInput {
   client?: Client
@@ -61,4 +66,14 @@ export default async function list_api_calls({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListApiCallsReturn
   return result
+}
+
+export function list_api_callsPager(
+  params: ListApiCallsInput
+): Pager<ListApiCallsInput, ListApiCallsReturn, ApiCallWithPrice> {
+  return createPager<ListApiCallsInput, ListApiCallsReturn, ApiCallWithPrice>(
+    list_api_calls,
+    params,
+    'page_token'
+  )
 }

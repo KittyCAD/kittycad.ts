@@ -4,14 +4,17 @@ import apiGen from './apiGen.js'
 
 main().catch((e) => {
   // Provide a stack trace for easier debugging in CI and locally.
-  console.error(e instanceof Error ? e.stack : e)
+  console.error('modelsGen error:', e instanceof Error ? e.stack : e)
   process.exit(1)
 })
 
 async function main() {
+  // Debug checkpoints to locate failures
+  console.log('[modelsGen] reading spec.json')
   const spec: OpenAPIV3.Document = JSON.parse(
     await fsp.readFile('./spec.json', 'utf8')
   )
+  console.log('[modelsGen] loaded spec, generating models')
   const schemas = spec.components.schemas as {
     [key: string]: OpenAPIV3.SchemaObject
   }
@@ -262,7 +265,9 @@ async function main() {
   template += `export type File =  {  readonly name: string;readonly data:Blob;  }\n\n`
 
   await fsp.writeFile(`./src/models.ts`, template, 'utf8')
+  console.log('[modelsGen] wrote models.ts, starting apiGen')
   await apiGen(typeNameReference)
+  console.log('[modelsGen] done')
 }
 
 function addCommentInfo(schema: any, typeString: string) {

@@ -1,10 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
 import {
   TextToCadResponseResultsPage,
   CreatedAtSortMode,
   Uuid,
+  TextToCadResponse,
 } from '../../models.js'
 
 interface ListTextToCadModelsForUserInput {
@@ -75,4 +77,18 @@ export default async function list_text_to_cad_models_for_user({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListTextToCadModelsForUserReturn
   return result
+}
+
+export function list_text_to_cad_models_for_userPager(
+  params: ListTextToCadModelsForUserInput
+): Pager<
+  ListTextToCadModelsForUserInput,
+  ListTextToCadModelsForUserReturn,
+  TextToCadResponse
+> {
+  return createPager<
+    ListTextToCadModelsForUserInput,
+    ListTextToCadModelsForUserReturn,
+    TextToCadResponse
+  >(list_text_to_cad_models_for_user, params, 'page_token')
 }

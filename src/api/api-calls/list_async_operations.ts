@@ -1,10 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
 import {
   AsyncApiCallResultsPage,
   CreatedAtSortMode,
   ApiCallStatus,
+  AsyncApiCall,
 } from '../../models.js'
 
 interface ListAsyncOperationsInput {
@@ -70,4 +72,14 @@ export default async function list_async_operations({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListAsyncOperationsReturn
   return result
+}
+
+export function list_async_operationsPager(
+  params: ListAsyncOperationsInput
+): Pager<ListAsyncOperationsInput, ListAsyncOperationsReturn, AsyncApiCall> {
+  return createPager<
+    ListAsyncOperationsInput,
+    ListAsyncOperationsReturn,
+    AsyncApiCall
+  >(list_async_operations, params, 'page_token')
 }

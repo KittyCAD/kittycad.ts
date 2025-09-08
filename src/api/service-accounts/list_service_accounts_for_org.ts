@@ -1,7 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { ServiceAccountResultsPage, CreatedAtSortMode } from '../../models.js'
+import {
+  ServiceAccountResultsPage,
+  CreatedAtSortMode,
+  ServiceAccount,
+} from '../../models.js'
 
 interface ListServiceAccountsForOrgInput {
   client?: Client
@@ -63,4 +68,18 @@ export default async function list_service_accounts_for_org({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListServiceAccountsForOrgReturn
   return result
+}
+
+export function list_service_accounts_for_orgPager(
+  params: ListServiceAccountsForOrgInput
+): Pager<
+  ListServiceAccountsForOrgInput,
+  ListServiceAccountsForOrgReturn,
+  ServiceAccount
+> {
+  return createPager<
+    ListServiceAccountsForOrgInput,
+    ListServiceAccountsForOrgReturn,
+    ServiceAccount
+  >(list_service_accounts_for_org, params, 'page_token')
 }

@@ -438,6 +438,7 @@ export default async function apiGen(lookup: Record<string, string>) {
 
         // No-op: Handlebars template handles optional params signature.
         const importedTypes: string[] = []
+        let pagerItemTypeName: string | undefined
         if (!isWebSocket) {
           Object.values(operation.specSection?.responses).forEach(
             (response) => {
@@ -468,6 +469,36 @@ export default async function apiGen(lookup: Record<string, string>) {
                 ) {
                   importedTypes.push(typeReference)
                 }
+                try {
+                  const refName = (ref || '').split('/').pop() as string
+                  if (refName?.endsWith('ResultsPage')) {
+                    const pageSchema = spec.components.schemas[
+                      refName
+                    ] as OpenAPIV3.SchemaObject
+                    const itemsSchemaRaw = (pageSchema?.properties as any)
+                      ?.items
+                    if (itemsSchemaRaw) {
+                      if ('$ref' in (itemsSchemaRaw as any)) {
+                        pagerItemTypeName =
+                          lookup[
+                            (itemsSchemaRaw as OpenAPIV3.ReferenceObject).$ref
+                          ]
+                      } else {
+                        const asSchema =
+                          itemsSchemaRaw as OpenAPIV3.SchemaObject
+                        if (isArraySchema(asSchema)) {
+                          const it = asSchema.items as
+                            | OpenAPIV3.ReferenceObject
+                            | OpenAPIV3.SchemaObject
+                          if ('$ref' in (it as any)) {
+                            pagerItemTypeName =
+                              lookup[(it as OpenAPIV3.ReferenceObject).$ref]
+                          }
+                        }
+                      }
+                    }
+                  }
+                } catch {}
               } else if (
                 Object.keys(schema).length === 0 ||
                 schema.type === 'string'
@@ -558,7 +589,11 @@ export default async function apiGen(lookup: Record<string, string>) {
             paramsSignature += ` = {} as ${paramsInterfaceName}`
           }
           const importsModels = `import {${[
-            ...new Set([...importedTypes, ...importedParamTypes]),
+            ...new Set([
+              ...importedTypes,
+              ...importedParamTypes,
+              ...(pagerItemTypeName ? [pagerItemTypeName] : []),
+            ]),
           ]
             .map((a) => (a || '').replaceAll('[', '').replaceAll(']', ''))
             .join(', ')}} from '../../models.js';`
@@ -572,6 +607,7 @@ export default async function apiGen(lookup: Record<string, string>) {
           const ctx = {
             importsModels,
             paramsInterface,
+            paramsInterfaceName,
             returnType: returnTyping,
             returnTypeName,
             functionName: operationId,
@@ -596,6 +632,8 @@ export default async function apiGen(lookup: Record<string, string>) {
               importedReturnTypes: importedTypes,
             }),
             noJsonResponse: has204,
+            pager: Boolean(pagerItemTypeName),
+            pagerItemTypeName: pagerItemTypeName || 'unknown',
           }
           template = await render(templatePath, ctx)
         } else {
@@ -769,6 +807,12 @@ export default async function apiGen(lookup: Record<string, string>) {
             `import ${operationId} from './api/${tag}/${operationId}.js';`
           )
           indexFile[safeTag].exportsStr.push(operationId)
+          if (pagerItemTypeName) {
+            indexFile[safeTag].importsStr.push(
+              `import { ${operationId}Pager } from './api/${tag}/${operationId}.js';`
+            )
+            indexFile[safeTag].exportsStr.push(`${operationId}Pager`)
+          }
         }
         const libWritePromise = fsp.writeFile(
           `./src/api/${tag}/${operationId}.ts`,
@@ -814,6 +858,7 @@ export default async function apiGen(lookup: Record<string, string>) {
   }
   indexFileString += `export { Client} from './client.js';\n`
   indexFileString += `export { ApiError } from './errors.js';\n`
+  indexFileString += `export { Pager, createPager } from './pagination.js';\n`
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8')
 
   // Build a concise WS usage snippet if the spec has any WS endpoints
@@ -1062,4 +1107,10 @@ function wrapJsDoc(lines: string[]): string {
 
 function sanitizeForJsDoc(str: string): string {
   return String(str).replaceAll('*/', '*\\/')
+}
+
+function isArraySchema(
+  s: OpenAPIV3.SchemaObject
+): s is OpenAPIV3.ArraySchemaObject {
+  return (s as OpenAPIV3.ArraySchemaObject).type === 'array'
 }

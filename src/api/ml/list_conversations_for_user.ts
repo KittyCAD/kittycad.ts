@@ -1,7 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { ConversationResultsPage, CreatedAtSortMode } from '../../models.js'
+import {
+  ConversationResultsPage,
+  CreatedAtSortMode,
+  Conversation,
+} from '../../models.js'
 
 interface ListConversationsForUserInput {
   client?: Client
@@ -63,4 +68,18 @@ export default async function list_conversations_for_user({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListConversationsForUserReturn
   return result
+}
+
+export function list_conversations_for_userPager(
+  params: ListConversationsForUserInput
+): Pager<
+  ListConversationsForUserInput,
+  ListConversationsForUserReturn,
+  Conversation
+> {
+  return createPager<
+    ListConversationsForUserInput,
+    ListConversationsForUserReturn,
+    Conversation
+  >(list_conversations_for_user, params, 'page_token')
 }

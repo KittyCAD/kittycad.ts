@@ -1,7 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { ShortlinkResultsPage, CreatedAtSortMode } from '../../models.js'
+import {
+  ShortlinkResultsPage,
+  CreatedAtSortMode,
+  Shortlink,
+} from '../../models.js'
 
 interface GetOrgShortlinksInput {
   client?: Client
@@ -61,4 +66,14 @@ export default async function get_org_shortlinks({
   await throwIfNotOk(response)
   const result = (await response.json()) as GetOrgShortlinksReturn
   return result
+}
+
+export function get_org_shortlinksPager(
+  params: GetOrgShortlinksInput
+): Pager<GetOrgShortlinksInput, GetOrgShortlinksReturn, Shortlink> {
+  return createPager<GetOrgShortlinksInput, GetOrgShortlinksReturn, Shortlink>(
+    get_org_shortlinks,
+    params,
+    'page_token'
+  )
 }

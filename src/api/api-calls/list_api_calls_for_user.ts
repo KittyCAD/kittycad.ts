@@ -1,10 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
 import {
   ApiCallWithPriceResultsPage,
   UserIdentifier,
   CreatedAtSortMode,
+  ApiCallWithPrice,
 } from '../../models.js'
 
 interface ListApiCallsForUserInput {
@@ -74,4 +76,18 @@ export default async function list_api_calls_for_user({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListApiCallsForUserReturn
   return result
+}
+
+export function list_api_calls_for_userPager(
+  params: ListApiCallsForUserInput
+): Pager<
+  ListApiCallsForUserInput,
+  ListApiCallsForUserReturn,
+  ApiCallWithPrice
+> {
+  return createPager<
+    ListApiCallsForUserInput,
+    ListApiCallsForUserReturn,
+    ApiCallWithPrice
+  >(list_api_calls_for_user, params, 'page_token')
 }

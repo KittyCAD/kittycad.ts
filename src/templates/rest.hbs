@@ -1,5 +1,8 @@
 import { Client } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
+{{#if pager}}
+import { Pager, createPager } from '../../pagination.js';
+{{/if}}
 
 {{{importsModels}}}
 
@@ -49,3 +52,15 @@ export default async function {{functionName}}(
   return result;
   {{/if}}
 }
+
+{{#if pager}}
+export function {{functionName}}Pager(
+  params: {{paramsInterfaceName}}
+): Pager<{{paramsInterfaceName}}, {{returnTypeName}}, {{pagerItemTypeName}}> {
+  return createPager<{{paramsInterfaceName}}, {{returnTypeName}}, {{pagerItemTypeName}}>(
+    {{functionName}},
+    params,
+    'page_token'
+  );
+}
+{{/if}}

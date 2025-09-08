@@ -1,7 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { MlPromptResultsPage, CreatedAtSortMode } from '../../models.js'
+import {
+  MlPromptResultsPage,
+  CreatedAtSortMode,
+  MlPrompt,
+} from '../../models.js'
 
 interface ListMlPromptsInput {
   client?: Client
@@ -65,4 +70,14 @@ export default async function list_ml_prompts({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListMlPromptsReturn
   return result
+}
+
+export function list_ml_promptsPager(
+  params: ListMlPromptsInput
+): Pager<ListMlPromptsInput, ListMlPromptsReturn, MlPrompt> {
+  return createPager<ListMlPromptsInput, ListMlPromptsReturn, MlPrompt>(
+    list_ml_prompts,
+    params,
+    'page_token'
+  )
 }

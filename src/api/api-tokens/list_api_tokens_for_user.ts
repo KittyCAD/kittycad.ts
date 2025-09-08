@@ -1,7 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { ApiTokenResultsPage, CreatedAtSortMode } from '../../models.js'
+import {
+  ApiTokenResultsPage,
+  CreatedAtSortMode,
+  ApiToken,
+} from '../../models.js'
 
 interface ListApiTokensForUserInput {
   client?: Client
@@ -63,4 +68,14 @@ export default async function list_api_tokens_for_user({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListApiTokensForUserReturn
   return result
+}
+
+export function list_api_tokens_for_userPager(
+  params: ListApiTokensForUserInput
+): Pager<ListApiTokensForUserInput, ListApiTokensForUserReturn, ApiToken> {
+  return createPager<
+    ListApiTokensForUserInput,
+    ListApiTokensForUserReturn,
+    ApiToken
+  >(list_api_tokens_for_user, params, 'page_token')
 }

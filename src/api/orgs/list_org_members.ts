@@ -1,10 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
 import {
   OrgMemberResultsPage,
   CreatedAtSortMode,
   UserOrgRole,
+  OrgMember,
 } from '../../models.js'
 
 interface ListOrgMembersInput {
@@ -68,4 +70,14 @@ export default async function list_org_members({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListOrgMembersReturn
   return result
+}
+
+export function list_org_membersPager(
+  params: ListOrgMembersInput
+): Pager<ListOrgMembersInput, ListOrgMembersReturn, OrgMember> {
+  return createPager<ListOrgMembersInput, ListOrgMembersReturn, OrgMember>(
+    list_org_members,
+    params,
+    'page_token'
+  )
 }

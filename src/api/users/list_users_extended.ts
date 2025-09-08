@@ -1,7 +1,12 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { ExtendedUserResultsPage, CreatedAtSortMode } from '../../models.js'
+import {
+  ExtendedUserResultsPage,
+  CreatedAtSortMode,
+  ExtendedUser,
+} from '../../models.js'
 
 interface ListUsersExtendedInput {
   client?: Client
@@ -61,4 +66,14 @@ export default async function list_users_extended({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListUsersExtendedReturn
   return result
+}
+
+export function list_users_extendedPager(
+  params: ListUsersExtendedInput
+): Pager<ListUsersExtendedInput, ListUsersExtendedReturn, ExtendedUser> {
+  return createPager<
+    ListUsersExtendedInput,
+    ListUsersExtendedReturn,
+    ExtendedUser
+  >(list_users_extended, params, 'page_token')
 }

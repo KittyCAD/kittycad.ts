@@ -1,7 +1,8 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { OrgResultsPage, CreatedAtSortMode } from '../../models.js'
+import { OrgResultsPage, CreatedAtSortMode, Org } from '../../models.js'
 
 interface ListOrgsInput {
   client?: Client
@@ -61,4 +62,14 @@ export default async function list_orgs({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListOrgsReturn
   return result
+}
+
+export function list_orgsPager(
+  params: ListOrgsInput
+): Pager<ListOrgsInput, ListOrgsReturn, Org> {
+  return createPager<ListOrgsInput, ListOrgsReturn, Org>(
+    list_orgs,
+    params,
+    'page_token'
+  )
 }

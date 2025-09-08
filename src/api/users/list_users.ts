@@ -1,7 +1,8 @@
 import { Client } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { UserResultsPage, CreatedAtSortMode } from '../../models.js'
+import { UserResultsPage, CreatedAtSortMode, User } from '../../models.js'
 
 interface ListUsersInput {
   client?: Client
@@ -61,4 +62,14 @@ export default async function list_users({
   await throwIfNotOk(response)
   const result = (await response.json()) as ListUsersReturn
   return result
+}
+
+export function list_usersPager(
+  params: ListUsersInput
+): Pager<ListUsersInput, ListUsersReturn, User> {
+  return createPager<ListUsersInput, ListUsersReturn, User>(
+    list_users,
+    params,
+    'page_token'
+  )
 }

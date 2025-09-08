@@ -8,6 +8,11 @@ import list_api_calls_for_user from './api/api-calls/list_api_calls_for_user.js'
 import list_async_operations from './api/api-calls/list_async_operations.js'
 import org_list_api_calls from './api/api-calls/org_list_api_calls.js'
 import user_list_api_calls from './api/api-calls/user_list_api_calls.js'
+import { list_api_callsPager } from './api/api-calls/list_api_calls.js'
+import { list_api_calls_for_userPager } from './api/api-calls/list_api_calls_for_user.js'
+import { list_async_operationsPager } from './api/api-calls/list_async_operations.js'
+import { org_list_api_callsPager } from './api/api-calls/org_list_api_calls.js'
+import { user_list_api_callsPager } from './api/api-calls/user_list_api_calls.js'
 export const api_calls = {
   get_api_call,
   get_api_call_for_org,
@@ -15,21 +20,28 @@ export const api_calls = {
   get_api_call_metrics,
   get_async_operation,
   list_api_calls,
+  list_api_callsPager,
   list_api_calls_for_user,
+  list_api_calls_for_userPager,
   list_async_operations,
+  list_async_operationsPager,
   org_list_api_calls,
+  org_list_api_callsPager,
   user_list_api_calls,
+  user_list_api_callsPager,
 }
 
 import create_api_token_for_user from './api/api-tokens/create_api_token_for_user.js'
 import delete_api_token_for_user from './api/api-tokens/delete_api_token_for_user.js'
 import get_api_token_for_user from './api/api-tokens/get_api_token_for_user.js'
 import list_api_tokens_for_user from './api/api-tokens/list_api_tokens_for_user.js'
+import { list_api_tokens_for_userPager } from './api/api-tokens/list_api_tokens_for_user.js'
 export const api_tokens = {
   create_api_token_for_user,
   delete_api_token_for_user,
   get_api_token_for_user,
   list_api_tokens_for_user,
+  list_api_tokens_for_userPager,
 }
 
 import apps_github_callback from './api/apps/apps_github_callback.js'
@@ -97,6 +109,9 @@ import get_text_to_cad_model_for_user from './api/ml/get_text_to_cad_model_for_u
 import list_conversations_for_user from './api/ml/list_conversations_for_user.js'
 import list_ml_prompts from './api/ml/list_ml_prompts.js'
 import list_text_to_cad_models_for_user from './api/ml/list_text_to_cad_models_for_user.js'
+import { list_conversations_for_userPager } from './api/ml/list_conversations_for_user.js'
+import { list_ml_promptsPager } from './api/ml/list_ml_prompts.js'
+import { list_text_to_cad_models_for_userPager } from './api/ml/list_text_to_cad_models_for_user.js'
 export const ml = {
   create_kcl_code_completions,
   create_proprietary_to_kcl,
@@ -107,8 +122,11 @@ export const ml = {
   get_ml_prompt,
   get_text_to_cad_model_for_user,
   list_conversations_for_user,
+  list_conversations_for_userPager,
   list_ml_prompts,
+  list_ml_promptsPager,
   list_text_to_cad_models_for_user,
+  list_text_to_cad_models_for_userPager,
   ml_copilot_ws: (params) => new MlCopilotWs(params),
   ml_reasoning_ws: (params) => new MlReasoningWs(params),
 }
@@ -157,6 +175,9 @@ import update_org from './api/orgs/update_org.js'
 import update_org_member from './api/orgs/update_org_member.js'
 import update_org_privacy_settings from './api/orgs/update_org_privacy_settings.js'
 import update_org_saml_idp from './api/orgs/update_org_saml_idp.js'
+import { get_org_shortlinksPager } from './api/orgs/get_org_shortlinks.js'
+import { list_org_membersPager } from './api/orgs/list_org_members.js'
+import { list_orgsPager } from './api/orgs/list_orgs.js'
 export const orgs = {
   create_org,
   create_org_member,
@@ -170,9 +191,12 @@ export const orgs = {
   get_org_privacy_settings,
   get_org_saml_idp,
   get_org_shortlinks,
+  get_org_shortlinksPager,
   get_user_org,
   list_org_members,
+  list_org_membersPager,
   list_orgs,
+  list_orgsPager,
   update_enterprise_pricing_for_org,
   update_org,
   update_org_member,
@@ -247,11 +271,13 @@ import create_service_account_for_org from './api/service-accounts/create_servic
 import delete_service_account_for_org from './api/service-accounts/delete_service_account_for_org.js'
 import get_service_account_for_org from './api/service-accounts/get_service_account_for_org.js'
 import list_service_accounts_for_org from './api/service-accounts/list_service_accounts_for_org.js'
+import { list_service_accounts_for_orgPager } from './api/service-accounts/list_service_accounts_for_org.js'
 export const service_accounts = {
   create_service_account_for_org,
   delete_service_account_for_org,
   get_service_account_for_org,
   list_service_accounts_for_org,
+  list_service_accounts_for_orgPager,
 }
 
 import create_store_coupon from './api/store/create_store_coupon.js'
@@ -307,6 +333,9 @@ import update_subscription_for_user from './api/users/update_subscription_for_us
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
 import update_user_self from './api/users/update_user_self.js'
 import update_user_shortlink from './api/users/update_user_shortlink.js'
+import { get_user_shortlinksPager } from './api/users/get_user_shortlinks.js'
+import { list_usersPager } from './api/users/list_users.js'
+import { list_users_extendedPager } from './api/users/list_users_extended.js'
 export const users = {
   create_user_shortlink,
   delete_user_self,
@@ -319,8 +348,11 @@ export const users = {
   get_user_self,
   get_user_self_extended,
   get_user_shortlinks,
+  get_user_shortlinksPager,
   list_users,
+  list_usersPager,
   list_users_extended,
+  list_users_extendedPager,
   patch_user_crm,
   put_public_form,
   put_public_subscribe,
@@ -729,3 +761,4 @@ export type {
 } from './models.js'
 export { Client } from './client.js'
 export { ApiError } from './errors.js'
+export { Pager, createPager } from './pagination.js'
