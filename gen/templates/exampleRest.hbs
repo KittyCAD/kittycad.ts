@@ -1,0 +1,37 @@
+import { {{tag}}{{#if expectThrow}}, ApiError{{/if}} } from '../../src/index.js';
+{{#if importFs}}import fsp from 'fs/promises';{{/if}}
+
+async function example() {
+  const response = await {{tag}}.{{operationId}}({{#if hasParams}}{ {{{params}}} }{{/if}});
+  return response;
+}
+
+{{#if pager}}
+// Pagination example (not executed in tests; for docs only)
+export async function example_pager() {
+  const pager = {{tag}}.{{pagerFnName}}({{#if hasParams}}{ {{{params}}} }{{/if}});
+  let total = 0;
+  // Pull up to two pages just to illustrate usage
+  for (let i = 0; i < 2 && pager.hasNext(); i++) {
+    const items = await pager.next();
+    total += items.length;
+  }
+  return total;
+}
+{{/if}}
+
+describe('Testing {{tag}}.{{operationId}}', () => {
+  it('should be truthy or throw', async () => {
+    {{#if expectTimeout}}
+    const examplePromise = example();
+    const timeoutPromise = new Promise((r) => setTimeout(() => r('timeout'), 450));
+    expect(await Promise.any([examplePromise, timeoutPromise])).toBe('timeout');
+    {{else}}
+      {{#if expectThrow}}
+      try { await example(); } catch (err) { expect(err).toBeInstanceOf(ApiError); }
+      {{else}}
+      expect(await example()).toBeTruthy();
+      {{/if}}
+    {{/if}}
+  });
+});

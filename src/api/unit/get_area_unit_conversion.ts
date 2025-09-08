@@ -1,32 +1,49 @@
-import {
-  UnitAreaConversion_type,
-  Error_type,
-  UnitArea_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Get_area_unit_conversion_params {
-  client?: Client;
-  input_unit: UnitArea_type;
-  output_unit: UnitArea_type;
-  value: number;
+import { UnitAreaConversion, UnitArea } from '../../models.js'
+
+interface GetAreaUnitConversionInput {
+  client?: Client
+  input_unit: UnitArea
+  output_unit: UnitArea
+  value: number
 }
 
-type Get_area_unit_conversion_return = UnitAreaConversion_type | Error_type;
+type GetAreaUnitConversionReturn = UnitAreaConversion
 
+/**
+ * Convert area units.
+ *
+ * Convert an area unit value to another area unit value. This is a nice endpoint to use for helper functions.
+ *
+ * Tags: unit
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UnitArea} input_unit The source format of the unit. (path)
+ * @property {UnitArea} output_unit The output format of the unit. (path)
+ * @property {number} value The initial value. (query)
+ * @returns {Promise<GetAreaUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitAreaConversion
+ */
 export default async function get_area_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: Get_area_unit_conversion_params): Promise<Get_area_unit_conversion_return> {
-  const url = `/unit/conversion/area/${input_unit}/${output_unit}?value=${value}`;
+}: GetAreaUnitConversionInput): Promise<GetAreaUnitConversionReturn> {
+  const url = `/unit/conversion/area/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -36,16 +53,16 @@ export default async function get_area_unit_conversion({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_area_unit_conversion_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetAreaUnitConversionReturn
+  return result
 }

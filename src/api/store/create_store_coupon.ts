@@ -1,28 +1,43 @@
-import {
-  DiscountCode_type,
-  Error_type,
-  StoreCouponParams_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Create_store_coupon_params {
-  client?: Client;
-  body: StoreCouponParams_type;
+import { DiscountCode, StoreCouponParams } from '../../models.js'
+
+interface CreateStoreCouponInput {
+  client?: Client
+  body: StoreCouponParams
 }
 
-type Create_store_coupon_return = DiscountCode_type | Error_type;
+type CreateStoreCouponReturn = DiscountCode
 
+/**
+ * Create a new store coupon.
+ *
+ * This endpoint requires authentication by a Zoo employee. It creates a new store coupon.
+ *
+ * Tags: store, hidden
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {StoreCouponParams} body Request body payload
+ * @returns {Promise<CreateStoreCouponReturn>} successful creation
+ *
+ * Possible return types: DiscountCode
+ */
 export default async function create_store_coupon({
   client,
   body,
-}: Create_store_coupon_params): Promise<Create_store_coupon_return> {
-  const url = `/store/coupon`;
+}: CreateStoreCouponInput): Promise<CreateStoreCouponReturn> {
+  const url = `/store/coupon`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -32,17 +47,18 @@ export default async function create_store_coupon({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/json',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/json'
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_store_coupon_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as CreateStoreCouponReturn
+  return result
 }

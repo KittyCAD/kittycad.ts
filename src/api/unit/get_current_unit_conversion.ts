@@ -1,34 +1,49 @@
-import {
-  UnitCurrentConversion_type,
-  Error_type,
-  UnitCurrent_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Get_current_unit_conversion_params {
-  client?: Client;
-  input_unit: UnitCurrent_type;
-  output_unit: UnitCurrent_type;
-  value: number;
+import { UnitCurrentConversion, UnitCurrent } from '../../models.js'
+
+interface GetCurrentUnitConversionInput {
+  client?: Client
+  input_unit: UnitCurrent
+  output_unit: UnitCurrent
+  value: number
 }
 
-type Get_current_unit_conversion_return =
-  | UnitCurrentConversion_type
-  | Error_type;
+type GetCurrentUnitConversionReturn = UnitCurrentConversion
 
+/**
+ * Convert current units.
+ *
+ * Convert a current unit value to another current unit value. This is a nice endpoint to use for helper functions.
+ *
+ * Tags: unit
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UnitCurrent} input_unit The source format of the unit. (path)
+ * @property {UnitCurrent} output_unit The output format of the unit. (path)
+ * @property {number} value The initial value. (query)
+ * @returns {Promise<GetCurrentUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitCurrentConversion
+ */
 export default async function get_current_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: Get_current_unit_conversion_params): Promise<Get_current_unit_conversion_return> {
-  const url = `/unit/conversion/current/${input_unit}/${output_unit}?value=${value}`;
+}: GetCurrentUnitConversionInput): Promise<GetCurrentUnitConversionReturn> {
+  const url = `/unit/conversion/current/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -38,16 +53,16 @@ export default async function get_current_unit_conversion({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_current_unit_conversion_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetCurrentUnitConversionReturn
+  return result
 }

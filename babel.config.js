@@ -5,5 +5,5 @@ export default {
     // See: https://www.electronjs.org/docs/latest/tutorial/electron-timelines
     node: 'v20.9.0',
     electron: '29.0.0',
-  }
-};
+  },
+}

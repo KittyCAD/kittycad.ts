@@ -1,24 +1,45 @@
-import { User_type, Error_type, UserIdentifier_type } from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Get_user_params {
-  client?: Client;
-  id: UserIdentifier_type;
+import { User, UserIdentifier } from '../../models.js'
+
+interface GetUserInput {
+  client?: Client
+  id: UserIdentifier
 }
 
-type Get_user_return = User_type | Error_type;
+type GetUserReturn = User
 
+/**
+ * Get a user.
+ *
+ * To get information about yourself, use `/users/me` as the endpoint. By doing so you will get the user information for the authenticated user.
+ *
+ * Alternatively, to get information about the authenticated user, use `/user` endpoint.
+ *
+ * Tags: users, hidden
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
+ * @returns {Promise<GetUserReturn>} successful operation
+ *
+ * Possible return types: User
+ */
 export default async function get_user({
   client,
   id,
-}: Get_user_params): Promise<Get_user_return> {
-  const url = `/users/${id}`;
+}: GetUserInput): Promise<GetUserReturn> {
+  const url = `/users/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -28,16 +49,16 @@ export default async function get_user({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_user_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetUserReturn
+  return result
 }

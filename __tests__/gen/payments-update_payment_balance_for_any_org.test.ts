@@ -1,4 +1,4 @@
-import { payments } from '../../src/index.js';
+import { payments, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await payments.update_payment_balance_for_any_org({
@@ -8,18 +8,16 @@ async function example() {
       monthly_api_credits_remaining_monetary_value: 7,
       stable_api_credits_remaining_monetary_value: 7,
     },
-  });
-  if ('error_code' in response) throw response;
-
-  return response;
+  })
+  return response
 }
 
 describe('Testing payments.update_payment_balance_for_any_org', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

@@ -1,24 +1,43 @@
-import { ApiToken_type, Error_type } from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Create_api_token_for_user_params {
-  client?: Client;
-  label: string;
+import { ApiToken } from '../../models.js'
+
+interface CreateApiTokenForUserInput {
+  client?: Client
+  label: string
 }
 
-type Create_api_token_for_user_return = ApiToken_type | Error_type;
+type CreateApiTokenForUserReturn = ApiToken
 
+/**
+ * Create a new API token for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It creates a new API token for the authenticated user.
+ *
+ * Tags: api-tokens
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {string} label An optional label for the API token. (query)
+ * @returns {Promise<CreateApiTokenForUserReturn>} successful creation
+ *
+ * Possible return types: ApiToken
+ */
 export default async function create_api_token_for_user({
   client,
   label,
-}: Create_api_token_for_user_params): Promise<Create_api_token_for_user_return> {
-  const url = `/user/api-tokens?label=${label}`;
+}: CreateApiTokenForUserInput): Promise<CreateApiTokenForUserReturn> {
+  const url = `/user/api-tokens?label=${label}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -28,16 +47,16 @@ export default async function create_api_token_for_user({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_api_token_for_user_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as CreateApiTokenForUserReturn
+  return result
 }

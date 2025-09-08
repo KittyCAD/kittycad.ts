@@ -1,0 +1,41 @@
+name: install-matrix
+permissions:
+  contents: read
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: [20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+      - name: Build package
+        run: yarn build
+      - name: Pack tarball
+        run: yarn pack --filename pkg.tgz
+
+      - name: Node ESM import smoke
+        run: node scripts/smoke/node-esm.mjs pkg.tgz
+
+      - name: Node CJS require smoke
+        run: node scripts/smoke/node-cjs.cjs pkg.tgz
+
+      - name: Browser bundling (esbuild) smoke
+        run: node scripts/smoke/esbuild.mjs pkg.tgz
+
+      - name: Browser bundling (Vite) smoke
+        run: node scripts/smoke/vite.mjs pkg.tgz

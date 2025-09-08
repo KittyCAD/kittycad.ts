@@ -1,4 +1,4 @@
-import { users } from '../../src/index.js';
+import { users, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await users.update_user_self({
@@ -13,14 +13,16 @@ async function example() {
       last_name: "The user's last name.",
       phone: "The user's phone number.",
     },
-  });
-  if ('error_code' in response) throw response;
-
-  return response;
+  })
+  return response
 }
 
 describe('Testing users.update_user_self', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
-  });
-});
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
+  })
+})

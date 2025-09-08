@@ -1,28 +1,46 @@
-import {
-  ZooProductSubscriptions_type,
-  Error_type,
-  ZooProductSubscriptionsOrgRequest_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Update_org_subscription_params {
-  client?: Client;
-  body: ZooProductSubscriptionsOrgRequest_type;
+import {
+  ZooProductSubscriptions,
+  ZooProductSubscriptionsOrgRequest,
+} from '../../models.js'
+
+interface UpdateOrgSubscriptionInput {
+  client?: Client
+  body: ZooProductSubscriptionsOrgRequest
 }
 
-type Update_org_subscription_return = ZooProductSubscriptions_type | Error_type;
+type UpdateOrgSubscriptionReturn = ZooProductSubscriptions
 
+/**
+ * Update the subscription for an org.
+ *
+ * This endpoint requires authentication by an org admin. It updates the subscription for the authenticated user's org.
+ *
+ * Tags: payments
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {ZooProductSubscriptionsOrgRequest} body Request body payload
+ * @returns {Promise<UpdateOrgSubscriptionReturn>} successful operation
+ *
+ * Possible return types: ZooProductSubscriptions
+ */
 export default async function update_org_subscription({
   client,
   body,
-}: Update_org_subscription_params): Promise<Update_org_subscription_return> {
-  const url = `/org/payment/subscriptions`;
+}: UpdateOrgSubscriptionInput): Promise<UpdateOrgSubscriptionReturn> {
+  const url = `/org/payment/subscriptions`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -32,17 +50,18 @@ export default async function update_org_subscription({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/json',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/json'
+  const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,
     body: JSON.stringify(body),
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Update_org_subscription_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as UpdateOrgSubscriptionReturn
+  return result
 }

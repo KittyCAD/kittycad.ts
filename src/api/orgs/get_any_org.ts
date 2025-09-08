@@ -1,24 +1,43 @@
-import { Org_type, Error_type, Uuid_type } from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Get_any_org_params {
-  client?: Client;
-  id: Uuid_type;
+import { Org, Uuid } from '../../models.js'
+
+interface GetAnyOrgInput {
+  client?: Client
+  id: Uuid
 }
 
-type Get_any_org_return = Org_type | Error_type;
+type GetAnyOrgReturn = Org
 
+/**
+ * Get an org.
+ *
+ * This endpoint requires authentication by a Zoo employee. It gets the information for the specified org.
+ *
+ * Tags: orgs, hidden
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {Uuid} id The organization ID. (path)
+ * @returns {Promise<GetAnyOrgReturn>} successful operation
+ *
+ * Possible return types: Org
+ */
 export default async function get_any_org({
   client,
   id,
-}: Get_any_org_params): Promise<Get_any_org_return> {
-  const url = `/orgs/${id}`;
+}: GetAnyOrgInput): Promise<GetAnyOrgReturn> {
+  const url = `/orgs/${id}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -28,16 +47,16 @@ export default async function get_any_org({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_any_org_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetAnyOrgReturn
+  return result
 }

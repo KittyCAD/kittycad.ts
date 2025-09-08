@@ -1,32 +1,58 @@
-import {
-  MlPromptResultsPage_type,
-  Error_type,
-  CreatedAtSortMode_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-interface List_ml_prompts_params {
-  client?: Client;
-  limit: number;
-  page_token: string;
-  sort_by: CreatedAtSortMode_type;
+import {
+  MlPromptResultsPage,
+  CreatedAtSortMode,
+  MlPrompt,
+} from '../../models.js'
+
+interface ListMlPromptsInput {
+  client?: Client
+  limit: number
+  page_token: string
+  sort_by: CreatedAtSortMode
 }
 
-type List_ml_prompts_return = MlPromptResultsPage_type | Error_type;
+type ListMlPromptsReturn = MlPromptResultsPage
 
+/**
+ * List all ML prompts.
+ *
+ * For text-to-cad prompts, this will always return the STEP file contents as well as the format the user originally requested.
+ *
+ * This endpoint requires authentication by a Zoo employee.
+ *
+ * The ML prompts are returned in order of creation, with the most recently created ML prompts first.
+ *
+ * Tags: ml, hidden
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {number} limit Maximum number of items returned by a single call (query)
+ * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @property {CreatedAtSortMode} sort_by (query)
+ * @returns {Promise<ListMlPromptsReturn>} successful operation
+ *
+ * Possible return types: MlPromptResultsPage
+ */
 export default async function list_ml_prompts({
   client,
   limit,
   page_token,
   sort_by,
-}: List_ml_prompts_params): Promise<List_ml_prompts_return> {
-  const url = `/ml-prompts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
+}: ListMlPromptsInput): Promise<ListMlPromptsReturn> {
+  const url = `/ml-prompts?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -36,16 +62,26 @@ export default async function list_ml_prompts({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as List_ml_prompts_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as ListMlPromptsReturn
+  return result
+}
+
+export function list_ml_prompts_pager(
+  params: ListMlPromptsInput
+): Pager<ListMlPromptsInput, ListMlPromptsReturn, MlPrompt> {
+  return createPager<ListMlPromptsInput, ListMlPromptsReturn, MlPrompt>(
+    list_ml_prompts,
+    params,
+    'page_token'
+  )
 }

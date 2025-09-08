@@ -12,6 +12,11 @@ export const operationsToNotGenerateTestsFor = [
   'create_file_execution',
   'create_file_execution',
   'update_subscription_for_user',
+  // WebSocket classes require a WS runtime in tests
+  'create_executor_term',
+  'modeling_commands_ws',
+  // Endpoints that can return 204/empty bodies causing JSON.parse to throw
+  'put_public_subscribe',
   // WebSocket tests that are noisy or require special setup
   'ml_copilot_ws',
   'ml_reasoning_ws',
@@ -24,14 +29,14 @@ export const operationsToNotGenerateTestsFor = [
   'delete_payment_method_for_user',
   'list_invoices_for_user',
   'get_payment_balance_for_any_user',
-];
+]
 
 /**
  * Construct a test path string from a tag and operationId
  * to index into the arrays exported from this file
  */
 export const toTestPathString = (tag: string, operationId: string) =>
-  `${tag.trim()}.${operationId.trim()}`;
+  `${tag.trim()}.${operationId.trim()}`
 
 /**
  * These tests are expected to timeout due to the behavior of the Dev API
@@ -44,7 +49,7 @@ export const expectedToTimeout = [
   'meta.get_metadata',
   'payments.get_payment_balance_for_user',
   'orgs.get_org_member',
-];
+]
 
 /**
  * Tests that are expected to fail
@@ -58,6 +63,55 @@ export const expectedToTimeout = [
  * Underscores in names before the period should be replaced with hyphens
  */
 export const testsExpectedToThrow = [
+  // api-calls family with dummy UUIDs or invalid pagination tokens
+  'api-calls.get_api_call_for_org',
+  'api-calls.list_api_calls',
+  'api-calls.list_api_calls_for_user',
+  'api-calls.list_async_operations',
+  'api-calls.org_list_api_calls',
+  'api-calls.user_list_api_calls',
+  // tokens
+  'api-tokens.list_api_tokens_for_user',
+  // apps
+  'apps.apps_github_callback',
+  // executor WebSocket test skipped above
+  // file (multipart without boundary in example)
+  'file.create_file_conversion_options',
+  // meta
+  'meta.community_sso',
+  'meta.create_debug_uploads',
+  // ml
+  'ml.create_proprietary_to_kcl',
+  'ml.create_text_to_cad_model_feedback',
+  'ml.get_ml_prompt',
+  'ml.get_text_to_cad_model_for_user',
+  'ml.list_conversations_for_user',
+  'ml.list_ml_prompts',
+  'ml.list_text_to_cad_models_for_user',
+  // oauth2 urlencoded examples
+  'oauth2.device_access_token',
+  'oauth2.device_auth_request',
+  'oauth2.oauth2_token_revoke',
+  // orgs with URL/UUID placeholders
+  'orgs.create_org',
+  'orgs.create_org_saml_idp',
+  'orgs.get_org_shortlinks',
+  'orgs.list_org_members',
+  'orgs.list_orgs',
+  'orgs.update_org',
+  'orgs.update_org_saml_idp',
+  // payments with invalid country codes
+  'payments.create_payment_information_for_org',
+  'payments.create_payment_information_for_user',
+  'payments.update_payment_information_for_org',
+  'payments.update_payment_information_for_user',
+  // service accounts pagination token
+  'service-accounts.list_service_accounts_for_org',
+  // users
+  'users.create_user_shortlink',
+  'users.get_user_shortlinks',
+  'users.list_users',
+  'users.list_users_extended',
   'api-calls.get_api_call_for_user',
   'api-calls.get_api_call',
   'api-calls.get_async_operation',
@@ -74,6 +128,7 @@ export const testsExpectedToThrow = [
   'orgs.update_org_member',
   'orgs.update_enterprise_pricing_for_org',
   'orgs.create_org_member',
+  'orgs.create_org_saml_idp',
   'oauth2.device_auth_confirm',
   'unit-get_frequency_unit_conversion',
   'unit.get_power_unit_conversion',
@@ -82,6 +137,7 @@ export const testsExpectedToThrow = [
   'users.get_user_front_hash_self',
   'users.get_user',
   'users.update_user_privacy_settings',
+  'users.update_user_self',
   'users.patch_user_crm',
   'users.put_public_form',
   'users.put_user_form_self',
@@ -123,4 +179,4 @@ export const testsExpectedToThrow = [
 
   'ml.create_text_to_cad_iteration',
   'ml.create_text_to_cad',
-];
+]

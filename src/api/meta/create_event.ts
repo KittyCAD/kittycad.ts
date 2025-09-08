@@ -1,27 +1,45 @@
-import { Error_type, Event_type } from '../../models.js';
-import { File } from '../../models.js';
-import { Client } from '../../client.js';
+import { File } from '../../models.js'
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Create_event_params {
-  client?: Client;
-  body: Event_type;
-  files: File[];
+import { Event } from '../../models.js'
+
+interface CreateEventInput {
+  client?: Client
+  files: File[]
+  body: Event
 }
 
-type Create_event_return = Error_type;
+type CreateEventReturn = void
 
+/**
+ * Creates an internal telemetry event.
+ *
+ * We collect anonymous telemetry data for improving our product.
+ *
+ * Tags: meta, hidden
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {File[]} files Files attached as multipart/form-data.
+ * @property {Event} body Telemetry requests
+ * @returns {Promise<CreateEventReturn>} resource updated
+ */
 export default async function create_event({
   client,
   files,
   body,
-}: Create_event_params): Promise<Create_event_return> {
-  const url = `/events`;
+}: CreateEventInput): Promise<CreateEventReturn> {
+  const url = `/events`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -31,24 +49,25 @@ export default async function create_event({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
+      ''
+  const headers: Record<string, string> = {
     'Content-Type': 'multipart/form-data',
-  };
+  }
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
 
-  const formData = new FormData();
+  const formData = new FormData()
   files.forEach((file) => {
-    formData.append(file.name, file.data, file.name);
-  });
-  formData.append('event', JSON.stringify(body));
+    formData.append(file.name, file.data, file.name)
+  })
+  formData.append('event', JSON.stringify(body))
 
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: formData,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_event_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  return undefined as CreateEventReturn
 }

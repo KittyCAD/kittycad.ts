@@ -1,24 +1,41 @@
-import { Error_type, AccountProvider_type } from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Oauth2_provider_callback_post_params {
-  client?: Client;
-  provider: AccountProvider_type;
+import { AccountProvider } from '../../models.js'
+
+interface Oauth2ProviderCallbackPostInput {
+  client?: Client
+  provider: AccountProvider
 }
 
-type Oauth2_provider_callback_post_return = Error_type;
+type Oauth2ProviderCallbackPostReturn = unknown
 
+/**
+ * Listen for callbacks for the OAuth 2.0 provider.
+ *
+ * This specific endpoint listens for posts of form data.
+ *
+ * Tags: oauth2, hidden
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {AccountProvider} provider The provider. (path)
+ * @returns {Promise<Oauth2ProviderCallbackPostReturn>} Temporary Redirect
+ */
 export default async function oauth2_provider_callback_post({
   client,
   provider,
-}: Oauth2_provider_callback_post_params): Promise<Oauth2_provider_callback_post_return> {
-  const url = `/oauth2/provider/${provider}/callback`;
+}: Oauth2ProviderCallbackPostInput): Promise<Oauth2ProviderCallbackPostReturn> {
+  const url = `/oauth2/provider/${provider}/callback`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -28,17 +45,16 @@ export default async function oauth2_provider_callback_post({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/x-www-form-urlencoded',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result =
-    (await response.json()) as Oauth2_provider_callback_post_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as Oauth2ProviderCallbackPostReturn
+  return result
 }

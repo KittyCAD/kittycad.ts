@@ -1,30 +1,44 @@
-import {
-  KclCodeCompletionResponse_type,
-  Error_type,
-  KclCodeCompletionRequest_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Create_kcl_code_completions_params {
-  client?: Client;
-  body: KclCodeCompletionRequest_type;
+import {
+  KclCodeCompletionResponse,
+  KclCodeCompletionRequest,
+} from '../../models.js'
+
+interface CreateKclCodeCompletionsInput {
+  client?: Client
+  body: KclCodeCompletionRequest
 }
 
-type Create_kcl_code_completions_return =
-  | KclCodeCompletionResponse_type
-  | Error_type;
+type CreateKclCodeCompletionsReturn = KclCodeCompletionResponse
 
+/**
+ * Generate code completions for KCL.
+ *
+ * Tags: ml, beta
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {KclCodeCompletionRequest} body Request body payload
+ * @returns {Promise<CreateKclCodeCompletionsReturn>} successful creation
+ *
+ * Possible return types: KclCodeCompletionResponse
+ */
 export default async function create_kcl_code_completions({
   client,
   body,
-}: Create_kcl_code_completions_params): Promise<Create_kcl_code_completions_return> {
-  const url = `/ml/kcl/completions`;
+}: CreateKclCodeCompletionsInput): Promise<CreateKclCodeCompletionsReturn> {
+  const url = `/ml/kcl/completions`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -34,17 +48,18 @@ export default async function create_kcl_code_completions({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/json',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/json'
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_kcl_code_completions_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as CreateKclCodeCompletionsReturn
+  return result
 }

@@ -1,0 +1,92 @@
+#!/usr/bin/env node
+const fs = require('node:fs/promises')
+const os = require('node:os')
+const path = require('node:path')
+const { spawn, spawnSync } = require('node:child_process')
+const resolveCmd = (cmd) => (process.platform === 'win32' ? `${cmd}.cmd` : cmd)
+
+function run(cmd, args, opts = {}) {
+  return new Promise((resolve, reject) => {
+    const trySpawn = (useShell) => {
+      const p = useShell
+        ? spawn([resolveCmd(cmd), ...args].join(' '), {
+            stdio: 'inherit',
+            shell: true,
+            ...opts,
+          })
+        : spawn(resolveCmd(cmd), args, {
+            stdio: 'inherit',
+            shell: false,
+            ...opts,
+          })
+      p.once('error', (e) => {
+        if (!useShell && (e.code === 'ENOENT' || e.code === 'EINVAL')) {
+          trySpawn(true)
+        } else {
+          reject(e)
+        }
+      })
+      p.once('exit', (code) =>
+        code === 0
+          ? resolve()
+          : reject(new Error(`${cmd} ${args.join(' ')} -> ${code}`))
+      )
+    }
+    trySpawn(false)
+  })
+}
+
+function hasCmd(cmd) {
+  try {
+    const r = spawnSync(resolveCmd(cmd), ['--version'], {
+      stdio: 'ignore',
+      shell: process.platform === 'win32',
+    })
+    return r.status === 0
+  } catch {
+    return false
+  }
+}
+
+async function main() {
+  let tarball = path.resolve(process.argv[2] || 'pkg.tgz')
+  const yarnSpec =
+    process.platform === 'win32' ? tarball.replace(/\\/g, '/') : tarball
+  const fileSpec = yarnSpec.startsWith('file:') ? yarnSpec : `file:${yarnSpec}`
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'kittycad-cjs-'))
+  process.chdir(dir)
+
+  const pkg = { name: 'cjs-smoke', private: true }
+  await fs.writeFile('package.json', JSON.stringify(pkg, null, 2))
+
+  const useYarn = await hasCmd('yarn')
+  if (useYarn) {
+    await run('yarn', ['add', fileSpec])
+  } else {
+    await run('npm', ['install', tarball])
+  }
+
+  const test = `
+const lib = require('@kittycad/lib')
+const ok = lib && typeof lib.meta === 'object' && typeof lib.Client === 'function'
+if (!ok) { console.error('bad: types'); process.exit(1) }
+(async () => {
+  try {
+    const res = await lib.meta.ping()
+    if (!res) throw new Error('no response')
+    console.log('cjs smoke OK')
+    process.exit(0)
+  } catch (e) {
+    console.error('bad: request failed', e?.message || e)
+    process.exit(1)
+  }
+})()
+`
+  await fs.writeFile('test.cjs', test)
+  await run('node', ['test.cjs'])
+}
+
+main().catch((e) => {
+  console.error(e)
+  process.exit(1)
+})

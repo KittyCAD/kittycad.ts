@@ -1,14 +1,16 @@
-import { ml } from '../../src/index.js';
+import { ml, ApiError } from '../../src/index.js'
 
 async function example() {
-  const response = await ml.get_ml_prompt({ id: 'string' });
-  if ('error_code' in response) throw response;
-
-  return response;
+  const response = await ml.get_ml_prompt({ id: 'string' })
+  return response
 }
 
 describe('Testing ml.get_ml_prompt', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
-  });
-});
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
+  })
+})

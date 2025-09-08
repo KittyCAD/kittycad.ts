@@ -1,33 +1,50 @@
-import {
-  ZooProductSubscriptions_type,
-  Error_type,
-  UserIdentifier_type,
-  ZooProductSubscriptionsUserRequest_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Update_subscription_for_user_params {
-  client?: Client;
-  id: UserIdentifier_type;
-  body: ZooProductSubscriptionsUserRequest_type;
+import {
+  ZooProductSubscriptions,
+  UserIdentifier,
+  ZooProductSubscriptionsUserRequest,
+} from '../../models.js'
+
+interface UpdateSubscriptionForUserInput {
+  client?: Client
+  id: UserIdentifier
+  body: ZooProductSubscriptionsUserRequest
 }
 
-type Update_subscription_for_user_return =
-  | ZooProductSubscriptions_type
-  | Error_type;
+type UpdateSubscriptionForUserReturn = ZooProductSubscriptions
 
+/**
+ * Update a subscription for a user.
+ *
+ * You must be a Zoo admin to perform this request.
+ *
+ * Tags: users, hidden
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
+ * @property {ZooProductSubscriptionsUserRequest} body Request body payload
+ * @returns {Promise<UpdateSubscriptionForUserReturn>} successful operation
+ *
+ * Possible return types: ZooProductSubscriptions
+ */
 export default async function update_subscription_for_user({
   client,
   id,
   body,
-}: Update_subscription_for_user_params): Promise<Update_subscription_for_user_return> {
-  const url = `/users/${id}/payment/subscriptions`;
+}: UpdateSubscriptionForUserInput): Promise<UpdateSubscriptionForUserReturn> {
+  const url = `/users/${id}/payment/subscriptions`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -37,17 +54,18 @@ export default async function update_subscription_for_user({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/json',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/json'
+  const fetchOptions: RequestInit = {
     method: 'PUT',
     headers,
     body: JSON.stringify(body),
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Update_subscription_for_user_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as UpdateSubscriptionForUserReturn
+  return result
 }

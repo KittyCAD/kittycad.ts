@@ -3,7 +3,7 @@
     "op": "add",
     "path": "/paths/~1ws~1modeling~1commands/get/x-typescript",
     "value": {
-      "example": "import { modeling } from '@kittycad/lib'\n\nasync function example() {\n    const response = await modeling.modeling_commands_ws({\n        api_call_id: 'string',\n        fps: 7,\n        pool: 'string',\n        post_effect: 'ssao',\n        replay: 'string',\n        show_grid: true,\n        unlocked_framerate: true,\n        video_res_height: 7,\n        video_res_width: 7,\n        webrtc: true,\n        body: {\n            candidate: {\n                candidate: 'The candidate string associated with the object.',\n                sdpMLineIndex: 7,\n                sdpMid: \"The identifier of the 'media stream identification' as defined in [RFC 8841](https://tools.ietf.org/html/rfc8841).\",\n                usernameFragment:\n                    'The username fragment (as defined in [RFC 8445](https://tools.ietf.org/html/rfc8445#section-5.2.1)) associated with the object.',\n            },\n            type: 'trickle_ice',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { modeling, Client } from '@kittycad/lib'\n\nasync function example() {\n    const client = new Client('your-token')\n    const conn = await modeling.modeling_commands_ws.connect({ client })\n}\n\ndescribe('Testing modeling.modeling_commands_ws', () => {\n    it('should be truthy or throw', async () => {\n        expect(true).toBeTruthy()\n    })\n})\n",
       "libDocsLink": ""
     }
   },
@@ -11,7 +11,7 @@
     "op": "add",
     "path": "/paths/~1ws~1ml~1reasoning~1{id}/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_reasoning_ws({\n        id: 'string',\n        body: { headers: {}, type: 'headers' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const client = new Client('your-token')\n    const conn = await ml.ml_reasoning_ws.connect({ client })\n}\n\ndescribe('Testing ml.ml_reasoning_ws', () => {\n    it('should be truthy or throw', async () => {\n        expect(true).toBeTruthy()\n    })\n})\n",
       "libDocsLink": ""
     }
   },
@@ -19,7 +19,7 @@
     "op": "add",
     "path": "/paths/~1ws~1ml~1copilot/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.ml_copilot_ws({\n        body: { headers: {}, type: 'headers' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const client = new Client('your-token')\n    const conn = await ml.ml_copilot_ws.connect({ client })\n}\n\ndescribe('Testing ml.ml_copilot_ws', () => {\n    it('should be truthy or throw', async () => {\n        expect(true).toBeTruthy()\n    })\n})\n",
       "libDocsLink": ""
     }
   },
@@ -27,7 +27,7 @@
     "op": "add",
     "path": "/paths/~1ws~1executor~1term/get/x-typescript",
     "value": {
-      "example": "import { executor } from '@kittycad/lib'\n\nasync function example() {\n    const response = await executor.create_executor_term()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { executor, Client } from '@kittycad/lib'\n\nasync function example() {\n    const client = new Client('your-token')\n    const conn = await executor.create_executor_term.connect({ client })\n}\n\ndescribe('Testing executor.create_executor_term', () => {\n    it('should be truthy or throw', async () => {\n        expect(true).toBeTruthy()\n    })\n})\n",
       "libDocsLink": ""
     }
   },
@@ -35,7 +35,7 @@
     "op": "add",
     "path": "/paths/~1website~1subscribe/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_subscribe({\n        body: { email: 'The email' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_subscribe({\n        body: { email: 'The email' },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -43,7 +43,7 @@
     "op": "add",
     "path": "/paths/~1website~1form/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_form({\n        body: {\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'general_inquiry',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            phone: 'The phone number of the user.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_form({\n        body: {\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'general_inquiry',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            phone: 'The phone number of the user.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -51,7 +51,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1subscriptions/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_subscription_for_user({\n        id: '31337',\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_subscription_for_user({\n        id: '31337',\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -59,7 +59,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1balance/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '31337',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '31337',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -67,7 +67,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1balance/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_user({\n        id: '31337',\n        include_total_due: true,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_user({\n        id: '31337',\n        include_total_due: true,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -75,7 +75,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1api-calls/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.list_api_calls_for_user({\n        id: '31337',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.list_api_calls_for_user({\n        id: '31337',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = api_calls.list_api_calls_for_user_pager({\n        id: '31337',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -83,7 +83,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user({ id: '31337' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user({ id: '31337' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -91,7 +91,7 @@
     "op": "add",
     "path": "/paths/~1users-extended~1{id}/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_extended({ id: '31337' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_extended({ id: '31337' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -99,7 +99,7 @@
     "op": "add",
     "path": "/paths/~1users-extended/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.list_users_extended({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.list_users_extended({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = users.list_users_extended_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -107,7 +107,7 @@
     "op": "add",
     "path": "/paths/~1users/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.list_users({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.list_users({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = users.list_users_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -115,7 +115,7 @@
     "op": "add",
     "path": "/paths/~1user~1text-to-cad~1{id}/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_model_feedback({\n        id: 'string',\n        feedback: 'thumbs_up',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_model_feedback({\n        id: 'string',\n        feedback: 'thumbs_up',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -123,7 +123,7 @@
     "op": "add",
     "path": "/paths/~1user~1text-to-cad~1{id}/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_text_to_cad_model_for_user({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_text_to_cad_model_for_user({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -131,7 +131,7 @@
     "op": "add",
     "path": "/paths/~1user~1text-to-cad/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_text_to_cad_models_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_text_to_cad_models_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_text_to_cad_models_for_user_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -139,7 +139,7 @@
     "op": "add",
     "path": "/paths/~1user~1shortlinks~1{key}/delete/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_shortlink({ key: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_shortlink({ key: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -147,7 +147,7 @@
     "op": "add",
     "path": "/paths/~1user~1shortlinks~1{key}/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_shortlink({\n        key: 'string',\n        body: {\n            password:\n                'The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here.',\n            restrict_to_org: true,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_shortlink({\n        key: 'string',\n        body: {\n            password:\n                'The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here.',\n            restrict_to_org: true,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -155,7 +155,7 @@
     "op": "add",
     "path": "/paths/~1user~1shortlinks/post/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.create_user_shortlink({\n        body: {\n            password:\n                'The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here.',\n            restrict_to_org: true,\n            url: 'The URL to redirect back to.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.create_user_shortlink({\n        body: {\n            password:\n                'The password for the shortlink, if you want to restrict access to it. This can only be set if your subscription allows for it. Otherwise, it will return an error. When you access the link it will be required to enter this password through basic auth. The username will be `{anything}` and the password will be the password you set here.',\n            restrict_to_org: true,\n            url: 'The URL to redirect back to.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -163,7 +163,7 @@
     "op": "add",
     "path": "/paths/~1user~1shortlinks/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_shortlinks({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_shortlinks({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = users.get_user_shortlinks_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -171,7 +171,7 @@
     "op": "add",
     "path": "/paths/~1user~1session~1{token}/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_session_for_user({\n        token: 'ses-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_session_for_user({\n        token: 'ses-00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -179,7 +179,7 @@
     "op": "add",
     "path": "/paths/~1user~1privacy/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_privacy_settings({\n        body: { can_train_on_data: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_privacy_settings({\n        body: { can_train_on_data: true },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -187,7 +187,7 @@
     "op": "add",
     "path": "/paths/~1user~1privacy/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_privacy_settings()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_privacy_settings()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -195,7 +195,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1tax/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.validate_customer_tax_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.validate_customer_tax_information_for_user()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -203,7 +203,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1subscriptions/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_user_subscription({\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_user_subscription({\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -211,7 +211,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1subscriptions/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_user_subscription({\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_user_subscription({\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -219,7 +219,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1subscriptions/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_user_subscription()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_user_subscription()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -227,7 +227,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1methods~1{id}/delete/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_method_for_user({\n        id: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_method_for_user({\n        id: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -235,7 +235,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1methods/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_payment_methods_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_payment_methods_for_user()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -243,7 +243,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1invoices/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_invoices_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_invoices_for_user()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -251,7 +251,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1intent/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_intent_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_intent_for_user()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -259,7 +259,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1balance/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_user({\n        include_total_due: true,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_user({\n        include_total_due: true,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -267,7 +267,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/delete/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_information_for_user()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -275,7 +275,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_information_for_user({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_information_for_user({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -283,7 +283,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_user({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_user({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -291,7 +291,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_information_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_information_for_user()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -299,7 +299,7 @@
     "op": "add",
     "path": "/paths/~1user~1org/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_user_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_user_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -307,7 +307,7 @@
     "op": "add",
     "path": "/paths/~1user~1oauth2~1providers/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_oauth2_providers_for_user()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_oauth2_providers_for_user()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -315,7 +315,7 @@
     "op": "add",
     "path": "/paths/~1user~1form/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_user_form_self({\n        body: {\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'general_inquiry',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            phone: 'The phone number of the user.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_user_form_self({\n        body: {\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'general_inquiry',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            phone: 'The phone number of the user.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -323,7 +323,7 @@
     "op": "add",
     "path": "/paths/~1user~1extended/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self_extended()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self_extended()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -331,7 +331,7 @@
     "op": "add",
     "path": "/paths/~1user~1crm/patch/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.patch_user_crm({\n        body: {\n            cad_industry: 'The industry of the user.',\n            cad_user_type: 'The user type.',\n            number_of_cad_users: 'The user count of the user.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.patch_user_crm({\n        body: {\n            cad_industry: 'The industry of the user.',\n            cad_user_type: 'The user type.',\n            number_of_cad_users: 'The user count of the user.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -339,7 +339,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens~1{token}/delete/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'api-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'api-00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -347,7 +347,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens~1{token}/get/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.get_api_token_for_user({\n        token: 'api-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.get_api_token_for_user({\n        token: 'api-00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -355,7 +355,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens/post/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.create_api_token_for_user({\n        label: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.create_api_token_for_user({\n        label: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -363,7 +363,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-tokens/get/x-typescript",
     "value": {
-      "example": "import { api_tokens } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.list_api_tokens_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_tokens, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_tokens.list_api_tokens_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = api_tokens.list_api_tokens_for_user_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -371,7 +371,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-calls~1{id}/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_for_user({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_for_user({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -379,7 +379,7 @@
     "op": "add",
     "path": "/paths/~1user~1api-calls/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.user_list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.user_list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = api_calls.user_list_api_calls_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -387,7 +387,7 @@
     "op": "add",
     "path": "/paths/~1user/delete/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.delete_user_self()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -395,7 +395,7 @@
     "op": "add",
     "path": "/paths/~1user/put/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self({\n        body: {\n            company: \"The user's company.\",\n            discord: \"The user's Discord handle.\",\n            first_name: \"The user's first name.\",\n            github: \"The user's GitHub handle.\",\n            image: \"The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next.\",\n            is_onboarded: true,\n            last_name: \"The user's last name.\",\n            phone: \"The user's phone number.\",\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_user_self({\n        body: {\n            company: \"The user's company.\",\n            discord: \"The user's Discord handle.\",\n            first_name: \"The user's first name.\",\n            github: \"The user's GitHub handle.\",\n            image: \"The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next.\",\n            is_onboarded: true,\n            last_name: \"The user's last name.\",\n            phone: \"The user's phone number.\",\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -403,7 +403,7 @@
     "op": "add",
     "path": "/paths/~1user/get/x-typescript",
     "value": {
-      "example": "import { users } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_self()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -411,7 +411,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1volume~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        input_unit: 'cm3',\n        output_unit: 'ft3',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_volume_unit_conversion({\n        input_unit: 'cm3',\n        output_unit: 'ft3',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -419,7 +419,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1torque~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_torque_unit_conversion({\n        input_unit: 'newton_metres',\n        output_unit: 'pound_foot',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_torque_unit_conversion({\n        input_unit: 'newton_metres',\n        output_unit: 'pound_foot',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -427,7 +427,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1temperature~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_temperature_unit_conversion({\n        input_unit: 'celsius',\n        output_unit: 'fahrenheit',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_temperature_unit_conversion({\n        input_unit: 'celsius',\n        output_unit: 'fahrenheit',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -435,7 +435,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1pressure~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_pressure_unit_conversion({\n        input_unit: 'atmospheres',\n        output_unit: 'bars',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_pressure_unit_conversion({\n        input_unit: 'atmospheres',\n        output_unit: 'bars',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -443,7 +443,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1power~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_power_unit_conversion({\n        input_unit: 'btu_per_minute',\n        output_unit: 'horsepower',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_power_unit_conversion({\n        input_unit: 'btu_per_minute',\n        output_unit: 'horsepower',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -451,7 +451,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1mass~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_mass_unit_conversion({\n        input_unit: 'g',\n        output_unit: 'kg',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_mass_unit_conversion({\n        input_unit: 'g',\n        output_unit: 'kg',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -459,7 +459,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1length~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        input_unit: 'cm',\n        output_unit: 'ft',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_length_unit_conversion({\n        input_unit: 'cm',\n        output_unit: 'ft',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -467,7 +467,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1frequency~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_frequency_unit_conversion({\n        input_unit: 'gigahertz',\n        output_unit: 'hertz',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_frequency_unit_conversion({\n        input_unit: 'gigahertz',\n        output_unit: 'hertz',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -475,7 +475,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1force~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_force_unit_conversion({\n        input_unit: 'dynes',\n        output_unit: 'kiloponds',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_force_unit_conversion({\n        input_unit: 'dynes',\n        output_unit: 'kiloponds',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -483,7 +483,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1energy~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_energy_unit_conversion({\n        input_unit: 'btu',\n        output_unit: 'electronvolts',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_energy_unit_conversion({\n        input_unit: 'btu',\n        output_unit: 'electronvolts',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -491,7 +491,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1current~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_current_unit_conversion({\n        input_unit: 'amperes',\n        output_unit: 'microamperes',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_current_unit_conversion({\n        input_unit: 'amperes',\n        output_unit: 'microamperes',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -499,7 +499,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1area~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_area_unit_conversion({\n        input_unit: 'cm2',\n        output_unit: 'dm2',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_area_unit_conversion({\n        input_unit: 'cm2',\n        output_unit: 'dm2',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -507,7 +507,7 @@
     "op": "add",
     "path": "/paths/~1unit~1conversion~1angle~1{input_unit}~1{output_unit}/get/x-typescript",
     "value": {
-      "example": "import { unit } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_angle_unit_conversion({\n        input_unit: 'degrees',\n        output_unit: 'radians',\n        value: 7,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { unit, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await unit.get_angle_unit_conversion({\n        input_unit: 'degrees',\n        output_unit: 'radians',\n        value: 7,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -515,7 +515,7 @@
     "op": "add",
     "path": "/paths/~1store~1coupon/post/x-typescript",
     "value": {
-      "example": "import { store } from '@kittycad/lib'\n\nasync function example() {\n    const response = await store.create_store_coupon({\n        body: { percent_off: 7 },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { store, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await store.create_store_coupon({\n        body: { percent_off: 7 },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -523,7 +523,7 @@
     "op": "add",
     "path": "/paths/~1pricing~1subscriptions/get/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_pricing_subscriptions()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_pricing_subscriptions()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -531,7 +531,7 @@
     "op": "add",
     "path": "/paths/~1ping/get/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.ping()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.ping()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -539,7 +539,7 @@
     "op": "add",
     "path": "/paths/~1orgs~1{id}~1payment~1balance/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -547,7 +547,7 @@
     "op": "add",
     "path": "/paths/~1orgs~1{id}~1payment~1balance/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_org({\n        include_total_due: true,\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_org({\n        include_total_due: true,\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -555,7 +555,7 @@
     "op": "add",
     "path": "/paths/~1orgs~1{id}~1enterprise~1pricing/put/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_enterprise_pricing_for_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: { interval: 'day', price: 7, type: 'flat' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_enterprise_pricing_for_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: { interval: 'day', price: 7, type: 'flat' },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -563,7 +563,7 @@
     "op": "add",
     "path": "/paths/~1orgs~1{id}/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -571,7 +571,7 @@
     "op": "add",
     "path": "/paths/~1orgs/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.list_orgs({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.list_orgs({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = orgs.list_orgs_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -579,7 +579,7 @@
     "op": "add",
     "path": "/paths/~1org~1shortlinks/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_shortlinks({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_shortlinks({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = orgs.get_org_shortlinks_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -587,7 +587,7 @@
     "op": "add",
     "path": "/paths/~1org~1service-accounts~1{token}/delete/x-typescript",
     "value": {
-      "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.delete_service_account_for_org({\n        token: 'svc-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { service_accounts, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.delete_service_account_for_org({\n        token: 'svc-00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -595,7 +595,7 @@
     "op": "add",
     "path": "/paths/~1org~1service-accounts~1{token}/get/x-typescript",
     "value": {
-      "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.get_service_account_for_org({\n        token: 'svc-00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { service_accounts, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.get_service_account_for_org({\n        token: 'svc-00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -603,7 +603,7 @@
     "op": "add",
     "path": "/paths/~1org~1service-accounts/post/x-typescript",
     "value": {
-      "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.create_service_account_for_org({\n        label: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { service_accounts, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.create_service_account_for_org({\n        label: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -611,7 +611,7 @@
     "op": "add",
     "path": "/paths/~1org~1service-accounts/get/x-typescript",
     "value": {
-      "example": "import { service_accounts } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.list_service_accounts_for_org({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { service_accounts, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await service_accounts.list_service_accounts_for_org({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = service_accounts.list_service_accounts_for_org_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -619,7 +619,7 @@
     "op": "add",
     "path": "/paths/~1org~1saml~1idp/delete/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.delete_org_saml_idp()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.delete_org_saml_idp()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -627,7 +627,7 @@
     "op": "add",
     "path": "/paths/~1org~1saml~1idp/post/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.create_org_saml_idp({\n        body: {\n            idp_entity_id: 'The entity ID of the SAML identity provider.',\n            idp_metadata_source: {\n                type: 'url',\n                url: 'The URL of the identity provider metadata descriptor.',\n            },\n            signing_keypair: {\n                private_key: 'The request signing private key (pem file).',\n                public_cert:\n                    'The request signing public certificate (pem file).',\n            },\n            technical_contact_email:\n                'The technical contact email address for the SAML identity provider.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.create_org_saml_idp({\n        body: {\n            idp_entity_id: 'The entity ID of the SAML identity provider.',\n            idp_metadata_source: {\n                type: 'url',\n                url: 'The URL of the identity provider metadata descriptor.',\n            },\n            signing_keypair: {\n                private_key: 'The request signing private key (pem file).',\n                public_cert:\n                    'The request signing public certificate (pem file).',\n            },\n            technical_contact_email:\n                'The technical contact email address for the SAML identity provider.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -635,7 +635,7 @@
     "op": "add",
     "path": "/paths/~1org~1saml~1idp/put/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org_saml_idp({\n        body: {\n            idp_entity_id: 'The entity ID of the SAML identity provider.',\n            idp_metadata_source: {\n                type: 'url',\n                url: 'The URL of the identity provider metadata descriptor.',\n            },\n            signing_keypair: {\n                private_key: 'The request signing private key (pem file).',\n                public_cert:\n                    'The request signing public certificate (pem file).',\n            },\n            technical_contact_email:\n                'The technical contact email address for the SAML identity provider.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org_saml_idp({\n        body: {\n            idp_entity_id: 'The entity ID of the SAML identity provider.',\n            idp_metadata_source: {\n                type: 'url',\n                url: 'The URL of the identity provider metadata descriptor.',\n            },\n            signing_keypair: {\n                private_key: 'The request signing private key (pem file).',\n                public_cert:\n                    'The request signing public certificate (pem file).',\n            },\n            technical_contact_email:\n                'The technical contact email address for the SAML identity provider.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -643,7 +643,7 @@
     "op": "add",
     "path": "/paths/~1org~1saml~1idp/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_saml_idp()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_saml_idp()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -651,7 +651,7 @@
     "op": "add",
     "path": "/paths/~1org~1privacy/put/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org_privacy_settings({\n        body: { can_train_on_data: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org_privacy_settings({\n        body: { can_train_on_data: true },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -659,7 +659,7 @@
     "op": "add",
     "path": "/paths/~1org~1privacy/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_privacy_settings()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_privacy_settings()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -667,7 +667,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1tax/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.validate_customer_tax_information_for_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.validate_customer_tax_information_for_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -675,7 +675,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1subscriptions/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_org_subscription({\n        body: { modeling_app: 'team', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_org_subscription({\n        body: { modeling_app: 'team', pay_annually: true },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -683,7 +683,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1subscriptions/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_org_subscription({\n        body: { modeling_app: 'team', pay_annually: true },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_org_subscription({\n        body: { modeling_app: 'team', pay_annually: true },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -691,7 +691,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1subscriptions/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_org_subscription()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_org_subscription()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -699,7 +699,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1methods~1{id}/delete/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_method_for_org({\n        id: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_method_for_org({\n        id: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -707,7 +707,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1methods/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_payment_methods_for_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_payment_methods_for_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -715,7 +715,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1invoices/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_invoices_for_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.list_invoices_for_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -723,7 +723,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1intent/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_intent_for_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_intent_for_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -731,7 +731,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment~1balance/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_org({\n        include_total_due: true,\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_org({\n        include_total_due: true,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -739,7 +739,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment/delete/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_information_for_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_information_for_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -747,7 +747,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment/post/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_information_for_org({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.create_payment_information_for_org({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -755,7 +755,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment/put/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_org({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_information_for_org({\n        body: {\n            address: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n            name: 'The name of the customer.',\n            phone: 'The phone for the customer.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -763,7 +763,7 @@
     "op": "add",
     "path": "/paths/~1org~1payment/get/x-typescript",
     "value": {
-      "example": "import { payments } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_information_for_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_information_for_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -771,7 +771,7 @@
     "op": "add",
     "path": "/paths/~1org~1members~1{user_id}/delete/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.delete_org_member({\n        user_id: '00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.delete_org_member({\n        user_id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -779,7 +779,7 @@
     "op": "add",
     "path": "/paths/~1org~1members~1{user_id}/put/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org_member({\n        user_id: '00000000-0000-0000-0000-000000000000',\n        body: { role: 'admin' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org_member({\n        user_id: '00000000-0000-0000-0000-000000000000',\n        body: { role: 'admin' },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -787,7 +787,7 @@
     "op": "add",
     "path": "/paths/~1org~1members~1{user_id}/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_member({\n        user_id: '00000000-0000-0000-0000-000000000000',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_member({\n        user_id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -795,7 +795,7 @@
     "op": "add",
     "path": "/paths/~1org~1members/post/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.create_org_member({\n        body: {\n            email: 'The email address of the user to add to the org.',\n            role: 'admin',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.create_org_member({\n        body: {\n            email: 'The email address of the user to add to the org.',\n            role: 'admin',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -803,7 +803,7 @@
     "op": "add",
     "path": "/paths/~1org~1members/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.list_org_members({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        role: 'admin',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.list_org_members({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        role: 'admin',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = orgs.list_org_members_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        role: 'admin',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -811,7 +811,7 @@
     "op": "add",
     "path": "/paths/~1org~1api-calls~1{id}/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_for_org({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_for_org({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -819,7 +819,7 @@
     "op": "add",
     "path": "/paths/~1org~1api-calls/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.org_list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.org_list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = api_calls.org_list_api_calls_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -827,7 +827,7 @@
     "op": "add",
     "path": "/paths/~1org/delete/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.delete_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.delete_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -835,7 +835,7 @@
     "op": "add",
     "path": "/paths/~1org/post/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.create_org({\n        body: {\n            allow_users_in_domain_to_auto_join: true,\n            billing_email: 'The billing email address of the org.',\n            domain: \"The org's domain.\",\n            image: 'The image for the org. This is a URL.',\n            name: 'The name of the org.',\n            phone: \"The org's phone number.\",\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.create_org({\n        body: {\n            allow_users_in_domain_to_auto_join: true,\n            billing_email: 'The billing email address of the org.',\n            domain: \"The org's domain.\",\n            image: 'The image for the org. This is a URL.',\n            name: 'The name of the org.',\n            phone: \"The org's phone number.\",\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -843,7 +843,7 @@
     "op": "add",
     "path": "/paths/~1org/put/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org({\n        body: {\n            allow_users_in_domain_to_auto_join: true,\n            billing_email: 'The billing email address of the org.',\n            domain: \"The org's domain.\",\n            image: 'The image for the org. This is a URL.',\n            name: 'The name of the org.',\n            phone: \"The org's phone number.\",\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org({\n        body: {\n            allow_users_in_domain_to_auto_join: true,\n            billing_email: 'The billing email address of the org.',\n            domain: \"The org's domain.\",\n            image: 'The image for the org. This is a URL.',\n            name: 'The name of the org.',\n            phone: \"The org's phone number.\",\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -851,7 +851,7 @@
     "op": "add",
     "path": "/paths/~1org/get/x-typescript",
     "value": {
-      "example": "import { orgs } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -859,7 +859,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1token~1revoke/post/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_token_revoke()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_token_revoke()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -867,7 +867,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1consent/get/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_consent({\n        provider: 'apple',\n        callback_url: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_consent({\n        provider: 'apple',\n        callback_url: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -875,7 +875,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1callback/post/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback_post({\n        provider: 'apple',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback_post({\n        provider: 'apple',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -883,7 +883,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1callback/get/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback({\n        provider: 'apple',\n        code: 'string',\n        id_token: 'string',\n        state: 'string',\n        user: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback({\n        provider: 'apple',\n        code: 'string',\n        id_token: 'string',\n        state: 'string',\n        user: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -891,7 +891,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1device~1verify/get/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_verify({\n        app_name: 'string',\n        user_code: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_verify({\n        app_name: 'string',\n        user_code: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -899,7 +899,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1device~1token/post/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_access_token()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_access_token()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -907,7 +907,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1device~1confirm/post/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_confirm({\n        body: { user_code: 'The user code.' },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_confirm({\n        body: { user_code: 'The user code.' },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -915,7 +915,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1device~1auth/post/x-typescript",
     "value": {
-      "example": "import { oauth2 } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_request()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_request()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -923,7 +923,7 @@
     "op": "add",
     "path": "/paths/~1ml~1text-to-cad~1multi-file~1iteration/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_multi_file_iteration({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            conversation_id: 'A UUID usually v4 or v7',\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files. If you want to apply a prompt to just a single file, use the source_ranges field and you can leave this empty.',\n            source_ranges: [],\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_multi_file_iteration({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            conversation_id: 'A UUID usually v4 or v7',\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files. If you want to apply a prompt to just a single file, use the source_ranges field and you can leave this empty.',\n            source_ranges: [],\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -931,7 +931,7 @@
     "op": "add",
     "path": "/paths/~1ml~1text-to-cad~1iteration/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_iteration({\n        body: {\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            original_source_code:\n                'The source code for the model (in kcl) that is to be edited.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the model, if not using source ranges.',\n            source_ranges: [],\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_iteration({\n        body: {\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            original_source_code:\n                'The source code for the model (in kcl) that is to be edited.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the model, if not using source ranges.',\n            source_ranges: [],\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -939,7 +939,7 @@
     "op": "add",
     "path": "/paths/~1ml~1kcl~1completions/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_kcl_code_completions({\n        body: {\n            extra: {\n                language: 'The language of the code.',\n                next_indent: 7,\n                prompt_tokens: 7,\n                suffix_tokens: 7,\n                trim_by_indentation: true,\n            },\n            max_tokens: 7,\n            n: 7,\n            nwo: 'For GitHub copilot this is the `{org}/{repo}`. This does not do anything yet. But we wanted the same API as GitHub Copilot. It might be used in the future.',\n            prompt: 'The prompt for the model.',\n            stop: ['string'],\n            stream: true,\n            suffix: 'The suffix for the model.',\n            temperature: 7,\n            top_p: 7,\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_kcl_code_completions({\n        body: {\n            extra: {\n                language: 'The language of the code.',\n                next_indent: 7,\n                prompt_tokens: 7,\n                suffix_tokens: 7,\n                trim_by_indentation: true,\n            },\n            max_tokens: 7,\n            n: 7,\n            nwo: 'For GitHub copilot this is the `{org}/{repo}`. This does not do anything yet. But we wanted the same API as GitHub Copilot. It might be used in the future.',\n            prompt: 'The prompt for the model.',\n            stop: ['string'],\n            stream: true,\n            suffix: 'The suffix for the model.',\n            temperature: 7,\n            top_p: 7,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -947,7 +947,7 @@
     "op": "add",
     "path": "/paths/~1ml~1convert~1proprietary-to-kcl/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_proprietary_to_kcl({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        code_option: 'execute',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_proprietary_to_kcl({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        code_option: 'execute',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -955,7 +955,7 @@
     "op": "add",
     "path": "/paths/~1ml~1conversations/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_conversations_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_conversations_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_conversations_for_user_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -963,7 +963,7 @@
     "op": "add",
     "path": "/paths/~1ml-prompts~1{id}/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_ml_prompt({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_ml_prompt({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -971,7 +971,7 @@
     "op": "add",
     "path": "/paths/~1ml-prompts/get/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_ml_prompts({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_ml_prompts({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_ml_prompts_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -979,7 +979,7 @@
     "op": "add",
     "path": "/paths/~1internal~1discord~1api-token~1{discord_id}/get/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.internal_get_api_token_for_discord_user({\n        discord_id: 'string',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.internal_get_api_token_for_discord_user({\n        discord_id: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -987,7 +987,7 @@
     "op": "add",
     "path": "/paths/~1file~1volume/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        output_unit: 'ft3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nasync function example() {\n    const response = await file.create_file_volume({\n        output_unit: 'ft3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -995,7 +995,7 @@
     "op": "add",
     "path": "/paths/~1file~1surface-area/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_surface_area({\n        output_unit: 'dm2',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nasync function example() {\n    const response = await file.create_file_surface_area({\n        output_unit: 'dm2',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1003,7 +1003,7 @@
     "op": "add",
     "path": "/paths/~1file~1mass/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_mass({\n        material_density: 7,\n        material_density_unit: 'lb:ft3',\n        output_unit: 'kg',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nasync function example() {\n    const response = await file.create_file_mass({\n        material_density: 7,\n        material_density_unit: 'lb:ft3',\n        output_unit: 'kg',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1011,7 +1011,7 @@
     "op": "add",
     "path": "/paths/~1file~1execute~1{lang}/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { executor } from '@kittycad/lib'\n\nasync function example() {\n    const response = await executor.create_file_execution({\n        lang: 'go',\n        output: 'string',\n        body: await fsp.readFile('./example.go', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { executor, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nasync function example() {\n    const response = await executor.create_file_execution({\n        lang: 'go',\n        output: 'string',\n        body: await fsp.readFile('./example.go', 'base64'),\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1019,7 +1019,7 @@
     "op": "add",
     "path": "/paths/~1file~1density/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_density({\n        material_mass: 7,\n        material_mass_unit: 'g',\n        output_unit: 'kg:m3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nasync function example() {\n    const response = await file.create_file_density({\n        material_mass: 7,\n        material_mass_unit: 'g',\n        output_unit: 'kg:m3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1027,7 +1027,7 @@
     "op": "add",
     "path": "/paths/~1file~1conversion~1{src_format}~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        output_format: 'stl',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        output_format: 'stl',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1035,7 +1035,7 @@
     "op": "add",
     "path": "/paths/~1file~1conversion/post/x-typescript",
     "value": {
-      "example": "import { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion_options({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            output_format: {\n                created: 'Timestamp override.',\n                storage: 'ascii',\n                type: 'fbx',\n            },\n            src_format: { type: 'fbx' },\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_conversion_options({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            output_format: {\n                created: 'Timestamp override.',\n                storage: 'ascii',\n                type: 'fbx',\n            },\n            src_format: { type: 'fbx' },\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1043,7 +1043,7 @@
     "op": "add",
     "path": "/paths/~1file~1center-of-mass/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { file } from '@kittycad/lib'\n\nasync function example() {\n    const response = await file.create_file_center_of_mass({\n        output_unit: 'ft',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { file, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nasync function example() {\n    const response = await file.create_file_center_of_mass({\n        output_unit: 'ft',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1051,7 +1051,7 @@
     "op": "add",
     "path": "/paths/~1events/post/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.create_event({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            attachment_uri:\n                'Attachment URI for where the attachment is stored.',\n            created_at: 'Time this event was created.',\n            event_type: 'successful_compile_before_close',\n            last_compiled_at:\n                'Time the associated attachment was last compiled.',\n            project_description: 'Project descriptino as given by the user.',\n            project_name: 'Project name as given by the user.',\n            source_id:\n                'The source app for this event, uuid that is unique to the app.',\n            type: 'modeling_app_event',\n            user_id: 'An anonymous user id generated client-side.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.create_event({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            attachment_uri:\n                'Attachment URI for where the attachment is stored.',\n            created_at: 'Time this event was created.',\n            event_type: 'successful_compile_before_close',\n            last_compiled_at:\n                'Time the associated attachment was last compiled.',\n            project_description: 'Project descriptino as given by the user.',\n            project_name: 'Project name as given by the user.',\n            source_id:\n                'The source app for this event, uuid that is unique to the app.',\n            type: 'modeling_app_event',\n            user_id: 'An anonymous user id generated client-side.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1059,7 +1059,7 @@
     "op": "add",
     "path": "/paths/~1debug~1uploads/post/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.create_debug_uploads({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.create_debug_uploads({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1067,7 +1067,7 @@
     "op": "add",
     "path": "/paths/~1community~1sso/get/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.community_sso({ sig: 'string', sso: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.community_sso({ sig: 'string', sso: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1075,7 +1075,7 @@
     "op": "add",
     "path": "/paths/~1async~1operations~1{id}/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_async_operation({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_async_operation({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1083,7 +1083,7 @@
     "op": "add",
     "path": "/paths/~1async~1operations/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.list_async_operations({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        status: 'queued',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.list_async_operations({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        status: 'queued',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = api_calls.list_async_operations_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        status: 'queued',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1091,7 +1091,7 @@
     "op": "add",
     "path": "/paths/~1apps~1github~1webhook/post/x-typescript",
     "value": {
-      "example": "import fsp from 'fs/promises'\nimport { apps } from '@kittycad/lib'\n\nasync function example() {\n    const response = await apps.apps_github_webhook({\n        body: await fsp.readFile('./example', 'base64'),\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { apps, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nasync function example() {\n    const response = await apps.apps_github_webhook({\n        body: await fsp.readFile('./example', 'base64'),\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1099,7 +1099,7 @@
     "op": "add",
     "path": "/paths/~1apps~1github~1consent/get/x-typescript",
     "value": {
-      "example": "import { apps } from '@kittycad/lib'\n\nasync function example() {\n    const response = await apps.apps_github_consent()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { apps, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await apps.apps_github_consent()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1107,7 +1107,7 @@
     "op": "add",
     "path": "/paths/~1apps~1github~1callback/get/x-typescript",
     "value": {
-      "example": "import { apps } from '@kittycad/lib'\n\nasync function example() {\n    const response = await apps.apps_github_callback()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { apps, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await apps.apps_github_callback()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1115,7 +1115,7 @@
     "op": "add",
     "path": "/paths/~1api-calls~1{id}/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call({ id: 'string' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1123,7 +1123,7 @@
     "op": "add",
     "path": "/paths/~1api-calls/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = api_calls.list_api_calls_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1131,7 +1131,7 @@
     "op": "add",
     "path": "/paths/~1api-call-metrics/get/x-typescript",
     "value": {
-      "example": "import { api_calls } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_metrics({ group_by: 'email' })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_metrics({ group_by: 'email' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1139,7 +1139,7 @@
     "op": "add",
     "path": "/paths/~1ai~1text-to-cad~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import { ml } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad({\n        output_format: 'stl',\n        kcl: true,\n        body: {\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the model.',\n        },\n    })\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad({\n        output_format: 'stl',\n        kcl: true,\n        body: {\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the model.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1147,7 +1147,7 @@
     "op": "add",
     "path": "/paths/~1_meta~1ipinfo/get/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_ipinfo()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_ipinfo()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1155,7 +1155,7 @@
     "op": "add",
     "path": "/paths/~1/get/x-typescript",
     "value": {
-      "example": "import { meta } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_schema()\n    if ('error_code' in response) throw response\n    console.log(JSON.stringify(response, null, 2))\n}\n",
+      "example": "import { meta, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await meta.get_schema()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1164,7 +1164,8 @@
     "path": "/info/x-typescript",
     "value": {
       "client": "// Create a client with your token.\nasync function ExampleWithClient() {\n  const client = new Client('your-token');\n  const response = await meta.ping({ client });\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}\n\n// - OR -\n\n// Your token will be parsed from the environment\n// variable: 'KITTYCAD_TOKEN'.\nasync function ExampleWithOutClient() {\n  const response = await meta.ping();\n  if ('error_code' in response) throw 'error';\n  console.log(response.message); // 'pong'\n}",
-      "install": "npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib"
+      "install": "npm install @kittycad/lib\n# or \n$ yarn add @kittycad/lib",
+      "ws": "// WebSocket usage\nasync function ExampleWs() {\n  const client = new Client('your-token');\n  const conn = await ml.ml_copilot_ws.connect({ client });\n  // Send a message (shape depends on endpoint)\n  // conn.send({ type: 'headers', headers: { 'X-Example': '1' } } as any);\n  // Read one message:\n  // const msg = await conn.recv();\n  // Or stream:\n  for await (const msg of conn) {\n    console.log(msg);\n    break;\n  }\n  conn.close();\n}"
     }
   }
 ]

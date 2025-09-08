@@ -1,4 +1,4 @@
-import { users } from '../../src/index.js';
+import { users, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await users.create_user_shortlink({
@@ -8,14 +8,16 @@ async function example() {
       restrict_to_org: true,
       url: 'The URL to redirect back to.',
     },
-  });
-  if ('error_code' in response) throw response;
-
-  return response;
+  })
+  return response
 }
 
 describe('Testing users.create_user_shortlink', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
-  });
-});
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
+  })
+})

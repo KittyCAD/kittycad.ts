@@ -1,14 +1,12 @@
-import { meta } from '../../src/index.js';
+import { meta } from '../../src/index.js'
 
 async function example() {
-  const response = await meta.get_ipinfo();
-  if ('error_code' in response) throw response;
-
-  return response;
+  const response = await meta.get_ipinfo()
+  return response
 }
 
 describe('Testing meta.get_ipinfo', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
-  });
-});
+    expect(await example()).toBeTruthy()
+  })
+})

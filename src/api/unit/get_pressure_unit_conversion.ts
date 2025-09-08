@@ -1,34 +1,49 @@
-import {
-  UnitPressureConversion_type,
-  Error_type,
-  UnitPressure_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Get_pressure_unit_conversion_params {
-  client?: Client;
-  input_unit: UnitPressure_type;
-  output_unit: UnitPressure_type;
-  value: number;
+import { UnitPressureConversion, UnitPressure } from '../../models.js'
+
+interface GetPressureUnitConversionInput {
+  client?: Client
+  input_unit: UnitPressure
+  output_unit: UnitPressure
+  value: number
 }
 
-type Get_pressure_unit_conversion_return =
-  | UnitPressureConversion_type
-  | Error_type;
+type GetPressureUnitConversionReturn = UnitPressureConversion
 
+/**
+ * Convert pressure units.
+ *
+ * Convert a pressure unit value to another pressure unit value. This is a nice endpoint to use for helper functions.
+ *
+ * Tags: unit
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UnitPressure} input_unit The source format of the unit. (path)
+ * @property {UnitPressure} output_unit The output format of the unit. (path)
+ * @property {number} value The initial value. (query)
+ * @returns {Promise<GetPressureUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitPressureConversion
+ */
 export default async function get_pressure_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: Get_pressure_unit_conversion_params): Promise<Get_pressure_unit_conversion_return> {
-  const url = `/unit/conversion/pressure/${input_unit}/${output_unit}?value=${value}`;
+}: GetPressureUnitConversionInput): Promise<GetPressureUnitConversionReturn> {
+  const url = `/unit/conversion/pressure/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -38,16 +53,16 @@ export default async function get_pressure_unit_conversion({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_pressure_unit_conversion_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetPressureUnitConversionReturn
+  return result
 }

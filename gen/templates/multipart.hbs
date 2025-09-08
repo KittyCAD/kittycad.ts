@@ -1,0 +1,59 @@
+import { File } from '../../models.js';
+import { Client } from '../../client.js';
+import { throwIfNotOk } from '../../errors.js';
+
+{{{importsModels}}}
+
+{{{paramsInterface}}}
+
+{{{returnType}}}
+
+{{{fnJsDoc}}}
+export default async function {{functionName}}(
+  {{{paramsSignature}}}
+): Promise<{{returnTypeName}}> {
+  const url = {{{urlExpr}}};
+  // Backwards compatible for the BASE_URL env variable
+  // That used to exist in only this lib, ZOO_HOST exists in the all the other
+  // sdks and the CLI.
+  const urlBase = client?.baseUrl || process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
+  const fullUrl = urlBase + url;
+  // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
+  // backwards compatibility, but the new standard is ZOO_API_TOKEN.
+  // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
+  // check for that as well.
+  const kittycadToken = client
+    ? client.token || process.env.ZOO_API_TOKEN || ''
+    : process.env.KITTYCAD_TOKEN ||
+      process.env.KITTYCAD_API_TOKEN ||
+      process.env.ZOO_API_TOKEN ||
+      '';
+  const headers: Record<string, string> = {
+    'Content-Type': 'multipart/form-data',
+  };
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`;
+
+  const formData = new FormData();
+  files.forEach((file) => {
+    formData.append(file.name, file.data, file.name);
+  });
+  {{#if multipartAppendBody}}
+  {{{multipartAppendBody}}}
+  {{/if}}
+
+  const fetchOptions: RequestInit = {
+    method: '{{httpMethod}}',
+    headers,
+    body: formData,
+  };
+  const _fetch = client?.fetch || fetch;
+  const response = await _fetch(fullUrl, fetchOptions);
+  await throwIfNotOk(response);
+  {{#if noJsonResponse}}
+  return undefined as {{returnTypeName}};
+  {{else}}
+  const result = (await response.json()) as {{returnTypeName}};
+  return result;
+  {{/if}}
+}
+

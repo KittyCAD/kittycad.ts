@@ -1,24 +1,43 @@
-import { CustomerBalance_type, Error_type } from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Get_payment_balance_for_user_params {
-  client?: Client;
-  include_total_due: boolean;
+import { CustomerBalance } from '../../models.js'
+
+interface GetPaymentBalanceForUserInput {
+  client?: Client
+  include_total_due: boolean
 }
 
-type Get_payment_balance_for_user_return = CustomerBalance_type | Error_type;
+type GetPaymentBalanceForUserReturn = CustomerBalance
 
+/**
+ * Get balance for your user.
+ *
+ * This endpoint requires authentication by any Zoo user. It gets the balance information for the authenticated user.
+ *
+ * Tags: payments
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {boolean} include_total_due If you would like to return the total due for a user. This makes the API call take longer so it is off by default. (query)
+ * @returns {Promise<GetPaymentBalanceForUserReturn>} successful operation
+ *
+ * Possible return types: CustomerBalance
+ */
 export default async function get_payment_balance_for_user({
   client,
   include_total_due,
-}: Get_payment_balance_for_user_params): Promise<Get_payment_balance_for_user_return> {
-  const url = `/user/payment/balance?include_total_due=${include_total_due}`;
+}: GetPaymentBalanceForUserInput): Promise<GetPaymentBalanceForUserReturn> {
+  const url = `/user/payment/balance?include_total_due=${include_total_due}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -28,16 +47,16 @@ export default async function get_payment_balance_for_user({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Get_payment_balance_for_user_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetPaymentBalanceForUserReturn
+  return result
 }

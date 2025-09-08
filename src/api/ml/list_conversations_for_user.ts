@@ -1,34 +1,56 @@
-import {
-  ConversationResultsPage_type,
-  Error_type,
-  CreatedAtSortMode_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-interface List_conversations_for_user_params {
-  client?: Client;
-  limit: number;
-  page_token: string;
-  sort_by: CreatedAtSortMode_type;
+import {
+  ConversationResultsPage,
+  CreatedAtSortMode,
+  Conversation,
+} from '../../models.js'
+
+interface ListConversationsForUserInput {
+  client?: Client
+  limit: number
+  page_token: string
+  sort_by: CreatedAtSortMode
 }
 
-type List_conversations_for_user_return =
-  | ConversationResultsPage_type
-  | Error_type;
+type ListConversationsForUserReturn = ConversationResultsPage
 
+/**
+ * List conversations
+ *
+ * This endpoint requires authentication by any Zoo user. It returns the conversations for the authenticated user.
+ *
+ * The conversations are returned in order of creation, with the most recently created conversations first.
+ *
+ * Tags: ml
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {number} limit Maximum number of items returned by a single call (query)
+ * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @property {CreatedAtSortMode} sort_by (query)
+ * @returns {Promise<ListConversationsForUserReturn>} successful operation
+ *
+ * Possible return types: ConversationResultsPage
+ */
 export default async function list_conversations_for_user({
   client,
   limit,
   page_token,
   sort_by,
-}: List_conversations_for_user_params): Promise<List_conversations_for_user_return> {
-  const url = `/ml/conversations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`;
+}: ListConversationsForUserInput): Promise<ListConversationsForUserReturn> {
+  const url = `/ml/conversations?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -38,16 +60,30 @@ export default async function list_conversations_for_user({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as List_conversations_for_user_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as ListConversationsForUserReturn
+  return result
+}
+
+export function list_conversations_for_user_pager(
+  params: ListConversationsForUserInput
+): Pager<
+  ListConversationsForUserInput,
+  ListConversationsForUserReturn,
+  Conversation
+> {
+  return createPager<
+    ListConversationsForUserInput,
+    ListConversationsForUserReturn,
+    Conversation
+  >(list_conversations_for_user, params, 'page_token')
 }

@@ -1,34 +1,49 @@
-import {
-  UnitFrequencyConversion_type,
-  Error_type,
-  UnitFrequency_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Get_frequency_unit_conversion_params {
-  client?: Client;
-  input_unit: UnitFrequency_type;
-  output_unit: UnitFrequency_type;
-  value: number;
+import { UnitFrequencyConversion, UnitFrequency } from '../../models.js'
+
+interface GetFrequencyUnitConversionInput {
+  client?: Client
+  input_unit: UnitFrequency
+  output_unit: UnitFrequency
+  value: number
 }
 
-type Get_frequency_unit_conversion_return =
-  | UnitFrequencyConversion_type
-  | Error_type;
+type GetFrequencyUnitConversionReturn = UnitFrequencyConversion
 
+/**
+ * Convert frequency units.
+ *
+ * Convert a frequency unit value to another frequency unit value. This is a nice endpoint to use for helper functions.
+ *
+ * Tags: unit
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {UnitFrequency} input_unit The source format of the unit. (path)
+ * @property {UnitFrequency} output_unit The output format of the unit. (path)
+ * @property {number} value The initial value. (query)
+ * @returns {Promise<GetFrequencyUnitConversionReturn>} successful operation
+ *
+ * Possible return types: UnitFrequencyConversion
+ */
 export default async function get_frequency_unit_conversion({
   client,
   input_unit,
   output_unit,
   value,
-}: Get_frequency_unit_conversion_params): Promise<Get_frequency_unit_conversion_return> {
-  const url = `/unit/conversion/frequency/${input_unit}/${output_unit}?value=${value}`;
+}: GetFrequencyUnitConversionInput): Promise<GetFrequencyUnitConversionReturn> {
+  const url = `/unit/conversion/frequency/${input_unit}/${output_unit}?value=${value}`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -38,17 +53,16 @@ export default async function get_frequency_unit_conversion({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result =
-    (await response.json()) as Get_frequency_unit_conversion_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetFrequencyUnitConversionReturn
+  return result
 }

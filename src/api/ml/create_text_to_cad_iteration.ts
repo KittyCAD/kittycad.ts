@@ -1,28 +1,49 @@
-import {
-  TextToCadIteration_type,
-  Error_type,
-  TextToCadIterationBody_type,
-} from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Create_text_to_cad_iteration_params {
-  client?: Client;
-  body: TextToCadIterationBody_type;
+import { TextToCadIteration, TextToCadIterationBody } from '../../models.js'
+
+interface CreateTextToCadIterationInput {
+  client?: Client
+  body: TextToCadIterationBody
 }
 
-type Create_text_to_cad_iteration_return = TextToCadIteration_type | Error_type;
+type CreateTextToCadIterationReturn = TextToCadIteration
 
+/**
+ * Iterate on a CAD model with a prompt.
+ *
+ * Even if you give specific ranges to edit, the model might change more than just those in order to make the changes you requested without breaking the code.
+ *
+ * You always get the whole code back, even if you only changed a small part of it.
+ *
+ * This operation is performed asynchronously, the `id` of the operation will be returned. You can use the `id` returned from the request to get status information about the async operation from the `/async/operations/{id}` endpoint.
+ *
+ * This endpoint will soon be deprecated in favor of the `/ml/text-to-cad/multi-file/iteration` endpoint. In that the endpoint path will remain but it will have the same behavior as `ml/text-to-cad/multi-file/iteration`.
+ *
+ * Tags: ml
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {TextToCadIterationBody} body Request body payload
+ * @returns {Promise<CreateTextToCadIterationReturn>} successful creation
+ *
+ * Possible return types: TextToCadIteration
+ */
 export default async function create_text_to_cad_iteration({
   client,
   body,
-}: Create_text_to_cad_iteration_params): Promise<Create_text_to_cad_iteration_return> {
-  const url = `/ml/text-to-cad/iteration`;
+}: CreateTextToCadIterationInput): Promise<CreateTextToCadIterationReturn> {
+  const url = `/ml/text-to-cad/iteration`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -32,17 +53,18 @@ export default async function create_text_to_cad_iteration({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'application/json',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/json'
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result = (await response.json()) as Create_text_to_cad_iteration_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as CreateTextToCadIterationReturn
+  return result
 }

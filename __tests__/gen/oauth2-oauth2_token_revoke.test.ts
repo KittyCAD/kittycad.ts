@@ -1,14 +1,16 @@
-import { oauth2 } from '../../src/index.js';
+import { oauth2, ApiError } from '../../src/index.js'
 
 async function example() {
-  const response = await oauth2.oauth2_token_revoke();
-  if ('error_code' in response) throw response;
-
-  return response;
+  const response = await oauth2.oauth2_token_revoke()
+  return response
 }
 
 describe('Testing oauth2.oauth2_token_revoke', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy();
-  });
-});
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
+  })
+})

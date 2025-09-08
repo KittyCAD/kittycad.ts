@@ -1,18 +1,16 @@
-import { orgs } from '../../src/index.js';
+import { orgs, ApiError } from '../../src/index.js'
 
 async function example() {
-  const response = await orgs.get_org();
-  if ('error_code' in response) throw response;
-
-  return response;
+  const response = await orgs.get_org()
+  return response
 }
 
 describe('Testing orgs.get_org', () => {
   it('should be truthy or throw', async () => {
     try {
-      await example();
+      await example()
     } catch (err) {
-      expect(err).toBeTruthy(); // eslint-disable-line jest/no-conditional-expect
+      expect(err).toBeInstanceOf(ApiError)
     }
-  });
-});
+  })
+})

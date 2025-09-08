@@ -1,22 +1,44 @@
-import { AccountProvider_type, Error_type } from '../../models.js';
-import { Client } from '../../client.js';
+import { Client } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
 
-interface Get_oauth2_providers_for_user_params {
-  client?: Client;
+import { AccountProvider } from '../../models.js'
+
+interface GetOauth2ProvidersForUserInput {
+  client?: Client
 }
 
-type Get_oauth2_providers_for_user_return = AccountProvider_type[] | Error_type;
+type GetOauth2ProvidersForUserReturn = AccountProvider[]
 
-export default async function get_oauth2_providers_for_user({
-  client,
-}: Get_oauth2_providers_for_user_params = {}): Promise<Get_oauth2_providers_for_user_return> {
-  const url = `/user/oauth2/providers`;
+/**
+ * Get the OAuth2 providers for your user.
+ *
+ * If this returns an empty array, then the user has not connected any OAuth2 providers and uses raw email authentication.
+ *
+ * This endpoint requires authentication by any Zoo user. It gets the providers for the authenticated user.
+ *
+ * Tags: users
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @returns {Promise<GetOauth2ProvidersForUserReturn>} successful operation
+ *
+ * Possible return types: AccountProvider[]
+ */
+export default async function get_oauth2_providers_for_user(
+  {
+    client,
+  }: GetOauth2ProvidersForUserInput = {} as GetOauth2ProvidersForUserInput
+): Promise<GetOauth2ProvidersForUserReturn> {
+  const url = `/user/oauth2/providers`
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
   const urlBase =
-    process?.env?.ZOO_HOST || process?.env?.BASE_URL || 'https://api.zoo.dev';
-  const fullUrl = urlBase + url;
+    client?.baseUrl ||
+    process?.env?.ZOO_HOST ||
+    process?.env?.BASE_URL ||
+    'https://api.zoo.dev'
+  const fullUrl = urlBase + url
   // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
   // backwards compatibility, but the new standard is ZOO_API_TOKEN.
   // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
@@ -26,17 +48,16 @@ export default async function get_oauth2_providers_for_user({
     : process.env.KITTYCAD_TOKEN ||
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
-      '';
-  const headers = {
-    Authorization: `Bearer ${kittycadToken}`,
-    'Content-Type': 'text/plain',
-  };
-  const fetchOptions = {
+      ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
-  };
-  const response = await fetch(fullUrl, fetchOptions);
-  const result =
-    (await response.json()) as Get_oauth2_providers_for_user_return;
-  return result;
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as GetOauth2ProvidersForUserReturn
+  return result
 }
