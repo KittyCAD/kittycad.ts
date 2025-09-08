@@ -1,11 +1,11 @@
-$ErrorActionPreference = 'Stop'
-
 param(
   [string]$RootCN,
   [string]$ServerCN,
   [string]$PfxPath,
   [string]$PfxPassword
 )
+
+$ErrorActionPreference = 'Stop'
 
 if (-not $RootCN) { $RootCN = 'KittyCAD-Test-Root' }
 if (-not $ServerCN) { $ServerCN = 'localhost' }
