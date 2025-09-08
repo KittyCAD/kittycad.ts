@@ -12,7 +12,48 @@ if (-not $ServerCN) { $ServerCN = 'localhost' }
 if (-not $PfxPath) { $PfxPath = 'servercert.pfx' }
 if (-not $PfxPassword) { $PfxPassword = 'pass' }
 
-Write-Host "Creating local root CA and server cert..."
+function Log([string]$msg) {
+  $ts = Get-Date -Format 'HH:mm:ss'
+  Write-Host "[$ts] $msg"
+}
+
+function Invoke-With-Timeout([ScriptBlock]$ScriptBlock, [int]$TimeoutSeconds, [object[]]$ArgumentList) {
+  $job = Start-Job -ScriptBlock $ScriptBlock -ArgumentList $ArgumentList
+  try {
+    if (Wait-Job -Job $job -Timeout $TimeoutSeconds) {
+      $res = Receive-Job -Job $job -ErrorAction Stop
+      return $res
+    } else {
+      throw "Timeout after $TimeoutSeconds seconds"
+    }
+  } finally {
+    Stop-Job $job -ErrorAction SilentlyContinue | Out-Null
+    Remove-Job $job -ErrorAction SilentlyContinue | Out-Null
+  }
+}
+
+function Invoke-ProcessWithTimeout([string]$File, [string]$Arguments, [int]$TimeoutSeconds) {
+  $psi = New-Object System.Diagnostics.ProcessStartInfo
+  $psi.FileName = $File
+  $psi.Arguments = $Arguments
+  $psi.UseShellExecute = $false
+  $psi.RedirectStandardOutput = $true
+  $psi.RedirectStandardError = $true
+  $p = New-Object System.Diagnostics.Process
+  $p.StartInfo = $psi
+  [void]$p.Start()
+  if ($p.WaitForExit($TimeoutSeconds * 1000)) {
+    $stdout = $p.StandardOutput.ReadToEnd()
+    $stderr = $p.StandardError.ReadToEnd()
+    if ($p.ExitCode -ne 0) { throw "Process failed ($File): $($p.ExitCode) `n$stderr" }
+    return $stdout
+  } else {
+    try { $p.Kill() } catch {}
+    throw "Process timeout: $File $Arguments"
+  }
+}
+
+Log "Creating local root CA and server cert..."
 
 
 # Create a root CA in CurrentUser store (use splatting for reliability)
@@ -29,7 +70,9 @@ $rootParams = @{
   NotAfter          = (Get-Date).AddMonths(3)
   TextExtension     = @('2.5.29.19={text}CA=1&pathlength=3')
 }
+$sw = [System.Diagnostics.Stopwatch]::StartNew()
 $root = New-SelfSignedCertificate @rootParams
+Log "Root created in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
 # Create a server cert signed by the root
 $serverParams = @{
@@ -45,15 +88,37 @@ $serverParams = @{
   Signer            = $root
   TextExtension     = @('2.5.29.19={text}CA=0')
 }
+$sw.Restart()
 $server = New-SelfSignedCertificate @serverParams
+Log "Server cert created in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
 # Trust the root CA in CurrentUser\Root store using Import-Certificate (avoids certutil hangs)
 $rootCer = Join-Path $PWD 'root.cer'
+$sw.Restart()
 Export-Certificate -Cert $root -FilePath $rootCer | Out-Null
-Import-Certificate -FilePath $rootCer -CertStoreLocation "Cert:\CurrentUser\Root" | Out-Null
+Log "Root exported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
+
+$timeout = [int]([Environment]::GetEnvironmentVariable('ZOO_CA_IMPORT_TIMEOUT') ?? '30')
+Log "Importing root into CurrentUser\\Root (timeout ${timeout}s)..."
+$sw.Restart()
+try {
+  Invoke-With-Timeout {
+    param($path)
+    $ErrorActionPreference = 'Stop'
+    Import-Certificate -FilePath $path -CertStoreLocation 'Cert:\\CurrentUser\\Root' | Out-Null
+  } $timeout @($rootCer)
+  Log "Root imported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
+} catch {
+  Log "Import-Certificate failed or timed out: $($_.Exception.Message). Falling back to certutil..."
+  $sw.Restart()
+  Invoke-ProcessWithTimeout 'certutil' "-user -addstore Root `"$rootCer`"" $timeout | Out-Null
+  Log "certutil import completed in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
+}
 
 # Export server cert as PFX for the Node HTTPS server
 $pwd = ConvertTo-SecureString -String $PfxPassword -Force -AsPlainText
+$sw.Restart()
 Export-PfxCertificate -Cert $server -FilePath $PfxPath -Password $pwd | Out-Null
+Log "PFX exported in $($sw.Elapsed.TotalSeconds.ToString('0.00'))s"
 
-Write-Host "Local CA created and trusted. PFX at $PfxPath"
+Log "Local CA created and trusted. PFX at $PfxPath"
