@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { UnitFrequencyConversion, UnitFrequency } from '../../models.js'
@@ -34,7 +34,9 @@ export default async function get_frequency_unit_conversion({
   output_unit,
   value,
 }: GetFrequencyUnitConversionInput): Promise<GetFrequencyUnitConversionReturn> {
-  const url = `/unit/conversion/frequency/${input_unit}/${output_unit}?value=${value}`
+  const path = `/unit/conversion/frequency/${input_unit}/${output_unit}`
+  const qs = buildQuery({ value: value })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

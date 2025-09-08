@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { ZooProductSubscription } from '../../models.js'
@@ -25,7 +25,9 @@ type GetPricingSubscriptionsReturn = ZooProductSubscription[]
 export default async function get_pricing_subscriptions(
   { client }: GetPricingSubscriptionsInput = {} as GetPricingSubscriptionsInput
 ): Promise<GetPricingSubscriptionsReturn> {
-  const url = `/pricing/subscriptions`
+  const path = `/pricing/subscriptions`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

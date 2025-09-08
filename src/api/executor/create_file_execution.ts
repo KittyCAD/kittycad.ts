@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { CodeOutput, CodeLanguage } from '../../models.js'
@@ -6,7 +6,7 @@ import { CodeOutput, CodeLanguage } from '../../models.js'
 interface CreateFileExecutionInput {
   client?: Client
   lang: CodeLanguage
-  output: string
+  output?: string
   body: string
 }
 
@@ -32,7 +32,9 @@ export default async function create_file_execution({
   output,
   body,
 }: CreateFileExecutionInput): Promise<CreateFileExecutionReturn> {
-  const url = `/file/execute/${lang}?output=${output}`
+  const path = `/file/execute/${lang}`
+  const qs = buildQuery({ output: output })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

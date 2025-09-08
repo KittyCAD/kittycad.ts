@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import {
@@ -35,7 +35,9 @@ export default async function update_enterprise_pricing_for_org({
   id,
   body,
 }: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const url = `/orgs/${id}/enterprise/pricing`
+  const path = `/orgs/${id}/enterprise/pricing`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

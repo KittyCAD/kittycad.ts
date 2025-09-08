@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { OAuth2ClientInfo, AccountProvider } from '../../models.js'
@@ -6,7 +6,7 @@ import { OAuth2ClientInfo, AccountProvider } from '../../models.js'
 interface Oauth2ProviderConsentInput {
   client?: Client
   provider: AccountProvider
-  callback_url: string
+  callback_url?: string
 }
 
 type Oauth2ProviderConsentReturn = OAuth2ClientInfo
@@ -29,7 +29,9 @@ export default async function oauth2_provider_consent({
   provider,
   callback_url,
 }: Oauth2ProviderConsentInput): Promise<Oauth2ProviderConsentReturn> {
-  const url = `/oauth2/provider/${provider}/consent?callback_url=${callback_url}`
+  const path = `/oauth2/provider/${provider}/consent`
+  const qs = buildQuery({ callback_url: callback_url })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

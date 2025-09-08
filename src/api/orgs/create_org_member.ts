@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { OrgMember, AddOrgMember } from '../../models.js'
@@ -36,7 +36,9 @@ export default async function create_org_member({
   client,
   body,
 }: CreateOrgMemberInput): Promise<CreateOrgMemberReturn> {
-  const url = `/org/members`
+  const path = `/org/members`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

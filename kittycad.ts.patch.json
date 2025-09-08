@@ -859,7 +859,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1token~1revoke/post/x-typescript",
     "value": {
-      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_token_revoke()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_token_revoke({\n        body: {\n            client_id: 'The client ID.',\n            client_secret: 'The client secret.',\n            token: 'An auth token. A uuid with a prefix of dev-',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -875,7 +875,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1callback/post/x-typescript",
     "value": {
-      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback_post({\n        provider: 'apple',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback_post({\n        provider: 'apple',\n        body: {\n            code: 'The authorization code.',\n            id_token:\n                'For Apple only, a JSON web token containing the user’s identity information.',\n            state: 'The state that we had passed in through the user consent URL.',\n            user: \"For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ 'name': { 'firstName': string, 'lastName': string }, 'email': string }`\",\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -899,7 +899,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1device~1token/post/x-typescript",
     "value": {
-      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_access_token()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_access_token({\n        body: {\n            client_id: 'The client ID.',\n            device_code: 'The device code.',\n            grant_type: 'urn:ietf:params:oauth:grant-type:device_code',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -915,7 +915,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1device~1auth/post/x-typescript",
     "value": {
-      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_request()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.device_auth_request({\n        body: { client_id: 'The client ID.' },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

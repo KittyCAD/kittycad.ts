@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
@@ -11,10 +11,10 @@ import {
 
 interface ListOrgMembersInput {
   client?: Client
-  limit: number
-  page_token: string
-  sort_by: CreatedAtSortMode
-  role: UserOrgRole
+  limit?: number
+  page_token?: string
+  sort_by?: CreatedAtSortMode
+  role?: UserOrgRole
 }
 
 type ListOrgMembersReturn = OrgMemberResultsPage
@@ -43,7 +43,14 @@ export default async function list_org_members({
   sort_by,
   role,
 }: ListOrgMembersInput): Promise<ListOrgMembersReturn> {
-  const url = `/org/members?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&role=${role}`
+  const path = `/org/members`
+  const qs = buildQuery({
+    limit: limit,
+    page_token: page_token,
+    sort_by: sort_by,
+    role: role,
+  })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

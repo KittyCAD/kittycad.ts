@@ -1,4 +1,4 @@
-import { Client } from '../../client.js';
+import { Client, buildQuery{{#if isUrlEncoded}}, buildForm{{/if}} } from '../../client.js';
 import { throwIfNotOk } from '../../errors.js';
 {{#if pager}}
 import { Pager, createPager } from '../../pagination.js';
@@ -14,7 +14,9 @@ import { Pager, createPager } from '../../pagination.js';
 export default async function {{functionName}}(
   {{{paramsSignature}}}
 ): Promise<{{returnTypeName}}> {
-  const url = {{{urlExpr}}};
+  const path = {{{urlPathExpr}}};
+  const qs = buildQuery({{{queryObjectExpr}}});
+  const url = path + qs;
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
@@ -64,4 +66,3 @@ export function {{pagerFnName}}(
   );
 }
 {{/if}}
-

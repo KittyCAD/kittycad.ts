@@ -1,11 +1,11 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { FileCenterOfMass, UnitLength, FileImportFormat } from '../../models.js'
 
 interface CreateFileCenterOfMassInput {
   client?: Client
-  output_unit: UnitLength
+  output_unit?: UnitLength
   src_format: FileImportFormat
   body: string
 }
@@ -42,7 +42,9 @@ export default async function create_file_center_of_mass({
   src_format,
   body,
 }: CreateFileCenterOfMassInput): Promise<CreateFileCenterOfMassReturn> {
-  const url = `/file/center-of-mass?output_unit=${output_unit}&src_format=${src_format}`
+  const path = `/file/center-of-mass`
+  const qs = buildQuery({ output_unit: output_unit, src_format: src_format })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

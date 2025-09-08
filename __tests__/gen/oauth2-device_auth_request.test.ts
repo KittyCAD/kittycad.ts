@@ -1,7 +1,9 @@
 import { oauth2, ApiError } from '../../src/index.js'
 
 async function example() {
-  const response = await oauth2.device_auth_request()
+  const response = await oauth2.device_auth_request({
+    body: { client_id: 'The client ID.' },
+  })
   return response
 }
 

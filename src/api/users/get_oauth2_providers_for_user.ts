@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { AccountProvider } from '../../models.js'
@@ -29,7 +29,9 @@ export default async function get_oauth2_providers_for_user(
     client,
   }: GetOauth2ProvidersForUserInput = {} as GetOauth2ProvidersForUserInput
 ): Promise<GetOauth2ProvidersForUserReturn> {
-  const url = `/user/oauth2/providers`
+  const path = `/user/oauth2/providers`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.

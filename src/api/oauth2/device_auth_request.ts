@@ -1,10 +1,11 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery, buildForm } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {} from '../../models.js'
+import { DeviceAuthRequestForm } from '../../models.js'
 
 interface DeviceAuthRequestInput {
   client?: Client
+  body: DeviceAuthRequestForm
 }
 
 type DeviceAuthRequestReturn = unknown
@@ -18,12 +19,16 @@ type DeviceAuthRequestReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {DeviceAuthRequestForm} body Request body payload
  * @returns {Promise<DeviceAuthRequestReturn>} Response payload.
  */
-export default async function device_auth_request(
-  { client }: DeviceAuthRequestInput = {} as DeviceAuthRequestInput
-): Promise<DeviceAuthRequestReturn> {
-  const url = `/oauth2/device/auth`
+export default async function device_auth_request({
+  client,
+  body,
+}: DeviceAuthRequestInput): Promise<DeviceAuthRequestReturn> {
+  const path = `/oauth2/device/auth`
+  const qs = buildQuery({})
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
@@ -45,9 +50,11 @@ export default async function device_auth_request(
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  headers['Content-Type'] = 'application/x-www-form-urlencoded'
   const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
+    body: buildForm(body as unknown as Record<string, unknown>),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)

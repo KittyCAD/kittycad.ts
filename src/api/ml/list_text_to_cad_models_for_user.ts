@@ -1,4 +1,4 @@
-import { Client } from '../../client.js'
+import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
@@ -11,11 +11,11 @@ import {
 
 interface ListTextToCadModelsForUserInput {
   client?: Client
-  limit: number
-  page_token: string
-  sort_by: CreatedAtSortMode
-  conversation_id: Uuid
-  no_models: boolean
+  limit?: number
+  page_token?: string
+  sort_by?: CreatedAtSortMode
+  conversation_id?: Uuid
+  no_models?: boolean
 }
 
 type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage
@@ -50,7 +50,15 @@ export default async function list_text_to_cad_models_for_user({
   conversation_id,
   no_models,
 }: ListTextToCadModelsForUserInput): Promise<ListTextToCadModelsForUserReturn> {
-  const url = `/user/text-to-cad?limit=${limit}&page_token=${page_token}&sort_by=${sort_by}&conversation_id=${conversation_id}&no_models=${no_models}`
+  const path = `/user/text-to-cad`
+  const qs = buildQuery({
+    limit: limit,
+    page_token: page_token,
+    sort_by: sort_by,
+    conversation_id: conversation_id,
+    no_models: no_models,
+  })
+  const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
   // sdks and the CLI.
