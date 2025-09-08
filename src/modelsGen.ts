@@ -297,7 +297,9 @@ function addCommentInfo(schema: any, typeString: string) {
 }
 
 function sanitizeForJsDoc(str: string): string {
-  return String(str).replaceAll('*/', '*/')
+  // Avoid prematurely terminating a JSDoc block inside descriptions.
+  // Replace closing token with a visually similar but safe sequence.
+  return String(str).replaceAll('*/', '*\\/')
 }
 
 function indentBlock(s: string, indent = ' * '): string {
