@@ -58,9 +58,7 @@ export default async function create_file_conversion_options({
       process.env.KITTYCAD_API_TOKEN ||
       process.env.ZOO_API_TOKEN ||
       ''
-  const headers: Record<string, string> = {
-    'Content-Type': 'multipart/form-data',
-  }
+  const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
 
   const formData = new FormData()
