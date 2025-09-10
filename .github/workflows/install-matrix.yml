@@ -20,13 +20,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          cache: yarn
+          cache: npm
       - name: Install deps
-        run: yarn install --frozen-lockfile
+        run: npm install --frozen-lockfile
       - name: Build package
-        run: yarn build
+        run: npm run build
       - name: Pack tarball
-        run: yarn pack --filename pkg.tgz
+        run: npm run pack --filename pkg.tgz
 
       - name: Node ESM import smoke
         run: node scripts/smoke/node-esm.mjs pkg.tgz

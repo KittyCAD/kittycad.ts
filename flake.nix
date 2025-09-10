@@ -31,7 +31,7 @@
           packages = (with pkgs; [
             just
             nodejs_22
-            yarn
+            npm i
           ]) ++ pkgs.lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
             libiconv 
             darwin.apple_sdk.frameworks.Security

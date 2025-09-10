@@ -13,13 +13,13 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-            node-version: '20.9.0'
-            cache: 'yarn'
-      - run: yarn install
-      - run: yarn gen
-      - run: yarn build
-      # Generate the OpenAPI spec. Yes, yarn test generates it.
-      - run: yarn test
+            node-version-file: '.nvmrc'
+            cache: 'npm'
+      - run: npm install
+      - run: npm run gen
+      - run: npm run build
+      # Generate the OpenAPI spec. Yes, npm run test generates it.
+      - run: npm run test
         env:
           ZOO_API_TOKEN: ${{ secrets.KITTYCAD_TOKEN }}
           ZOO_HOST: "https://api.dev.zoo.dev/"
