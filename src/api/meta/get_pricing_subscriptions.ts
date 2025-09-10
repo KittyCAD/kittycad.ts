@@ -7,7 +7,7 @@ interface GetPricingSubscriptionsInput {
   client?: Client
 }
 
-type GetPricingSubscriptionsReturn = ZooProductSubscription[]
+type GetPricingSubscriptionsReturn = Record<string, ZooProductSubscription[]>
 
 /**
  * Get the pricing for our subscriptions.
@@ -20,7 +20,7 @@ type GetPricingSubscriptionsReturn = ZooProductSubscription[]
  * @property {Client} [client] Optional client with auth token.
  * @returns {Promise<GetPricingSubscriptionsReturn>} successful operation
  *
- * Possible return types: ZooProductSubscription[]
+ * Possible return types: ZooProductSubscription
  */
 export default async function get_pricing_subscriptions(
   { client }: GetPricingSubscriptionsInput = {} as GetPricingSubscriptionsInput
