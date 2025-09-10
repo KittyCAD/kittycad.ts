@@ -447,6 +447,10 @@ export default async function apiGen(lookup: Record<string, string>) {
 
         // No-op: Handlebars template handles optional params signature.
         const importedTypes: string[] = []
+        // When response schemas are complex (e.g., objects with index signatures)
+        // we may want to explicitly override the computed return type.
+        // If set, this takes precedence over the union of importedTypes.
+        let returnTypeOverride: string | undefined
         let pagerItemTypeName: string | undefined
         if (!isWebSocket) {
           Object.values(operation.specSection?.responses).forEach(
@@ -534,18 +538,57 @@ export default async function apiGen(lookup: Record<string, string>) {
                 schema.type === 'object' &&
                 'additionalProperties' in schema
               ) {
-                schema.additionalProperties
-                const addProps =
-                  schema.additionalProperties as OpenAPIV3.SchemaObject
-                if (addProps.type === 'array' && '$ref' in addProps.items) {
-                  const typeReference = lookup[addProps.items.$ref]
-                  if (
-                    typeReference &&
-                    typeReference !== 'Error' &&
-                    !importedTypes.includes(typeReference + '[]')
+                const addProps = schema.additionalProperties as
+                  | OpenAPIV3.ReferenceObject
+                  | OpenAPIV3.SchemaObject
+
+                // Handle maps (index signatures) properly. Previously we
+                // collapsed `{ [k: string]: T[] }` into just `T[]`, which
+                // dropped the object shape. Build a Record<key, value> type
+                // and import the inner model type when applicable.
+                if (isRef(addProps)) {
+                  const t = lookup[addProps.$ref]
+                  if (t && t !== 'Error' && !importedTypes.includes(t))
+                    importedTypes.push(t)
+                  returnTypeOverride = `Record<string, ${t || 'unknown'}>`
+                } else if (isArraySchema(addProps as OpenAPIV3.SchemaObject)) {
+                  const items = (addProps as OpenAPIV3.ArraySchemaObject).items
+                  if (isRef(items)) {
+                    const t = lookup[items.$ref]
+                    if (t && t !== 'Error' && !importedTypes.includes(t))
+                      importedTypes.push(t)
+                    returnTypeOverride = `Record<string, ${t || 'unknown'}[]>`
+                  } else if (
+                    (items as OpenAPIV3.SchemaObject)?.type === 'string'
                   ) {
-                    importedTypes.push(typeReference + '[]')
+                    returnTypeOverride = 'Record<string, string[]>'
+                  } else if (
+                    (items as OpenAPIV3.SchemaObject)?.type === 'number' ||
+                    (items as OpenAPIV3.SchemaObject)?.type === 'integer'
+                  ) {
+                    returnTypeOverride = 'Record<string, number[]>'
+                  } else if (
+                    (items as OpenAPIV3.SchemaObject)?.type === 'boolean'
+                  ) {
+                    returnTypeOverride = 'Record<string, boolean[]>'
+                  } else {
+                    returnTypeOverride = 'Record<string, unknown[]>'
                   }
+                } else if (
+                  (addProps as OpenAPIV3.SchemaObject)?.type === 'string'
+                ) {
+                  returnTypeOverride = 'Record<string, string>'
+                } else if (
+                  (addProps as OpenAPIV3.SchemaObject)?.type === 'number' ||
+                  (addProps as OpenAPIV3.SchemaObject)?.type === 'integer'
+                ) {
+                  returnTypeOverride = 'Record<string, number>'
+                } else if (
+                  (addProps as OpenAPIV3.SchemaObject)?.type === 'boolean'
+                ) {
+                  returnTypeOverride = 'Record<string, boolean>'
+                } else {
+                  returnTypeOverride = 'Record<string, unknown>'
                 }
               } else {
                 // Fallback: accept unknown for unhandled response shapes
@@ -582,9 +625,11 @@ export default async function apiGen(lookup: Record<string, string>) {
           const returnTyping = `type ${pascalName}Return = ${
             has204
               ? 'void'
-              : importedTypes.length
-                ? importedTypes.join(' | ')
-                : 'unknown'
+              : returnTypeOverride
+                ? returnTypeOverride
+                : importedTypes.length
+                  ? importedTypes.join(' | ')
+                  : 'unknown'
           }`
           const paramsInterfaceName = `${pascalName}Input`
           const returnTypeName = `${pascalName}Return`
