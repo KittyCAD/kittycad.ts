@@ -26,7 +26,7 @@ jobs:
       - name: Build package
         run: npm run build
       - name: Pack tarball
-        run: npm run pack --filename pkg.tgz
+        run: npm pack --filename pkg.tgz
 
       - name: Node ESM import smoke
         run: node scripts/smoke/node-esm.mjs pkg.tgz
