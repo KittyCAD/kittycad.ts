@@ -1,5 +1,5 @@
 /**
- * Adapted from https://github.com/KittyCAD/modeling-app/blob/49d40f28b703505743f90948a38ede929d4f28e0/src/lib/crossPlatformFetch.ts
+ * Adapted from https://github.com/KittyCAD/text-to-cad-ui/blob/309a2e756732b7b9a2b095d6a0f99bc23872d542/src/lib/billing.ts
  */
 
 import { orgs, payments } from '..'
@@ -109,6 +109,7 @@ async function fetchBilling<T, TT>(
 
 export enum Tier {
   Free = 'free',
+  Plus = 'plus',
   Pro = 'pro',
   Organization = 'organization',
   Unknown = 'unknown',
@@ -127,6 +128,8 @@ const toTierFrom = (args: TierBasedOn): Tier => {
   } else if (!BillingError.from(args.subscriptions)) {
     if (args.subscriptions?.modeling_app?.name === 'pro') {
       return Tier.Pro
+    } else if (args.subscriptions?.modeling_app?.name === 'plus') {
+      return Tier.Plus
     } else {
       return Tier.Free
     }
@@ -173,6 +176,7 @@ export async function getBillingInfo(
       credits = Infinity
       break
     case Tier.Free:
+    case Tier.Plus:
       if (!BillingError.from(subscriptions)) {
         allowance = Number(
           subscriptions?.modeling_app?.monthly_pay_as_you_go_api_credits
