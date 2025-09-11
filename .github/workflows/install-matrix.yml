@@ -26,16 +26,16 @@ jobs:
       - name: Build package
         run: npm run build
       - name: Pack tarball
-        run: npm pack --filename pkg.tgz
+        run: npm pack
 
       - name: Node ESM import smoke
-        run: node scripts/smoke/node-esm.mjs pkg.tgz
+        run: node scripts/smoke/node-esm.mjs kittycad-lib-*.tgz
 
       - name: Node CJS require smoke
-        run: node scripts/smoke/node-cjs.cjs pkg.tgz
+        run: node scripts/smoke/node-cjs.cjs kittycad-lib-*.tgz
 
       - name: Browser bundling (esbuild) smoke
-        run: node scripts/smoke/esbuild.mjs pkg.tgz
+        run: node scripts/smoke/esbuild.mjs kittycad-lib-*.tgz
 
       - name: Browser bundling (Vite) smoke
-        run: node scripts/smoke/vite.mjs pkg.tgz
+        run: node scripts/smoke/vite.mjs kittycad-lib-*.tgz
