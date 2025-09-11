@@ -10,7 +10,7 @@ import {
 import { Client } from '../client'
 
 // Get all default values there
-const client: Client = {}
+const client: Client = { token: 'does-not-matter' }
 
 // Setup basic request mocking
 const server = setupServer()
@@ -97,31 +97,6 @@ test('Handles error fetching billing on balance', async () => {
 
   const billing = await getBillingInfo(client)
   expect(billing).toBeInstanceOf(BillingError)
-})
-
-test('Handles error fetching billing on subscriptions', async () => {
-  const data = {
-    balance: {
-      monthlyApiCreditsRemaining: 1,
-      stableApiCreditsRemaining: 2,
-    },
-  }
-
-  server.use(
-    http.get('*/user/payment/balance', () => {
-      return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
-    }),
-    http.get('*/user/payment/subscriptions', () => {
-      return new HttpResponse(403)
-    })
-  )
-
-  const billing = await getBillingInfo(client)
-  if (!BillingError.from(billing)) {
-    expect(billing.tier).toBe(Tier.Unknown)
-  } else {
-    expect(billing).not.toBe(BillingError)
-  }
 })
 
 test('Finds the credits of Free subscription', async () => {

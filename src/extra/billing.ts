@@ -73,6 +73,13 @@ async function fetchBilling<T, TT>(
         // url: dunno?
       })
     }
+
+    if (typeof response === 'number') {
+      return new BillingError({
+        type: EBillingError.UnexpectedStatus,
+        code: Number(response),
+      })
+    }
     return response
   } catch (e) {
     if ('status' in e && 'statusText' in e) {
@@ -94,13 +101,6 @@ async function fetchBilling<T, TT>(
           return new BillingError({
             type: EBillingError.JSONParse,
             error: data,
-          })
-        }
-
-        if (typeof data === 'number') {
-          return new BillingError({
-            type: EBillingError.UnexpectedStatus,
-            code: Number(data),
           })
         }
 
