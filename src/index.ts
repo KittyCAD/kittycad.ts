@@ -763,6 +763,3 @@ export type {
 export { Client } from './client.js'
 export { ApiError } from './errors.js'
 export { Pager, createPager } from './pagination.js'
-
-import { getBillingInfo, BillingError } from './extra/billing.js'
-export const extra = { getBillingInfo, BillingError }
