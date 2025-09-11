@@ -6427,6 +6427,11 @@ export type ReasoningMessage =
   | {
       /** The content of the reasoning. */
       content: string
+      type: 'markdown'
+    }
+  | {
+      /** The content of the reasoning. */
+      content: string
       type: 'kcl_docs'
     }
   | {
