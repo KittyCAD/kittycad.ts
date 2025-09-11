@@ -14,7 +14,7 @@ Directory layout (important)
 
 - `src/` — generated runtime SDK (do not hand‑edit):
   - `src/models.ts`, `src/api/**`, `src/index.ts` — the library surface users
-    import. These are overwritten by `yarn gen`.
+    import. These are overwritten by `npm run gen`.
   - `src/client.ts`, `src/errors.ts`, `src/pagination.ts`, `src/ws-utils.ts`
     — shared runtime helpers used by generated code.
 
@@ -27,15 +27,15 @@ We also try to write simple and idiomatic Typescript in the generation logic.
 
 Workflow
 
-- Run `yarn gen` after changes in `gen/**` to regenerate the SDK.
-- Run `yarn tsc` to type‑check everything, including generated examples.
-- Run `yarn build` to produce `dist/` artifacts (`exports` point to `dist`).
-- Run `yarn test` to execute tests (note: most generated examples are smoke
+- Run `npm run gen` after changes in `gen/**` to regenerate the SDK.
+- Run `npm run tsc` to type‑check everything, including generated examples.
+- Run `npm run build` to produce `dist/` artifacts (`exports` point to `dist`).
+- Run `npm run test` to execute tests (note: most generated examples are smoke
   tests; network calls may be skipped/expected to throw with dummy data).
 
 If you make a breaking change add it to the CHANGELOG.md with a migration guide.
 
-Always run `yarn fmt` after you make changes.
+Always run `npm run fmt` after you make changes.
 
 Conventions added by the generator
 

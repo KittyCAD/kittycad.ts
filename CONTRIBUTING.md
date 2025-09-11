@@ -8,7 +8,7 @@ It triggers a bot to commit the new specification to this repository.
 We really should automate publishing, but for now, it's this process:
 
 1. Update the version in `package.json` to the new version and merge that to main.
-2. run `yarn install && yarn build && npm publish`
+2. run `npm run install && npm run build && npm publish`
 3. run `git tag v<version> && git push --tags`
 4. create a release on github with the same tag.
 
