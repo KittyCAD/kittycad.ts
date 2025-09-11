@@ -1,4 +1,4 @@
-import { getBillingInfo, BillingError, Tier } from './billing'
+import { getBillingInfo, BillingError } from './billing'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import {
