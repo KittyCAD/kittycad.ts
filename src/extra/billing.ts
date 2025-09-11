@@ -82,30 +82,26 @@ async function fetchBilling<T, TT>(
     }
     return response
   } catch (e) {
-    if ('status' in e && 'statusText' in e) {
-      const fallbackErrorMessage = `Failed to request endpoint: ${e.status} ${e.statusText}`
-      try {
-        const data = await e.json()
-        const resolvedMessage =
-          data instanceof Object && 'message' in data
-            ? data.message
-            : fallbackErrorMessage
-        return new BillingError({
-          type: EBillingError.NotOk,
-          response: e,
-          data: JSON.stringify(data),
-          message: resolvedMessage,
-        })
-      } catch (data) {
-        if (data instanceof Error) {
-          return new BillingError({
-            type: EBillingError.JSONParse,
-            error: data,
-          })
-        }
+    if ('status' in e) {
+      const fallbackErrorMessage = `Failed to request endpoint: ${e.status}`
+      const data = e.body
+      const resolvedMessage =
+        data instanceof Object && 'message' in data
+          ? data.message
+          : fallbackErrorMessage
+      return new BillingError({
+        type: EBillingError.NotOk,
+        response: e,
+        data: JSON.stringify(data),
+        message: resolvedMessage,
+      })
+    }
 
-        return data
-      }
+    if (e instanceof SyntaxError) {
+      return new BillingError({
+        type: EBillingError.JSONParse,
+        error: e,
+      })
     }
     return e
   }
