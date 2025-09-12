@@ -6541,7 +6541,7 @@ export interface RtcSessionDescription {
 }
 
 export interface SamlIdentityProvider {
-  /** title:String, format:uri, description:The ACS (Assertion Consumer Service) url. */
+  /** title:String, format:uri, description:The ACS (Assertion Consumer Service) URL. */
   acs_url: string
   /**
    * {
@@ -6577,7 +6577,7 @@ export interface SamlIdentityProvider {
    * }
    */
   public_cert?: string
-  /** title:String, format:uri, description:The SLO (Single Logout) url. */
+  /** title:String, format:uri, description:The SLO (Single Logout) URL. */
   slo_url: string
   /**
    * {
