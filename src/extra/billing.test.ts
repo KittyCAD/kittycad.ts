@@ -135,6 +135,42 @@ test('Finds the credits of Free subscription', async () => {
   await expect(billing.allowance).toBe(monthlyCredits)
 })
 
+test('Finds the credits of Plus subscription', async () => {
+  const data = {
+    balance: {
+      monthlyApiCreditsRemaining: 10,
+      stableApiCreditsRemaining: 0,
+    },
+    subscriptions: {
+      monthlyPayAsYouGoApiCreditsTotal: 100,
+      name: 'plus' as ModelingAppSubscriptionTierName,
+    },
+  }
+
+  server.use(
+    http.get('*/user/payment/balance', () => {
+      return HttpResponse.json(createUserPaymentBalanceResponse(data.balance))
+    }),
+    http.get('*/user/payment/subscriptions', () => {
+      return HttpResponse.json(
+        createUserPaymentSubscriptionsResponse(data.subscriptions)
+      )
+    }),
+    http.get('*/org', () => {
+      return new HttpResponse(403)
+    })
+  )
+
+  const billing = await getBillingInfo(client)
+  if (BillingError.from(billing)) throw billing
+  const totalCredits =
+    data.balance.monthlyApiCreditsRemaining +
+    data.balance.stableApiCreditsRemaining
+  const monthlyCredits = data.subscriptions.monthlyPayAsYouGoApiCreditsTotal
+  await expect(billing.credits).toBe(totalCredits)
+  await expect(billing.allowance).toBe(monthlyCredits)
+})
+
 test('Finds infinite credits for Pro subscription', async () => {
   const data = {
     // These are all ignored
