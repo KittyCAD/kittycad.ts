@@ -29,8 +29,8 @@ jobs:
           private-key: ${{ secrets.GH_ORG_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -48,7 +48,7 @@ jobs:
             echo "No files changed, proceeding";
           fi
       # Checkout the docs repo since we will want to update the files there.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: 'kittycad/website'
           path: 'docs'
