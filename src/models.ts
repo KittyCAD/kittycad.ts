@@ -2933,7 +2933,6 @@ export type MlCopilotTool =
   | 'edit_kcl_code'
   | 'text_to_cad'
   | 'mechanical_knowledge_base'
-  | 'explain_kcl_file'
   | 'web_search'
 
 export type MlFeedback = 'thumbs_up' | 'thumbs_down' | 'accepted' | 'rejected'
@@ -3066,11 +3065,6 @@ export type MlToolResult =
       /** The response from the mechanical knowledge base. */
       response: string
       type: 'mechanical_knowledge_base'
-    }
-  | {
-      /** The response from explaining the kcl file. */
-      response: string
-      type: 'explain_kcl_file'
     }
 
 export type ModelingAppEventType = 'successful_compile_before_close'
