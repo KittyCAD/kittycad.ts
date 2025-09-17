@@ -2920,6 +2920,22 @@ export type MlCopilotServerMessage =
         /**
          * {
          *   "nullable": true,
+         *   "format": "date-time",
+         *   "description": "This indicates the time that the server has finished processing the request. This can be used by the client to measure the total time taken for the request. Although this might be passed in other contexts, outside of copilot mode, it is only relevant in copilot mode."
+         * }
+         */
+        completed_at?: string
+        /**
+         * {
+         *   "nullable": true,
+         *   "format": "date-time",
+         *   "description": "This indicates the time that the server had started processing the request. This can be used by the client to measure the total time taken for the request. Although this might be passed in other contexts, outside of copilot mode, it is only relevant in copilot mode."
+         * }
+         */
+        started_at?: string
+        /**
+         * {
+         *   "nullable": true,
          *   "description": "The whole response text, which is the final output of the AI. This is only relevant if in copilot mode, where the AI is expected to return the whole response at once."
          * }
          */
