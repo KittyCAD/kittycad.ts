@@ -3,13 +3,13 @@ import { throwIfNotOk } from '../../errors.js'
 
 import { MlFeedback } from '../../models.js'
 
-interface CreateTextToCadModelFeedbackInput {
+interface CreateTextToCadPartFeedbackInput {
   client?: Client
   id: string
   feedback: MlFeedback
 }
 
-type CreateTextToCadModelFeedbackReturn = void
+type CreateTextToCadPartFeedbackReturn = void
 
 /**
  * Give feedback to a specific ML response.
@@ -24,13 +24,13 @@ type CreateTextToCadModelFeedbackReturn = void
  * @property {Client} [client] Optional client with auth token.
  * @property {string} id The id of the model to give feedback to. (path)
  * @property {MlFeedback} feedback The feedback. (query)
- * @returns {Promise<CreateTextToCadModelFeedbackReturn>} resource updated
+ * @returns {Promise<CreateTextToCadPartFeedbackReturn>} resource updated
  */
-export default async function create_text_to_cad_model_feedback({
+export default async function create_text_to_cad_part_feedback({
   client,
   id,
   feedback,
-}: CreateTextToCadModelFeedbackInput): Promise<CreateTextToCadModelFeedbackReturn> {
+}: CreateTextToCadPartFeedbackInput): Promise<CreateTextToCadPartFeedbackReturn> {
   const path = `/user/text-to-cad/${id}`
   const qs = buildQuery({ feedback: feedback })
   const url = path + qs
@@ -62,5 +62,5 @@ export default async function create_text_to_cad_model_feedback({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  return undefined as CreateTextToCadModelFeedbackReturn
+  return undefined as CreateTextToCadPartFeedbackReturn
 }

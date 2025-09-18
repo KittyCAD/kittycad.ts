@@ -115,7 +115,7 @@
     "op": "add",
     "path": "/paths/~1user~1text-to-cad~1{id}/post/x-typescript",
     "value": {
-      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_model_feedback({\n        id: 'string',\n        feedback: 'thumbs_up',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_part_feedback({\n        id: 'string',\n        feedback: 'thumbs_up',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -123,7 +123,7 @@
     "op": "add",
     "path": "/paths/~1user~1text-to-cad~1{id}/get/x-typescript",
     "value": {
-      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_text_to_cad_model_for_user({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_text_to_cad_parts_for_user({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -131,7 +131,7 @@
     "op": "add",
     "path": "/paths/~1user~1text-to-cad/get/x-typescript",
     "value": {
-      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_text_to_cad_models_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_text_to_cad_models_for_user_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_text_to_cad_parts_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_text_to_cad_parts_for_user_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
