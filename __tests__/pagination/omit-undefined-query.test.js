@@ -23,7 +23,7 @@ describe('query building skips undefined params', () => {
       .mockResolvedValueOnce(makeRes({ items: [], next_page: null }))
     globalThis.fetch = mock
 
-    await ml.list_text_to_cad_models_for_user({
+    await ml.list_text_to_cad_parts_for_user({
       limit: 5,
       sort_by: 'created_at_descending',
       no_models: true,

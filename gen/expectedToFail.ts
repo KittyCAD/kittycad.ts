@@ -87,7 +87,7 @@ export const testsExpectedToThrow = [
   'ml.get_text_to_cad_model_for_user',
   'ml.list_conversations_for_user',
   'ml.list_ml_prompts',
-  'ml.list_text_to_cad_models_for_user',
+  'ml.list_text_to_cad_parts_for_user',
   // oauth2 urlencoded examples
   'oauth2.device_access_token',
   'oauth2.device_auth_request',

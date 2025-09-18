@@ -42,7 +42,7 @@ type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage
  *
  * Possible return types: TextToCadResponseResultsPage
  */
-export default async function list_text_to_cad_models_for_user({
+export default async function list_text_to_cad_parts_for_user({
   client,
   limit,
   page_token,
@@ -91,7 +91,7 @@ export default async function list_text_to_cad_models_for_user({
   return result
 }
 
-export function list_text_to_cad_models_for_user_pager(
+export function list_text_to_cad_parts_for_user_pager(
   params: ListTextToCadModelsForUserInput
 ): Pager<
   ListTextToCadModelsForUserInput,
@@ -102,5 +102,5 @@ export function list_text_to_cad_models_for_user_pager(
     ListTextToCadModelsForUserInput,
     ListTextToCadModelsForUserReturn,
     TextToCadResponse
-  >(list_text_to_cad_models_for_user, params, 'page_token')
+  >(list_text_to_cad_parts_for_user, params, 'page_token')
 }
