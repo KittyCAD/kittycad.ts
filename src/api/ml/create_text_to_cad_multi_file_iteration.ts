@@ -18,7 +18,7 @@ type CreateTextToCadMultiFileIterationReturn = TextToCadMultiFileIteration
 /**
  * Iterate on a multi-file CAD model with a prompt.
  *
- * This endpoint can iterate on multi-file models.
+ * This endpoint can iterate on multi-file projects.
  *
  * Even if you give specific ranges to edit, the model might change more than just those in order to make the changes you requested without breaking the code.
  *

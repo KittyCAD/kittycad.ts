@@ -27,7 +27,7 @@ function makeRes(body) {
   })
 }
 
-describe('pagination ml.list_text_to_cad_models_for_user_pager', () => {
+describe('pagination ml.list_text_to_cad_parts_for_user_pager', () => {
   const originalFetch = globalThis.fetch
   beforeEach(() => {
     vi.restoreAllMocks()
@@ -51,7 +51,7 @@ describe('pagination ml.list_text_to_cad_models_for_user_pager', () => {
       .mockResolvedValueOnce(makeRes(page2))
     globalThis.fetch = mock
 
-    const pager = ml.list_text_to_cad_models_for_user_pager({
+    const pager = ml.list_text_to_cad_parts_for_user_pager({
       limit: 10,
       page_token: '',
       sort_by: 'created_at_ascending',

@@ -1,7 +1,7 @@
 import { ml, ApiError } from '../../src/index.js'
 
 async function example() {
-  const response = await ml.list_text_to_cad_models_for_user({
+  const response = await ml.list_text_to_cad_parts_for_user({
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
@@ -13,7 +13,7 @@ async function example() {
 
 // Pagination example (not executed in tests; for docs only)
 export async function example_pager() {
-  const pager = ml.list_text_to_cad_models_for_user_pager({
+  const pager = ml.list_text_to_cad_parts_for_user_pager({
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
@@ -29,7 +29,7 @@ export async function example_pager() {
   return total
 }
 
-describe('Testing ml.list_text_to_cad_models_for_user', () => {
+describe('Testing ml.list_text_to_cad_parts_for_user', () => {
   it('should be truthy or throw', async () => {
     try {
       await example()

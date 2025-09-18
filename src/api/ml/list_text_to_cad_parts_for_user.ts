@@ -9,7 +9,7 @@ import {
   TextToCadResponse,
 } from '../../models.js'
 
-interface ListTextToCadModelsForUserInput {
+interface ListTextToCadPartsForUserInput {
   client?: Client
   limit?: number
   page_token?: string
@@ -18,16 +18,16 @@ interface ListTextToCadModelsForUserInput {
   no_models?: boolean
 }
 
-type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage
+type ListTextToCadPartsForUserReturn = TextToCadResponseResultsPage
 
 /**
- * List text-to-CAD models you've generated.
+ * List text-to-CAD parts you've generated.
  *
  * This will always return the STEP file contents as well as the format the user originally requested.
  *
- * This endpoint requires authentication by any Zoo user. It returns the text-to-CAD models for the authenticated user.
+ * This endpoint requires authentication by any Zoo user. It returns the text-to-CAD parts for the authenticated user.
  *
- * The text-to-CAD models are returned in order of creation, with the most recently created text-to-CAD models first.
+ * The text-to-CAD parts are returned in order of creation, with the most recently created text-to-CAD parts first.
  *
  * Tags: ml
  *
@@ -37,19 +37,19 @@ type ListTextToCadModelsForUserReturn = TextToCadResponseResultsPage
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {CreatedAtSortMode} sort_by (query)
  * @property {Uuid} conversation_id If specified, only return the prompts for the conversation id given. (query)
- * @property {boolean} no_models If we should return the model file contents or just the metadata. (query)
- * @returns {Promise<ListTextToCadModelsForUserReturn>} successful operation
+ * @property {boolean} no_models If we should return the part contents or just the metadata. (query)
+ * @returns {Promise<ListTextToCadPartsForUserReturn>} successful operation
  *
  * Possible return types: TextToCadResponseResultsPage
  */
-export default async function list_text_to_cad_models_for_user({
+export default async function list_text_to_cad_parts_for_user({
   client,
   limit,
   page_token,
   sort_by,
   conversation_id,
   no_models,
-}: ListTextToCadModelsForUserInput): Promise<ListTextToCadModelsForUserReturn> {
+}: ListTextToCadPartsForUserInput): Promise<ListTextToCadPartsForUserReturn> {
   const path = `/user/text-to-cad`
   const qs = buildQuery({
     limit: limit,
@@ -87,20 +87,20 @@ export default async function list_text_to_cad_models_for_user({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as ListTextToCadModelsForUserReturn
+  const result = (await response.json()) as ListTextToCadPartsForUserReturn
   return result
 }
 
-export function list_text_to_cad_models_for_user_pager(
-  params: ListTextToCadModelsForUserInput
+export function list_text_to_cad_parts_for_user_pager(
+  params: ListTextToCadPartsForUserInput
 ): Pager<
-  ListTextToCadModelsForUserInput,
-  ListTextToCadModelsForUserReturn,
+  ListTextToCadPartsForUserInput,
+  ListTextToCadPartsForUserReturn,
   TextToCadResponse
 > {
   return createPager<
-    ListTextToCadModelsForUserInput,
-    ListTextToCadModelsForUserReturn,
+    ListTextToCadPartsForUserInput,
+    ListTextToCadPartsForUserReturn,
     TextToCadResponse
-  >(list_text_to_cad_models_for_user, params, 'page_token')
+  >(list_text_to_cad_parts_for_user, params, 'page_token')
 }
