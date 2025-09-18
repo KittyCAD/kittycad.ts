@@ -82,9 +82,9 @@ export const testsExpectedToThrow = [
   'meta.create_debug_uploads',
   // ml
   'ml.create_proprietary_to_kcl',
-  'ml.create_text_to_cad_model_feedback',
+  'ml.create_text_to_cad_part_feedback',
   'ml.get_ml_prompt',
-  'ml.get_text_to_cad_model_for_user',
+  'ml.get_text_to_cad_part_for_user',
   'ml.list_conversations_for_user',
   'ml.list_ml_prompts',
   'ml.list_text_to_cad_parts_for_user',
