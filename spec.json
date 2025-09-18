@@ -29,7 +29,7 @@
                   "type": "string"
                 }
               },
-              "Access-Control-Allow-Headers": {
+              "Access-Control-Allow-Headerssssssssssssssssssssssssssssss": {
                 "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
                 "style": "simple",
                 "schema": {
