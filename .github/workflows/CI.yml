@@ -46,11 +46,11 @@ jobs:
           git fetch origin
           git add .
           git commit -am "I have generated the latest API!" || true
-          git push origin ${{github.event.pull_request.head.ref }} || true
+          git push origin HEAD:${{ github.event.pull_request.head.ref }} || true
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
       - name: Bump package.json version
         if: steps.git-check.outputs.modified == 'true'
         run: |
           npm version patch
-          git push origin ${{ github.head_ref }}
+          git push origin HEAD:${{ github.head_ref }}
