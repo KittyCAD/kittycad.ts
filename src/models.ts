@@ -114,14 +114,6 @@ export interface ApiCallQueryGroup {
   query: string
 }
 
-export type ApiCallQueryGroupBy =
-  | 'email'
-  | 'method'
-  | 'endpoint'
-  | 'user_id'
-  | 'origin'
-  | 'ip_address'
-
 export type ApiCallStatus =
   | 'queued'
   | 'uploaded'
@@ -1186,16 +1178,6 @@ export interface ClosePath {
   face_id: string
 }
 
-export type CodeLanguage = 'go' | 'python' | 'node'
-
-export type CodeOption =
-  /** Code option for running and verifying kcl.
-
-<details><summary>JSON schema</summary>
-
-```json { "title": "CodeOption", "description": "Code option for running and verifying kcl.", "type": "string", "enum": [ "parse", "execute", "cleanup", "mock_execute" ] } ``` </details> */
-  'parse' | 'execute' | 'cleanup' | 'mock_execute'
-
 export interface CodeOutput {
   /** The contents of the files requested if they were passed. */
   output_files?: OutputFile[]
@@ -1353,8 +1335,6 @@ export interface CreateShortlinkResponse {
   /** format:uri, description:The shortened url. */
   url: string
 }
-
-export type CreatedAtSortMode = 'created_at_ascending' | 'created_at_descending'
 
 export interface CrmData {
   /** nullable:true, description:The industry of the user. */
@@ -2878,6 +2858,12 @@ export type MlCopilotClientMessage =
 
 export type MlCopilotServerMessage =
   | {
+      session_data: {
+        /** The API call id associated with this websocket session. */
+        api_call_id: string
+      }
+    }
+  | {
       conversation_id: {
         /** The unique identifier for the conversation. */
         conversation_id: string
@@ -2916,6 +2902,17 @@ export type MlCopilotServerMessage =
       reasoning: ReasoningMessage
     }
   | {
+      replay: {
+        messages: /**
+         * {
+         *   "format": "uint8",
+         *   "minimum": 0
+         * }
+         */
+        number[][]
+      }
+    }
+  | {
       end_of_stream: {
         /**
          * {
@@ -2925,6 +2922,10 @@ export type MlCopilotServerMessage =
          * }
          */
         completed_at?: string
+        /** nullable:true, description:The conversation id for this session. */
+        conversation_id?: string
+        /** nullable:true, description:The ML prompt id for this turn. */
+        id?: Uuid
         /**
          * {
          *   "nullable": true,
@@ -3003,6 +3004,14 @@ export interface MlPrompt {
   /**
    * {
    *   "nullable": true,
+   *   "format": "int64",
+   *   "description": "Sum of EndOfStream durations, in seconds. Nullable to allow lazy backfill."
+   * }
+   */
+  seconds?: number
+  /**
+   * {
+   *   "nullable": true,
    *   "title": "DateTime",
    *   "format": "date-time",
    *   "description": "When the prompt was started."
@@ -3026,6 +3035,8 @@ export interface MlPromptMetadata {
   original_source_code?: string
   /** The source ranges the user suggested to change. */
   source_ranges?: SourceRangePrompt[]
+  /** nullable:true, description:The upstream conversation ID, if any. */
+  upstream_conversation_id?: string
 }
 
 export interface MlPromptResultsPage {
@@ -3045,6 +3056,7 @@ export type MlPromptType =
   | 'text_to_kcl'
   | 'text_to_kcl_iteration'
   | 'text_to_kcl_multi_file_iteration'
+  | 'copilot'
 
 export type MlToolResult =
   | {
@@ -6397,10 +6409,6 @@ export interface Pong {
   message: string
 }
 
-export type PostEffectType =
-  /** Post effect type */
-  'phosphor' | 'ssao' | 'noeffect'
-
 export interface PrivacySettings {
   /** If we can train on the data. If the user is a member of an organization, the organization's setting will override this. The organization's setting takes priority. */
   can_train_on_data: boolean
@@ -7469,14 +7477,14 @@ export interface Transform {
   /**
    * {
    *   "default": {
-   *     "angle": {
-   *       "unit": "degrees",
-   *       "value": 0
-   *     },
    *     "axis": {
    *       "x": 0,
    *       "y": 0,
    *       "z": 1
+   *     },
+   *     "angle": {
+   *       "unit": "degrees",
+   *       "value": 0
    *     },
    *     "origin": {
    *       "type": "local"
@@ -8327,8 +8335,6 @@ export interface User {
   updated_at: string
 }
 
-export type UserIdentifier = string
-
 export interface UserOrgInfo {
   /**
    * {
@@ -8619,6 +8625,32 @@ export interface ZoomToFit {
   settings: CameraSettings
 }
 
+export type ApiCallQueryGroupBy =
+  | 'email'
+  | 'method'
+  | 'endpoint'
+  | 'user_id'
+  | 'origin'
+  | 'ip_address'
+
+export type CreatedAtSortMode = 'created_at_ascending' | 'created_at_descending'
+
+export type CodeLanguage = 'go' | 'python' | 'node'
+
+export type CodeOption =
+  /** Code option for running and verifying kcl.
+
+<details><summary>JSON schema</summary>
+
+```json { "title": "CodeOption", "description": "Code option for running and verifying kcl.", "type": "string", "enum": [ "parse", "execute", "cleanup", "mock_execute" ] } ``` </details> */
+  'parse' | 'execute' | 'cleanup' | 'mock_execute'
+
+export type UserIdentifier = string
+
+export type PostEffectType =
+  /** Post effect type */
+  'phosphor' | 'ssao' | 'noeffect'
+
 export interface Models {
   AccountProvider: AccountProvider
   AddHoleFromOffset: AddHoleFromOffset
@@ -8634,7 +8666,6 @@ export interface Models {
   AnnotationTextOptions: AnnotationTextOptions
   AnnotationType: AnnotationType
   ApiCallQueryGroup: ApiCallQueryGroup
-  ApiCallQueryGroupBy: ApiCallQueryGroupBy
   ApiCallStatus: ApiCallStatus
   ApiCallWithPrice: ApiCallWithPrice
   ApiCallWithPriceResultsPage: ApiCallWithPriceResultsPage
@@ -8669,8 +8700,6 @@ export interface Models {
   CenterOfMass: CenterOfMass
   ClientMetrics: ClientMetrics
   ClosePath: ClosePath
-  CodeLanguage: CodeLanguage
-  CodeOption: CodeOption
   CodeOutput: CodeOutput
   Color: Color
   ComplementaryEdges: ComplementaryEdges
@@ -8682,7 +8711,6 @@ export interface Models {
   Coupon: Coupon
   CreateShortlinkRequest: CreateShortlinkRequest
   CreateShortlinkResponse: CreateShortlinkResponse
-  CreatedAtSortMode: CreatedAtSortMode
   CrmData: CrmData
   Currency: Currency
   CurveGetControlPoints: CurveGetControlPoints
@@ -8875,7 +8903,6 @@ export interface Models {
   Point3d: Point3d
   Point4d: Point4d
   Pong: Pong
-  PostEffectType: PostEffectType
   PrivacySettings: PrivacySettings
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectPointsToPlane: ProjectPointsToPlane
@@ -8998,7 +9025,6 @@ export interface Models {
   UpdateShortlinkRequest: UpdateShortlinkRequest
   UpdateUser: UpdateUser
   User: User
-  UserIdentifier: UserIdentifier
   UserOrgInfo: UserOrgInfo
   UserOrgRole: UserOrgRole
   UserResultsPage: UserResultsPage
@@ -9015,6 +9041,12 @@ export interface Models {
   ZooProductSubscriptionsUserRequest: ZooProductSubscriptionsUserRequest
   ZooTool: ZooTool
   ZoomToFit: ZoomToFit
+  ApiCallQueryGroupBy: ApiCallQueryGroupBy
+  CreatedAtSortMode: CreatedAtSortMode
+  CodeLanguage: CodeLanguage
+  CodeOption: CodeOption
+  UserIdentifier: UserIdentifier
+  PostEffectType: PostEffectType
 }
 
 export type File = { readonly name: string; readonly data: Blob }

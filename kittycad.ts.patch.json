@@ -49,6 +49,22 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1users-extended~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_extended({ id: '31337' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1users-extended/get/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.list_users_extended({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = users.list_users_extended_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1subscriptions/put/x-typescript",
     "value": {
       "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_subscription_for_user({\n        id: '31337',\n        body: { modeling_app: 'free', pay_annually: true },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -84,22 +100,6 @@
     "path": "/paths/~1users~1{id}/get/x-typescript",
     "value": {
       "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user({ id: '31337' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1users-extended~1{id}/get/x-typescript",
-    "value": {
-      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user_extended({ id: '31337' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1users-extended/get/x-typescript",
-    "value": {
-      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.list_users_extended({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = users.list_users_extended_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -921,6 +921,22 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1ml-prompts~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_ml_prompt({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml-prompts/get/x-typescript",
+    "value": {
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_ml_prompts({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_ml_prompts_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1ml~1text-to-cad~1multi-file~1iteration/post/x-typescript",
     "value": {
       "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_text_to_cad_multi_file_iteration({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: {\n            conversation_id: 'A UUID usually v4 or v7',\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files. If you want to apply a prompt to just a single file, use the source_ranges field and you can leave this empty.',\n            source_ranges: [],\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -956,22 +972,6 @@
     "path": "/paths/~1ml~1conversations/get/x-typescript",
     "value": {
       "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_conversations_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_conversations_for_user_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1ml-prompts~1{id}/get/x-typescript",
-    "value": {
-      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_ml_prompt({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1ml-prompts/get/x-typescript",
-    "value": {
-      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_ml_prompts({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_ml_prompts_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

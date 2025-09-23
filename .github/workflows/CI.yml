@@ -46,11 +46,21 @@ jobs:
           git fetch origin
           git add .
           git commit -am "I have generated the latest API!" || true
-          git push origin ${{github.event.pull_request.head.ref }} || true
+          branch="${{ github.event.pull_request.head.ref }}"
+          git fetch origin "${branch}" || git fetch origin
+          if git show-ref --verify --quiet "refs/remotes/origin/${branch}"; then
+            git rebase "origin/${branch}" || { git rebase --abort; exit 1; }
+          fi
+          git push origin HEAD:"${branch}" || true
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
       - name: Bump package.json version
         if: steps.git-check.outputs.modified == 'true'
         run: |
+          branch="${{ github.head_ref }}"
+          git fetch origin "${branch}" || git fetch origin
+          if git show-ref --verify --quiet "refs/remotes/origin/${branch}"; then
+            git rebase "origin/${branch}" || { git rebase --abort; exit 1; }
+          fi
           npm version patch
-          git push origin ${{ github.head_ref }}
+          git push origin HEAD:"${branch}"

@@ -6,10 +6,14 @@ import { MlCopilotClientMessage, MlCopilotServerMessage } from '../../models.js'
 
 interface MlCopilotWsParams {
   client?: Client
+  conversation_id?: string
+  replay?: boolean
 }
 
 /**
  * Open a websocket to prompt the ML copilot.
+ *
+ * This endpoint accepts typed query parameters via `MlCopilotQuery`. See the field documentation on that struct for details, including replay behavior and wire format.
  *
  * Tags: ml
  *
@@ -17,6 +21,8 @@ interface MlCopilotWsParams {
  * @template Res WebSocket response message type
  * @param functionNameParams Parameters for URL templating and auth
  * @property {Client} [client] Optional client with auth token.
+ * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
+ * @property {boolean} replay If `true`, emit BSON Replay for the specified conversation and continue. (query)
  */
 export default class MlCopilotWs<
   Req = MlCopilotClientMessage,
@@ -32,7 +38,10 @@ export default class MlCopilotWs<
    */
   async connect(): Promise<this> {
     const path = `/ws/ml/copilot`
-    const qs = buildQuery({})
+    const qs = buildQuery({
+      conversation_id: this.functionNameParams.conversation_id,
+      replay: this.functionNameParams.replay,
+    })
     const url = path + qs
     // Backwards compatible for the BASE_URL env variable
     // That used to exist in only this lib, ZOO_HOST exists in the all the other
