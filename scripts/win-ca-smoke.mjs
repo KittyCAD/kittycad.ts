@@ -8,8 +8,17 @@ try {
   ) {
     // Use system store as defaults (works for Node 22.15+).
     tls.setDefaultCACertificates(tls.getCACertificates('system'))
+  } else if (typeof process !== 'undefined' && process.platform === 'win32') {
+    // Older Node builds still need win-ca to patch undici/https fetches.
+    await import('win-ca/fetch')
   }
-} catch {}
+} catch {
+  try {
+    if (typeof process !== 'undefined' && process.platform === 'win32') {
+      await import('win-ca/fetch')
+    }
+  } catch {}
+}
 
 // Import the SDK to trigger cross-fetch polyfill and win-ca (Windows fallback).
 import { Client } from '../dist/mjs/index.js'
