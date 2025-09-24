@@ -11,6 +11,35 @@ try {
   }
 } catch {}
 
+const nodeVersion = process.versions?.node
+const major = nodeVersion
+  ? Number.parseInt(nodeVersion.split('.')[0] ?? '', 10)
+  : Number.NaN
+const needsCaPatch =
+  process.platform === 'win32' && Number.isFinite(major) && major < 22
+
+if (needsCaPatch) {
+  try {
+    await import('win-ca')
+  } catch {}
+  try {
+    const crossFetchModule = await import('cross-fetch')
+    const patchedFetch = crossFetchModule.fetch ?? crossFetchModule.default
+    if (typeof patchedFetch === 'function') {
+      globalThis.fetch = patchedFetch
+    }
+    if (typeof crossFetchModule.Headers === 'function') {
+      globalThis.Headers = crossFetchModule.Headers
+    }
+    if (typeof crossFetchModule.Request === 'function') {
+      globalThis.Request = crossFetchModule.Request
+    }
+    if (typeof crossFetchModule.Response === 'function') {
+      globalThis.Response = crossFetchModule.Response
+    }
+  } catch {}
+}
+
 // Import the SDK to trigger cross-fetch polyfill and win-ca (Windows fallback).
 import { Client } from '../dist/mjs/index.js'
 new Client('')
