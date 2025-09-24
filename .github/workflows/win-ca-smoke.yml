@@ -8,6 +8,9 @@ on:
   push:
     branches: [ main, master ]
 
+env:
+  SMOKE_URL: 'https://127.0.0.1:4443/'
+
 jobs:
   smoke:
     strategy:
@@ -20,8 +23,5 @@ jobs:
       install-command: |
         npm install --frozen-lockfile
         npm run build
-        if (-not (Test-Path 'scripts')) { New-Item -ItemType Directory -Path 'scripts' | Out-Null }
-        if (-not (Test-Path 'scripts/win')) { New-Item -ItemType Directory -Path 'scripts/win' | Out-Null }
-        Invoke-WebRequest 'https://raw.githubusercontent.com/kittycad/gh-action-win-ca/main/scripts/win/create-local-ca.ps1' -OutFile 'scripts/win/create-local-ca.ps1'
       pre-test-command: node scripts/win-ca-smoke.mjs
       post-test-command: node scripts/win-ca-smoke.mjs
