@@ -84,7 +84,7 @@ export const testsExpectedToThrow = [
   'ml.create_proprietary_to_kcl',
   'ml.create_text_to_cad_part_feedback',
   'ml.get_ml_prompt',
-  'ml.get_text_to_cad_parts_for_user',
+  'ml.get_text_to_cad_part_for_user',
   'ml.list_conversations_for_user',
   'ml.list_ml_prompts',
   'ml.list_text_to_cad_parts_for_user',
