@@ -16,6 +16,7 @@ interface ListTextToCadPartsForUserInput {
   sort_by?: CreatedAtSortMode
   conversation_id?: Uuid
   no_models?: boolean
+  no_parts?: boolean
 }
 
 type ListTextToCadPartsForUserReturn = TextToCadResponseResultsPage
@@ -37,7 +38,8 @@ type ListTextToCadPartsForUserReturn = TextToCadResponseResultsPage
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {CreatedAtSortMode} sort_by (query)
  * @property {Uuid} conversation_id If specified, only return the prompts for the conversation id given. (query)
- * @property {boolean} no_models If we should return the part contents or just the metadata. (query)
+ * @property {boolean} no_models DEPRECATED: This is the same as `no_parts`, and will be dropped in a future release. Please do not use this. (query)
+ * @property {boolean} no_parts If we should return the part contents or just the metadata. (query)
  * @returns {Promise<ListTextToCadPartsForUserReturn>} successful operation
  *
  * Possible return types: TextToCadResponseResultsPage
@@ -49,6 +51,7 @@ export default async function list_text_to_cad_parts_for_user({
   sort_by,
   conversation_id,
   no_models,
+  no_parts,
 }: ListTextToCadPartsForUserInput): Promise<ListTextToCadPartsForUserReturn> {
   const path = `/user/text-to-cad`
   const qs = buildQuery({
@@ -57,6 +60,7 @@ export default async function list_text_to_cad_parts_for_user({
     sort_by: sort_by,
     conversation_id: conversation_id,
     no_models: no_models,
+    no_parts: no_parts,
   })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
