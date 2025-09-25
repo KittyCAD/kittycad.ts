@@ -61,6 +61,21 @@ async function retry(fn, { attempts = 60, delayMs = 500 } = {}) {
 
 const res = await retry(() => fetch(target))
 if (!res.ok) throw new Error(`unexpected status ${res.status}`)
-const text = await res.text()
-if (text !== 'ok') throw new Error(`unexpected body ${text}`)
+
+let body
+try {
+  body = await res.json()
+} catch {
+  throw new Error('unexpected body: not valid JSON')
+}
+
+if (body?.status !== 'ok') {
+  let printable
+  try {
+    printable = JSON.stringify(body)
+  } catch {
+    printable = String(body)
+  }
+  throw new Error(`unexpected body ${printable}`)
+}
 console.log('win-ca smoke OK')
