@@ -7,6 +7,7 @@ async function example() {
     sort_by: 'created_at_ascending',
     conversation_id: '00000000-0000-0000-0000-000000000000',
     no_models: true,
+    no_parts: true,
   })
   return response
 }
@@ -19,6 +20,7 @@ export async function example_pager() {
     sort_by: 'created_at_ascending',
     conversation_id: '00000000-0000-0000-0000-000000000000',
     no_models: true,
+    no_parts: true,
   })
   let total = 0
   // Pull up to two pages just to illustrate usage

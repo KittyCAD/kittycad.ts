@@ -2744,6 +2744,13 @@ export interface KclCodeCompletionRequest {
   /**
    * {
    *   "nullable": true,
+   *   "description": "Zoo provided model, or fine-tuned model which should be used to process this request."
+   * }
+   */
+  model_version?: string
+  /**
+   * {
+   *   "nullable": true,
    *   "format": "uint8",
    *   "minimum": 0,
    *   "description": "How many completion choices to generate for each input message."
@@ -2757,7 +2764,7 @@ export interface KclCodeCompletionRequest {
    * }
    */
   nwo?: string
-  /** default:, description:The prompt for the model. */
+  /** default:, description:The prompt for the desired part. */
   prompt?: string
   stop?: string[]
   /**
@@ -2767,7 +2774,7 @@ export interface KclCodeCompletionRequest {
    * }
    */
   stream?: boolean
-  /** default:, description:The suffix for the model. */
+  /** default:, description:The suffix for the desired part. */
   suffix?: string
   /** nullable:true, format:float, description:The temperature for the model. */
   temperature?: number
@@ -7061,11 +7068,18 @@ export interface TextToCadCreateBody {
   /**
    * {
    *   "nullable": true,
+   *   "description": "Zoo provided model, or fine-tuned model which should be used to process this request."
+   * }
+   */
+  model_version?: string
+  /**
+   * {
+   *   "nullable": true,
    *   "description": "The project name. This is used to tie the prompt to a project. Which helps us make our models better over time."
    * }
    */
   project_name?: string
-  /** The prompt for the model. */
+  /** The prompt for the desired part. */
   prompt: string
 }
 

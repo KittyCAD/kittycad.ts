@@ -3,12 +3,12 @@ import { throwIfNotOk } from '../../errors.js'
 
 import { TextToCadResponse } from '../../models.js'
 
-interface GetTextToCadPartsForUserInput {
+interface GetTextToCadPartForUserInput {
   client?: Client
   id: string
 }
 
-type GetTextToCadPartsForUserReturn = TextToCadResponse
+type GetTextToCadPartForUserReturn = TextToCadResponse
 
 /**
  * Get a text-to-CAD response.
@@ -20,14 +20,14 @@ type GetTextToCadPartsForUserReturn = TextToCadResponse
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} id The id of the model to give feedback to. (path)
- * @returns {Promise<GetTextToCadPartsForUserReturn>} successful operation
+ * @returns {Promise<GetTextToCadPartForUserReturn>} successful operation
  *
  * Possible return types: TextToCadResponse
  */
-export default async function get_text_to_cad_parts_for_user({
+export default async function get_text_to_cad_part_for_user({
   client,
   id,
-}: GetTextToCadPartsForUserInput): Promise<GetTextToCadPartsForUserReturn> {
+}: GetTextToCadPartForUserInput): Promise<GetTextToCadPartForUserReturn> {
   const path = `/user/text-to-cad/${id}`
   const qs = buildQuery({})
   const url = path + qs
@@ -59,6 +59,6 @@ export default async function get_text_to_cad_parts_for_user({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as GetTextToCadPartsForUserReturn
+  const result = (await response.json()) as GetTextToCadPartForUserReturn
   return result
 }
