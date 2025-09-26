@@ -105,7 +105,7 @@ import create_text_to_cad_iteration from './api/ml/create_text_to_cad_iteration.
 import create_text_to_cad_multi_file_iteration from './api/ml/create_text_to_cad_multi_file_iteration.js'
 import create_text_to_cad_part_feedback from './api/ml/create_text_to_cad_part_feedback.js'
 import get_ml_prompt from './api/ml/get_ml_prompt.js'
-import get_text_to_cad_parts_for_user from './api/ml/get_text_to_cad_parts_for_user.js'
+import get_text_to_cad_part_for_user from './api/ml/get_text_to_cad_part_for_user.js'
 import list_conversations_for_user from './api/ml/list_conversations_for_user.js'
 import list_ml_prompts from './api/ml/list_ml_prompts.js'
 import list_text_to_cad_parts_for_user from './api/ml/list_text_to_cad_parts_for_user.js'
@@ -120,7 +120,7 @@ export const ml = {
   create_text_to_cad_multi_file_iteration,
   create_text_to_cad_part_feedback,
   get_ml_prompt,
-  get_text_to_cad_parts_for_user,
+  get_text_to_cad_part_for_user,
   list_conversations_for_user,
   list_conversations_for_user_pager,
   list_ml_prompts,
