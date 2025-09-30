@@ -199,6 +199,14 @@ export interface ApiCallWithPrice {
   /**
    * {
    *   "nullable": true,
+   *   "format": "int32",
+   *   "description": "The number of seconds the API call was billed for."
+   * }
+   */
+  seconds?: number
+  /**
+   * {
+   *   "nullable": true,
    *   "title": "DateTime",
    *   "format": "date-time",
    *   "description": "The date and time the API call started billing."
@@ -3140,11 +3148,12 @@ export interface ModelingAppSubscriptionTier {
   /**
    * {
    *   "title": "double",
+   *   "default": 0,
    *   "format": "money-usd",
    *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month."
    * }
    */
-  monthly_pay_as_you_go_api_credits_monetary_value: number
+  monthly_pay_as_you_go_api_credits_monetary_value?: number
   /** The name of the tier. */
   name: ModelingAppSubscriptionTierName
   /**
@@ -3152,7 +3161,7 @@ export interface ModelingAppSubscriptionTier {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The price of an API credit (meaning 1 credit = 1 minute of API usage)."
+   *   "description": "The price of an API credit (meaning 1 credit = 1 second of API usage)."
    * }
    */
   pay_as_you_go_api_credit_price?: number
@@ -8573,11 +8582,12 @@ export type ZooProductSubscription = {
   /**
    * {
    *   "title": "double",
+   *   "default": 0,
    *   "format": "money-usd",
    *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month."
    * }
    */
-  monthly_pay_as_you_go_api_credits_monetary_value: number
+  monthly_pay_as_you_go_api_credits_monetary_value?: number
   /** The name of the tier. */
   name: ModelingAppSubscriptionTierName
   /**
@@ -8585,7 +8595,7 @@ export type ZooProductSubscription = {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The price of an API credit (meaning 1 credit = 1 minute of API usage)."
+   *   "description": "The price of an API credit (meaning 1 credit = 1 second of API usage)."
    * }
    */
   pay_as_you_go_api_credit_price?: number
