@@ -19,6 +19,14 @@ type CreateProprietaryToKclReturn = KclModel
  *
  * A STEP file does not have feature tree data, so it will not work. A sldprt file does have feature tree data, so it will work.
  *
+ * This endpoint is designed to worj with any native proprietary CAD format, for example: - SolidWorks (.sldprt) - Creo (.prt) - Catia (.catpart) - NX (.prt) - Fusion 360 (.f3d)
+ *
+ * This endpoint is deterministic, it preserves the original design intent by using the feature tree data. This endpoint does not use any machine learning or AI.
+ *
+ * This endpoint is currently in beta, and is only available to users with access to the feature. Please contact support if you are interested in getting access.
+ *
+ * This endpoint might have limitations and bugs, please report any issues you encounter. It will be improved over time.
+ *
  * Input filepaths will be normalized and re-canonicalized to be under the current working directory -- so returned paths may differ from provided paths, and care must be taken when handling user provided paths.
  *
  * Tags: ml, hidden
