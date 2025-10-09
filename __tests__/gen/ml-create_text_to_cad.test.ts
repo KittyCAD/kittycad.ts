@@ -8,7 +8,7 @@ async function example() {
       kcl_version:
         'The version of kcl to use. If empty, the latest version will be used.',
       model_version:
-        'Zoo provided model, or fine-tuned model which should be used to process this request.',
+        'Zoo provided model, or custom model which should be used to process this request.',
       project_name:
         'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',
       prompt: 'The prompt for the desired part.',
