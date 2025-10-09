@@ -2752,7 +2752,7 @@ export interface KclCodeCompletionRequest {
   /**
    * {
    *   "nullable": true,
-   *   "description": "Zoo provided model, or fine-tuned model which should be used to process this request."
+   *   "description": "Zoo provided model, or custom model which should be used to process this request."
    * }
    */
   model_version?: string
@@ -7077,7 +7077,7 @@ export interface TextToCadCreateBody {
   /**
    * {
    *   "nullable": true,
-   *   "description": "Zoo provided model, or fine-tuned model which should be used to process this request."
+   *   "description": "Zoo provided model, or custom model which should be used to process this request."
    * }
    */
   model_version?: string

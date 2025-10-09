@@ -12,7 +12,7 @@ async function example() {
       },
       max_tokens: 7,
       model_version:
-        'Zoo provided model, or fine-tuned model which should be used to process this request.',
+        'Zoo provided model, or custom model which should be used to process this request.',
       n: 7,
       nwo: 'For GitHub copilot this is the `{org}/{repo}`. This does not do anything yet. But we wanted the same API as GitHub Copilot. It might be used in the future.',
       prompt: 'The prompt for the desired part.',
