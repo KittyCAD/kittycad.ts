@@ -59,9 +59,146 @@ export interface Angle {
   value: number
 }
 
+export interface AnnotationBasicDimension {
+  /** Basic dimension parameters (symbol and tolerance) */
+  dimension: AnnotationMbdBasicDimension
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "The point size of the fonts used to generate the annotation label.  Very large values can negatively affect performance."
+   * }
+   */
+  font_point_size: number
+  /** format:float, description:The scale of the font label in 3D space */
+  font_scale: number
+  /** format:uuid, description:Entity to measure the dimension from */
+  from_entity_id: string
+  /** Normalized position within the entity to position the dimension from */
+  from_entity_pos: Point2d
+  /** 2D Position offset of the annotation within the plane. */
+  offset: Point2d
+  /**
+   * {
+   *   "format": "uuid",
+   *   "description": "Orientation plane.  The annotation will lie in this plane which is positioned about the leader position as its origin."
+   * }
+   */
+  plane_id: string
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "Number of decimal places to use when displaying tolerance and dimension values"
+   * }
+   */
+  precision: number
+  /** format:uuid, description:Entity to measure the dimension to */
+  to_entity_id: string
+  /** Normalized position within the entity to position the dimension to */
+  to_entity_pos: Point2d
+}
+
+export interface AnnotationFeatureControl {
+  /** nullable:true, description:MBD Control frame for geometric control */
+  control_frame?: AnnotationMbdControlFrame
+  /**
+   * {
+   *   "nullable": true,
+   *   "minLength": 1,
+   *   "maxLength": 1,
+   *   "description": "Set if this annotation is defining a datum"
+   * }
+   */
+  defined_datum?: string
+  /** nullable:true, description:Basic dimensions */
+  dimension?: AnnotationMbdBasicDimension
+  /** format:uuid, description:Entity to place the annotation leader from */
+  entity_id: string
+  /** Normalized position within the entity to position the annotation leader from */
+  entity_pos: Point2d
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "The point size of the fonts used to generate the annotation label.  Very large values can negatively affect performance."
+   * }
+   */
+  font_point_size: number
+  /** format:float, description:The scale of the font label in 3D space */
+  font_scale: number
+  /** Type of leader to use */
+  leader_type: AnnotationLineEnd
+  /** 2D Position offset of the annotation within the plane. */
+  offset: Point2d
+  /**
+   * {
+   *   "format": "uuid",
+   *   "description": "Orientation plane.  The annotation will lie in this plane which is positioned about the leader position as its origin."
+   * }
+   */
+  plane_id: string
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "Number of decimal places to use when displaying tolerance and dimension values"
+   * }
+   */
+  precision: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Prefix text which will appear before the basic dimension"
+   * }
+   */
+  prefix?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Suffix text which will appear after the basic dimension"
+   * }
+   */
+  suffix?: string
+}
+
+export interface AnnotationFeatureTag {
+  /** format:uuid, description:Entity to place the annotation leader from */
+  entity_id: string
+  /** Normalized position within the entity to position the annotation leader from */
+  entity_pos: Point2d
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "The point size of the fonts used to generate the annotation label.  Very large values can negatively affect performance."
+   * }
+   */
+  font_point_size: number
+  /** format:float, description:The scale of the font label in 3D space */
+  font_scale: number
+  /** Tag key */
+  key: string
+  /** Type of leader to use */
+  leader_type: AnnotationLineEnd
+  /** 2D Position offset of the annotation within the plane. */
+  offset: Point2d
+  /**
+   * {
+   *   "format": "uuid",
+   *   "description": "Orientation plane.  The annotation will lie in this plane which is positioned about the leader position as its origin."
+   * }
+   */
+  plane_id: string
+  /** Whether or not to display the key on the annotation label */
+  show_key: boolean
+  /** Tag value */
+  value: string
+}
+
 export type AnnotationLineEnd =
   /** Annotation line end type */
-  'none' | 'arrow'
+  'none' | 'arrow' | 'dot'
 
 export interface AnnotationLineEndOptions {
   /** How to style the end of the annotation line. */
@@ -70,9 +207,83 @@ export interface AnnotationLineEndOptions {
   start: AnnotationLineEnd
 }
 
+export interface AnnotationMbdBasicDimension {
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "double",
+   *   "description": "The explicitly defined dimension.  Only required if the measurement is not automatically calculated."
+   * }
+   */
+  dimension?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Type of symbol to use for this dimension (if required)"
+   * }
+   */
+  symbol?: MbdSymbol
+  /** format:double, description:The tolerance of the dimension */
+  tolerance: number
+}
+
+export interface AnnotationMbdControlFrame {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Diameter symbol (if required) whether the geometric control requires a cylindrical or diameter tolerance"
+   * }
+   */
+  diameter_symbol?: MbdSymbol
+  /** nullable:true, description:Feature of size or tolerance modifiers */
+  modifier?: MbdSymbol
+  /**
+   * {
+   *   "nullable": true,
+   *   "minLength": 1,
+   *   "maxLength": 1,
+   *   "description": "Primary datum"
+   * }
+   */
+  primary_datum?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "minLength": 1,
+   *   "maxLength": 1,
+   *   "description": "Secondary datum"
+   * }
+   */
+  secondary_datum?: string
+  /** Geometric symbol, the type of geometric control specified */
+  symbol: MbdSymbol
+  /**
+   * {
+   *   "nullable": true,
+   *   "minLength": 1,
+   *   "maxLength": 1,
+   *   "description": "Tertiary datum"
+   * }
+   */
+  tertiary_datum?: string
+  /**
+   * {
+   *   "format": "double",
+   *   "description": "Tolerance value - the total tolerance of the geometric control.  The unit is based on the drawing standard."
+   * }
+   */
+  tolerance: number
+}
+
 export interface AnnotationOptions {
   /** nullable:true, description:Color to render the annotation */
   color?: Color
+  /** nullable:true, description:Set as an MBD measured basic dimension annotation */
+  dimension?: AnnotationBasicDimension
+  /** nullable:true, description:Set as an MBD Feature control annotation */
+  feature_control?: AnnotationFeatureControl
+  /** nullable:true, description:Set as a feature tag annotation */
+  feature_tag?: AnnotationFeatureTag
   /** nullable:true, description:How to style the start and end of the line */
   line_ends?: AnnotationLineEndOptions
   /** nullable:true, format:float, description:Width of the annotation's line */
@@ -1495,6 +1706,49 @@ export type CutStrategy = 'basic' | 'csg' | 'automatic'
 
 export type CutType = 'fillet' | 'chamfer'
 
+export type CutTypeV2 =
+  | {
+      fillet: {
+        /** The radius of the fillet. */
+        radius: LengthUnit
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "The second length affects the edge length of the second face of the cut. This will cause the fillet to take on the shape of a conic section, instead of an arc."
+         * }
+         */
+        second_length?: LengthUnit
+      }
+    }
+  | {
+      chamfer: {
+        /** nullable:true, description:The angle of the chamfer, default is 45deg. */
+        angle?: Angle
+        /** The distance from the edge to cut on each face. */
+        distance: LengthUnit
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "The second distance affects the edge length of the second face of the cut."
+         * }
+         */
+        second_distance?: LengthUnit
+        /** If true, the second distance or angle is applied to the other face of the cut. */
+        swap: boolean
+      }
+    }
+  | {
+      custom: {
+        /**
+         * {
+         *   "format": "uuid",
+         *   "description": "The path that will be used for the custom profile."
+         * }
+         */
+        path: string
+      }
+    }
+
 export interface DefaultCameraCenterToScene {} /* Empty object */
 
 export interface DefaultCameraCenterToSelection {} /* Empty object */
@@ -1901,6 +2155,39 @@ export interface ExtendedUserResultsPage {
 export interface Extrude {} /* Empty object */
 
 export type ExtrudeMethod = 'new' | 'merge'
+
+export type ExtrudeReference =
+  | {
+      entity_reference: {
+        /** format:uuid, description:The UUID of the entity to extrude to. */
+        entity_id: string
+      }
+    }
+  | {
+      axis: {
+        /** The axis to extrude to. */
+        axis: Point3d
+        /**
+         * {
+         *   "default": {
+         *     "x": 0,
+         *     "y": 0,
+         *     "z": 0
+         *   },
+         *   "description": "Point the axis goes through. Defaults to (0, 0, 0)."
+         * }
+         */
+        point?: Point3d
+      }
+    }
+  | {
+      point: {
+        /** The point to extrude to. */
+        point: Point3d
+      }
+    }
+
+export interface ExtrudeToReference {} /* Empty object */
 
 export interface ExtrudedFaceInfo {
   /**
@@ -2568,6 +2855,13 @@ export interface Invoice {
    * }
    */
   paid?: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Identifier for the payment intent backing this invoice."
+   * }
+   */
+  payment_intent_id?: string
   /** nullable:true, format:uri, description:The link to download the PDF for the invoice. */
   pdf?: string
   /** This is the transaction number that appears on email receipts sent for this invoice. */
@@ -2825,6 +3119,72 @@ export interface Mass {
   /** The output unit for the mass. */
   output_unit: UnitMass
 }
+
+export type MbdSymbol =
+  /** MBD symbol type */
+  | 'none'
+  | 'arclength'
+  | 'between'
+  | 'degrees'
+  | 'plusminus'
+  | 'angularity'
+  | 'cylindricity'
+  | 'roundness'
+  | 'concentricity'
+  | 'straightness'
+  | 'parallelism'
+  | 'flatness'
+  | 'profileofline'
+  | 'surfaceprofile'
+  | 'symmetry'
+  | 'perpendicularity'
+  | 'runout'
+  | 'totalrunout'
+  | 'position'
+  | 'centerline'
+  | 'partingline'
+  | 'isoenvelope'
+  | 'isoenvelopenony145m'
+  | 'freestate'
+  | 'statisticaltolerance'
+  | 'continuousfeature'
+  | 'independency'
+  | 'depth'
+  | 'start'
+  | 'leastcondition'
+  | 'maxcondition'
+  | 'conicaltaper'
+  | 'projected'
+  | 'slope'
+  | 'micro'
+  | 'tangentplane'
+  | 'unilateral'
+  | 'squarefeature'
+  | 'countersink'
+  | 'spotface'
+  | 'target'
+  | 'diameter'
+  | 'radius'
+  | 'sphericalradius'
+  | 'sphericaldiameter'
+  | 'controlledradius'
+  | 'boxstart'
+  | 'boxbar'
+  | 'boxbarbetween'
+  | 'letterbackwardunderline'
+  | 'punctuationbackwardunderline'
+  | 'modifierbackwardunderline'
+  | 'numericbackwardunderline'
+  | 'boxend'
+  | 'datumup'
+  | 'datumleft'
+  | 'datumright'
+  | 'datumdown'
+  | 'datumtriangle'
+  | 'halfspace'
+  | 'quarterspace'
+  | 'eighthspace'
+  | 'modifierspace'
 
 export type Method =
   | 'OPTIONS'
@@ -3208,6 +3568,13 @@ export type ModelingCmd =
       type: 'move_path_pen'
     }
   | {
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Optional label to associate with the new path segment."
+       * }
+       */
+      label?: string
       /** The ID of the command which created the path. */
       path: ModelingCmdId
       /** Segment to append to the path. This segment will implicitly begin at the current "pen" location. */
@@ -3241,6 +3608,27 @@ export type ModelingCmd =
       /** Which sketch to extrude. Must be a closed 2D solid. */
       target: ModelingCmdId
       type: 'extrude'
+    }
+  | {
+      /**
+       * {
+       *   "default": "merge",
+       *   "description": "Should the extrusion create a new object or be part of the existing object."
+       * }
+       */
+      extrude_method?: ExtrudeMethod
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Which IDs should the new faces have? If this isn't given, the engine will generate IDs."
+       * }
+       */
+      faces?: ExtrudedFaceInfo
+      /** Reference to extrude to. Extrusion occurs along the target's normal until it is as close to the reference as possible. */
+      reference: ExtrudeReference
+      /** Which sketch to extrude. Must be a closed 2D solid. */
+      target: ModelingCmdId
+      type: 'extrude_to_reference'
     }
   | {
       /**
@@ -3603,8 +3991,13 @@ export type ModelingCmd =
       cylinder_id: string
       /** Is the helix rotation clockwise? */
       is_clockwise: boolean
-      /** Length of the helix. */
-      length: LengthUnit
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Length of the helix. If None, the length of the cylinder will be used instead."
+       * }
+       */
+      length?: LengthUnit
       /** format:double, description:Number of revolutions. */
       revolutions: number
       /** default:{unit:degrees, value:0}, description:Start angle. */
@@ -3898,6 +4291,29 @@ export type ModelingCmd =
       /** The maximum acceptable surface gap computed between the filleted surfaces. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'solid3d_fillet_edge'
+    }
+  | {
+      /** The cut type and information required to perform the cut. */
+      cut_type: CutTypeV2
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      edge_ids?: string[]
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      extra_face_ids?: string[]
+      /** format:uuid, description:Which object is being cut. */
+      object_id: string
+      /** default:automatic, description:Which cutting algorithm to use. */
+      strategy?: CutStrategy
+      /** The maximum acceptable surface gap computed between the cut surfaces. Must be positive (i.e. greater than zero). */
+      tolerance: LengthUnit
+      type: 'solid3d_cut_edges'
     }
   | {
       /** format:uuid, description:Which face is being queried. */
@@ -4603,6 +5019,15 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/ExtrudeToReference"
+       * }
+       */
+      data: ExtrudeToReference
+      type: 'extrude_to_reference'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/TwistExtrude"
        * }
        */
@@ -4788,6 +5213,15 @@ export type OkModelingCmdResponse =
        */
       data: Solid3dFilletEdge
       type: 'solid3d_fillet_edge'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Solid3dCutEdges"
+       * }
+       */
+      data: Solid3dCutEdges
+      type: 'solid3d_cut_edges'
     }
   | {
       /**
@@ -6830,6 +7264,8 @@ export interface SketchModeDisable {} /* Empty object */
 
 export interface Solid2dAddHole {} /* Empty object */
 
+export interface Solid3dCutEdges {} /* Empty object */
+
 export interface Solid3dFilletEdge {} /* Empty object */
 
 export interface Solid3dGetAdjacencyInfo {
@@ -8682,8 +9118,13 @@ export interface Models {
   AddressDetails: AddressDetails
   AdjacencyInfo: AdjacencyInfo
   Angle: Angle
+  AnnotationBasicDimension: AnnotationBasicDimension
+  AnnotationFeatureControl: AnnotationFeatureControl
+  AnnotationFeatureTag: AnnotationFeatureTag
   AnnotationLineEnd: AnnotationLineEnd
   AnnotationLineEndOptions: AnnotationLineEndOptions
+  AnnotationMbdBasicDimension: AnnotationMbdBasicDimension
+  AnnotationMbdControlFrame: AnnotationMbdControlFrame
   AnnotationOptions: AnnotationOptions
   AnnotationTextAlignmentX: AnnotationTextAlignmentX
   AnnotationTextAlignmentY: AnnotationTextAlignmentY
@@ -8746,6 +9187,7 @@ export interface Models {
   CustomerBalance: CustomerBalance
   CutStrategy: CutStrategy
   CutType: CutType
+  CutTypeV2: CutTypeV2
   DefaultCameraCenterToScene: DefaultCameraCenterToScene
   DefaultCameraCenterToSelection: DefaultCameraCenterToSelection
   DefaultCameraFocusOn: DefaultCameraFocusOn
@@ -8806,6 +9248,8 @@ export interface Models {
   ExtendedUserResultsPage: ExtendedUserResultsPage
   Extrude: Extrude
   ExtrudeMethod: ExtrudeMethod
+  ExtrudeReference: ExtrudeReference
+  ExtrudeToReference: ExtrudeToReference
   ExtrudedFaceInfo: ExtrudedFaceInfo
   ExtrusionFaceCapType: ExtrusionFaceCapType
   ExtrusionFaceInfo: ExtrusionFaceInfo
@@ -8858,6 +9302,7 @@ export interface Models {
   MakeOffsetPath: MakeOffsetPath
   MakePlane: MakePlane
   Mass: Mass
+  MbdSymbol: MbdSymbol
   Method: Method
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotServerMessage: MlCopilotServerMessage
@@ -8975,6 +9420,7 @@ export interface Models {
   SideFace: SideFace
   SketchModeDisable: SketchModeDisable
   Solid2dAddHole: Solid2dAddHole
+  Solid3dCutEdges: Solid3dCutEdges
   Solid3dFilletEdge: Solid3dFilletEdge
   Solid3dGetAdjacencyInfo: Solid3dGetAdjacencyInfo
   Solid3dGetAllEdgeFaces: Solid3dGetAllEdgeFaces
