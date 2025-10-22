@@ -227,7 +227,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1methods~1{id}/delete/x-typescript",
     "value": {
-      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_method_for_user({\n        id: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_method_for_user({\n        id: 'string',\n        force: true,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
