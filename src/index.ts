@@ -170,6 +170,7 @@ import get_org_shortlinks from './api/orgs/get_org_shortlinks.js'
 import get_user_org from './api/orgs/get_user_org.js'
 import list_org_members from './api/orgs/list_org_members.js'
 import list_orgs from './api/orgs/list_orgs.js'
+import org_admin_details_get from './api/orgs/org_admin_details_get.js'
 import update_enterprise_pricing_for_org from './api/orgs/update_enterprise_pricing_for_org.js'
 import update_org from './api/orgs/update_org.js'
 import update_org_member from './api/orgs/update_org_member.js'
@@ -197,6 +198,7 @@ export const orgs = {
   list_org_members_pager,
   list_orgs,
   list_orgs_pager,
+  org_admin_details_get,
   update_enterprise_pricing_for_org,
   update_org,
   update_org_member,
@@ -333,6 +335,7 @@ import update_subscription_for_user from './api/users/update_subscription_for_us
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
 import update_user_self from './api/users/update_user_self.js'
 import update_user_shortlink from './api/users/update_user_shortlink.js'
+import user_admin_details_get from './api/users/user_admin_details_get.js'
 import { get_user_shortlinks_pager } from './api/users/get_user_shortlinks.js'
 import { list_users_extended_pager } from './api/users/list_users_extended.js'
 import { list_users_pager } from './api/users/list_users.js'
@@ -361,12 +364,14 @@ export const users = {
   update_user_privacy_settings,
   update_user_self,
   update_user_shortlink,
+  user_admin_details_get,
 }
 
 export type {
   AccountProvider,
   AddHoleFromOffset,
   AddOrgMember,
+  Address,
   AddressDetails,
   AdjacencyInfo,
   Angle,
@@ -594,6 +599,8 @@ export type {
   OppositeForAngle,
   OppositeForLengthUnit,
   Org,
+  OrgAddress,
+  OrgAdminDetails,
   OrgDetails,
   OrgMember,
   OrgMemberResultsPage,
@@ -752,6 +759,7 @@ export type {
   UpdateShortlinkRequest,
   UpdateUser,
   User,
+  UserAdminDetails,
   UserIdentifier,
   UserOrgInfo,
   UserOrgRole,

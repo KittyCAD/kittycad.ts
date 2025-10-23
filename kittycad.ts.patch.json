@@ -97,6 +97,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1users~1{id}~1admin~1details/get/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.user_admin_details_get({ id: '31337' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1users~1{id}/get/x-typescript",
     "value": {
       "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.get_user({ id: '31337' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -556,6 +564,14 @@
     "path": "/paths/~1orgs~1{id}~1enterprise~1pricing/put/x-typescript",
     "value": {
       "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_enterprise_pricing_for_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: { interval: 'day', price: 7, type: 'flat' },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1orgs~1{id}~1admin~1details/get/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.org_admin_details_get({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
