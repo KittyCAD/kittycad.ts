@@ -10,8 +10,9 @@ export const operationsToNotGenerateTestsFor = [
   'delete_payment_information_for_user',
   'oauth2_provider_callback_post',
   'create_file_execution',
-  'create_file_execution',
   'update_subscription_for_user',
+  'org_admin_details_get',
+  'user_admin_details_get',
   // WebSocket classes require a WS runtime in tests
   'create_executor_term',
   'modeling_commands_ws',

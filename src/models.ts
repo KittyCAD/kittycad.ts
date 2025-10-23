@@ -23,6 +23,29 @@ export interface AddOrgMember {
   role: UserOrgRole
 }
 
+export interface Address {
+  /** The city component. */
+  city?: string
+  /** The country component. This is a two-letter ISO country code. */
+  country: CountryCode
+  /** title:DateTime, format:date-time, description:The time and date the address was created. */
+  created_at: string
+  /** The unique identifier of the address. */
+  id: Uuid
+  /** The state component. */
+  state?: string
+  /** The first street component. */
+  street1?: string
+  /** The second street component. */
+  street2?: string
+  /** title:DateTime, format:date-time, description:The time and date the address was last updated. */
+  updated_at: string
+  /** The user ID that this address belongs to. */
+  user_id: Uuid
+  /** The zip component. */
+  zip?: string
+}
+
 export interface AddressDetails {
   /** The city component. */
   city?: string
@@ -6356,6 +6379,52 @@ export interface Org {
   updated_at: string
 }
 
+export interface OrgAddress {
+  /** The city component. */
+  city?: string
+  /** The country component. This is a two-letter ISO country code. */
+  country: CountryCode
+  /** title:DateTime, format:date-time, description:The time and date the address was created. */
+  created_at: string
+  /** The unique identifier of the address. */
+  id: Uuid
+  /** The org ID that this address belongs to. */
+  org_id: Uuid
+  /** The state component. */
+  state?: string
+  /** The first street component. */
+  street1?: string
+  /** The second street component. */
+  street2?: string
+  /** title:DateTime, format:date-time, description:The time and date the address was last updated. */
+  updated_at: string
+  /** The zip component. */
+  zip?: string
+}
+
+export interface OrgAdminDetails {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Latest billing address stored for the organization."
+   * }
+   */
+  address?: OrgAddress
+  /** nullable:true, description:Readable billing address summary. */
+  address_summary?: string
+  /** nullable:true, description:Block reason when the org is blocked. */
+  block?: BlockReason
+  /** nullable:true, description:Human-friendly block reason message. */
+  block_message?: string
+  /** Known payment methods on file. */
+  payment_methods: PaymentMethod[]
+  payment_methods_summary: string[]
+  /** nullable:true, description:Stripe customer identifier if one exists. */
+  stripe_customer_id?: string
+  /** nullable:true, description:Direct link to the Stripe customer dashboard. */
+  stripe_dashboard_url?: string
+}
+
 export interface OrgDetails {
   /**
    * {
@@ -8794,6 +8863,31 @@ export interface User {
   updated_at: string
 }
 
+export interface UserAdminDetails {
+  /** nullable:true, description:Latest billing address stored for the user. */
+  address?: Address
+  /** nullable:true, description:Readable billing address summary. */
+  address_summary?: string
+  /** nullable:true, description:Block reason when the user is blocked. */
+  block?: BlockReason
+  /** nullable:true, description:Human-friendly block reason message. */
+  block_message?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Direct or search link to the HubSpot contact record."
+   * }
+   */
+  hubspot_contact_url?: string
+  /** Known payment methods on file. */
+  payment_methods: PaymentMethod[]
+  payment_methods_summary: string[]
+  /** nullable:true, description:Stripe customer identifier if one exists. */
+  stripe_customer_id?: string
+  /** nullable:true, description:Direct link to the Stripe customer dashboard. */
+  stripe_dashboard_url?: string
+}
+
 export interface UserOrgInfo {
   /**
    * {
@@ -9115,6 +9209,7 @@ export interface Models {
   AccountProvider: AccountProvider
   AddHoleFromOffset: AddHoleFromOffset
   AddOrgMember: AddOrgMember
+  Address: Address
   AddressDetails: AddressDetails
   AdjacencyInfo: AdjacencyInfo
   Angle: Angle
@@ -9338,6 +9433,8 @@ export interface Models {
   OppositeForAngle: OppositeForAngle
   OppositeForLengthUnit: OppositeForLengthUnit
   Org: Org
+  OrgAddress: OrgAddress
+  OrgAdminDetails: OrgAdminDetails
   OrgDetails: OrgDetails
   OrgMember: OrgMember
   OrgMemberResultsPage: OrgMemberResultsPage
@@ -9495,6 +9592,7 @@ export interface Models {
   UpdateShortlinkRequest: UpdateShortlinkRequest
   UpdateUser: UpdateUser
   User: User
+  UserAdminDetails: UserAdminDetails
   UserOrgInfo: UserOrgInfo
   UserOrgRole: UserOrgRole
   UserResultsPage: UserResultsPage
