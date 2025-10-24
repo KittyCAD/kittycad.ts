@@ -33,4 +33,4 @@ jobs:
         if: steps.pr-commit.outputs.commited == 'true'
         run: |
           npm version patch
-          git push origin HEAD:"${branch}"
+          git push origin '${{github.event.pull_request.head.ref }}'
