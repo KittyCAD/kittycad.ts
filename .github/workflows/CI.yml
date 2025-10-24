@@ -33,4 +33,5 @@ jobs:
         if: steps.pr-commit.outputs.commited == 'true'
         run: |
           npm version patch
+          # This uses the authentification setup by pr-commit
           git push origin '${{github.event.pull_request.head.ref }}'
