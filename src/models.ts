@@ -1665,10 +1665,6 @@ export interface Customer {
 export interface CustomerBalance {
   /** title:DateTime, format:date-time, description:The date and time the balance was created. */
   created_at: string
-  /** The unique identifier for the balance. */
-  id: Uuid
-  /** The mapping id of the user or org. */
-  map_id: Uuid
   /**
    * {
    *   "nullable": true,
@@ -1680,7 +1676,7 @@ export interface CustomerBalance {
    * {
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The number of monthly API credits remaining in the balance. This is the number of credits remaining in the balance.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
+   *   "description": "The number of monthly API credits remaining in the balance."
    * }
    */
   monthly_api_credits_remaining: number
@@ -1688,7 +1684,7 @@ export interface CustomerBalance {
    * {
    *   "title": "double",
    *   "format": "money-usd",
-   *   "description": "The monetary value of the monthly API credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
+   *   "description": "The monetary value of the monthly API credits remaining in the balance."
    * }
    */
   monthly_api_credits_remaining_monetary_value: number
@@ -1696,7 +1692,7 @@ export interface CustomerBalance {
    * {
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The number of stable API credits remaining in the balance. These do not get reset or re-upped every month. This is separate from the monthly credits. Credits will first pull from the monthly credits, then the stable credits. Stable just means that they do not get reset every month. A user will have stable credits if a Zoo employee granted them credits.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
+   *   "description": "The number of stable API credits remaining in the balance."
    * }
    */
   stable_api_credits_remaining: number
@@ -1704,7 +1700,7 @@ export interface CustomerBalance {
    * {
    *   "title": "double",
    *   "format": "money-usd",
-   *   "description": "The monetary value of stable API credits remaining in the balance. These do not get reset or re-upped every month. This is separate from the monthly credits. Credits will first pull from the monthly credits, then the stable credits. Stable just means that they do not get reset every month. A user will have stable credits if a Zoo employee granted them credits.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
+   *   "description": "The monetary value of stable API credits remaining in the balance."
    * }
    */
   stable_api_credits_remaining_monetary_value: number
