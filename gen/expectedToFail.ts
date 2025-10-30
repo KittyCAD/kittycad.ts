@@ -30,6 +30,7 @@ export const operationsToNotGenerateTestsFor = [
   'delete_payment_method_for_user',
   'list_invoices_for_user',
   'get_payment_balance_for_any_user',
+  'create_user_subscription',
 ]
 
 /**

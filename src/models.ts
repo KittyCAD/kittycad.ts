@@ -1676,7 +1676,7 @@ export interface CustomerBalance {
    * {
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The number of monthly API credits remaining in the balance."
+   *   "description": "The number of monthly API credits remaining in the balance. This is the number of credits remaining in the balance.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
    * }
    */
   monthly_api_credits_remaining: number
@@ -1684,7 +1684,7 @@ export interface CustomerBalance {
    * {
    *   "title": "double",
    *   "format": "money-usd",
-   *   "description": "The monetary value of the monthly API credits remaining in the balance."
+   *   "description": "The monetary value of the monthly API credits remaining in the balance. This gets re-upped every month, but if the credits are not used for a month they do not carry over to the next month.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
    * }
    */
   monthly_api_credits_remaining_monetary_value: number
@@ -1692,7 +1692,7 @@ export interface CustomerBalance {
    * {
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The number of stable API credits remaining in the balance."
+   *   "description": "The number of stable API credits remaining in the balance. These do not get reset or re-upped every month. This is separate from the monthly credits. Credits will first pull from the monthly credits, then the stable credits. Stable just means that they do not get reset every month. A user will have stable credits if a Zoo employee granted them credits.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
    * }
    */
   stable_api_credits_remaining: number
@@ -1700,7 +1700,7 @@ export interface CustomerBalance {
    * {
    *   "title": "double",
    *   "format": "money-usd",
-   *   "description": "The monetary value of stable API credits remaining in the balance."
+   *   "description": "The monetary value of stable API credits remaining in the balance. These do not get reset or re-upped every month. This is separate from the monthly credits. Credits will first pull from the monthly credits, then the stable credits. Stable just means that they do not get reset every month. A user will have stable credits if a Zoo employee granted them credits.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
    * }
    */
   stable_api_credits_remaining_monetary_value: number
@@ -3233,6 +3233,8 @@ export type MlCopilotClientMessage =
       }
       /** The user can force specific tools to be used for this message. */
       forced_tools?: MlCopilotTool[]
+      /** nullable:true, description:Override the default model with another. */
+      model?: MlCopilotSupportedModels
       /**
        * {
        *   "nullable": true,
@@ -3240,6 +3242,8 @@ export type MlCopilotClientMessage =
        * }
        */
       project_name?: string
+      /** nullable:true, description:Change the default reasoning effort. */
+      reasoning_effort?: MlReasoningEffort
       /** The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */
       source_ranges?: SourceRangePrompt[]
       type: 'user'
@@ -3337,6 +3341,13 @@ export type MlCopilotServerMessage =
         whole_response?: string
       }
     }
+
+export type MlCopilotSupportedModels =
+  | 'gpt5_nano'
+  | 'gpt5_mini'
+  | 'gpt5_codex'
+  | 'gpt5'
+  | 'o3'
 
 export type MlCopilotSystemCommand = 'new' | 'bye'
 
@@ -3452,6 +3463,8 @@ export type MlPromptType =
   | 'text_to_kcl_multi_file_iteration'
   | 'copilot'
 
+export type MlReasoningEffort = 'low' | 'medium' | 'high'
+
 export type MlToolResult =
   | {
       /**
@@ -3491,10 +3504,6 @@ export type MlToolResult =
 
 export type ModelingAppEventType = 'successful_compile_before_close'
 
-export type ModelingAppIndividualSubscriptionTier = 'free' | 'plus' | 'pro'
-
-export type ModelingAppOrganizationSubscriptionTier = 'team' | 'enterprise'
-
 export type ModelingAppShareLinks =
   | 'public'
   | 'password_protected'
@@ -3511,6 +3520,8 @@ export interface ModelingAppSubscriptionTier {
   annual_discount?: number
   /** A description of the tier. */
   description: string
+  /** default:, description:The display name of the tier. */
+  display_name?: string
   /** The Zoo API endpoints that are included when through an approved zoo tool. */
   endpoints_included?: ApiEndpoint[]
   /** minItems:0, maxItems:15, description:Features that are included in the subscription. */
@@ -3534,7 +3545,7 @@ export interface ModelingAppSubscriptionTier {
    */
   monthly_pay_as_you_go_api_credits_monetary_value?: number
   /** The name of the tier. */
-  name: ModelingAppSubscriptionTierName
+  name: string
   /**
    * {
    *   "title": "double",
@@ -3557,13 +3568,6 @@ export interface ModelingAppSubscriptionTier {
   /** The Zoo tools that you can call unlimited times with this tier. */
   zoo_tools_included?: ZooTool[]
 }
-
-export type ModelingAppSubscriptionTierName =
-  | 'free'
-  | 'plus'
-  | 'pro'
-  | 'team'
-  | 'enterprise'
 
 export type ModelingCmd =
   | {
@@ -9092,6 +9096,8 @@ export type ZooProductSubscription = {
   annual_discount?: number
   /** A description of the tier. */
   description: string
+  /** default:, description:The display name of the tier. */
+  display_name?: string
   /** The Zoo API endpoints that are included when through an approved zoo tool. */
   endpoints_included?: ApiEndpoint[]
   /** minItems:0, maxItems:15, description:Features that are included in the subscription. */
@@ -9115,7 +9121,7 @@ export type ZooProductSubscription = {
    */
   monthly_pay_as_you_go_api_credits_monetary_value?: number
   /** The name of the tier. */
-  name: ModelingAppSubscriptionTierName
+  name: string
   /**
    * {
    *   "title": "double",
@@ -9145,8 +9151,8 @@ export interface ZooProductSubscriptions {
 }
 
 export interface ZooProductSubscriptionsOrgRequest {
-  /** default:team, description:A modeling app subscription. */
-  modeling_app?: ModelingAppOrganizationSubscriptionTier
+  /** Slug of the modeling app subscription tier requested. */
+  modeling_app: string
   /**
    * {
    *   "nullable": true,
@@ -9157,8 +9163,8 @@ export interface ZooProductSubscriptionsOrgRequest {
 }
 
 export interface ZooProductSubscriptionsUserRequest {
-  /** default:free, description:A modeling app subscription. */
-  modeling_app?: ModelingAppIndividualSubscriptionTier
+  /** Slug of the modeling app subscription tier requested. */
+  modeling_app: string
   /**
    * {
    *   "nullable": true,
@@ -9397,6 +9403,7 @@ export interface Models {
   Method: Method
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotServerMessage: MlCopilotServerMessage
+  MlCopilotSupportedModels: MlCopilotSupportedModels
   MlCopilotSystemCommand: MlCopilotSystemCommand
   MlCopilotTool: MlCopilotTool
   MlFeedback: MlFeedback
@@ -9404,13 +9411,11 @@ export interface Models {
   MlPromptMetadata: MlPromptMetadata
   MlPromptResultsPage: MlPromptResultsPage
   MlPromptType: MlPromptType
+  MlReasoningEffort: MlReasoningEffort
   MlToolResult: MlToolResult
   ModelingAppEventType: ModelingAppEventType
-  ModelingAppIndividualSubscriptionTier: ModelingAppIndividualSubscriptionTier
-  ModelingAppOrganizationSubscriptionTier: ModelingAppOrganizationSubscriptionTier
   ModelingAppShareLinks: ModelingAppShareLinks
   ModelingAppSubscriptionTier: ModelingAppSubscriptionTier
-  ModelingAppSubscriptionTierName: ModelingAppSubscriptionTierName
   ModelingCmd: ModelingCmd
   ModelingCmdId: ModelingCmdId
   ModelingCmdReq: ModelingCmdReq
