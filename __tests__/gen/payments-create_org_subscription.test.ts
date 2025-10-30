@@ -2,7 +2,10 @@ import { payments, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await payments.create_org_subscription({
-    body: { modeling_app: 'team', pay_annually: true },
+    body: {
+      modeling_app: 'Slug of the modeling app subscription tier requested.',
+      pay_annually: true,
+    },
   })
   return response
 }
