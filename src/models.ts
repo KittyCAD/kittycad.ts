@@ -1667,13 +1667,6 @@ export interface CustomerBalance {
   created_at: string
   /**
    * {
-   *   "nullable": true,
-   *   "description": "The enterprise price for the Modeling App subscription, if they are on the enterprise plan."
-   * }
-   */
-  modeling_app_enterprise_price?: SubscriptionTierPrice
-  /**
-   * {
    *   "format": "uint64",
    *   "minimum": 0,
    *   "description": "The number of monthly API credits remaining in the balance. This is the number of credits remaining in the balance.\n\nBoth the monetary value and the number of credits are returned, but they reflect the same value in the database."
@@ -3233,7 +3226,14 @@ export type MlCopilotClientMessage =
       }
       /** The user can force specific tools to be used for this message. */
       forced_tools?: MlCopilotTool[]
-      /** nullable:true, description:Override the default model with another. */
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Pick a mode for the agent to operate in. Defaults to a fast mode."
+       * }
+       */
+      mode?: MlCopilotMode
+      /** nullable:true, description:Override the default or mode model with another. */
       model?: MlCopilotSupportedModels
       /**
        * {
@@ -3242,7 +3242,7 @@ export type MlCopilotClientMessage =
        * }
        */
       project_name?: string
-      /** nullable:true, description:Change the default reasoning effort. */
+      /** nullable:true, description:Change the default or mode reasoning effort. */
       reasoning_effort?: MlReasoningEffort
       /** The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */
       source_ranges?: SourceRangePrompt[]
@@ -3253,6 +3253,8 @@ export type MlCopilotClientMessage =
       command: MlCopilotSystemCommand
       type: 'system'
     }
+
+export type MlCopilotMode = 'fast' | 'thoughtful'
 
 export type MlCopilotServerMessage =
   | {
@@ -9402,6 +9404,7 @@ export interface Models {
   MbdSymbol: MbdSymbol
   Method: Method
   MlCopilotClientMessage: MlCopilotClientMessage
+  MlCopilotMode: MlCopilotMode
   MlCopilotServerMessage: MlCopilotServerMessage
   MlCopilotSupportedModels: MlCopilotSupportedModels
   MlCopilotSystemCommand: MlCopilotSystemCommand
