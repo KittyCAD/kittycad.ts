@@ -13,7 +13,7 @@ type GetPaymentBalanceForOrgReturn = CustomerBalance
 /**
  * Get balance for your org.
  *
- * This endpoint requires authentication by an org admin. It gets the balance information for the authenticated user's org.
+ * This endpoint requires authentication by any member of an org. It gets the balance information for the authenticated user's org.
  *
  * Tags: payments
  *
