@@ -12,7 +12,7 @@ type GetOrgSubscriptionReturn = ZooProductSubscriptions
 /**
  * Get the subscription for an org.
  *
- * This endpoint requires authentication by an org admin. It gets the subscription for the authenticated user's org.
+ * This endpoint requires authentication by any member of an org. It gets the subscription for the authenticated user's org.
  *
  * Tags: payments
  *
