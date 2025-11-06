@@ -2867,13 +2867,6 @@ export interface Invoice {
    * }
    */
   paid?: boolean
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Identifier for the payment intent backing this invoice."
-   * }
-   */
-  payment_intent_id?: string
   /** nullable:true, format:uri, description:The link to download the PDF for the invoice. */
   pdf?: string
   /** This is the transaction number that appears on email receipts sent for this invoice. */
@@ -3349,7 +3342,7 @@ export type MlCopilotSupportedModels =
   | 'gpt5_mini'
   | 'gpt5_codex'
   | 'gpt5'
-  | 'o3'
+  | 'o3_mini'
 
 export type MlCopilotSystemCommand = 'new' | 'bye'
 
@@ -4721,6 +4714,28 @@ export type ModelingCmd =
       filter: EntityType[]
       type: 'set_selection_filter'
     }
+  | {
+      /** The entity types to be queried. */
+      filter: EntityType[]
+      /**
+       * {
+       *   "format": "uint32",
+       *   "minimum": 0,
+       *   "description": "Skip the first n returned ids. If multiple filters are provided, this skip will apply to each filter individually."
+       * }
+       */
+      skip: number
+      /**
+       * {
+       *   "format": "uint32",
+       *   "minimum": 1,
+       *   "maximum": 1000,
+       *   "description": "Take n ids after any ids skipped. This value must be greater than zero and not exceed 1000. If multiple filters are provided, this take will apply to each filter individually. If there are fewer than `take` items of the provided filter type then the returned list's length will be the smaller value."
+       * }
+       */
+      take: number
+      type: 'scene_get_entity_ids'
+    }
   | { type: 'default_camera_set_orthographic' }
   | {
       /**
@@ -5823,6 +5838,15 @@ export type OkModelingCmdResponse =
        */
       data: GetEntityType
       type: 'get_entity_type'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/SceneGetEntityIds"
+       * }
+       */
+      data: SceneGetEntityIds
+      type: 'scene_get_entity_ids'
     }
   | {
       /**
@@ -7152,6 +7176,15 @@ export interface SamlIdentityProviderCreate {
 }
 
 export interface SceneClearAll {} /* Empty object */
+
+export interface SceneGetEntityIds {
+  entity_ids: /**
+   * {
+   *   "format": "uuid"
+   * }
+   */
+  string[][]
+}
 
 export type SceneSelectionType = 'replace' | 'add' | 'remove'
 
@@ -9490,6 +9523,7 @@ export interface Models {
   SamlIdentityProvider: SamlIdentityProvider
   SamlIdentityProviderCreate: SamlIdentityProviderCreate
   SceneClearAll: SceneClearAll
+  SceneGetEntityIds: SceneGetEntityIds
   SceneSelectionType: SceneSelectionType
   SceneToolType: SceneToolType
   SelectAdd: SelectAdd

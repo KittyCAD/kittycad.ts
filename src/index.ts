@@ -653,6 +653,7 @@ export type {
   SamlIdentityProvider,
   SamlIdentityProviderCreate,
   SceneClearAll,
+  SceneGetEntityIds,
   SceneSelectionType,
   SceneToolType,
   SelectAdd,
