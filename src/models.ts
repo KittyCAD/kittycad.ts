@@ -2827,6 +2827,15 @@ export interface Invoice {
    * }
    */
   attempted?: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Why this invoice was created (e.g. `subscription_cycle`)."
+   * }
+   */
+  billing_reason?: string
+  /** nullable:true, description:Invoice collection method as returned by Stripe. */
+  collection_method?: string
   /** format:date-time, description:Time at which the object was created. */
   created_at: string
   /**
@@ -2880,6 +2889,13 @@ export interface Invoice {
    * }
    */
   status?: InvoiceStatus
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Subscription ID tied to this invoice, when available."
+   * }
+   */
+  subscription_id?: string
   /**
    * {
    *   "title": "double",
@@ -9209,7 +9225,7 @@ export interface ZooProductSubscriptionsUserRequest {
   pay_annually?: boolean
 }
 
-export type ZooTool = 'modeling_app' | 'diff_chrome_extension' | 'text_to_cad'
+export type ZooTool = 'modeling_app' | 'text_to_cad'
 
 export interface ZoomToFit {
   /** Camera settings */
