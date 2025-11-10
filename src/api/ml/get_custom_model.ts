@@ -1,41 +1,32 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions,
-  Uuid,
-  SubscriptionTierPrice,
-} from '../../models.js'
+import { CustomModel, Uuid } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface GetCustomModelInput {
   client?: Client
   id: Uuid
-  body: SubscriptionTierPrice
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type GetCustomModelReturn = CustomModel
 
 /**
- * Set the enterprise price for an organization.
+ * Retrieve the details of a single custom ML model so long as it belongs to the caller’s organization.
  *
- * You must be a Zoo admin to perform this request.
- *
- * Tags: orgs, hidden
+ * Tags: ml
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {Uuid} id The identifier. (path)
+ * @returns {Promise<GetCustomModelReturn>} successful operation
  *
- * Possible return types: ZooProductSubscriptions
+ * Possible return types: CustomModel
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function get_custom_model({
   client,
   id,
-  body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
+}: GetCustomModelInput): Promise<GetCustomModelReturn> {
+  const path = `/ml/custom/models/${id}`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -59,15 +50,13 @@ export default async function update_enterprise_pricing_for_org({
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
-  headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
-    method: 'PUT',
+    method: 'GET',
     headers,
-    body: JSON.stringify(body),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as GetCustomModelReturn
   return result
 }

@@ -825,6 +825,86 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}~1stats/get/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_dataset_conversion_stats({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}~1rescan/post/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.rescan_org_dataset({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}~1conversions~1{conversion_id}~1retry/post/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.retry_org_dataset_conversion({\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}~1conversions~1{conversion_id}/get/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_dataset_conversion({\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}~1conversions/get/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.list_org_dataset_conversions({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = orgs.list_org_dataset_conversions_pager({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}/put/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org_dataset({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            name: 'Optional new display name.',\n            source: {\n                access_role_arn:\n                    'Updated identity Zoo should assume when reading the dataset.',\n                provider: 's3',\n                uri: 'Updated fully-qualified URI for the dataset contents.',\n            },\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_dataset({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1datasets/post/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.create_org_dataset({\n        body: {\n            name: \"The dataset's display name.\",\n            source: {\n                access_role_arn:\n                    \"Identity we assume when accessing the dataset. Must be configured with the org's `aws_external_id` per AWS confused deputy guidance. See <https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html>.\",\n                provider: 's3',\n                uri: 'Fully-qualified URI for the dataset contents.',\n            },\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1datasets/get/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.list_org_datasets({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = orgs.list_org_datasets_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1dataset~1s3~1policies/get/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.org_dataset_s3_policies({\n        role_arn: 'string',\n        uri: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1org~1api-calls~1{id}/get/x-typescript",
     "value": {
       "example": "import { api_calls, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await api_calls.get_api_call_for_org({ id: 'string' })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -972,6 +1052,38 @@
     "path": "/paths/~1ml~1kcl~1completions/post/x-typescript",
     "value": {
       "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_kcl_code_completions({\n        body: {\n            extra: {\n                language: 'The language of the code.',\n                next_indent: 7,\n                prompt_tokens: 7,\n                suffix_tokens: 7,\n                trim_by_indentation: true,\n            },\n            max_tokens: 7,\n            model_version:\n                'Zoo provided model, or custom model which should be used to process this request.',\n            n: 7,\n            nwo: 'For GitHub copilot this is the `{org}/{repo}`. This does not do anything yet. But we wanted the same API as GitHub Copilot. It might be used in the future.',\n            prompt: 'The prompt for the desired part.',\n            stop: ['string'],\n            stream: true,\n            suffix: 'The suffix for the desired part.',\n            temperature: 7,\n            top_p: 7,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml~1custom~1models~1{id}~1datasets/get/x-typescript",
+    "value": {
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.list_org_datasets_for_model({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml~1custom~1models~1{id}/put/x-typescript",
+    "value": {
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.update_custom_model({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            name: \"The model's display name.\",\n            system_prompt: \"The model's system prompt.\",\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml~1custom~1models~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.get_custom_model({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1ml~1custom~1models/post/x-typescript",
+    "value": {
+      "example": "import { ml, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await ml.create_custom_model({\n        body: {\n            dataset_ids: [],\n            name: \"The model's display name.\",\n            system_prompt: \"The model's system prompt.\",\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

@@ -1,41 +1,35 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions,
-  Uuid,
-  SubscriptionTierPrice,
-} from '../../models.js'
+import { OrgDatasetFileConversion, Uuid } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface RetryOrgDatasetConversionInput {
   client?: Client
+  conversion_id: Uuid
   id: Uuid
-  body: SubscriptionTierPrice
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type RetryOrgDatasetConversionReturn = OrgDatasetFileConversion
 
 /**
- * Set the enterprise price for an organization.
+ * Retry a specific dataset conversion that failed previously for the caller's org.
  *
- * You must be a Zoo admin to perform this request.
- *
- * Tags: orgs, hidden
+ * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {Uuid} conversion_id Conversion identifier. (path)
+ * @property {Uuid} id Dataset identifier. (path)
+ * @returns {Promise<RetryOrgDatasetConversionReturn>} successfully enqueued operation
  *
- * Possible return types: ZooProductSubscriptions
+ * Possible return types: OrgDatasetFileConversion
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function retry_org_dataset_conversion({
   client,
+  conversion_id,
   id,
-  body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
+}: RetryOrgDatasetConversionInput): Promise<RetryOrgDatasetConversionReturn> {
+  const path = `/org/datasets/${id}/conversions/${conversion_id}/retry`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -59,15 +53,13 @@ export default async function update_enterprise_pricing_for_org({
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
-  headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
-    method: 'PUT',
+    method: 'POST',
     headers,
-    body: JSON.stringify(body),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as RetryOrgDatasetConversionReturn
   return result
 }

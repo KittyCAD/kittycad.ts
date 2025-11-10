@@ -1552,6 +1552,22 @@ export interface Coupon {
   percent_off?: number
 }
 
+export interface CreateCustomModel {
+  /** Org dataset IDs that should be linked to the model. Must contain at least one dataset owned by the org. */
+  dataset_ids: Uuid[]
+  /** The model's display name. */
+  name: string
+  /** nullable:true, description:The model's system prompt. */
+  system_prompt?: string
+}
+
+export interface CreateOrgDataset {
+  /** The dataset's display name. */
+  name: string
+  /** Details for accessing the dataset. */
+  source: OrgDatasetSource
+}
+
 export interface CreateShortlinkRequest {
   /**
    * {
@@ -1615,6 +1631,21 @@ export interface CurveSetConstraint {} /* Empty object */
 export type CurveType =
   /** The type of Curve (embedded within path) */
   'line' | 'arc' | 'nurbs'
+
+export interface CustomModel {
+  /** title:DateTime, format:date-time, description:The date and time the model was created. */
+  created_at: string
+  /** The unique identifier for the model. */
+  id: Uuid
+  /** User-provided display name. This is mutable; lookup by ID instead. */
+  name: string
+  /** The ID of the org owning the model. */
+  org_id: Uuid
+  /** User-provided LLM system prompt. This is akin to `AGENTS.md`. */
+  system_prompt: string
+  /** title:DateTime, format:date-time, description:The date and time the model was last updated. */
+  updated_at: string
+}
 
 export interface Customer {
   /** nullable:true, description:The customer's address. */
@@ -1761,6 +1792,12 @@ export type CutTypeV2 =
       }
     }
 
+export interface DatasetS3Policies {
+  bucket_policy: string
+  permission_policy: string
+  trust_policy: string
+}
+
 export interface DefaultCameraCenterToScene {} /* Empty object */
 
 export interface DefaultCameraCenterToSelection {} /* Empty object */
@@ -1897,22 +1934,6 @@ export interface EngineUtilEvaluatePath {
   /** The evaluated path curve position */
   pos: Point3d
 }
-
-export type EnterpriseSubscriptionTierPrice =
-  | {
-      /** The interval the price is charged. */
-      interval: PlanInterval
-      /** title:double, format:money-usd, description:The price. */
-      price: number
-      type: 'flat'
-    }
-  | {
-      /** The interval the price is charged. */
-      interval: PlanInterval
-      /** title:double, format:money-usd, description:The price. */
-      price: number
-      type: 'per_user'
-    }
 
 export interface EntityCircularPattern {
   /** The Face, edge, and entity ids of the patterned entities. */
@@ -3537,6 +3558,20 @@ export interface ModelingAppSubscriptionTier {
   endpoints_included?: ApiEndpoint[]
   /** minItems:0, maxItems:15, description:Features that are included in the subscription. */
   features?: SubscriptionTierFeature[]
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Indicates whether this plan uses custom-quoted pricing."
+   * }
+   */
+  is_custom_quote?: boolean
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Indicates whether the plan enables custom ML models."
+   * }
+   */
+  ml_custom_models?: boolean
   /**
    * {
    *   "default": 0,
@@ -6369,6 +6404,13 @@ export interface Org {
    * }
    */
   allow_users_in_domain_to_auto_join?: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "ExternalId our workers supply when assuming customer roles, following AWS guidance for avoiding the [confused deputy problem](https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html). Required before an org can register external datasets."
+   * }
+   */
+  aws_external_id?: Uuid
   /** format:email, description:The billing email address of the org. */
   billing_email: string
   /**
@@ -6465,6 +6507,240 @@ export interface OrgAdminDetails {
   stripe_customer_id?: string
   /** nullable:true, description:Direct link to the Stripe customer dashboard. */
   stripe_dashboard_url?: string
+}
+
+export interface OrgDataset {
+  /** Identity we assume when accessing the dataset (AWS role ARN today). Pair this with the org's `aws_external_id` to mitigate the AWS confused deputy risk. See <https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html>. */
+  access_role_arn: string
+  /** title:DateTime, format:date-time, description:The date and time the dataset was created. */
+  created_at: string
+  /** The unique identifier for the dataset. */
+  id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Last recorded sync error message, if dataset access failed."
+   * }
+   */
+  last_sync_error?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Timestamp for the last sync error."
+   * }
+   */
+  last_sync_error_at?: string
+  /** User-provided display name. This is mutable; lookup by ID instead. */
+  name: string
+  /** The ID of the org owning the dataset. */
+  org_id: Uuid
+  /** Fully-qualified URI to the dataset location (e.g. s3://bucket/prefix). */
+  source_uri: string
+  /** Storage provider identifier. */
+  storage_provider: StorageProvider
+  /** title:DateTime, format:date-time, description:The date and time the dataset was last updated. */
+  updated_at: string
+}
+
+export interface OrgDatasetConversionStatsResponse {
+  by_status: {
+    [key: string]: /**
+     * {
+     *   "format": "int64"
+     * }
+     */
+    number
+  }
+  /** Dataset identifier. */
+  dataset_id: Uuid
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Number of conversions currently in an error state."
+   * }
+   */
+  failures: number
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Number of conversions that completed successfully."
+   * }
+   */
+  successes: number
+  /** format:int64, description:Total number of tracked conversions. */
+  total: number
+}
+
+export interface OrgDatasetFileConversion {
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion got its current `status`."
+   * }
+   */
+  completed_at?: string
+  /** title:DateTime, format:date-time, description:The date and time the conversion was created. */
+  created_at: string
+  /** The ID of the dataset this file is being converted from. */
+  dataset_id: Uuid
+  /** File's ETag from dataset bucket, for detecting whether a file needs to be converted again can be reused when creating new custom ML models. */
+  file_etag: string
+  /** Location within dataset `path`. */
+  file_path: string
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Number of bytes, for measuring throughput and debugging conversion errors."
+   * }
+   */
+  file_size: number
+  /** The unique identifier for the conversion. */
+  id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Tracks which version the file was processed with. If conversion failed due to an internal error, then it will be retried on converter version change."
+   * }
+   */
+  importer_version?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Path where the processed file output is stored, when available."
+   * }
+   */
+  output_path?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion started."
+   * }
+   */
+  started_at?: string
+  /** Conversion status. */
+  status: OrgDatasetFileConversionStatus
+  /** nullable:true, description:Details associated with `status`. */
+  status_message?: string
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion was last updated."
+   * }
+   */
+  updated_at: string
+}
+
+export interface OrgDatasetFileConversionDetails {
+  /** Conversion metadata without storage pointers. */
+  conversion: OrgDatasetFileConversionSummary
+  /** Plain-text contents of the converted artifact. */
+  output: string
+}
+
+export type OrgDatasetFileConversionStatus =
+  | 'queued'
+  | 'canceled'
+  | 'in_progress'
+  | 'success'
+  | 'error_user'
+  | 'error_unsupported'
+  | 'error_internal'
+
+export interface OrgDatasetFileConversionSummary {
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion got its current `status`."
+   * }
+   */
+  completed_at?: string
+  /** title:DateTime, format:date-time, description:The date and time the conversion was created. */
+  created_at: string
+  /** The ID of the dataset this file is being converted from. */
+  dataset_id: Uuid
+  /** File's ETag from dataset bucket, for detecting whether a file needs to be reconverted. */
+  file_etag: string
+  /** Location within dataset `path`. */
+  file_path: string
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Number of bytes, for measuring throughput and debugging conversion errors."
+   * }
+   */
+  file_size: number
+  /** The unique identifier for the conversion. */
+  id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Tracks which version processed this file when available."
+   * }
+   */
+  importer_version?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion started."
+   * }
+   */
+  started_at?: string
+  /** Conversion status. */
+  status: OrgDatasetFileConversionStatus
+  /** nullable:true, description:Details associated with `status`. */
+  status_message?: string
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion was last updated."
+   * }
+   */
+  updated_at: string
+}
+
+export interface OrgDatasetFileConversionSummaryResultsPage {
+  /** list of items on this page of results */
+  items: OrgDatasetFileConversionSummary[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
+export interface OrgDatasetResultsPage {
+  /** list of items on this page of results */
+  items: OrgDataset[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
+export interface OrgDatasetSource {
+  /** Identity we assume when accessing the dataset. Must be configured with the org's `aws_external_id` per AWS confused deputy guidance. See <https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html>. */
+  access_role_arn: string
+  /** Storage provider identifier. */
+  provider: StorageProvider
+  /** Fully-qualified URI for the dataset contents. */
+  uri: string
 }
 
 export interface OrgDetails {
@@ -7469,6 +7745,8 @@ export interface SourceRangePrompt {
 export interface StartPath {} /* Empty object */
 
 export type StlStorage = 'ascii' | 'binary'
+
+export type StorageProvider = 's3'
 
 export interface StoreCouponParams {
   /** format:uint32, minimum:0, description:The percentage off. */
@@ -8786,9 +9064,42 @@ This is the same as the API call ID. */
 
 export interface UpdateAnnotation {} /* Empty object */
 
+export interface UpdateCustomModel {
+  /** nullable:true, description:The model's display name. */
+  name?: string
+  /** nullable:true, description:The model's system prompt. */
+  system_prompt?: string
+}
+
 export interface UpdateMemberToOrgBody {
   /** The organization role to give the user. */
   role: UserOrgRole
+}
+
+export interface UpdateOrgDataset {
+  /** nullable:true, description:Optional new display name. */
+  name?: string
+  /** nullable:true, description:Optional storage connection overrides. */
+  source?: UpdateOrgDatasetSource
+}
+
+export interface UpdateOrgDatasetSource {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Updated identity Zoo should assume when reading the dataset."
+   * }
+   */
+  access_role_arn?: string
+  /** nullable:true, description:Updated storage provider identifier. */
+  provider?: StorageProvider
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Updated fully-qualified URI for the dataset contents."
+   * }
+   */
+  uri?: string
 }
 
 export interface UpdatePaymentBalance {
@@ -9155,6 +9466,20 @@ export type ZooProductSubscription = {
   features?: SubscriptionTierFeature[]
   /**
    * {
+   *   "default": false,
+   *   "description": "Indicates whether this plan uses custom-quoted pricing."
+   * }
+   */
+  is_custom_quote?: boolean
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Indicates whether the plan enables custom ML models."
+   * }
+   */
+  ml_custom_models?: boolean
+  /**
+   * {
    *   "default": 0,
    *   "format": "uint64",
    *   "minimum": 0,
@@ -9322,6 +9647,8 @@ export interface Models {
   ConversionParams: ConversionParams
   CountryCode: CountryCode
   Coupon: Coupon
+  CreateCustomModel: CreateCustomModel
+  CreateOrgDataset: CreateOrgDataset
   CreateShortlinkRequest: CreateShortlinkRequest
   CreateShortlinkResponse: CreateShortlinkResponse
   CrmData: CrmData
@@ -9331,11 +9658,13 @@ export interface Models {
   CurveGetType: CurveGetType
   CurveSetConstraint: CurveSetConstraint
   CurveType: CurveType
+  CustomModel: CustomModel
   Customer: Customer
   CustomerBalance: CustomerBalance
   CutStrategy: CutStrategy
   CutType: CutType
   CutTypeV2: CutTypeV2
+  DatasetS3Policies: DatasetS3Policies
   DefaultCameraCenterToScene: DefaultCameraCenterToScene
   DefaultCameraCenterToSelection: DefaultCameraCenterToSelection
   DefaultCameraFocusOn: DefaultCameraFocusOn
@@ -9365,7 +9694,6 @@ export interface Models {
   EnableDryRun: EnableDryRun
   EnableSketchMode: EnableSketchMode
   EngineUtilEvaluatePath: EngineUtilEvaluatePath
-  EnterpriseSubscriptionTierPrice: EnterpriseSubscriptionTierPrice
   EntityCircularPattern: EntityCircularPattern
   EntityClone: EntityClone
   EntityFade: EntityFade
@@ -9488,6 +9816,15 @@ export interface Models {
   Org: Org
   OrgAddress: OrgAddress
   OrgAdminDetails: OrgAdminDetails
+  OrgDataset: OrgDataset
+  OrgDatasetConversionStatsResponse: OrgDatasetConversionStatsResponse
+  OrgDatasetFileConversion: OrgDatasetFileConversion
+  OrgDatasetFileConversionDetails: OrgDatasetFileConversionDetails
+  OrgDatasetFileConversionStatus: OrgDatasetFileConversionStatus
+  OrgDatasetFileConversionSummary: OrgDatasetFileConversionSummary
+  OrgDatasetFileConversionSummaryResultsPage: OrgDatasetFileConversionSummaryResultsPage
+  OrgDatasetResultsPage: OrgDatasetResultsPage
+  OrgDatasetSource: OrgDatasetSource
   OrgDetails: OrgDetails
   OrgMember: OrgMember
   OrgMemberResultsPage: OrgMemberResultsPage
@@ -9587,6 +9924,7 @@ export interface Models {
   SourceRangePrompt: SourceRangePrompt
   StartPath: StartPath
   StlStorage: StlStorage
+  StorageProvider: StorageProvider
   StoreCouponParams: StoreCouponParams
   Subscribe: Subscribe
   SubscriptionTierFeature: SubscriptionTierFeature
@@ -9641,7 +9979,10 @@ export interface Models {
   UnitVolume: UnitVolume
   UnitVolumeConversion: UnitVolumeConversion
   UpdateAnnotation: UpdateAnnotation
+  UpdateCustomModel: UpdateCustomModel
   UpdateMemberToOrgBody: UpdateMemberToOrgBody
+  UpdateOrgDataset: UpdateOrgDataset
+  UpdateOrgDatasetSource: UpdateOrgDatasetSource
   UpdatePaymentBalance: UpdatePaymentBalance
   UpdateShortlinkRequest: UpdateShortlinkRequest
   UpdateUser: UpdateUser

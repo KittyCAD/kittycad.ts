@@ -1,41 +1,34 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions,
-  Uuid,
-  SubscriptionTierPrice,
-} from '../../models.js'
+import { OrgDataset, CreateOrgDataset } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface CreateOrgDatasetInput {
   client?: Client
-  id: Uuid
-  body: SubscriptionTierPrice
+  body: CreateOrgDataset
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type CreateOrgDatasetReturn = OrgDataset
 
 /**
- * Set the enterprise price for an organization.
+ * Register a new S3 dataset that Zoo can assume into on behalf of the caller's org.
  *
- * You must be a Zoo admin to perform this request.
+ * If the dataset lives in S3, call `/org/dataset/s3/policies` first so you can generate the trust, permission, and bucket policies scoped to your dataset before invoking this endpoint.
  *
- * Tags: orgs, hidden
+ * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {CreateOrgDataset} body Request body payload
+ * @returns {Promise<CreateOrgDatasetReturn>} successful creation
  *
- * Possible return types: ZooProductSubscriptions
+ * Possible return types: OrgDataset
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function create_org_dataset({
   client,
-  id,
   body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
+}: CreateOrgDatasetInput): Promise<CreateOrgDatasetReturn> {
+  const path = `/org/datasets`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -61,13 +54,13 @@ export default async function update_enterprise_pricing_for_org({
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
-    method: 'PUT',
+    method: 'POST',
     headers,
     body: JSON.stringify(body),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as CreateOrgDatasetReturn
   return result
 }

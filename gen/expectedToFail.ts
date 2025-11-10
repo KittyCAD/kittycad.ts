@@ -31,6 +31,28 @@ export const operationsToNotGenerateTestsFor = [
   'list_invoices_for_user',
   'get_payment_balance_for_any_user',
   'create_user_subscription',
+
+  // 2025-11 spec additions that lack stable test fixtures
+  'create_custom_model',
+  'create_org_dataset',
+  'get_custom_model',
+  'get_org_dataset',
+  'get_org_dataset_conversion',
+  'get_org_dataset_conversion_stats',
+  'list_org_dataset_conversions',
+  'list_org_datasets',
+  'list_org_datasets_for_model',
+  'options_custom_model',
+  'options_custom_models',
+  'options_org_dataset',
+  'options_org_datasets',
+  'options_rescan_org_dataset',
+  'options_retry_org_dataset_conversion',
+  'org_dataset_s3_policies',
+  'rescan_org_dataset',
+  'retry_org_dataset_conversion',
+  'update_custom_model',
+  'update_org_dataset',
 ]
 
 /**

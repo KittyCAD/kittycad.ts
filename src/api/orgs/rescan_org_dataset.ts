@@ -1,41 +1,32 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions,
-  Uuid,
-  SubscriptionTierPrice,
-} from '../../models.js'
+import { OrgDataset, Uuid } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface RescanOrgDatasetInput {
   client?: Client
   id: Uuid
-  body: SubscriptionTierPrice
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type RescanOrgDatasetReturn = OrgDataset
 
 /**
- * Set the enterprise price for an organization.
+ * Request a rescan of a dataset that belongs to the caller's org.
  *
- * You must be a Zoo admin to perform this request.
- *
- * Tags: orgs, hidden
+ * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {Uuid} id The identifier. (path)
+ * @returns {Promise<RescanOrgDatasetReturn>} successfully enqueued operation
  *
- * Possible return types: ZooProductSubscriptions
+ * Possible return types: OrgDataset
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function rescan_org_dataset({
   client,
   id,
-  body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
+}: RescanOrgDatasetInput): Promise<RescanOrgDatasetReturn> {
+  const path = `/org/datasets/${id}/rescan`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -59,15 +50,13 @@ export default async function update_enterprise_pricing_for_org({
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
-  headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
-    method: 'PUT',
+    method: 'POST',
     headers,
-    body: JSON.stringify(body),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as RescanOrgDatasetReturn
   return result
 }

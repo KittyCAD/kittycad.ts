@@ -1,41 +1,37 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions,
-  Uuid,
-  SubscriptionTierPrice,
-} from '../../models.js'
+import { OrgDataset, Uuid, UpdateOrgDataset } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface UpdateOrgDatasetInput {
   client?: Client
   id: Uuid
-  body: SubscriptionTierPrice
+  body: UpdateOrgDataset
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type UpdateOrgDatasetReturn = OrgDataset
 
 /**
- * Set the enterprise price for an organization.
+ * Update dataset metadata or storage credentials for the caller's organization.
  *
- * You must be a Zoo admin to perform this request.
+ * IMPORTANT: Use this endpoint to fix connectivity to the same underlying storage location (e.g. rotating credentials or correcting a typo). Do not repoint an existing dataset at a completely different bucket or provider—create a new dataset instead so conversions in flight keep their original source. This warning applies to every storage backend, not just S3.
  *
- * Tags: orgs, hidden
+ * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {Uuid} id The identifier. (path)
+ * @property {UpdateOrgDataset} body Request body payload
+ * @returns {Promise<UpdateOrgDatasetReturn>} successful operation
  *
- * Possible return types: ZooProductSubscriptions
+ * Possible return types: OrgDataset
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function update_org_dataset({
   client,
   id,
   body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
+}: UpdateOrgDatasetInput): Promise<UpdateOrgDatasetReturn> {
+  const path = `/org/datasets/${id}`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -68,6 +64,6 @@ export default async function update_enterprise_pricing_for_org({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as UpdateOrgDatasetReturn
   return result
 }
