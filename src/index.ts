@@ -98,37 +98,45 @@ export const meta = {
 
 import MlCopilotWs from './api/ml/ml_copilot_ws.js'
 import MlReasoningWs from './api/ml/ml_reasoning_ws.js'
+import create_custom_model from './api/ml/create_custom_model.js'
 import create_kcl_code_completions from './api/ml/create_kcl_code_completions.js'
 import create_proprietary_to_kcl from './api/ml/create_proprietary_to_kcl.js'
 import create_text_to_cad from './api/ml/create_text_to_cad.js'
 import create_text_to_cad_iteration from './api/ml/create_text_to_cad_iteration.js'
 import create_text_to_cad_multi_file_iteration from './api/ml/create_text_to_cad_multi_file_iteration.js'
 import create_text_to_cad_part_feedback from './api/ml/create_text_to_cad_part_feedback.js'
+import get_custom_model from './api/ml/get_custom_model.js'
 import get_ml_prompt from './api/ml/get_ml_prompt.js'
 import get_text_to_cad_part_for_user from './api/ml/get_text_to_cad_part_for_user.js'
 import list_conversations_for_user from './api/ml/list_conversations_for_user.js'
 import list_ml_prompts from './api/ml/list_ml_prompts.js'
+import list_org_datasets_for_model from './api/ml/list_org_datasets_for_model.js'
 import list_text_to_cad_parts_for_user from './api/ml/list_text_to_cad_parts_for_user.js'
+import update_custom_model from './api/ml/update_custom_model.js'
 import { list_conversations_for_user_pager } from './api/ml/list_conversations_for_user.js'
 import { list_ml_prompts_pager } from './api/ml/list_ml_prompts.js'
 import { list_text_to_cad_parts_for_user_pager } from './api/ml/list_text_to_cad_parts_for_user.js'
 export const ml = {
+  create_custom_model,
   create_kcl_code_completions,
   create_proprietary_to_kcl,
   create_text_to_cad,
   create_text_to_cad_iteration,
   create_text_to_cad_multi_file_iteration,
   create_text_to_cad_part_feedback,
+  get_custom_model,
   get_ml_prompt,
   get_text_to_cad_part_for_user,
   list_conversations_for_user,
   list_conversations_for_user_pager,
   list_ml_prompts,
   list_ml_prompts_pager,
+  list_org_datasets_for_model,
   list_text_to_cad_parts_for_user,
   list_text_to_cad_parts_for_user_pager,
   ml_copilot_ws: (params) => new MlCopilotWs(params),
   ml_reasoning_ws: (params) => new MlReasoningWs(params),
+  update_custom_model,
 }
 
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws.js'
@@ -156,6 +164,7 @@ export const oauth2 = {
 }
 
 import create_org from './api/orgs/create_org.js'
+import create_org_dataset from './api/orgs/create_org_dataset.js'
 import create_org_member from './api/orgs/create_org_member.js'
 import create_org_saml_idp from './api/orgs/create_org_saml_idp.js'
 import delete_org from './api/orgs/delete_org.js'
@@ -163,24 +172,36 @@ import delete_org_member from './api/orgs/delete_org_member.js'
 import delete_org_saml_idp from './api/orgs/delete_org_saml_idp.js'
 import get_any_org from './api/orgs/get_any_org.js'
 import get_org from './api/orgs/get_org.js'
+import get_org_dataset from './api/orgs/get_org_dataset.js'
+import get_org_dataset_conversion from './api/orgs/get_org_dataset_conversion.js'
+import get_org_dataset_conversion_stats from './api/orgs/get_org_dataset_conversion_stats.js'
 import get_org_member from './api/orgs/get_org_member.js'
 import get_org_privacy_settings from './api/orgs/get_org_privacy_settings.js'
 import get_org_saml_idp from './api/orgs/get_org_saml_idp.js'
 import get_org_shortlinks from './api/orgs/get_org_shortlinks.js'
 import get_user_org from './api/orgs/get_user_org.js'
+import list_org_dataset_conversions from './api/orgs/list_org_dataset_conversions.js'
+import list_org_datasets from './api/orgs/list_org_datasets.js'
 import list_org_members from './api/orgs/list_org_members.js'
 import list_orgs from './api/orgs/list_orgs.js'
 import org_admin_details_get from './api/orgs/org_admin_details_get.js'
+import org_dataset_s3_policies from './api/orgs/org_dataset_s3_policies.js'
+import rescan_org_dataset from './api/orgs/rescan_org_dataset.js'
+import retry_org_dataset_conversion from './api/orgs/retry_org_dataset_conversion.js'
 import update_enterprise_pricing_for_org from './api/orgs/update_enterprise_pricing_for_org.js'
 import update_org from './api/orgs/update_org.js'
+import update_org_dataset from './api/orgs/update_org_dataset.js'
 import update_org_member from './api/orgs/update_org_member.js'
 import update_org_privacy_settings from './api/orgs/update_org_privacy_settings.js'
 import update_org_saml_idp from './api/orgs/update_org_saml_idp.js'
 import { get_org_shortlinks_pager } from './api/orgs/get_org_shortlinks.js'
+import { list_org_dataset_conversions_pager } from './api/orgs/list_org_dataset_conversions.js'
+import { list_org_datasets_pager } from './api/orgs/list_org_datasets.js'
 import { list_org_members_pager } from './api/orgs/list_org_members.js'
 import { list_orgs_pager } from './api/orgs/list_orgs.js'
 export const orgs = {
   create_org,
+  create_org_dataset,
   create_org_member,
   create_org_saml_idp,
   delete_org,
@@ -188,19 +209,30 @@ export const orgs = {
   delete_org_saml_idp,
   get_any_org,
   get_org,
+  get_org_dataset,
+  get_org_dataset_conversion,
+  get_org_dataset_conversion_stats,
   get_org_member,
   get_org_privacy_settings,
   get_org_saml_idp,
   get_org_shortlinks,
   get_org_shortlinks_pager,
   get_user_org,
+  list_org_dataset_conversions,
+  list_org_dataset_conversions_pager,
+  list_org_datasets,
+  list_org_datasets_pager,
   list_org_members,
   list_org_members_pager,
   list_orgs,
   list_orgs_pager,
   org_admin_details_get,
+  org_dataset_s3_policies,
+  rescan_org_dataset,
+  retry_org_dataset_conversion,
   update_enterprise_pricing_for_org,
   update_org,
+  update_org_dataset,
   update_org_member,
   update_org_privacy_settings,
   update_org_saml_idp,
@@ -434,6 +466,8 @@ export type {
   ConversionParams,
   CountryCode,
   Coupon,
+  CreateCustomModel,
+  CreateOrgDataset,
   CreateShortlinkRequest,
   CreateShortlinkResponse,
   CreatedAtSortMode,
@@ -444,11 +478,13 @@ export type {
   CurveGetType,
   CurveSetConstraint,
   CurveType,
+  CustomModel,
   Customer,
   CustomerBalance,
   CutStrategy,
   CutType,
   CutTypeV2,
+  DatasetS3Policies,
   DefaultCameraCenterToScene,
   DefaultCameraCenterToSelection,
   DefaultCameraFocusOn,
@@ -478,7 +514,6 @@ export type {
   EnableDryRun,
   EnableSketchMode,
   EngineUtilEvaluatePath,
-  EnterpriseSubscriptionTierPrice,
   EntityCircularPattern,
   EntityClone,
   EntityFade,
@@ -601,6 +636,15 @@ export type {
   Org,
   OrgAddress,
   OrgAdminDetails,
+  OrgDataset,
+  OrgDatasetConversionStatsResponse,
+  OrgDatasetFileConversion,
+  OrgDatasetFileConversionDetails,
+  OrgDatasetFileConversionStatus,
+  OrgDatasetFileConversionSummary,
+  OrgDatasetFileConversionSummaryResultsPage,
+  OrgDatasetResultsPage,
+  OrgDatasetSource,
   OrgDetails,
   OrgMember,
   OrgMemberResultsPage,
@@ -701,6 +745,7 @@ export type {
   SourceRangePrompt,
   StartPath,
   StlStorage,
+  StorageProvider,
   StoreCouponParams,
   Subscribe,
   SubscriptionTierFeature,
@@ -755,7 +800,10 @@ export type {
   UnitVolume,
   UnitVolumeConversion,
   UpdateAnnotation,
+  UpdateCustomModel,
   UpdateMemberToOrgBody,
+  UpdateOrgDataset,
+  UpdateOrgDatasetSource,
   UpdatePaymentBalance,
   UpdateShortlinkRequest,
   UpdateUser,

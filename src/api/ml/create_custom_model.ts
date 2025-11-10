@@ -1,41 +1,34 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions,
-  Uuid,
-  SubscriptionTierPrice,
-} from '../../models.js'
+import { CustomModel, CreateCustomModel } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface CreateCustomModelInput {
   client?: Client
-  id: Uuid
-  body: SubscriptionTierPrice
+  body: CreateCustomModel
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type CreateCustomModelReturn = CustomModel
 
 /**
- * Set the enterprise price for an organization.
+ * Create a custom ML model that is backed by one or more org datasets.
  *
- * You must be a Zoo admin to perform this request.
+ * Dataset readiness is enforced via `OrgDatasetFileConversion::status_counts_for_datasets`: - At least one conversion must have status `success`. - No conversions may remain in `queued`. If even a single file is still queued the dataset is treated as “not ready for training.” - A dataset consisting only of `canceled` or `error_*` entries is rejected because there’s nothing usable.
  *
- * Tags: orgs, hidden
+ * Tags: ml
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {CreateCustomModel} body Request body payload
+ * @returns {Promise<CreateCustomModelReturn>} successful creation
  *
- * Possible return types: ZooProductSubscriptions
+ * Possible return types: CustomModel
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function create_custom_model({
   client,
-  id,
   body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
+}: CreateCustomModelInput): Promise<CreateCustomModelReturn> {
+  const path = `/ml/custom/models`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -61,13 +54,13 @@ export default async function update_enterprise_pricing_for_org({
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
-    method: 'PUT',
+    method: 'POST',
     headers,
     body: JSON.stringify(body),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as CreateCustomModelReturn
   return result
 }

@@ -1,42 +1,36 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions,
-  Uuid,
-  SubscriptionTierPrice,
-} from '../../models.js'
+import { DatasetS3Policies } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface OrgDatasetS3PoliciesInput {
   client?: Client
-  id: Uuid
-  body: SubscriptionTierPrice
+  role_arn: string
+  uri: string
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type OrgDatasetS3PoliciesReturn = DatasetS3Policies
 
 /**
- * Set the enterprise price for an organization.
+ * Return the IAM policies customers should apply when onboarding an S3 dataset.
  *
- * You must be a Zoo admin to perform this request.
- *
- * Tags: orgs, hidden
+ * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {string} role_arn IAM role ARN customers expect Zoo to assume when reading the dataset. (query)
+ * @property {string} uri Dataset URI used to scope generated IAM policies. (query)
+ * @returns {Promise<OrgDatasetS3PoliciesReturn>} successful operation
  *
- * Possible return types: ZooProductSubscriptions
+ * Possible return types: DatasetS3Policies
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function org_dataset_s3_policies({
   client,
-  id,
-  body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
-  const qs = buildQuery({})
+  role_arn,
+  uri,
+}: OrgDatasetS3PoliciesInput): Promise<OrgDatasetS3PoliciesReturn> {
+  const path = `/org/dataset/s3/policies`
+  const qs = buildQuery({ role_arn: role_arn, uri: uri })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -59,15 +53,13 @@ export default async function update_enterprise_pricing_for_org({
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
-  headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
-    method: 'PUT',
+    method: 'GET',
     headers,
-    body: JSON.stringify(body),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as OrgDatasetS3PoliciesReturn
   return result
 }

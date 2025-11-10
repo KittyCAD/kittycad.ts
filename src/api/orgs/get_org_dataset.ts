@@ -1,41 +1,32 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ZooProductSubscriptions,
-  Uuid,
-  SubscriptionTierPrice,
-} from '../../models.js'
+import { OrgDataset, Uuid } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface GetOrgDatasetInput {
   client?: Client
   id: Uuid
-  body: SubscriptionTierPrice
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type GetOrgDatasetReturn = OrgDataset
 
 /**
- * Set the enterprise price for an organization.
+ * Fetch a single dataset by id so long as it belongs to the authenticated org.
  *
- * You must be a Zoo admin to perform this request.
- *
- * Tags: orgs, hidden
+ * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {Uuid} id The identifier. (path)
+ * @returns {Promise<GetOrgDatasetReturn>} successful operation
  *
- * Possible return types: ZooProductSubscriptions
+ * Possible return types: OrgDataset
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function get_org_dataset({
   client,
   id,
-  body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
+}: GetOrgDatasetInput): Promise<GetOrgDatasetReturn> {
+  const path = `/org/datasets/${id}`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -59,15 +50,13 @@ export default async function update_enterprise_pricing_for_org({
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
-  headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
-    method: 'PUT',
+    method: 'GET',
     headers,
-    body: JSON.stringify(body),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as GetOrgDatasetReturn
   return result
 }
