@@ -3380,6 +3380,9 @@ export type MlCopilotSupportedModels =
   | 'gpt5_codex'
   | 'gpt5'
   | 'o3_mini'
+  | 'azure_o3_mini'
+  | 'azure_gpt4o'
+  | 'azure_gpt4o_mini'
 
 export type MlCopilotSystemCommand = 'new' | 'bye'
 
