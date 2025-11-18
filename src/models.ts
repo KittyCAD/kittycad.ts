@@ -3323,6 +3323,7 @@ export type MlCopilotServerMessage =
         text: string
       }
     }
+  | { project_updated: { files: { [key: string]: string } } }
   | {
       /**
        * {
