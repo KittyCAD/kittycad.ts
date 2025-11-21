@@ -348,6 +348,14 @@ export interface ApiCallQueryGroup {
   query: string
 }
 
+export type ApiCallQueryGroupBy =
+  | 'email'
+  | 'method'
+  | 'endpoint'
+  | 'user_id'
+  | 'origin'
+  | 'ip_address'
+
 export type ApiCallStatus =
   | 'queued'
   | 'uploaded'
@@ -1420,6 +1428,16 @@ export interface ClosePath {
   face_id: string
 }
 
+export type CodeLanguage = 'go' | 'python' | 'node'
+
+export type CodeOption =
+  /** Code option for running and verifying kcl.
+
+<details><summary>JSON schema</summary>
+
+```json { "title": "CodeOption", "description": "Code option for running and verifying kcl.", "type": "string", "enum": [ "parse", "execute", "cleanup", "mock_execute" ] } ``` </details> */
+  'parse' | 'execute' | 'cleanup' | 'mock_execute'
+
 export interface CodeOutput {
   /** The contents of the files requested if they were passed. */
   output_files?: OutputFile[]
@@ -1593,6 +1611,8 @@ export interface CreateShortlinkResponse {
   /** format:uri, description:The shortened url. */
   url: string
 }
+
+export type CreatedAtSortMode = 'created_at_ascending' | 'created_at_descending'
 
 export interface CrmData {
   /** nullable:true, description:The industry of the user. */
@@ -7250,6 +7270,10 @@ export interface Pong {
   message: string
 }
 
+export type PostEffectType =
+  /** Post effect type */
+  'phosphor' | 'ssao' | 'noeffect'
+
 export interface PrivacySettings {
   /** If we can train on the data. If the user is a member of an organization, the organization's setting will override this. The organization's setting takes priority. */
   can_train_on_data: boolean
@@ -8338,14 +8362,14 @@ export interface Transform {
   /**
    * {
    *   "default": {
+   *     "angle": {
+   *       "unit": "degrees",
+   *       "value": 0
+   *     },
    *     "axis": {
    *       "x": 0,
    *       "y": 0,
    *       "z": 1
-   *     },
-   *     "angle": {
-   *       "unit": "degrees",
-   *       "value": 0
    *     },
    *     "origin": {
    *       "type": "local"
@@ -9254,6 +9278,8 @@ export interface UserAdminDetails {
   stripe_dashboard_url?: string
 }
 
+export type UserIdentifier = string
+
 export interface UserOrgInfo {
   /**
    * {
@@ -9561,32 +9587,6 @@ export interface ZoomToFit {
   settings: CameraSettings
 }
 
-export type ApiCallQueryGroupBy =
-  | 'email'
-  | 'method'
-  | 'endpoint'
-  | 'user_id'
-  | 'origin'
-  | 'ip_address'
-
-export type CreatedAtSortMode = 'created_at_ascending' | 'created_at_descending'
-
-export type CodeLanguage = 'go' | 'python' | 'node'
-
-export type CodeOption =
-  /** Code option for running and verifying kcl.
-
-<details><summary>JSON schema</summary>
-
-```json { "title": "CodeOption", "description": "Code option for running and verifying kcl.", "type": "string", "enum": [ "parse", "execute", "cleanup", "mock_execute" ] } ``` </details> */
-  'parse' | 'execute' | 'cleanup' | 'mock_execute'
-
-export type UserIdentifier = string
-
-export type PostEffectType =
-  /** Post effect type */
-  'phosphor' | 'ssao' | 'noeffect'
-
 export interface Models {
   AccountProvider: AccountProvider
   AddHoleFromOffset: AddHoleFromOffset
@@ -9608,6 +9608,7 @@ export interface Models {
   AnnotationTextOptions: AnnotationTextOptions
   AnnotationType: AnnotationType
   ApiCallQueryGroup: ApiCallQueryGroup
+  ApiCallQueryGroupBy: ApiCallQueryGroupBy
   ApiCallStatus: ApiCallStatus
   ApiCallWithPrice: ApiCallWithPrice
   ApiCallWithPriceResultsPage: ApiCallWithPriceResultsPage
@@ -9642,6 +9643,8 @@ export interface Models {
   CenterOfMass: CenterOfMass
   ClientMetrics: ClientMetrics
   ClosePath: ClosePath
+  CodeLanguage: CodeLanguage
+  CodeOption: CodeOption
   CodeOutput: CodeOutput
   Color: Color
   ComplementaryEdges: ComplementaryEdges
@@ -9655,6 +9658,7 @@ export interface Models {
   CreateOrgDataset: CreateOrgDataset
   CreateShortlinkRequest: CreateShortlinkRequest
   CreateShortlinkResponse: CreateShortlinkResponse
+  CreatedAtSortMode: CreatedAtSortMode
   CrmData: CrmData
   Currency: Currency
   CurveGetControlPoints: CurveGetControlPoints
@@ -9863,6 +9867,7 @@ export interface Models {
   Point3d: Point3d
   Point4d: Point4d
   Pong: Pong
+  PostEffectType: PostEffectType
   PrivacySettings: PrivacySettings
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectPointsToPlane: ProjectPointsToPlane
@@ -9992,6 +9997,7 @@ export interface Models {
   UpdateUser: UpdateUser
   User: User
   UserAdminDetails: UserAdminDetails
+  UserIdentifier: UserIdentifier
   UserOrgInfo: UserOrgInfo
   UserOrgRole: UserOrgRole
   UserResultsPage: UserResultsPage
@@ -10008,12 +10014,6 @@ export interface Models {
   ZooProductSubscriptionsUserRequest: ZooProductSubscriptionsUserRequest
   ZooTool: ZooTool
   ZoomToFit: ZoomToFit
-  ApiCallQueryGroupBy: ApiCallQueryGroupBy
-  CreatedAtSortMode: CreatedAtSortMode
-  CodeLanguage: CodeLanguage
-  CodeOption: CodeOption
-  UserIdentifier: UserIdentifier
-  PostEffectType: PostEffectType
 }
 
 export type File = { readonly name: string; readonly data: Blob }
