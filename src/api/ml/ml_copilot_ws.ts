@@ -22,7 +22,7 @@ interface MlCopilotWsParams {
  * @param functionNameParams Parameters for URL templating and auth
  * @property {Client} [client] Optional client with auth token.
  * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
- * @property {boolean} replay If `true`, emit BSON Replay for the specified conversation and continue. (query)
+ * @property {boolean} replay If `true`, emit MsgPack Replay for the specified conversation and continue. (query)
  */
 export default class MlCopilotWs<
   Req = MlCopilotClientMessage,
