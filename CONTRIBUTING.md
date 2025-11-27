@@ -6,3 +6,5 @@ This specification is generated only after `api-deux` gets those changes first.
 It triggers a bot to commit the new specification to this repository.
 
 **Every commit to main is published to NPM. Make sure to bump the version before merging any PR!**
+
+Before merging your PR run and commit the result of `npm version patch --no-git-tag-version`.
