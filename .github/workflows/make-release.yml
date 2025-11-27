@@ -3,10 +3,11 @@ on:
     branches:
       - main
 name: make-release
+permissions:
+  id-token: write  # Required for OIDC
+  contents: write
 jobs:
-  makerelease:
-    permissions:
-      contents: write
+  make-release:
     name: make-release
     runs-on: ubuntu-latest
     steps:
@@ -25,5 +26,3 @@ jobs:
         run: npm install && npm run build
       - name: Publish package
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
