@@ -3405,7 +3405,7 @@ export type MlCopilotSupportedModels =
   | 'azure_gpt4o'
   | 'azure_gpt4o_mini'
 
-export type MlCopilotSystemCommand = 'new' | 'bye'
+export type MlCopilotSystemCommand = 'new' | 'bye' | 'interrupt'
 
 export type MlCopilotTool =
   | 'edit_kcl_code'
