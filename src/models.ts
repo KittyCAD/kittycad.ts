@@ -1548,8 +1548,6 @@ export interface Coupon {
    * }
    */
   amount_off?: number
-  /** default:false, description:Always true for a deleted object. */
-  deleted?: boolean
   /** Unique identifier for the object. */
   id?: string
   metadata?: { [key: string]: string }
@@ -4257,6 +4255,8 @@ export type ModelingCmd =
   | {
       /** format:float, description:Ambient Occlusion of the new material */
       ambient_occlusion: number
+      /** nullable:true, description:Color of the backface */
+      backface_color?: Color
       /** Color of the new material */
       color: Color
       /** format:float, description:Metalness of the new material */
@@ -5017,6 +5017,16 @@ export type ModelingCmd =
       value: number
     }
   | { type: 'set_grid_auto_scale' }
+  | {
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Enables or disables OIT. If not given, toggles it."
+       * }
+       */
+      enabled?: boolean
+      type: 'set_order_independent_transparency'
+    }
 
 export type ModelingCmdId =
   /**
@@ -6355,6 +6365,15 @@ export type OkModelingCmdResponse =
       data: SetGridAutoScale
       type: 'set_grid_auto_scale'
     }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/SetOrderIndependentTransparency"
+       * }
+       */
+      data: SetOrderIndependentTransparency
+      type: 'set_order_independent_transparency'
+    }
 
 export type OkWebSocketResponseData =
   | {
@@ -7630,6 +7649,11 @@ export interface SetGridReferencePlane {} /* Empty object */
 export interface SetGridScale {} /* Empty object */
 
 export interface SetObjectTransform {} /* Empty object */
+
+export interface SetOrderIndependentTransparency {
+  /** Is it now enabled, or disabled? */
+  enabled: boolean
+}
 
 export interface SetSceneUnits {} /* Empty object */
 
@@ -9908,6 +9932,7 @@ export interface Models {
   SetGridReferencePlane: SetGridReferencePlane
   SetGridScale: SetGridScale
   SetObjectTransform: SetObjectTransform
+  SetOrderIndependentTransparency: SetOrderIndependentTransparency
   SetSceneUnits: SetSceneUnits
   SetSelectionFilter: SetSelectionFilter
   SetSelectionType: SetSelectionType
