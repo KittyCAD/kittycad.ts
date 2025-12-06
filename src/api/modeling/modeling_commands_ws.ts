@@ -12,6 +12,7 @@ interface ModelingCommandsWsParams {
   client?: Client
   api_call_id?: string
   fps?: number
+  order_independent_transparency?: boolean
   pool?: string
   post_effect?: PostEffectType
   replay?: string
@@ -35,6 +36,7 @@ interface ModelingCommandsWsParams {
  * @property {Client} [client] Optional client with auth token.
  * @property {string} api_call_id API Call ID for distributed tracing (query)
  * @property {number} fps Frames per second of the video feed. (query)
+ * @property {boolean} order_independent_transparency Enables nicer visuals for transparent surfaces. This slows down rendering, so it's off by default. (query)
  * @property {string} pool An optional identifier for a pool of engine instances. The 'default' pool is used when none is specified. (query)
  * @property {PostEffectType} post_effect Engine Post effects (such as SSAO) (query)
  * @property {string} replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
@@ -61,6 +63,8 @@ export default class ModelingCommandsWs<
     const qs = buildQuery({
       api_call_id: this.functionNameParams.api_call_id,
       fps: this.functionNameParams.fps,
+      order_independent_transparency:
+        this.functionNameParams.order_independent_transparency,
       pool: this.functionNameParams.pool,
       post_effect: this.functionNameParams.post_effect,
       replay: this.functionNameParams.replay,

@@ -720,6 +720,7 @@ export type {
   SetGridReferencePlane,
   SetGridScale,
   SetObjectTransform,
+  SetOrderIndependentTransparency,
   SetSceneUnits,
   SetSelectionFilter,
   SetSelectionType,
