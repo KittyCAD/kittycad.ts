@@ -21,6 +21,7 @@ interface ModelingCommandsWsParams {
   video_res_height?: number
   video_res_width?: number
   webrtc?: boolean
+  pr?: number
 }
 
 /**
@@ -45,6 +46,7 @@ interface ModelingCommandsWsParams {
  * @property {number} video_res_height Height of the video feed. Must be a multiple of 4. (query)
  * @property {number} video_res_width Width of the video feed. Must be a multiple of 4. (query)
  * @property {boolean} webrtc If true, will start a webrtc connection. (query)
+ * @property {number} pr Optional PR number for preview pools. If provided, takes precedence over pool=pr-{id}. (query)
  */
 export default class ModelingCommandsWs<
   Req = WebSocketRequest,
@@ -73,6 +75,7 @@ export default class ModelingCommandsWs<
       video_res_height: this.functionNameParams.video_res_height,
       video_res_width: this.functionNameParams.video_res_width,
       webrtc: this.functionNameParams.webrtc,
+      pr: this.functionNameParams.pr,
     })
     const url = path + qs
     // Backwards compatible for the BASE_URL env variable
