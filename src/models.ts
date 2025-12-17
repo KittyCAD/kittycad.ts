@@ -2794,6 +2794,7 @@ Defaults to millimeters. */
     }
 
 export interface InquiryForm {
+  cad_platforms?: string[]
   /** nullable:true, description:The company name. */
   company?: string
   /** format:email, description:The email address of the user. */
@@ -2804,15 +2805,25 @@ export interface InquiryForm {
   industry?: string
   /** The type of inquiry. */
   inquiry_type: InquiryType
+  /** nullable:true, description:The job title (used for pilot inquiries). */
+  job_title?: string
   /** The last name of the user. */
   last_name: string
   /** The message content. */
   message: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The number of CAD users (used for pilot inquiries)."
+   * }
+   */
+  num_cad_users?: string
   /** nullable:true, description:The phone number of the user. */
   phone?: string
 }
 
 export type InquiryType =
+  | 'pilot_inquiry'
   | 'general_inquiry'
   | 'sales_question'
   | 'developer_inquiry'
@@ -2998,7 +3009,13 @@ export interface InvoiceLineItem {
   metadata?: { [key: string]: string }
 }
 
-export type InvoiceStatus = 'draft' | 'open' | 'paid' | 'uncollectible' | 'void'
+export type InvoiceStatus =
+  | 'draft'
+  | 'open'
+  | 'paid'
+  | 'uncollectible'
+  | 'void'
+  | 'unknown'
 
 export interface IpAddrInfo {
   /** nullable:true, format:int64, description:Autonomous System Number. */
@@ -7198,7 +7215,7 @@ export interface PerspectiveCameraParameters {
   z_near?: number
 }
 
-export type PlanInterval = 'day' | 'month' | 'week' | 'year'
+export type PlanInterval = 'day' | 'month' | 'week' | 'year' | 'unknown'
 
 export interface PlanStep {
   /** The edit instructions for the step. */
@@ -7809,6 +7826,8 @@ export interface Subscribe {
   /** format:email, description:The email */
   email: string
 }
+
+export type SubscriptionActionType = 'payment_intent' | 'setup_intent'
 
 export interface SubscriptionTierFeature {
   /** minLength:1, maxLength:80, description:Information about the feature. */
@@ -9302,6 +9321,16 @@ export interface UserAdminDetails {
   stripe_dashboard_url?: string
 }
 
+export interface UserFeatureEntry {
+  /** Stable identifier for the feature flag (snake_case). */
+  id: string
+}
+
+export interface UserFeatureList {
+  /** Features that are active and safe to expose to the current user. */
+  features: UserFeatureEntry[]
+}
+
 export type UserIdentifier = string
 
 export interface UserOrgInfo {
@@ -9576,6 +9605,20 @@ export type ZooProductSubscription = {
 }
 
 export interface ZooProductSubscriptions {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Client secret to complete SCA/3DS for the current subscription change, when applicable."
+   * }
+   */
+  action_client_secret?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Type of intent associated with `action_client_secret`."
+   * }
+   */
+  action_type?: SubscriptionActionType
   /** A modeling app subscription. */
   modeling_app: ModelingAppSubscriptionTier
 }
@@ -9961,6 +10004,7 @@ export interface Models {
   StorageProvider: StorageProvider
   StoreCouponParams: StoreCouponParams
   Subscribe: Subscribe
+  SubscriptionActionType: SubscriptionActionType
   SubscriptionTierFeature: SubscriptionTierFeature
   SubscriptionTierPrice: SubscriptionTierPrice
   SubscriptionTierType: SubscriptionTierType
@@ -10022,6 +10066,8 @@ export interface Models {
   UpdateUser: UpdateUser
   User: User
   UserAdminDetails: UserAdminDetails
+  UserFeatureEntry: UserFeatureEntry
+  UserFeatureList: UserFeatureList
   UserIdentifier: UserIdentifier
   UserOrgInfo: UserOrgInfo
   UserOrgRole: UserOrgRole

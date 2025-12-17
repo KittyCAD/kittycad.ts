@@ -368,6 +368,7 @@ import update_user_privacy_settings from './api/users/update_user_privacy_settin
 import update_user_self from './api/users/update_user_self.js'
 import update_user_shortlink from './api/users/update_user_shortlink.js'
 import user_admin_details_get from './api/users/user_admin_details_get.js'
+import user_features_get from './api/users/user_features_get.js'
 import { get_user_shortlinks_pager } from './api/users/get_user_shortlinks.js'
 import { list_users_extended_pager } from './api/users/list_users_extended.js'
 import { list_users_pager } from './api/users/list_users.js'
@@ -397,6 +398,7 @@ export const users = {
   update_user_self,
   update_user_shortlink,
   user_admin_details_get,
+  user_features_get,
 }
 
 export type {
@@ -749,6 +751,7 @@ export type {
   StorageProvider,
   StoreCouponParams,
   Subscribe,
+  SubscriptionActionType,
   SubscriptionTierFeature,
   SubscriptionTierPrice,
   SubscriptionTierType,
@@ -810,6 +813,8 @@ export type {
   UpdateUser,
   User,
   UserAdminDetails,
+  UserFeatureEntry,
+  UserFeatureList,
   UserIdentifier,
   UserOrgInfo,
   UserOrgRole,

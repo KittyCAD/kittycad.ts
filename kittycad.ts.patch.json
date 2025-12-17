@@ -43,7 +43,7 @@
     "op": "add",
     "path": "/paths/~1website~1form/put/x-typescript",
     "value": {
-      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_form({\n        body: {\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'general_inquiry',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            phone: 'The phone number of the user.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_form({\n        body: {\n            cad_platforms: ['string'],\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'pilot_inquiry',\n            job_title: 'The job title (used for pilot inquiries).',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            num_cad_users:\n                'The number of CAD users (used for pilot inquiries).',\n            phone: 'The phone number of the user.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -323,7 +323,15 @@
     "op": "add",
     "path": "/paths/~1user~1form/put/x-typescript",
     "value": {
-      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_user_form_self({\n        body: {\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'general_inquiry',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            phone: 'The phone number of the user.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_user_form_self({\n        body: {\n            cad_platforms: ['string'],\n            company: 'The company name.',\n            email: 'The email address of the user.',\n            first_name: 'The first name of the user.',\n            industry: 'The industry of the user.',\n            inquiry_type: 'pilot_inquiry',\n            job_title: 'The job title (used for pilot inquiries).',\n            last_name: 'The last name of the user.',\n            message: 'The message content.',\n            num_cad_users:\n                'The number of CAD users (used for pilot inquiries).',\n            phone: 'The phone number of the user.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1features/get/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.user_features_get()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

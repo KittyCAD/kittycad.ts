@@ -17996,6 +17996,100 @@
         }
       }
     },
+    "/user/features": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "List user-visible feature flags enabled for the authenticated user.",
+        "description": "Returns only features that are marked as safe for exposure to clients and currently resolved to `true` for the requesting user (including org overrides).",
+        "operationId": "user_features_get",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "Access-Control-Allow-Credentials": {
+                "description": "Access-Control-Allow-Credentials header.",
+                "style": "simple",
+                "schema": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "description": "Access-Control-Allow-Headers header. This is a comma-separated list of headers.",
+                "style": "simple",
+                "schema": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Access-Control-Allow-Methods header.",
+                "style": "simple",
+                "schema": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "description": "Access-Control-Allow-Origin header.",
+                "style": "simple",
+                "schema": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "Content-Location": {
+                "description": "The Content-Location header for responses that are not the final destination. This is used to indicate where the resource can be found, when it is finished.",
+                "style": "simple",
+                "schema": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "Location": {
+                "description": "The location header for redirects and letting users know if there is a websocket they can listen to for status updates on their operation.",
+                "style": "simple",
+                "schema": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "Set-Cookie": {
+                "description": "Set-Cookie header.",
+                "style": "simple",
+                "schema": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "X-Api-Call-Id": {
+                "description": "ID for this request. We return it so that users can report this to us and help us debug their problems.",
+                "style": "simple",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserFeatureList"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
     "/user/form": {
       "put": {
         "tags": [
@@ -23399,6 +23493,17 @@
             "description": "If true, will start a webrtc connection.",
             "schema": {
               "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pr",
+            "description": "Optional PR number for preview pools. If provided, takes precedence over pool=pr-{id}.",
+            "schema": {
+              "nullable": true,
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0
             }
           }
         ],
@@ -29961,6 +30066,14 @@
         "description": "The form for a public inquiry submission.",
         "type": "object",
         "properties": {
+          "cad_platforms": {
+            "nullable": true,
+            "description": "The CAD platforms (used for pilot inquiries).",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "company": {
             "nullable": true,
             "description": "The company name.",
@@ -29988,12 +30101,22 @@
               }
             ]
           },
+          "job_title": {
+            "nullable": true,
+            "description": "The job title (used for pilot inquiries).",
+            "type": "string"
+          },
           "last_name": {
             "description": "The last name of the user.",
             "type": "string"
           },
           "message": {
             "description": "The message content.",
+            "type": "string"
+          },
+          "num_cad_users": {
+            "nullable": true,
+            "description": "The number of CAD users (used for pilot inquiries).",
             "type": "string"
           },
           "phone": {
@@ -30013,6 +30136,13 @@
       "InquiryType": {
         "description": "The type of inquiry.",
         "oneOf": [
+          {
+            "description": "Inquiries related to pilots (on the enterprise page).",
+            "type": "string",
+            "enum": [
+              "pilot_inquiry"
+            ]
+          },
           {
             "description": "General inquiry about the service or product.",
             "type": "string",
@@ -30322,6 +30452,13 @@
             "type": "string",
             "enum": [
               "void"
+            ]
+          },
+          {
+            "description": "Unknown.",
+            "type": "string",
+            "enum": [
+              "unknown"
             ]
           }
         ]
@@ -41091,6 +41228,13 @@
             "enum": [
               "year"
             ]
+          },
+          {
+            "description": "Don't use.",
+            "type": "string",
+            "enum": [
+              "unknown"
+            ]
           }
         ]
       },
@@ -42632,6 +42776,25 @@
         },
         "required": [
           "email"
+        ]
+      },
+      "SubscriptionActionType": {
+        "description": "Indicates which kind of Stripe intent requires customer action during subscription creation.",
+        "oneOf": [
+          {
+            "description": "The client secret belongs to a PaymentIntent (initial invoice payment).",
+            "type": "string",
+            "enum": [
+              "payment_intent"
+            ]
+          },
+          {
+            "description": "The client secret belongs to a SetupIntent (trial or setup-only flow).",
+            "type": "string",
+            "enum": [
+              "setup_intent"
+            ]
+          }
         ]
       },
       "SubscriptionTierFeature": {
@@ -46250,6 +46413,35 @@
           "payment_methods_summary"
         ]
       },
+      "UserFeatureEntry": {
+        "description": "Enabled features surfaced to end users.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Stable identifier for the feature flag (snake_case).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "UserFeatureList": {
+        "description": "User features response payload.",
+        "type": "object",
+        "properties": {
+          "features": {
+            "description": "Features that are active and safe to expose to the current user.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserFeatureEntry"
+            }
+          }
+        },
+        "required": [
+          "features"
+        ]
+      },
       "UserIdentifier": {
         "type": "string"
       },
@@ -46845,6 +47037,20 @@
         "description": "A struct of Zoo product subscriptions.",
         "type": "object",
         "properties": {
+          "action_client_secret": {
+            "nullable": true,
+            "description": "Client secret to complete SCA/3DS for the current subscription change, when applicable.",
+            "type": "string"
+          },
+          "action_type": {
+            "nullable": true,
+            "description": "Type of intent associated with `action_client_secret`.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SubscriptionActionType"
+              }
+            ]
+          },
           "modeling_app": {
             "description": "A modeling app subscription.",
             "allOf": [
