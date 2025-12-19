@@ -9321,9 +9321,13 @@ export interface UserAdminDetails {
   stripe_dashboard_url?: string
 }
 
+export type UserFeature =
+  | 'proprietary_to_kcl_conversion_beta'
+  | 'new_sketch_mode'
+
 export interface UserFeatureEntry {
   /** Stable identifier for the feature flag (snake_case). */
-  id: string
+  id: UserFeature
 }
 
 export interface UserFeatureList {
@@ -10066,6 +10070,7 @@ export interface Models {
   UpdateUser: UpdateUser
   User: User
   UserAdminDetails: UserAdminDetails
+  UserFeature: UserFeature
   UserFeatureEntry: UserFeatureEntry
   UserFeatureList: UserFeatureList
   UserIdentifier: UserIdentifier

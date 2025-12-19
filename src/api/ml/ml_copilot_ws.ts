@@ -8,6 +8,7 @@ interface MlCopilotWsParams {
   client?: Client
   conversation_id?: string
   replay?: boolean
+  pr?: number
 }
 
 /**
@@ -23,6 +24,7 @@ interface MlCopilotWsParams {
  * @property {Client} [client] Optional client with auth token.
  * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
  * @property {boolean} replay If `true`, emit MsgPack Replay for the specified conversation and continue. (query)
+ * @property {number} pr Optional Pull Request number to route traffic. (query)
  */
 export default class MlCopilotWs<
   Req = MlCopilotClientMessage,
@@ -41,6 +43,7 @@ export default class MlCopilotWs<
     const qs = buildQuery({
       conversation_id: this.functionNameParams.conversation_id,
       replay: this.functionNameParams.replay,
+      pr: this.functionNameParams.pr,
     })
     const url = path + qs
     // Backwards compatible for the BASE_URL env variable

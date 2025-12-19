@@ -813,6 +813,7 @@ export type {
   UpdateUser,
   User,
   UserAdminDetails,
+  UserFeature,
   UserFeatureEntry,
   UserFeatureList,
   UserIdentifier,
