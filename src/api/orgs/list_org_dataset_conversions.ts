@@ -5,7 +5,7 @@ import { Pager, createPager } from '../../pagination.js'
 import {
   OrgDatasetFileConversionSummaryResultsPage,
   Uuid,
-  CreatedAtSortMode,
+  ConversionSortMode,
   OrgDatasetFileConversionSummary,
 } from '../../models.js'
 
@@ -14,7 +14,7 @@ interface ListOrgDatasetConversionsInput {
   id: Uuid
   limit?: number
   page_token?: string
-  sort_by?: CreatedAtSortMode
+  sort_by?: ConversionSortMode
 }
 
 type ListOrgDatasetConversionsReturn =
@@ -30,7 +30,7 @@ type ListOrgDatasetConversionsReturn =
  * @property {Uuid} id The identifier. (path)
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
- * @property {CreatedAtSortMode} sort_by (query)
+ * @property {ConversionSortMode} sort_by (query)
  * @returns {Promise<ListOrgDatasetConversionsReturn>} successful operation
  *
  * Possible return types: OrgDatasetFileConversionSummaryResultsPage

@@ -889,6 +889,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}/delete/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.delete_org_dataset({\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1org~1datasets~1{id}/put/x-typescript",
     "value": {
       "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_org_dataset({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            name: 'Optional new display name.',\n            source: {\n                access_role_arn:\n                    'Updated identity Zoo should assume when reading the dataset.',\n                provider: 's3',\n                uri: 'Updated fully-qualified URI for the dataset contents.',\n            },\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",

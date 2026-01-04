@@ -168,6 +168,7 @@ import create_org_dataset from './api/orgs/create_org_dataset.js'
 import create_org_member from './api/orgs/create_org_member.js'
 import create_org_saml_idp from './api/orgs/create_org_saml_idp.js'
 import delete_org from './api/orgs/delete_org.js'
+import delete_org_dataset from './api/orgs/delete_org_dataset.js'
 import delete_org_member from './api/orgs/delete_org_member.js'
 import delete_org_saml_idp from './api/orgs/delete_org_saml_idp.js'
 import get_any_org from './api/orgs/get_any_org.js'
@@ -204,6 +205,7 @@ export const orgs = {
   create_org_member,
   create_org_saml_idp,
   delete_org,
+  delete_org_dataset,
   delete_org_member,
   delete_org_saml_idp,
   get_any_org,
@@ -470,6 +472,7 @@ export type {
   Conversation,
   ConversationResultsPage,
   ConversionParams,
+  ConversionSortMode,
   CountryCode,
   Coupon,
   CreateCustomModel,
@@ -651,6 +654,7 @@ export type {
   OrgDatasetFileConversionSummaryResultsPage,
   OrgDatasetResultsPage,
   OrgDatasetSource,
+  OrgDatasetStatus,
   OrgDetails,
   OrgMember,
   OrgMemberResultsPage,

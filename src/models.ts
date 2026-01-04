@@ -1534,6 +1534,14 @@ export interface ConversionParams {
   src_format: InputFormat3d
 }
 
+export type ConversionSortMode =
+  | 'created_at_ascending'
+  | 'created_at_descending'
+  | 'status_ascending'
+  | 'status_descending'
+  | 'updated_at_ascending'
+  | 'updated_at_descending'
+
 export type CountryCode =
   /** An ISO-3166 alpha-2 country code. Always uppercase. */
   string
@@ -6598,6 +6606,8 @@ export interface OrgDataset {
   org_id: Uuid
   /** Fully-qualified URI to the dataset location (e.g. s3://bucket/prefix). */
   source_uri: string
+  /** Lifecycle status for this dataset. */
+  status: OrgDatasetStatus
   /** Storage provider identifier. */
   storage_provider: StorageProvider
   /** title:DateTime, format:date-time, description:The date and time the dataset was last updated. */
@@ -6802,6 +6812,8 @@ export interface OrgDatasetSource {
   /** Fully-qualified URI for the dataset contents. */
   uri: string
 }
+
+export type OrgDatasetStatus = 'active' | 'deleting' | 'errored'
 
 export interface OrgDetails {
   /**
@@ -9763,6 +9775,7 @@ export interface Models {
   Conversation: Conversation
   ConversationResultsPage: ConversationResultsPage
   ConversionParams: ConversionParams
+  ConversionSortMode: ConversionSortMode
   CountryCode: CountryCode
   Coupon: Coupon
   CreateCustomModel: CreateCustomModel
@@ -9944,6 +9957,7 @@ export interface Models {
   OrgDatasetFileConversionSummaryResultsPage: OrgDatasetFileConversionSummaryResultsPage
   OrgDatasetResultsPage: OrgDatasetResultsPage
   OrgDatasetSource: OrgDatasetSource
+  OrgDatasetStatus: OrgDatasetStatus
   OrgDetails: OrgDetails
   OrgMember: OrgMember
   OrgMemberResultsPage: OrgMemberResultsPage
