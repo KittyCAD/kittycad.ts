@@ -188,7 +188,6 @@ import org_admin_details_get from './api/orgs/org_admin_details_get.js'
 import org_dataset_s3_policies from './api/orgs/org_dataset_s3_policies.js'
 import rescan_org_dataset from './api/orgs/rescan_org_dataset.js'
 import retry_org_dataset_conversion from './api/orgs/retry_org_dataset_conversion.js'
-import update_enterprise_pricing_for_org from './api/orgs/update_enterprise_pricing_for_org.js'
 import update_org from './api/orgs/update_org.js'
 import update_org_dataset from './api/orgs/update_org_dataset.js'
 import update_org_member from './api/orgs/update_org_member.js'
@@ -230,7 +229,6 @@ export const orgs = {
   org_dataset_s3_policies,
   rescan_org_dataset,
   retry_org_dataset_conversion,
-  update_enterprise_pricing_for_org,
   update_org,
   update_org_dataset,
   update_org_member,
@@ -260,12 +258,15 @@ import list_invoices_for_org from './api/payments/list_invoices_for_org.js'
 import list_invoices_for_user from './api/payments/list_invoices_for_user.js'
 import list_payment_methods_for_org from './api/payments/list_payment_methods_for_org.js'
 import list_payment_methods_for_user from './api/payments/list_payment_methods_for_user.js'
+import set_default_payment_method_for_user from './api/payments/set_default_payment_method_for_user.js'
 import update_org_subscription from './api/payments/update_org_subscription.js'
+import update_org_subscription_for_any_org from './api/payments/update_org_subscription_for_any_org.js'
 import update_payment_balance_for_any_org from './api/payments/update_payment_balance_for_any_org.js'
 import update_payment_balance_for_any_user from './api/payments/update_payment_balance_for_any_user.js'
 import update_payment_information_for_org from './api/payments/update_payment_information_for_org.js'
 import update_payment_information_for_user from './api/payments/update_payment_information_for_user.js'
 import update_user_subscription from './api/payments/update_user_subscription.js'
+import upsert_subscription_plan_price from './api/payments/upsert_subscription_plan_price.js'
 import validate_customer_tax_information_for_org from './api/payments/validate_customer_tax_information_for_org.js'
 import validate_customer_tax_information_for_user from './api/payments/validate_customer_tax_information_for_user.js'
 export const payments = {
@@ -291,12 +292,15 @@ export const payments = {
   list_invoices_for_user,
   list_payment_methods_for_org,
   list_payment_methods_for_user,
+  set_default_payment_method_for_user,
   update_org_subscription,
+  update_org_subscription_for_any_org,
   update_payment_balance_for_any_org,
   update_payment_balance_for_any_user,
   update_payment_information_for_org,
   update_payment_information_for_user,
   update_user_subscription,
+  upsert_subscription_plan_price,
   validate_customer_tax_information_for_org,
   validate_customer_tax_information_for_user,
 }
@@ -682,6 +686,7 @@ export type {
   Point4d,
   Pong,
   PostEffectType,
+  PriceUpsertRequest,
   PrivacySettings,
   ProjectEntityToPlane,
   ProjectPointsToPlane,
@@ -752,6 +757,8 @@ export type {
   StoreCouponParams,
   Subscribe,
   SubscriptionActionType,
+  SubscriptionPlanBillingModel,
+  SubscriptionPlanPriceRecord,
   SubscriptionTierFeature,
   SubscriptionTierPrice,
   SubscriptionTierType,
@@ -813,6 +820,7 @@ export type {
   UpdateUser,
   User,
   UserAdminDetails,
+  UserFeature,
   UserFeatureEntry,
   UserFeatureList,
   UserIdentifier,
