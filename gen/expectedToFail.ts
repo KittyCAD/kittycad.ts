@@ -35,6 +35,7 @@ export const operationsToNotGenerateTestsFor = [
   // 2025-11 spec additions that lack stable test fixtures
   'create_custom_model',
   'create_org_dataset',
+  'delete_org_dataset',
   'get_custom_model',
   'get_org_dataset',
   'get_org_dataset_conversion',
