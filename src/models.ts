@@ -7310,6 +7310,17 @@ export type PostEffectType =
   /** Post effect type */
   'phosphor' | 'ssao' | 'noeffect'
 
+export interface PriceUpsertRequest {
+  /** default:true, description:Whether the price should be active. */
+  active?: boolean
+  /** Billing model (flat or per-user). */
+  billing_model: SubscriptionPlanBillingModel
+  /** Cadence for billing (day, week, month, year). */
+  cadence: PlanInterval
+  /** format:double, description:Amount in USD. */
+  unit_amount: number
+}
+
 export interface PrivacySettings {
   /** If we can train on the data. If the user is a member of an organization, the organization's setting will override this. The organization's setting takes priority. */
   can_train_on_data: boolean
@@ -7828,6 +7839,35 @@ export interface Subscribe {
 }
 
 export type SubscriptionActionType = 'payment_intent' | 'setup_intent'
+
+export type SubscriptionPlanBillingModel = 'flat' | 'per_user'
+
+export interface SubscriptionPlanPriceRecord {
+  /** Whether this price is currently active. */
+  active: boolean
+  /** Billing model persisted in the database (`flat`, `per_user`, or `enterprise`). */
+  billing_model: SubscriptionPlanBillingModel
+  /** Billing cadence string (for example `month` or `year`). */
+  cadence: PlanInterval
+  /** title:DateTime, format:date-time, description:Timestamp when the price row was created. */
+  created_at: string
+  /** Unique identifier for the plan price entry. */
+  id: Uuid
+  /** nullable:true, description:Stripe price identifier, when synchronized. */
+  stripe_price_id?: string
+  /** Foreign key referencing the parent plan. */
+  subscription_plan_id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+   *   "description": "Optional monetary amount associated with the price row."
+   * }
+   */
+  unit_amount?: string
+  /** title:DateTime, format:date-time, description:Timestamp when the price row was last updated. */
+  updated_at: string
+}
 
 export interface SubscriptionTierFeature {
   /** minLength:1, maxLength:80, description:Information about the feature. */
@@ -9321,9 +9361,13 @@ export interface UserAdminDetails {
   stripe_dashboard_url?: string
 }
 
+export type UserFeature =
+  | 'proprietary_to_kcl_conversion_beta'
+  | 'new_sketch_mode'
+
 export interface UserFeatureEntry {
   /** Stable identifier for the feature flag (snake_case). */
-  id: string
+  id: UserFeature
 }
 
 export interface UserFeatureList {
@@ -9935,6 +9979,7 @@ export interface Models {
   Point4d: Point4d
   Pong: Pong
   PostEffectType: PostEffectType
+  PriceUpsertRequest: PriceUpsertRequest
   PrivacySettings: PrivacySettings
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectPointsToPlane: ProjectPointsToPlane
@@ -10005,6 +10050,8 @@ export interface Models {
   StoreCouponParams: StoreCouponParams
   Subscribe: Subscribe
   SubscriptionActionType: SubscriptionActionType
+  SubscriptionPlanBillingModel: SubscriptionPlanBillingModel
+  SubscriptionPlanPriceRecord: SubscriptionPlanPriceRecord
   SubscriptionTierFeature: SubscriptionTierFeature
   SubscriptionTierPrice: SubscriptionTierPrice
   SubscriptionTierType: SubscriptionTierType
@@ -10066,6 +10113,7 @@ export interface Models {
   UpdateUser: UpdateUser
   User: User
   UserAdminDetails: UserAdminDetails
+  UserFeature: UserFeature
   UserFeatureEntry: UserFeatureEntry
   UserFeatureList: UserFeatureList
   UserIdentifier: UserIdentifier

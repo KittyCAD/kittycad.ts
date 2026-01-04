@@ -46,7 +46,7 @@ interface ModelingCommandsWsParams {
  * @property {number} video_res_height Height of the video feed. Must be a multiple of 4. (query)
  * @property {number} video_res_width Width of the video feed. Must be a multiple of 4. (query)
  * @property {boolean} webrtc If true, will start a webrtc connection. (query)
- * @property {number} pr Optional PR number for preview pools. If provided, takes precedence over pool=pr-{id}. (query)
+ * @property {number} pr Optional Pull Request number to route traffic. (query)
  */
 export default class ModelingCommandsWs<
   Req = WebSocketRequest,

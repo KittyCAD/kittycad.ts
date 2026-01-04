@@ -233,6 +233,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1payment~1methods~1{id}~1default/post/x-typescript",
+    "value": {
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.set_default_payment_method_for_user({\n        id: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1payment~1methods~1{id}/delete/x-typescript",
     "value": {
       "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.delete_payment_method_for_user({\n        id: 'string',\n        force: true,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -529,6 +537,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1subscription-plans~1{slug}~1prices/post/x-typescript",
+    "value": {
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.upsert_subscription_plan_price({\n        slug: 'string',\n        body: {\n            active: true,\n            billing_model: 'flat',\n            cadence: 'day',\n            unit_amount: 7,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1store~1coupon/post/x-typescript",
     "value": {
       "example": "import { store, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await store.create_store_coupon({\n        body: { percent_off: 7 },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -553,6 +569,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1orgs~1{id}~1payment~1subscriptions/put/x-typescript",
+    "value": {
+      "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_org_subscription_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1orgs~1{id}~1payment~1balance/put/x-typescript",
     "value": {
       "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -564,14 +588,6 @@
     "path": "/paths/~1orgs~1{id}~1payment~1balance/get/x-typescript",
     "value": {
       "example": "import { payments, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_org({\n        include_total_due: true,\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1orgs~1{id}~1enterprise~1pricing/put/x-typescript",
-    "value": {
-      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.update_enterprise_pricing_for_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: { interval: 'day', price: 7, type: 'flat' },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

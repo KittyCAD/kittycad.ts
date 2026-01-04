@@ -4,38 +4,38 @@ import { throwIfNotOk } from '../../errors.js'
 import {
   ZooProductSubscriptions,
   Uuid,
-  SubscriptionTierPrice,
+  ZooProductSubscriptionsOrgRequest,
 } from '../../models.js'
 
-interface UpdateEnterprisePricingForOrgInput {
+interface UpdateOrgSubscriptionForAnyOrgInput {
   client?: Client
   id: Uuid
-  body: SubscriptionTierPrice
+  body: ZooProductSubscriptionsOrgRequest
 }
 
-type UpdateEnterprisePricingForOrgReturn = ZooProductSubscriptions
+type UpdateOrgSubscriptionForAnyOrgReturn = ZooProductSubscriptions
 
 /**
- * Set the enterprise price for an organization.
+ * Update the subscription for any org (admin override).
  *
- * You must be a Zoo admin to perform this request.
+ * This endpoint requires authentication by a Zoo admin. It updates the subscription for the specified org.
  *
- * Tags: orgs, hidden
+ * Tags: payments, hidden
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The organization ID. (path)
- * @property {SubscriptionTierPrice} body Request body payload
- * @returns {Promise<UpdateEnterprisePricingForOrgReturn>} successful operation
+ * @property {ZooProductSubscriptionsOrgRequest} body Request body payload
+ * @returns {Promise<UpdateOrgSubscriptionForAnyOrgReturn>} successful operation
  *
  * Possible return types: ZooProductSubscriptions
  */
-export default async function update_enterprise_pricing_for_org({
+export default async function update_org_subscription_for_any_org({
   client,
   id,
   body,
-}: UpdateEnterprisePricingForOrgInput): Promise<UpdateEnterprisePricingForOrgReturn> {
-  const path = `/orgs/${id}/enterprise/pricing`
+}: UpdateOrgSubscriptionForAnyOrgInput): Promise<UpdateOrgSubscriptionForAnyOrgReturn> {
+  const path = `/orgs/${id}/payment/subscriptions`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -68,6 +68,6 @@ export default async function update_enterprise_pricing_for_org({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as UpdateEnterprisePricingForOrgReturn
+  const result = (await response.json()) as UpdateOrgSubscriptionForAnyOrgReturn
   return result
 }
