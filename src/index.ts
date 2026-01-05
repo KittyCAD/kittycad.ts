@@ -449,6 +449,7 @@ export type {
   BatchResponse,
   BillingInfo,
   BlockReason,
+  BodyType,
   BooleanIntersection,
   BooleanSubtract,
   BooleanUnion,

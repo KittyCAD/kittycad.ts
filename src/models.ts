@@ -1131,6 +1131,8 @@ export interface BillingInfo {
 
 export type BlockReason = 'missing_payment_method' | 'payment_method_failed'
 
+export type BodyType = 'solid' | 'surface'
+
 export interface BooleanIntersection {
   /**
    * {
@@ -2778,6 +2780,22 @@ Defaults to millimeters. */
   | {
       /**
        * {
+       *   "default": {
+       *     "forward": {
+       *       "axis": "y",
+       *       "direction": "negative"
+       *     },
+       *     "up": {
+       *       "axis": "z",
+       *       "direction": "positive"
+       *     }
+       *   },
+       *   "description": "Co-ordinate system of input data.\n\nDefaults to the [KittyCAD co-ordinate system].\n\n[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html"
+       * }
+       */
+      coords?: System
+      /**
+       * {
        *   "default": false,
        *   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
        * }
@@ -3698,6 +3716,13 @@ export type ModelingCmd =
       type: 'extend_path'
     }
   | {
+      /**
+       * {
+       *   "default": "solid",
+       *   "description": "Should this extrude create a solid body or a surface?"
+       * }
+       */
+      body_type?: BodyType
       /** How far off the plane to extrude */
       distance: LengthUnit
       /**
@@ -3726,6 +3751,13 @@ export type ModelingCmd =
       type: 'extrude'
     }
   | {
+      /**
+       * {
+       *   "default": "solid",
+       *   "description": "Should this extrude create a solid body or a surface?"
+       * }
+       */
+      body_type?: BodyType
       /**
        * {
        *   "default": "merge",
@@ -3757,6 +3789,13 @@ export type ModelingCmd =
        * }
        */
       angle_step_size?: Angle
+      /**
+       * {
+       *   "default": "solid",
+       *   "description": "Should this extrude create a solid body or a surface?"
+       * }
+       */
+      body_type?: BodyType
       /** default:{x:0, y:0}, description:Center to twist about (relative to 2D sketch) */
       center_2d?: Point2d
       /** How far off the plane to extrude */
@@ -3798,6 +3837,13 @@ export type ModelingCmd =
       axis_is_2d: boolean
       /**
        * {
+       *   "default": "solid",
+       *   "description": "Should this extrude create a solid body or a surface?"
+       * }
+       */
+      body_type?: BodyType
+      /**
+       * {
        *   "default": "None",
        *   "description": "Should the revolution also revolve in the opposite direction along the given axis? If so, this specifies its angle."
        * }
@@ -3834,6 +3880,13 @@ export type ModelingCmd =
   | {
       /** The signed angle of revolution (in degrees, must be <= 360 in either direction) */
       angle: Angle
+      /**
+       * {
+       *   "default": "solid",
+       *   "description": "Should this extrude create a solid body or a surface?"
+       * }
+       */
+      body_type?: BodyType
       /**
        * {
        *   "format": "uuid",
@@ -4578,6 +4631,8 @@ export type ModelingCmd =
       type: 'set_current_tool_properties'
     }
   | {
+      /** nullable:true, description:The default color to use for all backfaces */
+      backface_color?: Color
       /** nullable:true, description:The default system color. */
       color?: Color
       type: 'set_default_system_properties'
@@ -9752,6 +9807,7 @@ export interface Models {
   BatchResponse: BatchResponse
   BillingInfo: BillingInfo
   BlockReason: BlockReason
+  BodyType: BodyType
   BooleanIntersection: BooleanIntersection
   BooleanSubtract: BooleanSubtract
   BooleanUnion: BooleanUnion
