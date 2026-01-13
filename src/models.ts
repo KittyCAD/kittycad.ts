@@ -3198,6 +3198,15 @@ export interface KclModel {
 
 export type LengthUnit = number
 
+export type LenientUrl =
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uri"
+   * }
+   */
+  string
+
 export interface Loft {
   /** format:uuid, description:The UUID of the newly created solid loft. */
   solid_id: string
@@ -3446,7 +3455,12 @@ export type MlCopilotSupportedModels =
   | 'azure_gpt4o'
   | 'azure_gpt4o_mini'
 
-export type MlCopilotSystemCommand = 'new' | 'bye' | 'interrupt'
+export type MlCopilotSystemCommand =
+  | 'new'
+  | 'bye'
+  | 'interrupt'
+  | 'cancel'
+  | 'answer_now'
 
 export type MlCopilotTool =
   | 'edit_kcl_code'
@@ -3662,7 +3676,7 @@ export interface ModelingAppSubscriptionTier {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The price of an API credit (meaning 1 credit = 1 second of API usage)."
+   *   "description": "The price of an API credit."
    * }
    */
   pay_as_you_go_api_credit_price?: number
@@ -9697,7 +9711,7 @@ export type ZooProductSubscription = {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The price of an API credit (meaning 1 credit = 1 second of API usage)."
+   *   "description": "The price of an API credit."
    * }
    */
   pay_as_you_go_api_credit_price?: number
@@ -9961,6 +9975,7 @@ export interface Models {
   KclCodeCompletionResponse: KclCodeCompletionResponse
   KclModel: KclModel
   LengthUnit: LengthUnit
+  LenientUrl: LenientUrl
   Loft: Loft
   MakeAxesGizmo: MakeAxesGizmo
   MakeOffsetPath: MakeOffsetPath

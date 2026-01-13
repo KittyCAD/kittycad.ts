@@ -603,6 +603,7 @@ export type {
   KclCodeCompletionResponse,
   KclModel,
   LengthUnit,
+  LenientUrl,
   Loft,
   MakeAxesGizmo,
   MakeOffsetPath,
