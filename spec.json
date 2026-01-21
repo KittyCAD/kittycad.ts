@@ -31537,6 +31537,13 @@
             "description": "The user message, which contains the content of the user's input.",
             "type": "object",
             "properties": {
+              "additional_files": {
+                "description": "The user can send additional files like images or PDFs to provide more context.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MlCopilotFile"
+                }
+              },
               "content": {
                 "description": "The content of the user's message.",
                 "type": "string"
@@ -31635,6 +31642,34 @@
               "type"
             ]
           }
+        ]
+      },
+      "MlCopilotFile": {
+        "description": "A file that can be transferred between the client and server.",
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "The file contents as binary data.",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint8",
+              "minimum": 0
+            }
+          },
+          "mimetype": {
+            "description": "The MIME type of the file (e.g., \"image/png\", \"application/pdf\", \"model/stl\").",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the file.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "mimetype",
+          "name"
         ]
       },
       "MlCopilotMode": {
@@ -31906,6 +31941,31 @@
             },
             "required": [
               "end_of_stream"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "description": "Files sent from the server to the client.",
+            "type": "object",
+            "properties": {
+              "files": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "description": "The list of files being sent.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MlCopilotFile"
+                    }
+                  }
+                },
+                "required": [
+                  "files"
+                ]
+              }
+            },
+            "required": [
+              "files"
             ],
             "additionalProperties": false
           }
