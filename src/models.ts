@@ -3313,6 +3313,8 @@ export type Method =
 export type MlCopilotClientMessage =
   | { headers: { [key: string]: string }; type: 'headers' }
   | {
+      /** The user can send additional files like images or PDFs to provide more context. */
+      additional_files?: MlCopilotFile[]
       /** The content of the user's message. */
       content: string
       current_files?: {
@@ -3353,6 +3355,20 @@ export type MlCopilotClientMessage =
       command: MlCopilotSystemCommand
       type: 'system'
     }
+
+export interface MlCopilotFile {
+  /**
+   * {
+   *   "format": "uint8",
+   *   "minimum": 0
+   * }
+   */
+  data: number[]
+  /** The MIME type of the file (e.g., "image/png", "application/pdf", "model/stl"). */
+  mimetype: string
+  /** The name of the file. */
+  name: string
+}
 
 export type MlCopilotMode = 'fast' | 'thoughtful'
 
@@ -3442,6 +3458,12 @@ export type MlCopilotServerMessage =
          * }
          */
         whole_response?: string
+      }
+    }
+  | {
+      files: {
+        /** The list of files being sent. */
+        files: MlCopilotFile[]
       }
     }
 
@@ -9984,6 +10006,7 @@ export interface Models {
   MbdSymbol: MbdSymbol
   Method: Method
   MlCopilotClientMessage: MlCopilotClientMessage
+  MlCopilotFile: MlCopilotFile
   MlCopilotMode: MlCopilotMode
   MlCopilotServerMessage: MlCopilotServerMessage
   MlCopilotSupportedModels: MlCopilotSupportedModels

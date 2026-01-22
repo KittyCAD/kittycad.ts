@@ -612,6 +612,7 @@ export type {
   MbdSymbol,
   Method,
   MlCopilotClientMessage,
+  MlCopilotFile,
   MlCopilotMode,
   MlCopilotServerMessage,
   MlCopilotSupportedModels,
