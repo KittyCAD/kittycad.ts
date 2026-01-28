@@ -81,7 +81,7 @@
   "author": "Kurt Hutten <kurt@zoo.dev>",
   "license": "MIT",
   "dependencies": {
-    "bson": "^6.8.0",
+    "bson": "^7.1.1",
     "cross-fetch": "^4.0.0",
     "openapi-types": "^12.0.0",
     "ts-node": "^10.9.1",
