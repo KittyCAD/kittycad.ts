@@ -3409,6 +3409,12 @@ export type MlCopilotServerMessage =
         text: string
       }
     }
+  | {
+      backend_shutdown: {
+        /** nullable:true, description:The reason given for the backend shutdown. */
+        reason?: string
+      }
+    }
   | { project_updated: { files: { [key: string]: string } } }
   | {
       /**
