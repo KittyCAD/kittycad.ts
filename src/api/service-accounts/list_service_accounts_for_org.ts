@@ -20,7 +20,7 @@ type ListServiceAccountsForOrgReturn = ServiceAccountResultsPage
 /**
  * List service accounts for your org.
  *
- * This endpoint requires authentication by an org admin. It returns the service accounts for the organization.
+ * This endpoint requires authentication by an org member. It returns the service accounts for the organization.
  *
  * The service accounts are returned in order of creation, with the most recently created service accounts first.
  *

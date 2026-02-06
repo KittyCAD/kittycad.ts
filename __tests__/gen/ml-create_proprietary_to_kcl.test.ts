@@ -8,7 +8,7 @@ async function example() {
         data: new Blob(['thing = 1'], { type: 'text/plain' }),
       },
     ],
-    code_option: 'execute',
+    code_option: 'mock_execute',
   })
   return response
 }
