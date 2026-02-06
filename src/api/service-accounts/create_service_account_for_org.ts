@@ -13,7 +13,7 @@ type CreateServiceAccountForOrgReturn = ServiceAccount
 /**
  * Create a new service account for your org.
  *
- * This endpoint requires authentication by an org admin. It creates a new service account for the organization.
+ * This endpoint requires authentication by an org member. It creates a new service account for the organization.
  *
  * Tags: service-accounts
  *
