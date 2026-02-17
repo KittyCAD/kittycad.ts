@@ -77,7 +77,16 @@ export const expectedToTimeout = [
 ]
 
 /**
+ * Generated REST tests default to the failure-path assertion style
+ * (truthy or ApiError). Add endpoints here only when you explicitly want
+ * strict success assertions in generated smoke tests.
+ */
+export const testsExpectedToSucceed: string[] = []
+
+/**
  * Tests that are expected to fail
+ * This is mostly a legacy list now that failure-path is the default.
+ * Keeping it lets us preserve explicit intent for historically flaky endpoints.
  * They are not exactly ignored because we still hit the endpoint but might be rejected
  * because the dummy data in the tests is not valid
  * i.e. using a uuid like 000-000-....
