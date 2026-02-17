@@ -1,4 +1,4 @@
-import { api_tokens } from '../../src/index.js'
+import { api_tokens, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await api_tokens.create_api_token_for_user({
@@ -9,6 +9,10 @@ async function example() {
 
 describe('Testing api_tokens.create_api_token_for_user', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy()
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
   })
 })

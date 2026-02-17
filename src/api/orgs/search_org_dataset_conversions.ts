@@ -3,48 +3,55 @@ import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
 import {
-  ServiceAccountResultsPage,
-  CreatedAtSortMode,
-  ServiceAccount,
+  OrgDatasetFileConversionSummaryResultsPage,
+  Uuid,
+  ConversionSortMode,
+  OrgDatasetFileConversionSummary,
 } from '../../models.js'
 
-interface ListServiceAccountsForOrgInput {
+interface SearchOrgDatasetConversionsInput {
   client?: Client
+  id: Uuid
   limit?: number
   page_token?: string
-  sort_by?: CreatedAtSortMode
+  q?: string
+  sort_by?: ConversionSortMode
 }
 
-type ListServiceAccountsForOrgReturn = ServiceAccountResultsPage
+type SearchOrgDatasetConversionsReturn =
+  OrgDatasetFileConversionSummaryResultsPage
 
 /**
- * List service accounts for your org.
+ * Search dataset conversions by conversion ID or file path.
  *
- * This endpoint requires authentication by an org member. It returns the service accounts for the organization.
+ * Supports partial and full matching and may return multiple results.
  *
- * The service accounts are returned in order of creation, with the most recently created service accounts first.
- *
- * Tags: service-accounts
+ * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {Uuid} id The identifier. (path)
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
- * @property {CreatedAtSortMode} sort_by (query)
- * @returns {Promise<ListServiceAccountsForOrgReturn>} successful operation
+ * @property {string} q Search text matched against conversion id or file path. (query)
+ * @property {ConversionSortMode} sort_by Requested sort mode for matched conversions. (query)
+ * @returns {Promise<SearchOrgDatasetConversionsReturn>} successful operation
  *
- * Possible return types: ServiceAccountResultsPage
+ * Possible return types: OrgDatasetFileConversionSummaryResultsPage
  */
-export default async function list_service_accounts_for_org({
+export default async function search_org_dataset_conversions({
   client,
+  id,
   limit,
   page_token,
+  q,
   sort_by,
-}: ListServiceAccountsForOrgInput): Promise<ListServiceAccountsForOrgReturn> {
-  const path = `/org/service-accounts`
+}: SearchOrgDatasetConversionsInput): Promise<SearchOrgDatasetConversionsReturn> {
+  const path = `/org/datasets/${id}/search/conversions`
   const qs = buildQuery({
     limit: limit,
     page_token: page_token,
+    q: q,
     sort_by: sort_by,
   })
   const url = path + qs
@@ -76,20 +83,20 @@ export default async function list_service_accounts_for_org({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as ListServiceAccountsForOrgReturn
+  const result = (await response.json()) as SearchOrgDatasetConversionsReturn
   return result
 }
 
-export function list_service_accounts_for_org_pager(
-  params: ListServiceAccountsForOrgInput
+export function search_org_dataset_conversions_pager(
+  params: SearchOrgDatasetConversionsInput
 ): Pager<
-  ListServiceAccountsForOrgInput,
-  ListServiceAccountsForOrgReturn,
-  ServiceAccount
+  SearchOrgDatasetConversionsInput,
+  SearchOrgDatasetConversionsReturn,
+  OrgDatasetFileConversionSummary
 > {
   return createPager<
-    ListServiceAccountsForOrgInput,
-    ListServiceAccountsForOrgReturn,
-    ServiceAccount
-  >(list_service_accounts_for_org, params, 'page_token')
+    SearchOrgDatasetConversionsInput,
+    SearchOrgDatasetConversionsReturn,
+    OrgDatasetFileConversionSummary
+  >(search_org_dataset_conversions, params, 'page_token')
 }

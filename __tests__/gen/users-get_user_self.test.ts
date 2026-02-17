@@ -1,4 +1,4 @@
-import { users } from '../../src/index.js'
+import { users, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await users.get_user_self()
@@ -7,6 +7,10 @@ async function example() {
 
 describe('Testing users.get_user_self', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy()
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
   })
 })

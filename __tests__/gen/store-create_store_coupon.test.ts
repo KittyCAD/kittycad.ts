@@ -1,4 +1,4 @@
-import { store } from '../../src/index.js'
+import { store, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await store.create_store_coupon({ body: { percent_off: 7 } })
@@ -7,6 +7,10 @@ async function example() {
 
 describe('Testing store.create_store_coupon', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy()
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
   })
 })

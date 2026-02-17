@@ -11,7 +11,7 @@ interface CreateOrgDatasetInput {
 type CreateOrgDatasetReturn = OrgDataset
 
 /**
- * Register a new S3 dataset that Zoo can assume into on behalf of the caller's org.
+ * Register a new org dataset.
  *
  * If the dataset lives in S3, call `/org/dataset/s3/policies` first so you can generate the trust, permission, and bucket policies scoped to your dataset before invoking this endpoint.
  *

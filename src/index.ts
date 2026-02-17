@@ -189,16 +189,19 @@ import org_admin_details_get from './api/orgs/org_admin_details_get.js'
 import org_dataset_s3_policies from './api/orgs/org_dataset_s3_policies.js'
 import rescan_org_dataset from './api/orgs/rescan_org_dataset.js'
 import retry_org_dataset_conversion from './api/orgs/retry_org_dataset_conversion.js'
+import search_org_dataset_conversions from './api/orgs/search_org_dataset_conversions.js'
 import update_org from './api/orgs/update_org.js'
 import update_org_dataset from './api/orgs/update_org_dataset.js'
 import update_org_member from './api/orgs/update_org_member.js'
 import update_org_privacy_settings from './api/orgs/update_org_privacy_settings.js'
 import update_org_saml_idp from './api/orgs/update_org_saml_idp.js'
+import upload_org_dataset_files from './api/orgs/upload_org_dataset_files.js'
 import { get_org_shortlinks_pager } from './api/orgs/get_org_shortlinks.js'
 import { list_org_dataset_conversions_pager } from './api/orgs/list_org_dataset_conversions.js'
 import { list_org_datasets_pager } from './api/orgs/list_org_datasets.js'
 import { list_org_members_pager } from './api/orgs/list_org_members.js'
 import { list_orgs_pager } from './api/orgs/list_orgs.js'
+import { search_org_dataset_conversions_pager } from './api/orgs/search_org_dataset_conversions.js'
 export const orgs = {
   create_org,
   create_org_dataset,
@@ -231,11 +234,14 @@ export const orgs = {
   org_dataset_s3_policies,
   rescan_org_dataset,
   retry_org_dataset_conversion,
+  search_org_dataset_conversions,
+  search_org_dataset_conversions_pager,
   update_org,
   update_org_dataset,
   update_org_member,
   update_org_privacy_settings,
   update_org_saml_idp,
+  upload_org_dataset_files,
 }
 
 import create_org_subscription from './api/payments/create_org_subscription.js'
@@ -450,6 +456,7 @@ export type {
   BillingInfo,
   BlockReason,
   BodyType,
+  BooleanImprint,
   BooleanIntersection,
   BooleanSubtract,
   BooleanUnion,
@@ -478,6 +485,7 @@ export type {
   Coupon,
   CreateCustomModel,
   CreateOrgDataset,
+  CreateRegion,
   CreateShortlinkRequest,
   CreateShortlinkResponse,
   CreatedAtSortMode,
@@ -526,12 +534,15 @@ export type {
   EngineUtilEvaluatePath,
   EntityCircularPattern,
   EntityClone,
+  EntityDeleteChildren,
   EntityFade,
   EntityGetAllChildUuids,
   EntityGetChildUuid,
   EntityGetDistance,
+  EntityGetIndex,
   EntityGetNumChildren,
   EntityGetParentId,
+  EntityGetPrimitiveIndex,
   EntityGetSketchPaths,
   EntityLinearPattern,
   EntityLinearPatternTransform,
@@ -717,9 +728,11 @@ export type {
   SelectAdd,
   SelectClear,
   SelectGet,
+  SelectRegionFromPoint,
   SelectRemove,
   SelectReplace,
   SelectWithPoint,
+  SelectedRegion,
   Selection,
   SendObject,
   ServiceAccount,
@@ -746,14 +759,20 @@ export type {
   Solid2dAddHole,
   Solid3dCutEdges,
   Solid3dFilletEdge,
+  Solid3dFlip,
+  Solid3dFlipFace,
   Solid3dGetAdjacencyInfo,
   Solid3dGetAllEdgeFaces,
   Solid3dGetAllOppositeEdges,
+  Solid3dGetBodyType,
   Solid3dGetCommonEdge,
+  Solid3dGetEdgeUuid,
   Solid3dGetExtrusionFaceInfo,
+  Solid3dGetFaceUuid,
   Solid3dGetNextAdjacentEdge,
   Solid3dGetOppositeEdge,
   Solid3dGetPrevAdjacentEdge,
+  Solid3dJoin,
   Solid3dShellFace,
   SourcePosition,
   SourceRange,
@@ -825,6 +844,7 @@ export type {
   UpdatePaymentBalance,
   UpdateShortlinkRequest,
   UpdateUser,
+  UploadOrgDatasetFilesResponse,
   User,
   UserAdminDetails,
   UserFeature,

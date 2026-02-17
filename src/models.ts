@@ -83,6 +83,8 @@ export interface Angle {
 }
 
 export interface AnnotationBasicDimension {
+  /** default:1, format:float, description:The scale of the dimension arrows. Defaults to 1. */
+  arrow_scale?: number
   /** Basic dimension parameters (symbol and tolerance) */
   dimension: AnnotationMbdBasicDimension
   /**
@@ -150,6 +152,14 @@ export interface AnnotationFeatureControl {
   font_point_size: number
   /** format:float, description:The scale of the font label in 3D space */
   font_scale: number
+  /**
+   * {
+   *   "default": 1,
+   *   "format": "float",
+   *   "description": "The scale of the leader (dot or arrow). Defaults to 1."
+   * }
+   */
+  leader_scale?: number
   /** Type of leader to use */
   leader_type: AnnotationLineEnd
   /** 2D Position offset of the annotation within the plane. */
@@ -202,6 +212,14 @@ export interface AnnotationFeatureTag {
   font_scale: number
   /** Tag key */
   key: string
+  /**
+   * {
+   *   "default": 1,
+   *   "format": "float",
+   *   "description": "The scale of the leader (dot or arrow). Defaults to 1."
+   * }
+   */
+  leader_scale?: number
   /** Type of leader to use */
   leader_type: AnnotationLineEnd
   /** 2D Position offset of the annotation within the plane. */
@@ -1133,6 +1151,15 @@ export type BlockReason = 'missing_payment_method' | 'payment_method_failed'
 
 export type BodyType = 'solid' | 'surface'
 
+export interface BooleanImprint {
+  /**
+   * {
+   *   "format": "uuid"
+   * }
+   */
+  extra_solid_ids?: string[]
+}
+
 export interface BooleanIntersection {
   /**
    * {
@@ -1433,12 +1460,12 @@ export interface ClosePath {
 export type CodeLanguage = 'go' | 'python' | 'node'
 
 export type CodeOption =
-  /** Code option for running and verifying kcl.
+  /** `CodeOption`
 
 <details><summary>JSON schema</summary>
 
-```json { "title": "CodeOption", "description": "Code option for running and verifying kcl.", "type": "string", "enum": [ "parse", "execute", "cleanup", "mock_execute" ] } ``` </details> */
-  'parse' | 'execute' | 'cleanup' | 'mock_execute'
+```json { "type": "string", "enum": [ "parse", "mock_execute", "execute" ] } ``` </details> */
+  'parse' | 'mock_execute' | 'execute'
 
 export interface CodeOutput {
   /** The contents of the files requested if they were passed. */
@@ -1593,6 +1620,8 @@ export interface CreateOrgDataset {
   /** Details for accessing the dataset. */
   source: OrgDatasetSource
 }
+
+export interface CreateRegion {} /* Empty object */
 
 export interface CreateShortlinkRequest {
   /**
@@ -1973,6 +2002,8 @@ export interface EntityClone {
   face_edge_ids?: FaceEdgeInfo[]
 }
 
+export interface EntityDeleteChildren {} /* Empty object */
+
 export interface EntityFade {} /* Empty object */
 
 export interface EntityGetAllChildUuids {
@@ -1996,6 +2027,11 @@ export interface EntityGetDistance {
   min_distance: LengthUnit
 }
 
+export interface EntityGetIndex {
+  /** format:uint32, minimum:0, description:The child index of the entity. */
+  entity_index: number
+}
+
 export interface EntityGetNumChildren {
   /** format:uint32, minimum:0, description:The number of children the entity has. */
   num: number
@@ -2004,6 +2040,13 @@ export interface EntityGetNumChildren {
 export interface EntityGetParentId {
   /** format:uuid, description:The UUID of the parent entity. */
   entity_id: string
+}
+
+export interface EntityGetPrimitiveIndex {
+  /** The type of this entity.  Helps infer whether this is an edge or a face index. */
+  entity_type: EntityType
+  /** format:uint32, minimum:0, description:The primitive index of the entity. */
+  primitive_index: number
 }
 
 export interface EntityGetSketchPaths {
@@ -3364,6 +3407,9 @@ export interface MlCopilotFile {
    * }
    */
   data: number[]
+  /** nullable:true, description:Optional blob storage path for the file contents. */
+  data_ref?: string
+  metadata?: { [key: string]: string }
   /** The MIME type of the file (e.g., "image/png", "application/pdf", "model/stl"). */
   mimetype: string
   /** The name of the file. */
@@ -3532,7 +3578,7 @@ export interface MlPrompt {
   /**
    * {
    *   "nullable": true,
-   *   "description": "The output file. In the case of TextToCad this is a link to a file in a GCP bucket."
+   *   "description": "The output directory reference for generated files. Stored as `blob://bucket/key` for new rows; legacy rows may contain a key-only value."
    * }
    */
   output_file?: string
@@ -3783,6 +3829,13 @@ export type ModelingCmd =
       faces?: ExtrudedFaceInfo
       /**
        * {
+       *   "nullable": true,
+       *   "description": "Only used if the extrusion is created from a face and extrude_method = Merge If true, coplanar faces will be merged and seams will be hidden. Otherwise, seams between the extrusion and original body will be shown."
+       * }
+       */
+      merge_coplanar_faces?: boolean
+      /**
+       * {
        *   "default": "None",
        *   "description": "Should the extrusion also extrude in the opposite direction? If so, this specifies its distance."
        * }
@@ -3920,6 +3973,30 @@ export type ModelingCmd =
       type: 'solid3d_shell_face'
     }
   | {
+      /** format:uuid, description:Which Solid3D is being joined. */
+      object_id: string
+      type: 'solid3d_join'
+    }
+  | {
+      /** format:uint32, minimum:0, description:The primitive index of the edge being queried. */
+      edge_index: number
+      /** format:uuid, description:The Solid3D parent who owns the edge */
+      object_id: string
+      type: 'solid3d_get_edge_uuid'
+    }
+  | {
+      /** format:uint32, minimum:0, description:The primitive index of the face being queried. */
+      face_index: number
+      /** format:uuid, description:The Solid3D parent who owns the face */
+      object_id: string
+      type: 'solid3d_get_face_uuid'
+    }
+  | {
+      /** format:uuid, description:The Solid3D whose body type is being queried. */
+      object_id: string
+      type: 'solid3d_get_body_type'
+    }
+  | {
       /** The signed angle of revolution (in degrees, must be <= 360 in either direction) */
       angle: Angle
       /**
@@ -3961,6 +4038,13 @@ export type ModelingCmd =
       base_curve_index?: number
       /** Attempt to approximate rational curves (such as arcs) using a bezier. This will remove banding around interpolations between arcs and non-arcs.  It may produce errors in other scenarios Over time, this field won't be necessary. */
       bez_approximate_rational: boolean
+      /**
+       * {
+       *   "default": "solid",
+       *   "description": "Should this loft create a solid body or a surface?"
+       * }
+       */
+      body_type?: BodyType
       /**
        * {
        *   "format": "uuid"
@@ -4128,6 +4212,27 @@ export type ModelingCmd =
       /** format:uuid, description:ID of the entity being queried. */
       entity_id: string
       type: 'entity_get_child_uuid'
+    }
+  | {
+      /** format:uuid, description:ID of the entity being queried. */
+      entity_id: string
+      type: 'entity_get_index'
+    }
+  | {
+      /** format:uuid, description:ID of the entity being queried. */
+      entity_id: string
+      type: 'entity_get_primitive_index'
+    }
+  | {
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      child_entity_ids: string[]
+      /** format:uuid, description:ID of the entity being modified */
+      entity_id: string
+      type: 'entity_delete_children'
     }
   | {
       /** format:uuid, description:ID of the entity being queried. */
@@ -4398,6 +4503,18 @@ export type ModelingCmd =
       /** format:uuid, description:Which object is being queried. */
       object_id: string
       type: 'solid3d_get_all_edge_faces'
+    }
+  | {
+      /** format:uuid, description:Which object is being flipped. */
+      object_id: string
+      type: 'solid3d_flip'
+    }
+  | {
+      /** format:uuid, description:Which face you want to flip. */
+      face_id: string
+      /** format:uuid, description:Which object is being queried. */
+      object_id: string
+      type: 'solid3d_flip_face'
     }
   | {
       /**
@@ -5090,6 +5207,17 @@ export type ModelingCmd =
   | {
       /**
        * {
+       *   "format": "uuid"
+       * }
+       */
+      body_ids: string[]
+      /** The maximum acceptable surface gap between the intersected bodies. Must be positive (i.e. greater than zero). */
+      tolerance: LengthUnit
+      type: 'boolean_imprint'
+    }
+  | {
+      /**
+       * {
        *   "nullable": true,
        *   "format": "uuid",
        *   "description": "If the object is a solid, this is the ID of the face to base the offset on. If given, and `object_id` refers to a solid, then this face on the solid will be offset. If given but `object_id` doesn't refer to a solid, responds with an error. If not given, then `object_id` itself will be offset directly."
@@ -5148,6 +5276,40 @@ export type ModelingCmd =
        */
       enabled?: boolean
       type: 'set_order_independent_transparency'
+    }
+  | {
+      /**
+       * {
+       *   "default": false,
+       *   "description": "By default, curve counterclockwise at intersections. If this is true, instead curve clockwise."
+       * }
+       */
+      curve_clockwise?: boolean
+      /**
+       * {
+       *   "default": -1,
+       *   "format": "int32",
+       *   "description": "At which intersection between `segment` and `intersection_segment` should we stop following the `segment` and start following `intersection_segment`? Defaults to -1, which means the last intersection."
+       * }
+       */
+      intersection_index?: number
+      /**
+       * {
+       *   "format": "uuid",
+       *   "description": "Second segment to follow to find the region. Intersects the first segment."
+       * }
+       */
+      intersection_segment: string
+      /** format:uuid, description:Which sketch object to create the region from. */
+      object_id: string
+      /** format:uuid, description:First segment to follow to find the region. */
+      segment: string
+      type: 'create_region'
+    }
+  | {
+      /** Where in the window was selected */
+      selected_at_window: Point2d
+      type: 'select_region_from_point'
     }
 
 export type ModelingCmdId =
@@ -5307,6 +5469,42 @@ export type OkModelingCmdResponse =
        */
       data: Solid3dShellFace
       type: 'solid3d_shell_face'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Solid3dJoin"
+       * }
+       */
+      data: Solid3dJoin
+      type: 'solid3d_join'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Solid3dGetEdgeUuid"
+       * }
+       */
+      data: Solid3dGetEdgeUuid
+      type: 'solid3d_get_edge_uuid'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Solid3dGetFaceUuid"
+       * }
+       */
+      data: Solid3dGetFaceUuid
+      type: 'solid3d_get_face_uuid'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Solid3dGetBodyType"
+       * }
+       */
+      data: Solid3dGetBodyType
+      type: 'solid3d_get_body_type'
     }
   | {
       /**
@@ -5788,6 +5986,33 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/EntityGetIndex"
+       * }
+       */
+      data: EntityGetIndex
+      type: 'entity_get_index'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/EntityGetPrimitiveIndex"
+       * }
+       */
+      data: EntityGetPrimitiveIndex
+      type: 'entity_get_primitive_index'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/EntityDeleteChildren"
+       * }
+       */
+      data: EntityDeleteChildren
+      type: 'entity_delete_children'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/EntityGetNumChildren"
        * }
        */
@@ -5991,6 +6216,24 @@ export type OkModelingCmdResponse =
        */
       data: Solid3dGetAllEdgeFaces
       type: 'solid3d_get_all_edge_faces'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Solid3dFlip"
+       * }
+       */
+      data: Solid3dFlip
+      type: 'solid3d_flip'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Solid3dFlipFace"
+       * }
+       */
+      data: Solid3dFlipFace
+      type: 'solid3d_flip_face'
     }
   | {
       /**
@@ -6472,6 +6715,15 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/BooleanImprint"
+       * }
+       */
+      data: BooleanImprint
+      type: 'boolean_imprint'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/SetGridScale"
        * }
        */
@@ -6495,6 +6747,24 @@ export type OkModelingCmdResponse =
        */
       data: SetOrderIndependentTransparency
       type: 'set_order_independent_transparency'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/CreateRegion"
+       * }
+       */
+      data: CreateRegion
+      type: 'create_region'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/SelectRegionFromPoint"
+       * }
+       */
+      data: SelectRegionFromPoint
+      type: 'select_region_from_point'
     }
 
 export type OkWebSocketResponseData =
@@ -6777,7 +7047,7 @@ export interface OrgDatasetFileConversion {
   /**
    * {
    *   "nullable": true,
-   *   "description": "Path where the processed file output is stored, when available."
+   *   "description": "Location reference where the processed file output is stored, when available. New records use `blob://bucket/key`; legacy records may still contain key-only values."
    * }
    */
   output_path?: string
@@ -6902,12 +7172,22 @@ export interface OrgDatasetResultsPage {
 }
 
 export interface OrgDatasetSource {
-  /** Identity we assume when accessing the dataset. Must be configured with the org's `aws_external_id` per AWS confused deputy guidance. See <https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html>. */
-  access_role_arn: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Identity we assume when accessing the dataset. Required when `provider` is `s3`; ignored for Zoo-managed datasets. Must be configured with the org's `aws_external_id` per AWS confused deputy guidance. See <https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html>."
+   * }
+   */
+  access_role_arn?: string
   /** Storage provider identifier. */
   provider: StorageProvider
-  /** Fully-qualified URI for the dataset contents. */
-  uri: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Fully-qualified URI for the dataset contents. Required when `provider` is `s3`; ignored for Zoo-managed datasets."
+   * }
+   */
+  uri?: string
 }
 
 export type OrgDatasetStatus = 'active' | 'deleting' | 'errored'
@@ -7687,6 +7967,16 @@ export interface SelectGet {
   entity_ids: string[]
 }
 
+export interface SelectRegionFromPoint {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The region the user clicked on. If they clicked an open space which isn't a region, this returns None."
+   * }
+   */
+  region?: SelectedRegion
+}
+
 export interface SelectRemove {} /* Empty object */
 
 export interface SelectReplace {} /* Empty object */
@@ -7694,6 +7984,33 @@ export interface SelectReplace {} /* Empty object */
 export interface SelectWithPoint {
   /** nullable:true, format:uuid, description:The UUID of the entity that was selected. */
   entity_id?: string
+}
+
+export interface SelectedRegion {
+  /**
+   * {
+   *   "default": false,
+   *   "description": "By default (when this is false), curve counterclockwise at intersections. If this is true, instead curve clockwise."
+   * }
+   */
+  curve_clockwise?: boolean
+  /**
+   * {
+   *   "default": -1,
+   *   "format": "int32",
+   *   "description": "At which intersection between `segment` and `intersection_segment` should we stop following the `segment` and start following `intersection_segment`? Defaults to -1, which means the last intersection."
+   * }
+   */
+  intersection_index?: number
+  /**
+   * {
+   *   "format": "uuid",
+   *   "description": "Second segment to follow to find the region. Intersects the first segment."
+   * }
+   */
+  intersection_segment: string
+  /** format:uuid, description:First segment to follow to find the region. */
+  segment: string
 }
 
 export type Selection =
@@ -7853,6 +8170,10 @@ export interface Solid3dCutEdges {} /* Empty object */
 
 export interface Solid3dFilletEdge {} /* Empty object */
 
+export interface Solid3dFlip {} /* Empty object */
+
+export interface Solid3dFlipFace {} /* Empty object */
+
 export interface Solid3dGetAdjacencyInfo {
   /** Details of each edge. */
   edges: AdjacencyInfo[]
@@ -7876,14 +8197,29 @@ export interface Solid3dGetAllOppositeEdges {
   edges: string[]
 }
 
+export interface Solid3dGetBodyType {
+  /** The body type */
+  body_type: BodyType
+}
+
 export interface Solid3dGetCommonEdge {
   /** nullable:true, format:uuid, description:The UUID of the common edge, if any. */
   edge?: string
 }
 
+export interface Solid3dGetEdgeUuid {
+  /** format:uuid, description:The UUID of the edge. */
+  edge_id: string
+}
+
 export interface Solid3dGetExtrusionFaceInfo {
   /** Details of each face. */
   faces: ExtrusionFaceInfo[]
+}
+
+export interface Solid3dGetFaceUuid {
+  /** format:uuid, description:The UUID of the face. */
+  face_id: string
 }
 
 export interface Solid3dGetNextAdjacentEdge {
@@ -7900,6 +8236,8 @@ export interface Solid3dGetPrevAdjacentEdge {
   /** nullable:true, format:uuid, description:The UUID of the edge. */
   edge?: string
 }
+
+export interface Solid3dJoin {} /* Empty object */
 
 export interface Solid3dShellFace {} /* Empty object */
 
@@ -7935,7 +8273,7 @@ export interface StartPath {} /* Empty object */
 
 export type StlStorage = 'ascii' | 'binary'
 
-export type StorageProvider = 's3'
+export type StorageProvider = 's3' | 'zoo_managed'
 
 export interface StoreCouponParams {
   /** format:uint32, minimum:0, description:The percentage off. */
@@ -9387,6 +9725,13 @@ export interface UpdateUser {
   phone?: string
 }
 
+export interface UploadOrgDatasetFilesResponse {
+  /** format:uint, minimum:0, description:Number of conversion jobs newly queued. */
+  queued_conversions: number
+  /** format:uint, minimum:0, description:Number of files accepted and stored. */
+  uploaded_files: number
+}
+
 export interface User {
   /** nullable:true, description:If the user should be blocked and the reason why. */
   block?: BlockReason
@@ -9850,6 +10195,7 @@ export interface Models {
   BillingInfo: BillingInfo
   BlockReason: BlockReason
   BodyType: BodyType
+  BooleanImprint: BooleanImprint
   BooleanIntersection: BooleanIntersection
   BooleanSubtract: BooleanSubtract
   BooleanUnion: BooleanUnion
@@ -9878,6 +10224,7 @@ export interface Models {
   Coupon: Coupon
   CreateCustomModel: CreateCustomModel
   CreateOrgDataset: CreateOrgDataset
+  CreateRegion: CreateRegion
   CreateShortlinkRequest: CreateShortlinkRequest
   CreateShortlinkResponse: CreateShortlinkResponse
   CreatedAtSortMode: CreatedAtSortMode
@@ -9926,12 +10273,15 @@ export interface Models {
   EngineUtilEvaluatePath: EngineUtilEvaluatePath
   EntityCircularPattern: EntityCircularPattern
   EntityClone: EntityClone
+  EntityDeleteChildren: EntityDeleteChildren
   EntityFade: EntityFade
   EntityGetAllChildUuids: EntityGetAllChildUuids
   EntityGetChildUuid: EntityGetChildUuid
   EntityGetDistance: EntityGetDistance
+  EntityGetIndex: EntityGetIndex
   EntityGetNumChildren: EntityGetNumChildren
   EntityGetParentId: EntityGetParentId
+  EntityGetPrimitiveIndex: EntityGetPrimitiveIndex
   EntityGetSketchPaths: EntityGetSketchPaths
   EntityLinearPattern: EntityLinearPattern
   EntityLinearPatternTransform: EntityLinearPatternTransform
@@ -10117,9 +10467,11 @@ export interface Models {
   SelectAdd: SelectAdd
   SelectClear: SelectClear
   SelectGet: SelectGet
+  SelectRegionFromPoint: SelectRegionFromPoint
   SelectRemove: SelectRemove
   SelectReplace: SelectReplace
   SelectWithPoint: SelectWithPoint
+  SelectedRegion: SelectedRegion
   Selection: Selection
   SendObject: SendObject
   ServiceAccount: ServiceAccount
@@ -10146,14 +10498,20 @@ export interface Models {
   Solid2dAddHole: Solid2dAddHole
   Solid3dCutEdges: Solid3dCutEdges
   Solid3dFilletEdge: Solid3dFilletEdge
+  Solid3dFlip: Solid3dFlip
+  Solid3dFlipFace: Solid3dFlipFace
   Solid3dGetAdjacencyInfo: Solid3dGetAdjacencyInfo
   Solid3dGetAllEdgeFaces: Solid3dGetAllEdgeFaces
   Solid3dGetAllOppositeEdges: Solid3dGetAllOppositeEdges
+  Solid3dGetBodyType: Solid3dGetBodyType
   Solid3dGetCommonEdge: Solid3dGetCommonEdge
+  Solid3dGetEdgeUuid: Solid3dGetEdgeUuid
   Solid3dGetExtrusionFaceInfo: Solid3dGetExtrusionFaceInfo
+  Solid3dGetFaceUuid: Solid3dGetFaceUuid
   Solid3dGetNextAdjacentEdge: Solid3dGetNextAdjacentEdge
   Solid3dGetOppositeEdge: Solid3dGetOppositeEdge
   Solid3dGetPrevAdjacentEdge: Solid3dGetPrevAdjacentEdge
+  Solid3dJoin: Solid3dJoin
   Solid3dShellFace: Solid3dShellFace
   SourcePosition: SourcePosition
   SourceRange: SourceRange
@@ -10225,6 +10583,7 @@ export interface Models {
   UpdatePaymentBalance: UpdatePaymentBalance
   UpdateShortlinkRequest: UpdateShortlinkRequest
   UpdateUser: UpdateUser
+  UploadOrgDatasetFilesResponse: UploadOrgDatasetFilesResponse
   User: User
   UserAdminDetails: UserAdminDetails
   UserFeature: UserFeature

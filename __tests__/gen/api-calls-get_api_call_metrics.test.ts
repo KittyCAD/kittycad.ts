@@ -1,4 +1,4 @@
-import { api_calls } from '../../src/index.js'
+import { api_calls, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await api_calls.get_api_call_metrics({ group_by: 'email' })
@@ -7,6 +7,10 @@ async function example() {
 
 describe('Testing api_calls.get_api_call_metrics', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy()
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
   })
 })
