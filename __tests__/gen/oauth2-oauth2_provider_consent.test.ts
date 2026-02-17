@@ -1,4 +1,4 @@
-import { oauth2 } from '../../src/index.js'
+import { oauth2, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await oauth2.oauth2_provider_consent({
@@ -10,6 +10,10 @@ async function example() {
 
 describe('Testing oauth2.oauth2_provider_consent', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy()
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
   })
 })

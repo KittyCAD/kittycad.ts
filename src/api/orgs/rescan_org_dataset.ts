@@ -6,6 +6,7 @@ import { OrgDataset, Uuid } from '../../models.js'
 interface RescanOrgDatasetInput {
   client?: Client
   id: Uuid
+  statuses?: string
 }
 
 type RescanOrgDatasetReturn = OrgDataset
@@ -18,6 +19,9 @@ type RescanOrgDatasetReturn = OrgDataset
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
+ * @property {string} statuses Optional comma-separated set of conversion statuses to retrigger.
+ *
+ * Example: `statuses=success,in_progress` If omitted, we retrigger all non-success conversions, but only retrigger `in_progress` conversions that have been running for more than 5 minutes. (query)
  * @returns {Promise<RescanOrgDatasetReturn>} successfully enqueued operation
  *
  * Possible return types: OrgDataset
@@ -25,9 +29,10 @@ type RescanOrgDatasetReturn = OrgDataset
 export default async function rescan_org_dataset({
   client,
   id,
+  statuses,
 }: RescanOrgDatasetInput): Promise<RescanOrgDatasetReturn> {
   const path = `/org/datasets/${id}/rescan`
-  const qs = buildQuery({})
+  const qs = buildQuery({ statuses: statuses })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

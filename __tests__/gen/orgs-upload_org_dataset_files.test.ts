@@ -1,19 +1,19 @@
-import { ml, ApiError } from '../../src/index.js'
+import { orgs, ApiError } from '../../src/index.js'
 
 async function example() {
-  const response = await ml.create_proprietary_to_kcl({
+  const response = await orgs.upload_org_dataset_files({
     files: [
       {
         name: 'thing.kcl',
         data: new Blob(['thing = 1'], { type: 'text/plain' }),
       },
     ],
-    code_option: 'mock_execute',
+    id: '00000000-0000-0000-0000-000000000000',
   })
   return response
 }
 
-describe('Testing ml.create_proprietary_to_kcl', () => {
+describe('Testing orgs.upload_org_dataset_files', () => {
   it('should be truthy or throw', async () => {
     try {
       await example()

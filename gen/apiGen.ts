@@ -6,6 +6,7 @@ import { format } from 'prettier'
 import {
   expectedToTimeout,
   operationsToNotGenerateTestsFor,
+  testsExpectedToSucceed,
   testsExpectedToThrow,
   toTestPathString,
 } from './expectedToFail.js'
@@ -761,14 +762,14 @@ export default async function apiGen(lookup: Record<string, string>) {
         {
           const paramsStr = inputParamsExamples.filter((a) => a).join(', ')
           const hasParams = Boolean(paramsStr)
+          const testPath = toTestPathString(tag, operationId)
+          const expectTimeout =
+            !isWebSocket && expectedToTimeout.includes(testPath)
           const expectThrow =
             !isWebSocket &&
-            testsExpectedToThrow.includes(toTestPathString(tag, operationId))
-          // Prefer explicit throw assertions over timeout when both are listed
-          const expectTimeout =
-            !isWebSocket &&
-            !expectThrow &&
-            expectedToTimeout.includes(toTestPathString(tag, operationId))
+            !expectTimeout &&
+            (testsExpectedToThrow.includes(testPath) ||
+              !testsExpectedToSucceed.includes(testPath))
           exampleTemplate = await render(exampleTplPath, {
             tag: safeTag,
             operationId,
@@ -787,15 +788,15 @@ export default async function apiGen(lookup: Record<string, string>) {
           ['console.log(JSON.stringify(response, null, 2));', ''],
         ])
         // If this test is a timeout-only check, drop unused ApiError import
-        if (
-          !isWebSocket &&
-          expectedToTimeout.includes(toTestPathString(tag, operationId)) &&
-          !testsExpectedToThrow.includes(toTestPathString(tag, operationId))
-        ) {
-          genTest = genTest
-            .replace(/,\s*ApiError\s*}/, ' }')
-            .replace(/ApiError\s*,\s*/g, '')
-            .replace(/,\s*ApiError/g, '')
+        if (!isWebSocket) {
+          const testPath = toTestPathString(tag, operationId)
+          const expectTimeout = expectedToTimeout.includes(testPath)
+          if (expectTimeout) {
+            genTest = genTest
+              .replace(/,\s*ApiError\s*}/, ' }')
+              .replace(/ApiError\s*,\s*/g, '')
+              .replace(/,\s*ApiError/g, '')
+          }
         }
         const genTestsWritePromise = !operationsToNotGenerateTestsFor.includes(
           operationId

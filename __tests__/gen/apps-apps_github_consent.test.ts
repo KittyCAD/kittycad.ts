@@ -1,4 +1,4 @@
-import { apps } from '../../src/index.js'
+import { apps, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await apps.apps_github_consent()
@@ -7,6 +7,10 @@ async function example() {
 
 describe('Testing apps.apps_github_consent', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy()
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
   })
 })

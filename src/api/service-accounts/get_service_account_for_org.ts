@@ -13,7 +13,7 @@ type GetServiceAccountForOrgReturn = ServiceAccount
 /**
  * Get an service account for your org.
  *
- * This endpoint requires authentication by an org admin. It returns details of the requested service account for the organization.
+ * This endpoint requires authentication by an org member. It returns details of the requested service account for the organization.
  *
  * Tags: service-accounts
  *

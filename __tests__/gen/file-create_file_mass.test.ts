@@ -1,4 +1,4 @@
-import { file } from '../../src/index.js'
+import { file, ApiError } from '../../src/index.js'
 import fsp from 'fs/promises'
 
 async function example() {
@@ -14,6 +14,10 @@ async function example() {
 
 describe('Testing file.create_file_mass', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy()
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
   })
 })

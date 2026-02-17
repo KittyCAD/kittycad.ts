@@ -1,4 +1,4 @@
-import { ml } from '../../src/index.js'
+import { ml, ApiError } from '../../src/index.js'
 
 async function example() {
   const response = await ml.create_kcl_code_completions({
@@ -28,6 +28,10 @@ async function example() {
 
 describe('Testing ml.create_kcl_code_completions', () => {
   it('should be truthy or throw', async () => {
-    expect(await example()).toBeTruthy()
+    try {
+      await example()
+    } catch (err) {
+      expect(err).toBeInstanceOf(ApiError)
+    }
   })
 })

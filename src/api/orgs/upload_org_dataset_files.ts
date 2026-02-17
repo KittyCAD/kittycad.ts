@@ -1,35 +1,39 @@
+import { File } from '../../models.js'
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ServiceAccount } from '../../models.js'
+import { UploadOrgDatasetFilesResponse, Uuid } from '../../models.js'
 
-interface CreateServiceAccountForOrgInput {
+interface UploadOrgDatasetFilesInput {
   client?: Client
-  label?: string
+  files: File[]
+  id: Uuid
 }
 
-type CreateServiceAccountForOrgReturn = ServiceAccount
+type UploadOrgDatasetFilesReturn = UploadOrgDatasetFilesResponse
 
 /**
- * Create a new service account for your org.
+ * Upload source files into a Zoo-managed dataset.
  *
- * This endpoint requires authentication by an org member. It creates a new service account for the organization.
+ * This endpoint accepts `multipart/form-data` where each file part becomes a source object in the dataset. Paths are normalized and must be relative.
  *
- * Tags: service-accounts
+ * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {string} label An optional label for the service account. (query)
- * @returns {Promise<CreateServiceAccountForOrgReturn>} successful creation
+ * @property {Uuid} id The identifier. (path)
+ * @property {File[]} files Files attached as multipart/form-data.
+ * @returns {Promise<UploadOrgDatasetFilesReturn>} successfully enqueued operation
  *
- * Possible return types: ServiceAccount
+ * Possible return types: UploadOrgDatasetFilesResponse
  */
-export default async function create_service_account_for_org({
+export default async function upload_org_dataset_files({
   client,
-  label,
-}: CreateServiceAccountForOrgInput): Promise<CreateServiceAccountForOrgReturn> {
-  const path = `/org/service-accounts`
-  const qs = buildQuery({ label: label })
+  files,
+  id,
+}: UploadOrgDatasetFilesInput): Promise<UploadOrgDatasetFilesReturn> {
+  const path = `/org/datasets/${id}/uploads`
+  const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -52,13 +56,20 @@ export default async function create_service_account_for_org({
       ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+
+  const formData = new FormData()
+  files.forEach((file) => {
+    formData.append(file.name, file.data, file.name)
+  })
+
   const fetchOptions: RequestInit = {
     method: 'POST',
     headers,
+    body: formData,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as CreateServiceAccountForOrgReturn
+  const result = (await response.json()) as UploadOrgDatasetFilesReturn
   return result
 }
