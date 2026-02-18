@@ -3,9 +3,9 @@ import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
 import {
-  MlPromptResultsPage,
+  MlPromptResponseResultsPage,
   CreatedAtSortMode,
-  MlPrompt,
+  MlPromptResponse,
 } from '../../models.js'
 
 interface ListMlPromptsInput {
@@ -15,7 +15,7 @@ interface ListMlPromptsInput {
   sort_by?: CreatedAtSortMode
 }
 
-type ListMlPromptsReturn = MlPromptResultsPage
+type ListMlPromptsReturn = MlPromptResponseResultsPage
 
 /**
  * List all ML prompts.
@@ -35,7 +35,7 @@ type ListMlPromptsReturn = MlPromptResultsPage
  * @property {CreatedAtSortMode} sort_by (query)
  * @returns {Promise<ListMlPromptsReturn>} successful operation
  *
- * Possible return types: MlPromptResultsPage
+ * Possible return types: MlPromptResponseResultsPage
  */
 export default async function list_ml_prompts({
   client,
@@ -84,8 +84,8 @@ export default async function list_ml_prompts({
 
 export function list_ml_prompts_pager(
   params: ListMlPromptsInput
-): Pager<ListMlPromptsInput, ListMlPromptsReturn, MlPrompt> {
-  return createPager<ListMlPromptsInput, ListMlPromptsReturn, MlPrompt>(
+): Pager<ListMlPromptsInput, ListMlPromptsReturn, MlPromptResponse> {
+  return createPager<ListMlPromptsInput, ListMlPromptsReturn, MlPromptResponse>(
     list_ml_prompts,
     params,
     'page_token'

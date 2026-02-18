@@ -1,14 +1,14 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { MlPrompt } from '../../models.js'
+import { MlPromptResponse } from '../../models.js'
 
 interface GetMlPromptInput {
   client?: Client
   id: string
 }
 
-type GetMlPromptReturn = MlPrompt
+type GetMlPromptReturn = MlPromptResponse
 
 /**
  * Get a ML prompt.
@@ -22,7 +22,7 @@ type GetMlPromptReturn = MlPrompt
  * @property {string} id The id of the model to give feedback to. (path)
  * @returns {Promise<GetMlPromptReturn>} successful operation
  *
- * Possible return types: MlPrompt
+ * Possible return types: MlPromptResponse
  */
 export default async function get_ml_prompt({
   client,
