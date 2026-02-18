@@ -12,6 +12,7 @@ import {
 interface ListOrgDatasetConversionsInput {
   client?: Client
   id: Uuid
+  filter?: string
   limit?: number
   page_token?: string
   sort_by?: ConversionSortMode
@@ -23,13 +24,14 @@ type ListOrgDatasetConversionsReturn =
 /**
  * List the file conversions that have been processed for a given dataset owned by the caller's org.
  *
- * This endpoint returns lightweight conversion summaries only (including `phase` and `phase_index`), and intentionally omits converted KCL output and snapshot image payloads for speed.
+ * This endpoint returns lightweight conversion summaries only (including `phase`), and intentionally omits converted KCL output and snapshot image payloads for speed. Use the optional `filter` query parameter to filter results (example: `?filter=status:success`).
  *
  * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
+ * @property {string} filter Optional filter string for conversions (example: `status:success`). (query)
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {ConversionSortMode} sort_by (query)
@@ -40,12 +42,14 @@ type ListOrgDatasetConversionsReturn =
 export default async function list_org_dataset_conversions({
   client,
   id,
+  filter,
   limit,
   page_token,
   sort_by,
 }: ListOrgDatasetConversionsInput): Promise<ListOrgDatasetConversionsReturn> {
   const path = `/org/datasets/${id}/conversions`
   const qs = buildQuery({
+    filter: filter,
     limit: limit,
     page_token: page_token,
     sort_by: sort_by,

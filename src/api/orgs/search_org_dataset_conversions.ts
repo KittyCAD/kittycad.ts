@@ -24,7 +24,7 @@ type SearchOrgDatasetConversionsReturn =
 /**
  * Search dataset conversions by conversion ID or file path.
  *
- * Supports partial and full matching and may return multiple results.
+ * Supports exact conversion-ID matching and fuzzy file-path matching.
  *
  * Tags: orgs
  *

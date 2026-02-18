@@ -7011,16 +7011,85 @@ export interface OrgDatasetConversionStatsResponse {
 }
 
 export interface OrgDatasetFileConversionDetails {
-  /** Conversion metadata without storage pointers. */
-  conversion: OrgDatasetFileConversionSummary
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion got its current `status`."
+   * }
+   */
+  completed_at?: string
+  /** title:DateTime, format:date-time, description:The date and time the conversion was created. */
+  created_at: string
+  /** The ID of the dataset this file is being converted from. */
+  dataset_id: Uuid
+  /** File's ETag from dataset bucket, for detecting whether a file needs to be reconverted. */
+  file_etag: string
+  /** Location within dataset `path`. */
+  file_path: string
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Number of bytes, for measuring throughput and debugging conversion errors."
+   * }
+   */
+  file_size: number
+  /** The unique identifier for the conversion. */
+  id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Tracks which version processed this file when available."
+   * }
+   */
+  importer_version?: string
+  metadata: unknown
   /** Snapshot images for the original source model. */
   original_snapshot_images: OrgDatasetSnapshotImage[]
-  /** Plain-text contents of the converted artifact. */
-  output: string
+  /** nullable:true, description:Plain-text contents of the converted artifact. */
+  output?: string
+  /** Current step in the conversion pipeline. */
+  phase: OrgDatasetFileConversionPhase
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Plain-text contents of the raw KCL artifact, when available."
+   * }
+   */
+  raw_kcl_output?: string
   /** Snapshot images for the raw KCL model. */
   raw_kcl_snapshot_images: OrgDatasetSnapshotImage[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Plain-text contents of the salon/refactored KCL artifact, when available."
+   * }
+   */
+  salon_kcl_output?: string
   /** Snapshot images for the salon/refactored KCL model. */
   salon_kcl_snapshot_images: OrgDatasetSnapshotImage[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion started."
+   * }
+   */
+  started_at?: string
+  /** Conversion status. */
+  status: OrgDatasetFileConversionStatus
+  /** nullable:true, description:Details associated with `status`. */
+  status_message?: string
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the conversion was last updated."
+   * }
+   */
+  updated_at: string
 }
 
 export type OrgDatasetFileConversionPhase =
@@ -7078,14 +7147,6 @@ export interface OrgDatasetFileConversionSummary {
   metadata: unknown
   /** Current step in the conversion pipeline. */
   phase: OrgDatasetFileConversionPhase
-  /**
-   * {
-   *   "format": "uint8",
-   *   "minimum": 0,
-   *   "description": "Numeric index for `phase` so clients do not need to hardcode enum ordering.\n\nMapping: - `0`: `queued` - `1`: `snapshot_original` - `2`: `convert_raw_kcl` - `3`: `snapshot_raw_kcl` - `4`: `salon` - `5`: `snapshot_salon_kcl` - `6`: `completed`"
-   * }
-   */
-  phase_index: number
   /**
    * {
    *   "nullable": true,
