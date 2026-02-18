@@ -7047,7 +7047,12 @@ export interface OrgDatasetFileConversionDetails {
   metadata: unknown
   /** Snapshot images for the original source model. */
   original_snapshot_images: OrgDatasetSnapshotImage[]
-  /** nullable:true, description:Plain-text contents of the converted artifact. */
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Plain-text contents of the converted artifact, when available."
+   * }
+   */
   output?: string
   /** Current step in the conversion pipeline. */
   phase: OrgDatasetFileConversionPhase
