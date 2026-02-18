@@ -14,6 +14,8 @@ type GetOrgDatasetConversionReturn = OrgDatasetFileConversionDetails
 /**
  * Fetch the metadata and converted output for a single dataset conversion.
  *
+ * Unlike list/search endpoints, this returns the full conversion payload: latest output text plus decoded snapshot image payloads for original, raw-KCL, and salon-KCL stages.
+ *
  * Tags: orgs
  *
  * @param params Function parameters.

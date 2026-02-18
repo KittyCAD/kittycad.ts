@@ -7010,76 +7010,27 @@ export interface OrgDatasetConversionStatsResponse {
   total: number
 }
 
-export interface OrgDatasetFileConversion {
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "The date and time the conversion got its current `status`."
-   * }
-   */
-  completed_at?: string
-  /** title:DateTime, format:date-time, description:The date and time the conversion was created. */
-  created_at: string
-  /** The ID of the dataset this file is being converted from. */
-  dataset_id: Uuid
-  /** File's ETag from dataset bucket, for detecting whether a file needs to be converted again can be reused when creating new custom ML models. */
-  file_etag: string
-  /** Location within dataset `path`. */
-  file_path: string
-  /**
-   * {
-   *   "format": "int64",
-   *   "description": "Number of bytes, for measuring throughput and debugging conversion errors."
-   * }
-   */
-  file_size: number
-  /** The unique identifier for the conversion. */
-  id: Uuid
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Tracks which version the file was processed with. If conversion failed due to an internal error, then it will be retried on converter version change."
-   * }
-   */
-  importer_version?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Location reference where the processed file output is stored, when available. New records use `blob://bucket/key`; legacy records may still contain key-only values."
-   * }
-   */
-  output_path?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "The date and time the conversion started."
-   * }
-   */
-  started_at?: string
-  /** Conversion status. */
-  status: OrgDatasetFileConversionStatus
-  /** nullable:true, description:Details associated with `status`. */
-  status_message?: string
-  /**
-   * {
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "The date and time the conversion was last updated."
-   * }
-   */
-  updated_at: string
-}
-
 export interface OrgDatasetFileConversionDetails {
   /** Conversion metadata without storage pointers. */
   conversion: OrgDatasetFileConversionSummary
+  /** Snapshot images for the original source model. */
+  original_snapshot_images: OrgDatasetSnapshotImage[]
   /** Plain-text contents of the converted artifact. */
   output: string
+  /** Snapshot images for the raw KCL model. */
+  raw_kcl_snapshot_images: OrgDatasetSnapshotImage[]
+  /** Snapshot images for the salon/refactored KCL model. */
+  salon_kcl_snapshot_images: OrgDatasetSnapshotImage[]
 }
+
+export type OrgDatasetFileConversionPhase =
+  | 'queued'
+  | 'snapshot_original'
+  | 'convert_raw_kcl'
+  | 'snapshot_raw_kcl'
+  | 'salon'
+  | 'snapshot_salon_kcl'
+  | 'completed'
 
 export type OrgDatasetFileConversionStatus =
   | 'queued'
@@ -7124,6 +7075,17 @@ export interface OrgDatasetFileConversionSummary {
    * }
    */
   importer_version?: string
+  metadata: unknown
+  /** Current step in the conversion pipeline. */
+  phase: OrgDatasetFileConversionPhase
+  /**
+   * {
+   *   "format": "uint8",
+   *   "minimum": 0,
+   *   "description": "Numeric index for `phase` so clients do not need to hardcode enum ordering.\n\nMapping: - `0`: `queued` - `1`: `snapshot_original` - `2`: `convert_raw_kcl` - `3`: `snapshot_raw_kcl` - `4`: `salon` - `5`: `snapshot_salon_kcl` - `6`: `completed`"
+   * }
+   */
+  phase_index: number
   /**
    * {
    *   "nullable": true,
@@ -7169,6 +7131,13 @@ export interface OrgDatasetResultsPage {
    * }
    */
   next_page?: string
+}
+
+export interface OrgDatasetSnapshotImage {
+  /** title:String, format:byte, description:Base64-encoded image bytes. */
+  data_base64: string
+  /** MIME type of the stored image. */
+  mime_type: string
 }
 
 export interface OrgDatasetSource {
@@ -10400,12 +10369,13 @@ export interface Models {
   OrgAdminDetails: OrgAdminDetails
   OrgDataset: OrgDataset
   OrgDatasetConversionStatsResponse: OrgDatasetConversionStatsResponse
-  OrgDatasetFileConversion: OrgDatasetFileConversion
   OrgDatasetFileConversionDetails: OrgDatasetFileConversionDetails
+  OrgDatasetFileConversionPhase: OrgDatasetFileConversionPhase
   OrgDatasetFileConversionStatus: OrgDatasetFileConversionStatus
   OrgDatasetFileConversionSummary: OrgDatasetFileConversionSummary
   OrgDatasetFileConversionSummaryResultsPage: OrgDatasetFileConversionSummaryResultsPage
   OrgDatasetResultsPage: OrgDatasetResultsPage
+  OrgDatasetSnapshotImage: OrgDatasetSnapshotImage
   OrgDatasetSource: OrgDatasetSource
   OrgDatasetStatus: OrgDatasetStatus
   OrgDetails: OrgDetails

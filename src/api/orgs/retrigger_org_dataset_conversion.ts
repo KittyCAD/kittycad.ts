@@ -1,18 +1,18 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { OrgDatasetFileConversion, Uuid } from '../../models.js'
+import { Uuid } from '../../models.js'
 
-interface RetryOrgDatasetConversionInput {
+interface RetriggerOrgDatasetConversionInput {
   client?: Client
   conversion_id: Uuid
   id: Uuid
 }
 
-type RetryOrgDatasetConversionReturn = OrgDatasetFileConversion
+type RetriggerOrgDatasetConversionReturn = void
 
 /**
- * Retry a specific dataset conversion that failed previously for the caller's org.
+ * Retrigger a specific dataset conversion for the caller's org.
  *
  * Tags: orgs
  *
@@ -20,16 +20,14 @@ type RetryOrgDatasetConversionReturn = OrgDatasetFileConversion
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} conversion_id Conversion identifier. (path)
  * @property {Uuid} id Dataset identifier. (path)
- * @returns {Promise<RetryOrgDatasetConversionReturn>} successfully enqueued operation
- *
- * Possible return types: OrgDatasetFileConversion
+ * @returns {Promise<RetriggerOrgDatasetConversionReturn>} resource updated
  */
-export default async function retry_org_dataset_conversion({
+export default async function retrigger_org_dataset_conversion({
   client,
   conversion_id,
   id,
-}: RetryOrgDatasetConversionInput): Promise<RetryOrgDatasetConversionReturn> {
-  const path = `/org/datasets/${id}/conversions/${conversion_id}/retry`
+}: RetriggerOrgDatasetConversionInput): Promise<RetriggerOrgDatasetConversionReturn> {
+  const path = `/org/datasets/${id}/conversions/${conversion_id}/retrigger`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -60,6 +58,5 @@ export default async function retry_org_dataset_conversion({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as RetryOrgDatasetConversionReturn
-  return result
+  return undefined as RetriggerOrgDatasetConversionReturn
 }

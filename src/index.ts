@@ -187,8 +187,8 @@ import list_org_members from './api/orgs/list_org_members.js'
 import list_orgs from './api/orgs/list_orgs.js'
 import org_admin_details_get from './api/orgs/org_admin_details_get.js'
 import org_dataset_s3_policies from './api/orgs/org_dataset_s3_policies.js'
-import rescan_org_dataset from './api/orgs/rescan_org_dataset.js'
-import retry_org_dataset_conversion from './api/orgs/retry_org_dataset_conversion.js'
+import retrigger_org_dataset from './api/orgs/retrigger_org_dataset.js'
+import retrigger_org_dataset_conversion from './api/orgs/retrigger_org_dataset_conversion.js'
 import search_org_dataset_conversions from './api/orgs/search_org_dataset_conversions.js'
 import update_org from './api/orgs/update_org.js'
 import update_org_dataset from './api/orgs/update_org_dataset.js'
@@ -232,8 +232,8 @@ export const orgs = {
   list_orgs_pager,
   org_admin_details_get,
   org_dataset_s3_policies,
-  rescan_org_dataset,
-  retry_org_dataset_conversion,
+  retrigger_org_dataset,
+  retrigger_org_dataset_conversion,
   search_org_dataset_conversions,
   search_org_dataset_conversions_pager,
   update_org,
@@ -661,12 +661,13 @@ export type {
   OrgAdminDetails,
   OrgDataset,
   OrgDatasetConversionStatsResponse,
-  OrgDatasetFileConversion,
   OrgDatasetFileConversionDetails,
+  OrgDatasetFileConversionPhase,
   OrgDatasetFileConversionStatus,
   OrgDatasetFileConversionSummary,
   OrgDatasetFileConversionSummaryResultsPage,
   OrgDatasetResultsPage,
+  OrgDatasetSnapshotImage,
   OrgDatasetSource,
   OrgDatasetStatus,
   OrgDetails,
