@@ -1,18 +1,18 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { OrgDataset, Uuid } from '../../models.js'
+import { Uuid } from '../../models.js'
 
-interface RescanOrgDatasetInput {
+interface RetriggerOrgDatasetInput {
   client?: Client
   id: Uuid
   statuses?: string
 }
 
-type RescanOrgDatasetReturn = OrgDataset
+type RetriggerOrgDatasetReturn = void
 
 /**
- * Request a rescan of a dataset that belongs to the caller's org.
+ * Request a retrigger of conversions for a dataset that belongs to the caller's org.
  *
  * Tags: orgs
  *
@@ -22,16 +22,14 @@ type RescanOrgDatasetReturn = OrgDataset
  * @property {string} statuses Optional comma-separated set of conversion statuses to retrigger.
  *
  * Example: `statuses=success,in_progress` If omitted, we retrigger all non-success conversions, but only retrigger `in_progress` conversions that have been running for more than 5 minutes. (query)
- * @returns {Promise<RescanOrgDatasetReturn>} successfully enqueued operation
- *
- * Possible return types: OrgDataset
+ * @returns {Promise<RetriggerOrgDatasetReturn>} resource updated
  */
-export default async function rescan_org_dataset({
+export default async function retrigger_org_dataset({
   client,
   id,
   statuses,
-}: RescanOrgDatasetInput): Promise<RescanOrgDatasetReturn> {
-  const path = `/org/datasets/${id}/rescan`
+}: RetriggerOrgDatasetInput): Promise<RetriggerOrgDatasetReturn> {
+  const path = `/org/datasets/${id}/retrigger`
   const qs = buildQuery({ statuses: statuses })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -62,6 +60,5 @@ export default async function rescan_org_dataset({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as RescanOrgDatasetReturn
-  return result
+  return undefined as RetriggerOrgDatasetReturn
 }

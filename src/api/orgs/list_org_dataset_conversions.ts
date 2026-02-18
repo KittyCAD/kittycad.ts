@@ -23,6 +23,8 @@ type ListOrgDatasetConversionsReturn =
 /**
  * List the file conversions that have been processed for a given dataset owned by the caller's org.
  *
+ * This endpoint returns lightweight conversion summaries only (including `phase` and `phase_index`), and intentionally omits converted KCL output and snapshot image payloads for speed.
+ *
  * Tags: orgs
  *
  * @param params Function parameters.
