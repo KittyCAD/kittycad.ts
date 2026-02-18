@@ -3544,7 +3544,18 @@ export type MlCopilotTool =
 
 export type MlFeedback = 'thumbs_up' | 'thumbs_down' | 'accepted' | 'rejected'
 
-export interface MlPrompt {
+export interface MlPromptMetadata {
+  /** nullable:true, description:Code for the model. */
+  code?: string
+  /** nullable:true, description:The original source code for the model. */
+  original_source_code?: string
+  /** The source ranges the user suggested to change. */
+  source_ranges?: SourceRangePrompt[]
+  /** nullable:true, description:The upstream conversation ID, if any. */
+  upstream_conversation_id?: string
+}
+
+export interface MlPromptResponse {
   /**
    * {
    *   "nullable": true,
@@ -3557,7 +3568,7 @@ export interface MlPrompt {
   /**
    * {
    *   "nullable": true,
-   *   "description": "The id for the conversation related to this prompt."
+   *   "description": "The conversation associated with this prompt, if any."
    * }
    */
   conversation_id?: Uuid
@@ -3578,26 +3589,15 @@ export interface MlPrompt {
   /**
    * {
    *   "nullable": true,
-   *   "description": "The output directory reference for generated files. Stored as `blob://bucket/key` for new rows; legacy rows may contain a key-only value."
+   *   "description": "The output directory reference for generated files."
    * }
    */
   output_file?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "The name of the project, if any. This allows us to group prompts together that come from the same project and user."
-   * }
-   */
+  /** nullable:true, description:The name of the project, if any. */
   project_name?: string
   /** The prompt. */
   prompt: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "format": "int64",
-   *   "description": "Sum of EndOfStream durations, in seconds. Nullable to allow lazy backfill."
-   * }
-   */
+  /** nullable:true, format:int64, description:Sum of EndOfStream durations, in seconds. */
   seconds?: number
   /**
    * {
@@ -3618,20 +3618,9 @@ export interface MlPrompt {
   user_id: Uuid
 }
 
-export interface MlPromptMetadata {
-  /** nullable:true, description:Code for the model. */
-  code?: string
-  /** nullable:true, description:The original source code for the model. */
-  original_source_code?: string
-  /** The source ranges the user suggested to change. */
-  source_ranges?: SourceRangePrompt[]
-  /** nullable:true, description:The upstream conversation ID, if any. */
-  upstream_conversation_id?: string
-}
-
-export interface MlPromptResultsPage {
+export interface MlPromptResponseResultsPage {
   /** list of items on this page of results */
-  items: MlPrompt[]
+  items: MlPromptResponse[]
   /**
    * {
    *   "nullable": true,
@@ -7099,14 +7088,10 @@ export interface OrgDatasetFileConversionDetails {
 
 export type OrgDatasetFileConversionPhase =
   | 'queued'
-  | 'zoo_generated_original_metadata'
   | 'snapshot_original'
-  | 'user_provided_metadata'
   | 'convert_raw_kcl'
-  | 'zoo_generated_raw_kcl_metadata'
   | 'snapshot_raw_kcl'
   | 'salon'
-  | 'zoo_generated_salon_kcl_metadata'
   | 'snapshot_salon_kcl'
   | 'completed'
 
@@ -10408,9 +10393,9 @@ export interface Models {
   MlCopilotSystemCommand: MlCopilotSystemCommand
   MlCopilotTool: MlCopilotTool
   MlFeedback: MlFeedback
-  MlPrompt: MlPrompt
   MlPromptMetadata: MlPromptMetadata
-  MlPromptResultsPage: MlPromptResultsPage
+  MlPromptResponse: MlPromptResponse
+  MlPromptResponseResultsPage: MlPromptResponseResultsPage
   MlPromptType: MlPromptType
   MlReasoningEffort: MlReasoningEffort
   MlToolResult: MlToolResult
