@@ -7088,10 +7088,14 @@ export interface OrgDatasetFileConversionDetails {
 
 export type OrgDatasetFileConversionPhase =
   | 'queued'
+  | 'zoo_generated_original_metadata'
   | 'snapshot_original'
+  | 'user_provided_metadata'
   | 'convert_raw_kcl'
+  | 'zoo_generated_raw_kcl_metadata'
   | 'snapshot_raw_kcl'
   | 'salon'
+  | 'zoo_generated_salon_kcl_metadata'
   | 'snapshot_salon_kcl'
   | 'completed'
 
