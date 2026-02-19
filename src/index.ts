@@ -171,6 +171,7 @@ import delete_org from './api/orgs/delete_org.js'
 import delete_org_dataset from './api/orgs/delete_org_dataset.js'
 import delete_org_member from './api/orgs/delete_org_member.js'
 import delete_org_saml_idp from './api/orgs/delete_org_saml_idp.js'
+import download_org_dataset_conversion_original from './api/orgs/download_org_dataset_conversion_original.js'
 import get_any_org from './api/orgs/get_any_org.js'
 import get_org from './api/orgs/get_org.js'
 import get_org_dataset from './api/orgs/get_org_dataset.js'
@@ -211,6 +212,7 @@ export const orgs = {
   delete_org_dataset,
   delete_org_member,
   delete_org_saml_idp,
+  download_org_dataset_conversion_original,
   get_any_org,
   get_org,
   get_org_dataset,
