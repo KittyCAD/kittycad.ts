@@ -889,6 +889,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1org~1datasets~1{id}~1conversions~1{conversion_id}~1original/get/x-typescript",
+    "value": {
+      "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.download_org_dataset_conversion_original({\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1org~1datasets~1{id}~1conversions~1{conversion_id}/get/x-typescript",
     "value": {
       "example": "import { orgs, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await orgs.get_org_dataset_conversion({\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        id: '00000000-0000-0000-0000-000000000000',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
