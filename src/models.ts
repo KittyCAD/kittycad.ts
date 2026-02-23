@@ -1147,6 +1147,8 @@ export interface BillingInfo {
   phone?: string
 }
 
+export type BlendType = 'tangent'
+
 export type BlockReason = 'missing_payment_method' | 'payment_method_failed'
 
 export type BodyType = 'solid' | 'surface'
@@ -2671,6 +2673,31 @@ This is the same as the API call ID. */
   volume?: number
 }
 
+export interface FractionOfEdge {
+  /** format:uuid, description:The id of the edge */
+  edge_id: string
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "float",
+   *   "minimum": 0,
+   *   "maximum": 1,
+   *   "description": "A value between [0.0, 1.0] (default 0.0) that is a percentage along the edge. This bound will control how much of the edge is used during the blend. If lower_bound is larger than upper_bound, the edge is effectively \"flipped\"."
+   * }
+   */
+  lower_bound?: number
+  /**
+   * {
+   *   "default": 1,
+   *   "format": "float",
+   *   "minimum": 0,
+   *   "maximum": 1,
+   *   "description": "A value between [0.0, 1.0] (default 1.0) that is a percentage along the edge. This bound will control how much of the edge is used during the blend. If lower_bound is larger than upper_bound, the edge is effectively \"flipped\"."
+   * }
+   */
+  upper_bound?: number
+}
+
 export interface GetEntityType {
   /** The type of the entity. */
   entity_type: EntityType
@@ -3880,7 +3907,15 @@ export type ModelingCmd =
        * }
        */
       body_type?: BodyType
-      /** default:{x:0, y:0}, description:Center to twist about (relative to 2D sketch) */
+      /**
+       * {
+       *   "default": {
+       *     "x": 0,
+       *     "y": 0
+       *   },
+       *   "description": "Center to twist about (relative to plane's origin) Defaults to `[0, 0]` i.e. the plane's origin"
+       * }
+       */
       center_2d?: Point2d
       /** How far off the plane to extrude */
       distance: LengthUnit
@@ -3900,6 +3935,13 @@ export type ModelingCmd =
       type: 'twist_extrude'
     }
   | {
+      /**
+       * {
+       *   "default": "solid",
+       *   "description": "Should this sweep create a solid body or a surface?"
+       * }
+       */
+      body_type?: BodyType
       /** default:sketch_plane, description:What is this sweep relative to? */
       relative_to?: RelativeTo
       /** If true, the sweep will be broken up into sub-sweeps (extrusions, revolves, sweeps) based on the trajectory path components. */
@@ -3965,6 +4007,13 @@ export type ModelingCmd =
       /** format:uuid, description:Which Solid3D is being joined. */
       object_id: string
       type: 'solid3d_join'
+    }
+  | {
+      /** default:tangent, description:The type of blend to use. */
+      blend_type?: BlendType
+      /** minItems:2, maxItems:2, description:The two surfaces that the blend will span between */
+      surfaces: SurfaceEdgeReference[]
+      type: 'surface_blend'
     }
   | {
       /** format:uint32, minimum:0, description:The primitive index of the edge being queried. */
@@ -5157,6 +5206,13 @@ export type ModelingCmd =
   | {
       /**
        * {
+       *   "default": false,
+       *   "description": "If true, non-contiguous bodies in the result will be returned as separate objects"
+       * }
+       */
+      separate_bodies?: boolean
+      /**
+       * {
        *   "format": "uuid"
        * }
        */
@@ -5168,6 +5224,13 @@ export type ModelingCmd =
   | {
       /**
        * {
+       *   "default": false,
+       *   "description": "If true, non-contiguous bodies in the result will be returned as separate objects"
+       * }
+       */
+      separate_bodies?: boolean
+      /**
+       * {
        *   "format": "uuid"
        * }
        */
@@ -5177,6 +5240,13 @@ export type ModelingCmd =
       type: 'boolean_intersection'
     }
   | {
+      /**
+       * {
+       *   "default": false,
+       *   "description": "If true, non-contiguous bodies in the result will be returned as separate objects"
+       * }
+       */
+      separate_bodies?: boolean
       /**
        * {
        *   "format": "uuid"
@@ -5200,6 +5270,13 @@ export type ModelingCmd =
        * }
        */
       body_ids: string[]
+      /**
+       * {
+       *   "default": false,
+       *   "description": "If true, bodies will be separated into multiple objects at their intersection boundaries."
+       * }
+       */
+      separate_bodies?: boolean
       /** The maximum acceptable surface gap between the intersected bodies. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'boolean_imprint'
@@ -5467,6 +5544,15 @@ export type OkModelingCmdResponse =
        */
       data: Solid3dJoin
       type: 'solid3d_join'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/SurfaceBlend"
+       * }
+       */
+      data: SurfaceBlend
+      type: 'surface_blend'
     }
   | {
       /**
@@ -7352,8 +7438,8 @@ export interface OutputFile {
 }
 
 export type OutputFormat2d = {
-  /** Export storage. */
-  storage: DxfStorage
+  /** default:ascii, description:Export storage. */
+  storage?: DxfStorage
   type: 'dxf'
 }
 
@@ -7403,15 +7489,29 @@ Defaults to millimeters. */
       units: UnitLength
     }
   | {
-      /** Co-ordinate system of output data.
-
-Defaults to the [KittyCAD co-ordinate system].
-
-[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
-      coords: System
+      /**
+       * {
+       *   "default": {
+       *     "forward": {
+       *       "axis": "y",
+       *       "direction": "negative"
+       *     },
+       *     "up": {
+       *       "axis": "z",
+       *       "direction": "positive"
+       *     }
+       *   },
+       *   "description": "Co-ordinate system of output data.\n\nDefaults to the [KittyCAD co-ordinate system].\n\n[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html"
+       * }
+       */
+      coords?: System
       /** nullable:true, format:date-time, description:Timestamp override. */
       created?: string
+      /** default:pretty, description:Presentation style. */
+      presentation?: StepPresentation
       type: 'step'
+      /** default:m, description:Export length unit.\n\nDefaults to meters. */
+      units?: UnitLength
     }
   | {
       /** Co-ordinate system of output data.
@@ -8299,6 +8399,8 @@ export interface SourceRangePrompt {
 
 export interface StartPath {} /* Empty object */
 
+export type StepPresentation = 'compact' | 'pretty'
+
 export type StlStorage = 'ascii' | 'binary'
 
 export type StorageProvider = 's3' | 'zoo_managed'
@@ -8405,6 +8507,15 @@ export interface SurfaceArea {
   output_unit: UnitArea
   /** format:double, description:The surface area. */
   surface_area: number
+}
+
+export interface SurfaceBlend {} /* Empty object */
+
+export interface SurfaceEdgeReference {
+  /** A list of the edge ids that belong to the body. */
+  edges: FractionOfEdge[]
+  /** format:uuid, description:The id of the body. */
+  object_id: string
 }
 
 export interface Sweep {} /* Empty object */
@@ -8962,19 +9073,7 @@ export interface Transform {
 }
 
 export interface TransformByForPoint3d {
-  /**
-   * {
-   *   "deprecated": true,
-   *   "description": "If true, the transform is applied in local space. If false, the transform is applied in global space."
-   * }
-   */
-  is_local: boolean
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "What to use as the origin for the transformation. If not provided, will fall back to local or global origin, depending on whatever the `is_local` field was set to."
-   * }
-   */
+  /** default:{type:local}, description:What to use as the origin for the transformation. */
   origin?: OriginType
   /** The scale, or rotation, or translation. */
   property: Point3d
@@ -8983,19 +9082,7 @@ export interface TransformByForPoint3d {
 }
 
 export interface TransformByForPoint4d {
-  /**
-   * {
-   *   "deprecated": true,
-   *   "description": "If true, the transform is applied in local space. If false, the transform is applied in global space."
-   * }
-   */
-  is_local: boolean
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "What to use as the origin for the transformation. If not provided, will fall back to local or global origin, depending on whatever the `is_local` field was set to."
-   * }
-   */
+  /** default:{type:local}, description:What to use as the origin for the transformation. */
   origin?: OriginType
   /** The scale, or rotation, or translation. */
   property: Point4d
@@ -10221,6 +10308,7 @@ export interface Models {
   AxisDirectionPair: AxisDirectionPair
   BatchResponse: BatchResponse
   BillingInfo: BillingInfo
+  BlendType: BlendType
   BlockReason: BlockReason
   BodyType: BodyType
   BooleanImprint: BooleanImprint
@@ -10352,6 +10440,7 @@ export interface Models {
   FileMass: FileMass
   FileSurfaceArea: FileSurfaceArea
   FileVolume: FileVolume
+  FractionOfEdge: FractionOfEdge
   GetEntityType: GetEntityType
   GetNumObjects: GetNumObjects
   GetSketchModePlane: GetSketchModePlane
@@ -10546,6 +10635,7 @@ export interface Models {
   SourceRange: SourceRange
   SourceRangePrompt: SourceRangePrompt
   StartPath: StartPath
+  StepPresentation: StepPresentation
   StlStorage: StlStorage
   StorageProvider: StorageProvider
   StoreCouponParams: StoreCouponParams
@@ -10560,6 +10650,8 @@ export interface Models {
   SuccessWebSocketResponse: SuccessWebSocketResponse
   SupportTier: SupportTier
   SurfaceArea: SurfaceArea
+  SurfaceBlend: SurfaceBlend
+  SurfaceEdgeReference: SurfaceEdgeReference
   Sweep: Sweep
   System: System
   TakeSnapshot: TakeSnapshot
