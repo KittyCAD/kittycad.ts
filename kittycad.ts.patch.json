@@ -353,6 +353,38 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1email-marketing-consent~1seen/post/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.user_email_marketing_consent_seen_post()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1email-marketing-consent~1request/post/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.user_email_marketing_consent_request_post()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1email-marketing-consent~1decline/post/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.user_email_marketing_consent_decline_post()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1email-marketing-consent/get/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.user_email_marketing_consent_get()\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1crm/patch/x-typescript",
     "value": {
       "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.patch_user_crm({\n        body: {\n            cad_industry: 'The industry of the user.',\n            cad_user_type: 'The user type.',\n            number_of_cad_users: 'The user count of the user.',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
