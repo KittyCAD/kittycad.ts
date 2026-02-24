@@ -1985,6 +1985,54 @@ export interface EmailAuthenticationForm {
   email: string
 }
 
+export interface EmailMarketingConfirmTokenBody {
+  /** The token id from the confirmation email. */
+  token: string
+}
+
+export interface EmailMarketingConsentState {
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Time the double opt-in confirmation completed."
+   * }
+   */
+  confirmed_at?: string
+  /** Whether the user is currently subscribed to marketing email. */
+  is_subscribed: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "First time the in-app prompt was seen."
+   * }
+   */
+  prompt_seen_at?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Time the latest opt-in request email was sent."
+   * }
+   */
+  requested_at?: string
+  /** Whether the website should show the modal for this user. */
+  should_show_prompt: boolean
+  /** Current consent state. */
+  status: EmailMarketingConsentStatus
+}
+
+export type EmailMarketingConsentStatus =
+  | 'unknown'
+  | 'dismissed'
+  | 'pending'
+  | 'confirmed'
+  | 'declined'
+
 export interface EnableDryRun {} /* Empty object */
 
 export interface EnableSketchMode {} /* Empty object */
@@ -10384,6 +10432,9 @@ export interface Models {
   EdgeInfo: EdgeInfo
   EdgeLinesVisible: EdgeLinesVisible
   EmailAuthenticationForm: EmailAuthenticationForm
+  EmailMarketingConfirmTokenBody: EmailMarketingConfirmTokenBody
+  EmailMarketingConsentState: EmailMarketingConsentState
+  EmailMarketingConsentStatus: EmailMarketingConsentStatus
   EnableDryRun: EnableDryRun
   EnableSketchMode: EnableSketchMode
   EngineUtilEvaluatePath: EngineUtilEvaluatePath

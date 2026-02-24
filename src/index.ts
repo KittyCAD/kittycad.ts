@@ -382,6 +382,10 @@ import update_user_privacy_settings from './api/users/update_user_privacy_settin
 import update_user_self from './api/users/update_user_self.js'
 import update_user_shortlink from './api/users/update_user_shortlink.js'
 import user_admin_details_get from './api/users/user_admin_details_get.js'
+import user_email_marketing_consent_decline_post from './api/users/user_email_marketing_consent_decline_post.js'
+import user_email_marketing_consent_get from './api/users/user_email_marketing_consent_get.js'
+import user_email_marketing_consent_request_post from './api/users/user_email_marketing_consent_request_post.js'
+import user_email_marketing_consent_seen_post from './api/users/user_email_marketing_consent_seen_post.js'
 import user_features_get from './api/users/user_features_get.js'
 import { get_user_shortlinks_pager } from './api/users/get_user_shortlinks.js'
 import { list_users_extended_pager } from './api/users/list_users_extended.js'
@@ -412,6 +416,10 @@ export const users = {
   update_user_self,
   update_user_shortlink,
   user_admin_details_get,
+  user_email_marketing_consent_decline_post,
+  user_email_marketing_consent_get,
+  user_email_marketing_consent_request_post,
+  user_email_marketing_consent_seen_post,
   user_features_get,
 }
 
@@ -532,6 +540,9 @@ export type {
   EdgeInfo,
   EdgeLinesVisible,
   EmailAuthenticationForm,
+  EmailMarketingConfirmTokenBody,
+  EmailMarketingConsentState,
+  EmailMarketingConsentStatus,
   EnableDryRun,
   EnableSketchMode,
   EngineUtilEvaluatePath,
