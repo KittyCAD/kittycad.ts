@@ -3,30 +3,28 @@ import { throwIfNotOk } from '../../errors.js'
 
 import { Subscribe } from '../../models.js'
 
-interface PutPublicSubscribeInput {
+interface PutPublicEmailMarketingConsentRequestInput {
   client?: Client
   body: Subscribe
 }
 
-type PutPublicSubscribeReturn = void
+type PutPublicEmailMarketingConsentRequestReturn = void
 
 /**
- * Subscribes a user to the newsletter.
- *
- * Legacy compatibility path while clients migrate to `/website/email-marketing-consent/request`.
+ * Requests public email marketing consent for an email address.
  *
  * Tags: users, hidden
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Subscribe} body Request body payload
- * @returns {Promise<PutPublicSubscribeReturn>} successful operation, no content
+ * @returns {Promise<PutPublicEmailMarketingConsentRequestReturn>} successful operation, no content
  */
-export default async function put_public_subscribe({
+export default async function put_public_email_marketing_consent_request({
   client,
   body,
-}: PutPublicSubscribeInput): Promise<PutPublicSubscribeReturn> {
-  const path = `/website/subscribe`
+}: PutPublicEmailMarketingConsentRequestInput): Promise<PutPublicEmailMarketingConsentRequestReturn> {
+  const path = `/website/email-marketing-consent/request`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -59,5 +57,5 @@ export default async function put_public_subscribe({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  return undefined as PutPublicSubscribeReturn
+  return undefined as PutPublicEmailMarketingConsentRequestReturn
 }

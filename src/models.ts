@@ -445,17 +445,8 @@ export interface ApiCallWithPrice {
    * }
    */
   price?: number
-  /** nullable:true, description:The request body sent by the API call. */
-  request_body?: string
   /** The request query params sent by the API call. */
   request_query_params?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "The response body returned by the API call. We do not store this information if it is above a certain size."
-   * }
-   */
-  response_body?: string
   /**
    * {
    *   "nullable": true,
