@@ -49,6 +49,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1website~1email-marketing-consent~1request/put/x-typescript",
+    "value": {
+      "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.put_public_email_marketing_consent_request({\n        body: { email: 'The email' },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1subscriptions/put/x-typescript",
     "value": {
       "example": "import { users, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await users.update_subscription_for_user({\n        id: '31337',\n        body: {\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",

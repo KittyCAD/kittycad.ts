@@ -374,6 +374,7 @@ import get_user_shortlinks from './api/users/get_user_shortlinks.js'
 import list_users from './api/users/list_users.js'
 import list_users_extended from './api/users/list_users_extended.js'
 import patch_user_crm from './api/users/patch_user_crm.js'
+import put_public_email_marketing_consent_request from './api/users/put_public_email_marketing_consent_request.js'
 import put_public_form from './api/users/put_public_form.js'
 import put_public_subscribe from './api/users/put_public_subscribe.js'
 import put_user_form_self from './api/users/put_user_form_self.js'
@@ -408,6 +409,7 @@ export const users = {
   list_users_extended_pager,
   list_users_pager,
   patch_user_crm,
+  put_public_email_marketing_consent_request,
   put_public_form,
   put_public_subscribe,
   put_user_form_self,
