@@ -1,6 +1,6 @@
 {
   "name": "@kittycad/lib",
-  "version": "3.1.35",
+  "version": "3.1.36",
   "description": "Javascript library for KittyCAD API",
   "type": "module",
   "keywords": [
