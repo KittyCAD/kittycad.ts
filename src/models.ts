@@ -7892,6 +7892,11 @@ export interface ProjectPointsToPlane {
   projected_points: Point3d[]
 }
 
+export interface PublicEmailMarketingConsentRequest {
+  /** format:email, description:The email */
+  email: string
+}
+
 export interface RawFile {
   /**
    * {
@@ -8447,11 +8452,6 @@ export type StorageProvider = 's3' | 'zoo_managed'
 export interface StoreCouponParams {
   /** format:uint32, minimum:0, description:The percentage off. */
   percent_off: number
-}
-
-export interface Subscribe {
-  /** format:email, description:The email */
-  email: string
 }
 
 export type SubscriptionActionType = 'payment_intent' | 'setup_intent'
@@ -10607,6 +10607,7 @@ export interface Models {
   PrivacySettings: PrivacySettings
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectPointsToPlane: ProjectPointsToPlane
+  PublicEmailMarketingConsentRequest: PublicEmailMarketingConsentRequest
   RawFile: RawFile
   ReasoningMessage: ReasoningMessage
   ReconfigureStream: ReconfigureStream
@@ -10681,7 +10682,6 @@ export interface Models {
   StlStorage: StlStorage
   StorageProvider: StorageProvider
   StoreCouponParams: StoreCouponParams
-  Subscribe: Subscribe
   SubscriptionActionType: SubscriptionActionType
   SubscriptionPlanBillingModel: SubscriptionPlanBillingModel
   SubscriptionPlanPriceRecord: SubscriptionPlanPriceRecord

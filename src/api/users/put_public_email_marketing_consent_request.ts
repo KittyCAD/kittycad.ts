@@ -1,11 +1,11 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Subscribe } from '../../models.js'
+import { PublicEmailMarketingConsentRequest } from '../../models.js'
 
 interface PutPublicEmailMarketingConsentRequestInput {
   client?: Client
-  body: Subscribe
+  body: PublicEmailMarketingConsentRequest
 }
 
 type PutPublicEmailMarketingConsentRequestReturn = void
@@ -17,7 +17,7 @@ type PutPublicEmailMarketingConsentRequestReturn = void
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Subscribe} body Request body payload
+ * @property {PublicEmailMarketingConsentRequest} body Request body payload
  * @returns {Promise<PutPublicEmailMarketingConsentRequestReturn>} successful operation, no content
  */
 export default async function put_public_email_marketing_consent_request({
