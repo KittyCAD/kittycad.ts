@@ -9945,6 +9945,17 @@ export interface User {
 }
 
 export interface UserAdminDetails {
+  /** format:int64, description:Count of valid API tokens. */
+  active_api_tokens_count: number
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Count of active (non-expired) device access tokens."
+   * }
+   */
+  active_device_tokens_count: number
+  /** format:int64, description:Count of active (non-expired) sessions. */
+  active_sessions_count: number
   /** nullable:true, description:Latest billing address stored for the user. */
   address?: Address
   /** nullable:true, description:Readable billing address summary. */
