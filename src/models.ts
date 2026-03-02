@@ -3703,7 +3703,7 @@ export type MlPromptType =
   | 'text_to_kcl_multi_file_iteration'
   | 'copilot'
 
-export type MlReasoningEffort = 'low' | 'medium' | 'high'
+export type MlReasoningEffort = 'low' | 'medium' | 'high' | 'xhigh'
 
 export type MlToolResult =
   | {
