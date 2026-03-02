@@ -8031,6 +8031,14 @@ export interface RtcSessionDescription {
   type: RtcSdpType
 }
 
+export type SalesInquiryType =
+  | 'pilot_inquiry'
+  | 'general_inquiry'
+  | 'sales_question'
+  | 'developer_inquiry'
+  | 'partnership_opportunity'
+  | 'other_sales_inquiry'
+
 export interface SamlIdentityProvider {
   /** title:String, format:uri, description:The ACS (Assertion Consumer Service) URL. */
   acs_url: string
@@ -8534,6 +8542,11 @@ export interface SuccessWebSocketResponse {
   /** Always true */
   success: boolean
 }
+
+export type SupportInquiryType =
+  | 'technical_support'
+  | 'account_management'
+  | 'other_support_inquiry'
 
 export type SupportTier =
   | 'community'
@@ -10191,6 +10204,52 @@ export type WebSocketResponse =
       success: boolean
     }
 
+export interface WebsiteSalesForm {
+  cad_platforms?: string[]
+  /** nullable:true, description:The company name. */
+  company?: string
+  /** format:email, description:The email address of the user. */
+  email: string
+  /** The first name of the user. */
+  first_name: string
+  /** nullable:true, description:The industry of the user. */
+  industry?: string
+  /** The type of sales inquiry. */
+  inquiry_type: SalesInquiryType
+  /** nullable:true, description:The job title (used for pilot inquiries). */
+  job_title?: string
+  /** The last name of the user. */
+  last_name: string
+  /** The message content. */
+  message: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The number of CAD users (used for pilot inquiries)."
+   * }
+   */
+  num_cad_users?: string
+  /** nullable:true, description:The phone number of the user. */
+  phone?: string
+}
+
+export interface WebsiteSupportForm {
+  /** nullable:true, description:Optional company metadata. */
+  company?: string
+  /** format:email, description:The email address of the user. */
+  email: string
+  /** The first name of the user. */
+  first_name: string
+  /** The type of support inquiry. */
+  inquiry_type: SupportInquiryType
+  /** The last name of the user. */
+  last_name: string
+  /** The message content. */
+  message: string
+  /** nullable:true, description:Optional phone metadata. */
+  phone?: string
+}
+
 export type WorldCoordinateSystem = 'right_handed_up_z' | 'right_handed_up_y'
 
 export type ZooProductSubscription = {
@@ -10630,6 +10689,7 @@ export interface Models {
   RtcIceCandidateInit: RtcIceCandidateInit
   RtcSdpType: RtcSdpType
   RtcSessionDescription: RtcSessionDescription
+  SalesInquiryType: SalesInquiryType
   SamlIdentityProvider: SamlIdentityProvider
   SamlIdentityProviderCreate: SamlIdentityProviderCreate
   SceneClearAll: SceneClearAll
@@ -10701,6 +10761,7 @@ export interface Models {
   SubscriptionTierType: SubscriptionTierType
   SubscriptionTrainingDataBehavior: SubscriptionTrainingDataBehavior
   SuccessWebSocketResponse: SuccessWebSocketResponse
+  SupportInquiryType: SupportInquiryType
   SupportTier: SupportTier
   SurfaceArea: SurfaceArea
   SurfaceBlend: SurfaceBlend
@@ -10773,6 +10834,8 @@ export interface Models {
   Volume: Volume
   WebSocketRequest: WebSocketRequest
   WebSocketResponse: WebSocketResponse
+  WebsiteSalesForm: WebsiteSalesForm
+  WebsiteSupportForm: WebsiteSupportForm
   WorldCoordinateSystem: WorldCoordinateSystem
   ZooProductSubscription: ZooProductSubscription
   ZooProductSubscriptions: ZooProductSubscriptions

@@ -378,6 +378,8 @@ import list_users_extended from './api/users/list_users_extended.js'
 import patch_user_crm from './api/users/patch_user_crm.js'
 import put_public_email_marketing_consent_request from './api/users/put_public_email_marketing_consent_request.js'
 import put_public_form from './api/users/put_public_form.js'
+import put_public_sales_form from './api/users/put_public_sales_form.js'
+import put_public_support_form from './api/users/put_public_support_form.js'
 import put_user_form_self from './api/users/put_user_form_self.js'
 import update_subscription_for_user from './api/users/update_subscription_for_user.js'
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
@@ -412,6 +414,8 @@ export const users = {
   patch_user_crm,
   put_public_email_marketing_consent_request,
   put_public_form,
+  put_public_sales_form,
+  put_public_support_form,
   put_user_form_self,
   update_subscription_for_user,
   update_user_privacy_settings,
@@ -738,6 +742,7 @@ export type {
   RtcIceCandidateInit,
   RtcSdpType,
   RtcSessionDescription,
+  SalesInquiryType,
   SamlIdentityProvider,
   SamlIdentityProviderCreate,
   SceneClearAll,
@@ -809,6 +814,7 @@ export type {
   SubscriptionTierType,
   SubscriptionTrainingDataBehavior,
   SuccessWebSocketResponse,
+  SupportInquiryType,
   SupportTier,
   SurfaceArea,
   SurfaceBlend,
@@ -881,6 +887,8 @@ export type {
   Volume,
   WebSocketRequest,
   WebSocketResponse,
+  WebsiteSalesForm,
+  WebsiteSupportForm,
   WorldCoordinateSystem,
   ZooProductSubscription,
   ZooProductSubscriptions,
