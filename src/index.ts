@@ -380,6 +380,7 @@ import put_public_email_marketing_consent_request from './api/users/put_public_e
 import put_public_form from './api/users/put_public_form.js'
 import put_public_sales_form from './api/users/put_public_sales_form.js'
 import put_public_support_form from './api/users/put_public_support_form.js'
+import put_user_cad_user_info_form from './api/users/put_user_cad_user_info_form.js'
 import put_user_form_self from './api/users/put_user_form_self.js'
 import update_subscription_for_user from './api/users/update_subscription_for_user.js'
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
@@ -416,6 +417,7 @@ export const users = {
   put_public_form,
   put_public_sales_form,
   put_public_support_form,
+  put_user_cad_user_info_form,
   put_user_form_self,
   update_subscription_for_user,
   update_user_privacy_settings,
@@ -477,6 +479,9 @@ export type {
   BooleanIntersection,
   BooleanSubtract,
   BooleanUnion,
+  CadDiscoverySource,
+  CadIndustry,
+  CadUserType,
   CameraDragEnd,
   CameraDragInteractionType,
   CameraDragMove,
@@ -492,6 +497,7 @@ export type {
   CodeOption,
   CodeOutput,
   Color,
+  CompanySize,
   ComplementaryEdges,
   ComponentTransform,
   Conversation,
@@ -874,6 +880,7 @@ export type {
   UploadOrgDatasetFilesResponse,
   User,
   UserAdminDetails,
+  UserCadInfoAdminDetails,
   UserFeature,
   UserFeatureEntry,
   UserFeatureList,
@@ -887,6 +894,7 @@ export type {
   Volume,
   WebSocketRequest,
   WebSocketResponse,
+  WebsiteCadUserInfoForm,
   WebsiteSalesForm,
   WebsiteSupportForm,
   WorldCoordinateSystem,

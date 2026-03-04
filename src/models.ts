@@ -1180,6 +1180,32 @@ export interface BooleanUnion {
   extra_solid_ids?: string[]
 }
 
+export type CadDiscoverySource =
+  | 'google'
+  | 'x'
+  | 'tiktok'
+  | 'reddit'
+  | 'payload_space'
+  | 'youtube'
+  | 'instagram'
+  | 'facebook'
+  | 'word_of_mouth'
+  | 'other'
+
+export type CadIndustry =
+  | 'mechanical_engineering'
+  | 'manufacturing'
+  | 'automotive'
+  | 'aerospace'
+  | 'civil_engineering'
+  | 'electrical_engineering'
+  | 'construction'
+  | 'product_design'
+  | 'architecture'
+  | 'other'
+
+export type CadUserType = 'student_or_researcher' | 'hobbyist' | 'professional'
+
 export interface CameraDragEnd {
   /** Camera settings */
   settings: CameraSettings
@@ -1479,6 +1505,15 @@ export interface Color {
   /** format:float, description:Red */
   r: number
 }
+
+export type CompanySize =
+  | 'one_to_ten'
+  | 'eleven_to_fifty'
+  | 'fifty_one_to_two_hundred'
+  | 'two_hundred_one_to_five_hundred'
+  | 'five_hundred_one_to_one_thousand'
+  | 'one_thousand_plus'
+  | 'other'
 
 export interface ComplementaryEdges {
   /**
@@ -9980,6 +10015,13 @@ export interface UserAdminDetails {
   /**
    * {
    *   "nullable": true,
+   *   "description": "CAD user info collected from website onboarding/CRM form."
+   * }
+   */
+  cad_user_info?: UserCadInfoAdminDetails
+  /**
+   * {
+   *   "nullable": true,
    *   "description": "Direct or search link to the HubSpot contact record."
    * }
    */
@@ -9991,6 +10033,26 @@ export interface UserAdminDetails {
   stripe_customer_id?: string
   /** nullable:true, description:Direct link to the Stripe customer dashboard. */
   stripe_dashboard_url?: string
+}
+
+export interface UserCadInfoAdminDetails {
+  /** nullable:true, description:CAD industry selection. */
+  cad_industry?: CadIndustry
+  /** nullable:true, description:CAD user persona/type. */
+  cad_user_type?: CadUserType
+  /** nullable:true, description:Company size selection. */
+  company_size?: CompanySize
+  /** nullable:true, description:Acquisition source selection. */
+  how_did_you_find_us?: CadDiscoverySource
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Free-text acquisition source when `other` was selected."
+   * }
+   */
+  how_did_you_find_us_other?: string
+  /** nullable:true, description:Number of CAD users. */
+  number_of_cad_users?: string
 }
 
 export type UserFeature =
@@ -10203,6 +10265,26 @@ export type WebSocketResponse =
       /** Always false */
       success: boolean
     }
+
+export interface WebsiteCadUserInfoForm {
+  /** nullable:true, description:The industry of the user. */
+  cad_industry?: CadIndustry
+  /** nullable:true, description:The user type. */
+  cad_user_type?: CadUserType
+  /** nullable:true, description:Optional company size metadata. */
+  company_size?: CompanySize
+  /** nullable:true, description:How the user found Zoo. */
+  how_did_you_find_us?: CadDiscoverySource
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Optional free-text value when \"Other\" is selected."
+   * }
+   */
+  how_did_you_find_us_other?: string
+  /** nullable:true, description:The number of CAD users. */
+  number_of_cad_users?: string
+}
 
 export interface WebsiteSalesForm {
   cad_platforms?: string[]
@@ -10424,6 +10506,9 @@ export interface Models {
   BooleanIntersection: BooleanIntersection
   BooleanSubtract: BooleanSubtract
   BooleanUnion: BooleanUnion
+  CadDiscoverySource: CadDiscoverySource
+  CadIndustry: CadIndustry
+  CadUserType: CadUserType
   CameraDragEnd: CameraDragEnd
   CameraDragInteractionType: CameraDragInteractionType
   CameraDragMove: CameraDragMove
@@ -10439,6 +10524,7 @@ export interface Models {
   CodeOption: CodeOption
   CodeOutput: CodeOutput
   Color: Color
+  CompanySize: CompanySize
   ComplementaryEdges: ComplementaryEdges
   ComponentTransform: ComponentTransform
   Conversation: Conversation
@@ -10821,6 +10907,7 @@ export interface Models {
   UploadOrgDatasetFilesResponse: UploadOrgDatasetFilesResponse
   User: User
   UserAdminDetails: UserAdminDetails
+  UserCadInfoAdminDetails: UserCadInfoAdminDetails
   UserFeature: UserFeature
   UserFeatureEntry: UserFeatureEntry
   UserFeatureList: UserFeatureList
@@ -10834,6 +10921,7 @@ export interface Models {
   Volume: Volume
   WebSocketRequest: WebSocketRequest
   WebSocketResponse: WebSocketResponse
+  WebsiteCadUserInfoForm: WebsiteCadUserInfoForm
   WebsiteSalesForm: WebsiteSalesForm
   WebsiteSupportForm: WebsiteSupportForm
   WorldCoordinateSystem: WorldCoordinateSystem
