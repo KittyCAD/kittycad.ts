@@ -1679,15 +1679,6 @@ export interface CreateShortlinkResponse {
 
 export type CreatedAtSortMode = 'created_at_ascending' | 'created_at_descending'
 
-export interface CrmData {
-  /** nullable:true, description:The industry of the user. */
-  cad_industry?: string
-  /** nullable:true, description:The user type. */
-  cad_user_type?: string
-  /** nullable:true, description:The user count of the user. */
-  number_of_cad_users?: string
-}
-
 export type Currency =
   /** Currency is the list of supported currencies. Always lowercase.
 
@@ -2962,46 +2953,6 @@ This is very important for correct scaling and when calculating physics properti
 Defaults to millimeters. */
       units: UnitLength
     }
-
-export interface InquiryForm {
-  cad_platforms?: string[]
-  /** nullable:true, description:The company name. */
-  company?: string
-  /** format:email, description:The email address of the user. */
-  email: string
-  /** The first name of the user. */
-  first_name: string
-  /** nullable:true, description:The industry of the user. */
-  industry?: string
-  /** The type of inquiry. */
-  inquiry_type: InquiryType
-  /** nullable:true, description:The job title (used for pilot inquiries). */
-  job_title?: string
-  /** The last name of the user. */
-  last_name: string
-  /** The message content. */
-  message: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "The number of CAD users (used for pilot inquiries)."
-   * }
-   */
-  num_cad_users?: string
-  /** nullable:true, description:The phone number of the user. */
-  phone?: string
-}
-
-export type InquiryType =
-  | 'pilot_inquiry'
-  | 'general_inquiry'
-  | 'sales_question'
-  | 'developer_inquiry'
-  | 'partnership_opportunity'
-  | 'other_sales_inquiry'
-  | 'technical_support'
-  | 'account_management'
-  | 'other_support_inquiry'
 
 export interface Invoice {
   /**
@@ -10539,7 +10490,6 @@ export interface Models {
   CreateShortlinkRequest: CreateShortlinkRequest
   CreateShortlinkResponse: CreateShortlinkResponse
   CreatedAtSortMode: CreatedAtSortMode
-  CrmData: CrmData
   Currency: Currency
   CurveGetControlPoints: CurveGetControlPoints
   CurveGetEndPoints: CurveGetEndPoints
@@ -10657,8 +10607,6 @@ export interface Models {
   ImportFiles: ImportFiles
   ImportedGeometry: ImportedGeometry
   InputFormat3d: InputFormat3d
-  InquiryForm: InquiryForm
-  InquiryType: InquiryType
   Invoice: Invoice
   InvoiceLineItem: InvoiceLineItem
   InvoiceStatus: InvoiceStatus
