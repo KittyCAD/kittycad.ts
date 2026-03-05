@@ -375,13 +375,10 @@ import get_user_self_extended from './api/users/get_user_self_extended.js'
 import get_user_shortlinks from './api/users/get_user_shortlinks.js'
 import list_users from './api/users/list_users.js'
 import list_users_extended from './api/users/list_users_extended.js'
-import patch_user_crm from './api/users/patch_user_crm.js'
 import put_public_email_marketing_consent_request from './api/users/put_public_email_marketing_consent_request.js'
-import put_public_form from './api/users/put_public_form.js'
 import put_public_sales_form from './api/users/put_public_sales_form.js'
 import put_public_support_form from './api/users/put_public_support_form.js'
 import put_user_cad_user_info_form from './api/users/put_user_cad_user_info_form.js'
-import put_user_form_self from './api/users/put_user_form_self.js'
 import update_subscription_for_user from './api/users/update_subscription_for_user.js'
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
 import update_user_self from './api/users/update_user_self.js'
@@ -412,13 +409,10 @@ export const users = {
   list_users_extended,
   list_users_extended_pager,
   list_users_pager,
-  patch_user_crm,
   put_public_email_marketing_consent_request,
-  put_public_form,
   put_public_sales_form,
   put_public_support_form,
   put_user_cad_user_info_form,
-  put_user_form_self,
   update_subscription_for_user,
   update_user_privacy_settings,
   update_user_self,
@@ -512,7 +506,6 @@ export type {
   CreateShortlinkRequest,
   CreateShortlinkResponse,
   CreatedAtSortMode,
-  CrmData,
   Currency,
   CurveGetControlPoints,
   CurveGetEndPoints,
@@ -630,8 +623,6 @@ export type {
   ImportFiles,
   ImportedGeometry,
   InputFormat3d,
-  InquiryForm,
-  InquiryType,
   Invoice,
   InvoiceLineItem,
   InvoiceStatus,
