@@ -1180,6 +1180,13 @@ export interface BooleanUnion {
   extra_solid_ids?: string[]
 }
 
+export interface BoundingBox {
+  /** Center of the box. */
+  center: Point3d
+  /** Dimensions of the box along each axis. */
+  dimensions: Point3d
+}
+
 export type CadDiscoverySource =
   | 'google'
   | 'x'
@@ -1476,6 +1483,17 @@ export interface ClosePath {
   face_id: string
 }
 
+export interface ClosestEdge {
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uuid",
+   *   "description": "The ID of the edge closest to the point given in the request. If there are no edges in the scene, returns None."
+   * }
+   */
+  edge_id?: string
+}
+
 export type CodeLanguage = 'go' | 'python' | 'node'
 
 export type CodeOption =
@@ -1650,6 +1668,8 @@ export interface CreateOrgDataset {
 }
 
 export interface CreateRegion {} /* Empty object */
+
+export interface CreateRegionFromQueryPoint {} /* Empty object */
 
 export interface CreateShortlinkRequest {
   /**
@@ -5291,12 +5311,25 @@ export type ModelingCmd =
       /**
        * {
        *   "default": false,
-       *   "description": "If true, bodies will be separated into multiple objects at their intersection boundaries."
+       *   "description": "If true, the provided tool bodies will not be modified"
+       * }
+       */
+      keep_tools?: boolean
+      /**
+       * {
+       *   "default": false,
+       *   "description": "If true, target bodies will be separated into multiple objects at their intersection boundaries."
        * }
        */
       separate_bodies?: boolean
       /** The maximum acceptable surface gap between the intersected bodies. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      tool_ids?: string[]
       type: 'boolean_imprint'
     }
   | {
@@ -5391,9 +5424,52 @@ export type ModelingCmd =
       type: 'create_region'
     }
   | {
+      /** format:uuid, description:Which sketch object to create the region from. */
+      object_id: string
+      /** The query point (in the same coordinates as the sketch itself) if a possible sketch region contains this point, then that region will be created */
+      query_point: Point2d
+      type: 'create_region_from_query_point'
+    }
+  | {
+      /** format:uuid, description:Which region to search within */
+      region_id: string
+      type: 'region_get_query_point'
+    }
+  | {
       /** Where in the window was selected */
       selected_at_window: Point2d
       type: 'select_region_from_point'
+    }
+  | {
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      entity_ids: string[]
+      type: 'bounding_box'
+    }
+  | {
+      /** The distance to offset the surface by. */
+      distance: LengthUnit
+      /** Flip the newly created face. */
+      flip: boolean
+      /** format:uuid, description:The surface to offset. */
+      surface_id: string
+      type: 'offset_surface'
+    }
+  | {
+      /** Find the edge closest to this point. Assumed to be in absolute coordinates, relative to global (scene) origin. */
+      closest_to: Point3d
+      /**
+       * {
+       *   "nullable": true,
+       *   "format": "uuid",
+       *   "description": "The body whose edges are being queried. If not given, will search all bodies in the scene."
+       * }
+       */
+      object_id?: string
+      type: 'closest_edge'
     }
 
 export type ModelingCmdId =
@@ -5461,6 +5537,8 @@ export interface ObjectBringToFront {} /* Empty object */
 export interface ObjectSetMaterialParamsPbr {} /* Empty object */
 
 export interface ObjectVisible {} /* Empty object */
+
+export interface OffsetSurface {} /* Empty object */
 
 export type OkModelingCmdResponse =
   | { type: 'empty' }
@@ -6853,11 +6931,56 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/CreateRegionFromQueryPoint"
+       * }
+       */
+      data: CreateRegionFromQueryPoint
+      type: 'create_region_from_query_point'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/RegionGetQueryPoint"
+       * }
+       */
+      data: RegionGetQueryPoint
+      type: 'region_get_query_point'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/SelectRegionFromPoint"
        * }
        */
       data: SelectRegionFromPoint
       type: 'select_region_from_point'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/BoundingBox"
+       * }
+       */
+      data: BoundingBox
+      type: 'bounding_box'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/OffsetSurface"
+       * }
+       */
+      data: OffsetSurface
+      type: 'offset_surface'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/ClosestEdge"
+       * }
+       */
+      data: ClosestEdge
+      type: 'closest_edge'
     }
 
 export type OkWebSocketResponseData =
@@ -7950,6 +8073,11 @@ export type ReasoningMessage =
     }
 
 export interface ReconfigureStream {} /* Empty object */
+
+export interface RegionGetQueryPoint {
+  /** A point that is inside of the queried region, in the same coordinate frame as the sketch itself */
+  query_point: Point2d
+}
 
 export type RelativeTo = 'sketch_plane' | 'trajectory_curve'
 
@@ -10443,6 +10571,7 @@ export interface Models {
   BooleanIntersection: BooleanIntersection
   BooleanSubtract: BooleanSubtract
   BooleanUnion: BooleanUnion
+  BoundingBox: BoundingBox
   CadDiscoverySource: CadDiscoverySource
   CadIndustry: CadIndustry
   CadUserType: CadUserType
@@ -10457,6 +10586,7 @@ export interface Models {
   CenterOfMass: CenterOfMass
   ClientMetrics: ClientMetrics
   ClosePath: ClosePath
+  ClosestEdge: ClosestEdge
   CodeLanguage: CodeLanguage
   CodeOption: CodeOption
   CodeOutput: CodeOutput
@@ -10473,6 +10603,7 @@ export interface Models {
   CreateCustomModel: CreateCustomModel
   CreateOrgDataset: CreateOrgDataset
   CreateRegion: CreateRegion
+  CreateRegionFromQueryPoint: CreateRegionFromQueryPoint
   CreateShortlinkRequest: CreateShortlinkRequest
   CreateShortlinkResponse: CreateShortlinkResponse
   CreatedAtSortMode: CreatedAtSortMode
@@ -10640,6 +10771,7 @@ export interface Models {
   ObjectBringToFront: ObjectBringToFront
   ObjectSetMaterialParamsPbr: ObjectSetMaterialParamsPbr
   ObjectVisible: ObjectVisible
+  OffsetSurface: OffsetSurface
   OkModelingCmdResponse: OkModelingCmdResponse
   OkWebSocketResponseData: OkWebSocketResponseData
   OppositeForAngle: OppositeForAngle
@@ -10701,6 +10833,7 @@ export interface Models {
   RawFile: RawFile
   ReasoningMessage: ReasoningMessage
   ReconfigureStream: ReconfigureStream
+  RegionGetQueryPoint: RegionGetQueryPoint
   RelativeTo: RelativeTo
   RemoveSceneObjects: RemoveSceneObjects
   Revolve: Revolve
