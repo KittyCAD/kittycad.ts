@@ -2272,13 +2272,6 @@ export interface ExtendedUser {
   first_name?: string
   /** The user's GitHub handle. */
   github?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "The user's Hubspot ID. This is mostly used for internal mapping."
-   * }
-   */
-  hubspot_contact_id?: string
   /** The unique identifier for the user. */
   id: Uuid
   /** title:String, format:uri, description:The image avatar for the user. This is a URL. */
@@ -9970,13 +9963,6 @@ export interface UserAdminDetails {
    * }
    */
   cad_user_info?: UserCadInfoAdminDetails
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Direct or search link to the HubSpot contact record."
-   * }
-   */
-  hubspot_contact_url?: string
   /** Known payment methods on file. */
   payment_methods: PaymentMethod[]
   payment_methods_summary: string[]
