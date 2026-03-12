@@ -1049,6 +1049,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1oauth2~1verify-account-linking/get/x-typescript",
+    "value": {
+      "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.verify_oauth_account_linking({\n        callback_url: 'string',\n        token: 'string',\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1oauth2~1token~1revoke/post/x-typescript",
     "value": {
       "example": "import { oauth2, ApiError } from '@kittycad/lib'\n\nasync function example() {\n    const response = await oauth2.oauth2_token_revoke({\n        body: {\n            client_id: 'The client ID.',\n            client_secret: 'The client secret.',\n            token: 'An auth token. A uuid with a prefix of dev-',\n        },\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
