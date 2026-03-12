@@ -6,6 +6,7 @@ export type AccountProvider =
   | 'microsoft'
   | 'saml'
   | 'tencent'
+  | 'test_provider'
 
 export interface AddHoleFromOffset {
   /**
@@ -3454,6 +3455,13 @@ export type MlCopilotClientMessage =
       project_name?: string
       /** nullable:true, description:Change the default or mode reasoning effort. */
       reasoning_effort?: MlReasoningEffort
+      /**
+       * {
+       *   "default": false,
+       *   "description": "To handle the transition period between sketch 1 and sketch_solve, set a flag for sketch_solve, True for sketch_solve, false for sketch 1. Defaults to false"
+       * }
+       */
+      sketch_solve?: boolean
       /** The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */
       source_ranges?: SourceRangePrompt[]
       type: 'user'

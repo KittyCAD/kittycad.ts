@@ -152,6 +152,7 @@ import oauth2_provider_callback from './api/oauth2/oauth2_provider_callback.js'
 import oauth2_provider_callback_post from './api/oauth2/oauth2_provider_callback_post.js'
 import oauth2_provider_consent from './api/oauth2/oauth2_provider_consent.js'
 import oauth2_token_revoke from './api/oauth2/oauth2_token_revoke.js'
+import verify_oauth_account_linking from './api/oauth2/verify_oauth_account_linking.js'
 export const oauth2 = {
   device_access_token,
   device_auth_confirm,
@@ -161,6 +162,7 @@ export const oauth2 = {
   oauth2_provider_callback_post,
   oauth2_provider_consent,
   oauth2_token_revoke,
+  verify_oauth_account_linking,
 }
 
 import create_org from './api/orgs/create_org.js'
