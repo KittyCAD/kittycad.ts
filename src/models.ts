@@ -1141,7 +1141,10 @@ export interface BillingInfo {
 
 export type BlendType = 'tangent'
 
-export type BlockReason = 'missing_payment_method' | 'payment_method_failed'
+export type BlockReason =
+  | 'missing_payment_method'
+  | 'payment_method_failed'
+  | 'upgrade_downgrade_abuse'
 
 export type BodyType = 'solid' | 'surface'
 
