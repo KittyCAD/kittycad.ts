@@ -56,8 +56,8 @@ export const operationsToNotGenerateTestsFor = [
   'update_org_dataset',
  
   // Will never have valid email, always fails 
-  'users.put_public_sales_form',
-  'users.put_public_support_form',
+  'put_public_sales_form',
+  'put_public_support_form',
 ]
 
 /**
