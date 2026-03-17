@@ -29,11 +29,17 @@ export class Client {
   fetch?: typeof fetch
 
   constructor(tokenOrOpts?: string | ClientOptions) {
+    const env = typeof process !== 'undefined' ? process.env : undefined
+
+    const envToken =
+      env?.KITTYCAD_TOKEN || env?.KITTYCAD_API_TOKEN || env?.ZOO_AI_TOKEN
+    const envHost = env?.ZOO_HOST
+
     if (typeof tokenOrOpts === 'string') {
       this.token = tokenOrOpts
     } else if (tokenOrOpts && typeof tokenOrOpts === 'object') {
-      this.token = tokenOrOpts.token
-      this.baseUrl = tokenOrOpts.baseUrl
+      this.token = tokenOrOpts.token || envToken
+      this.baseUrl = tokenOrOpts.baseUrl || envHost
       this.fetch = tokenOrOpts.fetch
     }
   }
