@@ -2,7 +2,11 @@ import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
-import { UserResultsPage, CreatedAtSortMode, User } from '../../models.js'
+import {
+  UserResponseResultsPage,
+  CreatedAtSortMode,
+  UserResponse,
+} from '../../models.js'
 
 interface ListUsersInput {
   client?: Client
@@ -11,7 +15,7 @@ interface ListUsersInput {
   sort_by?: CreatedAtSortMode
 }
 
-type ListUsersReturn = UserResultsPage
+type ListUsersReturn = UserResponseResultsPage
 
 /**
  * List users.
@@ -27,7 +31,7 @@ type ListUsersReturn = UserResultsPage
  * @property {CreatedAtSortMode} sort_by (query)
  * @returns {Promise<ListUsersReturn>} successful operation
  *
- * Possible return types: UserResultsPage
+ * Possible return types: UserResponseResultsPage
  */
 export default async function list_users({
   client,
@@ -76,8 +80,8 @@ export default async function list_users({
 
 export function list_users_pager(
   params: ListUsersInput
-): Pager<ListUsersInput, ListUsersReturn, User> {
-  return createPager<ListUsersInput, ListUsersReturn, User>(
+): Pager<ListUsersInput, ListUsersReturn, UserResponse> {
+  return createPager<ListUsersInput, ListUsersReturn, UserResponse>(
     list_users,
     params,
     'page_token'
