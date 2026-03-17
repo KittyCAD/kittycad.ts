@@ -1,8 +1,11 @@
-import { service_accounts, ApiError } from '../../src/index.js'
+import { service_accounts, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await service_accounts.create_service_account_for_org({
     label: 'string',
+    client,
   })
   return response
 }

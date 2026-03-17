@@ -1,5 +1,7 @@
 import { Client, meta } from '../src/index.js'
 
+const client = new Client()
+
 // Create a client with your token.
 async function ExampleWithClient() {
   const client = new Client(process.env.KITTYCAD_TOKEN)
@@ -14,7 +16,7 @@ async function ExampleWithClient() {
 // Your token will be parsed from the environment
 // variable: 'KITTYCAD_TOKEN'.
 async function ExampleWithOutClient() {
-  const response = await meta.ping()
+  const response = await meta.ping({ client })
   if ('error_code' in response) throw 'error'
   // console.log(response.message); // 'pong'
   return response

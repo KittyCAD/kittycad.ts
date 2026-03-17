@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ml } from '../../src/index.ts'
+import { Client, ml } from '../../src/index.ts'
 
 const iso = '2023-01-01T00:00:00Z'
 
@@ -50,8 +50,10 @@ describe('pagination ml.list_text_to_cad_parts_for_user_pager', () => {
       .mockResolvedValueOnce(makeRes(page1))
       .mockResolvedValueOnce(makeRes(page2))
     globalThis.fetch = mock
+    const client = new Client()
 
     const pager = ml.list_text_to_cad_parts_for_user_pager({
+      client,
       limit: 10,
       page_token: '',
       sort_by: 'created_at_ascending',

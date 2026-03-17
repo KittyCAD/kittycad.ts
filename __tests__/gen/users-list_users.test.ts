@@ -1,10 +1,13 @@
-import { users, ApiError } from '../../src/index.js'
+import { users, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await users.list_users({
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
+    client,
   })
   return response
 }
@@ -15,6 +18,7 @@ export async function example_pager() {
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
+    client,
   })
   let total = 0
   // Pull up to two pages just to illustrate usage

@@ -1,15 +1,17 @@
-import { {{tag}}{{#if expectThrow}}, ApiError{{/if}} } from '../../src/index.js';
+import { {{tag}}, Client{{#if expectThrow}}, ApiError{{/if}} } from '../../src/index.js';
 {{#if importFs}}import fsp from 'fs/promises';{{/if}}
 
+const client = new Client();
+
 async function example() {
-  const response = await {{tag}}.{{operationId}}({{#if hasParams}}{ {{{params}}} }{{/if}});
+  const response = await {{tag}}.{{operationId}}({ {{#if hasParams}}{{{params}}}, {{/if}}client });
   return response;
 }
 
 {{#if pager}}
 // Pagination example (not executed in tests; for docs only)
 export async function example_pager() {
-  const pager = {{tag}}.{{pagerFnName}}({{#if hasParams}}{ {{{params}}} }{{/if}});
+  const pager = {{tag}}.{{pagerFnName}}({ {{#if hasParams}}{{{params}}}, {{/if}}client });
   let total = 0;
   // Pull up to two pages just to illustrate usage
   for (let i = 0; i < 2 && pager.hasNext(); i++) {

@@ -1,7 +1,9 @@
-import { orgs, ApiError } from '../../src/index.js'
+import { orgs, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
-  const response = await orgs.get_org()
+  const response = await orgs.get_org({ client })
   return response
 }
 

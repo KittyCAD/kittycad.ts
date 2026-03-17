@@ -1,4 +1,6 @@
-import { api_calls, ApiError } from '../../src/index.js'
+import { api_calls, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await api_calls.list_async_operations({
@@ -6,6 +8,7 @@ async function example() {
     page_token: 'string',
     sort_by: 'created_at_ascending',
     status: 'queued',
+    client,
   })
   return response
 }
@@ -17,6 +20,7 @@ export async function example_pager() {
     page_token: 'string',
     sort_by: 'created_at_ascending',
     status: 'queued',
+    client,
   })
   let total = 0
   // Pull up to two pages just to illustrate usage

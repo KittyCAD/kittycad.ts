@@ -1,7 +1,9 @@
-import { meta, ApiError } from '../../src/index.js'
+import { meta, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
-  const response = await meta.get_ipinfo()
+  const response = await meta.get_ipinfo({ client })
   return response
 }
 

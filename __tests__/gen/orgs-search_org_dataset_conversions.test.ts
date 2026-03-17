@@ -1,4 +1,6 @@
-import { orgs, ApiError } from '../../src/index.js'
+import { orgs, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await orgs.search_org_dataset_conversions({
@@ -7,6 +9,7 @@ async function example() {
     page_token: 'string',
     q: 'string',
     sort_by: 'created_at_ascending',
+    client,
   })
   return response
 }
@@ -19,6 +22,7 @@ export async function example_pager() {
     page_token: 'string',
     q: 'string',
     sort_by: 'created_at_ascending',
+    client,
   })
   let total = 0
   // Pull up to two pages just to illustrate usage

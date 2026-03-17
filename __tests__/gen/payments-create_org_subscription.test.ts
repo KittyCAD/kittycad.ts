@@ -1,4 +1,6 @@
-import { payments, ApiError } from '../../src/index.js'
+import { payments, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await payments.create_org_subscription({
@@ -6,6 +8,7 @@ async function example() {
       modeling_app: 'Slug of the modeling app subscription tier requested.',
       pay_annually: true,
     },
+    client,
   })
   return response
 }

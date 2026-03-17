@@ -7,7 +7,7 @@ async function assertCreateFileMass(
   params: Parameters<typeof file.create_file_mass>[0]
 ) {
   try {
-    const response = await file.create_file_mass(params)
+    const response = await file.create_file_mass({ client, ...params })
     if ('error_code' in response)
       throw new Error('error' + JSON.stringify(response))
 

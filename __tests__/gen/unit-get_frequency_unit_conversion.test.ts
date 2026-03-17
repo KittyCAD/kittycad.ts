@@ -1,10 +1,13 @@
-import { unit, ApiError } from '../../src/index.js'
+import { unit, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await unit.get_frequency_unit_conversion({
     input_unit: 'gigahertz',
     output_unit: 'hertz',
     value: 7,
+    client,
   })
   return response
 }

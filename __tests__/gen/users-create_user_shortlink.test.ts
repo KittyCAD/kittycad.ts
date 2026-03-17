@@ -1,4 +1,6 @@
-import { users, ApiError } from '../../src/index.js'
+import { users, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await users.create_user_shortlink({
@@ -8,6 +10,7 @@ async function example() {
       restrict_to_org: true,
       url: 'The URL to redirect back to.',
     },
+    client,
   })
   return response
 }

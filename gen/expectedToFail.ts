@@ -54,6 +54,10 @@ export const operationsToNotGenerateTestsFor = [
   'retry_org_dataset_conversion',
   'update_custom_model',
   'update_org_dataset',
+
+  // Will never have valid email, always fails
+  'put_public_sales_form',
+  'put_public_support_form',
 ]
 
 /**

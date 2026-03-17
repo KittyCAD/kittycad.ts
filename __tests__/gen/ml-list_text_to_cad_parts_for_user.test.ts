@@ -1,4 +1,6 @@
-import { ml, ApiError } from '../../src/index.js'
+import { ml, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await ml.list_text_to_cad_parts_for_user({
@@ -8,6 +10,7 @@ async function example() {
     conversation_id: '00000000-0000-0000-0000-000000000000',
     no_models: true,
     no_parts: true,
+    client,
   })
   return response
 }
@@ -21,6 +24,7 @@ export async function example_pager() {
     conversation_id: '00000000-0000-0000-0000-000000000000',
     no_models: true,
     no_parts: true,
+    client,
   })
   let total = 0
   // Pull up to two pages just to illustrate usage

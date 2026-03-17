@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { users } from '../../src/index.ts'
+import { Client, users } from '../../src/index.ts'
 
 const iso = '2023-01-01T00:00:00Z'
 
@@ -43,8 +43,10 @@ describe('pagination users.list_users_pager', () => {
       .mockResolvedValueOnce(makeRes(page1))
       .mockResolvedValueOnce(makeRes(page2))
     globalThis.fetch = mock
+    const client = new Client()
 
     const pager = users.list_users_pager({
+      client,
       limit: 10,
       page_token: '',
       sort_by: 'created_at_ascending',

@@ -1,7 +1,9 @@
-import { api_calls, ApiError } from '../../src/index.js'
+import { api_calls, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
-  const response = await api_calls.get_api_call({ id: 'string' })
+  const response = await api_calls.get_api_call({ id: 'string', client })
   return response
 }
 

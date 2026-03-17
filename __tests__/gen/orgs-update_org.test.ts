@@ -1,4 +1,6 @@
-import { orgs, ApiError } from '../../src/index.js'
+import { orgs, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await orgs.update_org({
@@ -10,6 +12,7 @@ async function example() {
       name: 'The name of the org.',
       phone: "The org's phone number.",
     },
+    client,
   })
   return response
 }

@@ -1,4 +1,6 @@
-import { payments, ApiError } from '../../src/index.js'
+import { payments, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await payments.upsert_subscription_plan_price({
@@ -9,6 +11,7 @@ async function example() {
       cadence: 'day',
       unit_amount: 7,
     },
+    client,
   })
   return response
 }

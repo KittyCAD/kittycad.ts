@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { oauth2 } from '../../src/index.ts'
+import { Client, oauth2 } from '../../src/index.ts'
 
 function makeRes(body) {
   return new Response(JSON.stringify(body), {
@@ -20,8 +20,10 @@ describe('application/x-www-form-urlencoded bodies', () => {
   it('encodes form data and omits undefined', async () => {
     const mock = vi.fn((url, opts) => makeRes({ ok: true }))
     globalThis.fetch = mock
+    const client = new Client()
 
     await oauth2.device_access_token({
+      client,
       body: {
         client_id: '00000000-0000-0000-0000-000000000000',
         device_code: '11111111-1111-1111-1111-111111111111',

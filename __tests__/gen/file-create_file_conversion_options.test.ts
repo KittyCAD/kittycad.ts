@@ -1,4 +1,6 @@
-import { file, ApiError } from '../../src/index.js'
+import { file, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await file.create_file_conversion_options({
@@ -16,6 +18,7 @@ async function example() {
       },
       src_format: { type: 'fbx' },
     },
+    client,
   })
   return response
 }

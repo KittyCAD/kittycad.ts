@@ -1,4 +1,6 @@
-import { payments, ApiError } from '../../src/index.js'
+import { payments, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await payments.update_payment_balance_for_any_org({
@@ -8,6 +10,7 @@ async function example() {
       monthly_api_credits_remaining_monetary_value: 7,
       stable_api_credits_remaining_monetary_value: 7,
     },
+    client,
   })
   return response
 }

@@ -1,7 +1,9 @@
-import { orgs, ApiError } from '../../src/index.js'
+import { orgs, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
-  const response = await orgs.delete_org_saml_idp()
+  const response = await orgs.delete_org_saml_idp({ client })
   return response
 }
 

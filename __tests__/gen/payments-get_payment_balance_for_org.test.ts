@@ -1,8 +1,11 @@
-import { payments, ApiError } from '../../src/index.js'
+import { payments, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await payments.get_payment_balance_for_org({
     include_total_due: true,
+    client,
   })
   return response
 }

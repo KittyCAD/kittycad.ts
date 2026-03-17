@@ -50,10 +50,7 @@ export default class MlCopilotWs<
     // That used to exist in only this lib, ZOO_HOST exists in the all the other
     // sdks and the CLI.
     const urlBase =
-      this.functionNameParams?.client?.baseUrl ||
-      process?.env?.ZOO_HOST ||
-      process?.env?.BASE_URL ||
-      'https://api.zoo.dev'
+      this.functionNameParams?.client?.baseUrl || 'https://api.zoo.dev'
     const httpUrl = urlBase + url
     const wsUrl = httpUrl.replace(/^http/, 'ws')
 
@@ -80,11 +77,8 @@ export default class MlCopilotWs<
     // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
     // check for that as well.
     const kittycadToken = this.functionNameParams?.client
-      ? this.functionNameParams.client?.token || process.env.ZOO_API_TOKEN || ''
-      : process.env.KITTYCAD_TOKEN ||
-        process.env.KITTYCAD_API_TOKEN ||
-        process.env.ZOO_API_TOKEN ||
-        ''
+      ? this.functionNameParams.client?.token || ''
+      : ''
     if (kittycadToken) {
       try {
         const headersMsg: { type: 'headers'; headers: Record<string, string> } =

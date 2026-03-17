@@ -1,4 +1,6 @@
-import { oauth2, ApiError } from '../../src/index.js'
+import { oauth2, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await oauth2.oauth2_provider_callback({
@@ -7,6 +9,7 @@ async function example() {
     id_token: 'string',
     state: 'string',
     user: 'string',
+    client,
   })
   return response
 }
