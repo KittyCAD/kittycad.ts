@@ -54,6 +54,10 @@ export const operationsToNotGenerateTestsFor = [
   'retry_org_dataset_conversion',
   'update_custom_model',
   'update_org_dataset',
+ 
+  // Will never have valid email, always fails 
+  'users.put_public_sales_form',
+  'users.put_public_support_form',
 ]
 
 /**
@@ -246,8 +250,4 @@ export const testsExpectedToThrow = [
   'users.get_user_self',
   'users.get_user_self_extended',
   'users.user_features_get',
- 
-  // Will never have valid email, always fails 
-  'users.put_public_sales_form',
-  'users.put_public_support_form',
 ]
