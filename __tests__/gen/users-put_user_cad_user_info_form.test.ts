@@ -1,4 +1,6 @@
-import { users, ApiError } from '../../src/index.js'
+import { users, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await users.put_user_cad_user_info_form({
@@ -11,6 +13,7 @@ async function example() {
         "Optional free-text value when 'Other' is selected.",
       number_of_cad_users: 'The number of CAD users.',
     },
+    client,
   })
   return response
 }

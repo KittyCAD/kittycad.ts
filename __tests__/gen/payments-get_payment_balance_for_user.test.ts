@@ -1,8 +1,11 @@
-import { payments } from '../../src/index.js'
+import { payments, Client } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await payments.get_payment_balance_for_user({
     include_total_due: true,
+    client,
   })
   return response
 }

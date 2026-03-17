@@ -1,4 +1,6 @@
-import { meta, ApiError } from '../../src/index.js'
+import { meta, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await meta.create_event({
@@ -20,6 +22,7 @@ async function example() {
       type: 'modeling_app_event',
       user_id: 'An anonymous user id generated client-side.',
     },
+    client,
   })
   return response
 }

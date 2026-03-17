@@ -1,8 +1,11 @@
-import { orgs, ApiError } from '../../src/index.js'
+import { orgs, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await orgs.update_org_privacy_settings({
     body: { can_train_on_data: true },
+    client,
   })
   return response
 }

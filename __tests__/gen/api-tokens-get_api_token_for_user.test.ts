@@ -1,8 +1,11 @@
-import { api_tokens, ApiError } from '../../src/index.js'
+import { api_tokens, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await api_tokens.get_api_token_for_user({
     token: 'api-00000000-0000-0000-0000-000000000000',
+    client,
   })
   return response
 }

@@ -1,4 +1,6 @@
-import { payments, ApiError } from '../../src/index.js'
+import { payments, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await payments.create_payment_information_for_org({
@@ -14,6 +16,7 @@ async function example() {
       name: 'The name of the customer.',
       phone: 'The phone for the customer.',
     },
+    client,
   })
   return response
 }

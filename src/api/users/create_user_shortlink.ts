@@ -39,10 +39,6 @@ export default async function create_user_shortlink({
   // sdks and the CLI.
   const urlBase = client?.baseUrl || 'https://api.zoo.dev'
   const fullUrl = urlBase + url
-  // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
-  // backwards compatibility, but the new standard is ZOO_API_TOKEN.
-  // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
-  // check for that as well.
   const kittycadToken = client ? client.token || '' : ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`

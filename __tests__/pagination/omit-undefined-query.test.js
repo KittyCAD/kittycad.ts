@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ml } from '../../src/index.ts'
+import { Client, ml } from '../../src/index.ts'
 
 function makeRes(body) {
   return new Response(JSON.stringify(body), {
@@ -22,8 +22,10 @@ describe('query building skips undefined params', () => {
       .fn()
       .mockResolvedValueOnce(makeRes({ items: [], next_page: null }))
     globalThis.fetch = mock
+    const client = new Client()
 
     await ml.list_text_to_cad_parts_for_user({
+      client,
       limit: 5,
       sort_by: 'created_at_descending',
       no_models: true,

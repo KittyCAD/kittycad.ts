@@ -1,4 +1,6 @@
-import { ml, ApiError } from '../../src/index.js'
+import { ml, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await ml.create_kcl_code_completions({
@@ -22,6 +24,7 @@ async function example() {
       temperature: 7,
       top_p: 7,
     },
+    client,
   })
   return response
 }

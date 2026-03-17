@@ -1,4 +1,6 @@
-import { users, ApiError } from '../../src/index.js'
+import { users, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await users.put_public_sales_form({
@@ -15,6 +17,7 @@ async function example() {
       num_cad_users: 'The number of CAD users (used for pilot inquiries).',
       phone: 'The phone number of the user.',
     },
+    client,
   })
   return response
 }

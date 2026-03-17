@@ -1,8 +1,11 @@
-import { payments, ApiError } from '../../src/index.js'
+import { payments, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await payments.set_default_payment_method_for_user({
     id: 'string',
+    client,
   })
   return response
 }

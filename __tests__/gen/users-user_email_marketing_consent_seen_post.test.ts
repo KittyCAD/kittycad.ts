@@ -1,7 +1,11 @@
-import { users, ApiError } from '../../src/index.js'
+import { users, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
-  const response = await users.user_email_marketing_consent_seen_post()
+  const response = await users.user_email_marketing_consent_seen_post({
+    client,
+  })
   return response
 }
 

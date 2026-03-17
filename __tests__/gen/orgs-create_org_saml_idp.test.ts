@@ -1,4 +1,6 @@
-import { orgs, ApiError } from '../../src/index.js'
+import { orgs, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await orgs.create_org_saml_idp({
@@ -15,6 +17,7 @@ async function example() {
       technical_contact_email:
         'The technical contact email address for the SAML identity provider.',
     },
+    client,
   })
   return response
 }

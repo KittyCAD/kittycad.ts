@@ -1,4 +1,6 @@
-import { oauth2, ApiError } from '../../src/index.js'
+import { oauth2, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await oauth2.oauth2_token_revoke({
@@ -7,6 +9,7 @@ async function example() {
       client_secret: 'The client secret.',
       token: 'An auth token. A uuid with a prefix of dev-',
     },
+    client,
   })
   return response
 }

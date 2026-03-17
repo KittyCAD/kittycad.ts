@@ -38,10 +38,13 @@ export class Client {
     if (typeof tokenOrOpts === 'string') {
       this.token = tokenOrOpts
     } else if (tokenOrOpts && typeof tokenOrOpts === 'object') {
-      this.token = tokenOrOpts.token || envToken
-      this.baseUrl = tokenOrOpts.baseUrl || envHost
+      this.token = tokenOrOpts.token
+      this.baseUrl = tokenOrOpts.baseUrl
       this.fetch = tokenOrOpts.fetch
     }
+
+    this.token ??= envToken
+    this.baseUrl ??= envHost
   }
 }
 

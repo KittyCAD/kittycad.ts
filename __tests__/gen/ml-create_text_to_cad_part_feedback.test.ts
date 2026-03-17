@@ -1,9 +1,12 @@
-import { ml, ApiError } from '../../src/index.js'
+import { ml, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await ml.create_text_to_cad_part_feedback({
     id: 'string',
     feedback: 'thumbs_up',
+    client,
   })
   return response
 }

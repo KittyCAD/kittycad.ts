@@ -1,9 +1,12 @@
-import { apps, ApiError } from '../../src/index.js'
+import { apps, Client, ApiError } from '../../src/index.js'
 import fsp from 'fs/promises'
+
+const client = new Client()
 
 async function example() {
   const response = await apps.apps_github_webhook({
     body: await fsp.readFile('./example', 'base64'),
+    client,
   })
   return response
 }

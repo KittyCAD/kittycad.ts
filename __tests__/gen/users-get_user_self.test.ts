@@ -1,7 +1,9 @@
-import { users, ApiError } from '../../src/index.js'
+import { users, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
-  const response = await users.get_user_self()
+  const response = await users.get_user_self({ client })
   return response
 }
 

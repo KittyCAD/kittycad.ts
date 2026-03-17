@@ -1,4 +1,6 @@
-import { ml, ApiError } from '../../src/index.js'
+import { ml, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await ml.create_text_to_cad_multi_file_iteration({
@@ -18,6 +20,7 @@ async function example() {
         'The prompt for the overall changes. This is optional if you only want changes on specific source ranges. This will apply to all the files. If you want to apply a prompt to just a single file, use the source_ranges field and you can leave this empty.',
       source_ranges: [],
     },
+    client,
   })
   return response
 }

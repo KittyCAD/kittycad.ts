@@ -1,4 +1,6 @@
-import { orgs, ApiError } from '../../src/index.js'
+import { orgs, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await orgs.create_org_member({
@@ -6,6 +8,7 @@ async function example() {
       email: 'The email address of the user to add to the org.',
       role: 'admin',
     },
+    client,
   })
   return response
 }

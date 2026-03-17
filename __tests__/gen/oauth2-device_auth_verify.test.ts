@@ -1,9 +1,12 @@
-import { oauth2, ApiError } from '../../src/index.js'
+import { oauth2, Client, ApiError } from '../../src/index.js'
+
+const client = new Client()
 
 async function example() {
   const response = await oauth2.device_auth_verify({
     app_name: 'string',
     user_code: 'string',
+    client,
   })
   return response
 }
