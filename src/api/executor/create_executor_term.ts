@@ -36,16 +36,8 @@ export default class ExecutorTerm<Req = unknown, Res = unknown> {
     // Backwards compatible for the BASE_URL env variable
     // That used to exist in only this lib, ZOO_HOST exists in the all the other
     // sdks and the CLI.
-    const env = (
-      globalThis as typeof globalThis & {
-        process?: { env?: Record<string, string | undefined> }
-      }
-    ).process?.env
     const urlBase =
-      this.functionNameParams?.client?.baseUrl ||
-      env?.ZOO_HOST ||
-      env?.BASE_URL ||
-      'https://api.zoo.dev'
+      this.functionNameParams?.client?.baseUrl || 'https://api.zoo.dev'
     const httpUrl = urlBase + url
     const wsUrl = httpUrl.replace(/^http/, 'ws')
 
@@ -72,11 +64,8 @@ export default class ExecutorTerm<Req = unknown, Res = unknown> {
     // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
     // check for that as well.
     const kittycadToken = this.functionNameParams?.client
-      ? this.functionNameParams.client?.token || env?.ZOO_API_TOKEN || ''
-      : env?.KITTYCAD_TOKEN ||
-        env?.KITTYCAD_API_TOKEN ||
-        env?.ZOO_API_TOKEN ||
-        ''
+      ? this.functionNameParams.client?.token || ''
+      : ''
     if (kittycadToken) {
       try {
         const headersMsg: { type: 'headers'; headers: Record<string, string> } =
