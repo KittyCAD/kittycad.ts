@@ -246,4 +246,8 @@ export const testsExpectedToThrow = [
   'users.get_user_self',
   'users.get_user_self_extended',
   'users.user_features_get',
+ 
+  // Will never have valid email, always fails 
+  'users.put_public_sales_form',
+  'users.put_public_support_form',
 ]
