@@ -1,14 +1,14 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { User, UpdateUser } from '../../models.js'
+import { UserResponse, UpdateUser } from '../../models.js'
 
 interface UpdateUserSelfInput {
   client?: Client
   body: UpdateUser
 }
 
-type UpdateUserSelfReturn = User
+type UpdateUserSelfReturn = UserResponse
 
 /**
  * Update your user.
@@ -22,7 +22,7 @@ type UpdateUserSelfReturn = User
  * @property {UpdateUser} body Request body payload
  * @returns {Promise<UpdateUserSelfReturn>} successful operation
  *
- * Possible return types: User
+ * Possible return types: UserResponse
  */
 export default async function update_user_self({
   client,

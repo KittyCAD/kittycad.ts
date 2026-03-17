@@ -1,13 +1,13 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { User } from '../../models.js'
+import { UserResponse } from '../../models.js'
 
 interface GetUserSelfInput {
   client?: Client
 }
 
-type GetUserSelfReturn = User
+type GetUserSelfReturn = UserResponse
 
 /**
  * Get your user.
@@ -22,7 +22,7 @@ type GetUserSelfReturn = User
  * @property {Client} [client] Optional client with auth token.
  * @returns {Promise<GetUserSelfReturn>} successful operation
  *
- * Possible return types: User
+ * Possible return types: UserResponse
  */
 export default async function get_user_self(
   { client }: GetUserSelfInput = {} as GetUserSelfInput

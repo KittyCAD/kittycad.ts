@@ -1,14 +1,14 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { User, UserIdentifier } from '../../models.js'
+import { UserResponse, UserIdentifier } from '../../models.js'
 
 interface GetUserInput {
   client?: Client
   id: UserIdentifier
 }
 
-type GetUserReturn = User
+type GetUserReturn = UserResponse
 
 /**
  * Get a user.
@@ -24,7 +24,7 @@ type GetUserReturn = User
  * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
  * @returns {Promise<GetUserReturn>} successful operation
  *
- * Possible return types: User
+ * Possible return types: UserResponse
  */
 export default async function get_user({
   client,

@@ -10017,64 +10017,6 @@ export interface UploadOrgDatasetFilesResponse {
   uploaded_files: number
 }
 
-export interface User {
-  /** nullable:true, description:If the user should be blocked and the reason why. */
-  block?: BlockReason
-  /**
-   * {
-   *   "default": false,
-   *   "description": "If we can train on the user's data. If the user is a member of an organization, the organization's setting will override this."
-   * }
-   */
-  can_train_on_data?: boolean
-  /** The user's company. */
-  company?: string
-  /** title:DateTime, format:date-time, description:The date and time the user was created. */
-  created_at: string
-  /** default:false, description:If the user is scheduled for deletion. */
-  deletion_scheduled?: boolean
-  /** The user's Discord handle. */
-  discord?: string
-  /** format:email, description:The email address of the user. */
-  email?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "The date and time the email address was verified."
-   * }
-   */
-  email_verified?: string
-  /** The user's first name. */
-  first_name?: string
-  /** The user's GitHub handle. */
-  github?: string
-  /** The unique identifier for the user. */
-  id: Uuid
-  /** title:String, format:uri, description:The image avatar for the user. This is a URL. */
-  image: string
-  /** default:false, description:If the user has finished onboarding. */
-  is_onboarded?: boolean
-  /** default:false, description:If the user is tied to a service account. */
-  is_service_account?: boolean
-  /** The user's last name. */
-  last_name?: string
-  /** The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */
-  name?: string
-  /**
-   * {
-   *   "title": "String",
-   *   "default": "",
-   *   "format": "phone",
-   *   "description": "The user's phone number."
-   * }
-   */
-  phone?: string
-  /** title:DateTime, format:date-time, description:The date and time the user was last updated. */
-  updated_at: string
-}
-
 export interface UserAdminDetails {
   /** format:int64, description:Count of valid API tokens. */
   active_api_tokens_count: number
@@ -10204,9 +10146,69 @@ export interface UserOrgInfo {
 
 export type UserOrgRole = 'admin' | 'member'
 
-export interface UserResultsPage {
+export interface UserResponse {
+  /** nullable:true, description:If the user should be blocked and the reason why. */
+  block?: BlockReason
+  /** nullable:true, description:Human-friendly block reason message. */
+  block_message?: string
+  /**
+   * {
+   *   "default": false,
+   *   "description": "If we can train on the user's data. If the user is a member of an organization, the organization's setting will override this."
+   * }
+   */
+  can_train_on_data?: boolean
+  /** The user's company. */
+  company?: string
+  /** title:DateTime, format:date-time, description:The date and time the user was created. */
+  created_at: string
+  /** default:false, description:If the user is scheduled for deletion. */
+  deletion_scheduled?: boolean
+  /** The user's Discord handle. */
+  discord?: string
+  /** format:email, description:The email address of the user. */
+  email?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The date and time the email address was verified."
+   * }
+   */
+  email_verified?: string
+  /** The user's first name. */
+  first_name?: string
+  /** The user's GitHub handle. */
+  github?: string
+  /** The unique identifier for the user. */
+  id: Uuid
+  /** title:String, format:uri, description:The image avatar for the user. This is a URL. */
+  image: string
+  /** default:false, description:If the user has finished onboarding. */
+  is_onboarded?: boolean
+  /** default:false, description:If the user is tied to a service account. */
+  is_service_account?: boolean
+  /** The user's last name. */
+  last_name?: string
+  /** The name of the user. This is auto populated at first from the authentication provider (if there was a name). It can be updated by the user by updating their `first_name` and `last_name` fields. */
+  name?: string
+  /**
+   * {
+   *   "title": "String",
+   *   "default": "",
+   *   "format": "phone",
+   *   "description": "The user's phone number."
+   * }
+   */
+  phone?: string
+  /** title:DateTime, format:date-time, description:The date and time the user was last updated. */
+  updated_at: string
+}
+
+export interface UserResponseResultsPage {
   /** list of items on this page of results */
-  items: User[]
+  items: UserResponse[]
   /**
    * {
    *   "nullable": true,
@@ -10983,7 +10985,6 @@ export interface Models {
   UpdateShortlinkRequest: UpdateShortlinkRequest
   UpdateUser: UpdateUser
   UploadOrgDatasetFilesResponse: UploadOrgDatasetFilesResponse
-  User: User
   UserAdminDetails: UserAdminDetails
   UserCadInfoAdminDetails: UserCadInfoAdminDetails
   UserFeature: UserFeature
@@ -10992,7 +10993,8 @@ export interface Models {
   UserIdentifier: UserIdentifier
   UserOrgInfo: UserOrgInfo
   UserOrgRole: UserOrgRole
-  UserResultsPage: UserResultsPage
+  UserResponse: UserResponse
+  UserResponseResultsPage: UserResponseResultsPage
   Uuid: Uuid
   VerificationTokenResponse: VerificationTokenResponse
   ViewIsometric: ViewIsometric
