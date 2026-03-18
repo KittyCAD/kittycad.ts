@@ -1,0 +1,76 @@
+import { Client, buildQuery } from '../../client.js'
+import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
+
+import {
+  OAuth2AppResponseResultsPage,
+  CreatedAtSortMode,
+  OAuth2AppResponse,
+} from '../../models.js'
+
+interface ListOrgOauth2AppsInput {
+  client?: Client
+  limit?: number
+  page_token?: string
+  sort_by?: CreatedAtSortMode
+}
+
+type ListOrgOauth2AppsReturn = OAuth2AppResponseResultsPage
+
+/**
+ * List org OAuth apps.
+ *
+ * This endpoint requires authentication by an org member. It lists the organization's active public OAuth apps.
+ *
+ * Tags: oauth2, orgs
+ *
+ * @param params Function parameters.
+ * @property {Client} [client] Optional client with auth token.
+ * @property {number} limit Maximum number of items returned by a single call (query)
+ * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @property {CreatedAtSortMode} sort_by (query)
+ * @returns {Promise<ListOrgOauth2AppsReturn>} successful operation
+ *
+ * Possible return types: OAuth2AppResponseResultsPage
+ */
+export default async function list_org_oauth2_apps({
+  client,
+  limit,
+  page_token,
+  sort_by,
+}: ListOrgOauth2AppsInput): Promise<ListOrgOauth2AppsReturn> {
+  const path = `/org/oauth2/apps`
+  const qs = buildQuery({
+    limit: limit,
+    page_token: page_token,
+    sort_by: sort_by,
+  })
+  const url = path + qs
+  // Backwards compatible for the BASE_URL env variable
+  // That used to exist in only this lib, ZOO_HOST exists in the all the other
+  // sdks and the CLI.
+  const urlBase = client?.baseUrl || 'https://api.zoo.dev'
+  const fullUrl = urlBase + url
+  const kittycadToken = client ? client.token || '' : ''
+  const headers: Record<string, string> = {}
+  if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  const fetchOptions: RequestInit = {
+    method: 'GET',
+    headers,
+  }
+  const _fetch = client?.fetch || fetch
+  const response = await _fetch(fullUrl, fetchOptions)
+  await throwIfNotOk(response)
+  const result = (await response.json()) as ListOrgOauth2AppsReturn
+  return result
+}
+
+export function list_org_oauth2_apps_pager(
+  params: ListOrgOauth2AppsInput
+): Pager<ListOrgOauth2AppsInput, ListOrgOauth2AppsReturn, OAuth2AppResponse> {
+  return createPager<
+    ListOrgOauth2AppsInput,
+    ListOrgOauth2AppsReturn,
+    OAuth2AppResponse
+  >(list_org_oauth2_apps, params, 'page_token')
+}

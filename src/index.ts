@@ -144,24 +144,48 @@ export const modeling = {
   modeling_commands_ws: (params) => new ModelingCommandsWs(params),
 }
 
+import create_org_oauth2_app from './api/oauth2/create_org_oauth2_app.js'
+import create_user_oauth2_app from './api/oauth2/create_user_oauth2_app.js'
+import delete_org_oauth2_app from './api/oauth2/delete_org_oauth2_app.js'
+import delete_user_oauth2_app from './api/oauth2/delete_user_oauth2_app.js'
 import device_access_token from './api/oauth2/device_access_token.js'
 import device_auth_confirm from './api/oauth2/device_auth_confirm.js'
 import device_auth_request from './api/oauth2/device_auth_request.js'
 import device_auth_verify from './api/oauth2/device_auth_verify.js'
+import get_org_oauth2_app from './api/oauth2/get_org_oauth2_app.js'
+import get_user_oauth2_app from './api/oauth2/get_user_oauth2_app.js'
+import list_org_oauth2_apps from './api/oauth2/list_org_oauth2_apps.js'
+import list_user_oauth2_apps from './api/oauth2/list_user_oauth2_apps.js'
 import oauth2_provider_callback from './api/oauth2/oauth2_provider_callback.js'
 import oauth2_provider_callback_post from './api/oauth2/oauth2_provider_callback_post.js'
 import oauth2_provider_consent from './api/oauth2/oauth2_provider_consent.js'
 import oauth2_token_revoke from './api/oauth2/oauth2_token_revoke.js'
+import update_org_oauth2_app from './api/oauth2/update_org_oauth2_app.js'
+import update_user_oauth2_app from './api/oauth2/update_user_oauth2_app.js'
 import verify_oauth_account_linking from './api/oauth2/verify_oauth_account_linking.js'
+import { list_org_oauth2_apps_pager } from './api/oauth2/list_org_oauth2_apps.js'
+import { list_user_oauth2_apps_pager } from './api/oauth2/list_user_oauth2_apps.js'
 export const oauth2 = {
+  create_org_oauth2_app,
+  create_user_oauth2_app,
+  delete_org_oauth2_app,
+  delete_user_oauth2_app,
   device_access_token,
   device_auth_confirm,
   device_auth_request,
   device_auth_verify,
+  get_org_oauth2_app,
+  get_user_oauth2_app,
+  list_org_oauth2_apps,
+  list_org_oauth2_apps_pager,
+  list_user_oauth2_apps,
+  list_user_oauth2_apps_pager,
   oauth2_provider_callback,
   oauth2_provider_callback_post,
   oauth2_provider_consent,
   oauth2_token_revoke,
+  update_org_oauth2_app,
+  update_user_oauth2_app,
   verify_oauth_account_linking,
 }
 
@@ -505,6 +529,7 @@ export type {
   CountryCode,
   Coupon,
   CreateCustomModel,
+  CreateOAuth2AppRequest,
   CreateOrgDataset,
   CreateRegion,
   CreateRegionFromQueryPoint,
@@ -670,6 +695,10 @@ export type {
   MouseMove,
   MovePathPen,
   NewAnnotation,
+  OAuth2AppClientType,
+  OAuth2AppGrantType,
+  OAuth2AppResponse,
+  OAuth2AppResponseResultsPage,
   OAuth2ClientInfo,
   OAuth2GrantType,
   ObjectBringToFront,
@@ -870,6 +899,7 @@ export type {
   UpdateAnnotation,
   UpdateCustomModel,
   UpdateMemberToOrgBody,
+  UpdateOAuth2AppRequest,
   UpdateOrgDataset,
   UpdateOrgDatasetSource,
   UpdatePaymentBalance,
