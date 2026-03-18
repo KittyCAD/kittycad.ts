@@ -1664,6 +1664,11 @@ export interface CreateCustomModel {
   system_prompt?: string
 }
 
+export interface CreateOAuth2AppRequest {
+  /** The display name of the app. */
+  name: string
+}
+
 export interface CreateOrgDataset {
   /** The dataset's display name. */
   name: string
@@ -5524,6 +5529,45 @@ export interface MouseMove {} /* Empty object */
 export interface MovePathPen {} /* Empty object */
 
 export interface NewAnnotation {} /* Empty object */
+
+export type OAuth2AppClientType = 'public' | 'confidential'
+
+export type OAuth2AppGrantType =
+  | 'device_code'
+  | 'authorization_code'
+  | 'refresh_token'
+  | 'client_credentials'
+
+export interface OAuth2AppResponse {
+  /** The OAuth 2.0 client identifier. */
+  client_id: Uuid
+  /** The client type. */
+  client_type: OAuth2AppClientType
+  /** title:DateTime, format:date-time, description:When the app record was created. */
+  created_at: string
+  /** Whether this app is first-party. */
+  first_party: boolean
+  /** The OAuth grant types this app can use. */
+  grant_types: OAuth2AppGrantType[]
+  /** Whether this app is active. */
+  is_active: boolean
+  /** The display name of the app. */
+  name: string
+  /** title:DateTime, format:date-time, description:When the app record was last updated. */
+  updated_at: string
+}
+
+export interface OAuth2AppResponseResultsPage {
+  /** list of items on this page of results */
+  items: OAuth2AppResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
 
 export interface OAuth2ClientInfo {
   /** Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */
@@ -9919,6 +9963,11 @@ export interface UpdateMemberToOrgBody {
   role: UserOrgRole
 }
 
+export interface UpdateOAuth2AppRequest {
+  /** The new display name of the app. */
+  name: string
+}
+
 export interface UpdateOrgDataset {
   /** nullable:true, description:Optional new display name. */
   name?: string
@@ -10614,6 +10663,7 @@ export interface Models {
   CountryCode: CountryCode
   Coupon: Coupon
   CreateCustomModel: CreateCustomModel
+  CreateOAuth2AppRequest: CreateOAuth2AppRequest
   CreateOrgDataset: CreateOrgDataset
   CreateRegion: CreateRegion
   CreateRegionFromQueryPoint: CreateRegionFromQueryPoint
@@ -10779,6 +10829,10 @@ export interface Models {
   MouseMove: MouseMove
   MovePathPen: MovePathPen
   NewAnnotation: NewAnnotation
+  OAuth2AppClientType: OAuth2AppClientType
+  OAuth2AppGrantType: OAuth2AppGrantType
+  OAuth2AppResponse: OAuth2AppResponse
+  OAuth2AppResponseResultsPage: OAuth2AppResponseResultsPage
   OAuth2ClientInfo: OAuth2ClientInfo
   OAuth2GrantType: OAuth2GrantType
   ObjectBringToFront: ObjectBringToFront
@@ -10979,6 +11033,7 @@ export interface Models {
   UpdateAnnotation: UpdateAnnotation
   UpdateCustomModel: UpdateCustomModel
   UpdateMemberToOrgBody: UpdateMemberToOrgBody
+  UpdateOAuth2AppRequest: UpdateOAuth2AppRequest
   UpdateOrgDataset: UpdateOrgDataset
   UpdateOrgDatasetSource: UpdateOrgDatasetSource
   UpdatePaymentBalance: UpdatePaymentBalance
