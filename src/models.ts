@@ -4007,6 +4007,15 @@ export type ModelingCmd =
       /** Path along which to sweep. */
       trajectory: ModelingCmdId
       type: 'sweep'
+      /**
+       * {
+       *   "nullable": true,
+       *   "format": "uint8",
+       *   "minimum": 0,
+       *   "description": "What version of the sweeping algorithm to use. If None, or zero, the engine's default algorithm will be used"
+       * }
+       */
+      version?: number
     }
   | {
       /** The signed angle of revolution (in degrees, must be <= 360 in either direction) */
@@ -5463,6 +5472,13 @@ export type ModelingCmd =
        * }
        */
       entity_ids: string[]
+      /**
+       * {
+       *   "default": "mm",
+       *   "description": "The output unit for the box's dimensions. Defaults to millimeters."
+       * }
+       */
+      output_unit?: UnitLength
       type: 'bounding_box'
     }
   | {
