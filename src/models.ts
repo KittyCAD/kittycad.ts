@@ -7490,6 +7490,24 @@ export interface OrgDatasetResultsPage {
   next_page?: string
 }
 
+export interface OrgDatasetSemanticSearchMatch {
+  /**
+   * {
+   *   "format": "int32",
+   *   "description": "Zero-based chunk ordinal in the conversion output."
+   * }
+   */
+  chunk_index: number
+  /** Chunk text used for matching. */
+  content: string
+  /** Matching conversion id. */
+  conversion_id: Uuid
+  /** format:double, description:Cosine-similarity score in roughly [-1, 1]. */
+  similarity: number
+  /** Source path for the conversion. */
+  source_file_path: string
+}
+
 export interface OrgDatasetSnapshotImage {
   /** title:String, format:byte, description:Base64-encoded image bytes. */
   data_base64: string
@@ -10870,6 +10888,7 @@ export interface Models {
   OrgDatasetFileConversionSummary: OrgDatasetFileConversionSummary
   OrgDatasetFileConversionSummaryResultsPage: OrgDatasetFileConversionSummaryResultsPage
   OrgDatasetResultsPage: OrgDatasetResultsPage
+  OrgDatasetSemanticSearchMatch: OrgDatasetSemanticSearchMatch
   OrgDatasetSnapshotImage: OrgDatasetSnapshotImage
   OrgDatasetSource: OrgDatasetSource
   OrgDatasetStatus: OrgDatasetStatus

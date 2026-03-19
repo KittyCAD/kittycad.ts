@@ -218,6 +218,7 @@ import org_dataset_s3_policies from './api/orgs/org_dataset_s3_policies.js'
 import retrigger_org_dataset from './api/orgs/retrigger_org_dataset.js'
 import retrigger_org_dataset_conversion from './api/orgs/retrigger_org_dataset_conversion.js'
 import search_org_dataset_conversions from './api/orgs/search_org_dataset_conversions.js'
+import search_org_dataset_semantic from './api/orgs/search_org_dataset_semantic.js'
 import update_org from './api/orgs/update_org.js'
 import update_org_dataset from './api/orgs/update_org_dataset.js'
 import update_org_member from './api/orgs/update_org_member.js'
@@ -266,6 +267,7 @@ export const orgs = {
   retrigger_org_dataset_conversion,
   search_org_dataset_conversions,
   search_org_dataset_conversions_pager,
+  search_org_dataset_semantic,
   update_org,
   update_org_dataset,
   update_org_member,
@@ -720,6 +722,7 @@ export type {
   OrgDatasetFileConversionSummary,
   OrgDatasetFileConversionSummaryResultsPage,
   OrgDatasetResultsPage,
+  OrgDatasetSemanticSearchMatch,
   OrgDatasetSnapshotImage,
   OrgDatasetSource,
   OrgDatasetStatus,
