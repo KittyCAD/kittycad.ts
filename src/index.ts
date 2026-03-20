@@ -154,6 +154,8 @@ import device_auth_request from './api/oauth2/device_auth_request.js'
 import device_auth_verify from './api/oauth2/device_auth_verify.js'
 import get_org_oauth2_app from './api/oauth2/get_org_oauth2_app.js'
 import get_user_oauth2_app from './api/oauth2/get_user_oauth2_app.js'
+import list_oauth2_apps_for_any_org from './api/oauth2/list_oauth2_apps_for_any_org.js'
+import list_oauth2_apps_for_any_user from './api/oauth2/list_oauth2_apps_for_any_user.js'
 import list_org_oauth2_apps from './api/oauth2/list_org_oauth2_apps.js'
 import list_user_oauth2_apps from './api/oauth2/list_user_oauth2_apps.js'
 import oauth2_provider_callback from './api/oauth2/oauth2_provider_callback.js'
@@ -163,6 +165,8 @@ import oauth2_token_revoke from './api/oauth2/oauth2_token_revoke.js'
 import update_org_oauth2_app from './api/oauth2/update_org_oauth2_app.js'
 import update_user_oauth2_app from './api/oauth2/update_user_oauth2_app.js'
 import verify_oauth_account_linking from './api/oauth2/verify_oauth_account_linking.js'
+import { list_oauth2_apps_for_any_org_pager } from './api/oauth2/list_oauth2_apps_for_any_org.js'
+import { list_oauth2_apps_for_any_user_pager } from './api/oauth2/list_oauth2_apps_for_any_user.js'
 import { list_org_oauth2_apps_pager } from './api/oauth2/list_org_oauth2_apps.js'
 import { list_user_oauth2_apps_pager } from './api/oauth2/list_user_oauth2_apps.js'
 export const oauth2 = {
@@ -176,6 +180,10 @@ export const oauth2 = {
   device_auth_verify,
   get_org_oauth2_app,
   get_user_oauth2_app,
+  list_oauth2_apps_for_any_org,
+  list_oauth2_apps_for_any_org_pager,
+  list_oauth2_apps_for_any_user,
+  list_oauth2_apps_for_any_user_pager,
   list_org_oauth2_apps,
   list_org_oauth2_apps_pager,
   list_user_oauth2_apps,
