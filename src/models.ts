@@ -3428,6 +3428,7 @@ export type Method =
   | 'EXTENSION'
 
 export type MlCopilotClientMessage =
+  | { type: 'ping' }
   | { headers: { [key: string]: string }; type: 'headers' }
   | {
       /** The user can send additional files like images or PDFs to provide more context. */
@@ -3500,6 +3501,7 @@ export interface MlCopilotFile {
 export type MlCopilotMode = 'fast' | 'thoughtful'
 
 export type MlCopilotServerMessage =
+  | { pong: Record<string, unknown> }
   | {
       session_data: {
         /** The API call id associated with this websocket session. */
