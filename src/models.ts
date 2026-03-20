@@ -3000,6 +3000,15 @@ export interface Invoice {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
+   *   "description": "Total amount refunded across all captured charges linked to this invoice."
+   * }
+   */
+  amount_refunded?: number
+  /**
+   * {
+   *   "title": "double",
+   *   "default": 0,
+   *   "format": "money-usd",
    *   "description": "The amount remaining, in USD, that is due."
    * }
    */
@@ -3073,6 +3082,13 @@ export interface Invoice {
   pdf?: string
   /** This is the transaction number that appears on email receipts sent for this invoice. */
   receipt_number?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Refund summary for the invoice's payments, when any refunds have posted."
+   * }
+   */
+  refund_status?: InvoiceRefundStatus
   /** Extra information about an invoice for the customer's credit card statement. */
   statement_descriptor?: string
   /**
@@ -3151,6 +3167,8 @@ export interface InvoiceLineItem {
   invoice_item?: string
   metadata?: { [key: string]: string }
 }
+
+export type InvoiceRefundStatus = 'partially_refunded' | 'refunded'
 
 export type InvoiceStatus =
   | 'draft'
@@ -10825,6 +10843,7 @@ export interface Models {
   InputFormat3d: InputFormat3d
   Invoice: Invoice
   InvoiceLineItem: InvoiceLineItem
+  InvoiceRefundStatus: InvoiceRefundStatus
   InvoiceStatus: InvoiceStatus
   IpAddrInfo: IpAddrInfo
   KclCodeCompletionParams: KclCodeCompletionParams

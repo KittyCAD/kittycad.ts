@@ -657,6 +657,7 @@ export type {
   InputFormat3d,
   Invoice,
   InvoiceLineItem,
+  InvoiceRefundStatus,
   InvoiceStatus,
   IpAddrInfo,
   KclCodeCompletionParams,
