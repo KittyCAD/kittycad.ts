@@ -3633,6 +3633,7 @@ export type MlCopilotSupportedModels =
 export type MlCopilotSystemCommand =
   | 'new'
   | 'bye'
+  | 'continue'
   | 'interrupt'
   | 'cancel'
   | 'answer_now'
