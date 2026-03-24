@@ -7366,6 +7366,24 @@ export interface OrgDatasetFileConversionDetails {
    * }
    */
   importer_version?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Plain-text contents of the admin-provided manual KCL override, when available."
+   * }
+   */
+  manual_kcl_override?: string
+  /** Indicates whether a persisted manual KCL override will be used instead of regenerating KCL automatically. */
+  manual_kcl_override_active: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Timestamp when the manual KCL override was last updated."
+   * }
+   */
+  manual_kcl_override_updated_at?: string
   metadata: unknown
   /** Snapshot images for the original source model. */
   original_snapshot_images: OrgDatasetSnapshotImage[]
@@ -7424,6 +7442,7 @@ export type OrgDatasetFileConversionPhase =
   | 'zoo_generated_original_metadata'
   | 'snapshot_original'
   | 'user_provided_metadata'
+  | 'manual_kcl_override'
   | 'convert_raw_kcl'
   | 'zoo_generated_raw_kcl_metadata'
   | 'snapshot_raw_kcl'
@@ -7475,6 +7494,17 @@ export interface OrgDatasetFileConversionSummary {
    * }
    */
   importer_version?: string
+  /** Indicates whether a persisted manual KCL override will be used instead of regenerating KCL automatically. */
+  manual_kcl_override_active: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Timestamp when the manual KCL override was last updated."
+   * }
+   */
+  manual_kcl_override_updated_at?: string
   metadata: unknown
   /** Current step in the conversion pipeline. */
   phase: OrgDatasetFileConversionPhase
