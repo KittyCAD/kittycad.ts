@@ -3449,6 +3449,20 @@ export type MlCopilotClientMessage =
   | { type: 'ping' }
   | { headers: { [key: string]: string }; type: 'headers' }
   | {
+      current_files?: {
+        [key: string]: /**
+         * {
+         *   "format": "uint8",
+         *   "minimum": 0
+         * }
+         */
+        number[]
+      }
+      /** nullable:true, description:The project name, if any. */
+      project_name?: string
+      type: 'project_context'
+    }
+  | {
       /** The user can send additional files like images or PDFs to provide more context. */
       additional_files?: MlCopilotFile[]
       /** The content of the user's message. */
@@ -7519,7 +7533,7 @@ export interface OrgDatasetSemanticSearchMatch {
    * }
    */
   chunk_index: number
-  /** Chunk text used for matching. */
+  /** Full converted output text for the matched conversion, when available. */
   content: string
   /** Matching conversion id. */
   conversion_id: Uuid
