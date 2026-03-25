@@ -3331,6 +3331,20 @@ export interface KclModel {
   code: string
 }
 
+export type KclProjectFileRole =
+  | 'project_toml'
+  | 'project_file'
+  | 'preview_image'
+
+export type KclProjectPreviewStatus = 'pending' | 'ready' | 'failed'
+
+export type KclProjectPublicationStatus =
+  | 'draft'
+  | 'pending_review'
+  | 'published'
+  | 'rejected'
+  | 'deleted'
+
 export type LengthUnit = number
 
 export type LenientUrl =
@@ -8138,14 +8152,142 @@ export interface PrivacySettings {
   can_train_on_data: boolean
 }
 
+export interface ProjectCategoryResponse {
+  /** Optional helper text shown to users choosing a category. */
+  description: string
+  /** Human-readable category name. */
+  display_name: string
+  /** Unique category identifier. */
+  id: Uuid
+  /** Stable URL-safe category slug. */
+  slug: string
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Sort order used when presenting categories in clients."
+   * }
+   */
+  sort_order: number
+}
+
 export interface ProjectEntityToPlane {
   /** Projected points. */
   projected_points: Point3d[]
 }
 
+export interface ProjectFileResponse {
+  /** format:int64, description:File size in bytes. */
+  byte_size: number
+  /** Stored MIME type. */
+  content_type: string
+  /** title:DateTime, format:date-time, description:File creation timestamp. */
+  created_at: string
+  /** Logical role within the project. */
+  file_role: KclProjectFileRole
+  /** Unique file identifier. */
+  id: Uuid
+  /** Relative path as seen inside the project. */
+  relative_path: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Hex-encoded SHA-256 of the stored contents, when known."
+   * }
+   */
+  sha256?: string
+  /** format:int64, description:Stable ordering hint. */
+  sort_order: number
+  /** title:DateTime, format:date-time, description:File last update timestamp. */
+  updated_at: string
+}
+
 export interface ProjectPointsToPlane {
   /** Projected points. */
   projected_points: Point3d[]
+}
+
+export interface ProjectResponse {
+  /** Selected category identifiers associated with the project. */
+  category_ids: Uuid[]
+  /** title:DateTime, format:date-time, description:When the project row was created. */
+  created_at: string
+  /** User-facing project description. */
+  description: string
+  /** Relative path to the entrypoint KCL file. */
+  entrypoint_path: string
+  /** Project files currently stored for the owner-visible draft. */
+  files: ProjectFileResponse[]
+  /** Unique project identifier. */
+  id: Uuid
+  /** Current preview generation state. */
+  preview_status: KclProjectPreviewStatus
+  /** nullable:true, format:int32, description:Height of the primary preview image in pixels. */
+  primary_preview_height?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Relative path to the primary preview image, when one exists."
+   * }
+   */
+  primary_preview_path?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Renderer or asset version tag for the primary preview image."
+   * }
+   */
+  primary_preview_version?: string
+  /** nullable:true, format:int32, description:Width of the primary preview image in pixels. */
+  primary_preview_width?: number
+  /** Relative path to the project's manifest file. */
+  project_toml_path: string
+  /** Current publication workflow state. */
+  publication_status: KclProjectPublicationStatus
+  /** User-facing project title. */
+  title: string
+  /** title:DateTime, format:date-time, description:When the project row was last updated. */
+  updated_at: string
+}
+
+export interface ProjectSummaryResponse {
+  /** Selected category identifiers associated with the project. */
+  category_ids: Uuid[]
+  /** title:DateTime, format:date-time, description:When the project row was created. */
+  created_at: string
+  /** User-facing project description. */
+  description: string
+  /** Relative path to the entrypoint KCL file. */
+  entrypoint_path: string
+  /** Unique project identifier. */
+  id: Uuid
+  /** Current preview generation state. */
+  preview_status: KclProjectPreviewStatus
+  /** nullable:true, format:int32, description:Height of the primary preview image in pixels. */
+  primary_preview_height?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Relative path to the primary preview image, when one exists."
+   * }
+   */
+  primary_preview_path?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Renderer or asset version tag for the primary preview image."
+   * }
+   */
+  primary_preview_version?: string
+  /** nullable:true, format:int32, description:Width of the primary preview image in pixels. */
+  primary_preview_width?: number
+  /** Relative path to the project's manifest file. */
+  project_toml_path: string
+  /** Current publication workflow state. */
+  publication_status: KclProjectPublicationStatus
+  /** User-facing project title. */
+  title: string
+  /** title:DateTime, format:date-time, description:When the project row was last updated. */
+  updated_at: string
 }
 
 export interface PublicEmailMarketingConsentRequest {
@@ -10896,6 +11038,9 @@ export interface Models {
   KclCodeCompletionRequest: KclCodeCompletionRequest
   KclCodeCompletionResponse: KclCodeCompletionResponse
   KclModel: KclModel
+  KclProjectFileRole: KclProjectFileRole
+  KclProjectPreviewStatus: KclProjectPreviewStatus
+  KclProjectPublicationStatus: KclProjectPublicationStatus
   LengthUnit: LengthUnit
   LenientUrl: LenientUrl
   Loft: Loft
@@ -10996,8 +11141,12 @@ export interface Models {
   PostEffectType: PostEffectType
   PriceUpsertRequest: PriceUpsertRequest
   PrivacySettings: PrivacySettings
+  ProjectCategoryResponse: ProjectCategoryResponse
   ProjectEntityToPlane: ProjectEntityToPlane
+  ProjectFileResponse: ProjectFileResponse
   ProjectPointsToPlane: ProjectPointsToPlane
+  ProjectResponse: ProjectResponse
+  ProjectSummaryResponse: ProjectSummaryResponse
   PublicEmailMarketingConsentRequest: PublicEmailMarketingConsentRequest
   RawFile: RawFile
   ReasoningMessage: ReasoningMessage
