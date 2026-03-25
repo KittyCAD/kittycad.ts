@@ -10222,6 +10222,7 @@ export interface UserCadInfoAdminDetails {
 }
 
 export type UserFeature =
+  | 'aquarium'
   | 'proprietary_to_kcl_conversion_beta'
   | 'new_sketch_mode'
 
