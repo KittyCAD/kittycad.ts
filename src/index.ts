@@ -396,6 +396,7 @@ export const unit = {
   get_volume_unit_conversion,
 }
 
+import create_user_project from './api/users/create_user_project.js'
 import create_user_shortlink from './api/users/create_user_shortlink.js'
 import delete_user_self from './api/users/delete_user_self.js'
 import delete_user_shortlink from './api/users/delete_user_shortlink.js'
@@ -404,9 +405,12 @@ import get_session_for_user from './api/users/get_session_for_user.js'
 import get_user from './api/users/get_user.js'
 import get_user_extended from './api/users/get_user_extended.js'
 import get_user_privacy_settings from './api/users/get_user_privacy_settings.js'
+import get_user_project from './api/users/get_user_project.js'
 import get_user_self from './api/users/get_user_self.js'
 import get_user_self_extended from './api/users/get_user_self_extended.js'
 import get_user_shortlinks from './api/users/get_user_shortlinks.js'
+import list_project_categories from './api/users/list_project_categories.js'
+import list_user_projects from './api/users/list_user_projects.js'
 import list_users from './api/users/list_users.js'
 import list_users_extended from './api/users/list_users_extended.js'
 import put_public_email_marketing_consent_request from './api/users/put_public_email_marketing_consent_request.js'
@@ -415,6 +419,7 @@ import put_public_support_form from './api/users/put_public_support_form.js'
 import put_user_cad_user_info_form from './api/users/put_user_cad_user_info_form.js'
 import update_subscription_for_user from './api/users/update_subscription_for_user.js'
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
+import update_user_project from './api/users/update_user_project.js'
 import update_user_self from './api/users/update_user_self.js'
 import update_user_shortlink from './api/users/update_user_shortlink.js'
 import user_admin_details_get from './api/users/user_admin_details_get.js'
@@ -427,6 +432,7 @@ import { get_user_shortlinks_pager } from './api/users/get_user_shortlinks.js'
 import { list_users_extended_pager } from './api/users/list_users_extended.js'
 import { list_users_pager } from './api/users/list_users.js'
 export const users = {
+  create_user_project,
   create_user_shortlink,
   delete_user_self,
   delete_user_shortlink,
@@ -435,10 +441,13 @@ export const users = {
   get_user,
   get_user_extended,
   get_user_privacy_settings,
+  get_user_project,
   get_user_self,
   get_user_self_extended,
   get_user_shortlinks,
   get_user_shortlinks_pager,
+  list_project_categories,
+  list_user_projects,
   list_users,
   list_users_extended,
   list_users_extended_pager,
@@ -449,6 +458,7 @@ export const users = {
   put_user_cad_user_info_form,
   update_subscription_for_user,
   update_user_privacy_settings,
+  update_user_project,
   update_user_self,
   update_user_shortlink,
   user_admin_details_get,
@@ -670,6 +680,9 @@ export type {
   KclCodeCompletionRequest,
   KclCodeCompletionResponse,
   KclModel,
+  KclProjectFileRole,
+  KclProjectPreviewStatus,
+  KclProjectPublicationStatus,
   LengthUnit,
   LenientUrl,
   Loft,
@@ -770,8 +783,12 @@ export type {
   PostEffectType,
   PriceUpsertRequest,
   PrivacySettings,
+  ProjectCategoryResponse,
   ProjectEntityToPlane,
+  ProjectFileResponse,
   ProjectPointsToPlane,
+  ProjectResponse,
+  ProjectSummaryResponse,
   PublicEmailMarketingConsentRequest,
   RawFile,
   ReasoningMessage,
