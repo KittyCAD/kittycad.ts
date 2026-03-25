@@ -1393,14 +1393,6 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1debug~1uploads/post/x-typescript",
-    "value": {
-      "example": "import { meta, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await meta.create_debug_uploads({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
     "path": "/paths/~1community~1sso/get/x-typescript",
     "value": {
       "example": "import { meta, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await meta.community_sso({\n        sig: 'string',\n        sso: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",

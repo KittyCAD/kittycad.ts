@@ -78,7 +78,6 @@ export const file = {
 }
 
 import community_sso from './api/meta/community_sso.js'
-import create_debug_uploads from './api/meta/create_debug_uploads.js'
 import create_event from './api/meta/create_event.js'
 import get_ipinfo from './api/meta/get_ipinfo.js'
 import get_pricing_subscriptions from './api/meta/get_pricing_subscriptions.js'
@@ -87,7 +86,6 @@ import internal_get_api_token_for_discord_user from './api/meta/internal_get_api
 import ping from './api/meta/ping.js'
 export const meta = {
   community_sso,
-  create_debug_uploads,
   create_event,
   get_ipinfo,
   get_pricing_subscriptions,
