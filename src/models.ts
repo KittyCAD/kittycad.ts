@@ -2331,6 +2331,13 @@ export interface ExtendedUser {
   stripe_id?: string
   /** title:DateTime, format:date-time, description:The date and time the user was last updated. */
   updated_at: string
+  /**
+   * {
+   *   "default": "",
+   *   "description": "Public username/handle for community-facing features."
+   * }
+   */
+  username?: string
 }
 
 export interface ExtendedUserResultsPage {
@@ -3339,6 +3346,7 @@ export type KclProjectFileRole =
 export type KclProjectPreviewStatus = 'pending' | 'ready' | 'failed'
 
 export type KclProjectPublicationStatus =
+  | 'private'
   | 'draft'
   | 'pending_review'
   | 'published'
@@ -10495,6 +10503,13 @@ export interface UserResponse {
   phone?: string
   /** title:DateTime, format:date-time, description:The date and time the user was last updated. */
   updated_at: string
+  /**
+   * {
+   *   "default": "",
+   *   "description": "Public username/handle for community-facing features."
+   * }
+   */
+  username?: string
 }
 
 export interface UserResponseResultsPage {

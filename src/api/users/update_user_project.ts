@@ -13,7 +13,7 @@ interface UpdateUserProjectInput {
 type UpdateUserProjectReturn = ProjectResponse
 
 /**
- * Replace one of the authenticated user's draft projects.
+ * Replace one of the authenticated user's projects.
  *
  * Tags: users
  *
