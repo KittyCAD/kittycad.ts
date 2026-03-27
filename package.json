@@ -73,7 +73,7 @@
     "build:js": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly",
     "build": "rimraf dist && npm run build:types && npm run build:js",
-    "gen": "node --loader ts-node/esm ./gen/modelsGen.ts && npm run fmt",
+    "gen": "rimraf build/gen && tsc --outDir build/gen --module NodeNext --moduleResolution NodeNext --target ES2022 --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck gen/modelsGen.ts gen/apiGen.ts gen/expectedToFail.ts && node ./build/gen/modelsGen.js && npm run fmt",
     "test": "vitest",
     "tsc": "tsc",
     "fmt": "biome format --write ."

@@ -56,7 +56,7 @@ export const apps = {
 import ExecutorTerm from './api/executor/create_executor_term.js'
 import create_file_execution from './api/executor/create_file_execution.js'
 export const executor = {
-  create_executor_term: (params) => new ExecutorTerm(params),
+  create_executor_term: ExecutorTerm,
   create_file_execution,
 }
 
@@ -134,15 +134,13 @@ export const ml = {
   list_org_datasets_for_model,
   list_text_to_cad_parts_for_user,
   list_text_to_cad_parts_for_user_pager,
-  ml_copilot_ws: (params) => new MlCopilotWs(params),
-  ml_reasoning_ws: (params) => new MlReasoningWs(params),
+  ml_copilot_ws: MlCopilotWs,
+  ml_reasoning_ws: MlReasoningWs,
   update_custom_model,
 }
 
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws.js'
-export const modeling = {
-  modeling_commands_ws: (params) => new ModelingCommandsWs(params),
-}
+export const modeling = { modeling_commands_ws: ModelingCommandsWs }
 
 import device_access_token from './api/oauth2/device_access_token.js'
 import device_auth_confirm from './api/oauth2/device_auth_confirm.js'
@@ -906,3 +904,4 @@ export type {
 export { Client } from './client.js'
 export { ApiError } from './errors.js'
 export { Pager, createPager } from './pagination.js'
+export { WebRTC } from './webrtc.js'

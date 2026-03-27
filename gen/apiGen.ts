@@ -733,10 +733,10 @@ export default async function apiGen(lookup: Record<string, string>) {
           const paramsFields = inputTypes.join('; ')
           const wsUrlPathExpr = templateUrlOnlyPath.replaceAll(
             '${',
-            '${this.functionNameParams.'
+            '${functionNameParams.'
           )
           const wsQueryObjectExpr = `{ ${urlQueryParamNames
-            .map((n) => `${n}: this.functionNameParams.${n}`)
+            .map((n) => `${n}: functionNameParams.${n}`)
             .join(', ')} }`
           const ctx = {
             importsModels,
@@ -747,12 +747,21 @@ export default async function apiGen(lookup: Record<string, string>) {
             queryObjectExpr: wsQueryObjectExpr,
             wsReqType: wsReqType || 'unknown',
             wsRespType: wsRespType || 'unknown',
-            fnJsDoc: buildWsJsDoc(operation.specSection, {
+            fnClassJsDoc: buildWsClassJsDoc(operation.specSection, {
               operationId,
               params: params,
               paramTypeMap,
               paramRequiredMap,
             }),
+            fnUrlConstructorJsDoc: buildWsUrlConstructorJsDoc(
+              operation.specSection,
+              {
+                operationId,
+                params: params,
+                paramTypeMap,
+                paramRequiredMap,
+              }
+            ),
           }
           template = await render(templatePath, ctx)
         }
@@ -869,9 +878,7 @@ export default async function apiGen(lookup: Record<string, string>) {
           indexFile[safeTag].importsStr.push(
             `import ${className} from './api/${tag}/${operationId}.js';`
           )
-          indexFile[safeTag].exportsStr.push(
-            `${operationId}: (params) => new ${className}(params)`
-          )
+          indexFile[safeTag].exportsStr.push(`${operationId}: ${className}`)
         } else {
           indexFile[safeTag].importsStr.push(
             `import ${operationId} from './api/${tag}/${operationId}.js';`
@@ -929,6 +936,7 @@ export default async function apiGen(lookup: Record<string, string>) {
   indexFileString += `export { Client} from './client.js';\n`
   indexFileString += `export { ApiError } from './errors.js';\n`
   indexFileString += `export { Pager, createPager } from './pagination.js';\n`
+  indexFileString += `export { WebRTC } from './webrtc.js';\n`
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8')
 
   // Build a concise WS usage snippet if the spec has any WS endpoints
@@ -1133,7 +1141,7 @@ function buildOperationJsDoc(
   return wrapJsDoc(lines)
 }
 
-function buildWsJsDoc(
+function buildWsClassJsDoc(
   spec: OpenAPIV3.OperationObject,
   opts: {
     operationId: string
@@ -1151,6 +1159,22 @@ function buildWsJsDoc(
   if (tags) lines.push('', `Tags: ${tags}`)
   lines.push('', '@template Req WebSocket request message type')
   lines.push('@template Res WebSocket response message type')
+  return wrapJsDoc(lines)
+}
+
+function buildWsUrlConstructorJsDoc(
+  spec: OpenAPIV3.OperationObject,
+  opts: {
+    operationId: string
+    params: OpenAPIV3.ParameterObject[] | undefined
+    paramTypeMap: Record<string, string>
+    paramRequiredMap: Record<string, boolean>
+  }
+): string {
+  const lines: string[] = []
+  const summary = (spec.summary || '').trim()
+  const desc = (spec.description || '').trim()
+  const tags = (spec.tags || []).join(', ')
   lines.push('@param functionNameParams Parameters for URL templating and auth')
   lines.push(`@property {Client} [client] Optional client with auth token.`)
   for (const p of opts.params || []) {
