@@ -4,7 +4,10 @@ import apiGen from './apiGen.js'
 
 main().catch((e) => {
   // Provide a stack trace for easier debugging in CI and locally.
-  console.error('modelsGen error:', e instanceof Error ? e.stack : e)
+  console.error(
+    'modelsGen error:',
+    e instanceof Error ? e.stack : JSON.stringify(e, null, 2)
+  )
   process.exit(1)
 })
 
