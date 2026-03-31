@@ -10,7 +10,7 @@ async function example() {
       company_size: 'one_to_ten',
       how_did_you_find_us: 'google',
       how_did_you_find_us_other:
-        "Optional free-text value when 'Other' is selected.",
+        'Optional free-text value when "Other" is selected.',
       number_of_cad_users: 'The number of CAD users.',
     },
     client,

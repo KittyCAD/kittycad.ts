@@ -206,6 +206,7 @@ import delete_org_saml_idp from './api/orgs/delete_org_saml_idp.js'
 import download_org_dataset_conversion_original from './api/orgs/download_org_dataset_conversion_original.js'
 import download_org_dataset_successful_kcl_bulk from './api/orgs/download_org_dataset_successful_kcl_bulk.js'
 import get_any_org from './api/orgs/get_any_org.js'
+import get_billing_contract_for_any_org from './api/orgs/get_billing_contract_for_any_org.js'
 import get_org from './api/orgs/get_org.js'
 import get_org_dataset from './api/orgs/get_org_dataset.js'
 import get_org_dataset_conversion from './api/orgs/get_org_dataset_conversion.js'
@@ -231,6 +232,7 @@ import update_org_member from './api/orgs/update_org_member.js'
 import update_org_privacy_settings from './api/orgs/update_org_privacy_settings.js'
 import update_org_saml_idp from './api/orgs/update_org_saml_idp.js'
 import upload_org_dataset_files from './api/orgs/upload_org_dataset_files.js'
+import upsert_billing_contract_for_any_org from './api/orgs/upsert_billing_contract_for_any_org.js'
 import { get_org_shortlinks_pager } from './api/orgs/get_org_shortlinks.js'
 import { list_org_dataset_conversions_pager } from './api/orgs/list_org_dataset_conversions.js'
 import { list_org_datasets_pager } from './api/orgs/list_org_datasets.js'
@@ -249,6 +251,7 @@ export const orgs = {
   download_org_dataset_conversion_original,
   download_org_dataset_successful_kcl_bulk,
   get_any_org,
+  get_billing_contract_for_any_org,
   get_org,
   get_org_dataset,
   get_org_dataset_conversion,
@@ -280,6 +283,7 @@ export const orgs = {
   update_org_privacy_settings,
   update_org_saml_idp,
   upload_org_dataset_files,
+  upsert_billing_contract_for_any_org,
 }
 
 import create_org_subscription from './api/payments/create_org_subscription.js'
@@ -400,6 +404,7 @@ import create_user_project from './api/users/create_user_project.js'
 import create_user_shortlink from './api/users/create_user_shortlink.js'
 import delete_user_self from './api/users/delete_user_self.js'
 import delete_user_shortlink from './api/users/delete_user_shortlink.js'
+import download_user_project from './api/users/download_user_project.js'
 import get_oauth2_providers_for_user from './api/users/get_oauth2_providers_for_user.js'
 import get_session_for_user from './api/users/get_session_for_user.js'
 import get_user from './api/users/get_user.js'
@@ -417,6 +422,7 @@ import put_public_email_marketing_consent_request from './api/users/put_public_e
 import put_public_sales_form from './api/users/put_public_sales_form.js'
 import put_public_support_form from './api/users/put_public_support_form.js'
 import put_user_cad_user_info_form from './api/users/put_user_cad_user_info_form.js'
+import report_user_client_error from './api/users/report_user_client_error.js'
 import update_subscription_for_user from './api/users/update_subscription_for_user.js'
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
 import update_user_project from './api/users/update_user_project.js'
@@ -436,6 +442,7 @@ export const users = {
   create_user_shortlink,
   delete_user_self,
   delete_user_shortlink,
+  download_user_project,
   get_oauth2_providers_for_user,
   get_session_for_user,
   get_user,
@@ -456,6 +463,7 @@ export const users = {
   put_public_sales_form,
   put_public_support_form,
   put_user_cad_user_info_form,
+  report_user_client_error,
   update_subscription_for_user,
   update_user_privacy_settings,
   update_user_project,
@@ -509,7 +517,28 @@ export type {
   Axis,
   AxisDirectionPair,
   BatchResponse,
+  BillingCadence,
+  BillingCommitmentScope,
+  BillingContractItemInput,
+  BillingContractItemView,
+  BillingContractStatus,
+  BillingContractUpsert,
+  BillingContractView,
+  BillingExternalCustomerId,
   BillingInfo,
+  BillingItemCode,
+  BillingItemKind,
+  BillingPeriodIndex,
+  BillingPeriodInput,
+  BillingPeriodStatus,
+  BillingPeriodView,
+  BillingProvider,
+  BillingQuantity,
+  BillingRateTierInput,
+  BillingRateTierView,
+  BillingRolloverPolicy,
+  BillingUnit,
+  BillingUnitGranularity,
   BlendType,
   BlockReason,
   BodyType,
@@ -530,6 +559,8 @@ export type {
   CameraViewState,
   CardDetails,
   CenterOfMass,
+  ClientErrorReport,
+  ClientErrorReportAccepted,
   ClientMetrics,
   ClosePath,
   ClosestEdge,
@@ -867,6 +898,7 @@ export type {
   StorageProvider,
   StoreCouponParams,
   SubscriptionActionType,
+  SubscriptionBillingMode,
   SubscriptionPlanBillingModel,
   SubscriptionPlanPriceRecord,
   SubscriptionTierFeature,

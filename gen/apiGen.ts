@@ -12,6 +12,11 @@ import {
 } from './expectedToFail.js'
 const { observe, generate } = pkg
 
+function toExampleStringLiteral(value?: string): string {
+  const normalized = value?.replace(/\s+/g, ' ').trim() || 'string'
+  return JSON.stringify(normalized)
+}
+
 export default async function apiGen(lookup: Record<string, string>) {
   const spec: OpenAPIV3.Document = JSON.parse(
     await fsp.readFile('./spec.json', 'utf8')
@@ -300,9 +305,7 @@ export default async function apiGen(lookup: Record<string, string>) {
             ): string => {
               if ('type' in refSchema && !refSchema.properties) {
                 if (refSchema.type === 'string') {
-                  return `"${
-                    refSchema.description.replaceAll('"', ',') || 'string'
-                  }"`
+                  return toExampleStringLiteral(refSchema.description)
                 }
                 if (refSchema.type === 'number') {
                   return `7`
@@ -350,9 +353,7 @@ export default async function apiGen(lookup: Record<string, string>) {
                     return `${key}: '${value.enum[0]}'`
                   }
                   if (value.type === 'string') {
-                    return `${key}: "${
-                      (value.description || '').replaceAll('"', "'") || 'string'
-                    }"`
+                    return `${key}: ${toExampleStringLiteral(value.description)}`
                   }
                   if (value.type === 'number' || value.type === 'integer') {
                     return `${key}: 7`
@@ -602,16 +603,6 @@ export default async function apiGen(lookup: Record<string, string>) {
         // Render with Handlebars
         const render = async (path: string, ctx: Record<string, unknown>) => {
           const raw = await fsp.readFile(path, 'utf8')
-          // Debug: if rendering example templates, ensure we see the correct version
-          if (path.includes('example')) {
-            // eslint-disable-next-line no-console
-            console.log(
-              'rendering',
-              path,
-              'preview:',
-              raw.split('\n').slice(0, 3)
-            )
-          }
           const tpl = Handlebars.compile(raw)
           return tpl(ctx)
         }

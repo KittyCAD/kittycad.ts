@@ -19,7 +19,7 @@ type SetDefaultPaymentMethodForUserReturn = void
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {string} id The ID of the payment method. (path)
+ * @property {string} id Stripe payment method identifier. (path)
  * @returns {Promise<SetDefaultPaymentMethodForUserReturn>} successful operation, no content
  */
 export default async function set_default_payment_method_for_user({

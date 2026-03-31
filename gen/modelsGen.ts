@@ -55,7 +55,10 @@ async function main() {
       )
     }
     if (schema.type === 'number' || schema.type === 'integer') {
-      return addCommentInfo(schema, `${namePart} number`)
+      return addCommentInfo(
+        schema,
+        `${namePart} number ${!namePart && isRoot ? '/* use-type */' : ''}`
+      )
     }
     if (schema.type === 'object' && schema.properties) {
       const requiredSet = new Set((schema as any).required || [])

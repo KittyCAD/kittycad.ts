@@ -76,7 +76,7 @@
     "gen": "node --loader ts-node/esm ./gen/modelsGen.ts && npm run fmt",
     "test": "vitest",
     "tsc": "tsc",
-    "fmt": "biome format --write ."
+    "fmt": "biome format --write gen src __tests__ scripts *.js *.ts"
   },
   "author": "Kurt Hutten <kurt@zoo.dev>",
   "license": "MIT",

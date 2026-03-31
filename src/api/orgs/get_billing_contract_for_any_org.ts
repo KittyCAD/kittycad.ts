@@ -1,32 +1,34 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {} from '../../models.js'
+import { BillingContractView, Uuid } from '../../models.js'
 
-interface DeletePaymentMethodForOrgInput {
+interface GetBillingContractForAnyOrgInput {
   client?: Client
-  id: string
+  id: Uuid
 }
 
-type DeletePaymentMethodForOrgReturn = void
+type GetBillingContractForAnyOrgReturn = BillingContractView
 
 /**
- * Delete a payment method for your org.
+ * Get the billing contract for an organization.
  *
- * This endpoint requires authentication by an org admin. It deletes the specified payment method for the authenticated user's org.
+ * This endpoint requires Zoo admin authentication. It returns the active contract for the organization, or the latest draft when no active contract exists.
  *
- * Tags: payments, hidden
+ * Tags: orgs, hidden
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {string} id Stripe payment method identifier. (path)
- * @returns {Promise<DeletePaymentMethodForOrgReturn>} successful deletion
+ * @property {Uuid} id The organization ID. (path)
+ * @returns {Promise<GetBillingContractForAnyOrgReturn>} successful operation
+ *
+ * Possible return types: BillingContractView
  */
-export default async function delete_payment_method_for_org({
+export default async function get_billing_contract_for_any_org({
   client,
   id,
-}: DeletePaymentMethodForOrgInput): Promise<DeletePaymentMethodForOrgReturn> {
-  const path = `/org/payment/methods/${id}`
+}: GetBillingContractForAnyOrgInput): Promise<GetBillingContractForAnyOrgReturn> {
+  const path = `/orgs/${id}/billing/contract`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -38,11 +40,12 @@ export default async function delete_payment_method_for_org({
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   const fetchOptions: RequestInit = {
-    method: 'DELETE',
+    method: 'GET',
     headers,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  return undefined as DeletePaymentMethodForOrgReturn
+  const result = (await response.json()) as GetBillingContractForAnyOrgReturn
+  return result
 }
