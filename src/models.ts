@@ -1123,6 +1123,175 @@ export type BatchResponse =
       errors: ApiError[]
     }
 
+export type BillingCadence = 'annual' | 'quarterly' | 'monthly' | 'manual'
+
+export type BillingCommitmentScope = 'pooled' | 'per_item'
+
+export interface BillingContractItemInput {
+  /**
+   * {
+   *   "default": true,
+   *   "description": "Whether the item should participate in billing decisions immediately."
+   * }
+   */
+  active?: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Optional normalization rule used before rating usage."
+   * }
+   */
+  billing_unit_granularity?: BillingUnitGranularity
+  /** Canonical item code so later metering can find the right price row. */
+  code: BillingItemCode
+  /** Human-readable name shown in finance tooling. */
+  display_name: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Fixed fee charged for the item when the kind is `fixed_fee`."
+   * }
+   */
+  fixed_fee_amount?: number
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Whether usage from this item may burn down contract commitment."
+   * }
+   */
+  is_commitment_eligible?: boolean
+  /** Pricing model for this item. */
+  kind: BillingItemKind
+  /** default:[], description:Pricing tiers for usage-rated items. */
+  rate_tiers?: BillingRateTierInput[]
+  /** Base measurement unit for pricing and usage. */
+  unit: BillingUnit
+}
+
+export interface BillingContractItemView {
+  /** Whether the item is active. */
+  active: boolean
+  /** nullable:true, description:Optional normalization rule for usage. */
+  billing_unit_granularity?: BillingUnitGranularity
+  /** Canonical item code. */
+  code: BillingItemCode
+  /** Human-readable item name. */
+  display_name: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Fixed fee charged for the item when applicable."
+   * }
+   */
+  fixed_fee_amount?: number
+  /** Database identifier for the contract item row. */
+  id: Uuid
+  /** Whether this item can consume commitment. */
+  is_commitment_eligible: boolean
+  /** Pricing model for the item. */
+  kind: BillingItemKind
+  /** Usage tiers for the item. */
+  rate_tiers: BillingRateTierView[]
+  /** Measurement unit for the item. */
+  unit: BillingUnit
+}
+
+export type BillingContractStatus =
+  | 'draft'
+  | 'scheduled'
+  | 'active'
+  | 'closed'
+  | 'canceled'
+
+export interface BillingContractUpsert {
+  /** Operational cadence used for finance workflows. */
+  billing_cadence: BillingCadence
+  /** Whether commitment is shared or item-scoped. */
+  commitment_scope: BillingCommitmentScope
+  /** Contract currency shared by every money field in this definition. */
+  currency: Currency
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Free-form finance note for discounts or negotiated pricing."
+   * }
+   */
+  discount_description?: string
+  /** title:DateTime, format:date-time, description:Timestamp when the contract starts to apply. */
+  effective_at: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Provider-owned customer reference, when one already exists."
+   * }
+   */
+  external_customer_id?: BillingExternalCustomerId
+  /** Billable items attached to the contract. */
+  items: BillingContractItemInput[]
+  /** Human-readable contract label. */
+  name: string
+  /** nullable:true, description:Internal notes about the contract. */
+  notes?: string
+  /** Period schedule for the contract term. */
+  periods: BillingPeriodInput[]
+  /** Downstream provider responsible for collecting the invoice. */
+  provider: BillingProvider
+  /** What should happen to unused commitment when a period ends. */
+  rollover_policy: BillingRolloverPolicy
+  /** Lifecycle state for the new contract. */
+  status: BillingContractStatus
+  /** title:DateTime, format:date-time, description:Timestamp when the contract term ends. */
+  term_end_at: string
+}
+
+export interface BillingContractView {
+  /** Billing account identifier that owns the contract. */
+  account_id: Uuid
+  /** Operational cadence for finance workflows. */
+  billing_cadence: BillingCadence
+  /** Whether commitment is shared or item-scoped. */
+  commitment_scope: BillingCommitmentScope
+  /** Billing contract identifier. */
+  contract_id: Uuid
+  /** Currency shared by every money field in the contract. */
+  currency: Currency
+  /** nullable:true, description:Discount note associated with the contract. */
+  discount_description?: string
+  /** title:DateTime, format:date-time, description:Timestamp when the contract started applying. */
+  effective_at: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Provider-owned customer reference, when one exists."
+   * }
+   */
+  external_customer_id?: BillingExternalCustomerId
+  /** Billable items attached to the contract. */
+  items: BillingContractItemView[]
+  /** Human-readable contract label. */
+  name: string
+  /** nullable:true, description:Internal notes for the contract. */
+  notes?: string
+  /** Period schedule for the contract. */
+  periods: BillingPeriodView[]
+  /** Downstream invoice provider. */
+  provider: BillingProvider
+  /** What happens to unused commitment when a period ends. */
+  rollover_policy: BillingRolloverPolicy
+  /** Lifecycle state for the contract. */
+  status: BillingContractStatus
+  /** title:DateTime, format:date-time, description:Timestamp when the contract term ends. */
+  term_end_at: string
+}
+
+export type BillingExternalCustomerId =
+  /** Provider-owned customer reference for downstream invoicing systems. */
+  string
+
 export interface BillingInfo {
   /** nullable:true, description:The address of the customer. */
   address?: AddressDetails
@@ -1138,6 +1307,138 @@ export interface BillingInfo {
    */
   phone?: string
 }
+
+export type BillingItemCode =
+  | 'enterprise_support'
+  | 'fde'
+  | 'govcloud_management'
+  | 'file_ingestion_conversion'
+  | 'licensed_api_credits'
+
+export type BillingItemKind =
+  | 'fixed_fee'
+  | 'usage_tiered'
+  | 'usage_commitment_bucket'
+
+export type BillingPeriodIndex =
+  /**
+   * {
+   *   "format": "int32",
+   *   "description": "Non-negative index of a billing period inside a contract."
+   * }
+   */
+  number
+
+export interface BillingPeriodInput {
+  /** title:double, format:money-usd, description:New commitment funded for this period. */
+  commitment_amount: number
+  /** title:DateTime, format:date-time, description:Exclusive period end timestamp. */
+  period_end_at: string
+  /** Sequence index for the period inside the contract. */
+  period_index: BillingPeriodIndex
+  /** title:DateTime, format:date-time, description:Inclusive period start timestamp. */
+  period_start_at: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Commitment carried in from an earlier period."
+   * }
+   */
+  rollover_in_amount?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Commitment intentionally rolled out to a later period."
+   * }
+   */
+  rollover_out_amount?: number
+  /** nullable:true, description:Operational status for the period. */
+  status?: BillingPeriodStatus
+}
+
+export type BillingPeriodStatus = 'open' | 'closed'
+
+export interface BillingPeriodView {
+  /** title:double, format:money-usd, description:New commitment funded for this period. */
+  commitment_amount: number
+  /** Database identifier for the period row. */
+  id: Uuid
+  /** title:DateTime, format:date-time, description:Exclusive period end timestamp. */
+  period_end_at: string
+  /** Sequence index for the period inside the contract. */
+  period_index: BillingPeriodIndex
+  /** title:DateTime, format:date-time, description:Inclusive period start timestamp. */
+  period_start_at: string
+  /** title:double, format:money-usd, description:Commitment carried in from a previous period. */
+  rollover_in_amount: number
+  /**
+   * {
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Commitment intentionally rolled out to a later period."
+   * }
+   */
+  rollover_out_amount: number
+  /** Operational status for the period. */
+  status: BillingPeriodStatus
+}
+
+export type BillingProvider = 'stripe' | 'manual_invoice'
+
+export type BillingQuantity =
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Non-negative quantity used for tier boundaries and later usage counts."
+   * }
+   */
+  number
+
+export interface BillingRateTierInput {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Exclusive upper bound for the tier, or `None` when the tier is open-ended."
+   * }
+   */
+  tier_end_exclusive?: BillingQuantity
+  /** First billable quantity in this tier. */
+  tier_start_inclusive: BillingQuantity
+  /**
+   * {
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Price to charge for each unit that lands in this tier."
+   * }
+   */
+  unit_price: number
+}
+
+export interface BillingRateTierView {
+  /** Database identifier for the tier row. */
+  id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Exclusive upper bound for the tier, or `None` when the tier is open-ended."
+   * }
+   */
+  tier_end_exclusive?: BillingQuantity
+  /** First billable quantity in this tier. */
+  tier_start_inclusive: BillingQuantity
+  /** title:double, format:money-usd, description:Price charged for each unit in the tier. */
+  unit_price: number
+}
+
+export type BillingRolloverPolicy = 'none' | 'year1_to_year2_once'
+
+export type BillingUnit = 'file' | 'minute' | 'second' | 'year' | 'period'
+
+export type BillingUnitGranularity = 'minute' | 'second'
 
 export type BlendType = 'tangent'
 
@@ -1341,6 +1642,33 @@ export interface CenterOfMass {
   center_of_mass: Point3d
   /** The output unit for the center of mass. */
   output_unit: UnitLength
+}
+
+export interface ClientErrorReport {
+  /** Stable identifier for the client application reporting the error. */
+  client: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Optional application-defined error code or fingerprint."
+   * }
+   */
+  code?: string
+  /** nullable:true, description:Optional JavaScript/runtime error name. */
+  error_name?: string
+  /** Human-readable error message. */
+  message: string
+  /** Client release/version string. */
+  release: string
+  /** nullable:true, description:Optional route/path where the error occurred. */
+  route?: string
+  /** nullable:true, description:Optional stack trace or equivalent debug context. */
+  stack?: string
+}
+
+export interface ClientErrorReportAccepted {
+  /** Whether the report was accepted. */
+  accepted: boolean
 }
 
 export interface ClientMetrics {
@@ -1709,9 +2037,9 @@ export interface CreateShortlinkResponse {
 export type CreatedAtSortMode = 'created_at_ascending' | 'created_at_descending'
 
 export type Currency =
-  /** Currency is the list of supported currencies. Always lowercase.
+  /** A billing currency code.
 
-This comes from the Stripe API docs: For more details see <https://support.stripe.com/questions/which-currencies-does-stripe-support>. */
+This is intentionally billing-owned instead of Stripe-owned, so contract and manual invoice flows can use the same validated type without reaching back into a provider-specific crate. */
   string
 
 export interface CurveGetControlPoints {
@@ -1768,7 +2096,7 @@ export interface Customer {
   created_at: string
   /**
    * {
-   *   "default": "usd",
+   *   "default": "USD",
    *   "description": "Three-letter ISO code for the currency the customer can be charged in for recurring billing purposes."
    * }
    */
@@ -3049,8 +3377,8 @@ export interface Invoice {
   created_at: string
   /**
    * {
-   *   "default": "usd",
-   *   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
+   *   "default": "USD",
+   *   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html)."
    * }
    */
   currency?: Currency
@@ -3161,8 +3489,8 @@ export interface InvoiceLineItem {
   amount?: number
   /**
    * {
-   *   "default": "usd",
-   *   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase."
+   *   "default": "USD",
+   *   "description": "Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html)."
    * }
    */
   currency?: Currency
@@ -3830,6 +4158,13 @@ export interface ModelingAppSubscriptionTier {
    * }
    */
   annual_discount?: number
+  /**
+   * {
+   *   "default": "standard",
+   *   "description": "Indicates how billing collection is routed for this plan."
+   * }
+   */
+  billing_mode?: SubscriptionBillingMode
   /** A description of the tier. */
   description: string
   /** default:, description:The display name of the tier. */
@@ -8875,6 +9210,8 @@ export interface StoreCouponParams {
 
 export type SubscriptionActionType = 'payment_intent' | 'setup_intent'
 
+export type SubscriptionBillingMode = 'standard' | 'contract'
+
 export type SubscriptionPlanBillingModel = 'flat' | 'per_user'
 
 export interface SubscriptionPlanPriceRecord {
@@ -10727,6 +11064,13 @@ export type ZooProductSubscription = {
    * }
    */
   annual_discount?: number
+  /**
+   * {
+   *   "default": "standard",
+   *   "description": "Indicates how billing collection is routed for this plan."
+   * }
+   */
+  billing_mode?: SubscriptionBillingMode
   /** A description of the tier. */
   description: string
   /** default:, description:The display name of the tier. */
@@ -10882,7 +11226,28 @@ export interface Models {
   Axis: Axis
   AxisDirectionPair: AxisDirectionPair
   BatchResponse: BatchResponse
+  BillingCadence: BillingCadence
+  BillingCommitmentScope: BillingCommitmentScope
+  BillingContractItemInput: BillingContractItemInput
+  BillingContractItemView: BillingContractItemView
+  BillingContractStatus: BillingContractStatus
+  BillingContractUpsert: BillingContractUpsert
+  BillingContractView: BillingContractView
+  BillingExternalCustomerId: BillingExternalCustomerId
   BillingInfo: BillingInfo
+  BillingItemCode: BillingItemCode
+  BillingItemKind: BillingItemKind
+  BillingPeriodIndex: BillingPeriodIndex
+  BillingPeriodInput: BillingPeriodInput
+  BillingPeriodStatus: BillingPeriodStatus
+  BillingPeriodView: BillingPeriodView
+  BillingProvider: BillingProvider
+  BillingQuantity: BillingQuantity
+  BillingRateTierInput: BillingRateTierInput
+  BillingRateTierView: BillingRateTierView
+  BillingRolloverPolicy: BillingRolloverPolicy
+  BillingUnit: BillingUnit
+  BillingUnitGranularity: BillingUnitGranularity
   BlendType: BlendType
   BlockReason: BlockReason
   BodyType: BodyType
@@ -10903,6 +11268,8 @@ export interface Models {
   CameraViewState: CameraViewState
   CardDetails: CardDetails
   CenterOfMass: CenterOfMass
+  ClientErrorReport: ClientErrorReport
+  ClientErrorReportAccepted: ClientErrorReportAccepted
   ClientMetrics: ClientMetrics
   ClosePath: ClosePath
   ClosestEdge: ClosestEdge
@@ -11240,6 +11607,7 @@ export interface Models {
   StorageProvider: StorageProvider
   StoreCouponParams: StoreCouponParams
   SubscriptionActionType: SubscriptionActionType
+  SubscriptionBillingMode: SubscriptionBillingMode
   SubscriptionPlanBillingModel: SubscriptionPlanBillingModel
   SubscriptionPlanPriceRecord: SubscriptionPlanPriceRecord
   SubscriptionTierFeature: SubscriptionTierFeature

@@ -20,8 +20,8 @@ type DeletePaymentMethodForUserReturn = void
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {string} id The ID of the payment method. (path)
- * @property {boolean} force If true, force the deletion by bypassing our only-payment-method check. (query)
+ * @property {string} id Stripe payment method identifier. (path)
+ * @property {boolean} force Force deletion even when it is the last payment method on file. (query)
  * @returns {Promise<DeletePaymentMethodForUserReturn>} successful deletion
  */
 export default async function delete_payment_method_for_user({

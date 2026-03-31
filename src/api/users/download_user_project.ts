@@ -1,32 +1,30 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {} from '../../models.js'
+import { Uuid } from '../../models.js'
 
-interface DeletePaymentMethodForOrgInput {
+interface DownloadUserProjectInput {
   client?: Client
-  id: string
+  id: Uuid
 }
 
-type DeletePaymentMethodForOrgReturn = void
+type DownloadUserProjectReturn = unknown
 
 /**
- * Delete a payment method for your org.
+ * Download one of the authenticated user's projects as a tar archive.
  *
- * This endpoint requires authentication by an org admin. It deletes the specified payment method for the authenticated user's org.
- *
- * Tags: payments, hidden
+ * Tags: users
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {string} id Stripe payment method identifier. (path)
- * @returns {Promise<DeletePaymentMethodForOrgReturn>} successful deletion
+ * @property {Uuid} id The identifier. (path)
+ * @returns {Promise<DownloadUserProjectReturn>} Response payload.
  */
-export default async function delete_payment_method_for_org({
+export default async function download_user_project({
   client,
   id,
-}: DeletePaymentMethodForOrgInput): Promise<DeletePaymentMethodForOrgReturn> {
-  const path = `/org/payment/methods/${id}`
+}: DownloadUserProjectInput): Promise<DownloadUserProjectReturn> {
+  const path = `/user/projects/${id}/download`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -38,11 +36,12 @@ export default async function delete_payment_method_for_org({
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   const fetchOptions: RequestInit = {
-    method: 'DELETE',
+    method: 'GET',
     headers,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  return undefined as DeletePaymentMethodForOrgReturn
+  const result = (await response.json()) as DownloadUserProjectReturn
+  return result
 }

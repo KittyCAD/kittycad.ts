@@ -51,7 +51,7 @@
     "op": "add",
     "path": "/paths/~1website~1forms~1cad-user-info/put/x-typescript",
     "value": {
-      "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.put_user_cad_user_info_form({\n        body: {\n            cad_industry: 'mechanical_engineering',\n            cad_user_type: 'student_or_researcher',\n            company_size: 'one_to_ten',\n            how_did_you_find_us: 'google',\n            how_did_you_find_us_other:\n                \"Optional free-text value when 'Other' is selected.\",\n            number_of_cad_users: 'The number of CAD users.',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.put_user_cad_user_info_form({\n        body: {\n            cad_industry: 'mechanical_engineering',\n            cad_user_type: 'student_or_researcher',\n            company_size: 'one_to_ten',\n            how_did_you_find_us: 'google',\n            how_did_you_find_us_other:\n                'Optional free-text value when \"Other\" is selected.',\n            number_of_cad_users: 'The number of CAD users.',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -204,6 +204,14 @@
     "path": "/paths/~1user~1session~1{token}/get/x-typescript",
     "value": {
       "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.get_session_for_user({\n        token: 'ses-00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1projects~1{id}~1download/get/x-typescript",
+    "value": {
+      "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.download_user_project({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -473,6 +481,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1client-errors/post/x-typescript",
+    "value": {
+      "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.report_user_client_error({\n        body: {\n            client: 'Stable identifier for the client application reporting the error.',\n            code: 'Optional application-defined error code or fingerprint.',\n            error_name: 'Optional JavaScript/runtime error name.',\n            message: 'Human-readable error message.',\n            release: 'Client release/version string.',\n            route: 'Optional route/path where the error occurred.',\n            stack: 'Optional stack trace or equivalent debug context.',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1api-tokens~1{token}/delete/x-typescript",
     "value": {
       "example": "import { api_tokens, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await api_tokens.delete_api_token_for_user({\n        token: 'api-00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -716,6 +732,22 @@
     "path": "/paths/~1orgs~1{id}~1oauth2~1apps/get/x-typescript",
     "value": {
       "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.list_oauth2_apps_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = oauth2.list_oauth2_apps_for_any_org_pager({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1orgs~1{id}~1billing~1contract/put/x-typescript",
+    "value": {
+      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.upsert_billing_contract_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            billing_cadence: 'annual',\n            commitment_scope: 'pooled',\n            currency:\n                'A billing currency code. This is intentionally billing-owned instead of Stripe-owned, so contract and manual invoice flows can use the same validated type without reaching back into a provider-specific crate.',\n            discount_description:\n                'Free-form finance note for discounts or negotiated pricing.',\n            effective_at: 'Timestamp when the contract starts to apply.',\n            external_customer_id:\n                'Provider-owned customer reference for downstream invoicing systems.',\n            items: [],\n            name: 'Human-readable contract label.',\n            notes: 'Internal notes about the contract.',\n            periods: [],\n            provider: 'stripe',\n            rollover_policy: 'none',\n            status: 'draft',\n            term_end_at: 'Timestamp when the contract term ends.',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1orgs~1{id}~1billing~1contract/get/x-typescript",
+    "value": {
+      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.get_billing_contract_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1219,7 +1251,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1callback/post/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback_post({\n        provider: 'apple',\n        body: {\n            code: 'The authorization code.',\n            id_token:\n                'For Apple only, a JSON web token containing the user’s identity information.',\n            state: 'The state that we had passed in through the user consent URL.',\n            user: \"For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ 'name': { 'firstName': string, 'lastName': string }, 'email': string }`\",\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback_post({\n        provider: 'apple',\n        body: {\n            code: 'The authorization code.',\n            id_token:\n                'For Apple only, a JSON web token containing the user’s identity information.',\n            state: 'The state that we had passed in through the user consent URL.',\n            user: 'For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ \"name\": { \"firstName\": string, \"lastName\": string }, \"email\": string }`',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

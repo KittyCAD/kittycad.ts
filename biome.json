@@ -43,6 +43,6 @@
     }
   },
   "files": {
-    "ignore": ["**/*.json"]
+    "ignore": ["**/*.json", "**/node_modules", "**/dist"]
   }
 }
