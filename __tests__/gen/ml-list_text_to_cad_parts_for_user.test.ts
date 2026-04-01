@@ -7,9 +7,9 @@ async function example() {
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
-    conversation_id: '00000000-0000-0000-0000-000000000000',
     no_models: true,
     no_parts: true,
+    conversation_id: '00000000-0000-0000-0000-000000000000',
     client,
   })
   return response
@@ -21,9 +21,9 @@ export async function example_pager() {
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
-    conversation_id: '00000000-0000-0000-0000-000000000000',
     no_models: true,
     no_parts: true,
+    conversation_id: '00000000-0000-0000-0000-000000000000',
     client,
   })
   let total = 0

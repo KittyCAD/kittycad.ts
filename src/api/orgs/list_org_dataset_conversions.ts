@@ -12,10 +12,10 @@ import {
 interface ListOrgDatasetConversionsInput {
   client?: Client
   id: Uuid
-  filter?: string
   limit?: number
   page_token?: string
   sort_by?: ConversionSortMode
+  filter?: string
 }
 
 type ListOrgDatasetConversionsReturn =
@@ -31,10 +31,10 @@ type ListOrgDatasetConversionsReturn =
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
- * @property {string} filter Optional filter string for conversions (example: `status:success`). (query)
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {ConversionSortMode} sort_by (query)
+ * @property {string} filter Optional filter string for conversions (example: `status:success`). (query)
  * @returns {Promise<ListOrgDatasetConversionsReturn>} successful operation
  *
  * Possible return types: OrgDatasetFileConversionSummaryResultsPage
@@ -42,17 +42,17 @@ type ListOrgDatasetConversionsReturn =
 export default async function list_org_dataset_conversions({
   client,
   id,
-  filter,
   limit,
   page_token,
   sort_by,
+  filter,
 }: ListOrgDatasetConversionsInput): Promise<ListOrgDatasetConversionsReturn> {
   const path = `/org/datasets/${id}/conversions`
   const qs = buildQuery({
-    filter: filter,
     limit: limit,
     page_token: page_token,
     sort_by: sort_by,
+    filter: filter,
   })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable

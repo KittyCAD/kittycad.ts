@@ -4,8 +4,8 @@ const client = new Client()
 
 async function example() {
   const response = await orgs.retrigger_org_dataset_conversion({
-    conversion_id: '00000000-0000-0000-0000-000000000000',
     id: '00000000-0000-0000-0000-000000000000',
+    conversion_id: '00000000-0000-0000-0000-000000000000',
     client,
   })
   return response

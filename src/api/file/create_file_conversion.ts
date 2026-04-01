@@ -3,14 +3,14 @@ import { throwIfNotOk } from '../../errors.js'
 
 import {
   FileConversion,
-  FileExportFormat,
   FileImportFormat,
+  FileExportFormat,
 } from '../../models.js'
 
 interface CreateFileConversionInput {
   client?: Client
-  output_format: FileExportFormat
   src_format: FileImportFormat
+  output_format: FileExportFormat
   body: string
 }
 
@@ -31,8 +31,8 @@ type CreateFileConversionReturn = FileConversion
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {FileExportFormat} output_format The format the file should be converted to. (path)
  * @property {FileImportFormat} src_format The format of the file to convert. (path)
+ * @property {FileExportFormat} output_format The format the file should be converted to. (path)
  * @property {string} body Request body payload
  * @returns {Promise<CreateFileConversionReturn>} successful creation
  *
@@ -40,8 +40,8 @@ type CreateFileConversionReturn = FileConversion
  */
 export default async function create_file_conversion({
   client,
-  output_format,
   src_format,
+  output_format,
   body,
 }: CreateFileConversionInput): Promise<CreateFileConversionReturn> {
   const path = `/file/conversion/${src_format}/${output_format}`

@@ -6,8 +6,8 @@ import { OrgDatasetSemanticSearchMatch, Uuid } from '../../models.js'
 interface SearchOrgDatasetSemanticInput {
   client?: Client
   id: Uuid
-  limit?: number
   q: string
+  limit?: number
 }
 
 type SearchOrgDatasetSemanticReturn = OrgDatasetSemanticSearchMatch[]
@@ -22,10 +22,10 @@ type SearchOrgDatasetSemanticReturn = OrgDatasetSemanticSearchMatch[]
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
+ * @property {string} q Natural-language query text to embed and search. (query)
  * @property {number} limit Max number of matching chunks to return.
  *
  * Defaults to 10 and is capped at 100. (query)
- * @property {string} q Natural-language query text to embed and search. (query)
  * @returns {Promise<SearchOrgDatasetSemanticReturn>} successful operation
  *
  * Possible return types: OrgDatasetSemanticSearchMatch[]
@@ -33,11 +33,11 @@ type SearchOrgDatasetSemanticReturn = OrgDatasetSemanticSearchMatch[]
 export default async function search_org_dataset_semantic({
   client,
   id,
-  limit,
   q,
+  limit,
 }: SearchOrgDatasetSemanticInput): Promise<SearchOrgDatasetSemanticReturn> {
   const path = `/org/datasets/${id}/search/semantic`
-  const qs = buildQuery({ limit: limit, q: q })
+  const qs = buildQuery({ q: q, limit: limit })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

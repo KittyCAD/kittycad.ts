@@ -163,7 +163,7 @@
     "op": "add",
     "path": "/paths/~1user~1text-to-cad/get/x-typescript",
     "value": {
-      "example": "import { ml, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await ml.list_text_to_cad_parts_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n        no_parts: true,\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_text_to_cad_parts_for_user_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        no_models: true,\n        no_parts: true,\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { ml, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await ml.list_text_to_cad_parts_for_user({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        no_models: true,\n        no_parts: true,\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = ml.list_text_to_cad_parts_for_user_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        no_models: true,\n        no_parts: true,\n        conversation_id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1067,7 +1067,7 @@
     "op": "add",
     "path": "/paths/~1org~1datasets~1{id}~1search~1semantic/get/x-typescript",
     "value": {
-      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.search_org_dataset_semantic({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        q: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.search_org_dataset_semantic({\n        id: '00000000-0000-0000-0000-000000000000',\n        q: 'string',\n        limit: 7,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1091,7 +1091,7 @@
     "op": "add",
     "path": "/paths/~1org~1datasets~1{id}~1conversions~1{conversion_id}~1retrigger/post/x-typescript",
     "value": {
-      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.retrigger_org_dataset_conversion({\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.retrigger_org_dataset_conversion({\n        id: '00000000-0000-0000-0000-000000000000',\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1099,7 +1099,7 @@
     "op": "add",
     "path": "/paths/~1org~1datasets~1{id}~1conversions~1{conversion_id}~1original/get/x-typescript",
     "value": {
-      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.download_org_dataset_conversion_original({\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.download_org_dataset_conversion_original({\n        id: '00000000-0000-0000-0000-000000000000',\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1107,7 +1107,7 @@
     "op": "add",
     "path": "/paths/~1org~1datasets~1{id}~1conversions~1{conversion_id}/get/x-typescript",
     "value": {
-      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.get_org_dataset_conversion({\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.get_org_dataset_conversion({\n        id: '00000000-0000-0000-0000-000000000000',\n        conversion_id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1115,7 +1115,7 @@
     "op": "add",
     "path": "/paths/~1org~1datasets~1{id}~1conversions/get/x-typescript",
     "value": {
-      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.list_org_dataset_conversions({\n        id: '00000000-0000-0000-0000-000000000000',\n        filter: 'string',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = orgs.list_org_dataset_conversions_pager({\n        id: '00000000-0000-0000-0000-000000000000',\n        filter: 'string',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.list_org_dataset_conversions({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        filter: 'string',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = orgs.list_org_dataset_conversions_pager({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        filter: 'string',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1171,7 +1171,7 @@
     "op": "add",
     "path": "/paths/~1org~1dataset~1s3~1policies/get/x-typescript",
     "value": {
-      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.org_dataset_s3_policies({\n        role_arn: 'string',\n        uri: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.org_dataset_s3_policies({\n        uri: 'string',\n        role_arn: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1227,7 +1227,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1verify-account-linking/get/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.verify_oauth_account_linking({\n        callback_url: 'string',\n        token: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.verify_oauth_account_linking({\n        token: 'string',\n        callback_url: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1259,7 +1259,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1provider~1{provider}~1callback/get/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback({\n        provider: 'apple',\n        code: 'string',\n        id_token: 'string',\n        state: 'string',\n        user: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.oauth2_provider_callback({\n        provider: 'apple',\n        code: 'string',\n        state: 'string',\n        id_token: 'string',\n        user: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1267,7 +1267,7 @@
     "op": "add",
     "path": "/paths/~1oauth2~1device~1verify/get/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.device_auth_verify({\n        app_name: 'string',\n        user_code: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.device_auth_verify({\n        user_code: 'string',\n        app_name: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1395,7 +1395,7 @@
     "op": "add",
     "path": "/paths/~1file~1volume/post/x-typescript",
     "value": {
-      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_volume({\n        output_unit: 'ft3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_volume({\n        src_format: 'obj',\n        output_unit: 'ft3',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1403,7 +1403,7 @@
     "op": "add",
     "path": "/paths/~1file~1surface-area/post/x-typescript",
     "value": {
-      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_surface_area({\n        output_unit: 'dm2',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_surface_area({\n        src_format: 'obj',\n        output_unit: 'dm2',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1411,7 +1411,7 @@
     "op": "add",
     "path": "/paths/~1file~1mass/post/x-typescript",
     "value": {
-      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_mass({\n        material_density: 7,\n        material_density_unit: 'lb:ft3',\n        output_unit: 'kg',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_mass({\n        src_format: 'obj',\n        material_density: 7,\n        material_density_unit: 'lb:ft3',\n        output_unit: 'kg',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1427,7 +1427,7 @@
     "op": "add",
     "path": "/paths/~1file~1density/post/x-typescript",
     "value": {
-      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_density({\n        material_mass: 7,\n        material_mass_unit: 'g',\n        output_unit: 'kg:m3',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_density({\n        src_format: 'obj',\n        material_mass: 7,\n        material_mass_unit: 'g',\n        output_unit: 'kg:m3',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1435,7 +1435,7 @@
     "op": "add",
     "path": "/paths/~1file~1conversion~1{src_format}~1{output_format}/post/x-typescript",
     "value": {
-      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        output_format: 'stl',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_conversion({\n        src_format: 'obj',\n        output_format: 'stl',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1451,7 +1451,7 @@
     "op": "add",
     "path": "/paths/~1file~1center-of-mass/post/x-typescript",
     "value": {
-      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_center_of_mass({\n        output_unit: 'ft',\n        src_format: 'obj',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_center_of_mass({\n        src_format: 'obj',\n        output_unit: 'ft',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1467,7 +1467,7 @@
     "op": "add",
     "path": "/paths/~1community~1sso/get/x-typescript",
     "value": {
-      "example": "import { meta, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await meta.community_sso({\n        sig: 'string',\n        sso: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { meta, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await meta.community_sso({\n        sso: 'string',\n        sig: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

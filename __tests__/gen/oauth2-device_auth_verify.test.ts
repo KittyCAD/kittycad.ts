@@ -4,8 +4,8 @@ const client = new Client()
 
 async function example() {
   const response = await oauth2.device_auth_verify({
-    app_name: 'string',
     user_code: 'string',
+    app_name: 'string',
     client,
   })
   return response

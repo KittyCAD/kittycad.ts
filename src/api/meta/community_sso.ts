@@ -5,8 +5,8 @@ import {} from '../../models.js'
 
 interface CommunitySsoInput {
   client?: Client
-  sig: string
   sso: string
+  sig: string
 }
 
 type CommunitySsoReturn = unknown
@@ -18,17 +18,17 @@ type CommunitySsoReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {string} sig The signature for the given payload (query)
  * @property {string} sso The nonce and redirect URL sent to us by Discourse (query)
+ * @property {string} sig The signature for the given payload (query)
  * @returns {Promise<CommunitySsoReturn>} Temporary Redirect
  */
 export default async function community_sso({
   client,
-  sig,
   sso,
+  sig,
 }: CommunitySsoInput): Promise<CommunitySsoReturn> {
   const path = `/community/sso`
-  const qs = buildQuery({ sig: sig, sso: sso })
+  const qs = buildQuery({ sso: sso, sig: sig })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -4,8 +4,8 @@ const client = new Client()
 
 async function example() {
   const response = await meta.community_sso({
-    sig: 'string',
     sso: 'string',
+    sig: 'string',
     client,
   })
   return response

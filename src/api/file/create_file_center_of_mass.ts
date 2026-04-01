@@ -1,12 +1,12 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { FileCenterOfMass, UnitLength, FileImportFormat } from '../../models.js'
+import { FileCenterOfMass, FileImportFormat, UnitLength } from '../../models.js'
 
 interface CreateFileCenterOfMassInput {
   client?: Client
-  output_unit?: UnitLength
   src_format: FileImportFormat
+  output_unit?: UnitLength
   body: string
 }
 
@@ -29,8 +29,8 @@ type CreateFileCenterOfMassReturn = FileCenterOfMass
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {UnitLength} output_unit The output unit for the center of mass. (query)
  * @property {FileImportFormat} src_format The format of the file. (query)
+ * @property {UnitLength} output_unit The output unit for the center of mass. (query)
  * @property {string} body Request body payload
  * @returns {Promise<CreateFileCenterOfMassReturn>} successful creation
  *
@@ -38,12 +38,12 @@ type CreateFileCenterOfMassReturn = FileCenterOfMass
  */
 export default async function create_file_center_of_mass({
   client,
-  output_unit,
   src_format,
+  output_unit,
   body,
 }: CreateFileCenterOfMassInput): Promise<CreateFileCenterOfMassReturn> {
   const path = `/file/center-of-mass`
-  const qs = buildQuery({ output_unit: output_unit, src_format: src_format })
+  const qs = buildQuery({ src_format: src_format, output_unit: output_unit })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

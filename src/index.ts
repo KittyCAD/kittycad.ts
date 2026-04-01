@@ -888,6 +888,7 @@ export type {
   Solid3dGetOppositeEdge,
   Solid3dGetPrevAdjacentEdge,
   Solid3dJoin,
+  Solid3dMultiJoin,
   Solid3dShellFace,
   SourcePosition,
   SourceRange,

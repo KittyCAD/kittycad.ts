@@ -5,8 +5,8 @@ import {} from '../../models.js'
 
 interface DeviceAuthVerifyInput {
   client?: Client
-  app_name?: string
   user_code: string
+  app_name?: string
 }
 
 type DeviceAuthVerifyReturn = unknown
@@ -20,17 +20,17 @@ type DeviceAuthVerifyReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {string} app_name The originating app's name (query)
  * @property {string} user_code The user code. (query)
+ * @property {string} app_name The originating app's name (query)
  * @returns {Promise<DeviceAuthVerifyReturn>} Temporary Redirect
  */
 export default async function device_auth_verify({
   client,
-  app_name,
   user_code,
+  app_name,
 }: DeviceAuthVerifyInput): Promise<DeviceAuthVerifyReturn> {
   const path = `/oauth2/device/verify`
-  const qs = buildQuery({ app_name: app_name, user_code: user_code })
+  const qs = buildQuery({ user_code: user_code, app_name: app_name })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

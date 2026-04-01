@@ -1,12 +1,12 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { FileVolume, UnitVolume, FileImportFormat } from '../../models.js'
+import { FileVolume, FileImportFormat, UnitVolume } from '../../models.js'
 
 interface CreateFileVolumeInput {
   client?: Client
-  output_unit?: UnitVolume
   src_format: FileImportFormat
+  output_unit?: UnitVolume
   body: string
 }
 
@@ -29,8 +29,8 @@ type CreateFileVolumeReturn = FileVolume
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {UnitVolume} output_unit The output unit for the volume. (query)
  * @property {FileImportFormat} src_format The format of the file. (query)
+ * @property {UnitVolume} output_unit The output unit for the volume. (query)
  * @property {string} body Request body payload
  * @returns {Promise<CreateFileVolumeReturn>} successful creation
  *
@@ -38,12 +38,12 @@ type CreateFileVolumeReturn = FileVolume
  */
 export default async function create_file_volume({
   client,
-  output_unit,
   src_format,
+  output_unit,
   body,
 }: CreateFileVolumeInput): Promise<CreateFileVolumeReturn> {
   const path = `/file/volume`
-  const qs = buildQuery({ output_unit: output_unit, src_format: src_format })
+  const qs = buildQuery({ src_format: src_format, output_unit: output_unit })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other

@@ -5,8 +5,8 @@ const client = new Client()
 async function example() {
   const response = await orgs.search_org_dataset_semantic({
     id: '00000000-0000-0000-0000-000000000000',
-    limit: 7,
     q: 'string',
+    limit: 7,
     client,
   })
   return response

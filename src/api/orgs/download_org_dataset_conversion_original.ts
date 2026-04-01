@@ -5,8 +5,8 @@ import { Uuid } from '../../models.js'
 
 interface DownloadOrgDatasetConversionOriginalInput {
   client?: Client
-  conversion_id: Uuid
   id: Uuid
+  conversion_id: Uuid
 }
 
 type DownloadOrgDatasetConversionOriginalReturn = unknown
@@ -18,14 +18,14 @@ type DownloadOrgDatasetConversionOriginalReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} conversion_id Conversion identifier. (path)
  * @property {Uuid} id Dataset identifier. (path)
+ * @property {Uuid} conversion_id Conversion identifier. (path)
  * @returns {Promise<DownloadOrgDatasetConversionOriginalReturn>} Response payload.
  */
 export default async function download_org_dataset_conversion_original({
   client,
-  conversion_id,
   id,
+  conversion_id,
 }: DownloadOrgDatasetConversionOriginalInput): Promise<DownloadOrgDatasetConversionOriginalReturn> {
   const path = `/org/datasets/${id}/conversions/${conversion_id}/original`
   const qs = buildQuery({})

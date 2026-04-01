@@ -6,8 +6,8 @@ import { MlCopilotClientMessage, MlCopilotServerMessage } from '../../models.js'
 
 interface MlCopilotWsParams {
   client?: Client
-  conversation_id?: string
   replay?: boolean
+  conversation_id?: string
   pr?: number
 }
 
@@ -22,8 +22,8 @@ interface MlCopilotWsParams {
  * @template Res WebSocket response message type
  * @param functionNameParams Parameters for URL templating and auth
  * @property {Client} [client] Optional client with auth token.
- * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
  * @property {boolean} replay If `true`, emit MsgPack Replay for the specified conversation and continue. (query)
+ * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
  * @property {number} pr Optional Pull Request number to route traffic. (query)
  */
 export default class MlCopilotWs<
@@ -41,8 +41,8 @@ export default class MlCopilotWs<
   async connect(): Promise<this> {
     const path = `/ws/ml/copilot`
     const qs = buildQuery({
-      conversation_id: this.functionNameParams.conversation_id,
       replay: this.functionNameParams.replay,
+      conversation_id: this.functionNameParams.conversation_id,
       pr: this.functionNameParams.pr,
     })
     const url = path + qs

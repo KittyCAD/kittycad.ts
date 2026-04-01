@@ -5,8 +5,8 @@ const client = new Client()
 
 async function example() {
   const response = await file.create_file_volume({
-    output_unit: 'ft3',
     src_format: 'obj',
+    output_unit: 'ft3',
     body: await fsp.readFile('./example.obj', 'base64'),
     client,
   })

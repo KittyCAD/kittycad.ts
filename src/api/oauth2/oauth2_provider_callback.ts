@@ -7,8 +7,8 @@ interface Oauth2ProviderCallbackInput {
   client?: Client
   provider: AccountProvider
   code?: string
-  id_token?: string
   state?: string
+  id_token?: string
   user?: string
 }
 
@@ -23,8 +23,8 @@ type Oauth2ProviderCallbackReturn = unknown
  * @property {Client} [client] Optional client with auth token.
  * @property {AccountProvider} provider The provider. (path)
  * @property {string} code The authorization code. (query)
- * @property {string} id_token For Apple only, a JSON web token containing the user’s identity information. (query)
  * @property {string} state The state that we had passed in through the user consent URL. (query)
+ * @property {string} id_token For Apple only, a JSON web token containing the user’s identity information. (query)
  * @property {string} user For Apple only, a JSON string containing the data requested in the scope property. The returned data is in the following format: `{ "name": { "firstName": string, "lastName": string }, "email": string }` (query)
  * @returns {Promise<Oauth2ProviderCallbackReturn>} Temporary Redirect
  */
@@ -32,15 +32,15 @@ export default async function oauth2_provider_callback({
   client,
   provider,
   code,
-  id_token,
   state,
+  id_token,
   user,
 }: Oauth2ProviderCallbackInput): Promise<Oauth2ProviderCallbackReturn> {
   const path = `/oauth2/provider/${provider}/callback`
   const qs = buildQuery({
     code: code,
-    id_token: id_token,
     state: state,
+    id_token: id_token,
     user: user,
   })
   const url = path + qs

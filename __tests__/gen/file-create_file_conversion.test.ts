@@ -5,8 +5,8 @@ const client = new Client()
 
 async function example() {
   const response = await file.create_file_conversion({
-    output_format: 'stl',
     src_format: 'obj',
+    output_format: 'stl',
     body: await fsp.readFile('./example.obj', 'base64'),
     client,
   })
