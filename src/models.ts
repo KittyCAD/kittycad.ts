@@ -1997,9 +1997,27 @@ export interface CreateOrgDataset {
   source: OrgDatasetSource
 }
 
-export interface CreateRegion {} /* Empty object */
+export interface CreateRegion {
+  region_mapping: {
+    [key: string]: /**
+     * {
+     *   "format": "uuid"
+     * }
+     */
+    string
+  }
+}
 
-export interface CreateRegionFromQueryPoint {} /* Empty object */
+export interface CreateRegionFromQueryPoint {
+  region_mapping: {
+    [key: string]: /**
+     * {
+     *   "format": "uuid"
+     * }
+     */
+    string
+  }
+}
 
 export interface CreateShortlinkRequest {
   /**
@@ -4450,6 +4468,17 @@ export type ModelingCmd =
       type: 'solid3d_join'
     }
   | {
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      object_ids: string[]
+      /** The maximum acceptable surface gap computed between the joints. Must be positive (i.e. greater than zero). */
+      tolerance: LengthUnit
+      type: 'solid3d_multi_join'
+    }
+  | {
       /** default:tangent, description:The type of blend to use. */
       blend_type?: BlendType
       /** minItems:2, maxItems:2, description:The two surfaces that the blend will span between */
@@ -6089,6 +6118,15 @@ export type OkModelingCmdResponse =
        */
       data: Solid3dJoin
       type: 'solid3d_join'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Solid3dMultiJoin"
+       * }
+       */
+      data: Solid3dMultiJoin
+      type: 'solid3d_multi_join'
     }
   | {
       /**
@@ -8550,8 +8588,6 @@ export interface ProjectResponse {
   id: Uuid
   /** Current preview generation state. */
   preview_status: KclProjectPreviewStatus
-  /** nullable:true, format:int32, description:Height of the primary preview image in pixels. */
-  primary_preview_height?: number
   /**
    * {
    *   "nullable": true,
@@ -8559,15 +8595,6 @@ export interface ProjectResponse {
    * }
    */
   primary_preview_path?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Renderer or asset version tag for the primary preview image."
-   * }
-   */
-  primary_preview_version?: string
-  /** nullable:true, format:int32, description:Width of the primary preview image in pixels. */
-  primary_preview_width?: number
   /** Relative path to the project's manifest file. */
   project_toml_path: string
   /** Current publication workflow state. */
@@ -8591,8 +8618,6 @@ export interface ProjectSummaryResponse {
   id: Uuid
   /** Current preview generation state. */
   preview_status: KclProjectPreviewStatus
-  /** nullable:true, format:int32, description:Height of the primary preview image in pixels. */
-  primary_preview_height?: number
   /**
    * {
    *   "nullable": true,
@@ -8600,15 +8625,6 @@ export interface ProjectSummaryResponse {
    * }
    */
   primary_preview_path?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Renderer or asset version tag for the primary preview image."
-   * }
-   */
-  primary_preview_version?: string
-  /** nullable:true, format:int32, description:Width of the primary preview image in pixels. */
-  primary_preview_width?: number
   /** Relative path to the project's manifest file. */
   project_toml_path: string
   /** Current publication workflow state. */
@@ -9150,6 +9166,8 @@ export interface Solid3dGetPrevAdjacentEdge {
 }
 
 export interface Solid3dJoin {} /* Empty object */
+
+export interface Solid3dMultiJoin {} /* Empty object */
 
 export interface Solid3dShellFace {} /* Empty object */
 
@@ -11583,6 +11601,7 @@ export interface Models {
   Solid3dGetOppositeEdge: Solid3dGetOppositeEdge
   Solid3dGetPrevAdjacentEdge: Solid3dGetPrevAdjacentEdge
   Solid3dJoin: Solid3dJoin
+  Solid3dMultiJoin: Solid3dMultiJoin
   Solid3dShellFace: Solid3dShellFace
   SourcePosition: SourcePosition
   SourceRange: SourceRange

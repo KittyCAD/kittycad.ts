@@ -5,8 +5,8 @@ import { Uuid } from '../../models.js'
 
 interface RetriggerOrgDatasetConversionInput {
   client?: Client
-  conversion_id: Uuid
   id: Uuid
+  conversion_id: Uuid
 }
 
 type RetriggerOrgDatasetConversionReturn = void
@@ -18,14 +18,14 @@ type RetriggerOrgDatasetConversionReturn = void
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} conversion_id Conversion identifier. (path)
  * @property {Uuid} id Dataset identifier. (path)
+ * @property {Uuid} conversion_id Conversion identifier. (path)
  * @returns {Promise<RetriggerOrgDatasetConversionReturn>} resource updated
  */
 export default async function retrigger_org_dataset_conversion({
   client,
-  conversion_id,
   id,
+  conversion_id,
 }: RetriggerOrgDatasetConversionInput): Promise<RetriggerOrgDatasetConversionReturn> {
   const path = `/org/datasets/${id}/conversions/${conversion_id}/retrigger`
   const qs = buildQuery({})

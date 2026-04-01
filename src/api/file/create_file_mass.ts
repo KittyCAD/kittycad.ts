@@ -3,17 +3,17 @@ import { throwIfNotOk } from '../../errors.js'
 
 import {
   FileMass,
+  FileImportFormat,
   UnitDensity,
   UnitMass,
-  FileImportFormat,
 } from '../../models.js'
 
 interface CreateFileMassInput {
   client?: Client
+  src_format: FileImportFormat
   material_density: number
   material_density_unit?: UnitDensity
   output_unit?: UnitMass
-  src_format: FileImportFormat
   body: string
 }
 
@@ -36,10 +36,10 @@ type CreateFileMassReturn = FileMass
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {FileImportFormat} src_format The format of the file. (query)
  * @property {number} material_density The material density. (query)
  * @property {UnitDensity} material_density_unit The unit of the material density. (query)
  * @property {UnitMass} output_unit The output unit for the mass. (query)
- * @property {FileImportFormat} src_format The format of the file. (query)
  * @property {string} body Request body payload
  * @returns {Promise<CreateFileMassReturn>} successful creation
  *
@@ -47,18 +47,18 @@ type CreateFileMassReturn = FileMass
  */
 export default async function create_file_mass({
   client,
+  src_format,
   material_density,
   material_density_unit,
   output_unit,
-  src_format,
   body,
 }: CreateFileMassInput): Promise<CreateFileMassReturn> {
   const path = `/file/mass`
   const qs = buildQuery({
+    src_format: src_format,
     material_density: material_density,
     material_density_unit: material_density_unit,
     output_unit: output_unit,
-    src_format: src_format,
   })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable

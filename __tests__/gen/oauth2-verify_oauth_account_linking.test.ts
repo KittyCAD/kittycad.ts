@@ -4,8 +4,8 @@ const client = new Client()
 
 async function example() {
   const response = await oauth2.verify_oauth_account_linking({
-    callback_url: 'string',
     token: 'string',
+    callback_url: 'string',
     client,
   })
   return response

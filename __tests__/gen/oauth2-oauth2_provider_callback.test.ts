@@ -6,8 +6,8 @@ async function example() {
   const response = await oauth2.oauth2_provider_callback({
     provider: 'apple',
     code: 'string',
-    id_token: 'string',
     state: 'string',
+    id_token: 'string',
     user: 'string',
     client,
   })

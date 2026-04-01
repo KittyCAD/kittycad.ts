@@ -5,8 +5,8 @@ const client = new Client()
 
 async function example() {
   const response = await file.create_file_surface_area({
-    output_unit: 'dm2',
     src_format: 'obj',
+    output_unit: 'dm2',
     body: await fsp.readFile('./example.obj', 'base64'),
     client,
   })

@@ -5,8 +5,8 @@ const client = new Client()
 
 async function example() {
   const response = await file.create_file_center_of_mass({
-    output_unit: 'ft',
     src_format: 'obj',
+    output_unit: 'ft',
     body: await fsp.readFile('./example.obj', 'base64'),
     client,
   })

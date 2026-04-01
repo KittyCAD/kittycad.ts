@@ -5,8 +5,8 @@ import {} from '../../models.js'
 
 interface VerifyOauthAccountLinkingInput {
   client?: Client
-  callback_url?: string
   token: string
+  callback_url?: string
 }
 
 type VerifyOauthAccountLinkingReturn = unknown
@@ -20,17 +20,17 @@ type VerifyOauthAccountLinkingReturn = unknown
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {string} callback_url Optional callback URL to redirect to after verification (query)
  * @property {string} token The verification token from the email (query)
+ * @property {string} callback_url Optional callback URL to redirect to after verification (query)
  * @returns {Promise<VerifyOauthAccountLinkingReturn>} Temporary Redirect
  */
 export default async function verify_oauth_account_linking({
   client,
-  callback_url,
   token,
+  callback_url,
 }: VerifyOauthAccountLinkingInput): Promise<VerifyOauthAccountLinkingReturn> {
   const path = `/oauth2/verify-account-linking`
-  const qs = buildQuery({ callback_url: callback_url, token: token })
+  const qs = buildQuery({ token: token, callback_url: callback_url })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
