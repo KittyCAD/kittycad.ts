@@ -409,14 +409,7 @@ export interface ApiCallWithPrice {
   endpoint?: string
   /** The unique identifier for the API call. */
   id: Uuid
-  /**
-   * {
-   *   "title": "String",
-   *   "default": "",
-   *   "format": "ip",
-   *   "description": "The ip address of the origin."
-   * }
-   */
+  /** title:String, format:ip, description:The ip address of the origin. */
   ip_address?: string
   /** The HTTP method requested by the API call. */
   method: Method
@@ -3536,14 +3529,7 @@ export interface IpAddrInfo {
    * }
    */
   country_code3?: string
-  /**
-   * {
-   *   "title": "String",
-   *   "default": "",
-   *   "format": "ip",
-   *   "description": "IP address of the user."
-   * }
-   */
+  /** title:String, format:ip, description:IP address of the user. */
   ip?: string
   /**
    * {
