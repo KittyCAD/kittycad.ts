@@ -8640,6 +8640,28 @@ export interface PublicEmailMarketingConsentRequest {
   email: string
 }
 
+export interface PublicProjectOwnerResponse {
+  /** Community-facing username/handle. */
+  username: string
+}
+
+export interface PublicProjectResponse {
+  /** Selected public categories. */
+  categories: ProjectCategoryResponse[]
+  /** Public project description. */
+  description: string
+  /** Unique project identifier. */
+  id: Uuid
+  /** Public creator metadata. */
+  owner: PublicProjectOwnerResponse
+  /** nullable:true, description:Stable public thumbnail URL, when one exists. */
+  preview_url?: string
+  /** title:DateTime, format:date-time, description:When the project was published publicly. */
+  published_at: string
+  /** Public project title. */
+  title: string
+}
+
 export interface RawFile {
   /**
    * {
@@ -11534,6 +11556,8 @@ export interface Models {
   ProjectResponse: ProjectResponse
   ProjectSummaryResponse: ProjectSummaryResponse
   PublicEmailMarketingConsentRequest: PublicEmailMarketingConsentRequest
+  PublicProjectOwnerResponse: PublicProjectOwnerResponse
+  PublicProjectResponse: PublicProjectResponse
   RawFile: RawFile
   ReasoningMessage: ReasoningMessage
   ReconfigureStream: ReconfigureStream
