@@ -406,6 +406,7 @@ import delete_user_self from './api/users/delete_user_self.js'
 import delete_user_shortlink from './api/users/delete_user_shortlink.js'
 import download_user_project from './api/users/download_user_project.js'
 import get_oauth2_providers_for_user from './api/users/get_oauth2_providers_for_user.js'
+import get_public_project_thumbnail from './api/users/get_public_project_thumbnail.js'
 import get_session_for_user from './api/users/get_session_for_user.js'
 import get_user from './api/users/get_user.js'
 import get_user_extended from './api/users/get_user_extended.js'
@@ -415,9 +416,11 @@ import get_user_self from './api/users/get_user_self.js'
 import get_user_self_extended from './api/users/get_user_self_extended.js'
 import get_user_shortlinks from './api/users/get_user_shortlinks.js'
 import list_project_categories from './api/users/list_project_categories.js'
+import list_public_projects from './api/users/list_public_projects.js'
 import list_user_projects from './api/users/list_user_projects.js'
 import list_users from './api/users/list_users.js'
 import list_users_extended from './api/users/list_users_extended.js'
+import publish_user_project from './api/users/publish_user_project.js'
 import put_public_email_marketing_consent_request from './api/users/put_public_email_marketing_consent_request.js'
 import put_public_sales_form from './api/users/put_public_sales_form.js'
 import put_public_support_form from './api/users/put_public_support_form.js'
@@ -444,6 +447,7 @@ export const users = {
   delete_user_shortlink,
   download_user_project,
   get_oauth2_providers_for_user,
+  get_public_project_thumbnail,
   get_session_for_user,
   get_user,
   get_user_extended,
@@ -454,11 +458,13 @@ export const users = {
   get_user_shortlinks,
   get_user_shortlinks_pager,
   list_project_categories,
+  list_public_projects,
   list_user_projects,
   list_users,
   list_users_extended,
   list_users_extended_pager,
   list_users_pager,
+  publish_user_project,
   put_public_email_marketing_consent_request,
   put_public_sales_form,
   put_public_support_form,
@@ -821,6 +827,8 @@ export type {
   ProjectResponse,
   ProjectSummaryResponse,
   PublicEmailMarketingConsentRequest,
+  PublicProjectOwnerResponse,
+  PublicProjectResponse,
   RawFile,
   ReasoningMessage,
   ReconfigureStream,
