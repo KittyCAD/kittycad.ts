@@ -4180,13 +4180,6 @@ export interface ModelingAppSubscriptionTier {
   /**
    * {
    *   "default": false,
-   *   "description": "Indicates whether this plan uses custom-quoted pricing."
-   * }
-   */
-  is_custom_quote?: boolean
-  /**
-   * {
-   *   "default": false,
    *   "description": "Indicates whether the plan enables custom ML models."
    * }
    */
@@ -9287,7 +9280,7 @@ export type SubscriptionTierPrice =
       price: number
       type: 'per_user'
     }
-  | { type: 'enterprise' }
+  | { type: 'contract' }
 
 export type SubscriptionTierType =
   | { type: 'individual' }
@@ -11105,13 +11098,6 @@ export type ZooProductSubscription = {
   endpoints_included?: ApiEndpoint[]
   /** minItems:0, maxItems:15, description:Features that are included in the subscription. */
   features?: SubscriptionTierFeature[]
-  /**
-   * {
-   *   "default": false,
-   *   "description": "Indicates whether this plan uses custom-quoted pricing."
-   * }
-   */
-  is_custom_quote?: boolean
   /**
    * {
    *   "default": false,
