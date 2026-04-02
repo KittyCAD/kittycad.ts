@@ -1,6 +1,7 @@
 import { Client } from './client'
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws'
 import { OkWebSocketResponseData } from './models'
+import WorkerWebRTC from 'web-worker:./worker-webrtc.ts'
 
 enum PointerState {
   DOWN,
@@ -28,37 +29,45 @@ const pointerButtonToInteraction: Record<
   [PointerButton.RIGHT]: 'rotatetrackball',
 }
 
+type WorkerMessage = {
+  from: 'websocket',
+  payload: {
+    type: 'message',
+    data: unknown
+  }
+} | {
+  from: 'wasm',
+  payload: {
+    type: 'message',
+    data: unknown
+  }
+}
+
+type ZooClientArgs = { client: Client } & Parameters<
+  typeof ModelingCommandsWs.urlConstructFrom
+>
 export class WebRTC extends EventTarget {
-  private zooClient: Client
-  private zooModelingCommandsWs: WebSocket
-
+  private zooClientArgs: ZooClientArgs
+  
   private rtcPeerConnection: RTCPeerConnection
-  private pingIntervalId = setInterval(() => {
-    if (this.zooModelingCommandsWs.readyState !== WebSocket.OPEN) {
-      return
-    }
-    this.zooModelingCommandsWs.send(JSON.stringify({ type: 'ping' }))
-  }, 4000)
-
+  private workerWebRTC: Worker
+  
   public track?: RTCTrackEvent
   public channel?: RTCDataChannel
+  
+  public removeMouseEvents: (() => void) = () => {}
 
   constructor(
-    args: { client: Client } & Parameters<
-      typeof ModelingCommandsWs.urlConstructFrom
-    >
+    args: ZooClientArgs
   ) {
     super()
 
-    this.zooClient = args.client
-
-    this.zooModelingCommandsWs = new WebSocket(
-      ModelingCommandsWs.urlConstructFrom({
-        client: args.client,
-        webrtc: true,
-        ...args,
-      })
-    )
+    this.zooClientArgs = args
+    
+    // Initialization is NOT resource acquisition here. The purpose of early
+    // init is worker is available to hook up events to RTCPeerConnection events.
+    // Devs must still call .start()
+    this.workerWebRTC = new WorkerWebRTC()
 
     // Default topology for RTCPeerConnection
     this.rtcPeerConnection = new RTCPeerConnection({
@@ -73,7 +82,7 @@ export class WebRTC extends EventTarget {
     // Add a request for a data channel
     this.rtcPeerConnection.createDataChannel('unreliable_modeling_cmds')
 
-    this.ice(this.zooModelingCommandsWs)
+    this.ice()
 
     this.rtcPeerConnection.addEventListener(
       'track',
@@ -90,7 +99,9 @@ export class WebRTC extends EventTarget {
   }
 
   deconstructor() {
-    this.deice(this.zooModelingCommandsWs)
+    this.removeMouseEvents()
+  
+    this.deice()
 
     this.rtcPeerConnection.removeEventListener(
       'track',
@@ -104,8 +115,56 @@ export class WebRTC extends EventTarget {
       'connectionstatechange',
       this.webRTCOnConnectionStateChange.bind(this)
     )
-
-    clearInterval(this.pingIntervalId)
+  }
+  
+  start() {
+    this.workerWebRTC.postMessage({
+      to: 'worker',
+      payload: {
+        type: 'start',
+        data: [ this.zooClientArgs ]
+      }
+    })
+  }
+ 
+  // For regular wasm calls, for whatever reason devs need it for. 
+  // Alternatively they can load up a stand-alone wasm blob via
+  // @kittycad/kcl-wasm-lib.
+  wasm(funcName: string, ...args: unknown[]): Promise<unknown> {
+    return new Promise((resolve) => {
+      const onMessage = (ev: MessageEvent & WorkerMessage) => {
+        if (ev.from === 'wasm') {
+          this.workerWebRTC.removeEventListener('message', onMessage)
+          resolve(ev.payload.data)
+        }
+      }
+      
+      this.workerWebRTC.addEventListener('message', onMessage)
+      
+      this.workerWebRTC.postMessage({
+        to: 'wasm',
+        payload: {
+          type: funcName,
+          data: args ?? []
+        }
+      })
+    })      
+  }
+  
+  prepareToExecuteKcl(kclStr: string) {
+    return {
+      addEventListener: this.workerWebRTC.addEventListener.bind(this.workerWebRTC, 'message'),
+      remaddEventListener: this.workerWebRTC.removeEventListener.bind(this.workerWebRTC, 'message'),
+      start: () => {
+        this.workerWebRTC.postMessage({
+          to: 'wasm',
+          payload: {
+            type: 'execute',
+            data: [kclStr]
+          }
+        })
+      }
+    }
   }
 
   webRTCOnConnectionStateChange() {
@@ -130,13 +189,6 @@ export class WebRTC extends EventTarget {
     this.dispatchEvent(new Event('connected'))
   }
 
-  iceOnOpen(_ev: Event) {
-    ModelingCommandsWs.authenticate(
-      { client: this.zooClient },
-      this.zooModelingCommandsWs
-    )
-  }
-
   async iceOnIceServerInfo(
     msg: Extract<OkWebSocketResponseData, { type: 'ice_server_info' }>
   ) {
@@ -155,12 +207,17 @@ export class WebRTC extends EventTarget {
     // We will receive an sdp_answer saying what is compatible with the server.
     const rtcSessionDescription = await this.rtcPeerConnection.createOffer()
     await this.rtcPeerConnection.setLocalDescription(rtcSessionDescription)
-    this.zooModelingCommandsWs.send(
-      JSON.stringify({
-        type: 'sdp_offer',
-        offer: rtcSessionDescription,
-      })
-    )
+    
+    this.workerWebRTC.postMessage({
+      to: 'websocket',
+      payload: {
+        type: 'send',
+        data: [JSON.stringify({
+          type: 'sdp_offer',
+          offer: rtcSessionDescription,
+        })]
+      }
+    })
   }
 
   async iceOnSdpAnswer(
@@ -186,21 +243,25 @@ export class WebRTC extends EventTarget {
     // No more candidates, ICE gathering complete.
     if (ev.candidate === null) return
 
-    this.zooModelingCommandsWs.send(
-      JSON.stringify({
-        type: 'trickle_ice',
-        candidate: {
-          candidate: ev.candidate.candidate,
-          sdpMid: ev.candidate.sdpMid || undefined,
-          sdpMLineIndex: ev.candidate.sdpMLineIndex || undefined,
-          usernameFragment: ev.candidate.usernameFragment || undefined,
-        },
-      })
-    )
+    this.workerWebRTC.postMessage({
+      to: 'websocket',
+      payload: {
+        type: 'send',
+        data: [JSON.stringify({
+          type: 'trickle_ice',
+          candidate: {
+            candidate: ev.candidate.candidate,
+            sdpMid: ev.candidate.sdpMid || undefined,
+            sdpMLineIndex: ev.candidate.sdpMLineIndex || undefined,
+            usernameFragment: ev.candidate.usernameFragment || undefined,
+          },
+        })]
+      }
+    })
   }
 
-  iceOnMessage(ev: MessageEvent) {
-    const msg = ModelingCommandsWs.parseMessage(ev)
+  iceOnMessage(ev: WorkerMessage['payload']) {
+    const msg = ModelingCommandsWs.parseMessage(ev as MessageEvent)
 
     if (!('resp' in msg)) {
       return /* todo: emit error */
@@ -218,29 +279,24 @@ export class WebRTC extends EventTarget {
         break
     }
   }
+  
+  workerWebRTCOnMessage(ev: MessageEvent<WorkerMessage>) {
+    const msg = ev.data
+    if (msg.from !== 'websocket') { return }
+    if (msg.payload.type !== 'message') { return }
+    this.iceOnMessage(msg.payload)
+  }
 
-  iceOnError(_ev: Event) {}
-
-  iceOnClose(_ev: CloseEvent) {}
-
-  ice(ws: WebSocket) {
-    ws.addEventListener('open', this.iceOnOpen.bind(this))
-    ws.addEventListener('message', this.iceOnMessage.bind(this))
-    ws.addEventListener('error', this.iceOnError.bind(this))
-    ws.addEventListener('close', this.iceOnClose.bind(this))
-
+  ice() {
+    this.workerWebRTC.addEventListener('message', this.workerWebRTCOnMessage.bind(this))
     this.rtcPeerConnection.addEventListener(
       'icecandidate',
       this.iceOnIceCandidate.bind(this)
     )
   }
 
-  deice(ws: WebSocket) {
-    ws.removeEventListener('open', this.iceOnOpen)
-    ws.removeEventListener('message', this.iceOnMessage)
-    ws.removeEventListener('error', this.iceOnError)
-    ws.removeEventListener('close', this.iceOnClose)
-
+  deice() {
+    this.workerWebRTC.removeEventListener('message', this.workerWebRTCOnMessage.bind(this))
     this.rtcPeerConnection.removeEventListener(
       'icecandidate',
       this.iceOnIceCandidate
@@ -258,20 +314,24 @@ export class WebRTC extends EventTarget {
           return
         }
 
-        this.zooModelingCommandsWs.send(
-          JSON.stringify({
-            type: 'modeling_cmd_req',
-            cmd_id: '00000000-0000-0000-0000-000000000000',
-            cmd: {
-              type: pointerStateToType[targetPointerState],
-              interaction,
-              window: {
-                x: ev.offsetX,
-                y: ev.offsetY,
+        this.workerWebRTC.postMessage({
+          to: 'websocket',
+          payload: {
+            type: 'send',
+            data: [JSON.stringify({
+              type: 'modeling_cmd_req',
+              cmd_id: '00000000-0000-0000-0000-000000000000',
+              cmd: {
+                type: pointerStateToType[targetPointerState],
+                interaction,
+                window: {
+                  x: ev.offsetX,
+                  y: ev.offsetY,
+                },
               },
-            },
-          })
-        )
+            })]
+          }
+        })
 
         pointerButton = ev.button
         pointerState = targetPointerState
@@ -331,8 +391,8 @@ export class WebRTC extends EventTarget {
     }
 
     this.rtcPeerConnection.addEventListener('datachannel', onDataChannel)
-
-    return () => {
+    
+    this.removeMouseEvents = () => {
       this.rtcPeerConnection.removeEventListener('datachannel', onDataChannel)
       el.removeEventListener('pointerdown', onPointerDown)
       el.removeEventListener('pointermove', onPointerMove)
@@ -340,7 +400,14 @@ export class WebRTC extends EventTarget {
     }
   }
 
+  // In the future this could be over WebRTC channels.
   send(...args: Parameters<WebSocket['send']>) {
-    this.zooModelingCommandsWs.send(...args)
+    this.workerWebRTC.postMessage({
+      to: 'websocket',
+      payload: {
+        type: 'send',
+        data: args
+      }
+    })
   }
 }
