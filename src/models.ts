@@ -10662,6 +10662,8 @@ export interface UpdateUser {
    * }
    */
   phone?: string
+  /** Public username/handle for community-facing features. Empty clears it. */
+  username?: string
 }
 
 export interface UploadOrgDatasetFilesResponse {
