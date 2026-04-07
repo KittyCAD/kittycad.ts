@@ -14,6 +14,8 @@ async function example() {
       is_onboarded: true,
       last_name: "The user's last name.",
       phone: "The user's phone number.",
+      username:
+        'Public username/handle for community-facing features. Empty clears it.',
     },
     client,
   })
