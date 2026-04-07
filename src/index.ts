@@ -402,6 +402,7 @@ export const unit = {
 
 import create_user_project from './api/users/create_user_project.js'
 import create_user_shortlink from './api/users/create_user_shortlink.js'
+import delete_user_project from './api/users/delete_user_project.js'
 import delete_user_self from './api/users/delete_user_self.js'
 import delete_user_shortlink from './api/users/delete_user_shortlink.js'
 import download_user_project from './api/users/download_user_project.js'
@@ -443,6 +444,7 @@ import { list_users_pager } from './api/users/list_users.js'
 export const users = {
   create_user_project,
   create_user_shortlink,
+  delete_user_project,
   delete_user_self,
   delete_user_shortlink,
   download_user_project,
