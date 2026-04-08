@@ -401,8 +401,10 @@ export const unit = {
 }
 
 import create_user_project from './api/users/create_user_project.js'
+import create_user_project_share_link from './api/users/create_user_project_share_link.js'
 import create_user_shortlink from './api/users/create_user_shortlink.js'
 import delete_user_project from './api/users/delete_user_project.js'
+import delete_user_project_share_link from './api/users/delete_user_project_share_link.js'
 import delete_user_self from './api/users/delete_user_self.js'
 import delete_user_shortlink from './api/users/delete_user_shortlink.js'
 import download_user_project from './api/users/download_user_project.js'
@@ -418,6 +420,7 @@ import get_user_self_extended from './api/users/get_user_self_extended.js'
 import get_user_shortlinks from './api/users/get_user_shortlinks.js'
 import list_project_categories from './api/users/list_project_categories.js'
 import list_public_projects from './api/users/list_public_projects.js'
+import list_user_project_share_links from './api/users/list_user_project_share_links.js'
 import list_user_projects from './api/users/list_user_projects.js'
 import list_users from './api/users/list_users.js'
 import list_users_extended from './api/users/list_users_extended.js'
@@ -443,8 +446,10 @@ import { list_users_extended_pager } from './api/users/list_users_extended.js'
 import { list_users_pager } from './api/users/list_users.js'
 export const users = {
   create_user_project,
+  create_user_project_share_link,
   create_user_shortlink,
   delete_user_project,
+  delete_user_project_share_link,
   delete_user_self,
   delete_user_shortlink,
   download_user_project,
@@ -461,6 +466,7 @@ export const users = {
   get_user_shortlinks_pager,
   list_project_categories,
   list_public_projects,
+  list_user_project_share_links,
   list_user_projects,
   list_users,
   list_users_extended,
@@ -588,6 +594,7 @@ export type {
   CreateCustomModel,
   CreateOAuth2AppRequest,
   CreateOrgDataset,
+  CreateProjectShareLinkRequest,
   CreateRegion,
   CreateRegionFromQueryPoint,
   CreateShortlinkRequest,
@@ -722,6 +729,7 @@ export type {
   KclProjectFileRole,
   KclProjectPreviewStatus,
   KclProjectPublicationStatus,
+  KclProjectShareLinkAccessMode,
   LengthUnit,
   LenientUrl,
   Loft,
@@ -827,6 +835,7 @@ export type {
   ProjectFileResponse,
   ProjectPointsToPlane,
   ProjectResponse,
+  ProjectShareLinkResponse,
   ProjectSummaryResponse,
   PublicEmailMarketingConsentRequest,
   PublicProjectOwnerResponse,
