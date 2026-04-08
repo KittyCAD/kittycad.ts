@@ -1997,6 +1997,11 @@ export interface CreateOrgDataset {
   source: OrgDatasetSource
 }
 
+export interface CreateProjectShareLinkRequest {
+  /** default:anyone_with_link, description:Access policy for the generated share link. */
+  access_mode?: KclProjectShareLinkAccessMode
+}
+
 export interface CreateRegion {
   region_mapping: {
     [key: string]: /**
@@ -3684,6 +3689,10 @@ export type KclProjectPublicationStatus =
   | 'published'
   | 'rejected'
   | 'deleted'
+
+export type KclProjectShareLinkAccessMode =
+  | 'anyone_with_link'
+  | 'organization_only'
 
 export type LengthUnit = number
 
@@ -8598,6 +8607,19 @@ export interface ProjectResponse {
   updated_at: string
 }
 
+export interface ProjectShareLinkResponse {
+  /** Access policy for the share link. */
+  access_mode: KclProjectShareLinkAccessMode
+  /** title:DateTime, format:date-time, description:Share-link creation timestamp. */
+  created_at: string
+  /** Opaque identifier used in the public shared URL. */
+  key: string
+  /** title:DateTime, format:date-time, description:Share-link last update timestamp. */
+  updated_at: string
+  /** format:uri, description:Fully-qualified URL that can be shared. */
+  url: string
+}
+
 export interface ProjectSummaryResponse {
   /** Selected category identifiers associated with the project. */
   category_ids: Uuid[]
@@ -11303,6 +11325,7 @@ export interface Models {
   CreateCustomModel: CreateCustomModel
   CreateOAuth2AppRequest: CreateOAuth2AppRequest
   CreateOrgDataset: CreateOrgDataset
+  CreateProjectShareLinkRequest: CreateProjectShareLinkRequest
   CreateRegion: CreateRegion
   CreateRegionFromQueryPoint: CreateRegionFromQueryPoint
   CreateShortlinkRequest: CreateShortlinkRequest
@@ -11437,6 +11460,7 @@ export interface Models {
   KclProjectFileRole: KclProjectFileRole
   KclProjectPreviewStatus: KclProjectPreviewStatus
   KclProjectPublicationStatus: KclProjectPublicationStatus
+  KclProjectShareLinkAccessMode: KclProjectShareLinkAccessMode
   LengthUnit: LengthUnit
   LenientUrl: LenientUrl
   Loft: Loft
@@ -11542,6 +11566,7 @@ export interface Models {
   ProjectFileResponse: ProjectFileResponse
   ProjectPointsToPlane: ProjectPointsToPlane
   ProjectResponse: ProjectResponse
+  ProjectShareLinkResponse: ProjectShareLinkResponse
   ProjectSummaryResponse: ProjectSummaryResponse
   PublicEmailMarketingConsentRequest: PublicEmailMarketingConsentRequest
   PublicProjectOwnerResponse: PublicProjectOwnerResponse
