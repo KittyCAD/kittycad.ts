@@ -16924,7 +16924,7 @@
     "/projects/categories": {
       "get": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "List the active categories available for project submissions.",
         "operationId": "list_project_categories",
@@ -17106,7 +17106,7 @@
     "/projects/public": {
       "get": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "List publicly visible community projects for the website/gallery.",
         "operationId": "list_public_projects",
@@ -17287,7 +17287,7 @@
     "/projects/public/{id}/thumbnail": {
       "get": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Fetch the public thumbnail for a published project.",
         "operationId": "get_public_project_thumbnail",
@@ -17317,7 +17317,7 @@
     "/projects/public/{id}/vote": {
       "post": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Add the authenticated user's upvote to a published community project.",
         "operationId": "create_public_project_vote",
@@ -17419,7 +17419,7 @@
       },
       "delete": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Remove the authenticated user's upvote from a published community project.",
         "operationId": "delete_public_project_vote",
@@ -17620,7 +17620,7 @@
       "get": {
         "tags": [
           "hidden",
-          "users"
+          "projects"
         ],
         "summary": "Download a project using a share link.",
         "operationId": "download_shared_project",
@@ -24957,10 +24957,10 @@
     "/user/projects": {
       "get": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "List the authenticated user's projects.",
-        "operationId": "list_user_projects",
+        "operationId": "list_projects",
         "responses": {
           "200": {
             "description": "successful operation",
@@ -25052,10 +25052,10 @@
       },
       "post": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Create a draft project for the authenticated user.",
-        "operationId": "create_user_project",
+        "operationId": "create_project",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -25158,7 +25158,7 @@
         ],
         "summary": "OPTIONS endpoint.",
         "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
-        "operationId": "options_user_projects",
+        "operationId": "options_projects",
         "responses": {
           "204": {
             "description": "resource updated",
@@ -25241,10 +25241,10 @@
     "/user/projects/{id}": {
       "get": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Get one of the authenticated user's projects.",
-        "operationId": "get_user_project",
+        "operationId": "get_project",
         "parameters": [
           {
             "in": "path",
@@ -25343,10 +25343,10 @@
       },
       "put": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Replace one of the authenticated user's projects.",
-        "operationId": "update_user_project",
+        "operationId": "update_project",
         "parameters": [
           {
             "in": "path",
@@ -25456,10 +25456,10 @@
       },
       "delete": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Delete one of the authenticated user's projects.",
-        "operationId": "delete_user_project",
+        "operationId": "delete_project",
         "parameters": [
           {
             "in": "path",
@@ -25555,7 +25555,7 @@
         ],
         "summary": "OPTIONS endpoint.",
         "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
-        "operationId": "options_user_project",
+        "operationId": "options_project",
         "parameters": [
           {
             "in": "path",
@@ -25649,10 +25649,10 @@
     "/user/projects/{id}/download": {
       "get": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Download one of the authenticated user's projects as a tar archive.",
-        "operationId": "download_user_project",
+        "operationId": "download_project",
         "parameters": [
           {
             "in": "path",
@@ -25679,10 +25679,10 @@
     "/user/projects/{id}/publish": {
       "post": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Submit one of the authenticated user's projects for public review.",
-        "operationId": "publish_user_project",
+        "operationId": "publish_project",
         "parameters": [
           {
             "in": "path",
@@ -25785,7 +25785,7 @@
         ],
         "summary": "OPTIONS endpoint.",
         "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
-        "operationId": "options_publish_user_project",
+        "operationId": "options_publish_project",
         "parameters": [
           {
             "in": "path",
@@ -25879,10 +25879,10 @@
     "/user/projects/{id}/share-links": {
       "get": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "List share links for one of the authenticated user's projects.",
-        "operationId": "list_user_project_share_links",
+        "operationId": "list_project_share_links",
         "parameters": [
           {
             "in": "path",
@@ -25985,10 +25985,10 @@
       },
       "post": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Create a share link for one of the authenticated user's projects.",
-        "operationId": "create_user_project_share_link",
+        "operationId": "create_project_share_link",
         "parameters": [
           {
             "in": "path",
@@ -26101,7 +26101,7 @@
         ],
         "summary": "OPTIONS endpoint.",
         "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
-        "operationId": "options_user_project_share_links",
+        "operationId": "options_project_share_links",
         "parameters": [
           {
             "in": "path",
@@ -26195,10 +26195,10 @@
     "/user/projects/{id}/share-links/{key}": {
       "delete": {
         "tags": [
-          "users"
+          "projects"
         ],
         "summary": "Delete one share link for one of the authenticated user's projects.",
-        "operationId": "delete_user_project_share_link",
+        "operationId": "delete_project_share_link",
         "parameters": [
           {
             "in": "path",
@@ -26303,7 +26303,7 @@
         ],
         "summary": "OPTIONS endpoint.",
         "description": "This is necessary for some preflight requests, specifically POST, PUT, and DELETE.",
-        "operationId": "options_delete_user_project_share_link",
+        "operationId": "options_delete_project_share_link",
         "parameters": [
           {
             "in": "path",
@@ -58097,6 +58097,13 @@
       "description": "Operations around payments and billing.",
       "externalDocs": {
         "url": "https://zoo.dev/docs/api/payments"
+      }
+    },
+    {
+      "name": "projects",
+      "description": "Operations for user-owned projects, public project discovery, publishing, voting, and share links.",
+      "externalDocs": {
+        "url": "https://zoo.dev/docs/api/projects"
       }
     },
     {
