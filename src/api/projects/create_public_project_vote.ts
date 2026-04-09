@@ -1,29 +1,32 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ProjectSummaryResponse } from '../../models.js'
+import { PublicProjectVoteResponse, Uuid } from '../../models.js'
 
-interface ListUserProjectsInput {
+interface CreatePublicProjectVoteInput {
   client?: Client
+  id: Uuid
 }
 
-type ListUserProjectsReturn = ProjectSummaryResponse[]
+type CreatePublicProjectVoteReturn = PublicProjectVoteResponse
 
 /**
- * List the authenticated user's projects.
+ * Add the authenticated user's upvote to a published community project.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @returns {Promise<ListUserProjectsReturn>} successful operation
+ * @property {Uuid} id The identifier. (path)
+ * @returns {Promise<CreatePublicProjectVoteReturn>} successful operation
  *
- * Possible return types: ProjectSummaryResponse[]
+ * Possible return types: PublicProjectVoteResponse
  */
-export default async function list_user_projects(
-  { client }: ListUserProjectsInput = {} as ListUserProjectsInput
-): Promise<ListUserProjectsReturn> {
-  const path = `/user/projects`
+export default async function create_public_project_vote({
+  client,
+  id,
+}: CreatePublicProjectVoteInput): Promise<CreatePublicProjectVoteReturn> {
+  const path = `/projects/public/${id}/vote`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -35,12 +38,12 @@ export default async function list_user_projects(
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   const fetchOptions: RequestInit = {
-    method: 'GET',
+    method: 'POST',
     headers,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as ListUserProjectsReturn
+  const result = (await response.json()) as CreatePublicProjectVoteReturn
   return result
 }

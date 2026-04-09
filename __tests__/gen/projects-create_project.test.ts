@@ -1,9 +1,9 @@
-import { users, Client, ApiError } from '../../src/index.js'
+import { projects, Client, ApiError } from '../../src/index.js'
 
 const client = new Client()
 
 async function example() {
-  const response = await users.create_user_project({
+  const response = await projects.create_project({
     files: [
       {
         name: 'thing.kcl',
@@ -15,7 +15,7 @@ async function example() {
   return response
 }
 
-describe('Testing users.create_user_project', () => {
+describe('Testing projects.create_project', () => {
   it('should be truthy or throw', async () => {
     try {
       await example()

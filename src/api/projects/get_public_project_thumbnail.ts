@@ -1,32 +1,30 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ProjectResponse, Uuid } from '../../models.js'
+import { Uuid } from '../../models.js'
 
-interface GetUserProjectInput {
+interface GetPublicProjectThumbnailInput {
   client?: Client
   id: Uuid
 }
 
-type GetUserProjectReturn = ProjectResponse
+type GetPublicProjectThumbnailReturn = unknown
 
 /**
- * Get one of the authenticated user's projects.
+ * Fetch the public thumbnail for a published project.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
- * @returns {Promise<GetUserProjectReturn>} successful operation
- *
- * Possible return types: ProjectResponse
+ * @returns {Promise<GetPublicProjectThumbnailReturn>} Response payload.
  */
-export default async function get_user_project({
+export default async function get_public_project_thumbnail({
   client,
   id,
-}: GetUserProjectInput): Promise<GetUserProjectReturn> {
-  const path = `/user/projects/${id}`
+}: GetPublicProjectThumbnailInput): Promise<GetPublicProjectThumbnailReturn> {
+  const path = `/projects/public/${id}/thumbnail`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -44,6 +42,6 @@ export default async function get_user_project({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as GetUserProjectReturn
+  const result = (await response.json()) as GetPublicProjectThumbnailReturn
   return result
 }

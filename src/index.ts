@@ -355,6 +355,39 @@ export const payments = {
   validate_customer_tax_information_for_user,
 }
 
+import create_project from './api/projects/create_project.js'
+import create_project_share_link from './api/projects/create_project_share_link.js'
+import create_public_project_vote from './api/projects/create_public_project_vote.js'
+import delete_project from './api/projects/delete_project.js'
+import delete_project_share_link from './api/projects/delete_project_share_link.js'
+import delete_public_project_vote from './api/projects/delete_public_project_vote.js'
+import download_project from './api/projects/download_project.js'
+import get_project from './api/projects/get_project.js'
+import get_public_project_thumbnail from './api/projects/get_public_project_thumbnail.js'
+import list_project_categories from './api/projects/list_project_categories.js'
+import list_project_share_links from './api/projects/list_project_share_links.js'
+import list_projects from './api/projects/list_projects.js'
+import list_public_projects from './api/projects/list_public_projects.js'
+import publish_project from './api/projects/publish_project.js'
+import update_project from './api/projects/update_project.js'
+export const projects = {
+  create_project,
+  create_project_share_link,
+  create_public_project_vote,
+  delete_project,
+  delete_project_share_link,
+  delete_public_project_vote,
+  download_project,
+  get_project,
+  get_public_project_thumbnail,
+  list_project_categories,
+  list_project_share_links,
+  list_projects,
+  list_public_projects,
+  publish_project,
+  update_project,
+}
+
 import create_service_account_for_org from './api/service-accounts/create_service_account_for_org.js'
 import delete_service_account_for_org from './api/service-accounts/delete_service_account_for_org.js'
 import get_service_account_for_org from './api/service-accounts/get_service_account_for_org.js'
@@ -400,33 +433,19 @@ export const unit = {
   get_volume_unit_conversion,
 }
 
-import create_public_project_vote from './api/users/create_public_project_vote.js'
-import create_user_project from './api/users/create_user_project.js'
-import create_user_project_share_link from './api/users/create_user_project_share_link.js'
 import create_user_shortlink from './api/users/create_user_shortlink.js'
-import delete_public_project_vote from './api/users/delete_public_project_vote.js'
-import delete_user_project from './api/users/delete_user_project.js'
-import delete_user_project_share_link from './api/users/delete_user_project_share_link.js'
 import delete_user_self from './api/users/delete_user_self.js'
 import delete_user_shortlink from './api/users/delete_user_shortlink.js'
-import download_user_project from './api/users/download_user_project.js'
 import get_oauth2_providers_for_user from './api/users/get_oauth2_providers_for_user.js'
-import get_public_project_thumbnail from './api/users/get_public_project_thumbnail.js'
 import get_session_for_user from './api/users/get_session_for_user.js'
 import get_user from './api/users/get_user.js'
 import get_user_extended from './api/users/get_user_extended.js'
 import get_user_privacy_settings from './api/users/get_user_privacy_settings.js'
-import get_user_project from './api/users/get_user_project.js'
 import get_user_self from './api/users/get_user_self.js'
 import get_user_self_extended from './api/users/get_user_self_extended.js'
 import get_user_shortlinks from './api/users/get_user_shortlinks.js'
-import list_project_categories from './api/users/list_project_categories.js'
-import list_public_projects from './api/users/list_public_projects.js'
-import list_user_project_share_links from './api/users/list_user_project_share_links.js'
-import list_user_projects from './api/users/list_user_projects.js'
 import list_users from './api/users/list_users.js'
 import list_users_extended from './api/users/list_users_extended.js'
-import publish_user_project from './api/users/publish_user_project.js'
 import put_public_email_marketing_consent_request from './api/users/put_public_email_marketing_consent_request.js'
 import put_public_sales_form from './api/users/put_public_sales_form.js'
 import put_public_support_form from './api/users/put_public_support_form.js'
@@ -434,7 +453,6 @@ import put_user_cad_user_info_form from './api/users/put_user_cad_user_info_form
 import report_user_client_error from './api/users/report_user_client_error.js'
 import update_subscription_for_user from './api/users/update_subscription_for_user.js'
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
-import update_user_project from './api/users/update_user_project.js'
 import update_user_self from './api/users/update_user_self.js'
 import update_user_shortlink from './api/users/update_user_shortlink.js'
 import user_admin_details_get from './api/users/user_admin_details_get.js'
@@ -447,36 +465,22 @@ import { get_user_shortlinks_pager } from './api/users/get_user_shortlinks.js'
 import { list_users_extended_pager } from './api/users/list_users_extended.js'
 import { list_users_pager } from './api/users/list_users.js'
 export const users = {
-  create_public_project_vote,
-  create_user_project,
-  create_user_project_share_link,
   create_user_shortlink,
-  delete_public_project_vote,
-  delete_user_project,
-  delete_user_project_share_link,
   delete_user_self,
   delete_user_shortlink,
-  download_user_project,
   get_oauth2_providers_for_user,
-  get_public_project_thumbnail,
   get_session_for_user,
   get_user,
   get_user_extended,
   get_user_privacy_settings,
-  get_user_project,
   get_user_self,
   get_user_self_extended,
   get_user_shortlinks,
   get_user_shortlinks_pager,
-  list_project_categories,
-  list_public_projects,
-  list_user_project_share_links,
-  list_user_projects,
   list_users,
   list_users_extended,
   list_users_extended_pager,
   list_users_pager,
-  publish_user_project,
   put_public_email_marketing_consent_request,
   put_public_sales_form,
   put_public_support_form,
@@ -484,7 +488,6 @@ export const users = {
   report_user_client_error,
   update_subscription_for_user,
   update_user_privacy_settings,
-  update_user_project,
   update_user_self,
   update_user_shortlink,
   user_admin_details_get,
