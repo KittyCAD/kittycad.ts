@@ -1,32 +1,29 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ProjectShareLinkResponse, Uuid } from '../../models.js'
+import { ProjectSummaryResponse } from '../../models.js'
 
-interface ListUserProjectShareLinksInput {
+interface ListProjectsInput {
   client?: Client
-  id: Uuid
 }
 
-type ListUserProjectShareLinksReturn = ProjectShareLinkResponse[]
+type ListProjectsReturn = ProjectSummaryResponse[]
 
 /**
- * List share links for one of the authenticated user's projects.
+ * List the authenticated user's projects.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The identifier. (path)
- * @returns {Promise<ListUserProjectShareLinksReturn>} successful operation
+ * @returns {Promise<ListProjectsReturn>} successful operation
  *
- * Possible return types: ProjectShareLinkResponse[]
+ * Possible return types: ProjectSummaryResponse[]
  */
-export default async function list_user_project_share_links({
-  client,
-  id,
-}: ListUserProjectShareLinksInput): Promise<ListUserProjectShareLinksReturn> {
-  const path = `/user/projects/${id}/share-links`
+export default async function list_projects(
+  { client }: ListProjectsInput = {} as ListProjectsInput
+): Promise<ListProjectsReturn> {
+  const path = `/user/projects`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -44,6 +41,6 @@ export default async function list_user_project_share_links({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as ListUserProjectShareLinksReturn
+  const result = (await response.json()) as ListProjectsReturn
   return result
 }

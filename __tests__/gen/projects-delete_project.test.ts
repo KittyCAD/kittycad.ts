@@ -1,16 +1,16 @@
-import { users, Client, ApiError } from '../../src/index.js'
+import { projects, Client, ApiError } from '../../src/index.js'
 
 const client = new Client()
 
 async function example() {
-  const response = await users.list_user_project_share_links({
+  const response = await projects.delete_project({
     id: '00000000-0000-0000-0000-000000000000',
     client,
   })
   return response
 }
 
-describe('Testing users.list_user_project_share_links', () => {
+describe('Testing projects.delete_project', () => {
   it('should be truthy or throw', async () => {
     try {
       await example()

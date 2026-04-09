@@ -4,29 +4,29 @@ import { throwIfNotOk } from '../../errors.js'
 
 import { ProjectResponse } from '../../models.js'
 
-interface CreateUserProjectInput {
+interface CreateProjectInput {
   client?: Client
   files: File[]
 }
 
-type CreateUserProjectReturn = ProjectResponse
+type CreateProjectReturn = ProjectResponse
 
 /**
  * Create a draft project for the authenticated user.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {File[]} files Files attached as multipart/form-data.
- * @returns {Promise<CreateUserProjectReturn>} successful creation
+ * @returns {Promise<CreateProjectReturn>} successful creation
  *
  * Possible return types: ProjectResponse
  */
-export default async function create_user_project({
+export default async function create_project({
   client,
   files,
-}: CreateUserProjectInput): Promise<CreateUserProjectReturn> {
+}: CreateProjectInput): Promise<CreateProjectReturn> {
   const path = `/user/projects`
   const qs = buildQuery({})
   const url = path + qs
@@ -56,6 +56,6 @@ export default async function create_user_project({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as CreateUserProjectReturn
+  const result = (await response.json()) as CreateProjectReturn
   return result
 }

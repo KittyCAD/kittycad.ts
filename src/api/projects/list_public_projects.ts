@@ -1,30 +1,29 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Uuid } from '../../models.js'
+import { PublicProjectResponse } from '../../models.js'
 
-interface DownloadUserProjectInput {
+interface ListPublicProjectsInput {
   client?: Client
-  id: Uuid
 }
 
-type DownloadUserProjectReturn = unknown
+type ListPublicProjectsReturn = PublicProjectResponse[]
 
 /**
- * Download one of the authenticated user's projects as a tar archive.
+ * List publicly visible community projects for the website/gallery.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The identifier. (path)
- * @returns {Promise<DownloadUserProjectReturn>} Response payload.
+ * @returns {Promise<ListPublicProjectsReturn>} successful operation
+ *
+ * Possible return types: PublicProjectResponse[]
  */
-export default async function download_user_project({
-  client,
-  id,
-}: DownloadUserProjectInput): Promise<DownloadUserProjectReturn> {
-  const path = `/user/projects/${id}/download`
+export default async function list_public_projects(
+  { client }: ListPublicProjectsInput = {} as ListPublicProjectsInput
+): Promise<ListPublicProjectsReturn> {
+  const path = `/projects/public`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -42,6 +41,6 @@ export default async function download_user_project({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DownloadUserProjectReturn
+  const result = (await response.json()) as ListPublicProjectsReturn
   return result
 }

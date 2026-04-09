@@ -1,32 +1,30 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { PublicProjectVoteResponse, Uuid } from '../../models.js'
+import { Uuid } from '../../models.js'
 
-interface CreatePublicProjectVoteInput {
+interface DownloadProjectInput {
   client?: Client
   id: Uuid
 }
 
-type CreatePublicProjectVoteReturn = PublicProjectVoteResponse
+type DownloadProjectReturn = unknown
 
 /**
- * Add the authenticated user's upvote to a published community project.
+ * Download one of the authenticated user's projects as a tar archive.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
- * @returns {Promise<CreatePublicProjectVoteReturn>} successful operation
- *
- * Possible return types: PublicProjectVoteResponse
+ * @returns {Promise<DownloadProjectReturn>} Response payload.
  */
-export default async function create_public_project_vote({
+export default async function download_project({
   client,
   id,
-}: CreatePublicProjectVoteInput): Promise<CreatePublicProjectVoteReturn> {
-  const path = `/projects/public/${id}/vote`
+}: DownloadProjectInput): Promise<DownloadProjectReturn> {
+  const path = `/user/projects/${id}/download`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -38,12 +36,12 @@ export default async function create_public_project_vote({
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   const fetchOptions: RequestInit = {
-    method: 'POST',
+    method: 'GET',
     headers,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as CreatePublicProjectVoteReturn
+  const result = (await response.json()) as DownloadProjectReturn
   return result
 }

@@ -1,39 +1,32 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ProjectShareLinkResponse,
-  Uuid,
-  CreateProjectShareLinkRequest,
-} from '../../models.js'
+import { ProjectResponse, Uuid } from '../../models.js'
 
-interface CreateUserProjectShareLinkInput {
+interface GetProjectInput {
   client?: Client
   id: Uuid
-  body: CreateProjectShareLinkRequest
 }
 
-type CreateUserProjectShareLinkReturn = ProjectShareLinkResponse
+type GetProjectReturn = ProjectResponse
 
 /**
- * Create a share link for one of the authenticated user's projects.
+ * Get one of the authenticated user's projects.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
- * @property {CreateProjectShareLinkRequest} body Request body payload
- * @returns {Promise<CreateUserProjectShareLinkReturn>} successful creation
+ * @returns {Promise<GetProjectReturn>} successful operation
  *
- * Possible return types: ProjectShareLinkResponse
+ * Possible return types: ProjectResponse
  */
-export default async function create_user_project_share_link({
+export default async function get_project({
   client,
   id,
-  body,
-}: CreateUserProjectShareLinkInput): Promise<CreateUserProjectShareLinkReturn> {
-  const path = `/user/projects/${id}/share-links`
+}: GetProjectInput): Promise<GetProjectReturn> {
+  const path = `/user/projects/${id}`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -44,15 +37,13 @@ export default async function create_user_project_share_link({
   const kittycadToken = client ? client.token || '' : ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
-  headers['Content-Type'] = 'application/json'
   const fetchOptions: RequestInit = {
-    method: 'POST',
+    method: 'GET',
     headers,
-    body: JSON.stringify(body),
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as CreateUserProjectShareLinkReturn
+  const result = (await response.json()) as GetProjectReturn
   return result
 }

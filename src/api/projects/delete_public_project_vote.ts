@@ -1,30 +1,32 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Uuid } from '../../models.js'
+import { PublicProjectVoteResponse, Uuid } from '../../models.js'
 
-interface GetPublicProjectThumbnailInput {
+interface DeletePublicProjectVoteInput {
   client?: Client
   id: Uuid
 }
 
-type GetPublicProjectThumbnailReturn = unknown
+type DeletePublicProjectVoteReturn = PublicProjectVoteResponse
 
 /**
- * Fetch the public thumbnail for a published project.
+ * Remove the authenticated user's upvote from a published community project.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
- * @returns {Promise<GetPublicProjectThumbnailReturn>} Response payload.
+ * @returns {Promise<DeletePublicProjectVoteReturn>} successful operation
+ *
+ * Possible return types: PublicProjectVoteResponse
  */
-export default async function get_public_project_thumbnail({
+export default async function delete_public_project_vote({
   client,
   id,
-}: GetPublicProjectThumbnailInput): Promise<GetPublicProjectThumbnailReturn> {
-  const path = `/projects/public/${id}/thumbnail`
+}: DeletePublicProjectVoteInput): Promise<DeletePublicProjectVoteReturn> {
+  const path = `/projects/public/${id}/vote`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -36,12 +38,12 @@ export default async function get_public_project_thumbnail({
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   const fetchOptions: RequestInit = {
-    method: 'GET',
+    method: 'DELETE',
     headers,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as GetPublicProjectThumbnailReturn
+  const result = (await response.json()) as DeletePublicProjectVoteReturn
   return result
 }

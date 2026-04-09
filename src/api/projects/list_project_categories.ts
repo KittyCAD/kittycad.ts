@@ -1,33 +1,29 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Uuid } from '../../models.js'
+import { ProjectCategoryResponse } from '../../models.js'
 
-interface DeleteUserProjectShareLinkInput {
+interface ListProjectCategoriesInput {
   client?: Client
-  id: Uuid
-  key: string
 }
 
-type DeleteUserProjectShareLinkReturn = void
+type ListProjectCategoriesReturn = ProjectCategoryResponse[]
 
 /**
- * Delete one share link for one of the authenticated user's projects.
+ * List the active categories available for project submissions.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id Project identifier. (path)
- * @property {string} key Share-link key. (path)
- * @returns {Promise<DeleteUserProjectShareLinkReturn>} resource updated
+ * @returns {Promise<ListProjectCategoriesReturn>} successful operation
+ *
+ * Possible return types: ProjectCategoryResponse[]
  */
-export default async function delete_user_project_share_link({
-  client,
-  id,
-  key,
-}: DeleteUserProjectShareLinkInput): Promise<DeleteUserProjectShareLinkReturn> {
-  const path = `/user/projects/${id}/share-links/${key}`
+export default async function list_project_categories(
+  { client }: ListProjectCategoriesInput = {} as ListProjectCategoriesInput
+): Promise<ListProjectCategoriesReturn> {
+  const path = `/projects/categories`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -39,11 +35,12 @@ export default async function delete_user_project_share_link({
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   const fetchOptions: RequestInit = {
-    method: 'DELETE',
+    method: 'GET',
     headers,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  return undefined as DeleteUserProjectShareLinkReturn
+  const result = (await response.json()) as ListProjectCategoriesReturn
+  return result
 }

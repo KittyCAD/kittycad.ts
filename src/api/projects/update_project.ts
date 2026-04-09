@@ -1,32 +1,36 @@
+import { File } from '../../models.js'
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
 import { ProjectResponse, Uuid } from '../../models.js'
 
-interface PublishUserProjectInput {
+interface UpdateProjectInput {
   client?: Client
+  files: File[]
   id: Uuid
 }
 
-type PublishUserProjectReturn = ProjectResponse
+type UpdateProjectReturn = ProjectResponse
 
 /**
- * Submit one of the authenticated user's projects for public review.
+ * Replace one of the authenticated user's projects.
  *
- * Tags: users
+ * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
- * @returns {Promise<PublishUserProjectReturn>} successful operation
+ * @property {File[]} files Files attached as multipart/form-data.
+ * @returns {Promise<UpdateProjectReturn>} successful operation
  *
  * Possible return types: ProjectResponse
  */
-export default async function publish_user_project({
+export default async function update_project({
   client,
+  files,
   id,
-}: PublishUserProjectInput): Promise<PublishUserProjectReturn> {
-  const path = `/user/projects/${id}/publish`
+}: UpdateProjectInput): Promise<UpdateProjectReturn> {
+  const path = `/user/projects/${id}`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -34,16 +38,27 @@ export default async function publish_user_project({
   // sdks and the CLI.
   const urlBase = client?.baseUrl || 'https://api.zoo.dev'
   const fullUrl = urlBase + url
+  // The other sdks use to use KITTYCAD_API_TOKEN, now they still do for
+  // backwards compatibility, but the new standard is ZOO_API_TOKEN.
+  // For some reason only this lib supported KITTYCAD_TOKEN, so we need to
+  // check for that as well.
   const kittycadToken = client ? client.token || '' : ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+
+  const formData = new FormData()
+  files.forEach((file) => {
+    formData.append(file.name, file.data, file.name)
+  })
+
   const fetchOptions: RequestInit = {
-    method: 'POST',
+    method: 'PUT',
     headers,
+    body: formData,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as PublishUserProjectReturn
+  const result = (await response.json()) as UpdateProjectReturn
   return result
 }
