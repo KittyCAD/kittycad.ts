@@ -400,9 +400,11 @@ export const unit = {
   get_volume_unit_conversion,
 }
 
+import create_public_project_vote from './api/users/create_public_project_vote.js'
 import create_user_project from './api/users/create_user_project.js'
 import create_user_project_share_link from './api/users/create_user_project_share_link.js'
 import create_user_shortlink from './api/users/create_user_shortlink.js'
+import delete_public_project_vote from './api/users/delete_public_project_vote.js'
 import delete_user_project from './api/users/delete_user_project.js'
 import delete_user_project_share_link from './api/users/delete_user_project_share_link.js'
 import delete_user_self from './api/users/delete_user_self.js'
@@ -445,9 +447,11 @@ import { get_user_shortlinks_pager } from './api/users/get_user_shortlinks.js'
 import { list_users_extended_pager } from './api/users/list_users_extended.js'
 import { list_users_pager } from './api/users/list_users.js'
 export const users = {
+  create_public_project_vote,
   create_user_project,
   create_user_project_share_link,
   create_user_shortlink,
+  delete_public_project_vote,
   delete_user_project,
   delete_user_project_share_link,
   delete_user_self,
@@ -840,6 +844,7 @@ export type {
   PublicEmailMarketingConsentRequest,
   PublicProjectOwnerResponse,
   PublicProjectResponse,
+  PublicProjectVoteResponse,
   RawFile,
   ReasoningMessage,
   ReconfigureStream,

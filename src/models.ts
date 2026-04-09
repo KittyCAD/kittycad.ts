@@ -8667,6 +8667,8 @@ export interface PublicProjectResponse {
   description: string
   /** Unique project identifier. */
   id: Uuid
+  /** format:int64, description:Current total public like count for the project. */
+  like_count: number
   /** Public creator metadata. */
   owner: PublicProjectOwnerResponse
   /** nullable:true, description:Stable public thumbnail URL, when one exists. */
@@ -8675,6 +8677,13 @@ export interface PublicProjectResponse {
   published_at: string
   /** Public project title. */
   title: string
+}
+
+export interface PublicProjectVoteResponse {
+  /** format:int64, description:Current total public like count for the project. */
+  like_count: number
+  /** Whether the authenticated viewer currently likes the project. */
+  liked: boolean
 }
 
 export interface RawFile {
@@ -11571,6 +11580,7 @@ export interface Models {
   PublicEmailMarketingConsentRequest: PublicEmailMarketingConsentRequest
   PublicProjectOwnerResponse: PublicProjectOwnerResponse
   PublicProjectResponse: PublicProjectResponse
+  PublicProjectVoteResponse: PublicProjectVoteResponse
   RawFile: RawFile
   ReasoningMessage: ReasoningMessage
   ReconfigureStream: ReconfigureStream
