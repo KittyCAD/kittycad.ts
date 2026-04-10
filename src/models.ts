@@ -8575,6 +8575,36 @@ export interface ProjectPointsToPlane {
   projected_points: Point3d[]
 }
 
+export interface ProjectPublicationInfoResponse {
+  /** Whether the current editable draft differs from the last live version. */
+  has_unpublished_changes: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "When a version of this project most recently became public."
+   * }
+   */
+  last_published_at?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Last version that successfully went live for this project."
+   * }
+   */
+  last_published_version_id?: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "When the current version was most recently submitted for review."
+   * }
+   */
+  submitted_at?: string
+}
+
 export interface ProjectResponse {
   /** Selected category identifiers associated with the project. */
   category_ids: Uuid[]
@@ -8599,6 +8629,8 @@ export interface ProjectResponse {
   primary_preview_path?: string
   /** Relative path to the project's manifest file. */
   project_toml_path: string
+  /** Owner-facing publication metadata for the current and last live version. */
+  publication: ProjectPublicationInfoResponse
   /** Current publication workflow state. */
   publication_status: KclProjectPublicationStatus
   /** User-facing project title. */
@@ -8642,6 +8674,8 @@ export interface ProjectSummaryResponse {
   primary_preview_path?: string
   /** Relative path to the project's manifest file. */
   project_toml_path: string
+  /** Owner-facing publication metadata for the current and last live version. */
+  publication: ProjectPublicationInfoResponse
   /** Current publication workflow state. */
   publication_status: KclProjectPublicationStatus
   /** User-facing project title. */
@@ -8652,6 +8686,11 @@ export interface ProjectSummaryResponse {
 
 export interface PublicEmailMarketingConsentRequest {
   /** format:email, description:The email */
+  email: string
+}
+
+export interface PublicMailingListMembershipRequest {
+  /** format:email, description:Email address to add or remove. */
   email: string
 }
 
@@ -10763,7 +10802,7 @@ export interface UserCadInfoAdminDetails {
 export type UserFeature =
   | 'aquarium'
   | 'proprietary_to_kcl_conversion_beta'
-  | 'new_sketch_mode'
+  | 'classic_sketch_mode'
 
 export interface UserFeatureEntry {
   /** Stable identifier for the feature flag (snake_case). */
@@ -11574,10 +11613,12 @@ export interface Models {
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectFileResponse: ProjectFileResponse
   ProjectPointsToPlane: ProjectPointsToPlane
+  ProjectPublicationInfoResponse: ProjectPublicationInfoResponse
   ProjectResponse: ProjectResponse
   ProjectShareLinkResponse: ProjectShareLinkResponse
   ProjectSummaryResponse: ProjectSummaryResponse
   PublicEmailMarketingConsentRequest: PublicEmailMarketingConsentRequest
+  PublicMailingListMembershipRequest: PublicMailingListMembershipRequest
   PublicProjectOwnerResponse: PublicProjectOwnerResponse
   PublicProjectResponse: PublicProjectResponse
   PublicProjectVoteResponse: PublicProjectVoteResponse

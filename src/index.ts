@@ -447,6 +447,8 @@ import get_user_shortlinks from './api/users/get_user_shortlinks.js'
 import list_users from './api/users/list_users.js'
 import list_users_extended from './api/users/list_users_extended.js'
 import put_public_email_marketing_consent_request from './api/users/put_public_email_marketing_consent_request.js'
+import put_public_mailing_list_subscribe from './api/users/put_public_mailing_list_subscribe.js'
+import put_public_mailing_list_unsubscribe from './api/users/put_public_mailing_list_unsubscribe.js'
 import put_public_sales_form from './api/users/put_public_sales_form.js'
 import put_public_support_form from './api/users/put_public_support_form.js'
 import put_user_cad_user_info_form from './api/users/put_user_cad_user_info_form.js'
@@ -482,6 +484,8 @@ export const users = {
   list_users_extended_pager,
   list_users_pager,
   put_public_email_marketing_consent_request,
+  put_public_mailing_list_subscribe,
+  put_public_mailing_list_unsubscribe,
   put_public_sales_form,
   put_public_support_form,
   put_user_cad_user_info_form,
@@ -841,10 +845,12 @@ export type {
   ProjectEntityToPlane,
   ProjectFileResponse,
   ProjectPointsToPlane,
+  ProjectPublicationInfoResponse,
   ProjectResponse,
   ProjectShareLinkResponse,
   ProjectSummaryResponse,
   PublicEmailMarketingConsentRequest,
+  PublicMailingListMembershipRequest,
   PublicProjectOwnerResponse,
   PublicProjectResponse,
   PublicProjectVoteResponse,
