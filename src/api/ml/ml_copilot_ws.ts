@@ -20,20 +20,6 @@ interface MlCopilotWsParams {
  *
  * @template Req WebSocket request message type
  * @template Res WebSocket response message type
-<<<<<<< HEAD
- * @param functionNameParams Parameters for URL templating and auth
- * @property {Client} [client] Optional client with auth token.
- * @property {boolean} replay If `true`, emit MsgPack Replay for the specified conversation and continue. (query)
- * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
- * @property {number} pr Optional Pull Request number to route traffic. (query)
-||||||| parent of c290235 (WIP)
- * @param functionNameParams Parameters for URL templating and auth
- * @property {Client} [client] Optional client with auth token.
- * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
- * @property {boolean} replay If `true`, emit MsgPack Replay for the specified conversation and continue. (query)
- * @property {number} pr Optional Pull Request number to route traffic. (query)
-=======
->>>>>>> c290235 (WIP)
  */
 export default class MlCopilotWs {
   constructor() {}
@@ -41,8 +27,8 @@ export default class MlCopilotWs {
   /**
    * @param functionNameParams Parameters for URL templating and auth
    * @property {Client} [client] Optional client with auth token.
-   * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
    * @property {boolean} replay If `true`, emit MsgPack Replay for the specified conversation and continue. (query)
+   * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
    * @property {number} pr Optional Pull Request number to route traffic. (query)
    */
   static urlConstructFrom(functionNameParams: MlCopilotWsParams): URL {

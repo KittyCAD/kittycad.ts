@@ -4,9 +4,12 @@ import { OkWebSocketResponseData } from './models'
 import WorkerWebRTC from 'web-worker:./worker-webrtc.ts'
 
 // Based on human interaction speeds.
-const throttle = (functionToThrottleCallsTo: (...args: unknown[]) => void, timeMs: number) => {
+const throttle = (
+  functionToThrottleCallsTo: (...args: unknown[]) => void,
+  timeMs: number
+) => {
   let queuedArgs = undefined
-  
+
   const intervalId = setInterval(() => {
     if (queuedArgs === undefined) return
     const clonedArgs = queuedArgs
@@ -15,7 +18,7 @@ const throttle = (functionToThrottleCallsTo: (...args: unknown[]) => void, timeM
       functionToThrottleCallsTo(...clonedArgs)
     })
   }, timeMs)
-  
+
   return {
     fn: (...args: unknown[]) => {
       queuedArgs = args
@@ -50,23 +53,26 @@ const pointerButtonToInteraction: Record<
   [PointerButton.RIGHT]: 'rotatetrackball',
 }
 
-type WorkerMessage = {
-  from: 'websocket',
-  payload: {
-    type: 'message',
-    data: unknown
-  }
-} | {
-  from: 'wasm',
-  payload: {
-    type: 'message',
-    data: unknown
-  } |
-  {
-    type: 'execute',
-    data: 'done'
-  }
-}
+type WorkerMessage =
+  | {
+      from: 'websocket'
+      payload: {
+        type: 'message'
+        data: unknown
+      }
+    }
+  | {
+      from: 'wasm'
+      payload:
+        | {
+            type: 'message'
+            data: unknown
+          }
+        | {
+            type: 'execute'
+            data: 'done'
+          }
+    }
 
 // Make sure we tie our arguments to the WebSocket initializer's parameters.
 type ZooClientArgs = { client: Client } & Parameters<
@@ -74,22 +80,20 @@ type ZooClientArgs = { client: Client } & Parameters<
 >[0]
 export class WebRTC extends EventTarget {
   private zooClientArgs: ZooClientArgs
-  
+
   private rtcPeerConnection: RTCPeerConnection
   private workerWebRTC: Worker
-  
+
   public track?: RTCTrackEvent
   public channel?: RTCDataChannel
-  
-  public removeMouseEvents: (() => void) = () => {}
 
-  constructor(
-    args: ZooClientArgs
-  ) {
+  public removeMouseEvents: () => void = () => {}
+
+  constructor(args: ZooClientArgs) {
     super()
 
     this.zooClientArgs = args
-    
+
     // Initialization is NOT resource acquisition here. The purpose of early
     // init is worker is available to hook up events to RTCPeerConnection events.
     // Devs must still call .start()
@@ -126,7 +130,7 @@ export class WebRTC extends EventTarget {
 
   deconstructor() {
     this.removeMouseEvents()
-  
+
     this.deice()
 
     this.rtcPeerConnection.removeEventListener(
@@ -141,22 +145,22 @@ export class WebRTC extends EventTarget {
       'connectionstatechange',
       this.webRTCOnConnectionStateChange.bind(this)
     )
-    
+
     this.workerWebRTC.terminate()
     this.rtcPeerConnection.close()
   }
-  
+
   start() {
     this.workerWebRTC.postMessage({
       to: 'worker',
       payload: {
         type: 'start',
-        data: [ this.zooClientArgs ]
-      }
+        data: [this.zooClientArgs],
+      },
     })
   }
- 
-  // For regular wasm calls, for whatever reason devs need it for. 
+
+  // For regular wasm calls, for whatever reason devs need it for.
   // Alternatively they can load up a stand-alone wasm blob via
   // @kittycad/kcl-wasm-lib.
   wasm(funcName: string, ...args: unknown[]): Promise<unknown> {
@@ -168,41 +172,52 @@ export class WebRTC extends EventTarget {
           resolve(msg.payload.data)
         }
       }
-      
+
       this.workerWebRTC.addEventListener('message', onMessage)
-      
+
       this.workerWebRTC.postMessage({
         to: 'wasm',
         payload: {
           type: funcName,
-          data: args ?? []
-        }
+          data: args ?? [],
+        },
       })
-    })      
+    })
   }
-  
+
   executor() {
     return {
-      addEventListener: this.workerWebRTC.addEventListener.bind(this.workerWebRTC, 'message'),
-      removeEventListener: this.workerWebRTC.removeEventListener.bind(this.workerWebRTC, 'message'),
-      submit: (kclStr: string) => new Promise((resolve) => {
-        const onMessage = (ev: MessageEvent<WorkerMessage>) => {
-          const msg = ev.data
-          if (msg.from === 'wasm' && msg.payload.type === 'execute' && msg.payload.data === 'done') {
-            this.workerWebRTC.removeEventListener('message', onMessage)
-            resolve(undefined)
+      addEventListener: this.workerWebRTC.addEventListener.bind(
+        this.workerWebRTC,
+        'message'
+      ),
+      removeEventListener: this.workerWebRTC.removeEventListener.bind(
+        this.workerWebRTC,
+        'message'
+      ),
+      submit: (kclStr: string) =>
+        new Promise((resolve) => {
+          const onMessage = (ev: MessageEvent<WorkerMessage>) => {
+            const msg = ev.data
+            if (
+              msg.from === 'wasm' &&
+              msg.payload.type === 'execute' &&
+              msg.payload.data === 'done'
+            ) {
+              this.workerWebRTC.removeEventListener('message', onMessage)
+              resolve(undefined)
+            }
           }
-        }
-        this.workerWebRTC.addEventListener('message', onMessage)
-        
-        this.workerWebRTC.postMessage({
-          to: 'wasm',
-          payload: {
-            type: 'execute',
-            data: [kclStr]
-          }
-        })
-      })
+          this.workerWebRTC.addEventListener('message', onMessage)
+
+          this.workerWebRTC.postMessage({
+            to: 'wasm',
+            payload: {
+              type: 'execute',
+              data: [kclStr],
+            },
+          })
+        }),
     }
   }
 
@@ -246,16 +261,18 @@ export class WebRTC extends EventTarget {
     // We will receive an sdp_answer saying what is compatible with the server.
     const rtcSessionDescription = await this.rtcPeerConnection.createOffer()
     await this.rtcPeerConnection.setLocalDescription(rtcSessionDescription)
-    
+
     this.workerWebRTC.postMessage({
       to: 'websocket',
       payload: {
         type: 'send',
-        data: [JSON.stringify({
-          type: 'sdp_offer',
-          offer: rtcSessionDescription,
-        })]
-      }
+        data: [
+          JSON.stringify({
+            type: 'sdp_offer',
+            offer: rtcSessionDescription,
+          }),
+        ],
+      },
     })
   }
 
@@ -286,16 +303,18 @@ export class WebRTC extends EventTarget {
       to: 'websocket',
       payload: {
         type: 'send',
-        data: [JSON.stringify({
-          type: 'trickle_ice',
-          candidate: {
-            candidate: ev.candidate.candidate,
-            sdpMid: ev.candidate.sdpMid || undefined,
-            sdpMLineIndex: ev.candidate.sdpMLineIndex || undefined,
-            usernameFragment: ev.candidate.usernameFragment || undefined,
-          },
-        })]
-      }
+        data: [
+          JSON.stringify({
+            type: 'trickle_ice',
+            candidate: {
+              candidate: ev.candidate.candidate,
+              sdpMid: ev.candidate.sdpMid || undefined,
+              sdpMLineIndex: ev.candidate.sdpMLineIndex || undefined,
+              usernameFragment: ev.candidate.usernameFragment || undefined,
+            },
+          }),
+        ],
+      },
     })
   }
 
@@ -318,16 +337,23 @@ export class WebRTC extends EventTarget {
         break
     }
   }
-  
+
   workerWebRTCOnMessage(ev: MessageEvent<WorkerMessage>) {
     const msg = ev.data
-    if (msg.from !== 'websocket') { return }
-    if (msg.payload.type !== 'message') { return }
+    if (msg.from !== 'websocket') {
+      return
+    }
+    if (msg.payload.type !== 'message') {
+      return
+    }
     this.iceOnMessage(msg.payload)
   }
 
   ice() {
-    this.workerWebRTC.addEventListener('message', this.workerWebRTCOnMessage.bind(this))
+    this.workerWebRTC.addEventListener(
+      'message',
+      this.workerWebRTCOnMessage.bind(this)
+    )
     this.rtcPeerConnection.addEventListener(
       'icecandidate',
       this.iceOnIceCandidate.bind(this)
@@ -335,7 +361,10 @@ export class WebRTC extends EventTarget {
   }
 
   deice() {
-    this.workerWebRTC.removeEventListener('message', this.workerWebRTCOnMessage.bind(this))
+    this.workerWebRTC.removeEventListener(
+      'message',
+      this.workerWebRTCOnMessage.bind(this)
+    )
     this.rtcPeerConnection.removeEventListener(
       'icecandidate',
       this.iceOnIceCandidate
@@ -357,19 +386,21 @@ export class WebRTC extends EventTarget {
           to: 'websocket',
           payload: {
             type: 'send',
-            data: [JSON.stringify({
-              type: 'modeling_cmd_req',
-              cmd_id: '00000000-0000-0000-0000-000000000000',
-              cmd: {
-                type: pointerStateToType[targetPointerState],
-                interaction,
-                window: {
-                  x: ev.offsetX,
-                  y: ev.offsetY,
+            data: [
+              JSON.stringify({
+                type: 'modeling_cmd_req',
+                cmd_id: '00000000-0000-0000-0000-000000000000',
+                cmd: {
+                  type: pointerStateToType[targetPointerState],
+                  interaction,
+                  window: {
+                    x: ev.offsetX,
+                    y: ev.offsetY,
+                  },
                 },
-              },
-            })]
-          }
+              }),
+            ],
+          },
         })
 
         pointerButton = ev.button
@@ -379,18 +410,19 @@ export class WebRTC extends EventTarget {
     const onPointerDown = onPointerState(PointerState.DOWN)
     const onPointerUp = onPointerState(PointerState.UP)
     const onPointerLeave = (ev: PointerEvent) => {
-        const interaction = pointerButtonToInteraction[pointerButton]
-        if (interaction === undefined) {
-          return
-        }
-        
-        pointerState = PointerState.UP
-        
-        this.workerWebRTC.postMessage({
-          to: 'websocket',
-          payload: {
-            type: 'send',
-            data: [JSON.stringify({
+      const interaction = pointerButtonToInteraction[pointerButton]
+      if (interaction === undefined) {
+        return
+      }
+
+      pointerState = PointerState.UP
+
+      this.workerWebRTC.postMessage({
+        to: 'websocket',
+        payload: {
+          type: 'send',
+          data: [
+            JSON.stringify({
               type: 'modeling_cmd_req',
               cmd_id: '00000000-0000-0000-0000-000000000000',
               cmd: {
@@ -401,9 +433,10 @@ export class WebRTC extends EventTarget {
                   y: ev.offsetY,
                 },
               },
-            })]
-          }
-        })
+            }),
+          ],
+        },
+      })
     }
 
     let sequence = 0
@@ -445,8 +478,8 @@ export class WebRTC extends EventTarget {
           },
         })
       )
-    }, 1000/30)
-    
+    }, 1000 / 30)
+
     const onMouseWheel = throttle((ev: WheelEvent) => {
       ev.preventDefault()
       this.channel?.send(
@@ -455,11 +488,12 @@ export class WebRTC extends EventTarget {
           cmd_id: '00000000-0000-0000-0000-000000000000',
           cmd: {
             type: 'default_camera_zoom',
-            magnitude: Math.sign(ev.deltaY) * -1 * window.devicePixelRatio * 100,
+            magnitude:
+              Math.sign(ev.deltaY) * -1 * window.devicePixelRatio * 100,
           },
         })
       )
-    }, 1000/30)
+    }, 1000 / 30)
 
     const onDataChannel = (event: RTCDataChannelEvent) => {
       this.channel = event.channel
@@ -471,7 +505,7 @@ export class WebRTC extends EventTarget {
     }
 
     this.rtcPeerConnection.addEventListener('datachannel', onDataChannel)
-    
+
     this.removeMouseEvents = () => {
       this.rtcPeerConnection.removeEventListener('datachannel', onDataChannel)
       el.removeEventListener('pointerdown', onPointerDown)
@@ -490,8 +524,8 @@ export class WebRTC extends EventTarget {
       to: 'websocket',
       payload: {
         type: 'send',
-        data: args
-      }
+        data: args,
+      },
     })
   }
 }

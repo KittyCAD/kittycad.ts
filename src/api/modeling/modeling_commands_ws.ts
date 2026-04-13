@@ -33,38 +33,6 @@ interface ModelingCommandsWsParams {
  *
  * @template Req WebSocket request message type
  * @template Res WebSocket response message type
-<<<<<<< HEAD
- * @param functionNameParams Parameters for URL templating and auth
- * @property {Client} [client] Optional client with auth token.
- * @property {number} video_res_width Width of the video feed. Must be a multiple of 4. (query)
- * @property {number} video_res_height Height of the video feed. Must be a multiple of 4. (query)
- * @property {number} fps Frames per second of the video feed. (query)
- * @property {boolean} unlocked_framerate If true, engine will render video frames as fast as it can. (query)
- * @property {PostEffectType} post_effect Engine Post effects (such as SSAO) (query)
- * @property {boolean} webrtc If true, will start a webrtc connection. (query)
- * @property {string} pool An optional identifier for a pool of engine instances. The 'default' pool is used when none is specified. (query)
- * @property {boolean} show_grid If true, will show the grid at the start of the session. (query)
- * @property {string} replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
- * @property {string} api_call_id API Call ID for distributed tracing (query)
- * @property {boolean} order_independent_transparency Enables nicer visuals for transparent surfaces. This slows down rendering, so it's off by default. (query)
- * @property {number} pr Optional Pull Request number to route traffic. (query)
-||||||| parent of c290235 (WIP)
- * @param functionNameParams Parameters for URL templating and auth
- * @property {Client} [client] Optional client with auth token.
- * @property {string} api_call_id API Call ID for distributed tracing (query)
- * @property {number} fps Frames per second of the video feed. (query)
- * @property {boolean} order_independent_transparency Enables nicer visuals for transparent surfaces. This slows down rendering, so it's off by default. (query)
- * @property {string} pool An optional identifier for a pool of engine instances. The 'default' pool is used when none is specified. (query)
- * @property {PostEffectType} post_effect Engine Post effects (such as SSAO) (query)
- * @property {string} replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
- * @property {boolean} show_grid If true, will show the grid at the start of the session. (query)
- * @property {boolean} unlocked_framerate If true, engine will render video frames as fast as it can. (query)
- * @property {number} video_res_height Height of the video feed. Must be a multiple of 4. (query)
- * @property {number} video_res_width Width of the video feed. Must be a multiple of 4. (query)
- * @property {boolean} webrtc If true, will start a webrtc connection. (query)
- * @property {number} pr Optional Pull Request number to route traffic. (query)
-=======
->>>>>>> c290235 (WIP)
  */
 export default class ModelingCommandsWs {
   constructor() {}
@@ -72,67 +40,35 @@ export default class ModelingCommandsWs {
   /**
    * @param functionNameParams Parameters for URL templating and auth
    * @property {Client} [client] Optional client with auth token.
-   * @property {string} api_call_id API Call ID for distributed tracing (query)
-   * @property {number} fps Frames per second of the video feed. (query)
-   * @property {boolean} order_independent_transparency Enables nicer visuals for transparent surfaces. This slows down rendering, so it's off by default. (query)
-   * @property {string} pool An optional identifier for a pool of engine instances. The 'default' pool is used when none is specified. (query)
-   * @property {PostEffectType} post_effect Engine Post effects (such as SSAO) (query)
-   * @property {string} replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
-   * @property {boolean} show_grid If true, will show the grid at the start of the session. (query)
-   * @property {boolean} unlocked_framerate If true, engine will render video frames as fast as it can. (query)
-   * @property {number} video_res_height Height of the video feed. Must be a multiple of 4. (query)
    * @property {number} video_res_width Width of the video feed. Must be a multiple of 4. (query)
+   * @property {number} video_res_height Height of the video feed. Must be a multiple of 4. (query)
+   * @property {number} fps Frames per second of the video feed. (query)
+   * @property {boolean} unlocked_framerate If true, engine will render video frames as fast as it can. (query)
+   * @property {PostEffectType} post_effect Engine Post effects (such as SSAO) (query)
    * @property {boolean} webrtc If true, will start a webrtc connection. (query)
+   * @property {string} pool An optional identifier for a pool of engine instances. The 'default' pool is used when none is specified. (query)
+   * @property {boolean} show_grid If true, will show the grid at the start of the session. (query)
+   * @property {string} replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
+   * @property {string} api_call_id API Call ID for distributed tracing (query)
+   * @property {boolean} order_independent_transparency Enables nicer visuals for transparent surfaces. This slows down rendering, so it's off by default. (query)
    * @property {number} pr Optional Pull Request number to route traffic. (query)
    */
   static urlConstructFrom(functionNameParams: ModelingCommandsWsParams): URL {
     const path = `/ws/modeling/commands`
     const qs = buildQuery({
-<<<<<<< HEAD
-      video_res_width: this.functionNameParams.video_res_width,
-      video_res_height: this.functionNameParams.video_res_height,
-      fps: this.functionNameParams.fps,
-      unlocked_framerate: this.functionNameParams.unlocked_framerate,
-      post_effect: this.functionNameParams.post_effect,
-      webrtc: this.functionNameParams.webrtc,
-      pool: this.functionNameParams.pool,
-      show_grid: this.functionNameParams.show_grid,
-      replay: this.functionNameParams.replay,
-      api_call_id: this.functionNameParams.api_call_id,
-||||||| parent of c290235 (WIP)
-      api_call_id: this.functionNameParams.api_call_id,
-      fps: this.functionNameParams.fps,
-=======
-      api_call_id: functionNameParams.api_call_id,
-      fps: functionNameParams.fps,
->>>>>>> c290235 (WIP)
-      order_independent_transparency:
-<<<<<<< HEAD
-        this.functionNameParams.order_independent_transparency,
-      pr: this.functionNameParams.pr,
-||||||| parent of c290235 (WIP)
-        this.functionNameParams.order_independent_transparency,
-      pool: this.functionNameParams.pool,
-      post_effect: this.functionNameParams.post_effect,
-      replay: this.functionNameParams.replay,
-      show_grid: this.functionNameParams.show_grid,
-      unlocked_framerate: this.functionNameParams.unlocked_framerate,
-      video_res_height: this.functionNameParams.video_res_height,
-      video_res_width: this.functionNameParams.video_res_width,
-      webrtc: this.functionNameParams.webrtc,
-      pr: this.functionNameParams.pr,
-=======
-        functionNameParams.order_independent_transparency,
-      pool: functionNameParams.pool,
-      post_effect: functionNameParams.post_effect,
-      replay: functionNameParams.replay,
-      show_grid: functionNameParams.show_grid,
-      unlocked_framerate: functionNameParams.unlocked_framerate,
-      video_res_height: functionNameParams.video_res_height,
       video_res_width: functionNameParams.video_res_width,
+      video_res_height: functionNameParams.video_res_height,
+      fps: functionNameParams.fps,
+      unlocked_framerate: functionNameParams.unlocked_framerate,
+      post_effect: functionNameParams.post_effect,
       webrtc: functionNameParams.webrtc,
+      pool: functionNameParams.pool,
+      show_grid: functionNameParams.show_grid,
+      replay: functionNameParams.replay,
+      api_call_id: functionNameParams.api_call_id,
+      order_independent_transparency:
+        functionNameParams.order_independent_transparency,
       pr: functionNameParams.pr,
->>>>>>> c290235 (WIP)
     })
     const url = path + qs
     // Backwards compatible for the BASE_URL env variable
