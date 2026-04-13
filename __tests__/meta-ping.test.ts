@@ -1,4 +1,4 @@
-import { Client, meta } from '../src/index.js'
+import { Client, meta } from '../dist/mjs/index.js'
 
 const client = new Client()
 

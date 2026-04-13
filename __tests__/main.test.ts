@@ -1,5 +1,5 @@
 import fsp from 'fs/promises'
-import { ApiError, Client, file } from '../src/index.js'
+import { ApiError, Client, file } from '../dist/mjs/index.js'
 
 const client = new Client(null)
 

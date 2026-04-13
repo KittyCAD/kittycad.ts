@@ -77,6 +77,7 @@ type WorkerMessage =
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
 >[0]
+
 export class WebRTC extends EventTarget {
   private zooClientArgs: ZooClientArgs
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { Client, meta } from '../src/index.ts'
+import { Client, meta } from '../dist/mjs/index.js'
 
 function makeRes(body, status = 200) {
   return new Response(JSON.stringify(body), {
