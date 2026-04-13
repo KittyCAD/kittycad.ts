@@ -3,6 +3,27 @@ import ModelingCommandsWs from './api/modeling/modeling_commands_ws'
 import { OkWebSocketResponseData } from './models'
 import WorkerWebRTC from 'web-worker:./worker-webrtc.ts'
 
+// Based on human interaction speeds.
+const throttle = (functionToThrottleCallsTo: (...args: unknown[]) => void, timeMs: number) => {
+  let queuedArgs = undefined
+  
+  const intervalId = setInterval(() => {
+    if (queuedArgs === undefined) return
+    const clonedArgs = queuedArgs
+    queuedArgs = undefined
+    window.requestAnimationFrame(() => {
+      functionToThrottleCallsTo(...clonedArgs)
+    })
+  }, timeMs)
+  
+  return {
+    fn: (...args: unknown[]) => {
+      queuedArgs = args
+    },
+    intervalId,
+  }
+}
+
 enum PointerState {
   DOWN,
   UP,
@@ -40,12 +61,17 @@ type WorkerMessage = {
   payload: {
     type: 'message',
     data: unknown
+  } |
+  {
+    type: 'execute',
+    data: 'done'
   }
 }
 
+// Make sure we tie our arguments to the WebSocket initializer's parameters.
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
->
+>[0]
 export class WebRTC extends EventTarget {
   private zooClientArgs: ZooClientArgs
   
@@ -115,6 +141,9 @@ export class WebRTC extends EventTarget {
       'connectionstatechange',
       this.webRTCOnConnectionStateChange.bind(this)
     )
+    
+    this.workerWebRTC.terminate()
+    this.rtcPeerConnection.close()
   }
   
   start() {
@@ -132,10 +161,11 @@ export class WebRTC extends EventTarget {
   // @kittycad/kcl-wasm-lib.
   wasm(funcName: string, ...args: unknown[]): Promise<unknown> {
     return new Promise((resolve) => {
-      const onMessage = (ev: MessageEvent & WorkerMessage) => {
-        if (ev.from === 'wasm') {
+      const onMessage = (ev: MessageEvent<WorkerMessage>) => {
+        const msg = ev.data
+        if (msg.from === 'wasm') {
           this.workerWebRTC.removeEventListener('message', onMessage)
-          resolve(ev.payload.data)
+          resolve(msg.payload.data)
         }
       }
       
@@ -151,11 +181,20 @@ export class WebRTC extends EventTarget {
     })      
   }
   
-  prepareToExecuteKcl(kclStr: string) {
+  executor() {
     return {
       addEventListener: this.workerWebRTC.addEventListener.bind(this.workerWebRTC, 'message'),
-      remaddEventListener: this.workerWebRTC.removeEventListener.bind(this.workerWebRTC, 'message'),
-      start: () => {
+      removeEventListener: this.workerWebRTC.removeEventListener.bind(this.workerWebRTC, 'message'),
+      submit: (kclStr: string) => new Promise((resolve) => {
+        const onMessage = (ev: MessageEvent<WorkerMessage>) => {
+          const msg = ev.data
+          if (msg.from === 'wasm' && msg.payload.type === 'execute' && msg.payload.data === 'done') {
+            this.workerWebRTC.removeEventListener('message', onMessage)
+            resolve(undefined)
+          }
+        }
+        this.workerWebRTC.addEventListener('message', onMessage)
+        
         this.workerWebRTC.postMessage({
           to: 'wasm',
           payload: {
@@ -163,7 +202,7 @@ export class WebRTC extends EventTarget {
             data: [kclStr]
           }
         })
-      }
+      })
     }
   }
 
@@ -339,11 +378,37 @@ export class WebRTC extends EventTarget {
 
     const onPointerDown = onPointerState(PointerState.DOWN)
     const onPointerUp = onPointerState(PointerState.UP)
-    const onPointerLeave = onPointerUp
+    const onPointerLeave = (ev: PointerEvent) => {
+        const interaction = pointerButtonToInteraction[pointerButton]
+        if (interaction === undefined) {
+          return
+        }
+        
+        pointerState = PointerState.UP
+        
+        this.workerWebRTC.postMessage({
+          to: 'websocket',
+          payload: {
+            type: 'send',
+            data: [JSON.stringify({
+              type: 'modeling_cmd_req',
+              cmd_id: '00000000-0000-0000-0000-000000000000',
+              cmd: {
+                type: pointerStateToType[pointerState],
+                interaction,
+                window: {
+                  x: ev.offsetX,
+                  y: ev.offsetY,
+                },
+              },
+            })]
+          }
+        })
+    }
 
     let sequence = 0
 
-    const onPointerMove = (ev: PointerEvent) => {
+    const onPointerMove = throttle((ev: PointerEvent) => {
       if (pointerState === PointerState.DOWN) {
         this.channel?.send(
           JSON.stringify({
@@ -380,14 +445,29 @@ export class WebRTC extends EventTarget {
           },
         })
       )
-    }
+    }, 1000/30)
+    
+    const onMouseWheel = throttle((ev: WheelEvent) => {
+      ev.preventDefault()
+      this.channel?.send(
+        JSON.stringify({
+          type: 'modeling_cmd_req',
+          cmd_id: '00000000-0000-0000-0000-000000000000',
+          cmd: {
+            type: 'default_camera_zoom',
+            magnitude: Math.sign(ev.deltaY) * -1 * window.devicePixelRatio * 100,
+          },
+        })
+      )
+    }, 1000/30)
 
     const onDataChannel = (event: RTCDataChannelEvent) => {
       this.channel = event.channel
       el.addEventListener('pointerdown', onPointerDown)
-      el.addEventListener('pointermove', onPointerMove)
+      el.addEventListener('pointermove', onPointerMove.fn)
       el.addEventListener('pointerup', onPointerUp)
       el.addEventListener('pointerleave', onPointerLeave)
+      el.addEventListener('wheel', onMouseWheel.fn, { passive: false })
     }
 
     this.rtcPeerConnection.addEventListener('datachannel', onDataChannel)
@@ -395,8 +475,12 @@ export class WebRTC extends EventTarget {
     this.removeMouseEvents = () => {
       this.rtcPeerConnection.removeEventListener('datachannel', onDataChannel)
       el.removeEventListener('pointerdown', onPointerDown)
-      el.removeEventListener('pointermove', onPointerMove)
+      el.removeEventListener('pointermove', onPointerMove.fn)
+      clearInterval(onPointerMove.intervalId)
       el.removeEventListener('pointerup', onPointerUp)
+      el.removeEventListener('pointerleave', onPointerLeave)
+      el.removeEventListener('wheel', onMouseWheel.fn)
+      clearInterval(onMouseWheel.intervalId)
     }
   }
 

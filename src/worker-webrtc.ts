@@ -59,13 +59,12 @@ const start = async (args: ZooClientArgs) => {
   zooModelingCommandsWs.addEventListener('message', (ev: MessageEvent) => {
     postMessage({ from: 'websocket', payload: { type: 'message', data: ev.data }})
   })
-    
-  /* const pingIntervalId = */ setInterval(() => {
+
+  // The termination of the Web Worker will terminate this interval.
+  setInterval(() => {
     if (zooModelingCommandsWs.readyState !== WebSocket.OPEN) { return }
     zooModelingCommandsWs.send(JSON.stringify({ type: 'ping' }))
   }, 4000)
-      
-  // clearInterval(this.pingIntervalId)
 }
 
 
@@ -102,22 +101,47 @@ const engineCommandManagerLite = {
   }
 }
 
-const projectFsManagerLite = {
-  async readFile(_path: string): Promise<string | Uint8Array> {
-    return ''
-  },
-  async exists(_path: string): Promise<boolean> {
-    return false
-  },
-  async getAllFiles(_path: string): Promise<string[]> {
-    return []
-  }
-}
+// This function can take:
+// * A plain KCL string.
+// * A simple map of filepath -> KCL string.
+// * (TODO: Or a blob of bytes that's a tarball from our Aquarium.)
+const kclExecute = (kclStrOrProject: string | Map<string, string>, mainKclPathName = 'main.kcl') => {
+  const projectFsManagerLiteKclStr = (kclStr: string) => ({
+    async readFile(_targetPath: string): Promise<Uint8Array> {
+      return new TextEncoder().encode(kclStr)
+    },
+    async exists(_targetPath: string): Promise<boolean> {
+      return false
+    },
+    async getAllFiles(_targetPath: string): Promise<string[]> {
+      return [kclStr]
+    }
+  })
   
-const kclExecute = (kclStr: string) => {
+  const projectFsManagerLiteMap = (pathKclMap: Map<string, string>) => ({
+    async readFile(targetPath: string): Promise<Uint8Array> {
+      const kclStr = pathKclMap.get(targetPath) ?? ''
+      return new TextEncoder().encode(kclStr)
+    },
+    async exists(targetPath: string): Promise<boolean> {
+      return pathKclMap.has(targetPath)
+    },
+    async getAllFiles(_targetPath: string): Promise<string[]> {
+      return Array.from(pathKclMap.values())
+    }
+  })
+  
+  const projectFsManagerLite = typeof kclStrOrProject === 'string'
+    ? projectFsManagerLiteKclStr(kclStrOrProject)
+    : projectFsManagerLiteMap(kclStrOrProject)
+    
+  const entryFile = typeof kclStrOrProject === 'string'
+    ? kclStrOrProject
+    : kclStrOrProject.get(mainKclPathName)
+    
   const executorContext = new zooWasm.Context(engineCommandManagerLite, projectFsManagerLite)
-  const program = zooWasm.parse_wasm(kclStr)[0]
-  executorContext.execute(JSON.stringify(program), '', '{}')
+  const program = zooWasm.parse_wasm(entryFile)[0]
+  return executorContext.execute(JSON.stringify(program), mainKclPathName, '{}')
 }
 
 self.addEventListener('message', (ev: MessageEvent & MessageEventMain) => {
@@ -135,8 +159,17 @@ self.addEventListener('message', (ev: MessageEvent & MessageEventMain) => {
     }
     case 'wasm': {
       // Special cases.
-      if (msg.payload.type === 'execute' && typeof msg.payload.data[0] === 'string') {
-          kclExecute(msg.payload.data[0])
+      if (msg.payload.type === 'execute') {
+          // Returns when the wasm code is finished processing.
+          kclExecute(msg.payload.data[0]).then(() => {
+            postMessage({
+              from: 'wasm',
+              payload: {
+                type: 'execute',
+                data: 'done',
+              }
+            })
+          })
       } else {
         // Fallthrough to a function in the wasm blob.
         postMessage(zooWasm[msg.payload.type](...msg.payload.data))
