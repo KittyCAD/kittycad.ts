@@ -441,6 +441,7 @@ import delete_user_shortlink from './api/users/delete_user_shortlink.js'
 import get_oauth2_providers_for_user from './api/users/get_oauth2_providers_for_user.js'
 import get_session_for_user from './api/users/get_session_for_user.js'
 import get_user from './api/users/get_user.js'
+import get_user_cad_user_info_form from './api/users/get_user_cad_user_info_form.js'
 import get_user_extended from './api/users/get_user_extended.js'
 import get_user_privacy_settings from './api/users/get_user_privacy_settings.js'
 import get_user_self from './api/users/get_user_self.js'
@@ -475,6 +476,7 @@ export const users = {
   get_oauth2_providers_for_user,
   get_session_for_user,
   get_user,
+  get_user_cad_user_info_form,
   get_user_extended,
   get_user_privacy_settings,
   get_user_self,
