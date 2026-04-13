@@ -3,7 +3,6 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
-import webWorkerLoader from 'rollup-plugin-web-worker-loader'
 import pkg from './package.json'
 
 const extensions = ['.js', '.ts']
@@ -19,7 +18,6 @@ const plugins = [
   json(),
   nodeResolve({ extensions, browser: false, preferBuiltins: true }),
   commonjs(),
-  webWorkerLoader(),
   babel({ extensions }),
   terser(),
 ]
