@@ -1,4 +1,4 @@
-import { payments, Client } from '../../src/index.js'
+import { payments, Client } from '@kittycad/lib'
 
 const client = new Client()
 

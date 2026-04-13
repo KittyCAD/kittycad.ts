@@ -1,6 +1,7 @@
 import { Client } from './client'
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws'
 import { OkWebSocketResponseData } from './models'
+import WorkerWebRTC from 'web-worker:./worker-webrtc.ts'
 
 // Based on human interaction speeds.
 const throttle = (
@@ -97,10 +98,7 @@ export class WebRTC extends EventTarget {
     // Initialization is NOT resource acquisition here. The purpose of early
     // init is worker is available to hook up events to RTCPeerConnection events.
     // Devs must still call .start()
-    this.workerWebRTC = new Worker(
-      new URL('./worker-webrtc.ts', import.meta.url),
-      { type: 'module' }
-    )
+    this.workerWebRTC = new WorkerWebRTC()
 
     // Default topology for RTCPeerConnection
     this.rtcPeerConnection = new RTCPeerConnection({

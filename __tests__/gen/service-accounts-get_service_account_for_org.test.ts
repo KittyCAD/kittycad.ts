@@ -1,4 +1,4 @@
-import { service_accounts, Client, ApiError } from '../../src/index.js'
+import { service_accounts, Client, ApiError } from '@kittycad/lib'
 
 const client = new Client()
 

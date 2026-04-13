@@ -1,4 +1,4 @@
-import { apps, Client, ApiError } from '../../src/index.js'
+import { apps, Client, ApiError } from '@kittycad/lib'
 import fsp from 'fs/promises'
 
 const client = new Client()

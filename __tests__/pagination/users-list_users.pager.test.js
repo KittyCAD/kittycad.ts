@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { Client, users } from '../../src/index.ts'
+import { Client, users } from '@kittycad/lib'
 
 const iso = '2023-01-01T00:00:00Z'
 

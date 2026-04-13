@@ -1,4 +1,4 @@
-import { Client, meta } from '../dist/mjs/index.js'
+import { Client, meta } from '@kittycad/lib'
 
 const client = new Client()
 

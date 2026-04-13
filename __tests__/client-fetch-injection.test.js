@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { Client, meta } from '../dist/mjs/index.js'
+import { Client, meta } from '@kittycad/lib'
 
 function makeRes(body, status = 200) {
   return new Response(JSON.stringify(body), {
