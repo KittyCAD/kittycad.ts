@@ -363,6 +363,7 @@ import delete_project_share_link from './api/projects/delete_project_share_link.
 import delete_public_project_vote from './api/projects/delete_public_project_vote.js'
 import download_project from './api/projects/download_project.js'
 import get_project from './api/projects/get_project.js'
+import get_project_thumbnail from './api/projects/get_project_thumbnail.js'
 import get_public_project_thumbnail from './api/projects/get_public_project_thumbnail.js'
 import list_project_categories from './api/projects/list_project_categories.js'
 import list_project_share_links from './api/projects/list_project_share_links.js'
@@ -379,6 +380,7 @@ export const projects = {
   delete_public_project_vote,
   download_project,
   get_project,
+  get_project_thumbnail,
   get_public_project_thumbnail,
   list_project_categories,
   list_project_share_links,

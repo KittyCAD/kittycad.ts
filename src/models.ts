@@ -5131,6 +5131,8 @@ export type ModelingCmd =
       /** The maximum acceptable surface gap computed between the filleted surfaces. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'solid3d_fillet_edge'
+      /** If true, use the legacy CSG algorithm. */
+      use_legacy?: boolean
     }
   | {
       /** The cut type and information required to perform the cut. */
@@ -5154,6 +5156,8 @@ export type ModelingCmd =
       /** The maximum acceptable surface gap computed between the cut surfaces. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'solid3d_cut_edges'
+      /** If true, use the legacy CSG algorithm. */
+      use_legacy?: boolean
     }
   | {
       /** format:uuid, description:Which face is being queried. */
@@ -5304,6 +5308,10 @@ export type ModelingCmd =
       backface_color?: Color
       /** nullable:true, description:The default system color. */
       color?: Color
+      /** nullable:true, description:The default color to use for highlight */
+      highlight_color?: Color
+      /** nullable:true, description:The default color to use for selection */
+      selection_color?: Color
       type: 'set_default_system_properties'
     }
   | {
@@ -5692,6 +5700,8 @@ export type ModelingCmd =
       /** The maximum acceptable surface gap computed between the joined solids. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'boolean_union'
+      /** If true, use the legacy CSG algorithm. */
+      use_legacy?: boolean
     }
   | {
       /**
@@ -5710,6 +5720,8 @@ export type ModelingCmd =
       /** The maximum acceptable surface gap computed between the joined solids. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'boolean_intersection'
+      /** If true, use the legacy CSG algorithm. */
+      use_legacy?: boolean
     }
   | {
       /**
@@ -5734,6 +5746,8 @@ export type ModelingCmd =
        */
       tool_ids: string[]
       type: 'boolean_subtract'
+      /** If true, use the legacy CSG algorithm. */
+      use_legacy?: boolean
     }
   | {
       /**
@@ -5765,6 +5779,8 @@ export type ModelingCmd =
        */
       tool_ids?: string[]
       type: 'boolean_imprint'
+      /** If true, use the legacy CSG algorithm. */
+      use_legacy?: boolean
     }
   | {
       /**
@@ -8623,10 +8639,10 @@ export interface ProjectResponse {
   /**
    * {
    *   "nullable": true,
-   *   "description": "Relative path to the primary preview image, when one exists."
+   *   "description": "Stable authenticated thumbnail URL, when one exists."
    * }
    */
-  primary_preview_path?: string
+  preview_url?: string
   /** Relative path to the project's manifest file. */
   project_toml_path: string
   /** Owner-facing publication metadata for the current and last live version. */
@@ -8668,10 +8684,10 @@ export interface ProjectSummaryResponse {
   /**
    * {
    *   "nullable": true,
-   *   "description": "Relative path to the primary preview image, when one exists."
+   *   "description": "Stable authenticated thumbnail URL, when one exists."
    * }
    */
-  primary_preview_path?: string
+  preview_url?: string
   /** Relative path to the project's manifest file. */
   project_toml_path: string
   /** Owner-facing publication metadata for the current and last live version. */
@@ -8708,6 +8724,13 @@ export interface PublicProjectResponse {
   id: Uuid
   /** format:int64, description:Current total public like count for the project. */
   like_count: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Whether the authenticated viewer currently likes the project."
+   * }
+   */
+  liked?: boolean
   /** Public creator metadata. */
   owner: PublicProjectOwnerResponse
   /** nullable:true, description:Stable public thumbnail URL, when one exists. */
