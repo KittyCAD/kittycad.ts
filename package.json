@@ -1,6 +1,6 @@
 {
   "name": "@kittycad/lib",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Javascript library for KittyCAD API",
   "type": "module",
   "keywords": [
@@ -44,6 +44,7 @@
     "@babel/preset-env": "^7.18.9",
     "@babel/preset-typescript": "^7.18.6",
     "@biomejs/biome": "^1.9.0",
+    "@kittycad/kcl-wasm-lib": "^0.1.141",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^29.0.2",
     "@rollup/plugin-json": "^4.1.0",
@@ -81,7 +82,6 @@
   "author": "Kurt Hutten <kurt@zoo.dev>",
   "license": "MIT",
   "dependencies": {
-    "@kittycad/kcl-wasm-lib": "^0.1.141",
     "@msgpack/msgpack": "^3.1.3",
     "bson": "^7.1.1",
     "cross-fetch": "^4.0.0",
