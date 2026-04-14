@@ -1,4 +1,4 @@
-import { orgs, Client } from '../../src/index.js'
+import { orgs, Client } from '@kittycad/lib'
 
 const client = new Client()
 

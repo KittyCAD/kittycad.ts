@@ -1,4 +1,4 @@
-import { oauth2, Client, ApiError } from '../../src/index.js'
+import { oauth2, Client, ApiError } from '@kittycad/lib'
 
 const client = new Client()
 

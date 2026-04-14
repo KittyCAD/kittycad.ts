@@ -1,4 +1,4 @@
-import { meta, Client, ApiError } from '../../src/index.js'
+import { meta, Client, ApiError } from '@kittycad/lib'
 
 const client = new Client()
 

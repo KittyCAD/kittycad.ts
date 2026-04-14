@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { Client, oauth2 } from '../../src/index.ts'
+import { Client, oauth2 } from '@kittycad/lib'
 
 function makeRes(body) {
   return new Response(JSON.stringify(body), {
