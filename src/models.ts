@@ -8537,6 +8537,8 @@ export interface PrivacySettings {
   can_train_on_data: boolean
 }
 
+export type ProjectArchiveFormat = 'tar' | 'zip'
+
 export interface ProjectCategoryResponse {
   /** Optional helper text shown to users choosing a category. */
   description: string
@@ -11632,6 +11634,7 @@ export interface Models {
   PostEffectType: PostEffectType
   PriceUpsertRequest: PriceUpsertRequest
   PrivacySettings: PrivacySettings
+  ProjectArchiveFormat: ProjectArchiveFormat
   ProjectCategoryResponse: ProjectCategoryResponse
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectFileResponse: ProjectFileResponse
