@@ -75,7 +75,7 @@
     "build": "rimraf dist && npm run build:types && npm run build:js",
     "gen": "rimraf build/gen && tsc --outDir build/gen --module NodeNext --moduleResolution NodeNext --target ES2022 --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck gen/modelsGen.ts gen/apiGen.ts gen/expectedToFail.ts && node ./build/gen/modelsGen.js && npm run fmt",
     "test": "vitest",
-    "tsc": "tsc",
+    "tsc": "tsc && tsc -p tsconfig.tests.json",
     "fmt": "biome format --write gen src __tests__ scripts *.js *.ts"
   },
   "author": "Kurt Hutten <kurt@zoo.dev>",
