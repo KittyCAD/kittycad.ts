@@ -41,7 +41,7 @@ const start = async (args: ZooClientArgs) => {
   // today but it's intuitive to think this bag of data and functions is available
   // before the WebSocket is ready since they are "pure".
 
-  await fetch(new URL('http://localhost:3000/kcl_wasm_lib_bg.wasm'))
+  await fetch(new URL('/kcl_wasm_lib_bg.wasm', location.href))
     .then((resp) => resp.arrayBuffer())
     .then((buf) =>
       zooWasmInit({
