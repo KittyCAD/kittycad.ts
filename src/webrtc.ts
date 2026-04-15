@@ -491,8 +491,7 @@ export class WebRTC extends EventTarget {
           cmd_id: '00000000-0000-0000-0000-000000000000',
           cmd: {
             type: 'default_camera_zoom',
-            magnitude:
-              Math.sign(ev.deltaY) * -1 * window.devicePixelRatio * 50,
+            magnitude: Math.sign(ev.deltaY) * -1 * window.devicePixelRatio * 50,
           },
         })
       )
@@ -520,37 +519,39 @@ export class WebRTC extends EventTarget {
       clearInterval(onMouseWheel.intervalId)
     }
   }
-  
-  resize(args: { width: number, height: number }) {
+
+  resize(args: { width: number; height: number }) {
     window.requestAnimationFrame(() => {
-      this.send(JSON.stringify({
-        type: 'modeling_cmd_req',
-        cmd_id: '00000000-0000-0000-0000-000000000000',
-        cmd: {
-          type: 'reconfigure_stream',
-          ...args,
-          fps: 30,
-        },
-      }))
+      this.send(
+        JSON.stringify({
+          type: 'modeling_cmd_req',
+          cmd_id: '00000000-0000-0000-0000-000000000000',
+          cmd: {
+            type: 'reconfigure_stream',
+            ...args,
+            fps: 30,
+          },
+        })
+      )
     })
   }
-  
+
   addResizeObserver(el: HTMLElement) {
     const elVideo = el.querySelector<HTMLVideoElement>('video')
-    
+
     const onResize = throttle((entries: ResizeObserverEntry[]) => {
       // There'll only ever be 1, but this is safer.
       for (const entry of entries) {
         const width = entry.contentRect.width - (entry.contentRect.width % 4)
         const height = entry.contentRect.height - (entry.contentRect.height % 4)
-        
+
         elVideo.width = width
         elVideo.height = height
-        
+
         this.resize({ width, height })
       }
-    }, 1000/16)
-    
+    }, 1000 / 16)
+
     const observerResize = new ResizeObserver(onResize.fn)
     observerResize.observe(el)
     this.removeResizeObserver = () => {
