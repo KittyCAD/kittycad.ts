@@ -1,34 +1,33 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { Uuid, ProjectArchiveFormat } from '../../models.js'
+import { PublicProjectResponse, Uuid } from '../../models.js'
 
-interface DownloadProjectInput {
+interface GetPublicProjectInput {
   client?: Client
   id: Uuid
-  format?: ProjectArchiveFormat
 }
 
-type DownloadProjectReturn = unknown
+type GetPublicProjectReturn = PublicProjectResponse
 
 /**
- * Download one of the authenticated user's projects as a tar archive.
+ * Get one publicly visible community project.
  *
  * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
- * @property {ProjectArchiveFormat} format Archive format to return. Defaults to `tar`. (query)
- * @returns {Promise<DownloadProjectReturn>} Response payload.
+ * @returns {Promise<GetPublicProjectReturn>} successful operation
+ *
+ * Possible return types: PublicProjectResponse
  */
-export default async function download_project({
+export default async function get_public_project({
   client,
   id,
-  format,
-}: DownloadProjectInput): Promise<DownloadProjectReturn> {
-  const path = `/user/projects/${id}/download`
-  const qs = buildQuery({ format: format })
+}: GetPublicProjectInput): Promise<GetPublicProjectReturn> {
+  const path = `/projects/public/${id}`
+  const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -45,6 +44,6 @@ export default async function download_project({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DownloadProjectReturn
+  const result = (await response.json()) as GetPublicProjectReturn
   return result
 }

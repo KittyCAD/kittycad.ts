@@ -3,16 +3,16 @@ import { throwIfNotOk } from '../../errors.js'
 
 import { Uuid, ProjectArchiveFormat } from '../../models.js'
 
-interface DownloadProjectInput {
+interface DownloadPublicProjectInput {
   client?: Client
   id: Uuid
   format?: ProjectArchiveFormat
 }
 
-type DownloadProjectReturn = unknown
+type DownloadPublicProjectReturn = unknown
 
 /**
- * Download one of the authenticated user's projects as a tar archive.
+ * Download a published public project as a tar archive.
  *
  * Tags: projects
  *
@@ -20,14 +20,14 @@ type DownloadProjectReturn = unknown
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
  * @property {ProjectArchiveFormat} format Archive format to return. Defaults to `tar`. (query)
- * @returns {Promise<DownloadProjectReturn>} Response payload.
+ * @returns {Promise<DownloadPublicProjectReturn>} Response payload.
  */
-export default async function download_project({
+export default async function download_public_project({
   client,
   id,
   format,
-}: DownloadProjectInput): Promise<DownloadProjectReturn> {
-  const path = `/user/projects/${id}/download`
+}: DownloadPublicProjectInput): Promise<DownloadPublicProjectReturn> {
+  const path = `/projects/public/${id}/download`
   const qs = buildQuery({ format: format })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -45,6 +45,6 @@ export default async function download_project({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DownloadProjectReturn
+  const result = (await response.json()) as DownloadPublicProjectReturn
   return result
 }
