@@ -10,7 +10,7 @@ const extensions = ['.js', '.ts']
 
 // TODO: STOP doing this. This is the purpose of peerDependencies!
 const deps = Object.keys(pkg.dependencies || {}).filter(
-  (x) => !['bson', '@msgpack/msgpack'].includes(x)
+  (x) => !['bson', '@msgpack/msgpack', '@kittycad/kcl-wasm-lib'].includes(x)
 )
 
 const peers = Object.keys(pkg.peerDependencies || {})
