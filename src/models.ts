@@ -1485,6 +1485,12 @@ export interface BoundingBox {
   dimensions: Point3d
 }
 
+export type CadDesignWorkflow =
+  | 'sketching'
+  | 'coding'
+  | 'ai'
+  | 'hybrid_approach'
+
 export type CadDiscoverySource =
   | 'google'
   | 'x'
@@ -1496,6 +1502,8 @@ export type CadDiscoverySource =
   | 'facebook'
   | 'word_of_mouth'
   | 'other'
+
+export type CadExperienceLevel = 'beginner' | 'intermediate' | 'advanced'
 
 export type CadIndustry =
   | 'mechanical_engineering'
@@ -10805,12 +10813,23 @@ export interface UserAdminDetails {
 }
 
 export interface UserCadInfoAdminDetails {
+  /** nullable:true, description:CAD/API experience level. */
+  cad_experience_level?: CadExperienceLevel
   /** nullable:true, description:CAD industry selection. */
   cad_industry?: CadIndustry
   /** nullable:true, description:CAD user persona/type. */
   cad_user_type?: CadUserType
   /** nullable:true, description:Company size selection. */
   company_size?: CompanySize
+  /** nullable:true, description:Preferred design workflow. */
+  design_workflow?: CadDesignWorkflow
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Whether the user has used Zoo Design Studio or the API before."
+   * }
+   */
+  has_used_zoo_design_studio_or_api_before?: boolean
   /** nullable:true, description:Acquisition source selection. */
   how_did_you_find_us?: CadDiscoverySource
   /**
@@ -10820,8 +10839,26 @@ export interface UserCadInfoAdminDetails {
    * }
    */
   how_did_you_find_us_other?: string
+  /** nullable:true, description:Free-text city for the user's location. */
+  location_city?: string
+  /** nullable:true, description:Free-text country for the user's location. */
+  location_country?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Free-text state or region for the user's location."
+   * }
+   */
+  location_state?: string
   /** nullable:true, description:Number of CAD users. */
   number_of_cad_users?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Free-text description of what the user wants to build."
+   * }
+   */
+  what_are_you_building?: string
 }
 
 export type UserFeature =
@@ -11105,12 +11142,28 @@ export type WebSocketResponse =
     }
 
 export interface WebsiteCadUserInfoForm {
+  /** nullable:true, description:Experience level with CAD software or APIs. */
+  cad_experience_level?: CadExperienceLevel
   /** nullable:true, description:The industry of the user. */
   cad_industry?: CadIndustry
   /** nullable:true, description:The user type. */
   cad_user_type?: CadUserType
   /** nullable:true, description:Optional company size metadata. */
   company_size?: CompanySize
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Which design workflow the user is most excited about."
+   * }
+   */
+  design_workflow?: CadDesignWorkflow
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Whether the user has used Zoo Design Studio or the API before."
+   * }
+   */
+  has_used_zoo_design_studio_or_api_before?: boolean
   /** nullable:true, description:How the user found Zoo. */
   how_did_you_find_us?: CadDiscoverySource
   /**
@@ -11120,8 +11173,21 @@ export interface WebsiteCadUserInfoForm {
    * }
    */
   how_did_you_find_us_other?: string
+  /** nullable:true, description:Optional city for the user's location. */
+  location_city?: string
+  /** nullable:true, description:Optional country for the user's location. */
+  location_country?: string
+  /** nullable:true, description:Optional state or region for the user's location. */
+  location_state?: string
   /** nullable:true, description:The number of CAD users. */
   number_of_cad_users?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Optional free-text description of what the user wants to build."
+   * }
+   */
+  what_are_you_building?: string
 }
 
 export interface WebsiteSalesForm {
@@ -11366,7 +11432,9 @@ export interface Models {
   BooleanSubtract: BooleanSubtract
   BooleanUnion: BooleanUnion
   BoundingBox: BoundingBox
+  CadDesignWorkflow: CadDesignWorkflow
   CadDiscoverySource: CadDiscoverySource
+  CadExperienceLevel: CadExperienceLevel
   CadIndustry: CadIndustry
   CadUserType: CadUserType
   CameraDragEnd: CameraDragEnd
