@@ -5,7 +5,11 @@ const client = new Client()
 async function example() {
   const response = await oauth2.update_user_oauth2_app({
     client_id: '00000000-0000-0000-0000-000000000000',
-    body: { name: 'The new display name of the app.' },
+    body: {
+      grant_types: [],
+      name: 'The new display name of the app.',
+      redirect_uris: ['string'],
+    },
     client,
   })
   return response

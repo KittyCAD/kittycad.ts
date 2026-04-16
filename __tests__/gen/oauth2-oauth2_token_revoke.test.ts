@@ -7,7 +7,7 @@ async function example() {
     body: {
       client_id: 'The client ID.',
       client_secret: 'The client secret.',
-      token: 'An auth token. A uuid with a prefix of dev-',
+      token: 'The token to revoke.',
     },
     client,
   })

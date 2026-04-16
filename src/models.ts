@@ -1994,8 +1994,16 @@ export interface CreateCustomModel {
 }
 
 export interface CreateOAuth2AppRequest {
+  /** The OAuth grant types this app can use. */
+  grant_types?: OAuth2AppGrantType[]
   /** The display name of the app. */
   name: string
+  /**
+   * {
+   *   "format": "uri"
+   * }
+   */
+  redirect_uris?: string[]
 }
 
 export interface CreateOrgDataset {
@@ -2314,10 +2322,6 @@ export interface DeviceAccessTokenRequestForm {
   /** The grant type. */
   grant_type: OAuth2GrantType
 }
-
-export type DeviceAccessTokenUuid =
-  /** An auth token. A uuid with a prefix of dev- */
-  string
 
 export interface DeviceAuthConfirmParams {
   /** The user code. */
@@ -6002,6 +6006,13 @@ export interface OAuth2AppResponse {
   is_active: boolean
   /** The display name of the app. */
   name: string
+  /**
+   * {
+   *   "title": "String",
+   *   "format": "uri"
+   * }
+   */
+  redirect_uris: string[]
   /** title:DateTime, format:date-time, description:When the app record was last updated. */
   updated_at: string
 }
@@ -6017,6 +6028,12 @@ export interface OAuth2AppResponseResultsPage {
    */
   next_page?: string
 }
+
+export type OAuth2AuthorizationCodeUuid =
+  /** An auth token. A uuid with a prefix of zoo-oac- */
+  string
+
+export type OAuth2AuthorizationResponseType = 'code'
 
 export interface OAuth2ClientInfo {
   /** Value used for [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) protection via the `state` parameter. */
@@ -6034,7 +6051,34 @@ export interface OAuth2ClientInfo {
   url?: string
 }
 
+export type OAuth2CodeChallengeMethod = 'PLAIN' | 'S256'
+
 export type OAuth2GrantType = 'urn:ietf:params:oauth:grant-type:device_code'
+
+export type OAuth2RefreshTokenUuid =
+  /** An auth token. A uuid with a prefix of zoo-rfr- */
+  string
+
+export type OAuth2Scopes =
+  /** OAuth 2.0 scopes encoded as a space-delimited string. */
+  string
+
+export type OAuth2TokenGrantType = 'authorization_code' | 'refresh_token'
+
+export interface OAuth2TokenRequestForm {
+  /** format:uuid, description:The OAuth app client ID. */
+  client_id: string
+  /** nullable:true, description:The authorization code, for `authorization_code`. */
+  code?: OAuth2AuthorizationCodeUuid
+  /** nullable:true, description:The PKCE verifier, for `authorization_code`. */
+  code_verifier?: string
+  /** The OAuth token grant type. */
+  grant_type: OAuth2TokenGrantType
+  /** nullable:true, format:uri, description:The redirect URI, for `authorization_code`. */
+  redirect_uri?: string
+  /** nullable:true, description:The refresh token, for `refresh_token`. */
+  refresh_token?: OAuth2RefreshTokenUuid
+}
 
 export interface ObjectBringToFront {} /* Empty object */
 
@@ -9939,7 +9983,7 @@ export interface TokenRevokeRequestForm {
   /** nullable:true, description:The client secret. */
   client_secret?: string
   /** The token to revoke. */
-  token: DeviceAccessTokenUuid
+  token: string
 }
 
 export interface Transform {
@@ -10672,8 +10716,16 @@ export interface UpdateMemberToOrgBody {
 }
 
 export interface UpdateOAuth2AppRequest {
-  /** The new display name of the app. */
-  name: string
+  /** nullable:true, description:The OAuth grant types this app can use. */
+  grant_types?: OAuth2AppGrantType[]
+  /** nullable:true, description:The new display name of the app. */
+  name?: string
+  /**
+   * {
+   *   "format": "uri"
+   * }
+   */
+  redirect_uris?: string[]
 }
 
 export interface UpdateOrgDataset {
@@ -11500,7 +11552,6 @@ export interface Models {
   Density: Density
   DerEncodedKeyPair: DerEncodedKeyPair
   DeviceAccessTokenRequestForm: DeviceAccessTokenRequestForm
-  DeviceAccessTokenUuid: DeviceAccessTokenUuid
   DeviceAuthConfirmParams: DeviceAuthConfirmParams
   DeviceAuthRequestForm: DeviceAuthRequestForm
   Direction: Direction
@@ -11641,8 +11692,15 @@ export interface Models {
   OAuth2AppGrantType: OAuth2AppGrantType
   OAuth2AppResponse: OAuth2AppResponse
   OAuth2AppResponseResultsPage: OAuth2AppResponseResultsPage
+  OAuth2AuthorizationCodeUuid: OAuth2AuthorizationCodeUuid
+  OAuth2AuthorizationResponseType: OAuth2AuthorizationResponseType
   OAuth2ClientInfo: OAuth2ClientInfo
+  OAuth2CodeChallengeMethod: OAuth2CodeChallengeMethod
   OAuth2GrantType: OAuth2GrantType
+  OAuth2RefreshTokenUuid: OAuth2RefreshTokenUuid
+  OAuth2Scopes: OAuth2Scopes
+  OAuth2TokenGrantType: OAuth2TokenGrantType
+  OAuth2TokenRequestForm: OAuth2TokenRequestForm
   ObjectBringToFront: ObjectBringToFront
   ObjectSetMaterialParamsPbr: ObjectSetMaterialParamsPbr
   ObjectVisible: ObjectVisible

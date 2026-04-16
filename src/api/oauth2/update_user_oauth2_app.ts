@@ -18,7 +18,7 @@ type UpdateUserOauth2AppReturn = OAuth2AppResponse
 /**
  * Update a personal OAuth app.
  *
- * This endpoint requires authentication by any Zoo user. It updates the name of the authenticated user's active public OAuth app.
+ * This endpoint requires authentication by any Zoo user. It updates the configuration of the authenticated user's active public OAuth app.
  *
  * Tags: oauth2, users
  *

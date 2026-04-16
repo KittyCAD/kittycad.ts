@@ -13,7 +13,7 @@ type CreateOrgOauth2AppReturn = OAuth2AppResponse
 /**
  * Create an org OAuth app.
  *
- * This endpoint requires authentication by an org admin. It creates an active public device-flow app owned by the authenticated organization.
+ * This endpoint requires authentication by an org admin. It creates an active public OAuth app owned by the authenticated organization.
  *
  * Tags: oauth2, orgs
  *

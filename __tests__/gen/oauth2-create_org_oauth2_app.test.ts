@@ -4,7 +4,11 @@ const client = new Client()
 
 async function example() {
   const response = await oauth2.create_org_oauth2_app({
-    body: { name: 'The display name of the app.' },
+    body: {
+      grant_types: [],
+      name: 'The display name of the app.',
+      redirect_uris: ['string'],
+    },
     client,
   })
   return response
