@@ -100,8 +100,8 @@ const engineCommandManagerLite = {
     _idToRangeStr: string
   ): Promise<Uint8Array | undefined> {
     postMessage({
-      from: 'websocket',
-      payload: { type: 'message', data: commandStr },
+      to: 'websocket',
+      payload: { type: 'send', data: commandStr },
     })
 
     zooModelingCommandsWs?.send(commandStr)

@@ -62,6 +62,13 @@ type WorkerMessage =
       }
     }
   | {
+      to: 'websocket'
+      payload: {
+        type: 'send'
+        data: unknown
+      }
+    }
+  | {
       from: 'wasm'
       payload:
         | {
@@ -170,7 +177,7 @@ export class WebRTC extends EventTarget {
     return new Promise((resolve) => {
       const onMessage = (ev: MessageEvent<WorkerMessage>) => {
         const msg = ev.data
-        if (msg.from === 'wasm') {
+        if ('from' in msg && msg.from === 'wasm') {
           this.workerWebRTC.removeEventListener('message', onMessage)
           resolve(msg.payload.data)
         }
@@ -203,6 +210,7 @@ export class WebRTC extends EventTarget {
           const onMessage = (ev: MessageEvent<WorkerMessage>) => {
             const msg = ev.data
             if (
+              'from' in msg &&
               msg.from === 'wasm' &&
               msg.payload.type === 'execute' &&
               msg.payload.data === 'done'
@@ -343,6 +351,9 @@ export class WebRTC extends EventTarget {
 
   workerWebRTCOnMessage(ev: MessageEvent<WorkerMessage>) {
     const msg = ev.data
+    if (!('from' in msg)) {
+      return
+    }
     if (msg.from !== 'websocket') {
       return
     }
