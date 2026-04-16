@@ -62,6 +62,13 @@ type WorkerMessage =
       }
     }
   | {
+      to: 'websocket'
+      payload: {
+        type: 'send'
+        data: unknown
+      }
+    }
+  | {
       from: 'wasm'
       payload:
         | {
