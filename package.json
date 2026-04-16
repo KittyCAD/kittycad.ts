@@ -1,6 +1,6 @@
 {
   "name": "@kittycad/lib",
-  "version": "4.0.8",
+  "version": "4.0.10",
   "description": "Javascript library for KittyCAD API",
   "type": "module",
   "keywords": [
@@ -84,7 +84,7 @@
     "@msgpack/msgpack": "^3.1.3",
     "bson": "^7.1.1",
     "cross-fetch": "^4.0.0",
-    "@kittycad/kcl-wasm-lib": "^0.1.141",
+    "@kittycad/kcl-wasm-lib": "0.1.141",
     "openapi-types": "^12.0.0",
     "rollup-plugin-web-worker-loader": "^1.7.0",
     "ts-node": "^10.9.1",

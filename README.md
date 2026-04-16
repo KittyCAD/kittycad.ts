@@ -7,8 +7,6 @@ AN EXPLANATION BEHIND THE DERIVATION PROCESS!**
 
 ### [Full documentation here](https://zoo.dev/docs/api?lang=typescript)
 
-Simple example below.
-
 ### Install
 
 ```bash
