@@ -99,6 +99,11 @@ const engineCommandManagerLite = {
     commandStr: string,
     _idToRangeStr: string
   ): Promise<Uint8Array | undefined> {
+    postMessage({
+      from: 'websocket',
+      payload: { type: 'message', data: commandStr },
+    })
+    
     zooModelingCommandsWs?.send(commandStr)
 
     return new Promise((resolve) => {
