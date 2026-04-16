@@ -8,3 +8,9 @@ It triggers a bot to commit the new specification to this repository.
 **Every commit to main is published to NPM. Make sure to bump the version before merging any PR!**
 
 Before merging your PR run and commit the result of `npm version patch --no-git-tag-version`.
+
+## Maintainer Notes
+
+The `@kittycad/kcl-wasm-lib` dependency MUST BE THE EXACT VERSION, DO NOT
+CHANGE TO USING `^x.y.z` notation!
+
