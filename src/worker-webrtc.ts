@@ -103,7 +103,7 @@ const engineCommandManagerLite = {
       from: 'websocket',
       payload: { type: 'message', data: commandStr },
     })
-    
+
     zooModelingCommandsWs?.send(commandStr)
 
     return new Promise((resolve) => {
