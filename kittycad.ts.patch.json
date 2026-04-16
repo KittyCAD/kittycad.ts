@@ -467,7 +467,7 @@
     "op": "add",
     "path": "/paths/~1user~1oauth2~1apps~1{client_id}/put/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.update_user_oauth2_app({\n        client_id: '00000000-0000-0000-0000-000000000000',\n        body: { name: 'The new display name of the app.' },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.update_user_oauth2_app({\n        client_id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            grant_types: [],\n            name: 'The new display name of the app.',\n            redirect_uris: ['string'],\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -483,7 +483,7 @@
     "op": "add",
     "path": "/paths/~1user~1oauth2~1apps/post/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.create_user_oauth2_app({\n        body: { name: 'The display name of the app.' },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.create_user_oauth2_app({\n        body: {\n            grant_types: [],\n            name: 'The display name of the app.',\n            redirect_uris: ['string'],\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1099,7 +1099,7 @@
     "op": "add",
     "path": "/paths/~1org~1oauth2~1apps~1{client_id}/put/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.update_org_oauth2_app({\n        client_id: '00000000-0000-0000-0000-000000000000',\n        body: { name: 'The new display name of the app.' },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.update_org_oauth2_app({\n        client_id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            grant_types: [],\n            name: 'The new display name of the app.',\n            redirect_uris: ['string'],\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1115,7 +1115,7 @@
     "op": "add",
     "path": "/paths/~1org~1oauth2~1apps/post/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.create_org_oauth2_app({\n        body: { name: 'The display name of the app.' },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.create_org_oauth2_app({\n        body: {\n            grant_types: [],\n            name: 'The display name of the app.',\n            redirect_uris: ['string'],\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1355,7 +1355,15 @@
     "op": "add",
     "path": "/paths/~1oauth2~1token~1revoke/post/x-typescript",
     "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.oauth2_token_revoke({\n        body: {\n            client_id: 'The client ID.',\n            client_secret: 'The client secret.',\n            token: 'An auth token. A uuid with a prefix of dev-',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.oauth2_token_revoke({\n        body: {\n            client_id: 'The client ID.',\n            client_secret: 'The client secret.',\n            token: 'The token to revoke.',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1oauth2~1token/post/x-typescript",
+    "value": {
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.oauth2_token({\n        body: {\n            client_id: 'The OAuth app client ID.',\n            code: 'An auth token. A uuid with a prefix of zoo-oac-',\n            code_verifier: 'The PKCE verifier, for `authorization_code`.',\n            grant_type: 'authorization_code',\n            redirect_uri: 'The redirect URI, for `authorization_code`.',\n            refresh_token: 'An auth token. A uuid with a prefix of zoo-rfr-',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1412,6 +1420,14 @@
     "path": "/paths/~1oauth2~1device~1auth/post/x-typescript",
     "value": {
       "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.device_auth_request({\n        body: { client_id: 'The client ID.' },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1oauth2~1authorize/get/x-typescript",
+    "value": {
+      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.oauth2_authorize({\n        response_type: 'code',\n        client_id: 'string',\n        redirect_uri: 'string',\n        state: 'string',\n        code_challenge: 'string',\n        code_challenge_method: 'PLAIN',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

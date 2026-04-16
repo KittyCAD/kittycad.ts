@@ -18,7 +18,7 @@ type UpdateOrgOauth2AppReturn = OAuth2AppResponse
 /**
  * Update an org OAuth app.
  *
- * This endpoint requires authentication by an org admin. It updates the name of the organization's active public OAuth app.
+ * This endpoint requires authentication by an org admin. It updates the configuration of the organization's active public OAuth app.
  *
  * Tags: oauth2, orgs
  *

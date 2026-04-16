@@ -13,7 +13,7 @@ type CreateUserOauth2AppReturn = OAuth2AppResponse
 /**
  * Create a personal OAuth app.
  *
- * This endpoint requires authentication by any Zoo user. It creates an active public device-flow app owned by the authenticated user.
+ * This endpoint requires authentication by any Zoo user. It creates an active public OAuth app owned by the authenticated user.
  *
  * Tags: oauth2, users
  *

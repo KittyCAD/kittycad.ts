@@ -154,9 +154,11 @@ import list_oauth2_apps_for_any_org from './api/oauth2/list_oauth2_apps_for_any_
 import list_oauth2_apps_for_any_user from './api/oauth2/list_oauth2_apps_for_any_user.js'
 import list_org_oauth2_apps from './api/oauth2/list_org_oauth2_apps.js'
 import list_user_oauth2_apps from './api/oauth2/list_user_oauth2_apps.js'
+import oauth2_authorize from './api/oauth2/oauth2_authorize.js'
 import oauth2_provider_callback from './api/oauth2/oauth2_provider_callback.js'
 import oauth2_provider_callback_post from './api/oauth2/oauth2_provider_callback_post.js'
 import oauth2_provider_consent from './api/oauth2/oauth2_provider_consent.js'
+import oauth2_token from './api/oauth2/oauth2_token.js'
 import oauth2_token_revoke from './api/oauth2/oauth2_token_revoke.js'
 import update_org_oauth2_app from './api/oauth2/update_org_oauth2_app.js'
 import update_user_oauth2_app from './api/oauth2/update_user_oauth2_app.js'
@@ -184,9 +186,11 @@ export const oauth2 = {
   list_org_oauth2_apps_pager,
   list_user_oauth2_apps,
   list_user_oauth2_apps_pager,
+  oauth2_authorize,
   oauth2_provider_callback,
   oauth2_provider_callback_post,
   oauth2_provider_consent,
+  oauth2_token,
   oauth2_token_revoke,
   update_org_oauth2_app,
   update_user_oauth2_app,
@@ -646,7 +650,6 @@ export type {
   Density,
   DerEncodedKeyPair,
   DeviceAccessTokenRequestForm,
-  DeviceAccessTokenUuid,
   DeviceAuthConfirmParams,
   DeviceAuthRequestForm,
   Direction,
@@ -787,8 +790,15 @@ export type {
   OAuth2AppGrantType,
   OAuth2AppResponse,
   OAuth2AppResponseResultsPage,
+  OAuth2AuthorizationCodeUuid,
+  OAuth2AuthorizationResponseType,
   OAuth2ClientInfo,
+  OAuth2CodeChallengeMethod,
   OAuth2GrantType,
+  OAuth2RefreshTokenUuid,
+  OAuth2Scopes,
+  OAuth2TokenGrantType,
+  OAuth2TokenRequestForm,
   ObjectBringToFront,
   ObjectSetMaterialParamsPbr,
   ObjectVisible,
