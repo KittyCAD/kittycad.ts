@@ -192,15 +192,25 @@ self.addEventListener('message', (ev: MessageEvent & MessageEventMain) => {
       // Special cases.
       if (msg.payload.type === 'execute') {
         // Returns when the wasm code is finished processing.
-        kclExecute(msg.payload.data[0]).then(() => {
-          postMessage({
-            from: 'wasm',
-            payload: {
-              type: 'execute',
-              data: 'done',
-            },
+        kclExecute(msg.payload.data[0])
+          .then((resolved) => {
+            postMessage({
+              from: 'wasm',
+              payload: {
+                type: 'execute',
+                data: resolved,
+              },
+            })
           })
-        })
+          .catch((errored) => {
+            postMessage({
+              from: 'wasm',
+              payload: {
+                type: 'execute',
+                data: errored,
+              },
+            })
+          })
       } else {
         // Fallthrough to a function in the wasm blob.
         postMessage(zooWasm[msg.payload.type](...msg.payload.data))
