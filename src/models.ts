@@ -2433,6 +2433,7 @@ export type EmailMarketingConsentStatus =
   | 'dismissed'
   | 'pending'
   | 'confirmed'
+  | 'unsubscribed'
   | 'declined'
 
 export interface EnableDryRun {} /* Empty object */
