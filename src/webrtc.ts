@@ -77,7 +77,7 @@ type WorkerMessage =
           }
         | {
             type: 'execute'
-            data: 'done'
+            data: unknown
           }
     }
 
@@ -212,11 +212,10 @@ export class WebRTC extends EventTarget {
             if (
               'from' in msg &&
               msg.from === 'wasm' &&
-              msg.payload.type === 'execute' &&
-              msg.payload.data === 'done'
+              msg.payload.type === 'execute'
             ) {
               this.workerWebRTC.removeEventListener('message', onMessage)
-              resolve(undefined)
+              resolve(msg.payload.data)
             }
           }
           this.workerWebRTC.addEventListener('message', onMessage)
