@@ -1,7 +1,16 @@
 import { Client } from './client'
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws'
-import { OkWebSocketResponseData } from './models'
+import {
+  OkWebSocketResponseData,
+  SuccessWebSocketResponse,
+  FailureWebSocketResponse,
+} from './models'
 import WorkerWebRTC from 'web-worker:./worker-webrtc.ts'
+
+type ExpectedWebSocketResponse =
+  | FailureWebSocketResponse
+  | SuccessWebSocketResponse
+  | Error
 
 // Based on human interaction speeds.
 const throttle = (
@@ -205,17 +214,18 @@ export class WebRTC extends EventTarget {
         this.workerWebRTC,
         'message'
       ),
-      submit: (kclStr: string) =>
+      submit: (kclStr: string): Promise<ExpectedWebSocketResponse> =>
         new Promise((resolve) => {
           const onMessage = (ev: MessageEvent<WorkerMessage>) => {
             const msg = ev.data
             if (
               'from' in msg &&
+              // It's initiated from the wasm, but the very very root is the websocket.
               msg.from === 'wasm' &&
               msg.payload.type === 'execute'
             ) {
               this.workerWebRTC.removeEventListener('message', onMessage)
-              resolve(msg.payload.data)
+              resolve(msg.payload.data as ExpectedWebSocketResponse)
             }
           }
           this.workerWebRTC.addEventListener('message', onMessage)
@@ -571,13 +581,27 @@ export class WebRTC extends EventTarget {
   }
 
   // In the future this could be over WebRTC channels.
-  send(...args: Parameters<WebSocket['send']>) {
-    this.workerWebRTC.postMessage({
-      to: 'websocket',
-      payload: {
-        type: 'send',
-        data: args,
-      },
+  send(
+    ...args: Parameters<WebSocket['send']>
+  ): Promise<ExpectedWebSocketResponse> {
+    return new Promise((resolve) => {
+      const onMessage = (ev: MessageEvent<WorkerMessage>) => {
+        const msg = ev.data
+        if ('from' in msg && msg.from === 'websocket') {
+          this.workerWebRTC.removeEventListener('message', onMessage)
+          resolve(msg.payload.data as ExpectedWebSocketResponse)
+        }
+      }
+
+      this.workerWebRTC.addEventListener('message', onMessage)
+
+      this.workerWebRTC.postMessage({
+        to: 'websocket',
+        payload: {
+          type: 'send',
+          data: args,
+        },
+      })
     })
   }
 }
