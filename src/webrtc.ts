@@ -1,9 +1,16 @@
 import { Client } from './client'
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws'
-import { OkWebSocketResponseData, SuccessWebSocketResponse, FailureWebSocketResponse } from './models'
+import {
+  OkWebSocketResponseData,
+  SuccessWebSocketResponse,
+  FailureWebSocketResponse,
+} from './models'
 import WorkerWebRTC from 'web-worker:./worker-webrtc.ts'
 
-type ExpectedWebSocketResponse = FailureWebSocketResponse | SuccessWebSocketResponse | Error
+type ExpectedWebSocketResponse =
+  | FailureWebSocketResponse
+  | SuccessWebSocketResponse
+  | Error
 
 // Based on human interaction speeds.
 const throttle = (
@@ -574,7 +581,9 @@ export class WebRTC extends EventTarget {
   }
 
   // In the future this could be over WebRTC channels.
-  send(...args: Parameters<WebSocket['send']>): Promise<ExpectedWebSocketResponse> {
+  send(
+    ...args: Parameters<WebSocket['send']>
+  ): Promise<ExpectedWebSocketResponse> {
     return new Promise((resolve) => {
       const onMessage = (ev: MessageEvent<WorkerMessage>) => {
         const msg = ev.data
