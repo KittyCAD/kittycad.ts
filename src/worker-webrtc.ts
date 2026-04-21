@@ -130,7 +130,9 @@ const engineCommandManagerLite = {
 // * (TODO: Or a blob of bytes that's a tarball from our Aquarium.)
 const kclExecute = (
   kclStrOrProject: string | Map<string, string>,
-  mainKclPathName = 'main.kcl'
+  opts = {
+    mainKclPathName: 'main.kcl',
+  }
 ) => {
   const projectFsManagerLiteKclStr = (kclStr: string) => ({
     async readFile(_targetPath: string): Promise<Uint8Array> {
@@ -165,14 +167,18 @@ const kclExecute = (
   const entryFile =
     typeof kclStrOrProject === 'string'
       ? kclStrOrProject
-      : kclStrOrProject.get(mainKclPathName)
+      : kclStrOrProject.get(opts.mainKclPathName)
 
   const executorContext = new zooWasm.Context(
     engineCommandManagerLite,
     projectFsManagerLite
   )
   const program = zooWasm.parse_wasm(entryFile)[0]
-  return executorContext.execute(JSON.stringify(program), mainKclPathName, '{}')
+  return executorContext.execute(
+    JSON.stringify(program),
+    opts.mainKclPathName,
+    '{}'
+  )
 }
 
 self.addEventListener('message', (ev: MessageEvent & MessageEventMain) => {
@@ -192,7 +198,7 @@ self.addEventListener('message', (ev: MessageEvent & MessageEventMain) => {
       // Special cases.
       if (msg.payload.type === 'execute') {
         // Returns when the wasm code is finished processing.
-        kclExecute(msg.payload.data[0])
+        kclExecute(msg.payload.data[0], msg.payload.data[1])
           .then((resolved) => {
             postMessage({
               from: 'wasm',

@@ -214,7 +214,10 @@ export class WebRTC extends EventTarget {
         this.workerWebRTC,
         'message'
       ),
-      submit: (kclStr: string): Promise<ExpectedWebSocketResponse> =>
+      submit: (
+        kclStr: string,
+        opts = { mainKclPathName: 'main.kcl' }
+      ): Promise<ExpectedWebSocketResponse> =>
         new Promise((resolve) => {
           const onMessage = (ev: MessageEvent<WorkerMessage>) => {
             const msg = ev.data
@@ -234,7 +237,7 @@ export class WebRTC extends EventTarget {
             to: 'wasm',
             payload: {
               type: 'execute',
-              data: [kclStr],
+              data: [kclStr, opts],
             },
           })
         }),
