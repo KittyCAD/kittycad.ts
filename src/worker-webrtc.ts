@@ -131,8 +131,8 @@ const engineCommandManagerLite = {
 const kclExecute = (
   kclStrOrProject: string | Map<string, string>,
   opts = {
-    mainKclPathName: 'main.kcl'
-  },
+    mainKclPathName: 'main.kcl',
+  }
 ) => {
   const projectFsManagerLiteKclStr = (kclStr: string) => ({
     async readFile(_targetPath: string): Promise<Uint8Array> {
@@ -174,7 +174,11 @@ const kclExecute = (
     projectFsManagerLite
   )
   const program = zooWasm.parse_wasm(entryFile)[0]
-  return executorContext.execute(JSON.stringify(program), opts.mainKclPathName, '{}')
+  return executorContext.execute(
+    JSON.stringify(program),
+    opts.mainKclPathName,
+    '{}'
+  )
 }
 
 self.addEventListener('message', (ev: MessageEvent & MessageEventMain) => {
