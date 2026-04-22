@@ -1344,7 +1344,31 @@ export type BlockReason =
   | 'payment_method_failed'
   | 'upgrade_downgrade_abuse'
 
+export interface BodiesCreated {
+  /** All bodies created by this operation. */
+  bodies: BodyCreated[]
+}
+
+export interface BodiesUpdated {
+  /** All bodies created by this operation. */
+  bodies: BodyUpdated[]
+}
+
+export interface BodyCreated {
+  /** format:uuid, description:The body's ID. */
+  id: string
+  /** Surfaces this body contains. */
+  surfaces: SurfaceCreated[]
+}
+
 export type BodyType = 'solid' | 'surface'
+
+export interface BodyUpdated {
+  /** format:uuid, description:The body's ID. */
+  id: string
+  /** Surfaces added to this body. */
+  surfaces: SurfaceCreated[]
+}
 
 export interface BooleanImprint {
   /**
@@ -2571,7 +2595,12 @@ export interface ExtendedUser {
   username?: string
 }
 
-export interface Extrude {} /* Empty object */
+export interface Extrude {
+  /** Any new bodies created by the request. */
+  bodies_created?: BodiesCreated
+  /** Any existing bodies updated by the request. */
+  bodies_updated?: BodiesUpdated
+}
 
 export type ExtrudeMethod = 'new' | 'merge'
 
@@ -2606,7 +2635,12 @@ export type ExtrudeReference =
       }
     }
 
-export interface ExtrudeToReference {} /* Empty object */
+export interface ExtrudeToReference {
+  /** Any new bodies created by the request. */
+  bodies_created?: BodiesCreated
+  /** Any existing bodies updated by the request. */
+  bodies_updated?: BodiesUpdated
+}
 
 export interface ExtrudedFaceInfo {
   /**
@@ -8656,9 +8690,19 @@ export type RelativeTo = 'sketch_plane' | 'trajectory_curve'
 
 export interface RemoveSceneObjects {} /* Empty object */
 
-export interface Revolve {} /* Empty object */
+export interface Revolve {
+  /** Any new bodies created by the request. */
+  bodies_created?: BodiesCreated
+  /** Any existing bodies updated by the request. */
+  bodies_updated?: BodiesUpdated
+}
 
-export interface RevolveAboutEdge {} /* Empty object */
+export interface RevolveAboutEdge {
+  /** Any new bodies created by the request. */
+  bodies_created?: BodiesCreated
+  /** Any existing bodies updated by the request. */
+  bodies_updated?: BodiesUpdated
+}
 
 export interface Rotation {
   /** Rotate this far about the rotation axis. Defaults to zero (i.e. no rotation). */
@@ -9247,6 +9291,19 @@ export interface SurfaceArea {
 
 export interface SurfaceBlend {} /* Empty object */
 
+export interface SurfaceCreated {
+  /**
+   * {
+   *   "format": "uuid"
+   * }
+   */
+  from_segments: string[]
+  /** format:uuid, description:The surface's ID. */
+  id: string
+  /** format:uint32, minimum:0, description:Which number face of the parent body is this? */
+  primitive_face_index: number
+}
+
 export interface SurfaceEdgeReference {
   /** A list of the edge ids that belong to the body. */
   edges: FractionOfEdge[]
@@ -9254,7 +9311,12 @@ export interface SurfaceEdgeReference {
   object_id: string
 }
 
-export interface Sweep {} /* Empty object */
+export interface Sweep {
+  /** Any new bodies created by the request. */
+  bodies_created?: BodiesCreated
+  /** Any existing bodies updated by the request. */
+  bodies_updated?: BodiesUpdated
+}
 
 export interface System {
   /** Axis the front face of a model looks along. */
@@ -9826,7 +9888,12 @@ export interface TransformByForPoint4d {
   set: boolean
 }
 
-export interface TwistExtrude {} /* Empty object */
+export interface TwistExtrude {
+  /** Any new bodies created by the request. */
+  bodies_created?: BodiesCreated
+  /** Any existing bodies updated by the request. */
+  bodies_updated?: BodiesUpdated
+}
 
 export type UnitAngle = 'degrees' | 'radians'
 
@@ -11233,7 +11300,11 @@ export interface Models {
   BillingUnitGranularity: BillingUnitGranularity
   BlendType: BlendType
   BlockReason: BlockReason
+  BodiesCreated: BodiesCreated
+  BodiesUpdated: BodiesUpdated
+  BodyCreated: BodyCreated
   BodyType: BodyType
+  BodyUpdated: BodyUpdated
   BooleanImprint: BooleanImprint
   BooleanIntersection: BooleanIntersection
   BooleanSubtract: BooleanSubtract
@@ -11613,6 +11684,7 @@ export interface Models {
   SupportTier: SupportTier
   SurfaceArea: SurfaceArea
   SurfaceBlend: SurfaceBlend
+  SurfaceCreated: SurfaceCreated
   SurfaceEdgeReference: SurfaceEdgeReference
   Sweep: Sweep
   System: System
