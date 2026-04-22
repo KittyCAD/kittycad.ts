@@ -357,24 +357,6 @@ export interface AnnotationTextOptions {
 
 export type AnnotationType = 't2d' | 't3d'
 
-export interface ApiCallQueryGroup {
-  /**
-   * {
-   *   "format": "int64"
-   * }
-   */
-  count: number
-  query: string
-}
-
-export type ApiCallQueryGroupBy =
-  | 'email'
-  | 'method'
-  | 'endpoint'
-  | 'user_id'
-  | 'origin'
-  | 'ip_address'
-
 export type ApiCallStatus =
   | 'queued'
   | 'uploaded'
@@ -536,61 +518,6 @@ export type ApiTokenUuid =
 export interface AppClientInfo {
   /** The URL for consent. */
   url?: string
-}
-
-export interface AsyncApiCall {
-  /**
-   * {
-   *   "default": 0,
-   *   "format": "int16",
-   *   "description": "The number of times we've attempted to process this job."
-   * }
-   */
-  attempts?: number
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "The time and date the async API call was completed."
-   * }
-   */
-  completed_at?: string
-  /** title:DateTime, format:date-time, description:The time and date the async API call was created. */
-  created_at: string
-  /** nullable:true, description:The error the function returned, if any. */
-  error?: string
-  /** The unique identifier of the async API call.
-
-This is the same as the API call ID. */
-  id: Uuid
-  input?: string
-  output: unknown
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "The time and date the async API call was started."
-   * }
-   */
-  started_at?: string
-  /** The status of the async API call. */
-  status: ApiCallStatus
-  /** The type of async API call. */
-  type: AsyncApiCallType
-  /**
-   * {
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "The time and date the async API call was last updated."
-   * }
-   */
-  updated_at: string
-  /** The user ID of the user who created the async API call. */
-  user_id: Uuid
-  /** The worker node that is performing or performed the async API call. */
-  worker?: string
 }
 
 export type AsyncApiCallOutput =
@@ -1047,29 +974,6 @@ This is the same as the API call ID. */
       /** The user ID of the user who created the API call. */
       user_id: Uuid
     }
-
-export interface AsyncApiCallResultsPage {
-  /** list of items on this page of results */
-  items: AsyncApiCall[]
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
-   * }
-   */
-  next_page?: string
-}
-
-export type AsyncApiCallType =
-  | 'file_conversion'
-  | 'file_volume'
-  | 'file_center_of_mass'
-  | 'file_mass'
-  | 'file_density'
-  | 'file_surface_area'
-  | 'text_to_cad'
-  | 'text_to_cad_iteration'
-  | 'text_to_cad_multi_file_iteration'
 
 export interface AuthApiKeyResponse {
   /** The session token */
@@ -2571,36 +2475,6 @@ export type ErrorCode =
   | 'message_type_not_accepted'
   | 'message_type_not_accepted_for_web_r_t_c'
 
-export type Event = {
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Attachment URI for where the attachment is stored."
-   * }
-   */
-  attachment_uri?: string
-  /** format:date-time, description:Time this event was created. */
-  created_at: string
-  /** The specific event type from the modeling app. */
-  event_type: ModelingAppEventType
-  /** nullable:true, format:date-time, description:Time the associated attachment was last compiled. */
-  last_compiled_at?: string
-  /** nullable:true, description:Project descriptino as given by the user. */
-  project_description?: string
-  /** Project name as given by the user. */
-  project_name: string
-  /**
-   * {
-   *   "format": "uuid",
-   *   "description": "The source app for this event, uuid that is unique to the app."
-   * }
-   */
-  source_id: string
-  type: 'modeling_app_event'
-  /** An anonymous user id generated client-side. */
-  user_id: string
-}
-
 export interface Export {
   /** The files that were exported. */
   files: ExportFile[]
@@ -2695,18 +2569,6 @@ export interface ExtendedUser {
    * }
    */
   username?: string
-}
-
-export interface ExtendedUserResultsPage {
-  /** list of items on this page of results */
-  items: ExtendedUser[]
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
-   * }
-   */
-  next_page?: string
 }
 
 export interface Extrude {} /* Empty object */
@@ -3534,6 +3396,18 @@ export interface InvoiceLineItem {
 
 export type InvoiceRefundStatus = 'partially_refunded' | 'refunded'
 
+export interface InvoiceResultsPage {
+  /** list of items on this page of results */
+  items: Invoice[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export type InvoiceStatus =
   | 'draft'
   | 'open'
@@ -4036,99 +3910,6 @@ export type MlCopilotTool =
 
 export type MlFeedback = 'thumbs_up' | 'thumbs_down' | 'accepted' | 'rejected'
 
-export interface MlPromptMetadata {
-  /** nullable:true, description:Code for the model. */
-  code?: string
-  /** nullable:true, description:The original source code for the model. */
-  original_source_code?: string
-  /** The source ranges the user suggested to change. */
-  source_ranges?: SourceRangePrompt[]
-  /** nullable:true, description:The upstream conversation ID, if any. */
-  upstream_conversation_id?: string
-}
-
-export interface MlPromptResponse {
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "When the prompt was completed."
-   * }
-   */
-  completed_at?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "The conversation associated with this prompt, if any."
-   * }
-   */
-  conversation_id?: Uuid
-  /** title:DateTime, format:date-time, description:The date and time the ML prompt was created. */
-  created_at: string
-  /** nullable:true, description:The error message if the prompt failed. */
-  error?: string
-  /** nullable:true, description:Feedback from the user, if any. */
-  feedback?: MlFeedback
-  /** The unique identifier for the ML prompt. */
-  id: Uuid
-  /** nullable:true, description:The KCL version being used. */
-  kcl_version?: string
-  /** nullable:true, description:The metadata for the prompt. */
-  metadata?: MlPromptMetadata
-  /** The version of the model. */
-  model_version: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "The output directory reference for generated files."
-   * }
-   */
-  output_file?: string
-  /** nullable:true, description:The name of the project, if any. */
-  project_name?: string
-  /** The prompt. */
-  prompt: string
-  /** nullable:true, format:int64, description:Sum of EndOfStream durations, in seconds. */
-  seconds?: number
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "DateTime",
-   *   "format": "date-time",
-   *   "description": "When the prompt was started."
-   * }
-   */
-  started_at?: string
-  /** The status of the prompt. */
-  status: ApiCallStatus
-  /** The type of prompt. */
-  type: MlPromptType
-  /** title:DateTime, format:date-time, description:The date and time the ML prompt was last updated. */
-  updated_at: string
-  /** The user ID of the user who created the ML prompt. */
-  user_id: Uuid
-}
-
-export interface MlPromptResponseResultsPage {
-  /** list of items on this page of results */
-  items: MlPromptResponse[]
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
-   * }
-   */
-  next_page?: string
-}
-
-export type MlPromptType =
-  | 'text_to_cad'
-  | 'text_to_kcl'
-  | 'text_to_kcl_iteration'
-  | 'text_to_kcl_multi_file_iteration'
-  | 'copilot'
-
 export type MlReasoningEffort = 'low' | 'medium' | 'high' | 'xhigh'
 
 export type MlToolResult =
@@ -4167,8 +3948,6 @@ export type MlToolResult =
       response: string
       type: 'mechanical_knowledge_base'
     }
-
-export type ModelingAppEventType = 'successful_compile_before_close'
 
 export type ModelingAppShareLinks =
   | 'public'
@@ -7709,6 +7488,8 @@ export interface OrgAdminDetails {
   block?: BlockReason
   /** nullable:true, description:Human-friendly block reason message. */
   block_message?: string
+  /** Whether this organization is permanently exempt from blocking. */
+  never_block: boolean
   /** Known payment methods on file. */
   payment_methods: PaymentMethod[]
   payment_methods_summary: string[]
@@ -8135,18 +7916,6 @@ export interface OrgMember {
 export interface OrgMemberResultsPage {
   /** list of items on this page of results */
   items: OrgMember[]
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
-   * }
-   */
-  next_page?: string
-}
-
-export interface OrgResultsPage {
-  /** list of items on this page of results */
-  items: Org[]
   /**
    * {
    *   "nullable": true,
@@ -10856,6 +10625,8 @@ export interface UserAdminDetails {
    * }
    */
   cad_user_info?: UserCadInfoAdminDetails
+  /** Whether this user is permanently exempt from blocking. */
+  never_block: boolean
   /** Known payment methods on file. */
   payment_methods: PaymentMethod[]
   payment_methods_summary: string[]
@@ -11054,18 +10825,6 @@ export interface UserResponse {
    * }
    */
   username?: string
-}
-
-export interface UserResponseResultsPage {
-  /** list of items on this page of results */
-  items: UserResponse[]
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
-   * }
-   */
-  next_page?: string
 }
 
 export type Uuid =
@@ -11435,8 +11194,6 @@ export interface Models {
   AnnotationTextAlignmentY: AnnotationTextAlignmentY
   AnnotationTextOptions: AnnotationTextOptions
   AnnotationType: AnnotationType
-  ApiCallQueryGroup: ApiCallQueryGroup
-  ApiCallQueryGroupBy: ApiCallQueryGroupBy
   ApiCallStatus: ApiCallStatus
   ApiCallWithPrice: ApiCallWithPrice
   ApiCallWithPriceResultsPage: ApiCallWithPriceResultsPage
@@ -11446,10 +11203,7 @@ export interface Models {
   ApiTokenResultsPage: ApiTokenResultsPage
   ApiTokenUuid: ApiTokenUuid
   AppClientInfo: AppClientInfo
-  AsyncApiCall: AsyncApiCall
   AsyncApiCallOutput: AsyncApiCallOutput
-  AsyncApiCallResultsPage: AsyncApiCallResultsPage
-  AsyncApiCallType: AsyncApiCallType
   AuthApiKeyResponse: AuthApiKeyResponse
   AuthCallback: AuthCallback
   Axis: Axis
@@ -11593,14 +11347,12 @@ export interface Models {
   EntityType: EntityType
   Error: Error
   ErrorCode: ErrorCode
-  Event: Event
   Export: Export
   Export2d: Export2d
   Export3d: Export3d
   ExportFile: ExportFile
   ExtendPath: ExtendPath
   ExtendedUser: ExtendedUser
-  ExtendedUserResultsPage: ExtendedUserResultsPage
   Extrude: Extrude
   ExtrudeMethod: ExtrudeMethod
   ExtrudeReference: ExtrudeReference
@@ -11645,6 +11397,7 @@ export interface Models {
   Invoice: Invoice
   InvoiceLineItem: InvoiceLineItem
   InvoiceRefundStatus: InvoiceRefundStatus
+  InvoiceResultsPage: InvoiceResultsPage
   InvoiceStatus: InvoiceStatus
   IpAddrInfo: IpAddrInfo
   KclCodeCompletionParams: KclCodeCompletionParams
@@ -11672,13 +11425,8 @@ export interface Models {
   MlCopilotSystemCommand: MlCopilotSystemCommand
   MlCopilotTool: MlCopilotTool
   MlFeedback: MlFeedback
-  MlPromptMetadata: MlPromptMetadata
-  MlPromptResponse: MlPromptResponse
-  MlPromptResponseResultsPage: MlPromptResponseResultsPage
-  MlPromptType: MlPromptType
   MlReasoningEffort: MlReasoningEffort
   MlToolResult: MlToolResult
-  ModelingAppEventType: ModelingAppEventType
   ModelingAppShareLinks: ModelingAppShareLinks
   ModelingAppSubscriptionTier: ModelingAppSubscriptionTier
   ModelingCmd: ModelingCmd
@@ -11728,7 +11476,6 @@ export interface Models {
   OrgDetails: OrgDetails
   OrgMember: OrgMember
   OrgMemberResultsPage: OrgMemberResultsPage
-  OrgResultsPage: OrgResultsPage
   OrgRole: OrgRole
   OrientToFace: OrientToFace
   OriginType: OriginType
@@ -11930,7 +11677,6 @@ export interface Models {
   UserOrgInfo: UserOrgInfo
   UserOrgRole: UserOrgRole
   UserResponse: UserResponse
-  UserResponseResultsPage: UserResponseResultsPage
   Uuid: Uuid
   VerificationTokenResponse: VerificationTokenResponse
   ViewIsometric: ViewIsometric

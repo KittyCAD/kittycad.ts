@@ -1,30 +1,20 @@
 import get_api_call from './api/api-calls/get_api_call.js'
 import get_api_call_for_org from './api/api-calls/get_api_call_for_org.js'
 import get_api_call_for_user from './api/api-calls/get_api_call_for_user.js'
-import get_api_call_metrics from './api/api-calls/get_api_call_metrics.js'
 import get_async_operation from './api/api-calls/get_async_operation.js'
-import list_api_calls from './api/api-calls/list_api_calls.js'
 import list_api_calls_for_user from './api/api-calls/list_api_calls_for_user.js'
-import list_async_operations from './api/api-calls/list_async_operations.js'
 import org_list_api_calls from './api/api-calls/org_list_api_calls.js'
 import user_list_api_calls from './api/api-calls/user_list_api_calls.js'
 import { list_api_calls_for_user_pager } from './api/api-calls/list_api_calls_for_user.js'
-import { list_api_calls_pager } from './api/api-calls/list_api_calls.js'
-import { list_async_operations_pager } from './api/api-calls/list_async_operations.js'
 import { org_list_api_calls_pager } from './api/api-calls/org_list_api_calls.js'
 import { user_list_api_calls_pager } from './api/api-calls/user_list_api_calls.js'
 export const api_calls = {
   get_api_call,
   get_api_call_for_org,
   get_api_call_for_user,
-  get_api_call_metrics,
   get_async_operation,
-  list_api_calls,
   list_api_calls_for_user,
   list_api_calls_for_user_pager,
-  list_api_calls_pager,
-  list_async_operations,
-  list_async_operations_pager,
   org_list_api_calls,
   org_list_api_calls_pager,
   user_list_api_calls,
@@ -78,7 +68,6 @@ export const file = {
 }
 
 import community_sso from './api/meta/community_sso.js'
-import create_event from './api/meta/create_event.js'
 import get_ipinfo from './api/meta/get_ipinfo.js'
 import get_pricing_subscriptions from './api/meta/get_pricing_subscriptions.js'
 import get_schema from './api/meta/get_schema.js'
@@ -86,7 +75,6 @@ import internal_get_api_token_for_discord_user from './api/meta/internal_get_api
 import ping from './api/meta/ping.js'
 export const meta = {
   community_sso,
-  create_event,
   get_ipinfo,
   get_pricing_subscriptions,
   get_schema,
@@ -104,15 +92,12 @@ import create_text_to_cad_iteration from './api/ml/create_text_to_cad_iteration.
 import create_text_to_cad_multi_file_iteration from './api/ml/create_text_to_cad_multi_file_iteration.js'
 import create_text_to_cad_part_feedback from './api/ml/create_text_to_cad_part_feedback.js'
 import get_custom_model from './api/ml/get_custom_model.js'
-import get_ml_prompt from './api/ml/get_ml_prompt.js'
 import get_text_to_cad_part_for_user from './api/ml/get_text_to_cad_part_for_user.js'
 import list_conversations_for_user from './api/ml/list_conversations_for_user.js'
-import list_ml_prompts from './api/ml/list_ml_prompts.js'
 import list_org_datasets_for_model from './api/ml/list_org_datasets_for_model.js'
 import list_text_to_cad_parts_for_user from './api/ml/list_text_to_cad_parts_for_user.js'
 import update_custom_model from './api/ml/update_custom_model.js'
 import { list_conversations_for_user_pager } from './api/ml/list_conversations_for_user.js'
-import { list_ml_prompts_pager } from './api/ml/list_ml_prompts.js'
 import { list_text_to_cad_parts_for_user_pager } from './api/ml/list_text_to_cad_parts_for_user.js'
 export const ml = {
   create_custom_model,
@@ -123,12 +108,9 @@ export const ml = {
   create_text_to_cad_multi_file_iteration,
   create_text_to_cad_part_feedback,
   get_custom_model,
-  get_ml_prompt,
   get_text_to_cad_part_for_user,
   list_conversations_for_user,
   list_conversations_for_user_pager,
-  list_ml_prompts,
-  list_ml_prompts_pager,
   list_org_datasets_for_model,
   list_text_to_cad_parts_for_user,
   list_text_to_cad_parts_for_user_pager,
@@ -207,7 +189,6 @@ import delete_org_member from './api/orgs/delete_org_member.js'
 import delete_org_saml_idp from './api/orgs/delete_org_saml_idp.js'
 import download_org_dataset_conversion_original from './api/orgs/download_org_dataset_conversion_original.js'
 import download_org_dataset_successful_kcl_bulk from './api/orgs/download_org_dataset_successful_kcl_bulk.js'
-import get_any_org from './api/orgs/get_any_org.js'
 import get_billing_contract_for_any_org from './api/orgs/get_billing_contract_for_any_org.js'
 import get_org from './api/orgs/get_org.js'
 import get_org_dataset from './api/orgs/get_org_dataset.js'
@@ -221,7 +202,6 @@ import get_user_org from './api/orgs/get_user_org.js'
 import list_org_dataset_conversions from './api/orgs/list_org_dataset_conversions.js'
 import list_org_datasets from './api/orgs/list_org_datasets.js'
 import list_org_members from './api/orgs/list_org_members.js'
-import list_orgs from './api/orgs/list_orgs.js'
 import org_admin_details_get from './api/orgs/org_admin_details_get.js'
 import org_dataset_s3_policies from './api/orgs/org_dataset_s3_policies.js'
 import retrigger_org_dataset from './api/orgs/retrigger_org_dataset.js'
@@ -239,7 +219,6 @@ import { get_org_shortlinks_pager } from './api/orgs/get_org_shortlinks.js'
 import { list_org_dataset_conversions_pager } from './api/orgs/list_org_dataset_conversions.js'
 import { list_org_datasets_pager } from './api/orgs/list_org_datasets.js'
 import { list_org_members_pager } from './api/orgs/list_org_members.js'
-import { list_orgs_pager } from './api/orgs/list_orgs.js'
 import { search_org_dataset_conversions_pager } from './api/orgs/search_org_dataset_conversions.js'
 export const orgs = {
   create_org,
@@ -252,7 +231,6 @@ export const orgs = {
   delete_org_saml_idp,
   download_org_dataset_conversion_original,
   download_org_dataset_successful_kcl_bulk,
-  get_any_org,
   get_billing_contract_for_any_org,
   get_org,
   get_org_dataset,
@@ -270,8 +248,6 @@ export const orgs = {
   list_org_datasets_pager,
   list_org_members,
   list_org_members_pager,
-  list_orgs,
-  list_orgs_pager,
   org_admin_details_get,
   org_dataset_s3_policies,
   retrigger_org_dataset,
@@ -321,6 +297,8 @@ import update_user_subscription from './api/payments/update_user_subscription.js
 import upsert_subscription_plan_price from './api/payments/upsert_subscription_plan_price.js'
 import validate_customer_tax_information_for_org from './api/payments/validate_customer_tax_information_for_org.js'
 import validate_customer_tax_information_for_user from './api/payments/validate_customer_tax_information_for_user.js'
+import { list_invoices_for_org_pager } from './api/payments/list_invoices_for_org.js'
+import { list_invoices_for_user_pager } from './api/payments/list_invoices_for_user.js'
 export const payments = {
   create_org_subscription,
   create_payment_information_for_org,
@@ -341,7 +319,9 @@ export const payments = {
   get_payment_information_for_user,
   get_user_subscription,
   list_invoices_for_org,
+  list_invoices_for_org_pager,
   list_invoices_for_user,
+  list_invoices_for_user_pager,
   list_payment_methods_for_org,
   list_payment_methods_for_user,
   set_default_payment_method_for_user,
@@ -453,8 +433,6 @@ import get_user_privacy_settings from './api/users/get_user_privacy_settings.js'
 import get_user_self from './api/users/get_user_self.js'
 import get_user_self_extended from './api/users/get_user_self_extended.js'
 import get_user_shortlinks from './api/users/get_user_shortlinks.js'
-import list_users from './api/users/list_users.js'
-import list_users_extended from './api/users/list_users_extended.js'
 import put_public_email_marketing_consent_request from './api/users/put_public_email_marketing_consent_request.js'
 import put_public_mailing_list_subscribe from './api/users/put_public_mailing_list_subscribe.js'
 import put_public_mailing_list_unsubscribe from './api/users/put_public_mailing_list_unsubscribe.js'
@@ -473,8 +451,6 @@ import user_email_marketing_consent_request_post from './api/users/user_email_ma
 import user_email_marketing_consent_seen_post from './api/users/user_email_marketing_consent_seen_post.js'
 import user_features_get from './api/users/user_features_get.js'
 import { get_user_shortlinks_pager } from './api/users/get_user_shortlinks.js'
-import { list_users_extended_pager } from './api/users/list_users_extended.js'
-import { list_users_pager } from './api/users/list_users.js'
 export const users = {
   create_user_shortlink,
   delete_user_self,
@@ -489,10 +465,6 @@ export const users = {
   get_user_self_extended,
   get_user_shortlinks,
   get_user_shortlinks_pager,
-  list_users,
-  list_users_extended,
-  list_users_extended_pager,
-  list_users_pager,
   put_public_email_marketing_consent_request,
   put_public_mailing_list_subscribe,
   put_public_mailing_list_unsubscribe,
@@ -532,8 +504,6 @@ export type {
   AnnotationTextAlignmentY,
   AnnotationTextOptions,
   AnnotationType,
-  ApiCallQueryGroup,
-  ApiCallQueryGroupBy,
   ApiCallStatus,
   ApiCallWithPrice,
   ApiCallWithPriceResultsPage,
@@ -543,10 +513,7 @@ export type {
   ApiTokenResultsPage,
   ApiTokenUuid,
   AppClientInfo,
-  AsyncApiCall,
   AsyncApiCallOutput,
-  AsyncApiCallResultsPage,
-  AsyncApiCallType,
   AuthApiKeyResponse,
   AuthCallback,
   Axis,
@@ -690,14 +657,12 @@ export type {
   EntityType,
   Error as ApiErrorBody,
   ErrorCode,
-  Event,
   Export,
   Export2d,
   Export3d,
   ExportFile,
   ExtendPath,
   ExtendedUser,
-  ExtendedUserResultsPage,
   Extrude,
   ExtrudeMethod,
   ExtrudeReference,
@@ -742,6 +707,7 @@ export type {
   Invoice,
   InvoiceLineItem,
   InvoiceRefundStatus,
+  InvoiceResultsPage,
   InvoiceStatus,
   IpAddrInfo,
   KclCodeCompletionParams,
@@ -769,13 +735,8 @@ export type {
   MlCopilotSystemCommand,
   MlCopilotTool,
   MlFeedback,
-  MlPromptMetadata,
-  MlPromptResponse,
-  MlPromptResponseResultsPage,
-  MlPromptType,
   MlReasoningEffort,
   MlToolResult,
-  ModelingAppEventType,
   ModelingAppShareLinks,
   ModelingAppSubscriptionTier,
   ModelingCmd,
@@ -825,7 +786,6 @@ export type {
   OrgDetails,
   OrgMember,
   OrgMemberResultsPage,
-  OrgResultsPage,
   OrgRole,
   OrientToFace,
   OriginType,
@@ -1027,7 +987,6 @@ export type {
   UserOrgInfo,
   UserOrgRole,
   UserResponse,
-  UserResponseResultsPage,
   Uuid,
   VerificationTokenResponse,
   ViewIsometric,
