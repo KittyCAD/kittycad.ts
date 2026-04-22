@@ -148,8 +148,6 @@ export const testsExpectedToThrow = [
   // users
   'users.create_user_shortlink',
   'users.get_user_shortlinks',
-  'users.list_users',
-  'users.list_users_extended',
   'api-calls.get_api_call_for_user',
   'api-calls.get_api_call',
   'api-calls.get_async_operation',
@@ -222,7 +220,6 @@ export const testsExpectedToThrow = [
   'ml.create_text_to_cad',
 
   // 2026-02 auth-required/public-fixture gaps from update-spec CI
-  'api-calls.get_api_call_metrics',
   'api-tokens.create_api_token_for_user',
   'file.create_file_center_of_mass',
   'file.create_file_conversion',
