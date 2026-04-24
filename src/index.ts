@@ -286,6 +286,8 @@ import list_invoices_for_org from './api/payments/list_invoices_for_org.js'
 import list_invoices_for_user from './api/payments/list_invoices_for_user.js'
 import list_payment_methods_for_org from './api/payments/list_payment_methods_for_org.js'
 import list_payment_methods_for_user from './api/payments/list_payment_methods_for_user.js'
+import redirect_payment_method_portal_link_for_org from './api/payments/redirect_payment_method_portal_link_for_org.js'
+import redirect_payment_method_portal_link_for_user from './api/payments/redirect_payment_method_portal_link_for_user.js'
 import set_default_payment_method_for_user from './api/payments/set_default_payment_method_for_user.js'
 import update_org_subscription from './api/payments/update_org_subscription.js'
 import update_org_subscription_for_any_org from './api/payments/update_org_subscription_for_any_org.js'
@@ -324,6 +326,8 @@ export const payments = {
   list_invoices_for_user_pager,
   list_payment_methods_for_org,
   list_payment_methods_for_user,
+  redirect_payment_method_portal_link_for_org,
+  redirect_payment_method_portal_link_for_user,
   set_default_payment_method_for_user,
   update_org_subscription,
   update_org_subscription_for_any_org,
