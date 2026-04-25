@@ -55,7 +55,7 @@
     "@typescript-eslint/eslint-plugin": "~8.58",
     "@typescript-eslint/parser": "~8.58",
     "eslint": "^10.0.0",
-    "eslint-config-prettier": "~8.5",
+    "eslint-config-prettier": "~10.1",
     "eslint-plugin-jest": "^29.12.1",
     "fast-json-patch": "^3.1.1",
     "handlebars": "^4.7.8",
