@@ -7670,6 +7670,14 @@ export interface OrgDatasetFileConversionDetails {
    * }
    */
   raw_kcl_output?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "double",
+   *   "description": "Score from `0.0` to `1.0` that quantifies how closely the raw KCL model matches the original model."
+   * }
+   */
+  raw_kcl_similarity_score?: number
   /** Snapshot images for the raw KCL model. */
   raw_kcl_snapshot_images: OrgDatasetSnapshotImage[]
   /**
@@ -7679,6 +7687,14 @@ export interface OrgDatasetFileConversionDetails {
    * }
    */
   salon_kcl_output?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "double",
+   *   "description": "Score from `0.0` to `1.0` that quantifies how closely the salon KCL model matches the raw KCL model."
+   * }
+   */
+  salon_kcl_similarity_score?: number
   /** Snapshot images for the salon/refactored KCL model. */
   salon_kcl_snapshot_images: OrgDatasetSnapshotImage[]
   /**
@@ -7724,6 +7740,7 @@ export type OrgDatasetFileConversionStatus =
   | 'in_progress'
   | 'success'
   | 'error_user'
+  | 'error_geometry_mismatch'
   | 'error_unsupported'
   | 'error_internal'
 
@@ -7775,6 +7792,22 @@ export interface OrgDatasetFileConversionSummary {
   metadata: unknown
   /** Current step in the conversion pipeline. */
   phase: OrgDatasetFileConversionPhase
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "double",
+   *   "description": "Score from `0.0` to `1.0` that quantifies how closely the raw KCL model matches the original model."
+   * }
+   */
+  raw_kcl_similarity_score?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "double",
+   *   "description": "Score from `0.0` to `1.0` that quantifies how closely the salon KCL model matches the raw KCL model."
+   * }
+   */
+  salon_kcl_similarity_score?: number
   /**
    * {
    *   "nullable": true,
