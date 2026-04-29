@@ -10788,7 +10788,6 @@ export interface UserCadInfoAdminDetails {
 export type UserFeature =
   | 'aquarium'
   | 'proprietary_to_kcl_conversion_beta'
-  | 'classic_sketch_mode'
   | 'web_app_file_browser'
 
 export interface UserFeatureEntry {
