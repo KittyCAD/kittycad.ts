@@ -7,6 +7,7 @@ async function example() {
     client_id: '00000000-0000-0000-0000-000000000000',
     body: {
       grant_types: [],
+      mode: 'development',
       name: 'The new display name of the app.',
       redirect_uris: ['string'],
     },

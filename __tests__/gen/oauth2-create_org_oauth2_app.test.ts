@@ -6,6 +6,7 @@ async function example() {
   const response = await oauth2.create_org_oauth2_app({
     body: {
       grant_types: [],
+      mode: 'development',
       name: 'The display name of the app.',
       redirect_uris: ['string'],
     },

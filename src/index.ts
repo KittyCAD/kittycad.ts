@@ -122,14 +122,17 @@ export const ml = {
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws.js'
 export const modeling = { modeling_commands_ws: ModelingCommandsWs }
 
+import approve_oauth2_authorization_request from './api/oauth2/approve_oauth2_authorization_request.js'
 import create_org_oauth2_app from './api/oauth2/create_org_oauth2_app.js'
 import create_user_oauth2_app from './api/oauth2/create_user_oauth2_app.js'
 import delete_org_oauth2_app from './api/oauth2/delete_org_oauth2_app.js'
 import delete_user_oauth2_app from './api/oauth2/delete_user_oauth2_app.js'
+import deny_oauth2_authorization_request from './api/oauth2/deny_oauth2_authorization_request.js'
 import device_access_token from './api/oauth2/device_access_token.js'
 import device_auth_confirm from './api/oauth2/device_auth_confirm.js'
 import device_auth_request from './api/oauth2/device_auth_request.js'
 import device_auth_verify from './api/oauth2/device_auth_verify.js'
+import get_oauth2_authorization_request from './api/oauth2/get_oauth2_authorization_request.js'
 import get_org_oauth2_app from './api/oauth2/get_org_oauth2_app.js'
 import get_user_oauth2_app from './api/oauth2/get_user_oauth2_app.js'
 import list_oauth2_apps_for_any_org from './api/oauth2/list_oauth2_apps_for_any_org.js'
@@ -150,14 +153,17 @@ import { list_oauth2_apps_for_any_user_pager } from './api/oauth2/list_oauth2_ap
 import { list_org_oauth2_apps_pager } from './api/oauth2/list_org_oauth2_apps.js'
 import { list_user_oauth2_apps_pager } from './api/oauth2/list_user_oauth2_apps.js'
 export const oauth2 = {
+  approve_oauth2_authorization_request,
   create_org_oauth2_app,
   create_user_oauth2_app,
   delete_org_oauth2_app,
   delete_user_oauth2_app,
+  deny_oauth2_authorization_request,
   device_access_token,
   device_auth_confirm,
   device_auth_request,
   device_auth_verify,
+  get_oauth2_authorization_request,
   get_org_oauth2_app,
   get_user_oauth2_app,
   list_oauth2_apps_for_any_org,
@@ -757,14 +763,18 @@ export type {
   NewAnnotation,
   OAuth2AppClientType,
   OAuth2AppGrantType,
+  OAuth2AppMode,
   OAuth2AppResponse,
   OAuth2AppResponseResultsPage,
   OAuth2AuthorizationCodeUuid,
+  OAuth2AuthorizationDecisionResponse,
+  OAuth2AuthorizationRequestResponse,
   OAuth2AuthorizationResponseType,
   OAuth2ClientInfo,
   OAuth2CodeChallengeMethod,
   OAuth2GrantType,
   OAuth2RefreshTokenUuid,
+  OAuth2Scope,
   OAuth2Scopes,
   OAuth2TokenGrantType,
   OAuth2TokenRequestForm,
