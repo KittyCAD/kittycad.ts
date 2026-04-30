@@ -1924,6 +1924,8 @@ export interface CreateCustomModel {
 export interface CreateOAuth2AppRequest {
   /** The OAuth grant types this app can use. */
   grant_types?: OAuth2AppGrantType[]
+  /** nullable:true, description:The deployment mode for this app. */
+  mode?: OAuth2AppMode
   /** The display name of the app. */
   name: string
   /**
@@ -5805,6 +5807,8 @@ export type OAuth2AppGrantType =
   | 'refresh_token'
   | 'client_credentials'
 
+export type OAuth2AppMode = 'development' | 'production'
+
 export interface OAuth2AppResponse {
   /** The OAuth 2.0 client identifier. */
   client_id: Uuid
@@ -5818,6 +5822,8 @@ export interface OAuth2AppResponse {
   grant_types: OAuth2AppGrantType[]
   /** Whether this app is active. */
   is_active: boolean
+  /** The deployment mode for this app. */
+  mode: OAuth2AppMode
   /** The display name of the app. */
   name: string
   /**
@@ -5847,6 +5853,32 @@ export type OAuth2AuthorizationCodeUuid =
   /** An auth token. A uuid with a prefix of zoo-oac- */
   string
 
+export interface OAuth2AuthorizationDecisionResponse {
+  /** The URL the user agent should navigate to after the decision. */
+  redirect_url: string
+}
+
+export interface OAuth2AuthorizationRequestResponse {
+  /** The OAuth app display name. */
+  app_name: string
+  /** title:DateTime, format:date-time, description:When this authorization request expires. */
+  expires_at: string
+  /** nullable:true, description:The OAuth app owner display name, if available. */
+  owner_name?: string
+  /**
+   * {
+   *   "title": "String",
+   *   "format": "uri",
+   *   "description": "The redirect URI that will receive the authorization result."
+   * }
+   */
+  redirect_uri: string
+  /** The pending authorization request ID. */
+  request_id: Uuid
+  /** The scopes requested by the app. */
+  scopes: OAuth2Scope[]
+}
+
 export type OAuth2AuthorizationResponseType = 'code'
 
 export interface OAuth2ClientInfo {
@@ -5872,6 +5904,8 @@ export type OAuth2GrantType = 'urn:ietf:params:oauth:grant-type:device_code'
 export type OAuth2RefreshTokenUuid =
   /** An auth token. A uuid with a prefix of zoo-rfr- */
   string
+
+export type OAuth2Scope = 'modeling' | 'admin:write'
 
 export type OAuth2Scopes =
   /** OAuth 2.0 scopes encoded as a space-delimited string. */
@@ -10589,6 +10623,8 @@ export interface UpdateMemberToOrgBody {
 export interface UpdateOAuth2AppRequest {
   /** nullable:true, description:The OAuth grant types this app can use. */
   grant_types?: OAuth2AppGrantType[]
+  /** nullable:true, description:The deployment mode for this app. */
+  mode?: OAuth2AppMode
   /** nullable:true, description:The new display name of the app. */
   name?: string
   /**
@@ -11543,14 +11579,18 @@ export interface Models {
   NewAnnotation: NewAnnotation
   OAuth2AppClientType: OAuth2AppClientType
   OAuth2AppGrantType: OAuth2AppGrantType
+  OAuth2AppMode: OAuth2AppMode
   OAuth2AppResponse: OAuth2AppResponse
   OAuth2AppResponseResultsPage: OAuth2AppResponseResultsPage
   OAuth2AuthorizationCodeUuid: OAuth2AuthorizationCodeUuid
+  OAuth2AuthorizationDecisionResponse: OAuth2AuthorizationDecisionResponse
+  OAuth2AuthorizationRequestResponse: OAuth2AuthorizationRequestResponse
   OAuth2AuthorizationResponseType: OAuth2AuthorizationResponseType
   OAuth2ClientInfo: OAuth2ClientInfo
   OAuth2CodeChallengeMethod: OAuth2CodeChallengeMethod
   OAuth2GrantType: OAuth2GrantType
   OAuth2RefreshTokenUuid: OAuth2RefreshTokenUuid
+  OAuth2Scope: OAuth2Scope
   OAuth2Scopes: OAuth2Scopes
   OAuth2TokenGrantType: OAuth2TokenGrantType
   OAuth2TokenRequestForm: OAuth2TokenRequestForm
