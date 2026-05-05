@@ -407,27 +407,30 @@ export class WebRTC extends EventTarget {
         if (interaction === undefined) {
           return
         }
-
+        
+        const payload =  {
+          type: 'send',
+          data: [
+            JSON.stringify({
+              type: 'modeling_cmd_req',
+              cmd_id: '00000000-0000-0000-0000-000000000000',
+              cmd: {
+                type: pointerStateToType[targetPointerState],
+                interaction,
+                window: {
+                  x: ev.offsetX,
+                  y: ev.offsetY,
+                },
+              },
+            }),
+          ],
+        }
+        
         this.workerWebRTC.postMessage({
           to: 'websocket',
-          payload: {
-            type: 'send',
-            data: [
-              JSON.stringify({
-                type: 'modeling_cmd_req',
-                cmd_id: '00000000-0000-0000-0000-000000000000',
-                cmd: {
-                  type: pointerStateToType[targetPointerState],
-                  interaction,
-                  window: {
-                    x: ev.offsetX,
-                    y: ev.offsetY,
-                  },
-                },
-              }),
-            ],
-          },
+          payload,
         })
+        this.channel?.send(payload.data[0])
 
         pointerButton = ev.button
         pointerState = targetPointerState
@@ -442,27 +445,30 @@ export class WebRTC extends EventTarget {
       }
 
       pointerState = PointerState.UP
+      
+      const payload = {
+        type: 'send',
+        data: [
+          JSON.stringify({
+            type: 'modeling_cmd_req',
+            cmd_id: '00000000-0000-0000-0000-000000000000',
+            cmd: {
+              type: pointerStateToType[pointerState],
+              interaction,
+              window: {
+                x: ev.offsetX,
+                y: ev.offsetY,
+              },
+            },
+          }),
+        ],
+      }
 
       this.workerWebRTC.postMessage({
         to: 'websocket',
-        payload: {
-          type: 'send',
-          data: [
-            JSON.stringify({
-              type: 'modeling_cmd_req',
-              cmd_id: '00000000-0000-0000-0000-000000000000',
-              cmd: {
-                type: pointerStateToType[pointerState],
-                interaction,
-                window: {
-                  x: ev.offsetX,
-                  y: ev.offsetY,
-                },
-              },
-            }),
-          ],
-        },
+        payload,
       })
+      this.channel?.send(payload.data[0])
     }
 
     let sequence = 0
