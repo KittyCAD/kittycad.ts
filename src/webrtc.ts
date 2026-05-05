@@ -407,8 +407,8 @@ export class WebRTC extends EventTarget {
         if (interaction === undefined) {
           return
         }
-        
-        const payload =  {
+
+        const payload = {
           type: 'send',
           data: [
             JSON.stringify({
@@ -425,7 +425,7 @@ export class WebRTC extends EventTarget {
             }),
           ],
         }
-        
+
         this.workerWebRTC.postMessage({
           to: 'websocket',
           payload,
@@ -445,7 +445,7 @@ export class WebRTC extends EventTarget {
       }
 
       pointerState = PointerState.UP
-      
+
       const payload = {
         type: 'send',
         data: [
