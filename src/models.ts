@@ -10824,6 +10824,7 @@ export interface UserCadInfoAdminDetails {
 
 export type UserFeature =
   | 'aquarium'
+  | 'bodies_pane'
   | 'proprietary_to_kcl_conversion_beta'
   | 'web_app_file_browser'
 
