@@ -1,3 +1,9 @@
+import {
+  type AccessContext,
+  type ObjStringDict,
+  OAuth2AuthCodePKCE,
+} from '@kittycad/oauth2-auth-code-pkce'
+
 // Load fetch polyfill dynamically only when needed (older Node),
 // and avoid bundlers pulling it into browser builds.
 try {
@@ -21,12 +27,28 @@ export interface ClientOptions {
   token?: string
   baseUrl?: string
   fetch?: typeof fetch
+  clientId?: string
+  redirectUrl?: string
+  scopes?: string[]
+  onAccessTokenExpiry?: (
+    refreshAccessToken: () => Promise<AccessContext>
+  ) => Promise<AccessContext>
+  onInvalidGrant?: (refreshAuthCodeOrRefreshToken: () => Promise<void>) => void
 }
 
 export class Client {
   token?: string
   baseUrl?: string
   fetch?: typeof fetch
+  clientId?: string
+  redirectUrl?: string
+  scopes?: string[]
+  onAccessTokenExpiry?: (
+    refreshAccessToken: () => Promise<AccessContext>
+  ) => Promise<AccessContext>
+  onInvalidGrant?: (refreshAuthCodeOrRefreshToken: () => Promise<void>) => void
+
+  private oauth2?: OAuth2AuthCodePKCE
 
   constructor(tokenOrOpts?: string | ClientOptions) {
     const env = typeof process !== 'undefined' ? process.env : undefined
@@ -41,11 +63,87 @@ export class Client {
       this.token = tokenOrOpts.token
       this.baseUrl = tokenOrOpts.baseUrl
       this.fetch = tokenOrOpts.fetch
+      this.clientId = tokenOrOpts.clientId
+      this.redirectUrl = tokenOrOpts.redirectUrl
+      this.scopes = tokenOrOpts.scopes
+      this.onAccessTokenExpiry = tokenOrOpts.onAccessTokenExpiry
+      this.onInvalidGrant = tokenOrOpts.onInvalidGrant
     }
 
     this.token ??= envToken
     this.baseUrl ??= envHost
+
+    if (this.clientId) {
+      if (typeof localStorage !== 'undefined') {
+        this.oauth2 = this.createOAuth2Client()
+        this.oauth2.isHTTPDecoratorActive(true)
+        this.fetch = this.oauth2.decorateFetchHTTPClient(
+          this.fetch || fetch
+        ) as typeof fetch
+      }
+    }
   }
+
+  authorize(oneTimeParams?: ObjStringDict): Promise<void> {
+    return this.oauth2!.fetchAuthorizationCode(oneTimeParams)
+  }
+
+  isReturningFromAuthServer(): Promise<boolean> {
+    return this.oauth2!.isReturningFromAuthServer()
+  }
+
+  async getAccessToken(): Promise<AccessContext | undefined> {
+    const context = await this.oauth2!.getAccessToken()
+    this.updateTokenFromAccessContext(context)
+    return context
+  }
+
+  resetOAuth2(): void {
+    this.oauth2!.reset()
+    this.token = undefined
+  }
+
+  private createOAuth2Client(): OAuth2AuthCodePKCE {
+    const baseUrl = this.baseUrl || 'https://api.zoo.dev'
+    const redirectUrl = this.redirectUrl || getCurrentUrlWithoutSearch()
+
+    if (!redirectUrl) {
+      throw new Error(
+        'OAuth2 requires redirectUrl when the current browser URL is unavailable.'
+      )
+    }
+
+    return new OAuth2AuthCodePKCE({
+      authorizationUrl: joinUrl(baseUrl, '/oauth2/authorize'),
+      tokenUrl: joinUrl(baseUrl, '/oauth2/token'),
+      clientId: this.clientId,
+      redirectUrl,
+      scopes: this.scopes || [],
+      onAccessTokenExpiry: async (refreshAccessToken) => {
+        const context = await (this.onAccessTokenExpiry
+          ? this.onAccessTokenExpiry(refreshAccessToken)
+          : refreshAccessToken())
+        this.updateTokenFromAccessContext(context)
+        return context
+      },
+      onInvalidGrant: this.onInvalidGrant || (() => {}),
+    })
+  }
+
+  private updateTokenFromAccessContext(
+    context: AccessContext | undefined
+  ): void {
+    if (context?.token?.value) this.token = context.token.value
+  }
+}
+
+function getCurrentUrlWithoutSearch(): string | undefined {
+  if (typeof location === 'undefined') return undefined
+  return `${location.origin}${location.pathname}`
+}
+
+function joinUrl(baseUrl: string, path: string): string {
+  return `${baseUrl.replace(/\/+$/, '')}/${path.replace(/^\/+/, '')}`
 }
 
 /**
