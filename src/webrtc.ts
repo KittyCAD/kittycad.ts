@@ -12,7 +12,7 @@ type ExpectedWebSocketResponse =
   | FailureWebSocketResponse
   | SuccessWebSocketResponse
   | Error
-  
+
 const cloneWithoutNonSerializable = (a: unknown): unknown => {
   return JSON.parse(JSON.stringify(a))
 }
@@ -183,18 +183,21 @@ export class WebRTC extends EventTarget {
     // 'auth_token_missing'.
     const onMessage = (ev: MessageEvent<WorkerMessage>) => {
       const msg = ev.data
-      if (!('from' in msg
-        && msg.from === 'websocket'
-        && 'payload' in msg
-        && typeof msg.payload === 'object'
-        && 'data' in msg.payload
-        && typeof msg.payload.data === 'string')
+      if (
+        !(
+          'from' in msg &&
+          msg.from === 'websocket' &&
+          'payload' in msg &&
+          typeof msg.payload === 'object' &&
+          'data' in msg.payload &&
+          typeof msg.payload.data === 'string'
+        )
       ) {
         return
       }
       if (msg.payload.data.indexOf('auth_token_invalid') >= 0) {
         this.workerWebRTC.removeEventListener('message', onMessage)
-        
+
         // Will redirect us to the authorization server.
         this.zooClientArgs.client.oauth2.fetchAuthorizationCode()
       }
@@ -225,13 +228,17 @@ export class WebRTC extends EventTarget {
           },
         })
       })
+      // Should maybe move this up into @kittycad/oauth2-auth-code-pkce
       .catch((error: unknown) => {
-        if (
-          typeof error === 'object' &&
-          'kind' in error &&
-          error.kind === EErrorOAuth2.ErrorNoAuthCode
-        ) {
-          this.zooClientArgs.client.oauth2.fetchAuthorizationCode()
+        if (typeof error === 'object' && 'kind' in error) {
+          if (
+            [
+              EErrorOAuth2.ErrorNoAuthCode,
+              EErrorOAuth2.ErrorAccessTokenResponse,
+            ].some((e) => e === error.kind)
+          ) {
+            this.zooClientArgs.client.oauth2.fetchAuthorizationCode()
+          }
         }
       })
   }
