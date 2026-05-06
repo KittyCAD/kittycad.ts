@@ -1,3 +1,4 @@
+import { EErrorOAuth2 } from '@kittycad/oauth2-auth-code-pkce'
 import { Client } from './client'
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws'
 import {
@@ -11,6 +12,10 @@ type ExpectedWebSocketResponse =
   | FailureWebSocketResponse
   | SuccessWebSocketResponse
   | Error
+  
+const cloneWithoutNonSerializable = (a: unknown): unknown => {
+  return JSON.parse(JSON.stringify(a))
+}
 
 // Based on human interaction speeds.
 const throttle = (
@@ -170,28 +175,32 @@ export class WebRTC extends EventTarget {
   }
 
   async start() {
-    // Cannot be passed over the Worker boundary.
     // zooClientArgs.client.token will either have a valid token, invalid, or
     // unset / undefined. The Worker will notify us if something goes wrong, in
     // which case we will fire an authorization.
-    const oauth2 = this.zooClientArgs.client.oauth2
-    delete this.zooClientArgs.client.oauth2
 
     // Our initial auth is hella confusing, because the 1st will always show
-    // 'auth_token_missing'. Very heuristic.
+    // 'auth_token_missing'.
     const onMessage = (ev: MessageEvent<WorkerMessage>) => {
       const msg = ev.data
-      if (!('from' in msg && msg.from === 'websocket')) {
+      if (!('from' in msg
+        && msg.from === 'websocket'
+        && 'payload' in msg
+        && typeof msg.payload === 'object'
+        && 'data' in msg.payload
+        && typeof msg.payload.data === 'string')
+      ) {
         return
       }
-      // @ts-expect-error
       if (msg.payload.data.indexOf('auth_token_invalid') >= 0) {
         this.workerWebRTC.removeEventListener('message', onMessage)
-        oauth2.fetchAuthorizationCode()
+        
+        // Will redirect us to the authorization server.
+        this.zooClientArgs.client.oauth2.fetchAuthorizationCode()
       }
     }
 
-    void oauth2
+    void this.zooClientArgs.client.oauth2
       .getAccessToken()
       .then((context) => {
         if (context?.token?.value) {
@@ -205,16 +214,14 @@ export class WebRTC extends EventTarget {
             '00000000-0000-0000-0000-000000000000'
         }
 
-        // Not needed for us.
-        delete this.zooClientArgs.client.fetch
-
         this.workerWebRTC.addEventListener('message', onMessage)
 
         this.workerWebRTC.postMessage({
           to: 'worker',
           payload: {
             type: 'start',
-            data: [this.zooClientArgs],
+            // Cannot serialize functions across the Worker boundary.
+            data: [cloneWithoutNonSerializable(this.zooClientArgs)],
           },
         })
       })
@@ -222,9 +229,9 @@ export class WebRTC extends EventTarget {
         if (
           typeof error === 'object' &&
           'kind' in error &&
-          error.kind === 'ErrorNoAuthCode'
+          error.kind === EErrorOAuth2.ErrorNoAuthCode
         ) {
-          oauth2.fetchAuthorizationCode()
+          this.zooClientArgs.client.oauth2.fetchAuthorizationCode()
         }
       })
   }
