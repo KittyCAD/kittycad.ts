@@ -1371,6 +1371,8 @@ export interface BodyUpdated {
 }
 
 export interface BooleanImprint {
+  /** If the operation involved any intersecting solids. */
+  any_intersections?: boolean
   /**
    * {
    *   "format": "uuid"
@@ -1380,6 +1382,8 @@ export interface BooleanImprint {
 }
 
 export interface BooleanIntersection {
+  /** If the operation involved any intersecting solids. */
+  any_intersections?: boolean
   /**
    * {
    *   "format": "uuid"
@@ -1389,6 +1393,8 @@ export interface BooleanIntersection {
 }
 
 export interface BooleanSubtract {
+  /** If the operation involved any intersecting solids. */
+  any_intersections?: boolean
   /**
    * {
    *   "format": "uuid"
@@ -1398,6 +1404,8 @@ export interface BooleanSubtract {
 }
 
 export interface BooleanUnion {
+  /** If the operation involved any intersecting solids. */
+  any_intersections?: boolean
   /**
    * {
    *   "format": "uuid"
@@ -2304,6 +2312,30 @@ export interface EdgeInfo {
 
 export interface EdgeLinesVisible {} /* Empty object */
 
+export interface EdgeSpecifier {
+  /**
+   * {
+   *   "format": "uuid"
+   * }
+   */
+  end_faces?: string[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "Optional index for disambiguation when multiple edges share the same faces. If not provided (None), all matching edges will be used. If provided (Some(n)), only the edge at index n will be used."
+   * }
+   */
+  index?: number
+  /**
+   * {
+   *   "format": "uuid"
+   * }
+   */
+  side_faces: string[]
+}
+
 export interface EmailAuthenticationForm {
   /**
    * {
@@ -2462,10 +2494,149 @@ export interface EntityMirror {
   entity_face_edge_ids?: FaceEdgeInfo[]
 }
 
+export interface EntityMirrorAcross {
+  /** The Face, edge, and entity ids of the patterned entities. */
+  entity_face_edge_ids?: FaceEdgeInfo[]
+}
+
 export interface EntityMirrorAcrossEdge {
   /** The Face, edge, and entity ids of the patterned entities. */
   entity_face_edge_ids?: FaceEdgeInfo[]
 }
+
+export type EntityReference =
+  | {
+      /** format:uuid, description:Id of the plane being referenced. */
+      plane_id: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Optional primitive topology on a parent (not used for planes today)."
+       * }
+       */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'plane'
+    }
+  | {
+      /** format:uuid, description:Id of the face being referenced. */
+      face_id: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Fallback: solid3d UUID + face index on that body when `face_id` cannot be resolved client-side."
+       * }
+       */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'face'
+    }
+  | {
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      end_faces?: string[]
+      /**
+       * {
+       *   "nullable": true,
+       *   "format": "uint32",
+       *   "minimum": 0,
+       *   "description": "Optional index for disambiguation when multiple edges share the same faces. If not provided (None), all matching edges will be used. If provided (Some(n)), only the edge at index n will be used."
+       * }
+       */
+      index?: number
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      side_faces: string[]
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Fallback: solid3d UUID + edge index on that body for 3D BREP edges (distinct from `inner.index`)."
+       * }
+       */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'edge'
+    }
+  | {
+      /**
+       * {
+       *   "nullable": true,
+       *   "format": "uint32",
+       *   "minimum": 0,
+       *   "description": "Optional index among the filtered candidates."
+       * }
+       */
+      index?: number
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      side_faces: string[]
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Fallback: solid3d UUID + vertex index on that body."
+       * }
+       */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'vertex'
+    }
+  | {
+      /** format:uuid, description:Id of the solid2d being referenced. */
+      solid2d_id: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Typically omitted: `solid2d_id` is already the owning profile. Present for schema parity with other variants."
+       * }
+       */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'solid2d'
+    }
+  | {
+      /** format:uuid, description:Id of the solid3d being referenced. */
+      solid3d_id: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Typically omitted: `solid3d_id` is already the owning body. Present for schema parity with other variants."
+       * }
+       */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'solid3d'
+    }
+  | {
+      /** format:uuid, description:Id of the edge being referenced. */
+      edge_id: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Fallback: solid2d UUID + curve index in that profile."
+       * }
+       */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'solid2d_edge'
+    }
+  | {
+      /** format:uuid, description:Id of the path containing the segment. */
+      path_id: string
+      /** format:uuid, description:Id of the segment (curve) being referenced. */
+      segment_id: string
+      /** nullable:true, description:Fallback: path UUID + segment curve index. */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'segment'
+    }
+  | {
+      /** format:uuid, description:Id of the region being referenced. */
+      region_id: string
+      /** nullable:true, description:Fallback: path UUID + region index on that path. */
+      topology_fallback?: PrimitiveTopologyFallback
+      type: 'region'
+    }
 
 export interface EntitySetOpacity {} /* Empty object */
 
@@ -2474,6 +2645,7 @@ export type EntityType =
   | 'entity'
   | 'object'
   | 'path'
+  | 'segment'
   | 'curve'
   | 'solid2d'
   | 'solid3d'
@@ -2481,6 +2653,7 @@ export type EntityType =
   | 'face'
   | 'plane'
   | 'vertex'
+  | 'region'
 
 export interface Error {
   error_code?: string
@@ -2609,8 +2782,21 @@ export type ExtrudeMethod = 'new' | 'merge'
 export type ExtrudeReference =
   | {
       entity_reference: {
-        /** format:uuid, description:The UUID of the entity to extrude to. */
-        entity_id: string
+        /**
+         * {
+         *   "nullable": true,
+         *   "format": "uuid",
+         *   "description": "Legacy UUID of the entity to extrude to. If both `entity_id` and `entity_reference` are provided, `entity_reference` takes precedence."
+         * }
+         */
+        entity_id?: string
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Entity reference (e.g. edge by side_faces). If both `entity_id` and `entity_reference` are provided, `entity_reference` takes precedence."
+         * }
+         */
+        entity_reference?: EntityReference
       }
     }
   | {
@@ -3023,8 +3209,21 @@ This is the same as the API call ID. */
 }
 
 export interface FractionOfEdge {
-  /** format:uuid, description:The id of the edge */
-  edge_id: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uuid",
+   *   "description": "The id of the edge (legacy). If both `edge_id` and `edge_specifier` are provided, `edge_specifier` takes precedence."
+   * }
+   */
+  edge_id?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Edge specifier (side_faces, end_faces, index) identifying the edge. If both `edge_id` and `edge_specifier` are provided, `edge_specifier` takes precedence."
+   * }
+   */
+  edge_specifier?: EdgeSpecifier
   /**
    * {
    *   "default": 0,
@@ -3731,6 +3930,28 @@ export type Method =
   | 'PATCH'
   | 'EXTENSION'
 
+export type MirrorAcross =
+  | {
+      edge: {
+        /** format:uuid, description:Edge ID. */
+        id: string
+      }
+    }
+  | {
+      axis: {
+        /** Axis to use as mirror. */
+        axis: Point3d
+        /** Point through which the mirror axis passes. */
+        point: Point3d
+      }
+    }
+  | {
+      plane: {
+        /** format:uuid, description:Plane ID. */
+        id: string
+      }
+    }
+
 export type MlCopilotClientMessage =
   | { type: 'ping' }
   | { headers: { [key: string]: string }; type: 'headers' }
@@ -4339,11 +4560,19 @@ export type ModelingCmd =
       body_type?: BodyType
       /**
        * {
+       *   "nullable": true,
        *   "format": "uuid",
        *   "description": "The edge to use as the axis of revolution, must be linear and lie in the plane of the solid"
        * }
        */
-      edge_id: string
+      edge_id?: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Edge reference to use as the axis of revolution (new API). If both `edge_id` and `edge_reference` are provided, `edge_reference` takes precedence."
+       * }
+       */
+      edge_reference?: EdgeSpecifier
       /**
        * {
        *   "default": "None",
@@ -4669,8 +4898,21 @@ export type ModelingCmd =
       type: 'entity_make_helix_from_params'
     }
   | {
-      /** format:uuid, description:Edge about which to make the helix. */
-      edge_id: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "format": "uuid",
+       *   "description": "Edge ID about which to make the helix (legacy API, for backwards compatibility). If both `edge_id` and `edge_reference` are provided, `edge_reference` takes precedence."
+       * }
+       */
+      edge_id?: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Edge reference about which to make the helix (new API). If both `edge_id` and `edge_reference` are provided, `edge_reference` takes precedence."
+       * }
+       */
+      edge_reference?: EdgeSpecifier
       /** Is the helix rotation clockwise? */
       is_clockwise: boolean
       /**
@@ -4689,6 +4931,17 @@ export type ModelingCmd =
       type: 'entity_make_helix_from_edge'
     }
   | {
+      /** What to mirror across */
+      across: MirrorAcross
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      ids: string[]
+      type: 'entity_mirror_across'
+    }
+  | {
       /** Axis to use as mirror. */
       axis: Point3d
       /**
@@ -4704,11 +4957,19 @@ export type ModelingCmd =
   | {
       /**
        * {
+       *   "nullable": true,
        *   "format": "uuid",
-       *   "description": "The edge to use as the mirror axis, must be linear and lie in the plane of the solid"
+       *   "description": "The edge to use as the mirror axis (legacy API). Must be linear and lie in the plane of the solid. If both `edge_id` and `edge_reference` are provided, `edge_reference` takes precedence."
        * }
        */
-      edge_id: string
+      edge_id?: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Edge reference to use as the mirror axis (new API). If both `edge_id` and `edge_reference` are provided, `edge_reference` takes precedence."
+       * }
+       */
+      edge_reference?: EdgeSpecifier
       /**
        * {
        *   "format": "uuid"
@@ -4723,6 +4984,18 @@ export type ModelingCmd =
       /** What entity was selected? */
       selection_type: SceneSelectionType
       type: 'select_with_point'
+    }
+  | {
+      /** Where in the window was selected */
+      selected_at_window: Point2d
+      /** What entity was selected? */
+      selection_type: SceneSelectionType
+      type: 'query_entity_type_with_point'
+    }
+  | {
+      /** format:uuid, description:The entity id to query */
+      entity_id: string
+      type: 'query_entity_type'
     }
   | {
       /**
@@ -4937,6 +5210,8 @@ export type ModelingCmd =
        * }
        */
       edge_ids?: string[]
+      /** A struct containing the information required to reference an edge. */
+      edges_references?: EdgeSpecifier[]
       /**
        * {
        *   "format": "uuid"
@@ -4952,6 +5227,32 @@ export type ModelingCmd =
       /** The maximum acceptable surface gap computed between the filleted surfaces. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'solid3d_fillet_edge'
+      /** If true, use the legacy CSG algorithm. */
+      use_legacy?: boolean
+    }
+  | {
+      /** The cut type and information required to perform the cut. */
+      cut_type: CutTypeV2
+      /**
+       * {
+       *   "default": [],
+       *   "description": "A struct containing the information required to reference an edge."
+       * }
+       */
+      edges_references?: EdgeSpecifier[]
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      extra_face_ids?: string[]
+      /** format:uuid, description:Which object is being cut. */
+      object_id: string
+      /** default:automatic, description:Which cutting algorithm to use. */
+      strategy?: CutStrategy
+      /** The maximum acceptable surface gap computed between the cut surfaces. Must be positive (i.e. greater than zero). */
+      tolerance: LengthUnit
+      type: 'solid3d_cut_edge_references'
       /** If true, use the legacy CSG algorithm. */
       use_legacy?: boolean
     }
@@ -5146,9 +5447,22 @@ export type ModelingCmd =
       type: 'curve_get_control_points'
     }
   | {
-      /** format:uuid, description:Which entity to project (vertex or edge). */
-      entity_id: string
-      /** format:uuid, description:Which plane to project entity_id onto. */
+      /**
+       * {
+       *   "nullable": true,
+       *   "format": "uuid",
+       *   "description": "Which entity to project (vertex or edge). Legacy; if both `entity_id` and `entity_reference` are provided, `entity_reference` takes precedence."
+       * }
+       */
+      entity_id?: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Entity reference (e.g. edge by side_faces, vertex, face) to project. If both `entity_id` and `entity_reference` are provided, `entity_reference` takes precedence."
+       * }
+       */
+      entity_reference?: EntityReference
+      /** format:uuid, description:Which plane to project the entity onto. */
       plane_id: string
       type: 'project_entity_to_plane'
       /** If true: the projected points are returned in the plane_id's coordinate system, else: the projected points are returned in the world coordinate system. */
@@ -5495,6 +5809,11 @@ export type ModelingCmd =
       type: 'solid3d_get_adjacency_info'
     }
   | { type: 'select_clear' }
+  | {
+      /** Which entities to select (face-based references for edges/vertices, face_id for faces) */
+      entities: EntityReference[]
+      type: 'select_entity'
+    }
   | { type: 'select_get' }
   | { type: 'get_num_objects' }
   | {
@@ -5693,6 +6012,8 @@ export type ModelingCmd =
       /** format:uuid, description:First segment to follow to find the region. */
       segment: string
       type: 'create_region'
+      /** Which version of the Region endpoint to call. */
+      version?: RegionVersion
     }
   | {
       /** format:uuid, description:Which sketch object to create the region from. */
@@ -5700,6 +6021,8 @@ export type ModelingCmd =
       /** The query point (in the same coordinates as the sketch itself) if a possible sketch region contains this point, then that region will be created */
       query_point: Point2d
       type: 'create_region_from_query_point'
+      /** Which version of the Region endpoint to call. */
+      version?: RegionVersion
     }
   | {
       /** format:uuid, description:Which region to search within */
@@ -6231,6 +6554,15 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/Solid3dCutEdgeReferences"
+       * }
+       */
+      data: Solid3dCutEdgeReferences
+      type: 'solid3d_cut_edge_references'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/Solid3dCutEdges"
        * }
        */
@@ -6501,6 +6833,15 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/SelectEntity"
+       * }
+       */
+      data: SelectEntity
+      type: 'select_entity'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/Export2d"
        * }
        */
@@ -6533,6 +6874,24 @@ export type OkModelingCmdResponse =
        */
       data: SelectWithPoint
       type: 'select_with_point'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/QueryEntityTypeWithPoint"
+       * }
+       */
+      data: QueryEntityTypeWithPoint
+      type: 'query_entity_type_with_point'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/QueryEntityType"
+       * }
+       */
+      data: QueryEntityType
+      type: 'query_entity_type'
     }
   | {
       /**
@@ -7172,6 +7531,15 @@ export type OkModelingCmdResponse =
        */
       data: EntityMirror
       type: 'entity_mirror'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/EntityMirrorAcross"
+       * }
+       */
+      data: EntityMirrorAcross
+      type: 'entity_mirror_across'
     }
   | {
       /**
@@ -8448,6 +8816,24 @@ export interface PriceUpsertRequest {
   unit_amount: number
 }
 
+export interface PrimitiveTopologyFallback {
+  /**
+   * {
+   *   "format": "uuid",
+   *   "description": "UUID of the parent entity that owns the primitive (solid3d, solid2d, or path)."
+   * }
+   */
+  parent_id: string
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "Index of the face, edge, vertex, profile curve, or path segment on `parent_id`."
+   * }
+   */
+  primitive_index: number
+}
+
 export interface PrivacySettings {
   /** If we can train on the data. If the user is a member of an organization, the organization's setting will override this. The organization's setting takes priority. */
   can_train_on_data: boolean
@@ -8666,6 +9052,21 @@ export interface PublicProjectVoteResponse {
   liked: boolean
 }
 
+export interface QueryEntityType {
+  /** How to reference the provided entity using face ids. */
+  reference: EntityReference
+}
+
+export interface QueryEntityTypeWithPoint {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "How to reference the selected entity using face ids. None if no entity was found at the given point (e.g. clicked in empty space)."
+   * }
+   */
+  reference?: EntityReference
+}
+
 export interface RawFile {
   /**
    * {
@@ -8745,6 +9146,8 @@ export interface RegionGetQueryPoint {
   /** A point that is inside of the queried region, in the same coordinate frame as the sketch itself */
   query_point: Point2d
 }
+
+export type RegionVersion = 'V0' | 'V1'
 
 export type RelativeTo = 'sketch_plane' | 'trajectory_curve'
 
@@ -8922,6 +9325,8 @@ export type SceneToolType =
 export interface SelectAdd {} /* Empty object */
 
 export interface SelectClear {} /* Empty object */
+
+export interface SelectEntity {} /* Empty object */
 
 export interface SelectGet {
   /**
@@ -9130,6 +9535,8 @@ export interface SideFace {
 export interface SketchModeDisable {} /* Empty object */
 
 export interface Solid2dAddHole {} /* Empty object */
+
+export interface Solid3dCutEdgeReferences {} /* Empty object */
 
 export interface Solid3dCutEdges {} /* Empty object */
 
@@ -11451,6 +11858,7 @@ export interface Models {
   DxfStorage: DxfStorage
   EdgeInfo: EdgeInfo
   EdgeLinesVisible: EdgeLinesVisible
+  EdgeSpecifier: EdgeSpecifier
   EmailAuthenticationForm: EmailAuthenticationForm
   EmailMarketingConfirmTokenBody: EmailMarketingConfirmTokenBody
   EmailMarketingConsentState: EmailMarketingConsentState
@@ -11476,7 +11884,9 @@ export interface Models {
   EntityMakeHelixFromEdge: EntityMakeHelixFromEdge
   EntityMakeHelixFromParams: EntityMakeHelixFromParams
   EntityMirror: EntityMirror
+  EntityMirrorAcross: EntityMirrorAcross
   EntityMirrorAcrossEdge: EntityMirrorAcrossEdge
+  EntityReference: EntityReference
   EntitySetOpacity: EntitySetOpacity
   EntityType: EntityType
   Error: Error
@@ -11551,6 +11961,7 @@ export interface Models {
   Mass: Mass
   MbdSymbol: MbdSymbol
   Method: Method
+  MirrorAcross: MirrorAcross
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotFile: MlCopilotFile
   MlCopilotMode: MlCopilotMode
@@ -11646,6 +12057,7 @@ export interface Models {
   Pong: Pong
   PostEffectType: PostEffectType
   PriceUpsertRequest: PriceUpsertRequest
+  PrimitiveTopologyFallback: PrimitiveTopologyFallback
   PrivacySettings: PrivacySettings
   ProjectArchiveFormat: ProjectArchiveFormat
   ProjectCategoryResponse: ProjectCategoryResponse
@@ -11661,10 +12073,13 @@ export interface Models {
   PublicProjectOwnerResponse: PublicProjectOwnerResponse
   PublicProjectResponse: PublicProjectResponse
   PublicProjectVoteResponse: PublicProjectVoteResponse
+  QueryEntityType: QueryEntityType
+  QueryEntityTypeWithPoint: QueryEntityTypeWithPoint
   RawFile: RawFile
   ReasoningMessage: ReasoningMessage
   ReconfigureStream: ReconfigureStream
   RegionGetQueryPoint: RegionGetQueryPoint
+  RegionVersion: RegionVersion
   RelativeTo: RelativeTo
   RemoveSceneObjects: RemoveSceneObjects
   Revolve: Revolve
@@ -11682,6 +12097,7 @@ export interface Models {
   SceneToolType: SceneToolType
   SelectAdd: SelectAdd
   SelectClear: SelectClear
+  SelectEntity: SelectEntity
   SelectGet: SelectGet
   SelectRegionFromPoint: SelectRegionFromPoint
   SelectRemove: SelectRemove
@@ -11712,6 +12128,7 @@ export interface Models {
   SideFace: SideFace
   SketchModeDisable: SketchModeDisable
   Solid2dAddHole: Solid2dAddHole
+  Solid3dCutEdgeReferences: Solid3dCutEdgeReferences
   Solid3dCutEdges: Solid3dCutEdges
   Solid3dFilletEdge: Solid3dFilletEdge
   Solid3dFlip: Solid3dFlip
