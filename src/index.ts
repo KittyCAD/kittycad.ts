@@ -748,6 +748,7 @@ export type {
   MlCopilotClientMessage,
   MlCopilotFile,
   MlCopilotMode,
+  MlCopilotModeOption,
   MlCopilotServerMessage,
   MlCopilotSupportedModels,
   MlCopilotSystemCommand,
