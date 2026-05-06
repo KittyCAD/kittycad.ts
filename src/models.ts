@@ -3954,6 +3954,7 @@ export type MirrorAcross =
 
 export type MlCopilotClientMessage =
   | { type: 'ping' }
+  | { type: 'list_modes' }
   | { headers: { [key: string]: string }; type: 'headers' }
   | {
       current_files?: {
@@ -4032,6 +4033,17 @@ export interface MlCopilotFile {
 
 export type MlCopilotMode = 'fast' | 'thoughtful'
 
+export interface MlCopilotModeOption {
+  /** Human-readable display description. */
+  description: string
+  /** Client icon identifier. */
+  icon: string
+  /** Stable mode identifier to send in user messages. */
+  id: string
+  /** Human-readable display label. */
+  label: string
+}
+
 export type MlCopilotServerMessage =
   | { pong: Record<string, unknown> }
   | {
@@ -4068,6 +4080,14 @@ export type MlCopilotServerMessage =
       info: {
         /** The informational text. */
         text: string
+      }
+    }
+  | {
+      modes_response: {
+        /** Default mode identifier used when no mode is requested. */
+        default_mode: string
+        /** Available modes in configuration order. */
+        modes: MlCopilotModeOption[]
       }
     }
   | {
@@ -11965,6 +11985,7 @@ export interface Models {
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotFile: MlCopilotFile
   MlCopilotMode: MlCopilotMode
+  MlCopilotModeOption: MlCopilotModeOption
   MlCopilotServerMessage: MlCopilotServerMessage
   MlCopilotSupportedModels: MlCopilotSupportedModels
   MlCopilotSystemCommand: MlCopilotSystemCommand
