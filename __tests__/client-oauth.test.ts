@@ -1,7 +1,40 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Client } from '../src/client'
+import type { ClientOptions } from '../src/client'
+import type { AccessContext } from '@kittycad/oauth2-auth-code-pkce'
 
-const localStorageStateKey = 'oauth2authcodepkce-state'
+const { oauth2Instances, MockOAuth2AuthCodePKCE } = vi.hoisted(() => {
+  const oauth2Instances: MockOAuth2AuthCodePKCE[] = []
+
+  class MockOAuth2AuthCodePKCE {
+    isHTTPDecoratorActive = vi.fn()
+    decorateFetchHTTPClient = vi.fn((fetchClient: typeof fetch) => fetchClient)
+    fetchAuthorizationCode = vi.fn()
+    isReturningFromAuthServer = vi.fn(async () => true)
+    getAccessToken = vi.fn(async () => ({
+      token: { value: 'access-token', expiry: '2026-01-01T00:00:00.000Z' },
+    }))
+    reset = vi.fn()
+
+    constructor(
+      public config: {
+        authorizationUrl: string
+        tokenUrl: string
+        clientId?: string
+        redirectUrl: string
+        scopes: string[]
+        onAccessTokenExpiry: (
+          refreshAccessToken: () => Promise<AccessContext>
+        ) => Promise<AccessContext>
+        onInvalidGrant: () => void
+      }
+    ) {
+      oauth2Instances.push(this)
+    }
+  }
+
+  return { oauth2Instances, MockOAuth2AuthCodePKCE }
+})
 
 class MemoryStorage {
   private values = new Map<string, string>()
@@ -23,8 +56,13 @@ class MemoryStorage {
   }
 }
 
+vi.mock('@kittycad/oauth2-auth-code-pkce', () => ({
+  OAuth2AuthCodePKCE: MockOAuth2AuthCodePKCE,
+}))
+
 afterEach(() => {
   vi.unstubAllGlobals()
+  oauth2Instances.length = 0
 })
 
 describe('Client OAuth2', () => {
@@ -33,22 +71,7 @@ describe('Client OAuth2', () => {
   })
 
   it('updates the client token after exchanging an authorization code', async () => {
-    const storage = new MemoryStorage()
-    storage.setItem(
-      localStorageStateKey,
-      JSON.stringify({
-        stage: 0,
-        stateQueryParam: 'state-value',
-        codeVerifier: 'code-verifier',
-      })
-    )
-
-    vi.stubGlobal('localStorage', storage)
-    vi.stubGlobal('location', {
-      href: 'http://localhost:3000/callback?code=auth-code&state=state-value',
-      origin: 'http://localhost:3000',
-      pathname: '/callback',
-    })
+    vi.stubGlobal('localStorage', new MemoryStorage())
     const fetchSpy = vi.fn(
       async () =>
         new Response(
@@ -76,9 +99,42 @@ describe('Client OAuth2', () => {
     await client.getAccessToken()
 
     expect(client.token).toBe('access-token')
-    expect(fetchSpy).toHaveBeenCalledWith(
-      'https://api.zoo.dev/oauth2/token',
-      expect.objectContaining({ method: 'POST' })
+    expect(oauth2Instances).toHaveLength(1)
+    expect(oauth2Instances[0].config).toEqual(
+      expect.objectContaining({
+        authorizationUrl: 'https://api.zoo.dev/oauth2/authorize',
+        tokenUrl: 'https://api.zoo.dev/oauth2/token',
+        clientId: 'client-id',
+        redirectUrl: 'http://localhost:3000/callback',
+      })
     )
+    expect(oauth2Instances[0].decorateFetchHTTPClient).toHaveBeenCalledWith(
+      fetchSpy
+    )
+  })
+
+  it('updates the client token when OAuth refreshes an expired access token', async () => {
+    vi.stubGlobal('localStorage', new MemoryStorage())
+    const refreshAccessToken = vi.fn(async () => ({
+      token: {
+        value: 'refreshed-access-token',
+        expiry: '2026-01-01T00:00:00.000Z',
+      },
+    }))
+    const onAccessTokenExpiry: ClientOptions['onAccessTokenExpiry'] = vi.fn(
+      async (refresh) => refresh()
+    )
+
+    const client = new Client({
+      clientId: 'client-id',
+      redirectUrl: 'http://localhost:3000/callback',
+      onAccessTokenExpiry,
+    })
+
+    await oauth2Instances[0].config.onAccessTokenExpiry(refreshAccessToken)
+
+    expect(refreshAccessToken).toHaveBeenCalled()
+    expect(onAccessTokenExpiry).toHaveBeenCalledWith(refreshAccessToken)
+    expect(client.token).toBe('refreshed-access-token')
   })
 })
