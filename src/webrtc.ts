@@ -169,14 +169,64 @@ export class WebRTC extends EventTarget {
     this.rtcPeerConnection.close()
   }
 
-  start() {
-    this.workerWebRTC.postMessage({
-      to: 'worker',
-      payload: {
-        type: 'start',
-        data: [this.zooClientArgs],
-      },
-    })
+  async start() {
+    // Cannot be passed over the Worker boundary.
+    // zooClientArgs.client.token will either have a valid token, invalid, or
+    // unset / undefined. The Worker will notify us if something goes wrong, in
+    // which case we will fire an authorization.
+    const oauth2 = this.zooClientArgs.client.oauth2
+    delete this.zooClientArgs.client.oauth2
+
+    // Our initial auth is hella confusing, because the 1st will always show
+    // 'auth_token_missing'. Very heuristic.
+    const onMessage = (ev: MessageEvent<WorkerMessage>) => {
+      const msg = ev.data
+      if (!('from' in msg && msg.from === 'websocket')) {
+        return
+      }
+      // @ts-expect-error
+      if (msg.payload.data.indexOf('auth_token_invalid') >= 0) {
+        this.workerWebRTC.removeEventListener('message', onMessage)
+        oauth2.fetchAuthorizationCode()
+      }
+    }
+
+    void oauth2
+      .getAccessToken()
+      .then((context) => {
+        if (context?.token?.value) {
+          this.zooClientArgs.client.token = context?.token?.value
+        }
+
+        // Trigger the "auth_token_invalid" message, more reliable than
+        //  "auth_token_missing", using the NIL UUID.
+        if (this.zooClientArgs.client.token === undefined) {
+          this.zooClientArgs.client.token =
+            '00000000-0000-0000-0000-000000000000'
+        }
+
+        // Not needed for us.
+        delete this.zooClientArgs.client.fetch
+
+        this.workerWebRTC.addEventListener('message', onMessage)
+
+        this.workerWebRTC.postMessage({
+          to: 'worker',
+          payload: {
+            type: 'start',
+            data: [this.zooClientArgs],
+          },
+        })
+      })
+      .catch((error: unknown) => {
+        if (
+          typeof error === 'object' &&
+          'kind' in error &&
+          error.kind === 'ErrorNoAuthCode'
+        ) {
+          oauth2.fetchAuthorizationCode()
+        }
+      })
   }
 
   // For regular wasm calls, for whatever reason devs need it for.
@@ -372,6 +422,7 @@ export class WebRTC extends EventTarget {
     if (msg.payload.type !== 'message') {
       return
     }
+
     this.iceOnMessage(msg.payload)
   }
 

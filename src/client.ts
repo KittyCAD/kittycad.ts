@@ -48,7 +48,7 @@ export class Client {
   ) => Promise<AccessContext>
   onInvalidGrant?: (refreshAuthCodeOrRefreshToken: () => Promise<void>) => void
 
-  private oauth2?: OAuth2AuthCodePKCE
+  public oauth2?: OAuth2AuthCodePKCE
 
   constructor(tokenOrOpts?: string | ClientOptions) {
     const env = typeof process !== 'undefined' ? process.env : undefined
