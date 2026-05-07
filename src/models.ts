@@ -11246,6 +11246,7 @@ export type UserFeature =
   | 'aquarium'
   | 'bodies_pane'
   | 'proprietary_to_kcl_conversion_beta'
+  | 'sketch_experimental_features'
   | 'web_app_file_browser'
 
 export interface UserFeatureEntry {
