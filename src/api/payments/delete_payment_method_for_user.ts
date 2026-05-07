@@ -6,7 +6,6 @@ import {} from '../../models.js'
 interface DeletePaymentMethodForUserInput {
   client?: Client
   id: string
-  force?: boolean
 }
 
 type DeletePaymentMethodForUserReturn = void
@@ -21,16 +20,14 @@ type DeletePaymentMethodForUserReturn = void
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {string} id Stripe payment method identifier. (path)
- * @property {boolean} force Force deletion even when it is the last payment method on file. (query)
  * @returns {Promise<DeletePaymentMethodForUserReturn>} successful deletion
  */
 export default async function delete_payment_method_for_user({
   client,
   id,
-  force,
 }: DeletePaymentMethodForUserInput): Promise<DeletePaymentMethodForUserReturn> {
   const path = `/user/payment/methods/${id}`
-  const qs = buildQuery({ force: force })
+  const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
