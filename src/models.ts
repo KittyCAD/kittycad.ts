@@ -10973,6 +10973,7 @@ This is the same as the API call ID. */
 }
 
 export type UnitVolume =
+  | 'mm3'
   | 'cm3'
   | 'ft3'
   | 'in3'

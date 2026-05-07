@@ -4,8 +4,8 @@ const client = new Client()
 
 async function example() {
   const response = await unit.get_volume_unit_conversion({
-    input_unit: 'cm3',
-    output_unit: 'ft3',
+    input_unit: 'mm3',
+    output_unit: 'cm3',
     value: 7,
     client,
   })
