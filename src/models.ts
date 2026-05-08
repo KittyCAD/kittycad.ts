@@ -1945,6 +1945,8 @@ export interface CreateOAuth2AppRequest {
 }
 
 export interface CreateOrgDataset {
+  /** nullable:true, description:Optional human-readable notes about the dataset. */
+  description?: string
   /** The dataset's display name. */
   name: string
   /** Details for accessing the dataset. */
@@ -7953,6 +7955,13 @@ export interface OrgDataset {
   access_role_arn: string
   /** title:DateTime, format:date-time, description:The date and time the dataset was created. */
   created_at: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "User-provided description for humans reviewing the dataset."
+   * }
+   */
+  description?: string
   /** The unique identifier for the dataset. */
   id: Uuid
   /**
@@ -11057,6 +11066,13 @@ export interface UpdateOAuth2AppRequest {
 }
 
 export interface UpdateOrgDataset {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Optional description override. Null clears the description."
+   * }
+   */
+  description?: string
   /** nullable:true, description:Optional new display name. */
   name?: string
   /** nullable:true, description:Optional storage connection overrides. */
