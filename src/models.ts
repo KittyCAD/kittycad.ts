@@ -4015,6 +4015,29 @@ export type MlCopilotClientMessage =
       command: MlCopilotSystemCommand
       type: 'system'
     }
+  | {
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Error encountered while loading attachments, if any."
+       * }
+       */
+      error?: string
+      /** Loaded attachment files. Empty when no matching attachments were found. */
+      files?: MlCopilotFile[]
+      /** nullable:true, description:Prompt the attachments were loaded from. */
+      prompt_id?: Uuid
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Optional backend-provided identifier to correlate request/response pairs."
+       * }
+       */
+      request_id?: string
+      /** nullable:true, format:int32, description:Specific client message sequence, when requested. */
+      seq?: number
+      type: 'attachment_response'
+    }
 
 export interface MlCopilotFile {
   /**
@@ -4106,6 +4129,58 @@ export type MlCopilotServerMessage =
        * }
        */
       reasoning: ReasoningMessage
+    }
+  | {
+      request_attachments: {
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Conversation to search for attachments. Used when prompt_id is not known."
+         * }
+         */
+        conversation_id?: Uuid
+        names?: string[]
+        /**
+         * {
+         *   "default": false,
+         *   "description": "If true, return attachment metadata without loading file contents."
+         * }
+         */
+        only_metadata?: boolean
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Prompt to load attachments from. Defaults to the active/resumed prompt."
+         * }
+         */
+        prompt_id?: Uuid
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Optional backend-provided identifier to correlate request/response pairs."
+         * }
+         */
+        request_id?: string
+        /**
+         * {
+         *   "nullable": true,
+         *   "format": "int32",
+         *   "description": "Specific client message sequence to inspect. Defaults to recent client messages."
+         * }
+         */
+        seq?: number
+      }
+    }
+  | {
+      attachments_loaded: {
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Optional backend-provided identifier to correlate request/response pairs."
+         * }
+         */
+        request_id?: string
+      }
     }
   | {
       replay: {
