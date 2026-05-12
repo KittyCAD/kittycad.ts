@@ -1949,6 +1949,13 @@ export interface CreateOrgDataset {
   description?: string
   /** The dataset's display name. */
   name: string
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Whether a low raw-KCL similarity score should block conversion success."
+   * }
+   */
+  require_raw_kcl_similarity_score_for_success?: boolean
   /** Details for accessing the dataset. */
   source: OrgDatasetSource
 }
@@ -8059,6 +8066,8 @@ export interface OrgDataset {
   name: string
   /** The ID of the org owning the dataset. */
   org_id: Uuid
+  /** Whether a low raw-KCL similarity score should block conversion success for this dataset. */
+  require_raw_kcl_similarity_score_for_success: boolean
   /** Fully-qualified URI to the dataset location (e.g. s3://bucket/prefix). */
   source_uri: string
   /** Lifecycle status for this dataset. */
@@ -11150,6 +11159,13 @@ export interface UpdateOrgDataset {
   description?: string
   /** nullable:true, description:Optional new display name. */
   name?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Optional override for whether a low raw-KCL similarity score should block conversion success."
+   * }
+   */
+  require_raw_kcl_similarity_score_for_success?: boolean
   /** nullable:true, description:Optional storage connection overrides. */
   source?: UpdateOrgDatasetSource
 }
