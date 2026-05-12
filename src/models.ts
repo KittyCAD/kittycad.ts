@@ -11355,6 +11355,7 @@ export type UserFeature =
   | 'bodies_pane'
   | 'enable_z0006_lint'
   | 'modeling_dialogs'
+  | 'plugins'
   | 'proprietary_to_kcl_conversion_beta'
   | 'sketch_experimental_features'
   | 'web_app_file_browser'
