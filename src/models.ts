@@ -8021,6 +8021,14 @@ export interface OrgAdminDetails {
   block?: BlockReason
   /** nullable:true, description:Human-friendly block reason message. */
   block_message?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "int32",
+   *   "description": "Optional org-wide per-user override for concurrent engine sessions."
+   * }
+   */
+  max_engine_sessions_per_user_override?: number
   /** Whether this organization is permanently exempt from blocking. */
   never_block: boolean
   /** Known payment methods on file. */
