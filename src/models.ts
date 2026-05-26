@@ -9074,6 +9074,8 @@ export interface ProjectResponse {
   publication: ProjectPublicationInfoResponse
   /** Current publication workflow state. */
   publication_status: KclProjectPublicationStatus
+  /** Opaque revision token for optimistic project mutations. */
+  revision: string
   /** User-facing project title. */
   title: string
   /** title:DateTime, format:date-time, description:When the project row was last updated. */
@@ -9119,6 +9121,8 @@ export interface ProjectSummaryResponse {
   publication: ProjectPublicationInfoResponse
   /** Current publication workflow state. */
   publication_status: KclProjectPublicationStatus
+  /** Opaque revision token for optimistic project mutations. */
+  revision: string
   /** User-facing project title. */
   title: string
   /** title:DateTime, format:date-time, description:When the project row was last updated. */
