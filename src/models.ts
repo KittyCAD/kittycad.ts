@@ -4063,7 +4063,7 @@ export interface MlCopilotFile {
   name: string
 }
 
-export type MlCopilotMode = 'fast' | 'thoughtful'
+export type MlCopilotMode = 'fast' | 'thoughtful' | 'auto'
 
 export interface MlCopilotModeOption {
   /** Human-readable display description. */
