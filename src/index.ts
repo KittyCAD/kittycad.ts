@@ -785,6 +785,7 @@ export type {
   OAuth2TokenRequestForm,
   ObjectBringToFront,
   ObjectSetMaterialParamsPbr,
+  ObjectSetName,
   ObjectVisible,
   OffsetSurface,
   OkModelingCmdResponse,

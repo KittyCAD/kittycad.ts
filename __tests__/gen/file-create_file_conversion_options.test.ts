@@ -16,7 +16,14 @@ async function example() {
         storage: 'ascii',
         type: 'fbx',
       },
-      src_format: { type: 'fbx' },
+      src_format: {
+        coords: {
+          forward: { axis: 'y', direction: 'positive' },
+          up: { axis: 'y', direction: 'positive' },
+        },
+        split_closed_faces: true,
+        type: 'acis',
+      },
     },
     client,
   })
