@@ -334,6 +334,13 @@ export interface AnnotationOptions {
   position?: Point3d
   /** nullable:true, description:Text displayed on the annotation */
   text?: AnnotationTextOptions
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Length Units to use for this individual annotation.  If not provided, the units set by SetSceneUnits will be used."
+   * }
+   */
+  units?: UnitLength
 }
 
 export type AnnotationTextAlignmentX =
@@ -3082,9 +3089,15 @@ export type FileExportFormat =
   | 'stl'
 
 export type FileImportFormat =
+  | 'acis'
+  | 'catia'
+  | 'creo'
   | 'fbx'
   | 'gltf'
+  | 'inventor'
+  | 'nx'
   | 'obj'
+  | 'parasolid'
   | 'ply'
   | 'sldprt'
   | 'step'
@@ -3362,8 +3375,68 @@ export interface ImportedGeometry {
 }
 
 export type InputFormat3d =
+  | {
+      /** default:{forward:{axis:y, direction:negative}, up:{axis:z, direction:positive}}, description:Co-ordinate system of input data. */
+      coords?: System
+      /**
+       * {
+       *   "default": false,
+       *   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
+       * }
+       */
+      split_closed_faces?: boolean
+      type: 'acis'
+    }
+  | {
+      /** default:{forward:{axis:y, direction:negative}, up:{axis:z, direction:positive}}, description:Co-ordinate system of input data. */
+      coords?: System
+      /**
+       * {
+       *   "default": false,
+       *   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
+       * }
+       */
+      split_closed_faces?: boolean
+      type: 'catia'
+    }
+  | {
+      /** default:{forward:{axis:z, direction:positive}, up:{axis:y, direction:positive}}, description:Co-ordinate system of input data. */
+      coords?: System
+      /**
+       * {
+       *   "default": false,
+       *   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
+       * }
+       */
+      split_closed_faces?: boolean
+      type: 'creo'
+    }
   | { type: 'fbx' }
   | { type: 'gltf' }
+  | {
+      /** default:{forward:{axis:y, direction:negative}, up:{axis:z, direction:positive}}, description:Co-ordinate system of input data. */
+      coords?: System
+      /**
+       * {
+       *   "default": false,
+       *   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
+       * }
+       */
+      split_closed_faces?: boolean
+      type: 'inventor'
+    }
+  | {
+      /** default:{forward:{axis:y, direction:negative}, up:{axis:z, direction:positive}}, description:Co-ordinate system of input data. */
+      coords?: System
+      /**
+       * {
+       *   "default": false,
+       *   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
+       * }
+       */
+      split_closed_faces?: boolean
+      type: 'nx'
+    }
   | {
       /** Co-ordinate system of input data.
 
@@ -3378,6 +3451,18 @@ This is very important for correct scaling and when calculating physics properti
 
 Defaults to millimeters. */
       units: UnitLength
+    }
+  | {
+      /** default:{forward:{axis:y, direction:negative}, up:{axis:z, direction:positive}}, description:Co-ordinate system of input data. */
+      coords?: System
+      /**
+       * {
+       *   "default": false,
+       *   "description": "Splits all closed faces into two open faces.\n\nDefaults to `false` but is implicitly `true` when importing into the engine."
+       * }
+       */
+      split_closed_faces?: boolean
+      type: 'parasolid'
     }
   | {
       /** Co-ordinate system of input data.
@@ -3395,6 +3480,8 @@ Defaults to millimeters. */
       units: UnitLength
     }
   | {
+      /** default:{forward:{axis:z, direction:positive}, up:{axis:y, direction:positive}}, description:Co-ordinate system of input data. */
+      coords?: System
       /**
        * {
        *   "default": false,
@@ -4429,6 +4516,13 @@ export type ModelingCmd =
       distance: LengthUnit
       /**
        * {
+       *   "nullable": true,
+       *   "description": "What draft angle should be used in this extrusion? Negative values indicate an outward draft, while positive values indicate an inward draft"
+       * }
+       */
+      draft_angle?: Angle
+      /**
+       * {
        *   "default": "merge",
        *   "description": "Should the extrusion create a new object or be part of the existing object."
        * }
@@ -5199,6 +5293,13 @@ export type ModelingCmd =
       /** format:float, description:Roughness of the new material */
       roughness: number
       type: 'object_set_material_params_pbr'
+    }
+  | {
+      /** Name of the object. Using a zero-length name unsets the name. */
+      name?: string
+      /** format:uuid, description:Which object to change */
+      object_id: string
+      type: 'object_set_name'
     }
   | {
       /** format:uuid, description:ID of the entity being queried. */
@@ -6352,6 +6453,8 @@ export interface ObjectBringToFront {} /* Empty object */
 
 export interface ObjectSetMaterialParamsPbr {} /* Empty object */
 
+export interface ObjectSetName {} /* Empty object */
+
 export interface ObjectVisible {} /* Empty object */
 
 export interface OffsetSurface {} /* Empty object */
@@ -6636,6 +6739,15 @@ export type OkModelingCmdResponse =
        */
       data: ObjectSetMaterialParamsPbr
       type: 'object_set_material_params_pbr'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/ObjectSetName"
+       * }
+       */
+      data: ObjectSetName
+      type: 'object_set_name'
     }
   | {
       /**
@@ -12146,6 +12258,7 @@ export interface Models {
   OAuth2TokenRequestForm: OAuth2TokenRequestForm
   ObjectBringToFront: ObjectBringToFront
   ObjectSetMaterialParamsPbr: ObjectSetMaterialParamsPbr
+  ObjectSetName: ObjectSetName
   ObjectVisible: ObjectVisible
   OffsetSurface: OffsetSurface
   OkModelingCmdResponse: OkModelingCmdResponse
