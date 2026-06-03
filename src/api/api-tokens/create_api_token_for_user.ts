@@ -1,14 +1,14 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ApiToken } from '../../models.js'
+import { ApiTokenWithFullToken } from '../../models.js'
 
 interface CreateApiTokenForUserInput {
   client?: Client
   label?: string
 }
 
-type CreateApiTokenForUserReturn = ApiToken
+type CreateApiTokenForUserReturn = ApiTokenWithFullToken
 
 /**
  * Create a new API token for your user.
@@ -22,7 +22,7 @@ type CreateApiTokenForUserReturn = ApiToken
  * @property {string} label An optional label for the API token. (query)
  * @returns {Promise<CreateApiTokenForUserReturn>} successful creation
  *
- * Possible return types: ApiToken
+ * Possible return types: ApiTokenWithFullToken
  */
 export default async function create_api_token_for_user({
   client,
