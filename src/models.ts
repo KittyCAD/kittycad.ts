@@ -4402,6 +4402,13 @@ export type MlToolResult =
       /** title:int32, format:int32, description:The status code of the tool execution. */
       status_code: number
       type: 'edit_kcl_code'
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Optional reversible delta for undoing/redoing a Zookeeper project edit locally. The `outputs` map remains the resulting project state."
+       * }
+       */
+      zookeeper_edit_patch?: ZookeeperEditPatch
     }
   | {
       /** The response from the mechanical knowledge base. */
@@ -11931,6 +11938,36 @@ export interface ZooProductSubscriptionsUserRequest {
 
 export type ZooTool = 'modeling_app' | 'text_to_cad'
 
+export interface ZookeeperEditPatch {
+  /** Project files changed by this Zookeeper edit. */
+  changed_files?: ZookeeperEditPatchFile[]
+  /** Stable id for the Zookeeper run that produced this edit. */
+  run_id: string
+}
+
+export type ZookeeperEditPatchFile =
+  | {
+      /** File contents created by Zookeeper. */
+      contents: string
+      /** Project-relative path to the changed file. */
+      path: string
+      status: 'created'
+    }
+  | {
+      /** Machine-applicable unified diff from the previous contents to the new contents. */
+      diff: string
+      /** Project-relative path to the changed file. */
+      path: string
+      status: 'modified'
+    }
+  | {
+      /** Project-relative path to the changed file. */
+      path: string
+      /** File contents before Zookeeper deleted the file. */
+      previous_contents: string
+      status: 'deleted'
+    }
+
 export interface ZoomToFit {
   /** Camera settings */
   settings: CameraSettings
@@ -12475,6 +12512,8 @@ export interface Models {
   ZooProductSubscriptionsOrgRequest: ZooProductSubscriptionsOrgRequest
   ZooProductSubscriptionsUserRequest: ZooProductSubscriptionsUserRequest
   ZooTool: ZooTool
+  ZookeeperEditPatch: ZookeeperEditPatch
+  ZookeeperEditPatchFile: ZookeeperEditPatchFile
   ZoomToFit: ZoomToFit
 }
 
