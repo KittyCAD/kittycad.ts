@@ -2332,6 +2332,8 @@ export type DistanceType =
 
 export type DxfStorage = 'ascii' | 'binary'
 
+export type EdgeCutVersion = 'v0' | 'v1' | 'v2'
+
 export interface EdgeInfo {
   /** format:uuid, description:The UUID of the id. */
   edge_id: string
@@ -5451,6 +5453,8 @@ export type ModelingCmd =
       type: 'solid3d_fillet_edge'
       /** If true, use the legacy CSG algorithm. */
       use_legacy?: boolean
+      /** Which version of the edge cut algorithm to use. */
+      version?: EdgeCutVersion
     }
   | {
       /** The cut type and information required to perform the cut. */
@@ -5477,6 +5481,8 @@ export type ModelingCmd =
       type: 'solid3d_cut_edge_references'
       /** If true, use the legacy CSG algorithm. */
       use_legacy?: boolean
+      /** Which version of the edge cut algorithm to use. */
+      version?: EdgeCutVersion
     }
   | {
       /** The cut type and information required to perform the cut. */
@@ -5502,6 +5508,8 @@ export type ModelingCmd =
       type: 'solid3d_cut_edges'
       /** If true, use the legacy CSG algorithm. */
       use_legacy?: boolean
+      /** Which version of the edge cut algorithm to use. */
+      version?: EdgeCutVersion
     }
   | {
       /** format:uuid, description:Which face is being queried. */
@@ -12074,6 +12082,7 @@ export interface Models {
   DiscountCode: DiscountCode
   DistanceType: DistanceType
   DxfStorage: DxfStorage
+  EdgeCutVersion: EdgeCutVersion
   EdgeInfo: EdgeInfo
   EdgeLinesVisible: EdgeLinesVisible
   EdgeSpecifier: EdgeSpecifier

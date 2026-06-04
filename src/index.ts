@@ -638,6 +638,7 @@ export type {
   DiscountCode,
   DistanceType,
   DxfStorage,
+  EdgeCutVersion,
   EdgeInfo,
   EdgeLinesVisible,
   EdgeSpecifier,
