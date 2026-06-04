@@ -1031,6 +1031,8 @@ export type {
   ZooProductSubscriptionsOrgRequest,
   ZooProductSubscriptionsUserRequest,
   ZooTool,
+  ZookeeperEditPatch,
+  ZookeeperEditPatchFile,
   ZoomToFit,
 } from './models.js'
 export { Client } from './client.js'
