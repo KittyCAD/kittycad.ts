@@ -1,11 +1,11 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ServiceAccountUuid } from '../../models.js'
+import {} from '../../models.js'
 
 interface DeleteServiceAccountForOrgInput {
   client?: Client
-  token: ServiceAccountUuid
+  token: string
 }
 
 type DeleteServiceAccountForOrgReturn = void
@@ -17,11 +17,13 @@ type DeleteServiceAccountForOrgReturn = void
  *
  * This endpoint does not actually delete the service account from the database. It merely marks the token as invalid. We still want to keep the service account in the database for historical purposes.
  *
+ * The token path parameter can be either the full service account token (prefixed with `svc-`) or the token's unique ID (a UUID).
+ *
  * Tags: service-accounts
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {ServiceAccountUuid} token The service account. (path)
+ * @property {string} token The service account token (prefixed with `svc-`) or the token's unique ID (a UUID). (path)
  * @returns {Promise<DeleteServiceAccountForOrgReturn>} successful deletion
  */
 export default async function delete_service_account_for_org({

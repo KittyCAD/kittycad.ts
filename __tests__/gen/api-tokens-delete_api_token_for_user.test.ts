@@ -4,7 +4,7 @@ const client = new Client()
 
 async function example() {
   const response = await api_tokens.delete_api_token_for_user({
-    token: 'api-00000000-0000-0000-0000-000000000000',
+    token: 'string',
     client,
   })
   return response
