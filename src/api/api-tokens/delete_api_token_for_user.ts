@@ -1,11 +1,11 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { ApiTokenUuid } from '../../models.js'
+import {} from '../../models.js'
 
 interface DeleteApiTokenForUserInput {
   client?: Client
-  token: ApiTokenUuid
+  token: string
 }
 
 type DeleteApiTokenForUserReturn = void
@@ -17,11 +17,13 @@ type DeleteApiTokenForUserReturn = void
  *
  * This endpoint does not actually delete the API token from the database. It merely marks the token as invalid. We still want to keep the token in the database for historical purposes.
  *
+ * The token path parameter can be either the full API token (prefixed with `api-`) or the token's unique ID (a UUID).
+ *
  * Tags: api-tokens
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {ApiTokenUuid} token The API token. (path)
+ * @property {string} token The API token (prefixed with `api-`) or the token's unique ID (a UUID). (path)
  * @returns {Promise<DeleteApiTokenForUserReturn>} successful deletion
  */
 export default async function delete_api_token_for_user({
