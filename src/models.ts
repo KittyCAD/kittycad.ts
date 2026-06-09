@@ -2306,6 +2306,20 @@ export interface DeviceAuthRequestForm {
 
 export type Direction = 'positive' | 'negative'
 
+export type DirectionType =
+  | {
+      edge: {
+        /** format:uuid, description:Edge ID. */
+        id: string
+      }
+    }
+  | {
+      axis: {
+        /** Direction. */
+        direction: Point3d
+      }
+    }
+
 export interface DisableDryRun {} /* Empty object */
 
 export interface Discount {
@@ -2333,6 +2347,11 @@ export type DistanceType =
 export type DxfStorage = 'ascii' | 'binary'
 
 export type EdgeCutVersion = 'v0' | 'v1' | 'v2'
+
+export interface EdgeGetLength {
+  /** The length of the edge. */
+  length: LengthUnit
+}
 
 export interface EdgeInfo {
   /** format:uuid, description:The UUID of the id. */
@@ -4538,6 +4557,13 @@ export type ModelingCmd =
        * }
        */
       body_type?: BodyType
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "What direction to extrude in. If None, the engine will extrude in the direction normal of the target's plane."
+       * }
+       */
+      direction?: DirectionType
       /** How far off the plane to extrude */
       distance: LengthUnit
       /**
@@ -5036,6 +5062,11 @@ export type ModelingCmd =
       /** format:uuid, description:ID of the second entity being queried. */
       entity_id2: string
       type: 'entity_get_distance'
+    }
+  | {
+      /** format:uuid, description:ID of the edge being queried. */
+      edge_id: string
+      type: 'edge_get_length'
     }
   | {
       /** format:uuid, description:ID of the entity being cloned. */
@@ -7716,6 +7747,15 @@ export type OkModelingCmdResponse =
        */
       data: EntityGetDistance
       type: 'entity_get_distance'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/EdgeGetLength"
+       * }
+       */
+      data: EdgeGetLength
+      type: 'edge_get_length'
     }
   | {
       /**
@@ -12114,12 +12154,14 @@ export interface Models {
   DeviceAuthConfirmParams: DeviceAuthConfirmParams
   DeviceAuthRequestForm: DeviceAuthRequestForm
   Direction: Direction
+  DirectionType: DirectionType
   DisableDryRun: DisableDryRun
   Discount: Discount
   DiscountCode: DiscountCode
   DistanceType: DistanceType
   DxfStorage: DxfStorage
   EdgeCutVersion: EdgeCutVersion
+  EdgeGetLength: EdgeGetLength
   EdgeInfo: EdgeInfo
   EdgeLinesVisible: EdgeLinesVisible
   EdgeSpecifier: EdgeSpecifier
