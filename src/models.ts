@@ -4193,6 +4193,13 @@ export type MlCopilotMode = 'fast' | 'thoughtful' | 'auto'
 export interface MlCopilotModeOption {
   /** Human-readable display description. */
   description: string
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Whether this mode is unavailable for the user's current plan."
+   * }
+   */
+  disabled?: boolean
   /** Client icon identifier. */
   icon: string
   /** Stable mode identifier to send in user messages. */
