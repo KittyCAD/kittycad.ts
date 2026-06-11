@@ -364,6 +364,38 @@ export interface AnnotationTextOptions {
 
 export type AnnotationType = 't2d' | 't3d'
 
+export interface Announcement {
+  active: boolean
+  body?: string
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time"
+   * }
+   */
+  created_at: string
+  /**
+   * {
+   *   "$ref": "#/components/schemas/Uuid"
+   * }
+   */
+  id: Uuid
+  tag?: string
+  title: string
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time"
+   * }
+   */
+  updated_at: string
+}
+
+export interface AnnouncementList {
+  /** The list of active announcements. */
+  announcements: Announcement[]
+}
+
 export type ApiCallStatus =
   | 'queued'
   | 'uploaded'
@@ -3945,6 +3977,7 @@ export type KclProjectPublicationStatus =
   | 'published'
   | 'rejected'
   | 'deleted'
+  | 'changes_requested'
 
 export type KclProjectShareLinkAccessMode =
   | 'anyone_with_link'
@@ -9152,6 +9185,13 @@ export interface ProjectPointsToPlane {
 }
 
 export interface ProjectPublicationInfoResponse {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Moderator feedback when changes have been requested, if any."
+   * }
+   */
+  feedback?: string
   /** Whether the current editable draft differs from the last live version. */
   has_unpublished_changes: boolean
   /**
@@ -12040,6 +12080,8 @@ export interface Models {
   AnnotationTextAlignmentY: AnnotationTextAlignmentY
   AnnotationTextOptions: AnnotationTextOptions
   AnnotationType: AnnotationType
+  Announcement: Announcement
+  AnnouncementList: AnnouncementList
   ApiCallStatus: ApiCallStatus
   ApiCallWithPrice: ApiCallWithPrice
   ApiCallWithPriceResultsPage: ApiCallWithPriceResultsPage

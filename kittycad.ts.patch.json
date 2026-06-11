@@ -1625,6 +1625,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1announcements/get/x-typescript",
+    "value": {
+      "example": "import { meta, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await meta.get_announcements({ client })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1ai~1text-to-cad~1{output_format}/post/x-typescript",
     "value": {
       "example": "import { ml, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await ml.create_text_to_cad({\n        output_format: 'stl',\n        kcl: true,\n        body: {\n            kcl_version:\n                'The version of kcl to use. If empty, the latest version will be used.',\n            model_version:\n                'Zoo provided model, or custom model which should be used to process this request.',\n            project_name:\n                'The project name. This is used to tie the prompt to a project. Which helps us make our models better over time.',\n            prompt: 'The prompt for the desired part.',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
