@@ -4726,7 +4726,19 @@ export type ModelingCmd =
        * }
        */
       body_type?: BodyType
-      /** default:sketch_plane, description:What is this sweep relative to? */
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "If true, before the sweep starts, the profile will be re-oriented so that it is perpendicular to the path being swept along. If false, the profile is left in its current orientation. Defaults to false."
+       * }
+       */
+      orient_profile_perpendicular?: boolean
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "What is this sweep relative to? Deprecated; please use `translate_profile_to_path` and `orient_profile_perpendicular` instead."
+       * }
+       */
       relative_to?: RelativeTo
       /** If true, the sweep will be broken up into sub-sweeps (extrusions, revolves, sweeps) based on the trajectory path components. */
       sectional: boolean
@@ -4736,6 +4748,13 @@ export type ModelingCmd =
       tolerance: LengthUnit
       /** Path along which to sweep. */
       trajectory: ModelingCmdId
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "If true, the profile being swept will be moved to the path being swept along, before the sweep starts. If false, the profile stays where it is, and the sweep starts from there. Defaults to false."
+       * }
+       */
+      translate_profile_to_path?: boolean
       type: 'sweep'
       /**
        * {
