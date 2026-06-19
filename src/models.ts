@@ -98,8 +98,15 @@ export interface AnnotationBasicDimension {
   font_point_size: number
   /** format:float, description:The scale of the font label in 3D space */
   font_scale: number
-  /** format:uuid, description:Entity to measure the dimension from */
-  from_entity_id: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Edge reference to use to measure the dimension from If both `from_entity_id` and `from_edge_reference` are provided, `from_edge_reference` takes precedence."
+   * }
+   */
+  from_edge_reference?: EdgeSpecifier
+  /** nullable:true, format:uuid, description:Entity to measure the dimension from */
+  from_entity_id?: string
   /** Normalized position within the entity to position the dimension from */
   from_entity_pos: Point2d
   /** 2D Position offset of the annotation within the plane. */
@@ -119,8 +126,15 @@ export interface AnnotationBasicDimension {
    * }
    */
   precision: number
-  /** format:uuid, description:Entity to measure the dimension to */
-  to_entity_id: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Edge reference to use to measure the dimension from If both `to_entity_id` and `to_edge_reference` are provided, `to_edge_reference` takes precedence."
+   * }
+   */
+  to_edge_reference?: EdgeSpecifier
+  /** nullable:true, format:uuid, description:Entity to measure the dimension to */
+  to_entity_id?: string
   /** Normalized position within the entity to position the dimension to */
   to_entity_pos: Point2d
 }
@@ -139,8 +153,15 @@ export interface AnnotationFeatureControl {
   defined_datum?: string
   /** nullable:true, description:Basic dimensions */
   dimension?: AnnotationMbdBasicDimension
-  /** format:uuid, description:Entity to place the annotation leader from */
-  entity_id: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Edge reference to use to place the annotation leader from If both `entity_id` and `edge_reference` are provided, `edge_reference` takes precedence."
+   * }
+   */
+  edge_reference?: EdgeSpecifier
+  /** nullable:true, format:uuid, description:Entity to place the annotation leader from */
+  entity_id?: string
   /** Normalized position within the entity to position the annotation leader from */
   entity_pos: Point2d
   /**
@@ -197,8 +218,15 @@ export interface AnnotationFeatureControl {
 }
 
 export interface AnnotationFeatureTag {
-  /** format:uuid, description:Entity to place the annotation leader from */
-  entity_id: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Edge reference to use to place the annotation leader from If both `entity_id` and `edge_reference` are provided, `edge_reference` takes precedence."
+   * }
+   */
+  edge_reference?: EdgeSpecifier
+  /** nullable:true, format:uuid, description:Entity to place the annotation leader from */
+  entity_id?: string
   /** Normalized position within the entity to position the annotation leader from */
   entity_pos: Point2d
   /**
@@ -11557,7 +11585,6 @@ export interface UserCadInfoAdminDetails {
 }
 
 export type UserFeature =
-  | 'aquarium'
   | 'bodies_pane'
   | 'enable_z0006_lint'
   | 'modeling_dialogs'
