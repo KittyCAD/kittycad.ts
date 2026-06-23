@@ -210,6 +210,7 @@ import get_user_org from './api/orgs/get_user_org.js'
 import list_org_dataset_conversions from './api/orgs/list_org_dataset_conversions.js'
 import list_org_datasets from './api/orgs/list_org_datasets.js'
 import list_org_members from './api/orgs/list_org_members.js'
+import list_org_skills from './api/orgs/list_org_skills.js'
 import org_dataset_s3_policies from './api/orgs/org_dataset_s3_policies.js'
 import retrigger_org_dataset from './api/orgs/retrigger_org_dataset.js'
 import retrigger_org_dataset_conversion from './api/orgs/retrigger_org_dataset_conversion.js'
@@ -255,6 +256,7 @@ export const orgs = {
   list_org_datasets_pager,
   list_org_members,
   list_org_members_pager,
+  list_org_skills,
   org_dataset_s3_policies,
   retrigger_org_dataset,
   retrigger_org_dataset_conversion,
@@ -815,6 +817,7 @@ export type {
   OrgMember,
   OrgMemberResultsPage,
   OrgRole,
+  OrgSkillResponse,
   OrientToFace,
   OriginType,
   OutputFile,

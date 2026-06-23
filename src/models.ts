@@ -8739,6 +8739,17 @@ export interface OrgMemberResultsPage {
 
 export type OrgRole = 'admin' | 'member' | 'service_account'
 
+export interface OrgSkillResponse {
+  /** Short description injected into Zookeeper's initial prompt. */
+  description: string
+  /** Stable skill identifier. */
+  id: Uuid
+  /** Full markdown context loaded when the skill is activated. */
+  markdown: string
+  /** Human-readable activation name. */
+  name: string
+}
+
 export interface OrientToFace {
   /** Camera settings */
   settings: CameraSettings
@@ -12476,6 +12487,7 @@ export interface Models {
   OrgMember: OrgMember
   OrgMemberResultsPage: OrgMemberResultsPage
   OrgRole: OrgRole
+  OrgSkillResponse: OrgSkillResponse
   OrientToFace: OrientToFace
   OriginType: OriginType
   OutputFile: OutputFile
