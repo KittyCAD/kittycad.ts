@@ -6371,6 +6371,11 @@ export type ModelingCmd =
       version?: RegionVersion
     }
   | {
+      /** format:uuid, description:Which region to resolve */
+      region_id: string
+      type: 'region_get_resolvable_intersection_info'
+    }
+  | {
       /** format:uuid, description:Which sketch object to create the region from. */
       object_id: string
       /** The query point (in the same coordinates as the sketch itself) if a possible sketch region contains this point, then that region will be created */
@@ -8072,6 +8077,15 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/RegionGetResolvableIntersectionInfo"
+       * }
+       */
+      data: RegionGetResolvableIntersectionInfo
+      type: 'region_get_resolvable_intersection_info'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/CreateRegionFromQueryPoint"
        * }
        */
@@ -9492,6 +9506,41 @@ export interface ReconfigureStream {} /* Empty object */
 export interface RegionGetQueryPoint {
   /** A point that is inside of the queried region, in the same coordinate frame as the sketch itself */
   query_point: Point2d
+}
+
+export interface RegionGetResolvableIntersectionInfo {
+  /** True if the region lies within the clockwise interior of the two intersections (inside a "right" turn from the segment to the intersection segment) */
+  curve_clockwise: boolean
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "The total number of intersections between the two curves."
+   * }
+   */
+  intersection_count: number
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "Disambiguator providing the index of the intersection.  Can be non-zero if the two curves intersect multiple times"
+   * }
+   */
+  intersection_index: number
+  /**
+   * {
+   *   "format": "uuid",
+   *   "description": "The UUID of the curve that intersects the walking curve that also borders the queried region"
+   * }
+   */
+  intersection_segment: string
+  /**
+   * {
+   *   "format": "uuid",
+   *   "description": "The UUID of the walking curve that borders the queried region"
+   * }
+   */
+  segment: string
 }
 
 export type RegionVersion = 'V0' | 'V1'
@@ -12480,6 +12529,7 @@ export interface Models {
   ReasoningMessage: ReasoningMessage
   ReconfigureStream: ReconfigureStream
   RegionGetQueryPoint: RegionGetQueryPoint
+  RegionGetResolvableIntersectionInfo: RegionGetResolvableIntersectionInfo
   RegionVersion: RegionVersion
   RelativeTo: RelativeTo
   RemoveSceneObjects: RemoveSceneObjects
