@@ -868,6 +868,7 @@ export type {
   ReasoningMessage,
   ReconfigureStream,
   RegionGetQueryPoint,
+  RegionGetResolvableIntersectionInfo,
   RegionVersion,
   RelativeTo,
   RemoveSceneObjects,
