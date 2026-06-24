@@ -4383,6 +4383,14 @@ export type MlCopilotServerMessage =
       }
     }
   | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/ZookeeperAutoRouterMetadata"
+       * }
+       */
+      zookeeper_auto_router_metadata: ZookeeperAutoRouterMetadata
+    }
+  | {
       replay: {
         messages: /**
          * {
@@ -12131,6 +12139,16 @@ export interface ZooProductSubscriptionsUserRequest {
 
 export type ZooTool = 'modeling_app' | 'text_to_cad'
 
+export interface ZookeeperAutoRouterMetadata {
+  /** Auto-router classifier bucket, e.g. "simple", "moderate", or "complex". */
+  bucket: string
+  /** nullable:true, description:Prompt template/config label used by the router. */
+  prompt_template?: string
+  reasons?: string[]
+  /** nullable:true, description:Selection stage, e.g. \classifier\ or \replay\. */
+  stage?: string
+}
+
 export interface ZookeeperEditPatch {
   /** Project files changed by this Zookeeper edit. */
   changed_files?: ZookeeperEditPatchFile[]
@@ -12711,6 +12729,7 @@ export interface Models {
   ZooProductSubscriptionsOrgRequest: ZooProductSubscriptionsOrgRequest
   ZooProductSubscriptionsUserRequest: ZooProductSubscriptionsUserRequest
   ZooTool: ZooTool
+  ZookeeperAutoRouterMetadata: ZookeeperAutoRouterMetadata
   ZookeeperEditPatch: ZookeeperEditPatch
   ZookeeperEditPatchFile: ZookeeperEditPatchFile
   ZoomToFit: ZoomToFit
