@@ -1041,6 +1041,7 @@ export type {
   ZooProductSubscriptionsOrgRequest,
   ZooProductSubscriptionsUserRequest,
   ZooTool,
+  ZookeeperAutoRouterMetadata,
   ZookeeperEditPatch,
   ZookeeperEditPatchFile,
   ZoomToFit,
