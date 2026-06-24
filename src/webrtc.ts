@@ -203,6 +203,24 @@ export class WebRTC extends EventTarget {
       }
     }
 
+    const kickoffStartWebrtcWorker = () => {
+      this.workerWebRTC.addEventListener('message', onMessage)
+
+      this.workerWebRTC.postMessage({
+        to: 'worker',
+        payload: {
+          type: 'start',
+          // Cannot serialize functions across the Worker boundary.
+          data: [cloneWithoutNonSerializable(this.zooClientArgs)],
+        },
+      })
+    }
+
+    if (this.zooClientArgs.client.token) {
+      kickoffStartWebrtcWorker()
+      return
+    }
+
     void this.zooClientArgs.client.oauth2
       .getAccessToken()
       .then((context) => {
@@ -217,16 +235,7 @@ export class WebRTC extends EventTarget {
             '00000000-0000-0000-0000-000000000000'
         }
 
-        this.workerWebRTC.addEventListener('message', onMessage)
-
-        this.workerWebRTC.postMessage({
-          to: 'worker',
-          payload: {
-            type: 'start',
-            // Cannot serialize functions across the Worker boundary.
-            data: [cloneWithoutNonSerializable(this.zooClientArgs)],
-          },
-        })
+        kickoffStartWebrtcWorker()
       })
       // Should maybe move this up into @kittycad/oauth2-auth-code-pkce
       .catch((error: unknown) => {

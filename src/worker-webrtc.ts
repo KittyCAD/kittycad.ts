@@ -33,6 +33,15 @@ type MessageEventMain =
 
 let zooModelingCommandsWs: WebSocket | undefined = undefined
 
+function sendIfOpen(data: string): boolean {
+  if (zooModelingCommandsWs?.readyState !== WebSocket.OPEN) {
+    return false
+  }
+
+  zooModelingCommandsWs.send(data)
+  return true
+}
+
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
 >
@@ -104,7 +113,9 @@ const engineCommandManagerLite = {
       payload: { type: 'send', data: commandStr },
     })
 
-    zooModelingCommandsWs?.send(commandStr)
+    if (!sendIfOpen(commandStr)) {
+      return undefined
+    }
 
     return new Promise((resolve) => {
       const onMessage = (ev: MessageEvent) => {
@@ -191,6 +202,16 @@ self.addEventListener('message', (ev: MessageEvent & MessageEventMain) => {
       return
     }
     case 'websocket': {
+      if (msg.payload.type === 'send') {
+        const [data] = msg.payload.data
+
+        if (typeof data === 'string') {
+          sendIfOpen(data)
+        }
+
+        return
+      }
+
       zooModelingCommandsWs?.[msg.payload.type](...msg.payload.data)
       return
     }
