@@ -11658,6 +11658,7 @@ export type UserFeature =
   | 'modeling_dialogs'
   | 'plugins'
   | 'proprietary_to_kcl_conversion_beta'
+  | 'segments_based_regions'
   | 'sketch_experimental_features'
   | 'web_app_file_browser'
 
