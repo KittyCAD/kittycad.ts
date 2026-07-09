@@ -6589,7 +6589,7 @@ export type OAuth2RefreshTokenUuid =
   /** An auth token. A uuid with a prefix of zoo-rfr- */
   string
 
-export type OAuth2Scope = 'modeling' | 'admin:write'
+export type OAuth2Scope = 'user:read' | 'modeling' | 'admin:write'
 
 export type OAuth2Scopes =
   /** OAuth 2.0 scopes encoded as a space-delimited string. */
@@ -9518,6 +9518,25 @@ export type ReasoningMessage =
       /** The file name. */
       file_name: string
       type: 'deleted_kcl_file'
+    }
+  | {
+      /** The content of the file. */
+      content: string
+      /** The file name. */
+      file_name: string
+      type: 'created_project_file'
+    }
+  | {
+      /** The content of the file. */
+      content: string
+      /** The file name. */
+      file_name: string
+      type: 'updated_project_file'
+    }
+  | {
+      /** The file name. */
+      file_name: string
+      type: 'deleted_project_file'
     }
 
 export interface ReconfigureStream {} /* Empty object */
