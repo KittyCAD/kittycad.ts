@@ -12114,6 +12114,16 @@ export type ZooProductSubscription = {
   zoo_tools_included?: ZooTool[]
 }
 
+export type ZooProductSubscriptionDowngradeReason =
+  | 'cost_too_high'
+  | 'errors_or_bugs'
+  | 'missing_features'
+  | 'another_ai_product_better'
+  | 'zookeeper_results_low_quality'
+  | 'reasoning_time_runs_out'
+  | 'product_too_slow'
+  | 'other'
+
 export interface ZooProductSubscriptions {
   /**
    * {
@@ -12146,6 +12156,20 @@ export interface ZooProductSubscriptionsOrgRequest {
 }
 
 export interface ZooProductSubscriptionsUserRequest {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Customer-selected reason for downgrading back to the free tier."
+   * }
+   */
+  downgrade_reason?: ZooProductSubscriptionDowngradeReason
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Optional customer-provided context for the downgrade reason."
+   * }
+   */
+  downgrade_reason_text?: string
   /** Slug of the modeling app subscription tier requested. */
   modeling_app: string
   /**
@@ -12745,6 +12769,7 @@ export interface Models {
   WebsiteSupportForm: WebsiteSupportForm
   WorldCoordinateSystem: WorldCoordinateSystem
   ZooProductSubscription: ZooProductSubscription
+  ZooProductSubscriptionDowngradeReason: ZooProductSubscriptionDowngradeReason
   ZooProductSubscriptions: ZooProductSubscriptions
   ZooProductSubscriptionsOrgRequest: ZooProductSubscriptionsOrgRequest
   ZooProductSubscriptionsUserRequest: ZooProductSubscriptionsUserRequest

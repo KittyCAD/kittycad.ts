@@ -83,7 +83,7 @@
     "op": "add",
     "path": "/paths/~1users~1{id}~1payment~1subscriptions/put/x-typescript",
     "value": {
-      "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.update_subscription_for_user({\n        id: '31337',\n        body: {\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.update_subscription_for_user({\n        id: '31337',\n        body: {\n            downgrade_reason: 'cost_too_high',\n            downgrade_reason_text:\n                'Optional customer-provided context for the downgrade reason.',\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -323,7 +323,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1subscriptions/post/x-typescript",
     "value": {
-      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.create_user_subscription({\n        body: {\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.create_user_subscription({\n        body: {\n            downgrade_reason: 'cost_too_high',\n            downgrade_reason_text:\n                'Optional customer-provided context for the downgrade reason.',\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -331,7 +331,7 @@
     "op": "add",
     "path": "/paths/~1user~1payment~1subscriptions/put/x-typescript",
     "value": {
-      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.update_user_subscription({\n        body: {\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.update_user_subscription({\n        body: {\n            downgrade_reason: 'cost_too_high',\n            downgrade_reason_text:\n                'Optional customer-provided context for the downgrade reason.',\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
