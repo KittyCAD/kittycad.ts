@@ -41460,6 +41460,13 @@
             "enum": [
               "auto"
             ]
+          },
+          {
+            "description": "Use the private Zoo Pro model for internal Zookeeper workflows.",
+            "type": "string",
+            "enum": [
+              "zookeeper_pro"
+            ]
           }
         ]
       },
@@ -61196,6 +61203,67 @@
           }
         ]
       },
+      "ZooProductSubscriptionDowngradeReason": {
+        "description": "Customer-selected reason for downgrading an individual subscription.",
+        "oneOf": [
+          {
+            "description": "The subscription price is too expensive for the customer.",
+            "type": "string",
+            "enum": [
+              "cost_too_high"
+            ]
+          },
+          {
+            "description": "The customer encountered product errors or bugs.",
+            "type": "string",
+            "enum": [
+              "errors_or_bugs"
+            ]
+          },
+          {
+            "description": "The product is missing features the customer needs.",
+            "type": "string",
+            "enum": [
+              "missing_features"
+            ]
+          },
+          {
+            "description": "The customer prefers another AI product.",
+            "type": "string",
+            "enum": [
+              "another_ai_product_better"
+            ]
+          },
+          {
+            "description": "The customer is unhappy with Zookeeper output quality.",
+            "type": "string",
+            "enum": [
+              "zookeeper_results_low_quality"
+            ]
+          },
+          {
+            "description": "The customer runs out of reasoning time too quickly.",
+            "type": "string",
+            "enum": [
+              "reasoning_time_runs_out"
+            ]
+          },
+          {
+            "description": "The product feels too slow for the customer.",
+            "type": "string",
+            "enum": [
+              "product_too_slow"
+            ]
+          },
+          {
+            "description": "The customer selected another reason.",
+            "type": "string",
+            "enum": [
+              "other"
+            ]
+          }
+        ]
+      },
       "ZooProductSubscriptions": {
         "description": "A struct of Zoo product subscriptions.",
         "type": "object",
@@ -61249,6 +61317,20 @@
         "description": "A struct of Zoo product subscriptions a user can request.",
         "type": "object",
         "properties": {
+          "downgrade_reason": {
+            "nullable": true,
+            "description": "Customer-selected reason for downgrading back to the free tier.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ZooProductSubscriptionDowngradeReason"
+              }
+            ]
+          },
+          "downgrade_reason_text": {
+            "nullable": true,
+            "description": "Optional customer-provided context for the downgrade reason.",
+            "type": "string"
+          },
           "modeling_app": {
             "description": "Slug of the modeling app subscription tier requested.",
             "type": "string"

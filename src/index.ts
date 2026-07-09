@@ -1037,6 +1037,7 @@ export type {
   WebsiteSupportForm,
   WorldCoordinateSystem,
   ZooProductSubscription,
+  ZooProductSubscriptionDowngradeReason,
   ZooProductSubscriptions,
   ZooProductSubscriptionsOrgRequest,
   ZooProductSubscriptionsUserRequest,
