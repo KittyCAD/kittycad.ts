@@ -4249,7 +4249,7 @@ export interface MlCopilotFile {
   name: string
 }
 
-export type MlCopilotMode = 'fast' | 'thoughtful' | 'auto'
+export type MlCopilotMode = 'fast' | 'thoughtful' | 'auto' | 'zookeeper_pro'
 
 export interface MlCopilotModeOption {
   /** Human-readable display description. */
