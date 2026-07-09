@@ -48169,6 +48169,13 @@
         "description": "Supported OAuth 2.0 scopes.",
         "oneOf": [
           {
+            "description": "Grants read access to the authenticated user's profile.",
+            "type": "string",
+            "enum": [
+              "user:read"
+            ]
+          },
+          {
             "description": "Grants access to modeling APIs.",
             "type": "string",
             "enum": [
@@ -54842,6 +54849,76 @@
                 "type": "string",
                 "enum": [
                   "deleted_kcl_file"
+                ]
+              }
+            },
+            "required": [
+              "file_name",
+              "type"
+            ]
+          },
+          {
+            "description": "A project file that is being created by the AI. This does not contain KCL code.",
+            "type": "object",
+            "properties": {
+              "content": {
+                "description": "The content of the file.",
+                "type": "string"
+              },
+              "file_name": {
+                "description": "The file name.",
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "created_project_file"
+                ]
+              }
+            },
+            "required": [
+              "content",
+              "file_name",
+              "type"
+            ]
+          },
+          {
+            "description": "A project file that is being updated by the AI. This does not contain KCL code.",
+            "type": "object",
+            "properties": {
+              "content": {
+                "description": "The content of the file.",
+                "type": "string"
+              },
+              "file_name": {
+                "description": "The file name.",
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "updated_project_file"
+                ]
+              }
+            },
+            "required": [
+              "content",
+              "file_name",
+              "type"
+            ]
+          },
+          {
+            "description": "A project file that is being deleted by the AI.",
+            "type": "object",
+            "properties": {
+              "file_name": {
+                "description": "The file name.",
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "deleted_project_file"
                 ]
               }
             },
