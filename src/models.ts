@@ -3039,6 +3039,34 @@ export interface FailureWebSocketResponse {
 
 export type FbxStorage = 'ascii' | 'binary'
 
+export type Feature =
+  | 'bodies_pane'
+  | 'auth_restricted_to_employees'
+  | 'big_query_telemetry'
+  | 'billing'
+  | 'disallow_self_signup'
+  | 'email_with_s_e_s'
+  | 'enable_z0006_lint'
+  | 'kcl_new_lexer_parser'
+  | 'redirect_to_govcloud'
+  | 'require_saml_auth'
+  | 'local_dev'
+  | 'newsletter'
+  | 'prefix_email_subject'
+  | 'enterprise_cockroach'
+  | 'same_site_none_cookies'
+  | 'validate_tax_info'
+  | 'modeling_dialogs'
+  | 'plugins'
+  | 'proprietary_to_kcl_conversion_beta'
+  | 'segments_based_regions'
+  | 'sketch_experimental_features'
+  | 'web_app_file_browser'
+  | 'zookeeper_pro_mode'
+  | 'unsafe_allow_api_key_auth'
+  | 'unsafe_allow_localhost_shortlinks'
+  | 'zoo_corp_auth'
+
 export interface FileCenterOfMass {
   /** nullable:true, description:The resulting center of mass. */
   center_of_mass?: Point3d
@@ -11671,19 +11699,9 @@ export interface UserCadInfoAdminDetails {
   what_are_you_building?: string
 }
 
-export type UserFeature =
-  | 'bodies_pane'
-  | 'enable_z0006_lint'
-  | 'modeling_dialogs'
-  | 'plugins'
-  | 'proprietary_to_kcl_conversion_beta'
-  | 'segments_based_regions'
-  | 'sketch_experimental_features'
-  | 'web_app_file_browser'
-
 export interface UserFeatureEntry {
   /** Stable identifier for the feature flag (snake_case). */
-  id: UserFeature
+  id: Feature
 }
 
 export interface UserFeatureList {
@@ -12434,6 +12452,7 @@ export interface Models {
   FaceIsPlanar: FaceIsPlanar
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage
+  Feature: Feature
   FileCenterOfMass: FileCenterOfMass
   FileConversion: FileConversion
   FileDensity: FileDensity
@@ -12751,7 +12770,6 @@ export interface Models {
   UploadOrgDatasetFilesResponse: UploadOrgDatasetFilesResponse
   UserAdminDetails: UserAdminDetails
   UserCadInfoAdminDetails: UserCadInfoAdminDetails
-  UserFeature: UserFeature
   UserFeatureEntry: UserFeatureEntry
   UserFeatureList: UserFeatureList
   UserIdentifier: UserIdentifier
