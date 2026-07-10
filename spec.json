@@ -38603,6 +38603,193 @@
           }
         ]
       },
+      "Feature": {
+        "description": "Feature-like switches determined by environment, rules, and overrides.",
+        "oneOf": [
+          {
+            "description": "Enables the bodies pane in Zoo Design Studio.",
+            "type": "string",
+            "enum": [
+              "bodies_pane"
+            ]
+          },
+          {
+            "description": "When enabled, auth is restricted to only employees.",
+            "type": "string",
+            "enum": [
+              "auth_restricted_to_employees"
+            ]
+          },
+          {
+            "description": "Enables emitting telemetry to BigQuery, otherwise received telemetry is just dropped.",
+            "type": "string",
+            "enum": [
+              "big_query_telemetry"
+            ]
+          },
+          {
+            "description": "Stripe related features are enabled.",
+            "type": "string",
+            "enum": [
+              "billing"
+            ]
+          },
+          {
+            "description": "Disable signup through email or OAuth.",
+            "type": "string",
+            "enum": [
+              "disallow_self_signup"
+            ]
+          },
+          {
+            "description": "Email sending is handled by AWS SES.",
+            "type": "string",
+            "enum": [
+              "email_with_s_e_s"
+            ]
+          },
+          {
+            "description": "Enables the Z0006 lint, for converting to new face api syntax in Zoo Design Studio.",
+            "type": "string",
+            "enum": [
+              "enable_z0006_lint"
+            ]
+          },
+          {
+            "description": "New KCL lexer and parser.",
+            "type": "string",
+            "enum": [
+              "kcl_new_lexer_parser"
+            ]
+          },
+          {
+            "description": "Immediately redirect to our Govcloud environment (zoogov.dev).",
+            "type": "string",
+            "enum": [
+              "redirect_to_govcloud"
+            ]
+          },
+          {
+            "description": "Requires SAML auth and orgs for all users.",
+            "type": "string",
+            "enum": [
+              "require_saml_auth"
+            ]
+          },
+          {
+            "description": "Only to be used only for local development. Allows bypassing certain features or makes local dev easier.",
+            "type": "string",
+            "enum": [
+              "local_dev"
+            ]
+          },
+          {
+            "description": "Enables customers to subscribe to our newsletter.",
+            "type": "string",
+            "enum": [
+              "newsletter"
+            ]
+          },
+          {
+            "description": "Prefix email subjects with the environment so we can better identify the source.",
+            "type": "string",
+            "enum": [
+              "prefix_email_subject"
+            ]
+          },
+          {
+            "description": "Enterprise-only CockroachDB features (like `REGIONAL BY ROW`) are enabled in this environment.",
+            "type": "string",
+            "enum": [
+              "enterprise_cockroach"
+            ]
+          },
+          {
+            "description": "Always use cookies with same-site=none.",
+            "type": "string",
+            "enum": [
+              "same_site_none_cookies"
+            ]
+          },
+          {
+            "description": "Notify us via slack if we're missing tax info for a customer.",
+            "type": "string",
+            "enum": [
+              "validate_tax_info"
+            ]
+          },
+          {
+            "description": "Enables modeling dialogs in Zoo Design Studio.",
+            "type": "string",
+            "enum": [
+              "modeling_dialogs"
+            ]
+          },
+          {
+            "description": "Enables plugins in Zoo Design Studio.",
+            "type": "string",
+            "enum": [
+              "plugins"
+            ]
+          },
+          {
+            "description": "Grants access to the beta proprietary-to-KCL conversion endpoint.",
+            "type": "string",
+            "enum": [
+              "proprietary_to_kcl_conversion_beta"
+            ]
+          },
+          {
+            "description": "Enables the topological segments-based region API for point-and-click in Zoo Design Studio.",
+            "type": "string",
+            "enum": [
+              "segments_based_regions"
+            ]
+          },
+          {
+            "description": "Enables sketch solve experimental features in Zoo Design Studio.",
+            "type": "string",
+            "enum": [
+              "sketch_experimental_features"
+            ]
+          },
+          {
+            "description": "Enables the public-facing web app file browser feature.",
+            "type": "string",
+            "enum": [
+              "web_app_file_browser"
+            ]
+          },
+          {
+            "description": "Enables private Zookeeper Pro mode access in ML Copilot.",
+            "type": "string",
+            "enum": [
+              "zookeeper_pro_mode"
+            ]
+          },
+          {
+            "description": "Allow creating a session via an existing API key",
+            "type": "string",
+            "enum": [
+              "unsafe_allow_api_key_auth"
+            ]
+          },
+          {
+            "description": "Allow shortlinks to have a domain of localhost.",
+            "type": "string",
+            "enum": [
+              "unsafe_allow_localhost_shortlinks"
+            ]
+          },
+          {
+            "description": "Enable ZooCorp OAuth2. This adds https://auth.corp.zoo.dev as an OAuth2 provider.",
+            "type": "string",
+            "enum": [
+              "zoo_corp_auth"
+            ]
+          }
+        ]
+      },
       "FileCenterOfMass": {
         "description": "A file center of mass result.",
         "type": "object",
@@ -60249,19 +60436,6 @@
           }
         }
       },
-      "UserFeature": {
-        "type": "string",
-        "enum": [
-          "bodies_pane",
-          "enable_z0006_lint",
-          "modeling_dialogs",
-          "plugins",
-          "proprietary_to_kcl_conversion_beta",
-          "segments_based_regions",
-          "sketch_experimental_features",
-          "web_app_file_browser"
-        ]
-      },
       "UserFeatureEntry": {
         "description": "Enabled features surfaced to end users.",
         "type": "object",
@@ -60270,7 +60444,7 @@
             "description": "Stable identifier for the feature flag (snake_case).",
             "allOf": [
               {
-                "$ref": "#/components/schemas/UserFeature"
+                "$ref": "#/components/schemas/Feature"
               }
             ]
           }
