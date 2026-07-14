@@ -5,6 +5,7 @@ const client = new Client()
 async function example() {
   const response = await users.update_user_self({
     body: {
+      allow_pay_as_you_go: true,
       company: "The user's company.",
       discord: "The user's Discord handle.",
       first_name: "The user's first name.",

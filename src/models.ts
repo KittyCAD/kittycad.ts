@@ -2813,6 +2813,13 @@ export interface ExportFile {
 export interface ExtendPath {} /* Empty object */
 
 export interface ExtendedUser {
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Whether the user has opted into pay-as-you-go charges after using their included credits."
+   * }
+   */
+  allow_pay_as_you_go?: boolean
   /** nullable:true, description:If the user should be blocked and the reason why. */
   block?: BlockReason
   /**
@@ -11572,6 +11579,13 @@ export interface UpdateShortlinkRequest {
 }
 
 export interface UpdateUser {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Whether the user has opted into pay-as-you-go charges after using their included credits."
+   * }
+   */
+  allow_pay_as_you_go?: boolean
   /** The user's company. */
   company?: string
   /** The user's Discord handle. */
@@ -11769,6 +11783,13 @@ export interface UserOrgInfo {
 export type UserOrgRole = 'admin' | 'member'
 
 export interface UserResponse {
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Whether the user has opted into pay-as-you-go charges after using their included credits."
+   * }
+   */
+  allow_pay_as_you_go?: boolean
   /** nullable:true, description:If the user should be blocked and the reason why. */
   block?: BlockReason
   /** nullable:true, description:Human-friendly block reason message. */
