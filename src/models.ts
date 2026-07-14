@@ -1427,6 +1427,7 @@ export type BlockReason =
   | 'missing_payment_method'
   | 'payment_method_failed'
   | 'upgrade_downgrade_abuse'
+  | 'admin'
 
 export interface BodiesCreated {
   /** All bodies created by this operation. */
