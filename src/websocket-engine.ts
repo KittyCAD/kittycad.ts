@@ -5,7 +5,6 @@ import { EErrorOAuth2 } from '@kittycad/oauth2-auth-code-pkce'
 import { Client } from './client'
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws'
 import {
-  OkWebSocketResponseData,
   SuccessWebSocketResponse,
   FailureWebSocketResponse,
 } from './models'
@@ -218,9 +217,9 @@ export class WebSocket extends EventTarget {
         }),
     }
   }
-
+  
   send(
-    ...args: Parameters<WebSocket['send']>
+    ...args: unknown[]
   ): Promise<ExpectedWebSocketResponse> {
     return new Promise((resolve) => {
       const onMessage = (ev: MessageEvent<WorkerMessage>) => {
