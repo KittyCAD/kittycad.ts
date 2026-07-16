@@ -1104,6 +1104,8 @@ export type BatchResponse =
       errors: ApiError[]
     }
 
+export interface BeginExecution {} /* Empty object */
+
 export type BillingCadence = 'annual' | 'quarterly' | 'monthly' | 'manual'
 
 export type BillingCommitmentScope = 'pooled' | 'per_item'
@@ -2381,8 +2383,6 @@ export type DirectionType =
       }
     }
 
-export interface DisableDryRun {} /* Empty object */
-
 export interface Discount {
   /** The coupon that applied to create this discount. */
   coupon: Coupon
@@ -2513,9 +2513,9 @@ export type EmailMarketingConsentStatus =
   | 'unsubscribed'
   | 'declined'
 
-export interface EnableDryRun {} /* Empty object */
-
 export interface EnableSketchMode {} /* Empty object */
+
+export interface EndExecution {} /* Empty object */
 
 export interface EngineUtilEvaluatePath {
   /** The evaluated path curve position */
@@ -3028,6 +3028,15 @@ export interface FaceIsPlanar {
   y_axis?: Point3d
   /** nullable:true, description:plane's local z-axis (normal) */
   z_axis?: Point3d
+}
+
+export interface FactoryJobResponse {
+  /** nullable:true, description:The current (first) version id of the job. */
+  current_version_id?: Uuid
+  /** The stable, customer-facing job id. */
+  id: Uuid
+  /** The initial workflow status (`new`). */
+  status: string
 }
 
 export interface FailureWebSocketResponse {
@@ -5812,8 +5821,6 @@ export type ModelingCmd =
       planar_normal?: Point3d
       type: 'enable_sketch_mode'
     }
-  | { type: 'enable_dry_run' }
-  | { type: 'disable_dry_run' }
   | {
       /** The color to set the background to. */
       color: Color
@@ -6464,6 +6471,12 @@ export type ModelingCmd =
       type: 'offset_surface'
     }
   | {
+      /** Should rendering occur, or not? If enabled, rendering will be low resolution until you call EndExecution. */
+      enable_render: boolean
+      type: 'begin_execution'
+    }
+  | { type: 'end_execution' }
+  | {
       /** Find the edge closest to this point. Assumed to be in absolute coordinates, relative to global (scene) origin. */
       closest_to: Point3d
       /**
@@ -7055,24 +7068,6 @@ export type OkModelingCmdResponse =
        */
       data: SketchModeDisable
       type: 'sketch_mode_disable'
-    }
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/EnableDryRun"
-       * }
-       */
-      data: EnableDryRun
-      type: 'enable_dry_run'
-    }
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/DisableDryRun"
-       * }
-       */
-      data: DisableDryRun
-      type: 'disable_dry_run'
     }
   | {
       /**
@@ -8171,6 +8166,24 @@ export type OkModelingCmdResponse =
        */
       data: OffsetSurface
       type: 'offset_surface'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/BeginExecution"
+       * }
+       */
+      data: BeginExecution
+      type: 'begin_execution'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/EndExecution"
+       * }
+       */
+      data: EndExecution
+      type: 'end_execution'
     }
   | {
       /**
@@ -12306,6 +12319,7 @@ export interface Models {
   Axis: Axis
   AxisDirectionPair: AxisDirectionPair
   BatchResponse: BatchResponse
+  BeginExecution: BeginExecution
   BillingCadence: BillingCadence
   BillingCommitmentScope: BillingCommitmentScope
   BillingContractItemInput: BillingContractItemInput
@@ -12412,7 +12426,6 @@ export interface Models {
   DeviceAuthRequestForm: DeviceAuthRequestForm
   Direction: Direction
   DirectionType: DirectionType
-  DisableDryRun: DisableDryRun
   Discount: Discount
   DiscountCode: DiscountCode
   DistanceType: DistanceType
@@ -12426,8 +12439,8 @@ export interface Models {
   EmailMarketingConfirmTokenBody: EmailMarketingConfirmTokenBody
   EmailMarketingConsentState: EmailMarketingConsentState
   EmailMarketingConsentStatus: EmailMarketingConsentStatus
-  EnableDryRun: EnableDryRun
   EnableSketchMode: EnableSketchMode
+  EndExecution: EndExecution
   EngineUtilEvaluatePath: EngineUtilEvaluatePath
   EntityCircularPattern: EntityCircularPattern
   EntityClone: EntityClone
@@ -12472,6 +12485,7 @@ export interface Models {
   FaceGetGradient: FaceGetGradient
   FaceGetPosition: FaceGetPosition
   FaceIsPlanar: FaceIsPlanar
+  FactoryJobResponse: FactoryJobResponse
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage
   Feature: Feature
