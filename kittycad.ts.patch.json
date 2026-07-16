@@ -497,6 +497,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1factory~1jobs/post/x-typescript",
+    "value": {
+      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.create_user_factory_job({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1extended/get/x-typescript",
     "value": {
       "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.get_user_self_extended({ client })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",

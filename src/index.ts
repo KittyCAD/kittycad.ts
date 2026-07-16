@@ -50,6 +50,9 @@ export const executor = {
   create_file_execution,
 }
 
+import create_user_factory_job from './api/factory/create_user_factory_job.js'
+export const factory = { create_user_factory_job }
+
 import create_file_center_of_mass from './api/file/create_file_center_of_mass.js'
 import create_file_conversion from './api/file/create_file_conversion.js'
 import create_file_conversion_options from './api/file/create_file_conversion_options.js'
@@ -534,6 +537,7 @@ export type {
   Axis,
   AxisDirectionPair,
   BatchResponse,
+  BeginExecution,
   BillingCadence,
   BillingCommitmentScope,
   BillingContractItemInput,
@@ -640,7 +644,6 @@ export type {
   DeviceAuthRequestForm,
   Direction,
   DirectionType,
-  DisableDryRun,
   Discount,
   DiscountCode,
   DistanceType,
@@ -654,8 +657,8 @@ export type {
   EmailMarketingConfirmTokenBody,
   EmailMarketingConsentState,
   EmailMarketingConsentStatus,
-  EnableDryRun,
   EnableSketchMode,
+  EndExecution,
   EngineUtilEvaluatePath,
   EntityCircularPattern,
   EntityClone,
@@ -700,6 +703,7 @@ export type {
   FaceGetGradient,
   FaceGetPosition,
   FaceIsPlanar,
+  FactoryJobResponse,
   FailureWebSocketResponse,
   FbxStorage,
   Feature,
