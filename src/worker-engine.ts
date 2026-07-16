@@ -44,7 +44,9 @@ function sendIfOpen(data: string): boolean {
 
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
->
+> & {
+  webrtc: boolean
+}
 const start = async (args: ZooClientArgs) => {
   // Make the wasm blob available first before anything. We don't use it immediately
   // today but it's intuitive to think this bag of data and functions is available
@@ -61,7 +63,7 @@ const start = async (args: ZooClientArgs) => {
 
   zooModelingCommandsWs = new WebSocket(
     ModelingCommandsWs.urlConstructFrom({
-      webrtc: true,
+      webrtc: args.webrtc ?? true,
       ...args,
     })
   )
