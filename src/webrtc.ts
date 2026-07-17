@@ -98,7 +98,9 @@ type WorkerMessage =
 // Make sure we tie our arguments to the WebSocket initializer's parameters.
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
->[0]
+>[0] & {
+  enable_ssao?: boolean
+}
 
 export class WebRTC extends EventTarget {
   private zooClientArgs: ZooClientArgs
@@ -115,7 +117,10 @@ export class WebRTC extends EventTarget {
   constructor(args: ZooClientArgs) {
     super()
 
-    this.zooClientArgs = args
+    this.zooClientArgs = {
+      ...args,
+      enable_ssao: args.enable_ssao ?? true,
+    }
 
     // Initialization is NOT resource acquisition here. The purpose of early
     // init is worker is available to hook up events to RTCPeerConnection events.

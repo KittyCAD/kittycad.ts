@@ -32,7 +32,7 @@ type MessageEventMain =
     }
 
 let zooModelingCommandsWs: WebSocket | undefined = undefined
-const executorSettings = JSON.stringify({
+let executorSettings = JSON.stringify({
   settings: {
     modeling: {
       enable_ssao: false,
@@ -52,6 +52,7 @@ function sendIfOpen(data: string): boolean {
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
 > & {
+  enable_ssao?: boolean
   webrtc: boolean
 }
 const start = async (args: ZooClientArgs) => {
@@ -67,6 +68,14 @@ const start = async (args: ZooClientArgs) => {
         module_or_path: buf,
       })
     )
+
+  executorSettings = JSON.stringify({
+    settings: {
+      modeling: {
+        enable_ssao: args.enable_ssao ?? false,
+      },
+    },
+  })
 
   zooModelingCommandsWs = new WebSocket(
     ModelingCommandsWs.urlConstructFrom({

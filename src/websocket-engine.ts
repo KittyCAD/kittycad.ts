@@ -51,7 +51,9 @@ type WorkerMessage =
 // Make sure we tie our arguments to the WebSocket initializer's parameters.
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
->[0]
+>[0] & {
+  enable_ssao?: boolean
+}
 
 export class WebSocket extends EventTarget {
   private zooClientArgs: ZooClientArgs
