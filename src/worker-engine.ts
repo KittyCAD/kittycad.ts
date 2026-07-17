@@ -32,6 +32,13 @@ type MessageEventMain =
     }
 
 let zooModelingCommandsWs: WebSocket | undefined = undefined
+const executorSettings = JSON.stringify({
+  settings: {
+    modeling: {
+      enable_ssao: false,
+    },
+  },
+})
 
 function sendIfOpen(data: string): boolean {
   if (zooModelingCommandsWs?.readyState !== WebSocket.OPEN) {
@@ -190,7 +197,7 @@ const kclExecute = (
   return executorContext.execute(
     JSON.stringify(program),
     opts.mainKclPathName,
-    '{}'
+    executorSettings
   )
 }
 
