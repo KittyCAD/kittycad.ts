@@ -3057,13 +3057,13 @@ export interface FailureWebSocketResponse {
 export type FbxStorage = 'ascii' | 'binary'
 
 export type Feature =
-  | 'bodies_pane'
   | 'auth_restricted_to_employees'
   | 'big_query_telemetry'
   | 'billing'
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
   | 'enable_z0006_lint'
+  | 'factory_portal'
   | 'kcl_new_lexer_parser'
   | 'redirect_to_govcloud'
   | 'require_saml_auth'
@@ -4436,6 +4436,18 @@ export type MlCopilotServerMessage =
       zookeeper_auto_router_metadata: ZookeeperAutoRouterMetadata
     }
   | {
+      zookeeper_recovery_tool_output: {
+        /** Application-level tool call identifier. */
+        call_id: string
+        /** Bounded readable output derived from the completed tool result. */
+        output: string
+        /** default:false, description:Whether the tool changed the current project. */
+        project_updated?: boolean
+        /** Name of the completed tool. */
+        tool_name: string
+      }
+    }
+  | {
       replay: {
         messages: /**
          * {
@@ -4597,7 +4609,7 @@ export interface ModelingAppSubscriptionTier {
    *   "default": 0,
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month. This is equivalent to the monetary value divided by the price of an API credit."
+   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out. This is equivalent to the monetary value divided by the price of an API credit."
    * }
    */
   monthly_pay_as_you_go_api_credits?: number
@@ -4606,7 +4618,7 @@ export interface ModelingAppSubscriptionTier {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month."
+   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out."
    * }
    */
   monthly_pay_as_you_go_api_credits_monetary_value?: number
@@ -8543,6 +8555,8 @@ export type OrgDatasetFileConversionStatus =
   | 'success'
   | 'error_user'
   | 'error_geometry_mismatch'
+  | 'error_execution'
+  | 'error_connection'
   | 'error_unsupported'
   | 'error_internal'
 
@@ -12129,7 +12143,7 @@ export type ZooProductSubscription = {
    *   "default": 0,
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month. This is equivalent to the monetary value divided by the price of an API credit."
+   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out. This is equivalent to the monetary value divided by the price of an API credit."
    * }
    */
   monthly_pay_as_you_go_api_credits?: number
@@ -12138,7 +12152,7 @@ export type ZooProductSubscription = {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. This re-ups on the 1st of each month."
+   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out."
    * }
    */
   monthly_pay_as_you_go_api_credits_monetary_value?: number
