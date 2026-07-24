@@ -30,7 +30,7 @@ type CreateTextToCadMultiFileIterationReturn = TextToCadMultiFileIteration
  *
  * Input filepaths will be normalized and re-canonicalized to be under the current working directory -- so returned paths may differ from provided paths, and care must be taken when handling user provided paths.
  *
- * Tags: ml
+ * Tags: ml, hidden
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.

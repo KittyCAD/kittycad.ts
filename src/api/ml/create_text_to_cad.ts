@@ -27,7 +27,7 @@ type CreateTextToCadReturn = TextToCad
  *
  * One thing to note, if you hit the cache, this endpoint will return right away. So you only have to wait if the status is not `Completed` or `Failed`.
  *
- * Tags: ml
+ * Tags: ml, hidden
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.

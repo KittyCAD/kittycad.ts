@@ -23,7 +23,7 @@ type CreateTextToCadIterationReturn = TextToCadIteration
  *
  * This endpoint is deprecated in favor of `/ws/ml/copilot`.
  *
- * Tags: ml
+ * Tags: ml, hidden
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
