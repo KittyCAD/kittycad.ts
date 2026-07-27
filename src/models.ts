@@ -63,12 +63,14 @@ export interface AddressDetails {
 }
 
 export interface AdjacencyInfo {
-  /** nullable:true, description:Adjacent edge and face info. */
+  /** nullable:true, description:Next adjacent edge and face info. */
   adjacent_info?: EdgeInfo
   /** nullable:true, description:Opposite edge and face info. */
   opposite_info?: EdgeInfo
   /** nullable:true, description:Original edge id and face info. */
   original_info?: EdgeInfo
+  /** nullable:true, description:Previous adjacent edge and face info. */
+  previous_adjacent_info?: EdgeInfo
 }
 
 export interface Angle {
@@ -2108,6 +2110,21 @@ export type Currency =
 This is intentionally billing-owned instead of Stripe-owned, so contract and manual invoice flows can use the same validated type without reaching back into a provider-specific crate. */
   string
 
+export interface CurveDebug {
+  /** nullable:true, description:Center point of segment. */
+  center?: Point2d
+  /** nullable:true, description:End point of segment. */
+  end?: Point2d
+  /** ID for this segment. */
+  id: ModelingCmdId
+  /** nullable:true, description:Midpoint on a three point arc */
+  mid?: Point2d
+  /** What kind of segment is it (line, arc, etc) */
+  segment_type: CurveTypeDebug
+  /** nullable:true, description:Start point of segment or circle. */
+  start?: Point2d
+}
+
 export interface CurveGetControlPoints {
   /** Control points in the curve. */
   control_points: Point3d[]
@@ -2130,6 +2147,8 @@ export interface CurveSetConstraint {} /* Empty object */
 export type CurveType =
   /** The type of Curve (embedded within path) */
   'line' | 'arc' | 'nurbs'
+
+export type CurveTypeDebug = 'line' | 'three_point_arc' | 'circle'
 
 export interface CustomModel {
   /** title:DateTime, format:date-time, description:The date and time the model was created. */
@@ -3080,6 +3099,7 @@ export type Feature =
   | 'sketch_experimental_features'
   | 'web_app_file_browser'
   | 'zookeeper_pro_mode'
+  | 'zookeeper_ultra_mode'
   | 'unsafe_allow_api_key_auth'
   | 'unsafe_allow_localhost_shortlinks'
   | 'zoo_corp_auth'
@@ -4178,6 +4198,12 @@ export type MirrorAcross =
       }
     }
   | {
+      edge_reference: {
+        /** Stable edge reference. */
+        reference: EdgeSpecifier
+      }
+    }
+  | {
       axis: {
         /** Axis to use as mirror. */
         axis: Point3d
@@ -4294,7 +4320,12 @@ export interface MlCopilotFile {
   name: string
 }
 
-export type MlCopilotMode = 'fast' | 'thoughtful' | 'auto' | 'zookeeper_pro'
+export type MlCopilotMode =
+  | 'fast'
+  | 'thoughtful'
+  | 'auto'
+  | 'zookeeper_pro'
+  | 'zookeeper_ultra'
 
 export interface MlCopilotModeOption {
   /** Human-readable display description. */
@@ -4693,10 +4724,17 @@ export type ModelingCmd =
       /**
        * {
        *   "nullable": true,
-       *   "description": "What direction to extrude in. If None, the engine will extrude in the direction normal of the target's plane."
+       *   "description": "What direction to extrude in. If None, the engine will extrude in the direction normal of the target's plane. Legacy field; if `direction_reference` is provided, the reference takes precedence."
        * }
        */
       direction?: DirectionType
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Edge specifier identifying the edge direction to use. If provided, this takes precedence over `direction`."
+       * }
+       */
+      direction_reference?: EdgeSpecifier
       /** How far off the plane to extrude */
       distance: LengthUnit
       /**
@@ -4734,8 +4772,20 @@ export type ModelingCmd =
        * }
        */
       opposite?: OppositeForLengthUnit
-      /** Which sketch to extrude. Must be a closed 2D solid. */
-      target: ModelingCmdId
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Which sketch to extrude (legacy API). Must be a closed 2D solid. If `target_reference` is provided, the reference takes precedence."
+       * }
+       */
+      target?: ModelingCmdId
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Edge specifier identifying the edge to extrude. If provided, this takes precedence over `target`."
+       * }
+       */
+      target_reference?: EdgeSpecifier
       type: 'extrude'
     }
   | {
@@ -4826,6 +4876,13 @@ export type ModelingCmd =
        * }
        */
       orient_profile_perpendicular?: boolean
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "If orient_profile_perpendicular is true, the sketch shall be oriented such that the local Y axis of the sketch will be oriented to align with this element as much as possible. Defaults to +Z if not set"
+       * }
+       */
+      projected_axis?: DirectionType
       /**
        * {
        *   "nullable": true,
@@ -6208,8 +6265,8 @@ export type ModelingCmd =
       type: 'view_isometric'
     }
   | {
-      /** format:uuid, description:Any edge that lies on the extrusion base path. */
-      edge_id: string
+      /** nullable:true, format:uuid, description:Any edge that lies on the extrusion base path. */
+      edge_id?: string
       /**
        * {
        *   "format": "uuid",
@@ -6220,8 +6277,8 @@ export type ModelingCmd =
       type: 'solid3d_get_extrusion_face_info'
     }
   | {
-      /** format:uuid, description:Any edge that lies on the extrusion base path. */
-      edge_id: string
+      /** nullable:true, format:uuid, description:Any edge that lies on the extrusion base path. */
+      edge_id?: string
       /** format:uuid, description:The Solid3d object whose info is being queried. */
       object_id: string
       type: 'solid3d_get_adjacency_info'
@@ -6500,6 +6557,11 @@ export type ModelingCmd =
        */
       object_id?: string
       type: 'closest_edge'
+    }
+  | {
+      /** Which path to query */
+      path_id: ModelingCmdId
+      type: 'sketch_get_info'
     }
 
 export type ModelingCmdId =
@@ -8205,6 +8267,15 @@ export type OkModelingCmdResponse =
        */
       data: ClosestEdge
       type: 'closest_edge'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/SketchGetInfo"
+       * }
+       */
+      data: SketchGetInfo
+      type: 'sketch_get_info'
     }
 
 export type OkWebSocketResponseData =
@@ -10027,6 +10098,21 @@ export interface SideFace {
   face_id: string
   /** format:uuid, description:ID of the path this face is being extruded from. */
   path_id: string
+}
+
+export interface SketchGetInfo {
+  /** All curves in this sketch. */
+  curves: CurveDebug[]
+  /**
+   * {
+   *   "format": "uint16",
+   *   "minimum": 0,
+   *   "description": "How many regions the Toolpaths library thinks exist"
+   * }
+   */
+  region_count: number
+  /** OBJ representation of the topology from Toolpaths library. */
+  region_obj: string
 }
 
 export interface SketchModeDisable {} /* Empty object */
@@ -12410,11 +12496,13 @@ export interface Models {
   CreateShortlinkResponse: CreateShortlinkResponse
   CreatedAtSortMode: CreatedAtSortMode
   Currency: Currency
+  CurveDebug: CurveDebug
   CurveGetControlPoints: CurveGetControlPoints
   CurveGetEndPoints: CurveGetEndPoints
   CurveGetType: CurveGetType
   CurveSetConstraint: CurveSetConstraint
   CurveType: CurveType
+  CurveTypeDebug: CurveTypeDebug
   CustomModel: CustomModel
   Customer: Customer
   CustomerBalance: CustomerBalance
@@ -12720,6 +12808,7 @@ export interface Models {
   Shortlink: Shortlink
   ShortlinkResultsPage: ShortlinkResultsPage
   SideFace: SideFace
+  SketchGetInfo: SketchGetInfo
   SketchModeDisable: SketchModeDisable
   Solid2dAddHole: Solid2dAddHole
   Solid3dCutEdgeReferences: Solid3dCutEdgeReferences
