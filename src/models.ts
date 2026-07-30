@@ -73,6 +73,104 @@ export interface AdjacencyInfo {
   previous_adjacent_info?: EdgeInfo
 }
 
+export interface AggregateUsageCollectionThresholdBounds {
+  /**
+   * {
+   *   "title": "double",
+   *   "format": "money-usd"
+   * }
+   */
+  maximum_amount: number
+  /**
+   * {
+   *   "title": "double",
+   *   "format": "money-usd"
+   * }
+   */
+  minimum_amount: number
+}
+
+export interface AggregateUsageCollectionThresholdSet {
+  /**
+   * {
+   *   "title": "double",
+   *   "format": "money-usd"
+   * }
+   */
+  amount: number
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Version returned by the read that this mutation is based on."
+   * }
+   */
+  expected_version: number
+}
+
+export type AggregateUsageCollectionThresholdSource =
+  /** Precedence source that determines an account's effective threshold. */
+  'admin' | 'customer' | 'system_default'
+
+export interface AggregateUsageCollectionThresholdView {
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Zoo-controlled override. When present, customer mutations are disabled."
+   * }
+   */
+  admin_amount?: number
+  /**
+   * {
+   *   "$ref": "#/components/schemas/AggregateUsageCollectionThresholdBounds"
+   * }
+   */
+  admin_bounds: AggregateUsageCollectionThresholdBounds
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Customer preference used when no Zoo-controlled override is active."
+   * }
+   */
+  customer_amount?: number
+  /**
+   * {
+   *   "$ref": "#/components/schemas/AggregateUsageCollectionThresholdBounds"
+   * }
+   */
+  customer_bounds: AggregateUsageCollectionThresholdBounds
+  /**
+   * {
+   *   "title": "double",
+   *   "format": "money-usd"
+   * }
+   */
+  default_amount: number
+  /**
+   * {
+   *   "title": "double",
+   *   "format": "money-usd"
+   * }
+   */
+  effective_amount: number
+  /**
+   * {
+   *   "$ref": "#/components/schemas/AggregateUsageCollectionThresholdSource"
+   * }
+   */
+  source: AggregateUsageCollectionThresholdSource
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Monotonic version of the account's append-only threshold history."
+   * }
+   */
+  version: number
+}
+
 export interface Angle {
   /** What unit is the measurement? */
   unit: UnitAngle
@@ -1430,6 +1528,7 @@ export type BlendType = 'tangent'
 export type BlockReason =
   | 'missing_payment_method'
   | 'payment_method_failed'
+  | 'billing_threshold_reached'
   | 'upgrade_downgrade_abuse'
   | 'admin'
 
@@ -3047,6 +3146,11 @@ export interface FaceIsPlanar {
   y_axis?: Point3d
   /** nullable:true, description:plane's local z-axis (normal) */
   z_axis?: Point3d
+}
+
+export interface FactoryCustomerCatalogOption {
+  /** Exact catalog name to submit in the corresponding intake field. */
+  name: string
 }
 
 export interface FactoryJobResponse {
@@ -12388,6 +12492,10 @@ export interface Models {
   Address: Address
   AddressDetails: AddressDetails
   AdjacencyInfo: AdjacencyInfo
+  AggregateUsageCollectionThresholdBounds: AggregateUsageCollectionThresholdBounds
+  AggregateUsageCollectionThresholdSet: AggregateUsageCollectionThresholdSet
+  AggregateUsageCollectionThresholdSource: AggregateUsageCollectionThresholdSource
+  AggregateUsageCollectionThresholdView: AggregateUsageCollectionThresholdView
   Angle: Angle
   AnnotationBasicDimension: AnnotationBasicDimension
   AnnotationFeatureControl: AnnotationFeatureControl
@@ -12587,6 +12695,7 @@ export interface Models {
   FaceGetGradient: FaceGetGradient
   FaceGetPosition: FaceGetPosition
   FaceIsPlanar: FaceIsPlanar
+  FactoryCustomerCatalogOption: FactoryCustomerCatalogOption
   FactoryJobResponse: FactoryJobResponse
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage

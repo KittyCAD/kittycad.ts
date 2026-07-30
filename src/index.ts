@@ -51,7 +51,13 @@ export const executor = {
 }
 
 import create_user_factory_job from './api/factory/create_user_factory_job.js'
-export const factory = { create_user_factory_job }
+import get_user_factory_finishes from './api/factory/get_user_factory_finishes.js'
+import get_user_factory_materials from './api/factory/get_user_factory_materials.js'
+export const factory = {
+  create_user_factory_job,
+  get_user_factory_finishes,
+  get_user_factory_materials,
+}
 
 import create_file_center_of_mass from './api/file/create_file_center_of_mass.js'
 import create_file_conversion from './api/file/create_file_conversion.js'
@@ -286,6 +292,7 @@ import delete_payment_information_for_user from './api/payments/delete_payment_i
 import delete_payment_method_for_org from './api/payments/delete_payment_method_for_org.js'
 import delete_payment_method_for_user from './api/payments/delete_payment_method_for_user.js'
 import get_org_subscription from './api/payments/get_org_subscription.js'
+import get_org_usage_collection_threshold from './api/payments/get_org_usage_collection_threshold.js'
 import get_payment_balance_for_any_org from './api/payments/get_payment_balance_for_any_org.js'
 import get_payment_balance_for_any_user from './api/payments/get_payment_balance_for_any_user.js'
 import get_payment_balance_for_org from './api/payments/get_payment_balance_for_org.js'
@@ -293,13 +300,18 @@ import get_payment_balance_for_user from './api/payments/get_payment_balance_for
 import get_payment_information_for_org from './api/payments/get_payment_information_for_org.js'
 import get_payment_information_for_user from './api/payments/get_payment_information_for_user.js'
 import get_user_subscription from './api/payments/get_user_subscription.js'
+import get_user_usage_collection_threshold from './api/payments/get_user_usage_collection_threshold.js'
 import list_invoices_for_org from './api/payments/list_invoices_for_org.js'
 import list_invoices_for_user from './api/payments/list_invoices_for_user.js'
 import list_payment_methods_for_org from './api/payments/list_payment_methods_for_org.js'
 import list_payment_methods_for_user from './api/payments/list_payment_methods_for_user.js'
 import redirect_payment_method_portal_link_for_org from './api/payments/redirect_payment_method_portal_link_for_org.js'
 import redirect_payment_method_portal_link_for_user from './api/payments/redirect_payment_method_portal_link_for_user.js'
+import reset_org_usage_collection_threshold from './api/payments/reset_org_usage_collection_threshold.js'
+import reset_user_usage_collection_threshold from './api/payments/reset_user_usage_collection_threshold.js'
 import set_default_payment_method_for_user from './api/payments/set_default_payment_method_for_user.js'
+import set_org_usage_collection_threshold from './api/payments/set_org_usage_collection_threshold.js'
+import set_user_usage_collection_threshold from './api/payments/set_user_usage_collection_threshold.js'
 import update_org_subscription from './api/payments/update_org_subscription.js'
 import update_org_subscription_for_any_org from './api/payments/update_org_subscription_for_any_org.js'
 import update_payment_balance_for_any_org from './api/payments/update_payment_balance_for_any_org.js'
@@ -324,6 +336,7 @@ export const payments = {
   delete_payment_method_for_org,
   delete_payment_method_for_user,
   get_org_subscription,
+  get_org_usage_collection_threshold,
   get_payment_balance_for_any_org,
   get_payment_balance_for_any_user,
   get_payment_balance_for_org,
@@ -331,6 +344,7 @@ export const payments = {
   get_payment_information_for_org,
   get_payment_information_for_user,
   get_user_subscription,
+  get_user_usage_collection_threshold,
   list_invoices_for_org,
   list_invoices_for_org_pager,
   list_invoices_for_user,
@@ -339,7 +353,11 @@ export const payments = {
   list_payment_methods_for_user,
   redirect_payment_method_portal_link_for_org,
   redirect_payment_method_portal_link_for_user,
+  reset_org_usage_collection_threshold,
+  reset_user_usage_collection_threshold,
   set_default_payment_method_for_user,
+  set_org_usage_collection_threshold,
+  set_user_usage_collection_threshold,
   update_org_subscription,
   update_org_subscription_for_any_org,
   update_payment_balance_for_any_org,
@@ -506,6 +524,10 @@ export type {
   Address,
   AddressDetails,
   AdjacencyInfo,
+  AggregateUsageCollectionThresholdBounds,
+  AggregateUsageCollectionThresholdSet,
+  AggregateUsageCollectionThresholdSource,
+  AggregateUsageCollectionThresholdView,
   Angle,
   AnnotationBasicDimension,
   AnnotationFeatureControl,
@@ -705,6 +727,7 @@ export type {
   FaceGetGradient,
   FaceGetPosition,
   FaceIsPlanar,
+  FactoryCustomerCatalogOption,
   FactoryJobResponse,
   FailureWebSocketResponse,
   FbxStorage,
