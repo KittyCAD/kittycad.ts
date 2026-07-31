@@ -2148,6 +2148,15 @@ export interface CreateOrgDataset {
   source: OrgDatasetSource
 }
 
+export interface CreatePlanarSurface {
+  /**
+   * {
+   *   "format": "uuid"
+   * }
+   */
+  surfaces: string[]
+}
+
 export interface CreateProjectShareLinkRequest {
   /** default:anyone_with_link, description:Access policy for the generated share link. */
   access_mode?: KclProjectShareLinkAccessMode
@@ -4916,8 +4925,20 @@ export type ModelingCmd =
       faces?: ExtrudedFaceInfo
       /** Reference to extrude to. Extrusion occurs along the target's normal until it is as close to the reference as possible. */
       reference: ExtrudeReference
-      /** Which sketch to extrude. Must be a closed 2D solid. */
-      target: ModelingCmdId
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Which sketch or edge to extrude (legacy API).\n\nMust be a closed 2D solid, or an edge for surface extrusions. Either `target` or `target_reference` must be provided."
+       * }
+       */
+      target?: ModelingCmdId
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Edge specifier identifying the source edge to extrude. If provided, this takes precedence over `target`."
+       * }
+       */
+      target_reference?: EdgeSpecifier
       type: 'extrude_to_reference'
     }
   | {
@@ -6593,6 +6614,17 @@ export type ModelingCmd =
       type: 'create_region'
       /** Which version of the Region endpoint to call. */
       version?: RegionVersion
+    }
+  | {
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      curve_ids: string[]
+      /** Tolerance for the planar surface creation. Must be positive (i.e. greater than zero). */
+      tolerance: LengthUnit
+      type: 'create_planar_surface'
     }
   | {
       /** format:uuid, description:Which region to resolve */
@@ -8290,6 +8322,15 @@ export type OkModelingCmdResponse =
        */
       data: CreateRegion
       type: 'create_region'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/CreatePlanarSurface"
+       * }
+       */
+      data: CreatePlanarSurface
+      type: 'create_planar_surface'
     }
   | {
       /**
@@ -12597,6 +12638,7 @@ export interface Models {
   CreateCustomModel: CreateCustomModel
   CreateOAuth2AppRequest: CreateOAuth2AppRequest
   CreateOrgDataset: CreateOrgDataset
+  CreatePlanarSurface: CreatePlanarSurface
   CreateProjectShareLinkRequest: CreateProjectShareLinkRequest
   CreateRegion: CreateRegion
   CreateRegionFromQueryPoint: CreateRegionFromQueryPoint

@@ -629,6 +629,7 @@ export type {
   CreateCustomModel,
   CreateOAuth2AppRequest,
   CreateOrgDataset,
+  CreatePlanarSurface,
   CreateProjectShareLinkRequest,
   CreateRegion,
   CreateRegionFromQueryPoint,
