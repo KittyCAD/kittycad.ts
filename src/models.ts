@@ -2071,6 +2071,8 @@ export type ConversionSortMode =
   | 'created_at_descending'
   | 'status_ascending'
   | 'status_descending'
+  | 'phase_ascending'
+  | 'phase_descending'
   | 'updated_at_ascending'
   | 'updated_at_descending'
 
