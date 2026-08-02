@@ -16,6 +16,8 @@ interface ListOrgDatasetConversionsInput {
   page_token?: string
   sort_by?: ConversionSortMode
   filter?: string
+  q?: string
+  phase?: string
 }
 
 type ListOrgDatasetConversionsReturn =
@@ -24,7 +26,7 @@ type ListOrgDatasetConversionsReturn =
 /**
  * List the file conversions that have been processed for a given dataset owned by the caller's org.
  *
- * This endpoint returns lightweight conversion summaries only (including `phase`), and intentionally omits converted KCL output and snapshot image payloads for speed. Use the optional `filter` query parameter to filter results (example: `?filter=status:success`).
+ * This endpoint returns lightweight conversion summaries only (including `phase`), and intentionally omits converted KCL output and snapshot image payloads for speed. Use the optional `filter` query parameter to filter results (example: `?filter=status:success`). Use `q` to search by conversion id or file path and `phase` to narrow the pipeline stage.
  *
  * Tags: orgs
  *
@@ -35,6 +37,8 @@ type ListOrgDatasetConversionsReturn =
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {ConversionSortMode} sort_by (query)
  * @property {string} filter Optional filter string for conversions (example: `status:success`). (query)
+ * @property {string} q Optional search text matched against conversion id or file path. (query)
+ * @property {string} phase Optional conversion phase filter. (query)
  * @returns {Promise<ListOrgDatasetConversionsReturn>} successful operation
  *
  * Possible return types: OrgDatasetFileConversionSummaryResultsPage
@@ -46,6 +50,8 @@ export default async function list_org_dataset_conversions({
   page_token,
   sort_by,
   filter,
+  q,
+  phase,
 }: ListOrgDatasetConversionsInput): Promise<ListOrgDatasetConversionsReturn> {
   const path = `/org/datasets/${id}/conversions`
   const qs = buildQuery({
@@ -53,6 +59,8 @@ export default async function list_org_dataset_conversions({
     page_token: page_token,
     sort_by: sort_by,
     filter: filter,
+    q: q,
+    phase: phase,
   })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable

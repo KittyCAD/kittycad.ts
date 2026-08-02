@@ -9,6 +9,8 @@ async function example() {
     page_token: 'string',
     q: 'string',
     sort_by: 'created_at_ascending',
+    filter: 'string',
+    phase: 'string',
     client,
   })
   return response
@@ -22,6 +24,8 @@ export async function example_pager() {
     page_token: 'string',
     q: 'string',
     sort_by: 'created_at_ascending',
+    filter: 'string',
+    phase: 'string',
     client,
   })
   let total = 0

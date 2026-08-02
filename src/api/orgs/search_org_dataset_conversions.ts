@@ -16,6 +16,8 @@ interface SearchOrgDatasetConversionsInput {
   page_token?: string
   q?: string
   sort_by?: ConversionSortMode
+  filter?: string
+  phase?: string
 }
 
 type SearchOrgDatasetConversionsReturn =
@@ -35,6 +37,8 @@ type SearchOrgDatasetConversionsReturn =
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {string} q Search text matched against conversion id or file path. (query)
  * @property {ConversionSortMode} sort_by Requested sort mode for matched conversions. (query)
+ * @property {string} filter Optional filter string for conversions (example: `status:success`). (query)
+ * @property {string} phase Optional conversion phase filter. (query)
  * @returns {Promise<SearchOrgDatasetConversionsReturn>} successful operation
  *
  * Possible return types: OrgDatasetFileConversionSummaryResultsPage
@@ -46,6 +50,8 @@ export default async function search_org_dataset_conversions({
   page_token,
   q,
   sort_by,
+  filter,
+  phase,
 }: SearchOrgDatasetConversionsInput): Promise<SearchOrgDatasetConversionsReturn> {
   const path = `/org/datasets/${id}/search/conversions`
   const qs = buildQuery({
@@ -53,6 +59,8 @@ export default async function search_org_dataset_conversions({
     page_token: page_token,
     q: q,
     sort_by: sort_by,
+    filter: filter,
+    phase: phase,
   })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
