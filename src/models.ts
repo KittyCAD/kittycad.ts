@@ -1529,6 +1529,7 @@ export type BlockReason =
   | 'missing_payment_method'
   | 'payment_method_failed'
   | 'billing_threshold_reached'
+  | 'pay_as_you_go_disabled'
   | 'upgrade_downgrade_abuse'
   | 'admin'
 
