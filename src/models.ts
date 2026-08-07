@@ -4592,6 +4592,14 @@ export type MlCopilotServerMessage =
       zookeeper_auto_router_metadata: ZookeeperAutoRouterMetadata
     }
   | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/ZookeeperTurnUsage"
+       * }
+       */
+      zookeeper_turn_usage: ZookeeperTurnUsage
+    }
+  | {
       zookeeper_recovery_tool_output: {
         /** Application-level tool call identifier. */
         call_id: string
@@ -12533,6 +12541,252 @@ export type ZookeeperEditPatchFile =
       status: 'deleted'
     }
 
+export interface ZookeeperTurnUsage {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "API call the turn belongs to, as the backend knows it."
+   * }
+   */
+  api_call_id?: string
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens written to the provider's prompt cache."
+   * }
+   */
+  cache_write_input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens served from the provider's prompt cache."
+   * }
+   */
+  cached_input_tokens?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Conversation the turn belongs to, as the backend knows it."
+   * }
+   */
+  conversation_id?: string
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Cost in millionths of a US dollar, rounded half-up."
+   * }
+   */
+  cost_micro_usd?: number
+  /**
+   * {
+   *   "default": "",
+   *   "description": "Exact cost as a decimal string, e.g. \"0.02184000\"."
+   * }
+   */
+  cost_usd?: string
+  /** default:false, description:Whether every request was priced. */
+  fully_priced?: boolean
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens, including the cached and cache-write subsets below."
+   * }
+   */
+  input_tokens?: number
+  /** Usage split by model. */
+  models?: ZookeeperTurnUsageModel[]
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Completion tokens, including the reasoning subset below."
+   * }
+   */
+  output_tokens?: number
+  /** default:0, format:int64, description:Requests whose model had a known price. */
+  priced_requests?: number
+  /** default:0, format:int64, description:Completion tokens spent on reasoning. */
+  reasoning_tokens?: number
+  /** default:0, format:int64, description:Number of model requests. */
+  requests?: number
+  /**
+   * {
+   *   "default": "",
+   *   "description": "Payload shape identifier, e.g. \"zookeeper_turn_usage.v1\"."
+   * }
+   */
+  schema_version?: string
+  /** Usage split by the part of the turn that spent it. */
+  stages?: ZookeeperTurnUsageStage[]
+  /** default:0, format:int64, description:Input plus output tokens. */
+  total_tokens?: number
+  /** default:0, format:int64, description:Prompt tokens billed at the full input rate. */
+  uncached_input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Requests whose model had no known price; their tokens are counted but contribute no cost, so totals are a floor rather than an estimate."
+   * }
+   */
+  unpriced_requests?: number
+}
+
+export interface ZookeeperTurnUsageModel {
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens written to the provider's prompt cache."
+   * }
+   */
+  cache_write_input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens served from the provider's prompt cache."
+   * }
+   */
+  cached_input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Cost in millionths of a US dollar, rounded half-up."
+   * }
+   */
+  cost_micro_usd?: number
+  /**
+   * {
+   *   "default": "",
+   *   "description": "Exact cost as a decimal string, e.g. \"0.02184000\"."
+   * }
+   */
+  cost_usd?: string
+  /** default:false, description:Whether every request was priced. */
+  fully_priced?: boolean
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens, including the cached and cache-write subsets below."
+   * }
+   */
+  input_tokens?: number
+  /** Model name as the provider reported it. */
+  model: string
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Completion tokens, including the reasoning subset below."
+   * }
+   */
+  output_tokens?: number
+  /** default:0, format:int64, description:Requests whose model had a known price. */
+  priced_requests?: number
+  /**
+   * {
+   *   "default": "",
+   *   "description": "Where the price came from, e.g. \"litellm\", \"litellm_alias\", \"override\", or \"unknown\"."
+   * }
+   */
+  pricing_source?: string
+  /** default:0, format:int64, description:Completion tokens spent on reasoning. */
+  reasoning_tokens?: number
+  /** default:0, format:int64, description:Number of model requests. */
+  requests?: number
+  /** default:0, format:int64, description:Input plus output tokens. */
+  total_tokens?: number
+  /** default:0, format:int64, description:Prompt tokens billed at the full input rate. */
+  uncached_input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Requests whose model had no known price; their tokens are counted but contribute no cost, so totals are a floor rather than an estimate."
+   * }
+   */
+  unpriced_requests?: number
+}
+
+export interface ZookeeperTurnUsageStage {
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens written to the provider's prompt cache."
+   * }
+   */
+  cache_write_input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens served from the provider's prompt cache."
+   * }
+   */
+  cached_input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Cost in millionths of a US dollar, rounded half-up."
+   * }
+   */
+  cost_micro_usd?: number
+  /**
+   * {
+   *   "default": "",
+   *   "description": "Exact cost as a decimal string, e.g. \"0.02184000\"."
+   * }
+   */
+  cost_usd?: string
+  /** default:false, description:Whether every request was priced. */
+  fully_priced?: boolean
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Prompt tokens, including the cached and cache-write subsets below."
+   * }
+   */
+  input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Completion tokens, including the reasoning subset below."
+   * }
+   */
+  output_tokens?: number
+  /** default:0, format:int64, description:Requests whose model had a known price. */
+  priced_requests?: number
+  /** default:0, format:int64, description:Completion tokens spent on reasoning. */
+  reasoning_tokens?: number
+  /** default:0, format:int64, description:Number of model requests. */
+  requests?: number
+  /** Which part of the turn spent the tokens, e.g. "agent_stream", "auto_router", "compaction", "sub_agent", or "prompt_validation". */
+  stage: string
+  /** default:0, format:int64, description:Input plus output tokens. */
+  total_tokens?: number
+  /** default:0, format:int64, description:Prompt tokens billed at the full input rate. */
+  uncached_input_tokens?: number
+  /**
+   * {
+   *   "default": 0,
+   *   "format": "int64",
+   *   "description": "Requests whose model had no known price; their tokens are counted but contribute no cost, so totals are a floor rather than an estimate."
+   * }
+   */
+  unpriced_requests?: number
+}
+
 export interface ZoomToFit {
   /** Camera settings */
   settings: CameraSettings
@@ -13097,6 +13351,9 @@ export interface Models {
   ZookeeperAutoRouterMetadata: ZookeeperAutoRouterMetadata
   ZookeeperEditPatch: ZookeeperEditPatch
   ZookeeperEditPatchFile: ZookeeperEditPatchFile
+  ZookeeperTurnUsage: ZookeeperTurnUsage
+  ZookeeperTurnUsageModel: ZookeeperTurnUsageModel
+  ZookeeperTurnUsageStage: ZookeeperTurnUsageStage
   ZoomToFit: ZoomToFit
 }
 
