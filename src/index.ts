@@ -1076,6 +1076,9 @@ export type {
   ZookeeperAutoRouterMetadata,
   ZookeeperEditPatch,
   ZookeeperEditPatchFile,
+  ZookeeperTurnUsage,
+  ZookeeperTurnUsageModel,
+  ZookeeperTurnUsageStage,
   ZoomToFit,
 } from './models.js'
 export { Client } from './client.js'
