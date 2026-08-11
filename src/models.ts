@@ -8965,7 +8965,7 @@ export interface OrgDatasetSource {
   uri?: string
 }
 
-export type OrgDatasetStatus = 'active' | 'deleting' | 'errored'
+export type OrgDatasetStatus = 'active' | 'paused' | 'deleting' | 'errored'
 
 export interface OrgDetails {
   /**
