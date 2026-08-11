@@ -4606,6 +4606,12 @@ export type MlCopilotServerMessage =
       zookeeper_auto_router_metadata: ZookeeperAutoRouterMetadata
     }
   | {
+      zookeeper_open_ai_response_checkpoint: {
+        /** OpenAI Responses API response identifier. */
+        response_id: string
+      }
+    }
+  | {
       /**
        * {
        *   "$ref": "#/components/schemas/ZookeeperTurnUsage"
