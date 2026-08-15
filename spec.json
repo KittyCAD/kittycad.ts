@@ -40397,6 +40397,13 @@
             ]
           },
           {
+            "description": "Enables the named views user interface in Zoo Design Studio.",
+            "type": "string",
+            "enum": [
+              "named_views_ui"
+            ]
+          },
+          {
             "description": "Enables plugins in Zoo Design Studio.",
             "type": "string",
             "enum": [
