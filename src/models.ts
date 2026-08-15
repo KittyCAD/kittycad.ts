@@ -3208,6 +3208,7 @@ export type Feature =
   | 'email_with_s_e_s'
   | 'enable_z0006_lint'
   | 'factory_portal'
+  | 'kcl_cek_executor'
   | 'kcl_new_lexer_parser'
   | 'redirect_to_govcloud'
   | 'require_saml_auth'
