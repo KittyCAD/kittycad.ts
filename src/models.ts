@@ -3218,6 +3218,7 @@ export type Feature =
   | 'same_site_none_cookies'
   | 'validate_tax_info'
   | 'modeling_dialogs'
+  | 'named_views_ui'
   | 'plugins'
   | 'proprietary_to_kcl_conversion_beta'
   | 'segments_based_regions'
