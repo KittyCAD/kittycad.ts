@@ -40327,6 +40327,13 @@
             ]
           },
           {
+            "description": "KCL CEK machine executor.",
+            "type": "string",
+            "enum": [
+              "kcl_cek_executor"
+            ]
+          },
+          {
             "description": "New KCL lexer and parser.",
             "type": "string",
             "enum": [
