@@ -3805,6 +3805,13 @@ Defaults to millimeters. */
        * }
        */
       split_closed_faces?: boolean
+      /**
+       * {
+       *   "default": "brep",
+       *   "description": "What representation should be used for this file after it's imported?"
+       * }
+       */
+      target_representation?: StepImportTargetRepresentation
       type: 'step'
     }
   | {
@@ -8626,6 +8633,8 @@ export interface OrgDataset {
    * }
    */
   last_sync_error_at?: string
+  /** Whether this dataset may be used for MCP and semantic-search lookups. */
+  lookup_enabled: boolean
   /** User-provided display name. This is mutable; lookup by ID instead. */
   name: string
   /** The ID of the org owning the dataset. */
@@ -10414,6 +10423,8 @@ export interface SourceRangePrompt {
 }
 
 export interface StartPath {} /* Empty object */
+
+export type StepImportTargetRepresentation = 'mesh' | 'brep'
 
 export type StepPresentation = 'compact' | 'pretty'
 
@@ -13273,6 +13284,7 @@ export interface Models {
   SourceRange: SourceRange
   SourceRangePrompt: SourceRangePrompt
   StartPath: StartPath
+  StepImportTargetRepresentation: StepImportTargetRepresentation
   StepPresentation: StepPresentation
   StlStorage: StlStorage
   StorageProvider: StorageProvider
