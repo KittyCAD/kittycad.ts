@@ -976,6 +976,7 @@ export type {
   SourceRange,
   SourceRangePrompt,
   StartPath,
+  StepImportTargetRepresentation,
   StepPresentation,
   StlStorage,
   StorageProvider,
