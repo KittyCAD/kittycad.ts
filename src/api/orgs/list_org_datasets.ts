@@ -12,6 +12,7 @@ interface ListOrgDatasetsInput {
   client?: Client
   limit?: number
   page_token?: string
+  lookup_enabled?: boolean
   sort_by?: CreatedAtSortMode
 }
 
@@ -26,6 +27,7 @@ type ListOrgDatasetsReturn = OrgDatasetResultsPage
  * @property {Client} [client] Optional client with auth token.
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @property {boolean} lookup_enabled When set, only return datasets with the matching lookup setting. (query)
  * @property {CreatedAtSortMode} sort_by (query)
  * @returns {Promise<ListOrgDatasetsReturn>} successful operation
  *
@@ -35,12 +37,14 @@ export default async function list_org_datasets({
   client,
   limit,
   page_token,
+  lookup_enabled,
   sort_by,
 }: ListOrgDatasetsInput): Promise<ListOrgDatasetsReturn> {
   const path = `/org/datasets`
   const qs = buildQuery({
     limit: limit,
     page_token: page_token,
+    lookup_enabled: lookup_enabled,
     sort_by: sort_by,
   })
   const url = path + qs
