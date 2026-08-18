@@ -98,9 +98,6 @@ import MlReasoningWs from './api/ml/ml_reasoning_ws.js'
 import create_custom_model from './api/ml/create_custom_model.js'
 import create_kcl_code_completions from './api/ml/create_kcl_code_completions.js'
 import create_proprietary_to_kcl from './api/ml/create_proprietary_to_kcl.js'
-import create_text_to_cad from './api/ml/create_text_to_cad.js'
-import create_text_to_cad_iteration from './api/ml/create_text_to_cad_iteration.js'
-import create_text_to_cad_multi_file_iteration from './api/ml/create_text_to_cad_multi_file_iteration.js'
 import create_text_to_cad_part_feedback from './api/ml/create_text_to_cad_part_feedback.js'
 import get_custom_model from './api/ml/get_custom_model.js'
 import get_text_to_cad_part_for_user from './api/ml/get_text_to_cad_part_for_user.js'
@@ -114,9 +111,6 @@ export const ml = {
   create_custom_model,
   create_kcl_code_completions,
   create_proprietary_to_kcl,
-  create_text_to_cad,
-  create_text_to_cad_iteration,
-  create_text_to_cad_multi_file_iteration,
   create_text_to_cad_part_feedback,
   get_custom_model,
   get_text_to_cad_part_for_user,
@@ -999,12 +993,7 @@ export type {
   Sweep,
   System,
   TakeSnapshot,
-  TextToCad,
-  TextToCadCreateBody,
-  TextToCadIteration,
-  TextToCadIterationBody,
   TextToCadModel,
-  TextToCadMultiFileIteration,
   TextToCadMultiFileIterationBody,
   TextToCadResponse,
   TextToCadResponseResultsPage,
