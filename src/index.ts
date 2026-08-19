@@ -368,6 +368,7 @@ import create_project from './api/projects/create_project.js'
 import create_project_share_link from './api/projects/create_project_share_link.js'
 import create_public_project_vote from './api/projects/create_public_project_vote.js'
 import delete_project from './api/projects/delete_project.js'
+import delete_project_organization from './api/projects/delete_project_organization.js'
 import delete_project_share_link from './api/projects/delete_project_share_link.js'
 import delete_public_project_vote from './api/projects/delete_public_project_vote.js'
 import download_project from './api/projects/download_project.js'
@@ -382,11 +383,13 @@ import list_projects from './api/projects/list_projects.js'
 import list_public_projects from './api/projects/list_public_projects.js'
 import publish_project from './api/projects/publish_project.js'
 import update_project from './api/projects/update_project.js'
+import update_project_organization from './api/projects/update_project_organization.js'
 export const projects = {
   create_project,
   create_project_share_link,
   create_public_project_vote,
   delete_project,
+  delete_project_organization,
   delete_project_share_link,
   delete_public_project_vote,
   download_project,
@@ -401,6 +404,7 @@ export const projects = {
   list_public_projects,
   publish_project,
   update_project,
+  update_project_organization,
 }
 
 import create_service_account_for_org from './api/service-accounts/create_service_account_for_org.js'

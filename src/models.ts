@@ -9543,6 +9543,8 @@ export interface ProjectAccessResponse {
   can_delete: boolean
   /** Whether the caller may replace project content or metadata. */
   can_edit: boolean
+  /** Whether the caller may move the project into or out of an organization library. */
+  can_manage_organization: boolean
   /**
    * {
    *   "nullable": true,
