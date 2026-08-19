@@ -9538,6 +9538,24 @@ export interface PrivacySettings {
   can_train_on_data: boolean
 }
 
+export interface ProjectAccessResponse {
+  /** Whether the caller may delete the project. */
+  can_delete: boolean
+  /** Whether the caller may replace project content or metadata. */
+  can_edit: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Owning organization when this is an organization project."
+   * }
+   */
+  organization_id?: Uuid
+  /** Ownership scope controlling project visibility. */
+  scope: ProjectAccessScope
+}
+
+export type ProjectAccessScope = 'personal' | 'organization'
+
 export type ProjectArchiveFormat = 'tar' | 'zip'
 
 export interface ProjectCategoryResponse {
@@ -9632,6 +9650,8 @@ export interface ProjectPublicationInfoResponse {
 }
 
 export interface ProjectResponse {
+  /** Effective project capabilities for the authenticated caller. */
+  access: ProjectAccessResponse
   /** Selected category identifiers associated with the project. */
   category_ids: Uuid[]
   /** title:DateTime, format:date-time, description:When the project row was created. */
@@ -9681,6 +9701,8 @@ export interface ProjectShareLinkResponse {
 }
 
 export interface ProjectSummaryResponse {
+  /** Effective project capabilities for the authenticated caller. */
+  access: ProjectAccessResponse
   /** Selected category identifiers associated with the project. */
   category_ids: Uuid[]
   /** title:DateTime, format:date-time, description:When the project row was created. */
@@ -12948,6 +12970,8 @@ export interface Models {
   PriceUpsertRequest: PriceUpsertRequest
   PrimitiveTopologyFallback: PrimitiveTopologyFallback
   PrivacySettings: PrivacySettings
+  ProjectAccessResponse: ProjectAccessResponse
+  ProjectAccessScope: ProjectAccessScope
   ProjectArchiveFormat: ProjectArchiveFormat
   ProjectCategoryResponse: ProjectCategoryResponse
   ProjectEntityToPlane: ProjectEntityToPlane

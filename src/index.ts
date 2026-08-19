@@ -876,6 +876,8 @@ export type {
   PriceUpsertRequest,
   PrimitiveTopologyFallback,
   PrivacySettings,
+  ProjectAccessResponse,
+  ProjectAccessScope,
   ProjectArchiveFormat,
   ProjectCategoryResponse,
   ProjectEntityToPlane,
