@@ -4357,6 +4357,20 @@ export type MlCopilotClientMessage =
   | { type: 'list_modes' }
   | { headers: { [key: string]: string }; type: 'headers' }
   | {
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "The project-relative file open in the client's active editor, if any."
+       * }
+       */
+      active_file?: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Stable identifier used to correlate this project context update across services."
+       * }
+       */
+      correlation_id?: Uuid
       current_files?: {
         [key: string]: /**
          * {
@@ -4366,11 +4380,25 @@ export type MlCopilotClientMessage =
          */
         number[]
       }
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "API call ID for the active Engine modeling session, when available."
+       * }
+       */
+      engine_api_call_id?: Uuid
       /** nullable:true, description:The project name, if any. */
       project_name?: string
       type: 'project_context'
     }
   | {
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "The project-relative file open in the client's active editor, if any."
+       * }
+       */
+      active_file?: string
       /** The user can send additional files like images or PDFs to provide more context. */
       additional_files?: MlCopilotFile[]
       /** The content of the user's message. */
@@ -4403,10 +4431,10 @@ export type MlCopilotClientMessage =
       /**
        * {
        *   "nullable": true,
-       *   "description": "Pick a mode for the agent to operate in. Defaults to a fast mode."
+       *   "description": "Pick a mode for the agent to operate in. Defaults to the service's configured mode. Mode identifiers are discovered at runtime through `list_modes`, so this stays open to backend-configured values that may not yet exist in the generated client enum."
        * }
        */
-      mode?: MlCopilotMode
+      mode?: string
       /** nullable:true, description:Override the default or mode model with another. */
       model?: MlCopilotSupportedModels
       /**
@@ -4467,13 +4495,6 @@ export interface MlCopilotFile {
   /** The name of the file. */
   name: string
 }
-
-export type MlCopilotMode =
-  | 'fast'
-  | 'thoughtful'
-  | 'auto'
-  | 'zookeeper_pro'
-  | 'zookeeper_ultra'
 
 export interface MlCopilotModeOption {
   /** Human-readable display description. */
@@ -12876,7 +12897,6 @@ export interface Models {
   MirrorAcross: MirrorAcross
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotFile: MlCopilotFile
-  MlCopilotMode: MlCopilotMode
   MlCopilotModeOption: MlCopilotModeOption
   MlCopilotServerMessage: MlCopilotServerMessage
   MlCopilotSupportedModels: MlCopilotSupportedModels
