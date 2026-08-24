@@ -4352,6 +4352,14 @@ export type MirrorAcross =
       }
     }
 
+export type MlCopilotAccessDeniedCode =
+  | 'missing_payment_method'
+  | 'payment_method_failed'
+  | 'billing_threshold_reached'
+  | 'pay_as_you_go_disabled'
+  | 'upgrade_downgrade_abuse'
+  | 'admin'
+
 export type MlCopilotClientMessage =
   | { type: 'ping' }
   | { type: 'list_modes' }
@@ -4544,6 +4552,16 @@ export type MlCopilotServerMessage =
       error: {
         /** The error message. */
         detail: string
+      }
+    }
+  | {
+      access_denied: {
+        /** Stable machine-readable denial code. */
+        code: MlCopilotAccessDeniedCode
+        /** Human-readable explanation suitable for display to the user. */
+        detail: string
+        /** Whether reconnecting without an external account change can help. */
+        retryable: boolean
       }
     }
   | {
@@ -12895,6 +12913,7 @@ export interface Models {
   MbdSymbol: MbdSymbol
   Method: Method
   MirrorAcross: MirrorAcross
+  MlCopilotAccessDeniedCode: MlCopilotAccessDeniedCode
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotFile: MlCopilotFile
   MlCopilotModeOption: MlCopilotModeOption

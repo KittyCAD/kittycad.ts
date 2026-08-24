@@ -782,6 +782,7 @@ export type {
   MbdSymbol,
   Method,
   MirrorAcross,
+  MlCopilotAccessDeniedCode,
   MlCopilotClientMessage,
   MlCopilotFile,
   MlCopilotModeOption,
