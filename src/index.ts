@@ -784,7 +784,6 @@ export type {
   MirrorAcross,
   MlCopilotClientMessage,
   MlCopilotFile,
-  MlCopilotMode,
   MlCopilotModeOption,
   MlCopilotServerMessage,
   MlCopilotSupportedModels,
