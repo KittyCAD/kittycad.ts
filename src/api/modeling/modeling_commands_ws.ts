@@ -25,9 +25,19 @@ interface ModelingCommandsWsParams {
 }
 
 /**
- * Open a websocket which accepts modeling commands.
+ * Opens a WebSocket to a Zoo KittyCAD engine instance.
  *
- * Pass those commands to the engine via websocket, and pass responses back to the client. Basically, this is a websocket proxy between the frontend/client and the engine.
+ * **Note**: Currently it's recommended to set `webrtc=true` in the WebSocket query string, otherwise some features, such as opacity setting, will cause the engine to fail.
+ *
+ * Due to the long-lived nature of the instances, it's possible the resources on have been used and not freed entirely, or the instance is in a bad state. Thus it's good practice to expect to have to potentially reconnect at any moment -even almost immediately after the first connection!
+ *
+ * Authorization happens via a pseudo HTTP header over the WebSocket: `{ type: "headers", headers: { "Authorization": "Bearer xxxxxxxxx" }}`
+ *
+ * The very next thing recommended is to setup a ping-pong interval. The current timeout is 10s and has no documented guarantee, so use a conservative number below that. 5s should be sufficient. A ping-pong interval is sending `{ type: 'ping" }` when `{ request_id, success, resp: { type: "pong", data: {} } }` message is received.
+ *
+ * You're ready to start sending modeling commands!
+ *
+ * If you want to understand how to connect to the WebRTC video stream, https://github.com/KittyCAD/kittycad.ts/blob/main/src/webrtc.ts is a nice example to learn from.
  *
  * Tags: modeling
  *
