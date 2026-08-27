@@ -4660,6 +4660,20 @@ export type MlCopilotServerMessage =
       }
     }
   | {
+      zookeeper_open_ai_intermediate_response_checkpoint: {
+        expected_tool_call_ids?: string[]
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Digest of the project files against which this response was produced.\n\nOlder checkpoints omit this field and remain useful for portable replay, but cannot authorize exact intermediate continuation."
+         * }
+         */
+        project_files_digest?: string
+        /** OpenAI Responses API response identifier. */
+        response_id: string
+      }
+    }
+  | {
       /**
        * {
        *   "$ref": "#/components/schemas/ZookeeperTurnUsage"
@@ -4673,8 +4687,22 @@ export type MlCopilotServerMessage =
         call_id: string
         /** Bounded readable output derived from the completed tool result. */
         output: string
+        /**
+         * {
+         *   "default": false,
+         *   "description": "Whether the output above was shortened before it reached API."
+         * }
+         */
+        output_truncated?: boolean
         /** default:false, description:Whether the tool changed the current project. */
         project_updated?: boolean
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "OpenAI response that emitted this tool call. Older producers may omit it; such output remains useful for portable replay but not native resume."
+         * }
+         */
+        response_id?: string
         /** Name of the completed tool. */
         tool_name: string
       }
