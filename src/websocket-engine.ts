@@ -4,10 +4,7 @@
 import { EErrorOAuth2 } from '@kittycad/oauth2-auth-code-pkce'
 import { Client } from './client'
 import ModelingCommandsWs from './api/modeling/modeling_commands_ws'
-import {
-  SuccessWebSocketResponse,
-  FailureWebSocketResponse,
-} from './models'
+import { SuccessWebSocketResponse, FailureWebSocketResponse } from './models'
 import WorkerEngine from 'web-worker:./worker-engine.ts'
 
 type ExpectedWebSocketResponse =
@@ -18,7 +15,6 @@ type ExpectedWebSocketResponse =
 const cloneWithoutNonSerializable = (a: unknown): unknown => {
   return JSON.parse(JSON.stringify(a))
 }
-
 
 type WorkerMessage =
   | {
@@ -52,8 +48,8 @@ type WorkerMessage =
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
 >[0] & {
-  enable_ssao?: boolean
-}
+    enable_ssao?: boolean
+  }
 
 export class WebSocket extends EventTarget {
   private zooClientArgs: ZooClientArgs
@@ -219,10 +215,8 @@ export class WebSocket extends EventTarget {
         }),
     }
   }
-  
-  send(
-    ...args: unknown[]
-  ): Promise<ExpectedWebSocketResponse> {
+
+  send(...args: unknown[]): Promise<ExpectedWebSocketResponse> {
     return new Promise((resolve) => {
       const onMessage = (ev: MessageEvent<WorkerMessage>) => {
         const msg = ev.data

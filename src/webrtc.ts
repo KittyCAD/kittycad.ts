@@ -99,8 +99,8 @@ type WorkerMessage =
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
 >[0] & {
-  enable_ssao?: boolean
-}
+    enable_ssao?: boolean
+  }
 
 export class WebRTC extends EventTarget {
   private zooClientArgs: ZooClientArgs
