@@ -40133,6 +40133,13 @@
             ]
           },
           {
+            "description": "Allows legacy sketches to be edited using point-and-click in Zoo Design Studio.",
+            "type": "string",
+            "enum": [
+              "legacy_sketch_mode"
+            ]
+          },
+          {
             "description": "Enables sketch solve experimental features in Zoo Design Studio.",
             "type": "string",
             "enum": [
