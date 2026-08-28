@@ -3223,6 +3223,7 @@ export type Feature =
   | 'plugins'
   | 'proprietary_to_kcl_conversion_beta'
   | 'segments_based_regions'
+  | 'legacy_sketch_mode'
   | 'sketch_experimental_features'
   | 'web_app_file_browser'
   | 'zookeeper_pro_mode'
