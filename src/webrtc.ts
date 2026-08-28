@@ -6,7 +6,7 @@ import {
   SuccessWebSocketResponse,
   FailureWebSocketResponse,
 } from './models'
-import WorkerWebRTC from 'web-worker:./worker-webrtc.ts'
+import WorkerEngine from 'web-worker:./worker-engine.ts'
 
 type ExpectedWebSocketResponse =
   | FailureWebSocketResponse
@@ -98,13 +98,15 @@ type WorkerMessage =
 // Make sure we tie our arguments to the WebSocket initializer's parameters.
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
->[0]
+>[0] & {
+    enable_ssao?: boolean
+  }
 
 export class WebRTC extends EventTarget {
   private zooClientArgs: ZooClientArgs
 
   private rtcPeerConnection: RTCPeerConnection
-  private workerWebRTC: Worker
+  private workerEngine: Worker
 
   public track?: RTCTrackEvent
   public channel?: RTCDataChannel
@@ -115,12 +117,15 @@ export class WebRTC extends EventTarget {
   constructor(args: ZooClientArgs) {
     super()
 
-    this.zooClientArgs = args
+    this.zooClientArgs = {
+      ...args,
+      enable_ssao: args.enable_ssao ?? true,
+    }
 
     // Initialization is NOT resource acquisition here. The purpose of early
     // init is worker is available to hook up events to RTCPeerConnection events.
     // Devs must still call .start()
-    this.workerWebRTC = new WorkerWebRTC()
+    this.workerEngine = new WorkerEngine()
 
     // Default topology for RTCPeerConnection
     this.rtcPeerConnection = new RTCPeerConnection({
@@ -170,7 +175,7 @@ export class WebRTC extends EventTarget {
       this.webRTCOnConnectionStateChange.bind(this)
     )
 
-    this.workerWebRTC.terminate()
+    this.workerEngine.terminate()
     this.rtcPeerConnection.close()
   }
 
@@ -196,7 +201,7 @@ export class WebRTC extends EventTarget {
         return
       }
       if (msg.payload.data.indexOf('auth_token_invalid') >= 0) {
-        this.workerWebRTC.removeEventListener('message', onMessage)
+        this.workerEngine.removeEventListener('message', onMessage)
 
         // Will redirect us to the authorization server.
         this.zooClientArgs.client.oauth2.fetchAuthorizationCode()
@@ -204,9 +209,9 @@ export class WebRTC extends EventTarget {
     }
 
     const kickoffStartWebrtcWorker = () => {
-      this.workerWebRTC.addEventListener('message', onMessage)
+      this.workerEngine.addEventListener('message', onMessage)
 
-      this.workerWebRTC.postMessage({
+      this.workerEngine.postMessage({
         to: 'worker',
         payload: {
           type: 'start',
@@ -260,14 +265,14 @@ export class WebRTC extends EventTarget {
       const onMessage = (ev: MessageEvent<WorkerMessage>) => {
         const msg = ev.data
         if ('from' in msg && msg.from === 'wasm') {
-          this.workerWebRTC.removeEventListener('message', onMessage)
+          this.workerEngine.removeEventListener('message', onMessage)
           resolve(msg.payload.data)
         }
       }
 
-      this.workerWebRTC.addEventListener('message', onMessage)
+      this.workerEngine.addEventListener('message', onMessage)
 
-      this.workerWebRTC.postMessage({
+      this.workerEngine.postMessage({
         to: 'wasm',
         payload: {
           type: funcName,
@@ -279,12 +284,12 @@ export class WebRTC extends EventTarget {
 
   executor() {
     return {
-      addEventListener: this.workerWebRTC.addEventListener.bind(
-        this.workerWebRTC,
+      addEventListener: this.workerEngine.addEventListener.bind(
+        this.workerEngine,
         'message'
       ),
-      removeEventListener: this.workerWebRTC.removeEventListener.bind(
-        this.workerWebRTC,
+      removeEventListener: this.workerEngine.removeEventListener.bind(
+        this.workerEngine,
         'message'
       ),
       submit: (
@@ -300,13 +305,13 @@ export class WebRTC extends EventTarget {
               msg.from === 'wasm' &&
               msg.payload.type === 'execute'
             ) {
-              this.workerWebRTC.removeEventListener('message', onMessage)
+              this.workerEngine.removeEventListener('message', onMessage)
               resolve(msg.payload.data as ExpectedWebSocketResponse)
             }
           }
-          this.workerWebRTC.addEventListener('message', onMessage)
+          this.workerEngine.addEventListener('message', onMessage)
 
-          this.workerWebRTC.postMessage({
+          this.workerEngine.postMessage({
             to: 'wasm',
             payload: {
               type: 'execute',
@@ -358,7 +363,7 @@ export class WebRTC extends EventTarget {
     const rtcSessionDescription = await this.rtcPeerConnection.createOffer()
     await this.rtcPeerConnection.setLocalDescription(rtcSessionDescription)
 
-    this.workerWebRTC.postMessage({
+    this.workerEngine.postMessage({
       to: 'websocket',
       payload: {
         type: 'send',
@@ -395,7 +400,7 @@ export class WebRTC extends EventTarget {
     // No more candidates, ICE gathering complete.
     if (ev.candidate === null) return
 
-    this.workerWebRTC.postMessage({
+    this.workerEngine.postMessage({
       to: 'websocket',
       payload: {
         type: 'send',
@@ -434,7 +439,7 @@ export class WebRTC extends EventTarget {
     }
   }
 
-  workerWebRTCOnMessage(ev: MessageEvent<WorkerMessage>) {
+  workerEngineOnMessage(ev: MessageEvent<WorkerMessage>) {
     const msg = ev.data
     if (!('from' in msg)) {
       return
@@ -450,9 +455,9 @@ export class WebRTC extends EventTarget {
   }
 
   ice() {
-    this.workerWebRTC.addEventListener(
+    this.workerEngine.addEventListener(
       'message',
-      this.workerWebRTCOnMessage.bind(this)
+      this.workerEngineOnMessage.bind(this)
     )
     this.rtcPeerConnection.addEventListener(
       'icecandidate',
@@ -461,9 +466,9 @@ export class WebRTC extends EventTarget {
   }
 
   deice() {
-    this.workerWebRTC.removeEventListener(
+    this.workerEngine.removeEventListener(
       'message',
-      this.workerWebRTCOnMessage.bind(this)
+      this.workerEngineOnMessage.bind(this)
     )
     this.rtcPeerConnection.removeEventListener(
       'icecandidate',
@@ -500,7 +505,7 @@ export class WebRTC extends EventTarget {
           ],
         }
 
-        this.workerWebRTC.postMessage({
+        this.workerEngine.postMessage({
           to: 'websocket',
           payload,
         })
@@ -538,7 +543,7 @@ export class WebRTC extends EventTarget {
         ],
       }
 
-      this.workerWebRTC.postMessage({
+      this.workerEngine.postMessage({
         to: 'websocket',
         payload,
       })
@@ -671,14 +676,14 @@ export class WebRTC extends EventTarget {
       const onMessage = (ev: MessageEvent<WorkerMessage>) => {
         const msg = ev.data
         if ('from' in msg && msg.from === 'websocket') {
-          this.workerWebRTC.removeEventListener('message', onMessage)
+          this.workerEngine.removeEventListener('message', onMessage)
           resolve(msg.payload.data as ExpectedWebSocketResponse)
         }
       }
 
-      this.workerWebRTC.addEventListener('message', onMessage)
+      this.workerEngine.addEventListener('message', onMessage)
 
-      this.workerWebRTC.postMessage({
+      this.workerEngine.postMessage({
         to: 'websocket',
         payload: {
           type: 'send',

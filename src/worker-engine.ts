@@ -32,6 +32,13 @@ type MessageEventMain =
     }
 
 let zooModelingCommandsWs: WebSocket | undefined = undefined
+let executorSettings = JSON.stringify({
+  settings: {
+    modeling: {
+      enable_ssao: false,
+    },
+  },
+})
 
 function sendIfOpen(data: string): boolean {
   if (zooModelingCommandsWs?.readyState !== WebSocket.OPEN) {
@@ -44,7 +51,10 @@ function sendIfOpen(data: string): boolean {
 
 type ZooClientArgs = { client: Client } & Parameters<
   typeof ModelingCommandsWs.urlConstructFrom
->
+> & {
+    enable_ssao?: boolean
+    webrtc: boolean
+  }
 const start = async (args: ZooClientArgs) => {
   // Make the wasm blob available first before anything. We don't use it immediately
   // today but it's intuitive to think this bag of data and functions is available
@@ -59,9 +69,17 @@ const start = async (args: ZooClientArgs) => {
       })
     )
 
+  executorSettings = JSON.stringify({
+    settings: {
+      modeling: {
+        enable_ssao: args.enable_ssao ?? false,
+      },
+    },
+  })
+
   zooModelingCommandsWs = new WebSocket(
     ModelingCommandsWs.urlConstructFrom({
-      webrtc: true,
+      webrtc: args.webrtc ?? true,
       ...args,
     })
   )
@@ -188,7 +206,7 @@ const kclExecute = (
   return executorContext.execute(
     JSON.stringify(program),
     opts.mainKclPathName,
-    '{}'
+    executorSettings
   )
 }
 
