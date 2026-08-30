@@ -671,7 +671,7 @@ export default async function apiGen(lookup: Record<string, string>) {
             omitContentType: isMultipart || bodyLine === '',
             bodyLine,
             multipartAppendBody: inputParams.includes('body')
-              ? "formData.append('event', JSON.stringify(body))"
+              ? "formData.append('body', new Blob([JSON.stringify(body)], { type: 'application/json' }))"
               : '',
             fnJsDoc: buildOperationJsDoc(operation.specSection, {
               operationId,

@@ -56,7 +56,10 @@ export default async function create_file_conversion_options({
   files.forEach((file) => {
     formData.append(file.name, file.data, file.name)
   })
-  formData.append('event', JSON.stringify(body))
+  formData.append(
+    'body',
+    new Blob([JSON.stringify(body)], { type: 'application/json' })
+  )
 
   const fetchOptions: RequestInit = {
     method: 'POST',
