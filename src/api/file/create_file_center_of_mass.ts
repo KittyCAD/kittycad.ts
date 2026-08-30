@@ -17,7 +17,7 @@ type CreateFileCenterOfMassReturn = FileCenterOfMass
  *
  * We assume any file given to us has one consistent unit throughout. We also assume the file is at the proper scale.
  *
- * This endpoint returns the cartesian coordinate in world space measure units.
+ * This endpoint returns the cartesian coordinate in the KittyCAD coordinate system (+Z up, -Y forward) using the requested measure units.
  *
  * In the future, we will use the units inside the file if they are given and do any conversions if necessary for the calculation. But currently, that is not supported.
  *

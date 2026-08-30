@@ -758,7 +758,12 @@ This is the same as the API call ID. */
       user_id: Uuid
     }
   | {
-      /** nullable:true, description:The resulting center of mass. */
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "The resulting center of mass in the KittyCAD coordinate system (+Z up, -Y forward)."
+       * }
+       */
       center_of_mass?: Point3d
       /**
        * {
@@ -3233,7 +3238,12 @@ export type Feature =
   | 'zoo_corp_auth'
 
 export interface FileCenterOfMass {
-  /** nullable:true, description:The resulting center of mass. */
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The resulting center of mass in the KittyCAD coordinate system (+Z up, -Y forward)."
+   * }
+   */
   center_of_mass?: Point3d
   /**
    * {
