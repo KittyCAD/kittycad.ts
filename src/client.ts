@@ -54,7 +54,7 @@ export class Client {
     const env = typeof process !== 'undefined' ? process.env : undefined
 
     const envToken =
-      env?.KITTYCAD_TOKEN || env?.KITTYCAD_API_TOKEN || env?.ZOO_AI_TOKEN
+      env?.KITTYCAD_TOKEN || env?.KITTYCAD_API_TOKEN || env?.ZOO_API_TOKEN
     const envHost = env?.ZOO_HOST
 
     if (typeof tokenOrOpts === 'string') {
