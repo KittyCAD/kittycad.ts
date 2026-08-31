@@ -3211,6 +3211,7 @@ export type Feature =
   | 'billing'
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
+  | 'engine_manager_quarantine'
   | 'enable_z0006_lint'
   | 'factory_portal'
   | 'kcl_cek_executor'
