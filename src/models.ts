@@ -4881,7 +4881,7 @@ export interface ModelingAppSubscriptionTier {
    *   "default": 0,
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out. This is equivalent to the monetary value divided by the price of an API credit."
+   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app for each monthly account-anniversary period. The boundary is evaluated in UTC and does not change with monthly versus annual subscription payment cadence. This is equivalent to the monetary value divided by the price of an API credit."
    * }
    */
   monthly_pay_as_you_go_api_credits?: number
@@ -4890,7 +4890,7 @@ export interface ModelingAppSubscriptionTier {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out."
+   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app for each monthly account-anniversary period. The boundary is evaluated in UTC and does not change with monthly versus annual subscription payment cadence."
    * }
    */
   monthly_pay_as_you_go_api_credits_monetary_value?: number
@@ -12288,7 +12288,7 @@ export type ZooProductSubscription = {
    *   "default": 0,
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out. This is equivalent to the monetary value divided by the price of an API credit."
+   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app for each monthly account-anniversary period. The boundary is evaluated in UTC and does not change with monthly versus annual subscription payment cadence. This is equivalent to the monetary value divided by the price of an API credit."
    * }
    */
   monthly_pay_as_you_go_api_credits?: number
@@ -12297,7 +12297,7 @@ export type ZooProductSubscription = {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out."
+   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app for each monthly account-anniversary period. The boundary is evaluated in UTC and does not change with monthly versus annual subscription payment cadence."
    * }
    */
   monthly_pay_as_you_go_api_credits_monetary_value?: number
