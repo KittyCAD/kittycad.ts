@@ -3209,6 +3209,7 @@ export type Feature =
   | 'auth_restricted_to_employees'
   | 'big_query_telemetry'
   | 'billing'
+  | 'cpu_engine_pool'
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
   | 'engine_manager_quarantine'
