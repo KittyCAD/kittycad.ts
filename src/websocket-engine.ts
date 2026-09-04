@@ -74,6 +74,8 @@ export class WebSocket extends EventTarget {
   }
 
   async start() {
+    const { promise, resolve } = Promise.withResolvers()
+
     // zooClientArgs.client.token will either have a valid token, invalid, or
     // unset / undefined. The Worker will notify us if something goes wrong, in
     // which case we will fire an authorization.
@@ -99,6 +101,10 @@ export class WebSocket extends EventTarget {
 
         // Will redirect us to the authorization server.
         this.zooClientArgs.client.oauth2.fetchAuthorizationCode()
+
+        // Indicative that we have a modeling session. Can start sending commands.
+      } else if (msg.payload.data.indexOf('modeling_session_data') >= 0) {
+        resolve(undefined)
       }
     }
 
@@ -117,7 +123,7 @@ export class WebSocket extends EventTarget {
 
     if (this.zooClientArgs.client.token) {
       kickoffStartWebrtcWorker()
-      return
+      return promise
     }
 
     void this.zooClientArgs.client.oauth2
@@ -149,6 +155,8 @@ export class WebSocket extends EventTarget {
           }
         }
       })
+
+    return promise
   }
 
   // For regular wasm calls, for whatever reason devs need it for.

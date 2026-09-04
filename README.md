@@ -15,17 +15,19 @@ npm install @kittycad/lib
 yarn add @kittycad/lib
 
 ## set your token
-export KITTYCAD_TOKEN=<your token>
+export ZOO_API_TOKEN=<your token>
 ```
 
 ### Basic example
 ```typescript
-import { file } from '@kittycad/lib';
+import { Client, file } from '@kittycad/lib';
 import fsp from 'fs/promises';
 
 async function main() {
+    const client = new Client()
     // zoo.dev/docs/api/get-cad-file-mass?lang=typescript
     const response = await file.create_file_mass({
+      client,
       src_format: 'obj',
       material_density_unit: 'kg:m3',
       output_unit: 'g',
@@ -40,4 +42,3 @@ async function main() {
 
 main();
 ```
-
