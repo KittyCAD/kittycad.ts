@@ -40,7 +40,7 @@ let executorSettings = JSON.stringify({
   },
 })
 
-function sendIfOpen(data: string): boolean {
+function sendIfOpen(data: string | ArrayBuffer | ArrayBufferView<ArrayBufferLike>): boolean {
   if (zooModelingCommandsWs?.readyState !== WebSocket.OPEN) {
     return false
   }
@@ -83,6 +83,7 @@ const start = async (args: ZooClientArgs) => {
       ...args,
     })
   )
+  zooModelingCommandsWs.binaryType = 'arraybuffer'
 
   zooModelingCommandsWs.addEventListener(
     'open',
@@ -223,7 +224,7 @@ self.addEventListener('message', (ev: MessageEvent & MessageEventMain) => {
       if (msg.payload.type === 'send') {
         const [data] = msg.payload.data
 
-        if (typeof data === 'string') {
+        if (typeof data === 'string' || data instanceof ArrayBuffer || ArrayBuffer.isView(data)) {
           sendIfOpen(data)
         }
 
