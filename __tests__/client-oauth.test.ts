@@ -62,7 +62,13 @@ vi.mock('@kittycad/oauth2-auth-code-pkce', () => ({
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  vi.unstubAllEnvs()
   oauth2Instances.length = 0
+})
+
+it('reads the standard ZOO_API_TOKEN environment variable', () => {
+  vi.stubEnv('ZOO_API_TOKEN', 'zoo-token')
+  expect(new Client().token).toBe('zoo-token')
 })
 
 describe('Client OAuth2', () => {
