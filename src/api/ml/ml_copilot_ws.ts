@@ -2,12 +2,17 @@ import { Client, buildQuery } from '../../client.js'
 import { BSON } from 'bson'
 import type { Document } from 'bson'
 import { isArrayBufferViewLike } from '../../ws-utils.js'
-import { MlCopilotClientMessage, MlCopilotServerMessage } from '../../models.js'
+import {
+  MlCopilotReplayAttachmentMode,
+  MlCopilotClientMessage,
+  MlCopilotServerMessage,
+} from '../../models.js'
 
 interface MlCopilotWsParams {
   client?: Client
   replay?: boolean
   conversation_id?: string
+  replay_attachment_mode?: MlCopilotReplayAttachmentMode
   pr?: number
 }
 
@@ -41,6 +46,7 @@ export default class MlCopilotWs {
    * @property {Client} [client] Optional client with auth token.
    * @property {boolean} replay If `true`, emit MsgPack Replay for the specified conversation and continue. (query)
    * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
+   * @property {MlCopilotReplayAttachmentMode} replay_attachment_mode Controls whether replayed attachment payloads are sent in full or replaced with metadata that can be used with `FetchAttachments`. (query)
    * @property {number} pr Optional Pull Request number to route traffic. (query)
    */
   static urlConstructFrom(functionNameParams: MlCopilotWsParams): URL {
@@ -48,6 +54,7 @@ export default class MlCopilotWs {
     const qs = buildQuery({
       replay: functionNameParams.replay,
       conversation_id: functionNameParams.conversation_id,
+      replay_attachment_mode: functionNameParams.replay_attachment_mode,
       pr: functionNameParams.pr,
     })
     const url = path + qs

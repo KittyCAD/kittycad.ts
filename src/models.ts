@@ -1164,6 +1164,28 @@ This is the same as the API call ID. */
       user_id: Uuid
     }
 
+export interface AttachmentRef {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Stable digest of the attachment bytes, formatted as `sha256:<lowercase hex>`."
+   * }
+   */
+  content_hash?: string
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "Position of this attachment in the message's attachment array."
+   * }
+   */
+  index: number
+  /** Prompt containing the persisted message row. */
+  prompt_id: Uuid
+  /** format:int32, description:Sequence number of the persisted message row. */
+  seq: number
+}
+
 export interface AuthApiKeyResponse {
   /** The session token */
   session_token: string
@@ -3209,8 +3231,10 @@ export type Feature =
   | 'auth_restricted_to_employees'
   | 'big_query_telemetry'
   | 'billing'
+  | 'cpu_engine_pool'
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
+  | 'engine_manager_quarantine'
   | 'enable_z0006_lint'
   | 'factory_portal'
   | 'kcl_cek_executor'
@@ -3223,6 +3247,7 @@ export type Feature =
   | 'enterprise_cockroach'
   | 'same_site_none_cookies'
   | 'validate_tax_info'
+  | 'drawings'
   | 'modeling_dialogs'
   | 'named_views_ui'
   | 'plugins'
@@ -4408,6 +4433,13 @@ export type MlCopilotClientMessage =
       engine_api_call_id?: Uuid
       /** nullable:true, description:The project name, if any. */
       project_name?: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Revision and idempotency metadata for `current_files`. Its absence identifies a legacy unfenced message, not an initial revision."
+       * }
+       */
+      project_snapshot?: MlCopilotProjectSnapshotMetadata
       type: 'project_context'
     }
   | {
@@ -4463,11 +4495,32 @@ export type MlCopilotClientMessage =
        * }
        */
       project_name?: string
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Revision and idempotency metadata for `current_files`. Its absence identifies a legacy unfenced message, not an initial revision."
+       * }
+       */
+      project_snapshot?: MlCopilotProjectSnapshotMetadata
       /** nullable:true, description:Change the default or mode reasoning effort. */
       reasoning_effort?: MlReasoningEffort
       /** The source ranges the user suggested to change. If empty, the content (prompt) will be used and is required. */
       source_ranges?: SourceRangePrompt[]
       type: 'user'
+    }
+  | {
+      /**
+       * {
+       *   "format": "uint32",
+       *   "minimum": 0
+       * }
+       */
+      indices: number[]
+      /** Prompt containing the persisted message row. */
+      prompt_id: Uuid
+      /** format:int32, description:Sequence number of the persisted message row. */
+      seq: number
+      type: 'fetch_attachments'
     }
   | {
       /** The content of the system message. */
@@ -4499,6 +4552,8 @@ export type MlCopilotClientMessage =
     }
 
 export interface MlCopilotFile {
+  /** nullable:true, description:Reference for fetching this attachment on demand. */
+  attachment_ref?: AttachmentRef
   /**
    * {
    *   "format": "uint8",
@@ -4532,6 +4587,37 @@ export interface MlCopilotModeOption {
   /** Human-readable display label. */
   label: string
 }
+
+export interface MlCopilotProjectRevision {
+  /** Stable namespaced project identifier shared by every revision of the project. */
+  project_id: string
+  /** Opaque identifier for the accepted project state. Every accepted write gets a fresh value, even when its contents equal an older revision. Clients must not infer file equality or ancestry from this value. */
+  revision: string
+  /** Opaque API-issued token that must accompany subsequent writes to this revision. */
+  writer_fence: string
+}
+
+export interface MlCopilotProjectSnapshotMetadata {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Canonical revision and writer fence on which `current_files` is based. Its `project_id` must match the outer `project_id`. Omit this only when establishing the first canonical revision; omission must not replace an existing revision."
+   * }
+   */
+  base_revision?: MlCopilotProjectRevision
+  /** Stable, namespaced project identifier. Cloud projects use `cloud:<project UUID>` and API validates project access. Local projects use `local:<durable app project ID>` and API scopes the value to the authenticated principal. */
+  project_id: string
+  /** Idempotency key for this complete project snapshot, scoped to `project_id`. */
+  snapshot_id: string
+}
+
+export type MlCopilotProjectSnapshotStatus =
+  | 'accepted'
+  | 'merged'
+  | 'rejected_stale'
+  | 'conflict'
+
+export type MlCopilotReplayAttachmentMode = 'full' | 'metadata_only'
 
 export type MlCopilotServerMessage =
   | { pong: Record<string, unknown> }
@@ -4596,6 +4682,41 @@ export type MlCopilotServerMessage =
       }
     }
   | { project_updated: { files: { [key: string]: string } } }
+  | {
+      project_revision_updated: {
+        files: {
+          [key: string]: /**
+           * {
+           *   "format": "uint8",
+           *   "minimum": 0
+           * }
+           */
+          number[]
+        }
+        /** Canonical revision represented by `files`. */
+        project_revision: MlCopilotProjectRevision
+      }
+    }
+  | {
+      project_snapshot_result: {
+        canonical_files?: {
+          [key: string]: /**
+           * {
+           *   "format": "uint8",
+           *   "minimum": 0
+           * }
+           */
+          number[]
+        }
+        conflicting_paths?: string[]
+        /** Canonical revision after processing the snapshot. */
+        project_revision: MlCopilotProjectRevision
+        /** Idempotency key from the submitted snapshot. */
+        snapshot_id: string
+        /** How the submitted snapshot affected canonical state. */
+        status: MlCopilotProjectSnapshotStatus
+      }
+    }
   | {
       /**
        * {
@@ -4766,6 +4887,18 @@ export type MlCopilotServerMessage =
         files: MlCopilotFile[]
       }
     }
+  | {
+      attachments: {
+        /** Fetched files, in the same order as the requested indices. */
+        files: MlCopilotFile[]
+        /** Prompt containing the persisted message row. */
+        prompt_id: Uuid
+        /** Authoritative role that owns the file attachment, read from the stored row. */
+        role: MlMessageRole
+        /** format:int32, description:Sequence number of the persisted message row. */
+        seq: number
+      }
+    }
 
 export type MlCopilotSupportedModels =
   | 'gpt5_nano'
@@ -4792,6 +4925,8 @@ export type MlCopilotTool =
   | 'web_search'
 
 export type MlFeedback = 'thumbs_up' | 'thumbs_down' | 'accepted' | 'rejected'
+
+export type MlMessageRole = 'client' | 'server'
 
 export type MlReasoningEffort = 'low' | 'medium' | 'high' | 'xhigh'
 
@@ -4880,7 +5015,7 @@ export interface ModelingAppSubscriptionTier {
    *   "default": 0,
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out. This is equivalent to the monetary value divided by the price of an API credit."
+   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app for each monthly account-anniversary period. The boundary is evaluated in UTC and does not change with monthly versus annual subscription payment cadence. This is equivalent to the monetary value divided by the price of an API credit."
    * }
    */
   monthly_pay_as_you_go_api_credits?: number
@@ -4889,7 +5024,7 @@ export interface ModelingAppSubscriptionTier {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out."
+   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app for each monthly account-anniversary period. The boundary is evaluated in UTC and does not change with monthly versus annual subscription payment cadence."
    * }
    */
   monthly_pay_as_you_go_api_credits_monetary_value?: number
@@ -12287,7 +12422,7 @@ export type ZooProductSubscription = {
    *   "default": 0,
    *   "format": "uint64",
    *   "minimum": 0,
-   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out. This is equivalent to the monetary value divided by the price of an API credit."
+   *   "description": "The amount of pay-as-you-go API credits the individual or org gets outside the modeling app for each monthly account-anniversary period. The boundary is evaluated in UTC and does not change with monthly versus annual subscription payment cadence. This is equivalent to the monetary value divided by the price of an API credit."
    * }
    */
   monthly_pay_as_you_go_api_credits?: number
@@ -12296,7 +12431,7 @@ export type ZooProductSubscription = {
    *   "title": "double",
    *   "default": 0,
    *   "format": "money-usd",
-   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app per month. Credit replenishment remains calendar-month based while anniversary billing is rolled out."
+   *   "description": "The monetary value of pay-as-you-go API credits the individual or org gets outside the modeling app for each monthly account-anniversary period. The boundary is evaluated in UTC and does not change with monthly versus annual subscription payment cadence."
    * }
    */
   monthly_pay_as_you_go_api_credits_monetary_value?: number
@@ -12722,6 +12857,7 @@ export interface Models {
   ApiTokenWithFullToken: ApiTokenWithFullToken
   AppClientInfo: AppClientInfo
   AsyncApiCallOutput: AsyncApiCallOutput
+  AttachmentRef: AttachmentRef
   AuthApiKeyResponse: AuthApiKeyResponse
   AuthCallback: AuthCallback
   Axis: Axis
@@ -12956,11 +13092,16 @@ export interface Models {
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotFile: MlCopilotFile
   MlCopilotModeOption: MlCopilotModeOption
+  MlCopilotProjectRevision: MlCopilotProjectRevision
+  MlCopilotProjectSnapshotMetadata: MlCopilotProjectSnapshotMetadata
+  MlCopilotProjectSnapshotStatus: MlCopilotProjectSnapshotStatus
+  MlCopilotReplayAttachmentMode: MlCopilotReplayAttachmentMode
   MlCopilotServerMessage: MlCopilotServerMessage
   MlCopilotSupportedModels: MlCopilotSupportedModels
   MlCopilotSystemCommand: MlCopilotSystemCommand
   MlCopilotTool: MlCopilotTool
   MlFeedback: MlFeedback
+  MlMessageRole: MlMessageRole
   MlReasoningEffort: MlReasoningEffort
   MlToolResult: MlToolResult
   ModelingAppShareLinks: ModelingAppShareLinks
