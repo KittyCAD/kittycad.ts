@@ -21,13 +21,14 @@ interface ModelingCommandsWsParams {
   replay?: string
   api_call_id?: string
   order_independent_transparency?: boolean
+  geometry_only?: boolean
   pr?: number
 }
 
 /**
  * Opens a WebSocket to a Zoo KittyCAD engine instance.
  *
- * **Note**: Currently it's recommended to set `webrtc=true` in the WebSocket query string, otherwise some features, such as opacity setting, will cause the engine to fail.
+ * Set `geometry_only=true` only when the session will never render images or video. `webrtc=false` disables video transport but leaves image rendering available.
  *
  * Due to the long-lived nature of the instances, it's possible the resources on have been used and not freed entirely, or the instance is in a bad state. Thus it's good practice to expect to have to potentially reconnect at any moment -even almost immediately after the first connection!
  *
@@ -61,6 +62,7 @@ export default class ModelingCommandsWs {
    * @property {string} replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
    * @property {string} api_call_id API Call ID for distributed tracing (query)
    * @property {boolean} order_independent_transparency Enables nicer visuals for transparent surfaces. This slows down rendering, so it's off by default. (query)
+   * @property {boolean} geometry_only Disable all image and video rendering for this session. Defaults to false. Must be combined with webrtc=false. This is independent of CPU pool availability. (query)
    * @property {number} pr Optional Pull Request number to route traffic. (query)
    */
   static urlConstructFrom(functionNameParams: ModelingCommandsWsParams): URL {
@@ -78,6 +80,7 @@ export default class ModelingCommandsWs {
       api_call_id: functionNameParams.api_call_id,
       order_independent_transparency:
         functionNameParams.order_independent_transparency,
+      geometry_only: functionNameParams.geometry_only,
       pr: functionNameParams.pr,
     })
     const url = path + qs
