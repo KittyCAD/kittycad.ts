@@ -53,10 +53,18 @@ export const executor = {
 import create_user_factory_job from './api/factory/create_user_factory_job.js'
 import get_user_factory_finishes from './api/factory/get_user_factory_finishes.js'
 import get_user_factory_materials from './api/factory/get_user_factory_materials.js'
+import list_org_factory_jobs from './api/factory/list_org_factory_jobs.js'
+import list_user_factory_jobs from './api/factory/list_user_factory_jobs.js'
+import { list_org_factory_jobs_pager } from './api/factory/list_org_factory_jobs.js'
+import { list_user_factory_jobs_pager } from './api/factory/list_user_factory_jobs.js'
 export const factory = {
   create_user_factory_job,
   get_user_factory_finishes,
   get_user_factory_materials,
+  list_org_factory_jobs,
+  list_org_factory_jobs_pager,
+  list_user_factory_jobs,
+  list_user_factory_jobs_pager,
 }
 
 import create_file_center_of_mass from './api/file/create_file_center_of_mass.js'
@@ -728,6 +736,8 @@ export type {
   FaceGetPosition,
   FaceIsPlanar,
   FactoryCustomerCatalogOption,
+  FactoryCustomerJobSummary,
+  FactoryCustomerJobSummaryResultsPage,
   FactoryJobResponse,
   FailureWebSocketResponse,
   FbxStorage,
