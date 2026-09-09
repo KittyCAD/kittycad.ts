@@ -81,49 +81,9 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1users~1{id}~1payment~1subscriptions/put/x-typescript",
-    "value": {
-      "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.update_subscription_for_user({\n        id: '31337',\n        body: {\n            downgrade_reason: 'cost_too_high',\n            downgrade_reason_text:\n                'Optional customer-provided context for the downgrade reason.',\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1users~1{id}~1payment~1balance/put/x-typescript",
-    "value": {
-      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_user({\n        id: '31337',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1users~1{id}~1payment~1balance/get/x-typescript",
-    "value": {
-      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_user({\n        id: '31337',\n        include_total_due: true,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1users~1{id}~1oauth2~1apps/get/x-typescript",
-    "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.list_oauth2_apps_for_any_user({\n        id: '31337',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = oauth2.list_oauth2_apps_for_any_user_pager({\n        id: '31337',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
     "path": "/paths/~1users~1{id}~1api-calls/get/x-typescript",
     "value": {
       "example": "import { api_calls, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await api_calls.list_api_calls_for_user({\n        id: '31337',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = api_calls.list_api_calls_for_user_pager({\n        id: '31337',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1users~1{id}~1admin~1details/get/x-typescript",
-    "value": {
-      "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.user_admin_details_get({ id: '31337', client })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -801,22 +761,6 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1subscription-plans~1{slug}~1prices/post/x-typescript",
-    "value": {
-      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.upsert_subscription_plan_price({\n        slug: 'string',\n        body: {\n            active: true,\n            billing_model: 'flat',\n            cadence: 'day',\n            unit_amount: 7,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1store~1coupon/post/x-typescript",
-    "value": {
-      "example": "import { store, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await store.create_store_coupon({\n        body: { percent_off: 7 },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
     "path": "/paths/~1projects~1public~1{id}~1vote/delete/x-typescript",
     "value": {
       "example": "import { projects, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await projects.delete_public_project_vote({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -884,54 +828,6 @@
     "path": "/paths/~1ping/get/x-typescript",
     "value": {
       "example": "import { meta, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await meta.ping({ client })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1orgs~1{id}~1payment~1subscriptions/put/x-typescript",
-    "value": {
-      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.update_org_subscription_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            modeling_app:\n                'Slug of the modeling app subscription tier requested.',\n            pay_annually: true,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1orgs~1{id}~1payment~1balance/put/x-typescript",
-    "value": {
-      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.update_payment_balance_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        include_total_due: true,\n        body: {\n            monthly_api_credits_remaining_monetary_value: 7,\n            stable_api_credits_remaining_monetary_value: 7,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1orgs~1{id}~1payment~1balance/get/x-typescript",
-    "value": {
-      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.get_payment_balance_for_any_org({\n        include_total_due: true,\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1orgs~1{id}~1oauth2~1apps/get/x-typescript",
-    "value": {
-      "example": "import { oauth2, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await oauth2.list_oauth2_apps_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = oauth2.list_oauth2_apps_for_any_org_pager({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1orgs~1{id}~1billing~1contract/put/x-typescript",
-    "value": {
-      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.upsert_billing_contract_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            billing_cadence: 'annual',\n            commitment_scope: 'pooled',\n            currency:\n                'A billing currency code. This is intentionally billing-owned instead of Stripe-owned, so contract and manual invoice flows can use the same validated type without reaching back into a provider-specific crate.',\n            discount_description:\n                'Free-form finance note for discounts or negotiated pricing.',\n            effective_at: 'Timestamp when the contract starts to apply.',\n            external_customer_id:\n                'Provider-owned customer reference for downstream invoicing systems.',\n            items: [],\n            name: 'Human-readable contract label.',\n            notes: 'Internal notes about the contract.',\n            periods: [],\n            provider: 'stripe',\n            rollover_policy: 'none',\n            status: 'draft',\n            term_end_at: 'Timestamp when the contract term ends.',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1orgs~1{id}~1billing~1contract/get/x-typescript",
-    "value": {
-      "example": "import { orgs, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await orgs.get_billing_contract_for_any_org({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1601,14 +1497,6 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1internal~1discord~1api-token~1{discord_id}/get/x-typescript",
-    "value": {
-      "example": "import { meta, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await meta.internal_get_api_token_for_discord_user({\n        discord_id: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
     "path": "/paths/~1file~1volume/post/x-typescript",
     "value": {
       "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_volume({\n        src_format: 'obj',\n        output_unit: 'cm3',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -1684,30 +1572,6 @@
     "path": "/paths/~1async~1operations~1{id}/get/x-typescript",
     "value": {
       "example": "import { api_calls, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await api_calls.get_async_operation({\n        id: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1apps~1github~1webhook/post/x-typescript",
-    "value": {
-      "example": "import { apps, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await apps.apps_github_webhook({\n        body: await fsp.readFile('./example', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1apps~1github~1consent/get/x-typescript",
-    "value": {
-      "example": "import { apps, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await apps.apps_github_consent({ client })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1apps~1github~1callback/get/x-typescript",
-    "value": {
-      "example": "import { apps, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await apps.apps_github_callback({ client })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
