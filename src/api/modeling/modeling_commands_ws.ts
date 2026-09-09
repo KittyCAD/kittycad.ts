@@ -4,6 +4,7 @@ import type { Document } from 'bson'
 import { isArrayBufferViewLike } from '../../ws-utils.js'
 import {
   PostEffectType,
+  KclVersion,
   WebSocketRequest,
   WebSocketResponse,
 } from '../../models.js'
@@ -16,11 +17,13 @@ interface ModelingCommandsWsParams {
   unlocked_framerate?: boolean
   post_effect?: PostEffectType
   webrtc?: boolean
+  geometry_only?: boolean
   pool?: string
   show_grid?: boolean
   replay?: string
   api_call_id?: string
   order_independent_transparency?: boolean
+  kcl_version?: KclVersion
   pr?: number
 }
 
@@ -56,11 +59,13 @@ export default class ModelingCommandsWs {
    * @property {boolean} unlocked_framerate If true, engine will render video frames as fast as it can. (query)
    * @property {PostEffectType} post_effect Engine Post effects (such as SSAO) (query)
    * @property {boolean} webrtc If true, will start a webrtc connection. (query)
+   * @property {boolean} geometry_only If true, the engine will be ran without any graphical rendering capability. This may reduce the ability of some endpoints such as snapshot. (query)
    * @property {string} pool An optional identifier for a pool of engine instances. The 'default' pool is used when none is specified. (query)
    * @property {boolean} show_grid If true, will show the grid at the start of the session. (query)
    * @property {string} replay If given, when the session ends, the modeling commands sent during the session will be written out to this filename. For debugging. (query)
    * @property {string} api_call_id API Call ID for distributed tracing (query)
    * @property {boolean} order_independent_transparency Enables nicer visuals for transparent surfaces. This slows down rendering, so it's off by default. (query)
+   * @property {KclVersion} kcl_version Which KCL+Engine version should the engine use? Clients use this to opt into updated algorithms and behaviours. (query)
    * @property {number} pr Optional Pull Request number to route traffic. (query)
    */
   static urlConstructFrom(functionNameParams: ModelingCommandsWsParams): URL {
@@ -72,12 +77,14 @@ export default class ModelingCommandsWs {
       unlocked_framerate: functionNameParams.unlocked_framerate,
       post_effect: functionNameParams.post_effect,
       webrtc: functionNameParams.webrtc,
+      geometry_only: functionNameParams.geometry_only,
       pool: functionNameParams.pool,
       show_grid: functionNameParams.show_grid,
       replay: functionNameParams.replay,
       api_call_id: functionNameParams.api_call_id,
       order_independent_transparency:
         functionNameParams.order_independent_transparency,
+      kcl_version: functionNameParams.kcl_version,
       pr: functionNameParams.pr,
     })
     const url = path + qs

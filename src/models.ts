@@ -359,7 +359,7 @@ export interface AnnotationMbdBasicDimension {
    * {
    *   "nullable": true,
    *   "format": "double",
-   *   "description": "The explicitly defined dimension.  Only required if the measurement is not automatically calculated."
+   *   "description": "The explicitly defined dimension. Only required if the measurement is not automatically calculated."
    * }
    */
   dimension?: number
@@ -370,8 +370,8 @@ export interface AnnotationMbdBasicDimension {
    * }
    */
   symbol?: MbdSymbol
-  /** format:double, description:The tolerance of the dimension */
-  tolerance: number
+  /** nullable:true, format:double, description:The tolerance of the dimension */
+  tolerance?: number
 }
 
 export interface AnnotationMbdControlFrame {
@@ -416,7 +416,7 @@ export interface AnnotationMbdControlFrame {
   /**
    * {
    *   "format": "double",
-   *   "description": "Tolerance value - the total tolerance of the geometric control.  The unit is based on the drawing standard."
+   *   "description": "Tolerance value - the total tolerance of the geometric control. The unit is based on the drawing standard."
    * }
    */
   tolerance: number
@@ -435,6 +435,13 @@ export interface AnnotationOptions {
   line_ends?: AnnotationLineEndOptions
   /** nullable:true, format:float, description:Width of the annotation's line */
   line_width?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Human-friendly identifier for this annotation. Included in some exports and metadata of the model. This is _not_ displayed visually in, the annotation, it's only metadata."
+   * }
+   */
+  name?: string
   /** nullable:true, description:Position to put the annotation */
   position?: Point3d
   /** nullable:true, description:Text displayed on the annotation */
@@ -1607,7 +1614,7 @@ export interface ClientMetrics {
    * {
    *   "nullable": true,
    *   "format": "float",
-   *   "description": "Total duration of pauses in seconds.\n\nThis is the \"ping\" between the client and the STUN server. Not to be confused with the E2E RTT documented [here](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime)\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-currentroundtriptime"
+   *   "description": "Estimated round trip time, measured in seconds.\n\nThis is the \"ping\" between the client and the STUN server. Not to be confused with the E2E RTT documented [here](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime)\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-currentroundtriptime"
    * }
    */
   rtc_stun_rtt_sec?: number
@@ -3935,6 +3942,8 @@ export type KclProjectShareLinkAccessMode =
   | 'anyone_with_link'
   | 'organization_only'
 
+export type KclVersion = '1.0' | '2.0' | '3.0-preview'
+
 export type LengthUnit = number
 
 export type LenientUrl =
@@ -4872,7 +4881,7 @@ export type ModelingCmd =
        * }
        */
       direction_reference?: EdgeSpecifier
-      /** How far off the plane to extrude */
+      /** How far off the plane to extrude This distance is relative to the target's plane, not an absolute coordinate. Symmetric extrusions will extrude outwards from both sides of the sketch to the length specified. */
       distance: LengthUnit
       /**
        * {
@@ -5325,7 +5334,7 @@ export type ModelingCmd =
       /**
        * {
        *   "format": "float",
-       *   "description": "Move the camera forward along the vector it's looking at, by this magnitudedefaultCameraZoom. Basically, how much should the camera move forward by."
+       *   "description": "Move the camera forward along the vector it's looking at, by this magnitude. Basically, how much should the camera move forward by."
        * }
        */
       magnitude: number
@@ -5781,7 +5790,7 @@ export type ModelingCmd =
       type: 'solid3d_get_opposite_edge'
     }
   | {
-      /** format:uuid, description:Which edge you want the opposite of. */
+      /** format:uuid, description:Which edge you want the next edge of. */
       edge_id: string
       /**
        * {
@@ -5795,7 +5804,7 @@ export type ModelingCmd =
       type: 'solid3d_get_next_adjacent_edge'
     }
   | {
-      /** format:uuid, description:Which edge you want the opposite of. */
+      /** format:uuid, description:Which edge you want the previous edge of. */
       edge_id: string
       /**
        * {
@@ -6054,6 +6063,13 @@ export type ModelingCmd =
       backface_color?: Color
       /** nullable:true, description:The default system color. */
       color?: Color
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "The default color to use for the edges of 3D bodies."
+       * }
+       */
+      edge_3d_color?: Color
       /** nullable:true, description:The default color to use for highlight */
       highlight_color?: Color
       /** nullable:true, description:The default color to use for selection */
@@ -8506,6 +8522,7 @@ export type OkWebSocketResponseData =
       }
       type: 'debug'
     }
+  | { data: Record<string, unknown>; type: 'reconnect' }
 
 export type OppositeForAngle = string
 
@@ -12665,6 +12682,7 @@ export interface Models {
   KclProjectPreviewStatus: KclProjectPreviewStatus
   KclProjectPublicationStatus: KclProjectPublicationStatus
   KclProjectShareLinkAccessMode: KclProjectShareLinkAccessMode
+  KclVersion: KclVersion
   LengthUnit: LengthUnit
   LenientUrl: LenientUrl
   Loft: Loft

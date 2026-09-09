@@ -717,6 +717,7 @@ export type {
   KclProjectPreviewStatus,
   KclProjectPublicationStatus,
   KclProjectShareLinkAccessMode,
+  KclVersion,
   LengthUnit,
   LenientUrl,
   Loft,
