@@ -19,15 +19,16 @@ export class ApiError extends Error {
 export async function throwIfNotOk(res: Response): Promise<void> {
   if (res.ok) return
   let body: Partial<Error> | undefined
+  let text: string
   try {
-    body = (await res.json()) as Partial<Error>
+    text = await res.text()
   } catch {
-    try {
-      const text = await res.text()
-      body = text ? ({ message: text } as Partial<Error>) : undefined
-    } catch {
-      body = undefined
-    }
+    throw new ApiError(res.status)
+  }
+  try {
+    body = JSON.parse(text) as Partial<Error>
+  } catch {
+    body = text ? ({ message: text } as Partial<Error>) : undefined
   }
   throw new ApiError(res.status, body)
 }
