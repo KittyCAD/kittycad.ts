@@ -24,29 +24,6 @@ export interface AddOrgMember {
   role: UserOrgRole
 }
 
-export interface Address {
-  /** The city component. */
-  city?: string
-  /** The country component. This is a two-letter ISO country code. */
-  country: CountryCode
-  /** title:DateTime, format:date-time, description:The time and date the address was created. */
-  created_at: string
-  /** The unique identifier of the address. */
-  id: Uuid
-  /** The state component. */
-  state?: string
-  /** The first street component. */
-  street1?: string
-  /** The second street component. */
-  street2?: string
-  /** title:DateTime, format:date-time, description:The time and date the address was last updated. */
-  updated_at: string
-  /** The user ID that this address belongs to. */
-  user_id: Uuid
-  /** The zip component. */
-  zip?: string
-}
-
 export interface AddressDetails {
   /** The city component. */
   city?: string
@@ -382,7 +359,7 @@ export interface AnnotationMbdBasicDimension {
    * {
    *   "nullable": true,
    *   "format": "double",
-   *   "description": "The explicitly defined dimension.  Only required if the measurement is not automatically calculated."
+   *   "description": "The explicitly defined dimension. Only required if the measurement is not automatically calculated."
    * }
    */
   dimension?: number
@@ -393,8 +370,8 @@ export interface AnnotationMbdBasicDimension {
    * }
    */
   symbol?: MbdSymbol
-  /** format:double, description:The tolerance of the dimension */
-  tolerance: number
+  /** nullable:true, format:double, description:The tolerance of the dimension */
+  tolerance?: number
 }
 
 export interface AnnotationMbdControlFrame {
@@ -439,7 +416,7 @@ export interface AnnotationMbdControlFrame {
   /**
    * {
    *   "format": "double",
-   *   "description": "Tolerance value - the total tolerance of the geometric control.  The unit is based on the drawing standard."
+   *   "description": "Tolerance value - the total tolerance of the geometric control. The unit is based on the drawing standard."
    * }
    */
   tolerance: number
@@ -458,6 +435,13 @@ export interface AnnotationOptions {
   line_ends?: AnnotationLineEndOptions
   /** nullable:true, format:float, description:Width of the annotation's line */
   line_width?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Human-friendly identifier for this annotation. Included in some exports and metadata of the model. This is _not_ displayed visually in, the annotation, it's only metadata."
+   * }
+   */
+  name?: string
   /** nullable:true, description:Position to put the annotation */
   position?: Point3d
   /** nullable:true, description:Text displayed on the annotation */
@@ -697,11 +681,6 @@ export interface ApiTokenWithFullToken {
   updated_at: string
   /** The ID of the user that owns the API token. */
   user_id: Uuid
-}
-
-export interface AppClientInfo {
-  /** The URL for consent. */
-  url?: string
 }
 
 export type AsyncApiCallOutput =
@@ -1233,175 +1212,6 @@ export type BatchResponse =
 
 export interface BeginExecution {} /* Empty object */
 
-export type BillingCadence = 'annual' | 'quarterly' | 'monthly' | 'manual'
-
-export type BillingCommitmentScope = 'pooled' | 'per_item'
-
-export interface BillingContractItemInput {
-  /**
-   * {
-   *   "default": true,
-   *   "description": "Whether the item should participate in billing decisions immediately."
-   * }
-   */
-  active?: boolean
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Optional normalization rule used before rating usage."
-   * }
-   */
-  billing_unit_granularity?: BillingUnitGranularity
-  /** Canonical item code so later metering can find the right price row. */
-  code: BillingItemCode
-  /** Human-readable name shown in finance tooling. */
-  display_name: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "double",
-   *   "format": "money-usd",
-   *   "description": "Fixed fee charged for the item when the kind is `fixed_fee`."
-   * }
-   */
-  fixed_fee_amount?: number
-  /**
-   * {
-   *   "default": false,
-   *   "description": "Whether usage from this item may burn down contract commitment."
-   * }
-   */
-  is_commitment_eligible?: boolean
-  /** Pricing model for this item. */
-  kind: BillingItemKind
-  /** default:[], description:Pricing tiers for usage-rated items. */
-  rate_tiers?: BillingRateTierInput[]
-  /** Base measurement unit for pricing and usage. */
-  unit: BillingUnit
-}
-
-export interface BillingContractItemView {
-  /** Whether the item is active. */
-  active: boolean
-  /** nullable:true, description:Optional normalization rule for usage. */
-  billing_unit_granularity?: BillingUnitGranularity
-  /** Canonical item code. */
-  code: BillingItemCode
-  /** Human-readable item name. */
-  display_name: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "double",
-   *   "format": "money-usd",
-   *   "description": "Fixed fee charged for the item when applicable."
-   * }
-   */
-  fixed_fee_amount?: number
-  /** Database identifier for the contract item row. */
-  id: Uuid
-  /** Whether this item can consume commitment. */
-  is_commitment_eligible: boolean
-  /** Pricing model for the item. */
-  kind: BillingItemKind
-  /** Usage tiers for the item. */
-  rate_tiers: BillingRateTierView[]
-  /** Measurement unit for the item. */
-  unit: BillingUnit
-}
-
-export type BillingContractStatus =
-  | 'draft'
-  | 'scheduled'
-  | 'active'
-  | 'closed'
-  | 'canceled'
-
-export interface BillingContractUpsert {
-  /** Operational cadence used for finance workflows. */
-  billing_cadence: BillingCadence
-  /** Whether commitment is shared or item-scoped. */
-  commitment_scope: BillingCommitmentScope
-  /** Contract currency shared by every money field in this definition. */
-  currency: Currency
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Free-form finance note for discounts or negotiated pricing."
-   * }
-   */
-  discount_description?: string
-  /** title:DateTime, format:date-time, description:Timestamp when the contract starts to apply. */
-  effective_at: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Provider-owned customer reference, when one already exists."
-   * }
-   */
-  external_customer_id?: BillingExternalCustomerId
-  /** Billable items attached to the contract. */
-  items: BillingContractItemInput[]
-  /** Human-readable contract label. */
-  name: string
-  /** nullable:true, description:Internal notes about the contract. */
-  notes?: string
-  /** Period schedule for the contract term. */
-  periods: BillingPeriodInput[]
-  /** Downstream provider responsible for collecting the invoice. */
-  provider: BillingProvider
-  /** What should happen to unused commitment when a period ends. */
-  rollover_policy: BillingRolloverPolicy
-  /** Lifecycle state for the new contract. */
-  status: BillingContractStatus
-  /** title:DateTime, format:date-time, description:Timestamp when the contract term ends. */
-  term_end_at: string
-}
-
-export interface BillingContractView {
-  /** Billing account identifier that owns the contract. */
-  account_id: Uuid
-  /** Operational cadence for finance workflows. */
-  billing_cadence: BillingCadence
-  /** Whether commitment is shared or item-scoped. */
-  commitment_scope: BillingCommitmentScope
-  /** Billing contract identifier. */
-  contract_id: Uuid
-  /** Currency shared by every money field in the contract. */
-  currency: Currency
-  /** nullable:true, description:Discount note associated with the contract. */
-  discount_description?: string
-  /** title:DateTime, format:date-time, description:Timestamp when the contract started applying. */
-  effective_at: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Provider-owned customer reference, when one exists."
-   * }
-   */
-  external_customer_id?: BillingExternalCustomerId
-  /** Billable items attached to the contract. */
-  items: BillingContractItemView[]
-  /** Human-readable contract label. */
-  name: string
-  /** nullable:true, description:Internal notes for the contract. */
-  notes?: string
-  /** Period schedule for the contract. */
-  periods: BillingPeriodView[]
-  /** Downstream invoice provider. */
-  provider: BillingProvider
-  /** What happens to unused commitment when a period ends. */
-  rollover_policy: BillingRolloverPolicy
-  /** Lifecycle state for the contract. */
-  status: BillingContractStatus
-  /** title:DateTime, format:date-time, description:Timestamp when the contract term ends. */
-  term_end_at: string
-}
-
-export type BillingExternalCustomerId =
-  /** Provider-owned customer reference for downstream invoicing systems. */
-  string
-
 export interface BillingInfo {
   /** nullable:true, description:The address of the customer. */
   address?: AddressDetails
@@ -1417,138 +1227,6 @@ export interface BillingInfo {
    */
   phone?: string
 }
-
-export type BillingItemCode =
-  | 'enterprise_support'
-  | 'fde'
-  | 'govcloud_management'
-  | 'file_ingestion_conversion'
-  | 'licensed_api_credits'
-
-export type BillingItemKind =
-  | 'fixed_fee'
-  | 'usage_tiered'
-  | 'usage_commitment_bucket'
-
-export type BillingPeriodIndex =
-  /**
-   * {
-   *   "format": "int32",
-   *   "description": "Non-negative index of a billing period inside a contract."
-   * }
-   */
-  number
-
-export interface BillingPeriodInput {
-  /** title:double, format:money-usd, description:New commitment funded for this period. */
-  commitment_amount: number
-  /** title:DateTime, format:date-time, description:Exclusive period end timestamp. */
-  period_end_at: string
-  /** Sequence index for the period inside the contract. */
-  period_index: BillingPeriodIndex
-  /** title:DateTime, format:date-time, description:Inclusive period start timestamp. */
-  period_start_at: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "double",
-   *   "format": "money-usd",
-   *   "description": "Commitment carried in from an earlier period."
-   * }
-   */
-  rollover_in_amount?: number
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "double",
-   *   "format": "money-usd",
-   *   "description": "Commitment intentionally rolled out to a later period."
-   * }
-   */
-  rollover_out_amount?: number
-  /** nullable:true, description:Operational status for the period. */
-  status?: BillingPeriodStatus
-}
-
-export type BillingPeriodStatus = 'open' | 'closed'
-
-export interface BillingPeriodView {
-  /** title:double, format:money-usd, description:New commitment funded for this period. */
-  commitment_amount: number
-  /** Database identifier for the period row. */
-  id: Uuid
-  /** title:DateTime, format:date-time, description:Exclusive period end timestamp. */
-  period_end_at: string
-  /** Sequence index for the period inside the contract. */
-  period_index: BillingPeriodIndex
-  /** title:DateTime, format:date-time, description:Inclusive period start timestamp. */
-  period_start_at: string
-  /** title:double, format:money-usd, description:Commitment carried in from a previous period. */
-  rollover_in_amount: number
-  /**
-   * {
-   *   "title": "double",
-   *   "format": "money-usd",
-   *   "description": "Commitment intentionally rolled out to a later period."
-   * }
-   */
-  rollover_out_amount: number
-  /** Operational status for the period. */
-  status: BillingPeriodStatus
-}
-
-export type BillingProvider = 'stripe' | 'manual_invoice'
-
-export type BillingQuantity =
-  /**
-   * {
-   *   "format": "int64",
-   *   "description": "Non-negative quantity used for tier boundaries and later usage counts."
-   * }
-   */
-  number
-
-export interface BillingRateTierInput {
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Exclusive upper bound for the tier, or `None` when the tier is open-ended."
-   * }
-   */
-  tier_end_exclusive?: BillingQuantity
-  /** First billable quantity in this tier. */
-  tier_start_inclusive: BillingQuantity
-  /**
-   * {
-   *   "title": "double",
-   *   "format": "money-usd",
-   *   "description": "Price to charge for each unit that lands in this tier."
-   * }
-   */
-  unit_price: number
-}
-
-export interface BillingRateTierView {
-  /** Database identifier for the tier row. */
-  id: Uuid
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Exclusive upper bound for the tier, or `None` when the tier is open-ended."
-   * }
-   */
-  tier_end_exclusive?: BillingQuantity
-  /** First billable quantity in this tier. */
-  tier_start_inclusive: BillingQuantity
-  /** title:double, format:money-usd, description:Price charged for each unit in the tier. */
-  unit_price: number
-}
-
-export type BillingRolloverPolicy = 'none' | 'year1_to_year2_once'
-
-export type BillingUnit = 'file' | 'minute' | 'second' | 'year' | 'period'
-
-export type BillingUnitGranularity = 'minute' | 'second'
 
 export type BlendType = 'tangent'
 
@@ -1936,7 +1614,7 @@ export interface ClientMetrics {
    * {
    *   "nullable": true,
    *   "format": "float",
-   *   "description": "Total duration of pauses in seconds.\n\nThis is the \"ping\" between the client and the STUN server. Not to be confused with the E2E RTT documented [here](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime)\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-currentroundtriptime"
+   *   "description": "Estimated round trip time, measured in seconds.\n\nThis is the \"ping\" between the client and the STUN server. Not to be confused with the E2E RTT documented [here](https://www.w3.org/TR/webrtc-stats/#dom-rtcremoteinboundrtpstreamstats-roundtriptime)\n\nhttps://www.w3.org/TR/webrtc-stats/#dom-rtcicecandidatepairstats-currentroundtriptime"
    * }
    */
   rtc_stun_rtt_sec?: number
@@ -2552,15 +2230,6 @@ export type DirectionType =
 export interface Discount {
   /** The coupon that applied to create this discount. */
   coupon: Coupon
-}
-
-export interface DiscountCode {
-  /** The code for the discount. */
-  code: string
-  /** nullable:true, format:date-time, description:The date the discount code expires. */
-  expires_at?: string
-  /** format:uint32, minimum:0, description:The percent off for the discount. */
-  percent_off: number
 }
 
 export type DistanceType =
@@ -3260,6 +2929,7 @@ export type Feature =
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
   | 'engine_manager_quarantine'
+  | 'execution_jobs'
   | 'enable_z0006_lint'
   | 'factory_portal'
   | 'kcl_cek_executor'
@@ -3283,6 +2953,7 @@ export type Feature =
   | 'web_app_file_browser'
   | 'zookeeper_pro_mode'
   | 'zookeeper_ultra_mode'
+  | 'zookeeper_client_commands'
   | 'unsafe_allow_api_key_auth'
   | 'unsafe_allow_localhost_shortlinks'
   | 'zoo_corp_auth'
@@ -4271,6 +3942,8 @@ export type KclProjectShareLinkAccessMode =
   | 'anyone_with_link'
   | 'organization_only'
 
+export type KclVersion = '1.0' | '2.0' | '3.0-preview'
+
 export type LengthUnit = number
 
 export type LenientUrl =
@@ -4420,6 +4093,23 @@ export type MlCopilotAccessDeniedCode =
   | 'pay_as_you_go_disabled'
   | 'upgrade_downgrade_abuse'
   | 'admin'
+
+export interface MlCopilotClientCommand {
+  /** Description used when Zookeeper searches the client catalog. */
+  description: string
+  /** Stable identifier used to invoke the command, for example `modeling.export`. */
+  id: string
+  input_schema: string
+  /** Short human-readable command name. */
+  title: string
+}
+
+export type MlCopilotClientCommandStatus =
+  | 'accepted'
+  | 'succeeded'
+  | 'rejected'
+  | 'failed'
+  | 'cancelled'
 
 export type MlCopilotClientMessage =
   | { type: 'ping' }
@@ -4574,6 +4264,45 @@ export type MlCopilotClientMessage =
       /** nullable:true, format:int32, description:Specific client message sequence, when requested. */
       seq?: number
       type: 'attachment_response'
+    }
+  | {
+      /** Complete set of commands available at this revision. */
+      commands: MlCopilotClientCommand[]
+      /**
+       * {
+       *   "format": "uint16",
+       *   "minimum": 0,
+       *   "description": "Version of the client-command wire protocol understood by the client."
+       * }
+       */
+      protocol_version: number
+      /**
+       * {
+       *   "format": "uint64",
+       *   "minimum": 0,
+       *   "description": "Monotonically increasing catalog revision for this connection."
+       * }
+       */
+      revision: number
+      type: 'update_client_command_schema'
+    }
+  | {
+      /**
+       * {
+       *   "format": "uint64",
+       *   "minimum": 0,
+       *   "description": "Catalog revision against which the request was validated."
+       * }
+       */
+      catalog_revision: number
+      /** nullable:true, description:Optional error or rejection detail. */
+      error?: string
+      /** Correlation identifier supplied in `ClientCommandRequest`. */
+      request_id: string
+      result: unknown
+      /** Current execution state. */
+      status: MlCopilotClientCommandStatus
+      type: 'client_command_response'
     }
 
 export interface MlCopilotFile {
@@ -4740,6 +4469,23 @@ export type MlCopilotServerMessage =
         snapshot_id: string
         /** How the submitted snapshot affected canonical state. */
         status: MlCopilotProjectSnapshotStatus
+      }
+    }
+  | {
+      client_command_request: {
+        arguments: string
+        /**
+         * {
+         *   "format": "uint64",
+         *   "minimum": 0,
+         *   "description": "Catalog revision used when Zookeeper selected the command."
+         * }
+         */
+        catalog_revision: number
+        /** Identifier from the advertised client command catalog. */
+        command_id: string
+        /** Unique request identifier used to correlate client responses. */
+        request_id: string
       }
     }
   | {
@@ -5135,7 +4881,7 @@ export type ModelingCmd =
        * }
        */
       direction_reference?: EdgeSpecifier
-      /** How far off the plane to extrude */
+      /** How far off the plane to extrude This distance is relative to the target's plane, not an absolute coordinate. Symmetric extrusions will extrude outwards from both sides of the sketch to the length specified. */
       distance: LengthUnit
       /**
        * {
@@ -5588,7 +5334,7 @@ export type ModelingCmd =
       /**
        * {
        *   "format": "float",
-       *   "description": "Move the camera forward along the vector it's looking at, by this magnitudedefaultCameraZoom. Basically, how much should the camera move forward by."
+       *   "description": "Move the camera forward along the vector it's looking at, by this magnitude. Basically, how much should the camera move forward by."
        * }
        */
       magnitude: number
@@ -6044,7 +5790,7 @@ export type ModelingCmd =
       type: 'solid3d_get_opposite_edge'
     }
   | {
-      /** format:uuid, description:Which edge you want the opposite of. */
+      /** format:uuid, description:Which edge you want the next edge of. */
       edge_id: string
       /**
        * {
@@ -6058,7 +5804,7 @@ export type ModelingCmd =
       type: 'solid3d_get_next_adjacent_edge'
     }
   | {
-      /** format:uuid, description:Which edge you want the opposite of. */
+      /** format:uuid, description:Which edge you want the previous edge of. */
       edge_id: string
       /**
        * {
@@ -6317,6 +6063,13 @@ export type ModelingCmd =
       backface_color?: Color
       /** nullable:true, description:The default system color. */
       color?: Color
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "The default color to use for the edges of 3D bodies."
+       * }
+       */
+      edge_3d_color?: Color
       /** nullable:true, description:The default color to use for highlight */
       highlight_color?: Color
       /** nullable:true, description:The default color to use for selection */
@@ -8769,6 +8522,7 @@ export type OkWebSocketResponseData =
       }
       type: 'debug'
     }
+  | { data: Record<string, unknown>; type: 'reconnect' }
 
 export type OppositeForAngle = string
 
@@ -9742,17 +9496,6 @@ export type PostEffectType =
   /** Post effect type */
   'phosphor' | 'ssao' | 'noeffect'
 
-export interface PriceUpsertRequest {
-  /** default:true, description:Whether the price should be active. */
-  active?: boolean
-  /** Billing model (flat or per-user). */
-  billing_model: SubscriptionPlanBillingModel
-  /** Cadence for billing (day, week, month, year). */
-  cadence: PlanInterval
-  /** format:double, description:Amount in USD. */
-  unit_amount: number
-}
-
 export interface PrimitiveTopologyFallback {
   /**
    * {
@@ -10694,43 +10437,9 @@ export type StlStorage = 'ascii' | 'binary'
 
 export type StorageProvider = 's3' | 'zoo_managed'
 
-export interface StoreCouponParams {
-  /** format:uint32, minimum:0, description:The percentage off. */
-  percent_off: number
-}
-
 export type SubscriptionActionType = 'payment_intent' | 'setup_intent'
 
 export type SubscriptionBillingMode = 'standard' | 'contract'
-
-export type SubscriptionPlanBillingModel = 'flat' | 'per_user'
-
-export interface SubscriptionPlanPriceRecord {
-  /** Whether this price is currently active. */
-  active: boolean
-  /** Billing model persisted in the database (`flat`, `per_user`, or `enterprise`). */
-  billing_model: SubscriptionPlanBillingModel
-  /** Billing cadence string (for example `month` or `year`). */
-  cadence: PlanInterval
-  /** title:DateTime, format:date-time, description:Timestamp when the price row was created. */
-  created_at: string
-  /** Unique identifier for the plan price entry. */
-  id: Uuid
-  /** nullable:true, description:Stripe price identifier, when synchronized. */
-  stripe_price_id?: string
-  /** Foreign key referencing the parent plan. */
-  subscription_plan_id: Uuid
-  /**
-   * {
-   *   "nullable": true,
-   *   "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
-   *   "description": "Optional monetary amount associated with the price row."
-   * }
-   */
-  unit_amount?: string
-  /** title:DateTime, format:date-time, description:Timestamp when the price row was last updated. */
-  updated_at: string
-}
 
 export interface SubscriptionTierFeature {
   /** minLength:1, maxLength:80, description:Information about the feature. */
@@ -11877,27 +11586,6 @@ export interface UpdateOrgDatasetSource {
   uri?: string
 }
 
-export interface UpdatePaymentBalance {
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "double",
-   *   "format": "money-usd",
-   *   "description": "The monetary value of the monthy API credits remaining in the balance. This gets re-upped every month,"
-   * }
-   */
-  monthly_api_credits_remaining_monetary_value?: number
-  /**
-   * {
-   *   "nullable": true,
-   *   "title": "double",
-   *   "format": "money-usd",
-   *   "description": "The monetary value of stable API credits remaining in the balance. These do not get reset or re-upped every month. This is separate from the monthly credits. Credits will first pull from the monthly credits, then the stable credits. Stable just means that they do not get reset every month. A user will have stable credits if a Zoo employee granted them credits."
-   * }
-   */
-  stable_api_credits_remaining_monetary_value?: number
-}
-
 export interface UpdateShortlinkRequest {
   /**
    * {
@@ -11956,93 +11644,6 @@ export interface UploadOrgDatasetFilesResponse {
   queued_conversions: number
   /** format:uint, minimum:0, description:Number of files accepted and stored. */
   uploaded_files: number
-}
-
-export interface UserAdminDetails {
-  /** format:int64, description:Count of valid API tokens. */
-  active_api_tokens_count: number
-  /**
-   * {
-   *   "format": "int64",
-   *   "description": "Count of active (non-expired) device access tokens."
-   * }
-   */
-  active_device_tokens_count: number
-  /** format:int64, description:Count of active (non-expired) sessions. */
-  active_sessions_count: number
-  /** nullable:true, description:Latest billing address stored for the user. */
-  address?: Address
-  /** nullable:true, description:Readable billing address summary. */
-  address_summary?: string
-  /** nullable:true, description:Block reason when the user is blocked. */
-  block?: BlockReason
-  /** nullable:true, description:Human-friendly block reason message. */
-  block_message?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "CAD user info collected from website onboarding/CRM form."
-   * }
-   */
-  cad_user_info?: UserCadInfoAdminDetails
-  /** Whether this user is permanently exempt from blocking. */
-  never_block: boolean
-  /** Known payment methods on file. */
-  payment_methods: PaymentMethod[]
-  payment_methods_summary: string[]
-  /** nullable:true, description:Stripe customer identifier if one exists. */
-  stripe_customer_id?: string
-  /** nullable:true, description:Direct link to the Stripe customer dashboard. */
-  stripe_dashboard_url?: string
-}
-
-export interface UserCadInfoAdminDetails {
-  /** nullable:true, description:CAD/API experience level. */
-  cad_experience_level?: CadExperienceLevel
-  /** nullable:true, description:CAD industry selection. */
-  cad_industry?: CadIndustry
-  /** nullable:true, description:CAD user persona/type. */
-  cad_user_type?: CadUserType
-  /** nullable:true, description:Company size selection. */
-  company_size?: CompanySize
-  /** nullable:true, description:Preferred design workflow. */
-  design_workflow?: CadDesignWorkflow
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Whether the user has used Zoo Design Studio or the API before."
-   * }
-   */
-  has_used_zoo_design_studio_or_api_before?: boolean
-  /** nullable:true, description:Acquisition source selection. */
-  how_did_you_find_us?: CadDiscoverySource
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Free-text acquisition source when `other` was selected."
-   * }
-   */
-  how_did_you_find_us_other?: string
-  /** nullable:true, description:Free-text city for the user's location. */
-  location_city?: string
-  /** nullable:true, description:Free-text country for the user's location. */
-  location_country?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Free-text state or region for the user's location."
-   * }
-   */
-  location_state?: string
-  /** nullable:true, description:Number of CAD users. */
-  number_of_cad_users?: string
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Free-text description of what the user wants to build."
-   * }
-   */
-  what_are_you_building?: string
 }
 
 export interface UserFeatureEntry {
@@ -12849,7 +12450,6 @@ export interface Models {
   AccountProvider: AccountProvider
   AddHoleFromOffset: AddHoleFromOffset
   AddOrgMember: AddOrgMember
-  Address: Address
   AddressDetails: AddressDetails
   AdjacencyInfo: AdjacencyInfo
   AggregateUsageCollectionThresholdBounds: AggregateUsageCollectionThresholdBounds
@@ -12880,7 +12480,6 @@ export interface Models {
   ApiTokenResultsPage: ApiTokenResultsPage
   ApiTokenUuid: ApiTokenUuid
   ApiTokenWithFullToken: ApiTokenWithFullToken
-  AppClientInfo: AppClientInfo
   AsyncApiCallOutput: AsyncApiCallOutput
   AttachmentRef: AttachmentRef
   AuthApiKeyResponse: AuthApiKeyResponse
@@ -12889,28 +12488,7 @@ export interface Models {
   AxisDirectionPair: AxisDirectionPair
   BatchResponse: BatchResponse
   BeginExecution: BeginExecution
-  BillingCadence: BillingCadence
-  BillingCommitmentScope: BillingCommitmentScope
-  BillingContractItemInput: BillingContractItemInput
-  BillingContractItemView: BillingContractItemView
-  BillingContractStatus: BillingContractStatus
-  BillingContractUpsert: BillingContractUpsert
-  BillingContractView: BillingContractView
-  BillingExternalCustomerId: BillingExternalCustomerId
   BillingInfo: BillingInfo
-  BillingItemCode: BillingItemCode
-  BillingItemKind: BillingItemKind
-  BillingPeriodIndex: BillingPeriodIndex
-  BillingPeriodInput: BillingPeriodInput
-  BillingPeriodStatus: BillingPeriodStatus
-  BillingPeriodView: BillingPeriodView
-  BillingProvider: BillingProvider
-  BillingQuantity: BillingQuantity
-  BillingRateTierInput: BillingRateTierInput
-  BillingRateTierView: BillingRateTierView
-  BillingRolloverPolicy: BillingRolloverPolicy
-  BillingUnit: BillingUnit
-  BillingUnitGranularity: BillingUnitGranularity
   BlendType: BlendType
   BlockReason: BlockReason
   BodiesCreated: BodiesCreated
@@ -12999,7 +12577,6 @@ export interface Models {
   Direction: Direction
   DirectionType: DirectionType
   Discount: Discount
-  DiscountCode: DiscountCode
   DistanceType: DistanceType
   DxfStorage: DxfStorage
   EdgeCutVersion: EdgeCutVersion
@@ -13105,6 +12682,7 @@ export interface Models {
   KclProjectPreviewStatus: KclProjectPreviewStatus
   KclProjectPublicationStatus: KclProjectPublicationStatus
   KclProjectShareLinkAccessMode: KclProjectShareLinkAccessMode
+  KclVersion: KclVersion
   LengthUnit: LengthUnit
   LenientUrl: LenientUrl
   Loft: Loft
@@ -13116,6 +12694,8 @@ export interface Models {
   Method: Method
   MirrorAcross: MirrorAcross
   MlCopilotAccessDeniedCode: MlCopilotAccessDeniedCode
+  MlCopilotClientCommand: MlCopilotClientCommand
+  MlCopilotClientCommandStatus: MlCopilotClientCommandStatus
   MlCopilotClientMessage: MlCopilotClientMessage
   MlCopilotFile: MlCopilotFile
   MlCopilotModeOption: MlCopilotModeOption
@@ -13215,7 +12795,6 @@ export interface Models {
   Point4d: Point4d
   Pong: Pong
   PostEffectType: PostEffectType
-  PriceUpsertRequest: PriceUpsertRequest
   PrimitiveTopologyFallback: PrimitiveTopologyFallback
   PrivacySettings: PrivacySettings
   ProjectAccessResponse: ProjectAccessResponse
@@ -13318,11 +12897,8 @@ export interface Models {
   StepPresentation: StepPresentation
   StlStorage: StlStorage
   StorageProvider: StorageProvider
-  StoreCouponParams: StoreCouponParams
   SubscriptionActionType: SubscriptionActionType
   SubscriptionBillingMode: SubscriptionBillingMode
-  SubscriptionPlanBillingModel: SubscriptionPlanBillingModel
-  SubscriptionPlanPriceRecord: SubscriptionPlanPriceRecord
   SubscriptionTierFeature: SubscriptionTierFeature
   SubscriptionTierPrice: SubscriptionTierPrice
   SubscriptionTierType: SubscriptionTierType
@@ -13379,12 +12955,9 @@ export interface Models {
   UpdateOAuth2AppRequest: UpdateOAuth2AppRequest
   UpdateOrgDataset: UpdateOrgDataset
   UpdateOrgDatasetSource: UpdateOrgDatasetSource
-  UpdatePaymentBalance: UpdatePaymentBalance
   UpdateShortlinkRequest: UpdateShortlinkRequest
   UpdateUser: UpdateUser
   UploadOrgDatasetFilesResponse: UploadOrgDatasetFilesResponse
-  UserAdminDetails: UserAdminDetails
-  UserCadInfoAdminDetails: UserCadInfoAdminDetails
   UserFeatureEntry: UserFeatureEntry
   UserFeatureList: UserFeatureList
   UserIdentifier: UserIdentifier

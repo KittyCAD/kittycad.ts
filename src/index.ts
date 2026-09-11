@@ -34,15 +34,6 @@ export const api_tokens = {
   list_api_tokens_for_user_pager,
 }
 
-import apps_github_callback from './api/apps/apps_github_callback.js'
-import apps_github_consent from './api/apps/apps_github_consent.js'
-import apps_github_webhook from './api/apps/apps_github_webhook.js'
-export const apps = {
-  apps_github_callback,
-  apps_github_consent,
-  apps_github_webhook,
-}
-
 import ExecutorTerm from './api/executor/create_executor_term.js'
 import create_file_execution from './api/executor/create_file_execution.js'
 export const executor = {
@@ -89,7 +80,6 @@ import get_announcements from './api/meta/get_announcements.js'
 import get_ipinfo from './api/meta/get_ipinfo.js'
 import get_pricing_subscriptions from './api/meta/get_pricing_subscriptions.js'
 import get_schema from './api/meta/get_schema.js'
-import internal_get_api_token_for_discord_user from './api/meta/internal_get_api_token_for_discord_user.js'
 import ping from './api/meta/ping.js'
 export const meta = {
   community_sso,
@@ -97,7 +87,6 @@ export const meta = {
   get_ipinfo,
   get_pricing_subscriptions,
   get_schema,
-  internal_get_api_token_for_discord_user,
   ping,
 }
 
@@ -148,8 +137,6 @@ import device_auth_verify from './api/oauth2/device_auth_verify.js'
 import get_oauth2_authorization_request from './api/oauth2/get_oauth2_authorization_request.js'
 import get_org_oauth2_app from './api/oauth2/get_org_oauth2_app.js'
 import get_user_oauth2_app from './api/oauth2/get_user_oauth2_app.js'
-import list_oauth2_apps_for_any_org from './api/oauth2/list_oauth2_apps_for_any_org.js'
-import list_oauth2_apps_for_any_user from './api/oauth2/list_oauth2_apps_for_any_user.js'
 import list_org_oauth2_apps from './api/oauth2/list_org_oauth2_apps.js'
 import list_user_oauth2_apps from './api/oauth2/list_user_oauth2_apps.js'
 import oauth2_authorize from './api/oauth2/oauth2_authorize.js'
@@ -161,8 +148,6 @@ import oauth2_token_revoke from './api/oauth2/oauth2_token_revoke.js'
 import update_org_oauth2_app from './api/oauth2/update_org_oauth2_app.js'
 import update_user_oauth2_app from './api/oauth2/update_user_oauth2_app.js'
 import verify_oauth_account_linking from './api/oauth2/verify_oauth_account_linking.js'
-import { list_oauth2_apps_for_any_org_pager } from './api/oauth2/list_oauth2_apps_for_any_org.js'
-import { list_oauth2_apps_for_any_user_pager } from './api/oauth2/list_oauth2_apps_for_any_user.js'
 import { list_org_oauth2_apps_pager } from './api/oauth2/list_org_oauth2_apps.js'
 import { list_user_oauth2_apps_pager } from './api/oauth2/list_user_oauth2_apps.js'
 export const oauth2 = {
@@ -179,10 +164,6 @@ export const oauth2 = {
   get_oauth2_authorization_request,
   get_org_oauth2_app,
   get_user_oauth2_app,
-  list_oauth2_apps_for_any_org,
-  list_oauth2_apps_for_any_org_pager,
-  list_oauth2_apps_for_any_user,
-  list_oauth2_apps_for_any_user_pager,
   list_org_oauth2_apps,
   list_org_oauth2_apps_pager,
   list_user_oauth2_apps,
@@ -208,7 +189,6 @@ import delete_org_member from './api/orgs/delete_org_member.js'
 import delete_org_saml_idp from './api/orgs/delete_org_saml_idp.js'
 import download_org_dataset_conversion_original from './api/orgs/download_org_dataset_conversion_original.js'
 import download_org_dataset_successful_kcl_bulk from './api/orgs/download_org_dataset_successful_kcl_bulk.js'
-import get_billing_contract_for_any_org from './api/orgs/get_billing_contract_for_any_org.js'
 import get_org from './api/orgs/get_org.js'
 import get_org_dataset from './api/orgs/get_org_dataset.js'
 import get_org_dataset_conversion from './api/orgs/get_org_dataset_conversion.js'
@@ -233,7 +213,6 @@ import update_org_member from './api/orgs/update_org_member.js'
 import update_org_privacy_settings from './api/orgs/update_org_privacy_settings.js'
 import update_org_saml_idp from './api/orgs/update_org_saml_idp.js'
 import upload_org_dataset_files from './api/orgs/upload_org_dataset_files.js'
-import upsert_billing_contract_for_any_org from './api/orgs/upsert_billing_contract_for_any_org.js'
 import { get_org_shortlinks_pager } from './api/orgs/get_org_shortlinks.js'
 import { list_org_dataset_conversions_pager } from './api/orgs/list_org_dataset_conversions.js'
 import { list_org_datasets_pager } from './api/orgs/list_org_datasets.js'
@@ -250,7 +229,6 @@ export const orgs = {
   delete_org_saml_idp,
   download_org_dataset_conversion_original,
   download_org_dataset_successful_kcl_bulk,
-  get_billing_contract_for_any_org,
   get_org,
   get_org_dataset,
   get_org_dataset_conversion,
@@ -280,7 +258,6 @@ export const orgs = {
   update_org_privacy_settings,
   update_org_saml_idp,
   upload_org_dataset_files,
-  upsert_billing_contract_for_any_org,
 }
 
 import create_org_subscription from './api/payments/create_org_subscription.js'
@@ -295,8 +272,6 @@ import delete_payment_method_for_org from './api/payments/delete_payment_method_
 import delete_payment_method_for_user from './api/payments/delete_payment_method_for_user.js'
 import get_org_subscription from './api/payments/get_org_subscription.js'
 import get_org_usage_collection_threshold from './api/payments/get_org_usage_collection_threshold.js'
-import get_payment_balance_for_any_org from './api/payments/get_payment_balance_for_any_org.js'
-import get_payment_balance_for_any_user from './api/payments/get_payment_balance_for_any_user.js'
 import get_payment_balance_for_org from './api/payments/get_payment_balance_for_org.js'
 import get_payment_balance_for_user from './api/payments/get_payment_balance_for_user.js'
 import get_payment_information_for_org from './api/payments/get_payment_information_for_org.js'
@@ -315,13 +290,9 @@ import set_default_payment_method_for_user from './api/payments/set_default_paym
 import set_org_usage_collection_threshold from './api/payments/set_org_usage_collection_threshold.js'
 import set_user_usage_collection_threshold from './api/payments/set_user_usage_collection_threshold.js'
 import update_org_subscription from './api/payments/update_org_subscription.js'
-import update_org_subscription_for_any_org from './api/payments/update_org_subscription_for_any_org.js'
-import update_payment_balance_for_any_org from './api/payments/update_payment_balance_for_any_org.js'
-import update_payment_balance_for_any_user from './api/payments/update_payment_balance_for_any_user.js'
 import update_payment_information_for_org from './api/payments/update_payment_information_for_org.js'
 import update_payment_information_for_user from './api/payments/update_payment_information_for_user.js'
 import update_user_subscription from './api/payments/update_user_subscription.js'
-import upsert_subscription_plan_price from './api/payments/upsert_subscription_plan_price.js'
 import validate_customer_tax_information_for_org from './api/payments/validate_customer_tax_information_for_org.js'
 import validate_customer_tax_information_for_user from './api/payments/validate_customer_tax_information_for_user.js'
 import { list_invoices_for_org_pager } from './api/payments/list_invoices_for_org.js'
@@ -339,8 +310,6 @@ export const payments = {
   delete_payment_method_for_user,
   get_org_subscription,
   get_org_usage_collection_threshold,
-  get_payment_balance_for_any_org,
-  get_payment_balance_for_any_user,
   get_payment_balance_for_org,
   get_payment_balance_for_user,
   get_payment_information_for_org,
@@ -361,13 +330,9 @@ export const payments = {
   set_org_usage_collection_threshold,
   set_user_usage_collection_threshold,
   update_org_subscription,
-  update_org_subscription_for_any_org,
-  update_payment_balance_for_any_org,
-  update_payment_balance_for_any_user,
   update_payment_information_for_org,
   update_payment_information_for_user,
   update_user_subscription,
-  upsert_subscription_plan_price,
   validate_customer_tax_information_for_org,
   validate_customer_tax_information_for_user,
 }
@@ -428,9 +393,6 @@ export const service_accounts = {
   list_service_accounts_for_org_pager,
 }
 
-import create_store_coupon from './api/store/create_store_coupon.js'
-export const store = { create_store_coupon }
-
 import get_angle_unit_conversion from './api/unit/get_angle_unit_conversion.js'
 import get_area_unit_conversion from './api/unit/get_area_unit_conversion.js'
 import get_current_unit_conversion from './api/unit/get_current_unit_conversion.js'
@@ -479,11 +441,9 @@ import put_public_sales_form from './api/users/put_public_sales_form.js'
 import put_public_support_form from './api/users/put_public_support_form.js'
 import put_user_cad_user_info_form from './api/users/put_user_cad_user_info_form.js'
 import report_user_client_error from './api/users/report_user_client_error.js'
-import update_subscription_for_user from './api/users/update_subscription_for_user.js'
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
 import update_user_self from './api/users/update_user_self.js'
 import update_user_shortlink from './api/users/update_user_shortlink.js'
-import user_admin_details_get from './api/users/user_admin_details_get.js'
 import user_email_marketing_consent_decline_post from './api/users/user_email_marketing_consent_decline_post.js'
 import user_email_marketing_consent_get from './api/users/user_email_marketing_consent_get.js'
 import user_email_marketing_consent_request_post from './api/users/user_email_marketing_consent_request_post.js'
@@ -511,11 +471,9 @@ export const users = {
   put_public_support_form,
   put_user_cad_user_info_form,
   report_user_client_error,
-  update_subscription_for_user,
   update_user_privacy_settings,
   update_user_self,
   update_user_shortlink,
-  user_admin_details_get,
   user_email_marketing_consent_decline_post,
   user_email_marketing_consent_get,
   user_email_marketing_consent_request_post,
@@ -527,7 +485,6 @@ export type {
   AccountProvider,
   AddHoleFromOffset,
   AddOrgMember,
-  Address,
   AddressDetails,
   AdjacencyInfo,
   AggregateUsageCollectionThresholdBounds,
@@ -558,7 +515,6 @@ export type {
   ApiTokenResultsPage,
   ApiTokenUuid,
   ApiTokenWithFullToken,
-  AppClientInfo,
   AsyncApiCallOutput,
   AttachmentRef,
   AuthApiKeyResponse,
@@ -567,28 +523,7 @@ export type {
   AxisDirectionPair,
   BatchResponse,
   BeginExecution,
-  BillingCadence,
-  BillingCommitmentScope,
-  BillingContractItemInput,
-  BillingContractItemView,
-  BillingContractStatus,
-  BillingContractUpsert,
-  BillingContractView,
-  BillingExternalCustomerId,
   BillingInfo,
-  BillingItemCode,
-  BillingItemKind,
-  BillingPeriodIndex,
-  BillingPeriodInput,
-  BillingPeriodStatus,
-  BillingPeriodView,
-  BillingProvider,
-  BillingQuantity,
-  BillingRateTierInput,
-  BillingRateTierView,
-  BillingRolloverPolicy,
-  BillingUnit,
-  BillingUnitGranularity,
   BlendType,
   BlockReason,
   BodiesCreated,
@@ -677,7 +612,6 @@ export type {
   Direction,
   DirectionType,
   Discount,
-  DiscountCode,
   DistanceType,
   DxfStorage,
   EdgeCutVersion,
@@ -783,6 +717,7 @@ export type {
   KclProjectPreviewStatus,
   KclProjectPublicationStatus,
   KclProjectShareLinkAccessMode,
+  KclVersion,
   LengthUnit,
   LenientUrl,
   Loft,
@@ -794,6 +729,8 @@ export type {
   Method,
   MirrorAcross,
   MlCopilotAccessDeniedCode,
+  MlCopilotClientCommand,
+  MlCopilotClientCommandStatus,
   MlCopilotClientMessage,
   MlCopilotFile,
   MlCopilotModeOption,
@@ -893,7 +830,6 @@ export type {
   Point4d,
   Pong,
   PostEffectType,
-  PriceUpsertRequest,
   PrimitiveTopologyFallback,
   PrivacySettings,
   ProjectAccessResponse,
@@ -996,11 +932,8 @@ export type {
   StepPresentation,
   StlStorage,
   StorageProvider,
-  StoreCouponParams,
   SubscriptionActionType,
   SubscriptionBillingMode,
-  SubscriptionPlanBillingModel,
-  SubscriptionPlanPriceRecord,
   SubscriptionTierFeature,
   SubscriptionTierPrice,
   SubscriptionTierType,
@@ -1057,12 +990,9 @@ export type {
   UpdateOAuth2AppRequest,
   UpdateOrgDataset,
   UpdateOrgDatasetSource,
-  UpdatePaymentBalance,
   UpdateShortlinkRequest,
   UpdateUser,
   UploadOrgDatasetFilesResponse,
-  UserAdminDetails,
-  UserCadInfoAdminDetails,
   UserFeatureEntry,
   UserFeatureList,
   UserIdentifier,
