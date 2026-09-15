@@ -24,13 +24,10 @@ jobs:
       - name: Publish package
         run: npm publish
 
-  update-dependents:
-    name: Update ${{ matrix.repository }} dependencies
+  update-viewer:
+    name: Update viewer dependencies
     needs: make-release
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        repository: [web-view, viewer]
     steps:
       - name: Create GitHub App token
         id: app-token
@@ -39,13 +36,13 @@ jobs:
           app-id: ${{ secrets.GH_ORG_APP_ID }}
           private-key: ${{ secrets.GH_ORG_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: ${{ matrix.repository }}
+          repositories: viewer
           permission-contents: write
 
-      - name: Checkout ${{ matrix.repository }}
+      - name: Checkout viewer
         uses: actions/checkout@v7.0.1
         with:
-          repository: KittyCAD/${{ matrix.repository }}
+          repository: KittyCAD/viewer
           ref: main
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: false
@@ -62,7 +59,6 @@ jobs:
         run: npm install "@kittycad/lib@$LIB_VERSION"
 
       - name: Update kcl-wasm-lib dependency
-        if: matrix.repository == 'viewer'
         env:
           LIB_VERSION: ${{ github.ref_name }}
         run: |
@@ -70,7 +66,6 @@ jobs:
           npm install "@kittycad/kcl-wasm-lib@$kcl_version"
 
       - name: Commit updated viewer dependencies
-        if: matrix.repository == 'viewer'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
@@ -85,8 +80,40 @@ jobs:
             -m "Triggered by ${{ github.workflow }}: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           git push origin main
 
+  update-web-view:
+    name: Update web-view dependency
+    needs: update-viewer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          app-id: ${{ secrets.GH_ORG_APP_ID }}
+          private-key: ${{ secrets.GH_ORG_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: web-view
+          permission-contents: write
+
+      - name: Checkout web-view
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: KittyCAD/web-view
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Update kittycad.ts dependency
+        env:
+          LIB_VERSION: ${{ github.ref_name }}
+        run: npm install "@kittycad/lib@$LIB_VERSION"
+
       - name: Commit and release web-view dependency update
-        if: matrix.repository == 'web-view'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
