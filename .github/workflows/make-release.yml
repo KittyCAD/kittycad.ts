@@ -68,6 +68,7 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
+      # This guarantees all dependents have synchronized kcl-wasm-lib and kittycad.ts versions.
       - name: Update KittyCAD dependencies
         env:
           KCL_VERSION: ${{ needs.make-release.outputs.kcl-version }}
