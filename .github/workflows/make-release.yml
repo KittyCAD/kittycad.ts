@@ -24,8 +24,8 @@ jobs:
       - name: Read package versions
         id: package-versions
         run: |
-          echo "kcl-version=$(node -p 'require("./package.json").dependencies["@kittycad/kcl-wasm-lib"]')" >> "$GITHUB_OUTPUT"
-          echo "lib-version=$(node -p 'require("./package.json").version')" >> "$GITHUB_OUTPUT"
+          echo "kcl-version=$(jq -r '.dependencies["@kittycad/kcl-wasm-lib"]' package.json)" >> "$GITHUB_OUTPUT"
+          echo "lib-version=$(jq -r '.version' package.json)" >> "$GITHUB_OUTPUT"
       # Only push a tag that matches the version in package.json
       - name: Tag em and bag em
         run: |
