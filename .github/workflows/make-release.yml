@@ -110,6 +110,7 @@ jobs:
         with:
           repository: KittyCAD/web-view
           ref: main
+          path: web-view
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: false
 
@@ -119,11 +120,13 @@ jobs:
           package-manager-cache: false
 
       - name: Update kittycad.ts dependency
+        working-directory: web-view
         env:
           LIB_VERSION: ${{ github.ref_name }}
         run: npm install "@kittycad/lib@$LIB_VERSION"
 
       - name: Commit and release web-view dependency update
+        working-directory: web-view
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
