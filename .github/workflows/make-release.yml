@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v*
 name: make-release
 permissions: {}
 jobs:
@@ -9,13 +9,15 @@ jobs:
     name: make-release
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write # Required for OIDC
     outputs:
       kcl-version: ${{ steps.package-versions.outputs.kcl-version }}
       lib-version: ${{ steps.package-versions.outputs.lib-version }}
     steps:
       - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v7.0.0
         with:
           node-version-file: '.nvmrc'
@@ -26,11 +28,6 @@ jobs:
         run: |
           echo "kcl-version=$(jq -r '.dependencies["@kittycad/kcl-wasm-lib"]' package.json)" >> "$GITHUB_OUTPUT"
           echo "lib-version=$(jq -r '.version' package.json)" >> "$GITHUB_OUTPUT"
-      # Only push a tag that matches the version in package.json
-      - name: Tag em and bag em
-        run: |
-          git tag v$(cat package.json | jq -r .version)
-          git push origin v$(cat package.json | jq -r .version)
       - name: Build package artifacts
         run: npm install && npm run build
       - name: Publish package
