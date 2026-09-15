@@ -1,7 +1,6 @@
 on:
   push:
-    tags:
-      - '*.*.*'
+    tags: ['*']
 name: make-release
 permissions: {}
 jobs:
