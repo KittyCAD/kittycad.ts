@@ -4,7 +4,7 @@ on:
       - main
 name: make-release
 permissions:
-  id-token: write  # Required for OIDC
+  id-token: write # Required for OIDC
   contents: write
 jobs:
   make-release:
@@ -26,3 +26,45 @@ jobs:
         run: npm install && npm run build
       - name: Publish package
         run: npm publish
+
+  update-web-view:
+    name: Update web-view dependencies
+    needs: make-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          app-id: ${{ secrets.GH_ORG_APP_ID }}
+          private-key: ${{ secrets.GH_ORG_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: web-view
+          permission-contents: write
+
+      - name: Checkout web-view
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: KittyCAD/web-view
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Update KittyCAD dependencies
+        run: npm install @kittycad/kcl-wasm-lib@latest @kittycad/lib@latest
+
+      - name: Commit updated dependencies
+        run: |
+          if git diff --quiet; then
+            exit 0
+          fi
+          git config user.name github-actions[bot]
+          git config user.email zoo-github-actions-auth[bot]@users.noreply.github.com
+          git add package.json package-lock.json
+          git commit -m "Update KittyCAD web dependencies"
+          git push origin main
