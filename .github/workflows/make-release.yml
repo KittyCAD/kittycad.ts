@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - v*
+      - '*.*.*'
 name: make-release
 permissions: {}
 jobs:
@@ -11,9 +11,6 @@ jobs:
     permissions:
       contents: read
       id-token: write # Required for OIDC
-    outputs:
-      kcl-version: ${{ steps.package-versions.outputs.kcl-version }}
-      lib-version: ${{ steps.package-versions.outputs.lib-version }}
     steps:
       - uses: actions/checkout@v7.0.1
         with:
@@ -23,11 +20,6 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org/'
           cache: 'npm'
-      - name: Read package versions
-        id: package-versions
-        run: |
-          echo "kcl-version=$(jq -r '.dependencies["@kittycad/kcl-wasm-lib"]' package.json)" >> "$GITHUB_OUTPUT"
-          echo "lib-version=$(jq -r '.version' package.json)" >> "$GITHUB_OUTPUT"
       - name: Build package artifacts
         run: npm install && npm run build
       - name: Publish package
@@ -68,13 +60,13 @@ jobs:
       # This guarantees all dependents have synchronized kcl-wasm-lib and kittycad.ts versions.
       - name: Update KittyCAD dependencies
         env:
-          KCL_VERSION: ${{ needs.make-release.outputs.kcl-version }}
-          LIB_VERSION: ${{ needs.make-release.outputs.lib-version }}
+          LIB_VERSION: ${{ github.ref_name }}
           REPOSITORY: ${{ matrix.repository }}
         run: |
           packages=("@kittycad/lib@$LIB_VERSION")
           if [[ "$REPOSITORY" == "viewer" ]]; then
-            packages+=("@kittycad/kcl-wasm-lib@$KCL_VERSION")
+            kcl_version="$(npm view "@kittycad/lib@$LIB_VERSION" dependencies.@kittycad/kcl-wasm-lib)"
+            packages+=("@kittycad/kcl-wasm-lib@$kcl_version")
           fi
           npm install "${packages[@]}"
 
