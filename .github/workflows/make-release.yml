@@ -23,6 +23,15 @@ jobs:
         run: npm install && npm run build
       - name: Publish package
         run: npm publish
+      - name: Wait for package availability
+        env:
+          LIB_VERSION: ${{ github.ref_name }}
+        run: |
+          for delay in 0 2 4 8 16; do
+            sleep "$delay"
+            npm view "@kittycad/lib@$LIB_VERSION" version && exit 0
+          done
+          exit 1
 
   # Updates future dependents and kicks off further CI.
   update-viewer:
