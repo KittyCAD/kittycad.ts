@@ -53,8 +53,7 @@ jobs:
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: package-lock.json
+          package-manager-cache: false
 
       # This guarantees all dependents have synchronized kcl-wasm-lib and kittycad.ts versions.
       - name: Update kittycad.ts dependency
