@@ -24,6 +24,7 @@ jobs:
       - name: Publish package
         run: npm publish
 
+  # Updates future dependents and kicks off further CI.
   update-viewer:
     name: Update viewer dependencies
     needs: make-release
