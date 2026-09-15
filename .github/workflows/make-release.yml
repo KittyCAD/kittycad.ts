@@ -57,17 +57,18 @@ jobs:
           cache-dependency-path: package-lock.json
 
       # This guarantees all dependents have synchronized kcl-wasm-lib and kittycad.ts versions.
-      - name: Update KittyCAD dependencies
+      - name: Update kittycad.ts dependency
         env:
           LIB_VERSION: ${{ github.ref_name }}
-          REPOSITORY: ${{ matrix.repository }}
+        run: npm install "@kittycad/lib@$LIB_VERSION"
+
+      - name: Update kcl-wasm-lib dependency
+        if: matrix.repository == 'viewer'
+        env:
+          LIB_VERSION: ${{ github.ref_name }}
         run: |
-          packages=("@kittycad/lib@$LIB_VERSION")
-          if [[ "$REPOSITORY" == "viewer" ]]; then
-            kcl_version="$(npm view "@kittycad/lib@$LIB_VERSION" dependencies.@kittycad/kcl-wasm-lib)"
-            packages+=("@kittycad/kcl-wasm-lib@$kcl_version")
-          fi
-          npm install "${packages[@]}"
+          kcl_version="$(npm view "@kittycad/lib@$LIB_VERSION" dependencies.@kittycad/kcl-wasm-lib)"
+          npm install "@kittycad/kcl-wasm-lib@$kcl_version"
 
       - name: Commit updated dependencies
         env:
