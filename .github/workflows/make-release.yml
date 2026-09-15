@@ -10,6 +10,9 @@ jobs:
   make-release:
     name: make-release
     runs-on: ubuntu-latest
+    outputs:
+      kcl-version: ${{ steps.package-versions.outputs.kcl-version }}
+      lib-version: ${{ steps.package-versions.outputs.lib-version }}
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v7.0.0
@@ -17,6 +20,11 @@ jobs:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org/'
           cache: 'npm'
+      - name: Read package versions
+        id: package-versions
+        run: |
+          echo "kcl-version=$(node -p 'require("./package.json").dependencies["@kittycad/kcl-wasm-lib"]')" >> "$GITHUB_OUTPUT"
+          echo "lib-version=$(node -p 'require("./package.json").version')" >> "$GITHUB_OUTPUT"
       # Only push a tag that matches the version in package.json
       - name: Tag em and bag em
         run: |
@@ -27,10 +35,13 @@ jobs:
       - name: Publish package
         run: npm publish
 
-  update-web-view:
-    name: Update web-view dependencies
+  update-dependents:
+    name: Update ${{ matrix.repository }} dependencies
     needs: make-release
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repository: [web-view, viewer]
     steps:
       - name: Create GitHub App token
         id: app-token
@@ -39,13 +50,13 @@ jobs:
           app-id: ${{ secrets.GH_ORG_APP_ID }}
           private-key: ${{ secrets.GH_ORG_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: web-view
+          repositories: ${{ matrix.repository }}
           permission-contents: write
 
-      - name: Checkout web-view
+      - name: Checkout ${{ matrix.repository }}
         uses: actions/checkout@v7.0.1
         with:
-          repository: KittyCAD/web-view
+          repository: KittyCAD/${{ matrix.repository }}
           ref: main
           token: ${{ steps.app-token.outputs.token }}
 
@@ -56,7 +67,10 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Update KittyCAD dependencies
-        run: npm install @kittycad/kcl-wasm-lib@latest @kittycad/lib@latest
+        env:
+          KCL_VERSION: ${{ needs.make-release.outputs.kcl-version }}
+          LIB_VERSION: ${{ needs.make-release.outputs.lib-version }}
+        run: npm install "@kittycad/kcl-wasm-lib@$KCL_VERSION" "@kittycad/lib@$LIB_VERSION"
 
       - name: Commit updated dependencies
         run: |
