@@ -90,6 +90,60 @@ jobs:
             -m "Triggered by ${{ github.workflow }}: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           git push origin main
 
+  update-api:
+    name: Update API dependency
+    needs: make-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          app-id: ${{ secrets.GH_ORG_APP_ID }}
+          private-key: ${{ secrets.GH_ORG_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: api
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Checkout API
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: KittyCAD/api
+          ref: main
+          path: api
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Update kittycad.ts dependency
+        working-directory: api/admin-dashboard/app
+        env:
+          LIB_VERSION: ${{ github.ref_name }}
+        run: npm install "@kittycad/lib@$LIB_VERSION"
+
+      - name: Open API dependency pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          path: api
+          branch: automation/kittycad-lib-${{ github.ref_name }}
+          base: main
+          delete-branch: true
+          add-paths: |
+            admin-dashboard/app/package.json
+            admin-dashboard/app/package-lock.json
+          commit-message: |
+            Update kittycad/lib dependency
+
+            Triggered by ${{ github.workflow }}: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          title: Update kittycad/lib dependency
+          body: ''
+
   update-web-view:
     name: Update web-view dependency
     needs: update-viewer
