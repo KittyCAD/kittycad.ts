@@ -3,13 +3,14 @@ on:
     branches:
       - main
 name: make-release
-permissions:
-  id-token: write # Required for OIDC
-  contents: write
+permissions: {}
 jobs:
   make-release:
     name: make-release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write # Required for OIDC
     outputs:
       kcl-version: ${{ steps.package-versions.outputs.kcl-version }}
       lib-version: ${{ steps.package-versions.outputs.lib-version }}
