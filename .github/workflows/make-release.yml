@@ -70,15 +70,40 @@ jobs:
           npm install "@kittycad/kcl-wasm-lib@$kcl_version"
 
       - name: Commit updated dependencies
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        id: dependency-commit
         run: |
           if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          gh auth setup-git
           git config user.name github-actions[bot]
           git config user.email zoo-github-actions-auth[bot]@users.noreply.github.com
           git add package.json package-lock.json
           git commit -m "Update KittyCAD web dependencies"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create web-view version
+        if: matrix.repository == 'web-view' && steps.dependency-commit.outputs.changed == 'true'
+        run: |
+          npm version patch --no-git-tag-version
+          version="$(jq -r '.version' package.json)"
+          git add package.json package-lock.json
+          git commit -m "Trigger release via version bump to $version"
+          git tag "$version"
+
+      - name: Push viewer update
+        if: matrix.repository == 'viewer' && steps.dependency-commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh auth setup-git
           git push origin main
+
+      - name: Push web-view update and tag
+        if: matrix.repository == 'web-view' && steps.dependency-commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh auth setup-git
+          git push origin main
+          git push origin "$(jq -r '.version' package.json)"
