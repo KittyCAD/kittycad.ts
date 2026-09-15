@@ -18,7 +18,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org/'
-          cache: 'npm'
+          package-manager-cache: false
       - name: Build package artifacts
         run: npm install && npm run build
       - name: Publish package
