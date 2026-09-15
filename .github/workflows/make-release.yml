@@ -71,7 +71,13 @@ jobs:
         env:
           KCL_VERSION: ${{ needs.make-release.outputs.kcl-version }}
           LIB_VERSION: ${{ needs.make-release.outputs.lib-version }}
-        run: npm install "@kittycad/kcl-wasm-lib@$KCL_VERSION" "@kittycad/lib@$LIB_VERSION"
+          REPOSITORY: ${{ matrix.repository }}
+        run: |
+          packages=("@kittycad/lib@$LIB_VERSION")
+          if [[ "$REPOSITORY" == "viewer" ]]; then
+            packages+=("@kittycad/kcl-wasm-lib@$KCL_VERSION")
+          fi
+          npm install "${packages[@]}"
 
       - name: Commit updated dependencies
         run: |
