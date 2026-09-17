@@ -5881,6 +5881,8 @@ export type ModelingCmd =
       object_id: string
       /** default:automatic, description:Which cutting algorithm to use. */
       strategy?: CutStrategy
+      /** If true, also cut edges that are tangent to the selected edges. */
+      tangent_chain?: boolean
       /** The maximum acceptable surface gap computed between the cut surfaces. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'solid3d_cut_edge_references'
@@ -5908,6 +5910,8 @@ export type ModelingCmd =
       object_id: string
       /** default:automatic, description:Which cutting algorithm to use. */
       strategy?: CutStrategy
+      /** If true, also cut edges that are tangent to the selected edges. */
+      tangent_chain?: boolean
       /** The maximum acceptable surface gap computed between the cut surfaces. Must be positive (i.e. greater than zero). */
       tolerance: LengthUnit
       type: 'solid3d_cut_edges'
@@ -6738,6 +6742,11 @@ export type ModelingCmd =
       /** Which path to query */
       path_id: ModelingCmdId
       type: 'sketch_get_info'
+    }
+  | {
+      /** Which KCL version the following commands should be executed with. */
+      kcl_version: KclVersion
+      type: 'set_kcl_version'
     }
 
 export type ModelingCmdId =
@@ -8461,6 +8470,15 @@ export type OkModelingCmdResponse =
        */
       data: SketchGetInfo
       type: 'sketch_get_info'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/SetKclVersion"
+       * }
+       */
+      data: SetKclVersion
+      type: 'set_kcl_version'
     }
 
 export type OkWebSocketResponseData =
@@ -10240,6 +10258,8 @@ export interface SetGridAutoScale {} /* Empty object */
 export interface SetGridReferencePlane {} /* Empty object */
 
 export interface SetGridScale {} /* Empty object */
+
+export interface SetKclVersion {} /* Empty object */
 
 export interface SetObjectTransform {} /* Empty object */
 
@@ -12858,6 +12878,7 @@ export interface Models {
   SetGridAutoScale: SetGridAutoScale
   SetGridReferencePlane: SetGridReferencePlane
   SetGridScale: SetGridScale
+  SetKclVersion: SetKclVersion
   SetObjectTransform: SetObjectTransform
   SetOrderIndependentTransparency: SetOrderIndependentTransparency
   SetSceneUnits: SetSceneUnits
