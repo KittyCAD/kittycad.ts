@@ -1,10 +1,9 @@
-import { oauth2, Client, ApiError } from '@kittycad/lib'
+import { factory, Client, ApiError } from '@kittycad/lib'
 
 const client = new Client()
 
 async function example() {
-  const response = await oauth2.list_oauth2_apps_for_any_user({
-    id: '31337',
+  const response = await factory.list_user_factory_jobs({
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
@@ -15,8 +14,7 @@ async function example() {
 
 // Pagination example (not executed in tests; for docs only)
 export async function example_pager() {
-  const pager = oauth2.list_oauth2_apps_for_any_user_pager({
-    id: '31337',
+  const pager = factory.list_user_factory_jobs_pager({
     limit: 7,
     page_token: 'string',
     sort_by: 'created_at_ascending',
@@ -31,7 +29,7 @@ export async function example_pager() {
   return total
 }
 
-describe('Testing oauth2.list_oauth2_apps_for_any_user', () => {
+describe('Testing factory.list_user_factory_jobs', () => {
   it('should be truthy or throw', async () => {
     try {
       await example()

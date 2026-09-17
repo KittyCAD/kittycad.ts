@@ -1,28 +1,94 @@
 on:
   push:
-    branches:
-      - main
+    tags: ['*']
 name: make-release
-permissions:
-  id-token: write  # Required for OIDC
-  contents: write
+permissions: {}
 jobs:
   make-release:
     name: make-release
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for OIDC
     steps:
       - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v7.0.0
         with:
           node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org/'
-          cache: 'npm'
-      # Only push a tag that matches the version in package.json
-      - name: Tag em and bag em
-        run: |
-          git tag v$(cat package.json | jq -r .version)
-          git push origin v$(cat package.json | jq -r .version)
+          package-manager-cache: false
       - name: Build package artifacts
         run: npm install && npm run build
       - name: Publish package
         run: npm publish
+      - name: Wait for package availability
+        env:
+          LIB_VERSION: ${{ github.ref_name }}
+        run: |
+          for delay in 0 2 4 8 16; do
+            sleep "$delay"
+            npm view "@kittycad/lib@$LIB_VERSION" version && exit 0
+          done
+          exit 1
+
+  # Updates future dependents and kicks off further CI.
+  update-web-view:
+    name: Update web-view dependency
+    needs: make-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          app-id: ${{ secrets.GH_ORG_APP_ID }}
+          private-key: ${{ secrets.GH_ORG_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: web-view
+          permission-contents: write
+
+      - name: Checkout web-view
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: KittyCAD/web-view
+          ref: main
+          path: web-view
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Update kittycad.ts dependency
+        working-directory: web-view
+        env:
+          LIB_VERSION: ${{ github.ref_name }}
+        run: npm install "@kittycad/lib@$LIB_VERSION"
+
+      - name: Commit and release web-view dependency update
+        working-directory: web-view
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          if git diff --quiet; then
+            exit 0
+          fi
+          gh auth setup-git
+          git config user.name github-actions[bot]
+          git config user.email zoo-github-actions-auth[bot]@users.noreply.github.com
+          git add package.json package-lock.json
+          git commit -m "Update KittyCAD web dependencies" \
+            -m "Triggered by ${{ github.workflow }}: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          npm version patch --no-git-tag-version
+          version="$(jq -r '.version' package.json)"
+          git add package.json package-lock.json
+          git commit -m "Trigger release via version bump to $version" \
+            -m "Triggered by ${{ github.workflow }}: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          git push origin main
+          git tag "$version"
+          git push origin "$version"

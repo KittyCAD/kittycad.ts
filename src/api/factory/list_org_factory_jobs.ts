@@ -3,47 +3,43 @@ import { throwIfNotOk } from '../../errors.js'
 import { Pager, createPager } from '../../pagination.js'
 
 import {
-  OAuth2AppResponseResultsPage,
-  UserIdentifier,
+  FactoryCustomerJobSummaryResultsPage,
   CreatedAtSortMode,
-  OAuth2AppResponse,
+  FactoryCustomerJobSummary,
 } from '../../models.js'
 
-interface ListOauth2AppsForAnyUserInput {
+interface ListOrgFactoryJobsInput {
   client?: Client
-  id: UserIdentifier
   limit?: number
   page_token?: string
   sort_by?: CreatedAtSortMode
 }
 
-type ListOauth2AppsForAnyUserReturn = OAuth2AppResponseResultsPage
+type ListOrgFactoryJobsReturn = FactoryCustomerJobSummaryResultsPage
 
 /**
- * List OAuth 2.0 apps owned by a user.
+ * List Factory jobs owned by your organization.
  *
- * This endpoint requires Zoo admin authentication. It returns the target user's active OAuth apps so the admin dashboard can inspect them without impersonating the user.
+ * Any current organization member can list its jobs, including archived jobs. Ownership uses the job's stored organization, so a submitter leaving or deleting their account does not move the job. Former members lose access. Results are paginated, newest first by default, with the job id breaking ties. Internal communication, financial details, and file storage locations are omitted.
  *
- * Tags: oauth2, hidden
+ * Tags: factory
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {UserIdentifier} id The user's identifier (uuid or email). (path)
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @property {CreatedAtSortMode} sort_by (query)
- * @returns {Promise<ListOauth2AppsForAnyUserReturn>} successful operation
+ * @returns {Promise<ListOrgFactoryJobsReturn>} successful operation
  *
- * Possible return types: OAuth2AppResponseResultsPage
+ * Possible return types: FactoryCustomerJobSummaryResultsPage
  */
-export default async function list_oauth2_apps_for_any_user({
+export default async function list_org_factory_jobs({
   client,
-  id,
   limit,
   page_token,
   sort_by,
-}: ListOauth2AppsForAnyUserInput): Promise<ListOauth2AppsForAnyUserReturn> {
-  const path = `/users/${id}/oauth2/apps`
+}: ListOrgFactoryJobsInput): Promise<ListOrgFactoryJobsReturn> {
+  const path = `/org/factory/jobs`
   const qs = buildQuery({
     limit: limit,
     page_token: page_token,
@@ -65,20 +61,20 @@ export default async function list_oauth2_apps_for_any_user({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as ListOauth2AppsForAnyUserReturn
+  const result = (await response.json()) as ListOrgFactoryJobsReturn
   return result
 }
 
-export function list_oauth2_apps_for_any_user_pager(
-  params: ListOauth2AppsForAnyUserInput
+export function list_org_factory_jobs_pager(
+  params: ListOrgFactoryJobsInput
 ): Pager<
-  ListOauth2AppsForAnyUserInput,
-  ListOauth2AppsForAnyUserReturn,
-  OAuth2AppResponse
+  ListOrgFactoryJobsInput,
+  ListOrgFactoryJobsReturn,
+  FactoryCustomerJobSummary
 > {
   return createPager<
-    ListOauth2AppsForAnyUserInput,
-    ListOauth2AppsForAnyUserReturn,
-    OAuth2AppResponse
-  >(list_oauth2_apps_for_any_user, params, 'page_token')
+    ListOrgFactoryJobsInput,
+    ListOrgFactoryJobsReturn,
+    FactoryCustomerJobSummary
+  >(list_org_factory_jobs, params, 'page_token')
 }
