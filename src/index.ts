@@ -893,6 +893,7 @@ export type {
   SetGridAutoScale,
   SetGridReferencePlane,
   SetGridScale,
+  SetKclVersion,
   SetObjectTransform,
   SetOrderIndependentTransparency,
   SetSceneUnits,
