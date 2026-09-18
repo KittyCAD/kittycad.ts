@@ -3622,6 +3622,13 @@ export interface Invoice {
    * }
    */
   billing_reason?: string
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Whether the provider confirmed a currently failed payment can be retried. Revalidated by the provider before each retry; open invoices alone do not qualify."
+   * }
+   */
+  can_retry_payment?: boolean
   /** nullable:true, description:Invoice collection method as returned by Stripe. */
   collection_method?: string
   /** format:date-time, description:Time at which the object was created. */
