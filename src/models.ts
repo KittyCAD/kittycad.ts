@@ -2080,7 +2080,7 @@ export interface CustomerBalance {
    *   "nullable": true,
    *   "title": "double",
    *   "format": "money-usd",
-   *   "description": "This includes any outstanding, draft, or open invoices and any pending invoice items. This does not include any credits the customer has on their account. This amount is only returned if requested from the api."
+   *   "description": "Net cash owed for completed API usage awaiting invoicing, outstanding invoices, and pending invoice items. Usage credits and writeoffs have already been applied; do not subtract the remaining credit balance from this amount. Ongoing sessions and usage still being priced are not included. This amount is only returned if requested from the api."
    * }
    */
   total_due?: number
