@@ -4242,6 +4242,13 @@ export type MlCopilotClientMessage =
       prompt_id: Uuid
       /** format:int32, description:Sequence number of the persisted message row. */
       seq: number
+      /**
+       * {
+       *   "default": false,
+       *   "description": "Whether the client can handle an `AttachmentsError` response. Defaults to false so older desktop clients keep receiving the generic `Error` response until they update and explicitly opt in."
+       * }
+       */
+      supports_attachments_error?: boolean
       type: 'fetch_attachments'
     }
   | {
@@ -4673,6 +4680,23 @@ export type MlCopilotServerMessage =
         prompt_id: Uuid
         /** Authoritative role that owns the file attachment, read from the stored row. */
         role: MlMessageRole
+        /** format:int32, description:Sequence number of the persisted message row. */
+        seq: number
+      }
+    }
+  | {
+      attachments_error: {
+        /** Client readable error detail. */
+        detail: string
+        /**
+         * {
+         *   "format": "uint32",
+         *   "minimum": 0
+         * }
+         */
+        indices: number[]
+        /** Prompt containing the persisted message row. */
+        prompt_id: Uuid
         /** format:int32, description:Sequence number of the persisted message row. */
         seq: number
       }
