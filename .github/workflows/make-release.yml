@@ -25,7 +25,7 @@ jobs:
         run: npm install && npm run build
       - name: Check already published
         id: npm-view
-        run: echo "version=$(npm view '@kittycad/lib@$LIB_VERSION' version)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(npm view "@kittycad/lib@$LIB_VERSION" version)" >> "$GITHUB_OUTPUT"
       - name: Publish package
         if: steps.npm-view.outputs.version != env.LIB_VERSION
         run: npm publish
