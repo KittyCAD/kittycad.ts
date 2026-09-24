@@ -10,6 +10,8 @@ jobs:
     permissions:
       contents: read
       id-token: write # Required for OIDC
+    env:
+      LIB_VERSION: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v7.0.1
         with:
@@ -21,11 +23,13 @@ jobs:
           package-manager-cache: false
       - name: Build package artifacts
         run: npm install && npm run build
+      - name: Check already published
+        id: npm-view
+        run: echo "version=$(npm view '@kittycad/@lib@$LIB_VERSION' version)" >> "$GITHUB_OUTPUT"
       - name: Publish package
+        if: steps.npm-view.outputs.version != env.LIB_VERSION
         run: npm publish
       - name: Wait for package availability
-        env:
-          LIB_VERSION: ${{ github.ref_name }}
         run: |
           for delay in 0 2 4 8 16; do
             sleep "$delay"
