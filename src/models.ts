@@ -2942,6 +2942,7 @@ export type Feature =
   | 'enterprise_cockroach'
   | 'same_site_none_cookies'
   | 'validate_tax_info'
+  | 'dfm_review'
   | 'drawings'
   | 'modeling_dialogs'
   | 'named_views_ui'
