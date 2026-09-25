@@ -19,7 +19,7 @@ type GetPaymentBalanceForOrgReturn = CustomerBalance
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {boolean} include_total_due If you would like to return the total due for a user. This makes the API call take longer so it is off by default. (query)
+ * @property {boolean} include_total_due Return both recorded charges (`total_due`) and estimated cash charges after available usage credits (`amount_due_after_credits`). This makes the API call take longer so it is off by default. (query)
  * @returns {Promise<GetPaymentBalanceForOrgReturn>} successful operation
  *
  * Possible return types: CustomerBalance

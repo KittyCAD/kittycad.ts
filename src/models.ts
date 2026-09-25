@@ -2028,6 +2028,15 @@ export interface Customer {
 }
 
 export interface CustomerBalance {
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "double",
+   *   "format": "money-usd",
+   *   "description": "Estimated cash charges after applying currently available monthly and stable API credits to eligible usage, including usage from earlier billing periods. Credits cannot reduce subscription charges or invoices whose provider export has already started. Credits are counted once and never beyond eligible usage.\n\nThis read does not reserve or spend credits. The amount can change as credits are granted, spent, or refreshed, or as new charges arrive. Use this field directly instead of subtracting the credit balance from `total_due`. Like `total_due`, this is only returned when the amount due is requested and the payment provider is available; otherwise it is `null`."
+   * }
+   */
+  amount_due_after_credits?: number
   /** title:DateTime, format:date-time, description:The date and time the balance was created. */
   created_at: string
   /**
@@ -2080,7 +2089,7 @@ export interface CustomerBalance {
    *   "nullable": true,
    *   "title": "double",
    *   "format": "money-usd",
-   *   "description": "Net cash owed for completed API usage awaiting invoicing, outstanding invoices, and pending invoice items. Usage credits and writeoffs have already been applied; do not subtract the remaining credit balance from this amount. Ongoing sessions and usage still being priced are not included. This amount is only returned if requested from the api."
+   *   "description": "Recorded cash charges for completed API usage awaiting invoicing, outstanding invoices, and pending invoice items. Credits and writeoffs already assigned to usage are reflected in this amount.\n\nAvailable credits can still reduce eligible usage charges, including usage from earlier billing periods. They are applied when an aggregate usage invoice is generated and again immediately before its first provider export, using monthly credits before stable credits.\n\nThis amount is not a forecast of the next payment. Do not subtract the full remaining credit balance: the total can also include subscription charges and invoices whose provider export has already started, which usage credits cannot reduce. Use `amount_due_after_credits` for the estimate after applicable remaining credits. Ongoing sessions and usage still being priced are not included. This amount is only returned if requested from the API."
    * }
    */
   total_due?: number
