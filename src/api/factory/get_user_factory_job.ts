@@ -1,32 +1,32 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { OrgDataset, Uuid } from '../../models.js'
+import { FactoryCustomerJobDetail, Uuid } from '../../models.js'
 
-interface ListOrgDatasetsForModelInput {
+interface GetUserFactoryJobInput {
   client?: Client
-  id: Uuid
+  job_id: Uuid
 }
 
-type ListOrgDatasetsForModelReturn = OrgDataset[]
+type GetUserFactoryJobReturn = FactoryCustomerJobDetail
 
 /**
- * List the org datasets that are currently attached to a custom ML model owned by the caller’s organization.
+ * Get a personal Factory job and its current customer-visible specifications.
  *
- * Tags: ml
+ * Tags: factory
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
- * @property {Uuid} id The identifier. (path)
- * @returns {Promise<ListOrgDatasetsForModelReturn>} successful operation
+ * @property {Uuid} job_id The requested job's identifier. (path)
+ * @returns {Promise<GetUserFactoryJobReturn>} successful operation
  *
- * Possible return types: OrgDataset[]
+ * Possible return types: FactoryCustomerJobDetail
  */
-export default async function list_org_datasets_for_model({
+export default async function get_user_factory_job({
   client,
-  id,
-}: ListOrgDatasetsForModelInput): Promise<ListOrgDatasetsForModelReturn> {
-  const path = `/ml/custom/models/${id}/datasets`
+  job_id,
+}: GetUserFactoryJobInput): Promise<GetUserFactoryJobReturn> {
+  const path = `/user/factory/jobs/${job_id}`
   const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
@@ -44,6 +44,6 @@ export default async function list_org_datasets_for_model({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as ListOrgDatasetsForModelReturn
+  const result = (await response.json()) as GetUserFactoryJobReturn
   return result
 }

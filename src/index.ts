@@ -42,7 +42,9 @@ export const executor = {
 }
 
 import create_user_factory_job from './api/factory/create_user_factory_job.js'
+import get_org_factory_job from './api/factory/get_org_factory_job.js'
 import get_user_factory_finishes from './api/factory/get_user_factory_finishes.js'
+import get_user_factory_job from './api/factory/get_user_factory_job.js'
 import get_user_factory_materials from './api/factory/get_user_factory_materials.js'
 import list_org_factory_jobs from './api/factory/list_org_factory_jobs.js'
 import list_user_factory_jobs from './api/factory/list_user_factory_jobs.js'
@@ -50,7 +52,9 @@ import { list_org_factory_jobs_pager } from './api/factory/list_org_factory_jobs
 import { list_user_factory_jobs_pager } from './api/factory/list_user_factory_jobs.js'
 export const factory = {
   create_user_factory_job,
+  get_org_factory_job,
   get_user_factory_finishes,
+  get_user_factory_job,
   get_user_factory_materials,
   list_org_factory_jobs,
   list_org_factory_jobs_pager,
@@ -99,7 +103,6 @@ import create_text_to_cad_part_feedback from './api/ml/create_text_to_cad_part_f
 import get_custom_model from './api/ml/get_custom_model.js'
 import get_text_to_cad_part_for_user from './api/ml/get_text_to_cad_part_for_user.js'
 import list_conversations_for_user from './api/ml/list_conversations_for_user.js'
-import list_org_datasets_for_model from './api/ml/list_org_datasets_for_model.js'
 import list_text_to_cad_parts_for_user from './api/ml/list_text_to_cad_parts_for_user.js'
 import update_custom_model from './api/ml/update_custom_model.js'
 import { list_conversations_for_user_pager } from './api/ml/list_conversations_for_user.js'
@@ -113,7 +116,6 @@ export const ml = {
   get_text_to_cad_part_for_user,
   list_conversations_for_user,
   list_conversations_for_user_pager,
-  list_org_datasets_for_model,
   list_text_to_cad_parts_for_user,
   list_text_to_cad_parts_for_user_pager,
   ml_copilot_ws: MlCopilotWs,
@@ -670,8 +672,10 @@ export type {
   FaceGetPosition,
   FaceIsPlanar,
   FactoryCustomerCatalogOption,
+  FactoryCustomerJobDetail,
   FactoryCustomerJobSummary,
   FactoryCustomerJobSummaryResultsPage,
+  FactoryCustomerJobVersion,
   FactoryJobResponse,
   FailureWebSocketResponse,
   FbxStorage,

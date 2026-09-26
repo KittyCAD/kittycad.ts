@@ -481,6 +481,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1factory~1jobs~1{job_id}/get/x-typescript",
+    "value": {
+      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.get_user_factory_job({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user~1factory~1jobs/post/x-typescript",
     "value": {
       "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.create_user_factory_job({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -1121,6 +1129,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1org~1factory~1jobs~1{job_id}/get/x-typescript",
+    "value": {
+      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.get_org_factory_job({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1org~1factory~1jobs/get/x-typescript",
     "value": {
       "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.list_org_factory_jobs({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = factory.list_org_factory_jobs_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -1444,14 +1460,6 @@
     "path": "/paths/~1ml~1kcl~1completions/post/x-typescript",
     "value": {
       "example": "import { ml, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await ml.create_kcl_code_completions({\n        body: {\n            extra: {\n                language: 'The language of the code.',\n                next_indent: 7,\n                prompt_tokens: 7,\n                suffix_tokens: 7,\n                trim_by_indentation: true,\n            },\n            max_tokens: 7,\n            model_version:\n                'Zoo provided model, or custom model which should be used to process this request.',\n            n: 7,\n            nwo: 'For GitHub copilot this is the `{org}/{repo}`. This does not do anything yet. But we wanted the same API as GitHub Copilot. It might be used in the future.',\n            prompt: 'The prompt for the desired part.',\n            stop: ['string'],\n            stream: true,\n            suffix: 'The suffix for the desired part.',\n            temperature: 7,\n            top_p: 7,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
-    "path": "/paths/~1ml~1custom~1models~1{id}~1datasets/get/x-typescript",
-    "value": {
-      "example": "import { ml, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await ml.list_org_datasets_for_model({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

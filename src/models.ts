@@ -2879,6 +2879,13 @@ export interface FactoryCustomerCatalogOption {
   name: string
 }
 
+export interface FactoryCustomerJobDetail {
+  /** nullable:true, description:The current version, if the job has one. */
+  current_version?: FactoryCustomerJobVersion
+  /** The same summary returned by the customer job list. */
+  job: FactoryCustomerJobSummary
+}
+
 export interface FactoryCustomerJobSummary {
   /** title:DateTime, format:date-time, description:When the job was created. */
   created_at: string
@@ -2902,6 +2909,15 @@ export interface FactoryCustomerJobSummaryResultsPage {
    * }
    */
   next_page?: string
+}
+
+export interface FactoryCustomerJobVersion {
+  /** title:DateTime, format:date-time, description:When this version was created. */
+  created_at: string
+  file_names: string[]
+  /** Identifier of the current version. */
+  id: Uuid
+  specs: string
 }
 
 export interface FactoryJobResponse {
@@ -12696,8 +12712,10 @@ export interface Models {
   FaceGetPosition: FaceGetPosition
   FaceIsPlanar: FaceIsPlanar
   FactoryCustomerCatalogOption: FactoryCustomerCatalogOption
+  FactoryCustomerJobDetail: FactoryCustomerJobDetail
   FactoryCustomerJobSummary: FactoryCustomerJobSummary
   FactoryCustomerJobSummaryResultsPage: FactoryCustomerJobSummaryResultsPage
+  FactoryCustomerJobVersion: FactoryCustomerJobVersion
   FactoryJobResponse: FactoryJobResponse
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage
