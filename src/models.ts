@@ -3975,6 +3975,11 @@ export type KclProjectShareLinkAccessMode =
   | 'anyone_with_link'
   | 'organization_only'
 
+export type KclProjectVersionAncestryStatus =
+  | 'root'
+  | 'recorded'
+  | 'legacy_unknown'
+
 export type KclVersion = '1.0' | '2.0' | '3.0-preview'
 
 export type LengthUnit = number
@@ -9794,6 +9799,67 @@ export interface ProjectSummaryResponse {
   updated_at: string
 }
 
+export interface ProjectVersionDetailResponse {
+  /** Whether this is a root, has a recorded parent, or has unknown ancestry. */
+  ancestry_status: KclProjectVersionAncestryStatus
+  /** title:DateTime, format:date-time, description:When this version was created. */
+  created_at: string
+  /** Description saved with this version. */
+  description: string
+  /** Relative path to this version's KCL entrypoint. */
+  entrypoint_path: string
+  /** Files stored for this version. */
+  files: ProjectFileResponse[]
+  /** Unique identifier of this version. */
+  id: Uuid
+  /** Whether this is the project's current version. */
+  is_current: boolean
+  /** nullable:true, description:Version this save was based on, when known. */
+  parent_version_id?: Uuid
+  /** Preview generation state for this version. */
+  preview_status: KclProjectPreviewStatus
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "URL for this version's preview, when a preview file is available."
+   * }
+   */
+  preview_url?: string
+  /** Relative path to this version's project manifest. */
+  project_toml_path: string
+  /** Title saved with this version. */
+  title: string
+}
+
+export interface ProjectVersionSummaryResponse {
+  /** Whether this is a root, has a recorded parent, or has unknown ancestry. */
+  ancestry_status: KclProjectVersionAncestryStatus
+  /** title:DateTime, format:date-time, description:When this version was created. */
+  created_at: string
+  /** Unique identifier of this version. */
+  id: Uuid
+  /** Whether this is the project's current version. */
+  is_current: boolean
+  /** nullable:true, description:Version this save was based on, when known. */
+  parent_version_id?: Uuid
+  /** Preview generation state for this version. */
+  preview_status: KclProjectPreviewStatus
+  /** Title saved with this version. */
+  title: string
+}
+
+export interface ProjectVersionSummaryResponseResultsPage {
+  /** list of items on this page of results */
+  items: ProjectVersionSummaryResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export interface PublicEmailMarketingConsentRequest {
   /** format:email, description:The email */
   email: string
@@ -12761,6 +12827,7 @@ export interface Models {
   KclProjectPreviewStatus: KclProjectPreviewStatus
   KclProjectPublicationStatus: KclProjectPublicationStatus
   KclProjectShareLinkAccessMode: KclProjectShareLinkAccessMode
+  KclProjectVersionAncestryStatus: KclProjectVersionAncestryStatus
   KclVersion: KclVersion
   LengthUnit: LengthUnit
   LenientUrl: LenientUrl
@@ -12887,6 +12954,9 @@ export interface Models {
   ProjectResponse: ProjectResponse
   ProjectShareLinkResponse: ProjectShareLinkResponse
   ProjectSummaryResponse: ProjectSummaryResponse
+  ProjectVersionDetailResponse: ProjectVersionDetailResponse
+  ProjectVersionSummaryResponse: ProjectVersionSummaryResponse
+  ProjectVersionSummaryResponseResultsPage: ProjectVersionSummaryResponseResultsPage
   PublicEmailMarketingConsentRequest: PublicEmailMarketingConsentRequest
   PublicMailingListMembershipRequest: PublicMailingListMembershipRequest
   PublicProjectOwnerResponse: PublicProjectOwnerResponse

@@ -347,18 +347,23 @@ import delete_project_organization from './api/projects/delete_project_organizat
 import delete_project_share_link from './api/projects/delete_project_share_link.js'
 import delete_public_project_vote from './api/projects/delete_public_project_vote.js'
 import download_project from './api/projects/download_project.js'
+import download_project_version from './api/projects/download_project_version.js'
 import download_public_project from './api/projects/download_public_project.js'
 import get_project from './api/projects/get_project.js'
 import get_project_thumbnail from './api/projects/get_project_thumbnail.js'
+import get_project_version from './api/projects/get_project_version.js'
+import get_project_version_thumbnail from './api/projects/get_project_version_thumbnail.js'
 import get_public_project from './api/projects/get_public_project.js'
 import get_public_project_thumbnail from './api/projects/get_public_project_thumbnail.js'
 import list_project_categories from './api/projects/list_project_categories.js'
 import list_project_share_links from './api/projects/list_project_share_links.js'
+import list_project_versions from './api/projects/list_project_versions.js'
 import list_projects from './api/projects/list_projects.js'
 import list_public_projects from './api/projects/list_public_projects.js'
 import publish_project from './api/projects/publish_project.js'
 import update_project from './api/projects/update_project.js'
 import update_project_organization from './api/projects/update_project_organization.js'
+import { list_project_versions_pager } from './api/projects/list_project_versions.js'
 export const projects = {
   create_project,
   create_project_share_link,
@@ -368,13 +373,18 @@ export const projects = {
   delete_project_share_link,
   delete_public_project_vote,
   download_project,
+  download_project_version,
   download_public_project,
   get_project,
   get_project_thumbnail,
+  get_project_version,
+  get_project_version_thumbnail,
   get_public_project,
   get_public_project_thumbnail,
   list_project_categories,
   list_project_share_links,
+  list_project_versions,
+  list_project_versions_pager,
   list_projects,
   list_public_projects,
   publish_project,
@@ -721,6 +731,7 @@ export type {
   KclProjectPreviewStatus,
   KclProjectPublicationStatus,
   KclProjectShareLinkAccessMode,
+  KclProjectVersionAncestryStatus,
   KclVersion,
   LengthUnit,
   LenientUrl,
@@ -847,6 +858,9 @@ export type {
   ProjectResponse,
   ProjectShareLinkResponse,
   ProjectSummaryResponse,
+  ProjectVersionDetailResponse,
+  ProjectVersionSummaryResponse,
+  ProjectVersionSummaryResponseResultsPage,
   PublicEmailMarketingConsentRequest,
   PublicMailingListMembershipRequest,
   PublicProjectOwnerResponse,
