@@ -184,8 +184,20 @@ export interface AnnotationBasicDimension {
   from_edge_reference?: EdgeSpecifier
   /** nullable:true, format:uuid, description:Entity to measure the dimension from */
   from_entity_id?: string
-  /** Normalized position within the entity to position the dimension from */
-  from_entity_pos: Point2d
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Position within the entity to position the dimension leader from"
+   * }
+   */
+  from_entity_leader_pos?: AnnotationMbdLeaderPosition
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Normalized position within the entity to position the dimension from Deprecated; please use `from_entity_leader_pos`"
+   * }
+   */
+  from_entity_pos?: Point2d
   /** 2D Position offset of the annotation within the plane. */
   offset: Point2d
   /**
@@ -212,8 +224,20 @@ export interface AnnotationBasicDimension {
   to_edge_reference?: EdgeSpecifier
   /** nullable:true, format:uuid, description:Entity to measure the dimension to */
   to_entity_id?: string
-  /** Normalized position within the entity to position the dimension to */
-  to_entity_pos: Point2d
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Position within the entity to position the dimension leader from"
+   * }
+   */
+  to_entity_leader_pos?: AnnotationMbdLeaderPosition
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Normalized position within the entity to position the dimension to Deprecated; please use `to_entity_leader_pos`"
+   * }
+   */
+  to_entity_pos?: Point2d
 }
 
 export interface AnnotationFeatureControl {
@@ -239,8 +263,20 @@ export interface AnnotationFeatureControl {
   edge_reference?: EdgeSpecifier
   /** nullable:true, format:uuid, description:Entity to place the annotation leader from */
   entity_id?: string
-  /** Normalized position within the entity to position the annotation leader from */
-  entity_pos: Point2d
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Position within the entity to position the annotation leader from"
+   * }
+   */
+  entity_leader_pos?: AnnotationMbdLeaderPosition
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Normalized position within the entity to position the annotation leader from Deprecated; please use `entity_leader_pos`"
+   * }
+   */
+  entity_pos?: Point2d
   /**
    * {
    *   "format": "uint32",
@@ -304,8 +340,20 @@ export interface AnnotationFeatureTag {
   edge_reference?: EdgeSpecifier
   /** nullable:true, format:uuid, description:Entity to place the annotation leader from */
   entity_id?: string
-  /** Normalized position within the entity to position the annotation leader from */
-  entity_pos: Point2d
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Position within the entity to position the annotation leader from"
+   * }
+   */
+  entity_leader_pos?: AnnotationMbdLeaderPosition
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Normalized position within the entity to position the annotation leader from Deprecated; please use `entity_leader_pos`"
+   * }
+   */
+  entity_pos?: Point2d
   /**
    * {
    *   "format": "uint32",
@@ -421,6 +469,15 @@ export interface AnnotationMbdControlFrame {
    */
   tolerance: number
 }
+
+export type AnnotationMbdLeaderPosition =
+  | {
+      normalized_pos: {
+        /** The position */
+        pos: Point2d
+      }
+    }
+  | { centroid: Record<string, unknown> }
 
 export interface AnnotationOptions {
   /** nullable:true, description:Color to render the annotation */
@@ -2569,6 +2626,11 @@ export type EntityReference =
       type: 'solid3d'
     }
   | {
+      /** format:uuid, description:Id of the helix object. */
+      helix_id: string
+      type: 'helix'
+    }
+  | {
       /** format:uuid, description:Id of the edge being referenced. */
       edge_id: string
       /**
@@ -2613,6 +2675,7 @@ export type EntityType =
   | 'plane'
   | 'vertex'
   | 'region'
+  | 'patterngroup'
 
 export interface Error {
   error_code?: string
@@ -2976,10 +3039,10 @@ export type Feature =
   | 'segments_based_regions'
   | 'legacy_sketch_mode'
   | 'sketch_experimental_features'
-  | 'web_app_file_browser'
   | 'zookeeper_pro_mode'
   | 'zookeeper_ultra_mode'
   | 'zookeeper_client_commands'
+  | 'zookeeper_kcl_migration'
   | 'unsafe_allow_api_key_auth'
   | 'unsafe_allow_localhost_shortlinks'
   | 'zoo_corp_auth'
@@ -3950,6 +4013,159 @@ export interface KclCodeCompletionResponse {
   completions: string[]
 }
 
+export type KclMigrationClientMessage =
+  | { headers: { [key: string]: string }; type: 'headers' }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/KclMigrationRequest"
+       * }
+       */
+      request: KclMigrationRequest
+      type: 'start'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Uuid"
+       * }
+       */
+      operation_id: Uuid
+      type: 'status'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Uuid"
+       * }
+       */
+      operation_id: Uuid
+      type: 'cancel'
+    }
+  | { type: 'ping' }
+
+export interface KclMigrationOperation {
+  /**
+   * {
+   *   "format": "date-time",
+   *   "description": "Original deadline, including preparation and validation. Never extended."
+   * }
+   */
+  deadline: string
+  /** Same idempotency key supplied by the initiating client. */
+  id: Uuid
+  /** Source revision, retained for conflict detection when applying the result. */
+  project_snapshot: MlCopilotProjectSnapshotMetadata
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Terminal result, if available. The review itself has no execution deadline."
+   * }
+   */
+  result?: KclMigrationResult
+  /** Current state. */
+  status: KclMigrationStatus
+  /** Target accepted for this attempt. */
+  target: KclMigrationTarget
+}
+
+export interface KclMigrationRequest {
+  /** default:false, description:Explicit consent to unstable preview semantics. */
+  allow_preview?: boolean
+  current_files: {
+    [key: string]: /**
+     * {
+     *   "format": "uint8",
+     *   "minimum": 0
+     * }
+     */
+    number[]
+  }
+  /** Project-relative KCL file to execute. */
+  entrypoint: string
+  /** Revision against which the user will review and apply the candidate. */
+  project_snapshot: MlCopilotProjectSnapshotMetadata
+  /** Client-generated idempotency key. Reuse it when retrying delivery. */
+  request_id: Uuid
+  /** Requested target. The worker inspects the actual source version. */
+  target: KclMigrationTarget
+}
+
+export interface KclMigrationResult {
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Confirmed rejection or failure before conversion started. Only unsuccessful attempts may set this; API excludes them from the daily attempt allowance. Missing evidence defaults to counting the attempt."
+   * }
+   */
+  conversion_not_started?: boolean
+  /** User-facing outcome or failure explanation. */
+  detail: string
+  files?: {
+    [key: string]: /**
+     * {
+     *   "format": "uint8",
+     *   "minimum": 0
+     * }
+     */
+    number[]
+  }
+  /** Terminal state. `running` is not a valid result. */
+  status: KclMigrationStatus
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Execution and equivalence evidence, required on success."
+   * }
+   */
+  validation?: KclMigrationValidation
+}
+
+export type KclMigrationServerMessage =
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/KclMigrationOperation"
+       * }
+       */
+      operation: KclMigrationOperation
+      type: 'operation'
+    }
+  | { detail: string; type: 'error' }
+  | { type: 'pong' }
+
+export type KclMigrationStatus =
+  | 'running'
+  | 'succeeded'
+  | 'failed'
+  | 'timed_out'
+  | 'cancelled'
+  | 'unsupported'
+  | 'validation_failed'
+
+export type KclMigrationTarget = '3.0-preview' | '3.0'
+
+export interface KclMigrationValidation {
+  /** Relevant parameter and control-flow behavior passed validation. */
+  behavior_preserved: boolean
+  /** Geometry passed the version-pair validation policy. */
+  geometry_preserved: boolean
+  /** Revision of the conversion instructions and validation policy. */
+  rules_revision: string
+  /** Exact target runtime used for execution and geometry checks. */
+  runtime_version: string
+  /** The unchanged source project executed successfully. */
+  source_executed: boolean
+  /** Actual source semantics detected and executed by the worker. */
+  source_version: string
+  /** Reviewable explanation of checks, tolerances, and any accepted differences. */
+  summary: string
+  /** Target semantics used during validation, which must match the request. */
+  target: KclMigrationTarget
+  /** The candidate executed successfully under target semantics. */
+  target_executed: boolean
+}
+
 export interface KclModel {
   /** The KCL code. */
   code: string
@@ -3980,7 +4196,7 @@ export type KclProjectVersionAncestryStatus =
   | 'recorded'
   | 'legacy_unknown'
 
-export type KclVersion = '1.0' | '2.0' | '3.0-preview'
+export type KclVersion = '1.0' | '2.0' | '3.0-preview' | '3.0'
 
 export type LengthUnit = number
 
@@ -6140,6 +6356,8 @@ export type ModelingCmd =
       highlight_color?: Color
       /** nullable:true, description:The default color to use for selection */
       selection_color?: Color
+      /** nullable:true, description:The default tolerance values. */
+      tolerance?: Tolerance
       type: 'set_default_system_properties'
     }
   | {
@@ -6371,6 +6589,40 @@ export type ModelingCmd =
       /** The output unit for the surface area. */
       output_unit: UnitArea
       type: 'surface_area'
+    }
+  | {
+      /** The output unit for the bounding box's dimensions. */
+      bounding_box_output_unit: UnitLength
+      /** The output unit for center of mass. */
+      center_of_mass_output_unit: UnitLength
+      /** The output unit for density. */
+      density_output_unit: UnitDensity
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      entity_ids: string[]
+      /** The output unit for mass. */
+      mass_output_unit: UnitMass
+      /** format:double, description:The material density used to calculate mass. */
+      material_density: number
+      /** The material density unit. */
+      material_density_unit: UnitDensity
+      /**
+       * {
+       *   "format": "double",
+       *   "description": "The material mass used to calculate density, independently of the calculated mass."
+       * }
+       */
+      material_mass: number
+      /** The material mass unit. */
+      material_mass_unit: UnitMass
+      /** The output unit for surface area. */
+      surface_area_output_unit: UnitArea
+      type: 'physical_properties'
+      /** The output unit for volume. */
+      volume_output_unit: UnitVolume
     }
   | {
       type: 'default_camera_focus_on'
@@ -8185,6 +8437,15 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/PhysicalProperties"
+       * }
+       */
+      data: PhysicalProperties
+      type: 'physical_properties'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/GetSketchModePlane"
        * }
        */
@@ -9201,6 +9462,13 @@ export type OutputFormat3d =
       type: 'fbx'
     }
   | {
+      /**
+       * {
+       *   "default": false,
+       *   "description": "Include engine UUIDs in glTF extras. Defaults to false."
+       * }
+       */
+      include_uuids?: boolean
       /** Specifies how the JSON will be presented. */
       presentation: GltfPresentation
       /** Specifies which kind of glTF 2.0 will be exported. */
@@ -9479,6 +9747,21 @@ export interface PerspectiveCameraParameters {
   z_far?: number
   /** nullable:true, format:float, description:Camera frustum near plane. */
   z_near?: number
+}
+
+export interface PhysicalProperties {
+  /** The bounding box's center and dimensions, in the requested bounding box output unit. */
+  bounding_box: BoundingBox
+  /** The center of mass and its output unit. */
+  center_of_mass: CenterOfMass
+  /** The density and its output unit. */
+  density: Density
+  /** The mass and its output unit. */
+  mass: Mass
+  /** The surface area and its output unit. */
+  surface_area: SurfaceArea
+  /** The volume and its output unit. */
+  volume: Volume
 }
 
 export type PlanInterval = 'day' | 'month' | 'week' | 'year' | 'unknown'
@@ -10937,6 +11220,11 @@ export interface TokenRevokeRequestForm {
   client_secret?: string
   /** The token to revoke. */
   token: string
+}
+
+export interface Tolerance {
+  /** The distance tolerance for 2D point-point coincidence. */
+  point_point_2d_coincident: LengthUnit
 }
 
 export interface Transform {
@@ -12607,6 +12895,7 @@ export interface Models {
   AnnotationLineEndOptions: AnnotationLineEndOptions
   AnnotationMbdBasicDimension: AnnotationMbdBasicDimension
   AnnotationMbdControlFrame: AnnotationMbdControlFrame
+  AnnotationMbdLeaderPosition: AnnotationMbdLeaderPosition
   AnnotationOptions: AnnotationOptions
   AnnotationTextAlignmentX: AnnotationTextAlignmentX
   AnnotationTextAlignmentY: AnnotationTextAlignmentY
@@ -12822,6 +13111,14 @@ export interface Models {
   KclCodeCompletionParams: KclCodeCompletionParams
   KclCodeCompletionRequest: KclCodeCompletionRequest
   KclCodeCompletionResponse: KclCodeCompletionResponse
+  KclMigrationClientMessage: KclMigrationClientMessage
+  KclMigrationOperation: KclMigrationOperation
+  KclMigrationRequest: KclMigrationRequest
+  KclMigrationResult: KclMigrationResult
+  KclMigrationServerMessage: KclMigrationServerMessage
+  KclMigrationStatus: KclMigrationStatus
+  KclMigrationTarget: KclMigrationTarget
+  KclMigrationValidation: KclMigrationValidation
   KclModel: KclModel
   KclProjectFileRole: KclProjectFileRole
   KclProjectPreviewStatus: KclProjectPreviewStatus
@@ -12931,6 +13228,7 @@ export interface Models {
   PaymentMethodCardChecks: PaymentMethodCardChecks
   PaymentMethodType: PaymentMethodType
   PerspectiveCameraParameters: PerspectiveCameraParameters
+  PhysicalProperties: PhysicalProperties
   PlanInterval: PlanInterval
   PlanStep: PlanStep
   PlaneIntersectAndProject: PlaneIntersectAndProject
@@ -13068,6 +13366,7 @@ export interface Models {
   TextToCadResponse: TextToCadResponse
   TextToCadResponseResultsPage: TextToCadResponseResultsPage
   TokenRevokeRequestForm: TokenRevokeRequestForm
+  Tolerance: Tolerance
   Transform: Transform
   TransformByForPoint3d: TransformByForPoint3d
   TransformByForPoint4d: TransformByForPoint4d

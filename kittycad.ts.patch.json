@@ -17,6 +17,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1ws~1ml~1kcl-migration/get/x-typescript",
+    "value": {
+      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const client = new Client('your-token')\n    const conn = await ml.kcl_migration_ws.connect({ client })\n}\n\ndescribe('Testing ml.kcl_migration_ws', () => {\n    it('should be truthy or throw', async () => {\n        expect(true).toBeTruthy()\n    })\n})\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1ws~1ml~1copilot/get/x-typescript",
     "value": {
       "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const client = new Client('your-token')\n    const conn = await ml.ml_copilot_ws.connect({ client })\n}\n\ndescribe('Testing ml.ml_copilot_ws', () => {\n    it('should be truthy or throw', async () => {\n        expect(true).toBeTruthy()\n    })\n})\n",
