@@ -94,6 +94,7 @@ export const meta = {
   ping,
 }
 
+import KclMigrationWs from './api/ml/kcl_migration_ws.js'
 import MlCopilotWs from './api/ml/ml_copilot_ws.js'
 import MlReasoningWs from './api/ml/ml_reasoning_ws.js'
 import create_custom_model from './api/ml/create_custom_model.js'
@@ -114,6 +115,7 @@ export const ml = {
   create_text_to_cad_part_feedback,
   get_custom_model,
   get_text_to_cad_part_for_user,
+  kcl_migration_ws: KclMigrationWs,
   list_conversations_for_user,
   list_conversations_for_user_pager,
   list_text_to_cad_parts_for_user,
@@ -511,6 +513,7 @@ export type {
   AnnotationLineEndOptions,
   AnnotationMbdBasicDimension,
   AnnotationMbdControlFrame,
+  AnnotationMbdLeaderPosition,
   AnnotationOptions,
   AnnotationTextAlignmentX,
   AnnotationTextAlignmentY,
@@ -726,6 +729,14 @@ export type {
   KclCodeCompletionParams,
   KclCodeCompletionRequest,
   KclCodeCompletionResponse,
+  KclMigrationClientMessage,
+  KclMigrationOperation,
+  KclMigrationRequest,
+  KclMigrationResult,
+  KclMigrationServerMessage,
+  KclMigrationStatus,
+  KclMigrationTarget,
+  KclMigrationValidation,
   KclModel,
   KclProjectFileRole,
   KclProjectPreviewStatus,
@@ -835,6 +846,7 @@ export type {
   PaymentMethodCardChecks,
   PaymentMethodType,
   PerspectiveCameraParameters,
+  PhysicalProperties,
   PlanInterval,
   PlanStep,
   PlaneIntersectAndProject,
@@ -972,6 +984,7 @@ export type {
   TextToCadResponse,
   TextToCadResponseResultsPage,
   TokenRevokeRequestForm,
+  Tolerance,
   Transform,
   TransformByForPoint3d,
   TransformByForPoint4d,
