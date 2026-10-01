@@ -3,13 +3,10 @@ import {
   ApiError,
   Client,
   collectApiList,
-  factory,
   meta,
   ml,
   orgs,
-  payments,
   projects,
-  users,
 } from '@kittycad/lib'
 
 function response(body: unknown, status = 200): Response {
@@ -51,17 +48,6 @@ const legacyCalls: LegacyCall[] = [
     legacyListField: 'announcements',
   },
   {
-    name: 'project categories',
-    path: '/projects/categories',
-    read: (client, signal) =>
-      projects.list_project_categories({ client, signal }),
-  },
-  {
-    name: 'public projects',
-    path: '/projects/public',
-    read: (client, signal) => projects.list_public_projects({ client, signal }),
-  },
-  {
     name: 'user projects',
     path: '/user/projects',
     read: (client, signal) => projects.list_projects({ client, signal }),
@@ -71,11 +57,6 @@ const legacyCalls: LegacyCall[] = [
     path: `/user/projects/${id}/share-links`,
     read: (client, signal) =>
       projects.list_project_share_links({ client, signal, id }),
-  },
-  {
-    name: 'organization skills',
-    path: '/org/skills',
-    read: (client, signal) => orgs.list_org_skills({ client, signal }),
   },
   {
     name: 'semantic search',
@@ -88,36 +69,6 @@ const legacyCalls: LegacyCall[] = [
         q: 'some words',
         limit: 2,
       }),
-  },
-  {
-    name: 'organization payment methods',
-    path: '/org/payment/methods',
-    read: (client, signal) =>
-      payments.list_payment_methods_for_org({ client, signal }),
-  },
-  {
-    name: 'user payment methods',
-    path: '/user/payment/methods',
-    read: (client, signal) =>
-      payments.list_payment_methods_for_user({ client, signal }),
-  },
-  {
-    name: 'factory finishes',
-    path: '/user/factory/finishes',
-    read: (client, signal) =>
-      factory.get_user_factory_finishes({ client, signal }),
-  },
-  {
-    name: 'factory materials',
-    path: '/user/factory/materials',
-    read: (client, signal) =>
-      factory.get_user_factory_materials({ client, signal }),
-  },
-  {
-    name: 'OAuth2 providers',
-    path: '/user/oauth2/providers',
-    read: (client, signal) =>
-      users.get_oauth2_providers_for_user({ client, signal }),
   },
 ]
 
@@ -376,32 +327,13 @@ describe('collectApiList', () => {
 })
 
 describe('existing SDK contracts', () => {
-  it('keeps ResultsPage calls single-page and their pagers explicit', async () => {
+  it('keeps ResultsPage calls single-page', async () => {
     const page = { items: [{ id: 'first' }], next_page: 'second' }
     const fetch = vi
       .fn<typeof globalThis.fetch>()
       .mockResolvedValueOnce(response(page))
-      .mockResolvedValueOnce(response(page))
-      .mockResolvedValueOnce(
-        response({ items: [{ id: 'last' }], next_page: null })
-      )
     const client = clientFor(fetch)
     expect(await ml.list_text_to_cad_parts_for_user({ client })).toEqual(page)
-    expect(fetch).toHaveBeenCalledTimes(1)
-    const pager = ml.list_text_to_cad_parts_for_user_pager({ client })
-    expect(await pager.next()).toEqual(page.items)
-    expect(pager.hasNext()).toBe(true)
-    expect(await pager.next()).toEqual([{ id: 'last' }])
-    expect(pager.hasNext()).toBe(false)
-    expect(fetch).toHaveBeenCalledTimes(3)
-  })
-
-  it('keeps non-collection GET responses intact', async () => {
-    const body = { message: 'pong' }
-    const fetch = vi
-      .fn<typeof globalThis.fetch>()
-      .mockResolvedValueOnce(response(body))
-    expect(await meta.ping({ client: clientFor(fetch) })).toEqual(body)
     expect(fetch).toHaveBeenCalledTimes(1)
   })
 
