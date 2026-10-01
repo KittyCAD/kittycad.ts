@@ -1,10 +1,13 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
+import { collectApiList } from '../../pagination.js'
+
 import { PublicProjectResponse } from '../../models.js'
 
 interface ListPublicProjectsInput {
   client?: Client
+  signal?: AbortSignal
 }
 
 type ListPublicProjectsReturn = PublicProjectResponse[]
@@ -12,16 +15,20 @@ type ListPublicProjectsReturn = PublicProjectResponse[]
 /**
  * List publicly visible community projects for the website/gallery.
  *
+ * Accepts legacy collections or items/next_page responses and reads all pages.
+ * Rejects failed, malformed, or repeated pages without returning partial results.
+ *
  * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {AbortSignal} [signal] Cancel the entire list request.
  * @returns {Promise<ListPublicProjectsReturn>} successful operation
  *
  * Possible return types: PublicProjectResponse[]
  */
 export default async function list_public_projects(
-  { client }: ListPublicProjectsInput = {} as ListPublicProjectsInput
+  { client, signal }: ListPublicProjectsInput = {} as ListPublicProjectsInput
 ): Promise<ListPublicProjectsReturn> {
   const path = `/projects/public`
   const qs = buildQuery({})
@@ -37,10 +44,16 @@ export default async function list_public_projects(
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
+    signal,
   }
   const _fetch = client?.fetch || fetch
-  const response = await _fetch(fullUrl, fetchOptions)
-  await throwIfNotOk(response)
-  const result = (await response.json()) as ListPublicProjectsReturn
-  return result
+  const items = await collectApiList<ListPublicProjectsReturn[number]>(
+    fullUrl,
+    async (pageUrl) => {
+      const response = await _fetch(pageUrl, fetchOptions)
+      await throwIfNotOk(response)
+      return response.json()
+    }
+  )
+  return items
 }

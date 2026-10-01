@@ -4,6 +4,10 @@ import { throwIfNotOk } from '../../errors.js';
 import { Pager, createPager } from '../../pagination.js';
 {{/if}}
 
+{{#if collectList}}
+import { collectApiList } from '../../pagination.js';
+{{/if}}
+
 {{{importsModels}}}
 
 {{{paramsInterface}}}
@@ -33,11 +37,30 @@ export default async function {{functionName}}(
   const fetchOptions: RequestInit = {
     method: '{{httpMethod}}',
     headers,
+    {{#if collectList}}
+    signal,
+    {{/if}}
     {{#if bodyLine}}
     {{{bodyLine}}},
     {{/if}}
   };
   const _fetch = client?.fetch || fetch;
+  {{#if collectList}}
+  const items = await collectApiList<{{{collectItemType}}}>(
+    fullUrl,
+    async (pageUrl) => {
+      const response = await _fetch(pageUrl, fetchOptions);
+      await throwIfNotOk(response);
+      return response.json();
+    }{{#if legacyListField}},
+    '{{legacyListField}}'{{/if}}
+  );
+  {{#if legacyListField}}
+  return { {{legacyListField}}: items };
+  {{else}}
+  return items;
+  {{/if}}
+  {{else}}
   const response = await _fetch(fullUrl, fetchOptions);
   await throwIfNotOk(response);
   {{#if noJsonResponse}}
@@ -45,6 +68,7 @@ export default async function {{functionName}}(
   {{else}}
   const result = (await response.json()) as {{returnTypeName}};
   return result;
+  {{/if}}
   {{/if}}
 }
 

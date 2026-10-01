@@ -1,10 +1,13 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
+import { collectApiList } from '../../pagination.js'
+
 import { OrgSkillResponse } from '../../models.js'
 
 interface ListOrgSkillsInput {
   client?: Client
+  signal?: AbortSignal
 }
 
 type ListOrgSkillsReturn = OrgSkillResponse[]
@@ -12,16 +15,20 @@ type ListOrgSkillsReturn = OrgSkillResponse[]
 /**
  * List every skill that belongs to the caller's organization.
  *
+ * Accepts legacy collections or items/next_page responses and reads all pages.
+ * Rejects failed, malformed, or repeated pages without returning partial results.
+ *
  * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {AbortSignal} [signal] Cancel the entire list request.
  * @returns {Promise<ListOrgSkillsReturn>} successful operation
  *
  * Possible return types: OrgSkillResponse[]
  */
 export default async function list_org_skills(
-  { client }: ListOrgSkillsInput = {} as ListOrgSkillsInput
+  { client, signal }: ListOrgSkillsInput = {} as ListOrgSkillsInput
 ): Promise<ListOrgSkillsReturn> {
   const path = `/org/skills`
   const qs = buildQuery({})
@@ -37,10 +44,16 @@ export default async function list_org_skills(
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
+    signal,
   }
   const _fetch = client?.fetch || fetch
-  const response = await _fetch(fullUrl, fetchOptions)
-  await throwIfNotOk(response)
-  const result = (await response.json()) as ListOrgSkillsReturn
-  return result
+  const items = await collectApiList<ListOrgSkillsReturn[number]>(
+    fullUrl,
+    async (pageUrl) => {
+      const response = await _fetch(pageUrl, fetchOptions)
+      await throwIfNotOk(response)
+      return response.json()
+    }
+  )
+  return items
 }

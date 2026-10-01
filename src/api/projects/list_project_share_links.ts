@@ -1,11 +1,14 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
+import { collectApiList } from '../../pagination.js'
+
 import { ProjectShareLinkResponse, Uuid } from '../../models.js'
 
 interface ListProjectShareLinksInput {
   client?: Client
   id: Uuid
+  signal?: AbortSignal
 }
 
 type ListProjectShareLinksReturn = ProjectShareLinkResponse[]
@@ -13,10 +16,14 @@ type ListProjectShareLinksReturn = ProjectShareLinkResponse[]
 /**
  * List share links for one of the authenticated user's projects.
  *
+ * Accepts legacy collections or items/next_page responses and reads all pages.
+ * Rejects failed, malformed, or repeated pages without returning partial results.
+ *
  * Tags: projects
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {AbortSignal} [signal] Cancel the entire list request.
  * @property {Uuid} id The identifier. (path)
  * @returns {Promise<ListProjectShareLinksReturn>} successful operation
  *
@@ -25,6 +32,7 @@ type ListProjectShareLinksReturn = ProjectShareLinkResponse[]
 export default async function list_project_share_links({
   client,
   id,
+  signal,
 }: ListProjectShareLinksInput): Promise<ListProjectShareLinksReturn> {
   const path = `/user/projects/${id}/share-links`
   const qs = buildQuery({})
@@ -40,10 +48,16 @@ export default async function list_project_share_links({
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
+    signal,
   }
   const _fetch = client?.fetch || fetch
-  const response = await _fetch(fullUrl, fetchOptions)
-  await throwIfNotOk(response)
-  const result = (await response.json()) as ListProjectShareLinksReturn
-  return result
+  const items = await collectApiList<ListProjectShareLinksReturn[number]>(
+    fullUrl,
+    async (pageUrl) => {
+      const response = await _fetch(pageUrl, fetchOptions)
+      await throwIfNotOk(response)
+      return response.json()
+    }
+  )
+  return items
 }

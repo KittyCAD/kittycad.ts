@@ -1,10 +1,13 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
+import { collectApiList } from '../../pagination.js'
+
 import { AccountProvider } from '../../models.js'
 
 interface GetOauth2ProvidersForUserInput {
   client?: Client
+  signal?: AbortSignal
 }
 
 type GetOauth2ProvidersForUserReturn = AccountProvider[]
@@ -16,10 +19,14 @@ type GetOauth2ProvidersForUserReturn = AccountProvider[]
  *
  * This endpoint requires authentication by any Zoo user. It gets the providers for the authenticated user.
  *
+ * Accepts legacy collections or items/next_page responses and reads all pages.
+ * Rejects failed, malformed, or repeated pages without returning partial results.
+ *
  * Tags: users
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {AbortSignal} [signal] Cancel the entire list request.
  * @returns {Promise<GetOauth2ProvidersForUserReturn>} successful operation
  *
  * Possible return types: AccountProvider[]
@@ -27,6 +34,7 @@ type GetOauth2ProvidersForUserReturn = AccountProvider[]
 export default async function get_oauth2_providers_for_user(
   {
     client,
+    signal,
   }: GetOauth2ProvidersForUserInput = {} as GetOauth2ProvidersForUserInput
 ): Promise<GetOauth2ProvidersForUserReturn> {
   const path = `/user/oauth2/providers`
@@ -43,10 +51,16 @@ export default async function get_oauth2_providers_for_user(
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
+    signal,
   }
   const _fetch = client?.fetch || fetch
-  const response = await _fetch(fullUrl, fetchOptions)
-  await throwIfNotOk(response)
-  const result = (await response.json()) as GetOauth2ProvidersForUserReturn
-  return result
+  const items = await collectApiList<GetOauth2ProvidersForUserReturn[number]>(
+    fullUrl,
+    async (pageUrl) => {
+      const response = await _fetch(pageUrl, fetchOptions)
+      await throwIfNotOk(response)
+      return response.json()
+    }
+  )
+  return items
 }

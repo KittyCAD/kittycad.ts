@@ -1,6 +1,8 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
+import { collectApiList } from '../../pagination.js'
+
 import { OrgDatasetSemanticSearchMatch, Uuid } from '../../models.js'
 
 interface SearchOrgDatasetSemanticInput {
@@ -8,6 +10,7 @@ interface SearchOrgDatasetSemanticInput {
   id: Uuid
   q: string
   limit?: number
+  signal?: AbortSignal
 }
 
 type SearchOrgDatasetSemanticReturn = OrgDatasetSemanticSearchMatch[]
@@ -17,10 +20,14 @@ type SearchOrgDatasetSemanticReturn = OrgDatasetSemanticSearchMatch[]
  *
  * This embeds the query text with the org-dataset embedding model and returns top chunk matches ranked by cosine similarity.
  *
+ * Accepts legacy collections or items/next_page responses and reads all pages.
+ * Rejects failed, malformed, or repeated pages without returning partial results.
+ *
  * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {AbortSignal} [signal] Cancel the entire list request.
  * @property {Uuid} id The identifier. (path)
  * @property {string} q Natural-language query text to embed and search. (query)
  * @property {number} limit Max number of matching chunks to return.
@@ -35,6 +42,7 @@ export default async function search_org_dataset_semantic({
   id,
   q,
   limit,
+  signal,
 }: SearchOrgDatasetSemanticInput): Promise<SearchOrgDatasetSemanticReturn> {
   const path = `/org/datasets/${id}/search/semantic`
   const qs = buildQuery({ q: q, limit: limit })
@@ -50,10 +58,16 @@ export default async function search_org_dataset_semantic({
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
+    signal,
   }
   const _fetch = client?.fetch || fetch
-  const response = await _fetch(fullUrl, fetchOptions)
-  await throwIfNotOk(response)
-  const result = (await response.json()) as SearchOrgDatasetSemanticReturn
-  return result
+  const items = await collectApiList<SearchOrgDatasetSemanticReturn[number]>(
+    fullUrl,
+    async (pageUrl) => {
+      const response = await _fetch(pageUrl, fetchOptions)
+      await throwIfNotOk(response)
+      return response.json()
+    }
+  )
+  return items
 }

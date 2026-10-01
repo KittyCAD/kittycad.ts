@@ -1044,5 +1044,5 @@ export type {
 } from './models.js'
 export { Client } from './client.js'
 export { ApiError } from './errors.js'
-export { Pager, createPager } from './pagination.js'
+export { Pager, createPager, collectApiList } from './pagination.js'
 export { WebRTC } from './webrtc.js'

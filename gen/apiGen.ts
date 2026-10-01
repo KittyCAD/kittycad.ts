@@ -623,6 +623,25 @@ export default async function apiGen(lookup: Record<string, string>) {
                   ? importedTypes.join(' | ')
                   : 'unknown'
           }`
+          // Keep legacy GET collection contracts while the server moves to
+          // Dropshot pages. Native ResultsPage endpoints keep explicit pagers.
+          const legacyListField =
+            importedTypes.length === 1 &&
+            importedTypes[0] === 'AnnouncementList'
+              ? 'announcements'
+              : undefined
+          const collectList =
+            operation.method === 'get' &&
+            !has204 &&
+            !returnTypeOverride &&
+            !pagerItemTypeName &&
+            importedTypes.length === 1 &&
+            (importedTypes[0].endsWith('[]') || !!legacyListField)
+          if (collectList) {
+            inputTypes.push('signal?: AbortSignal')
+            inputParams.push('signal')
+            paramRequiredMap['signal'] = false
+          }
           const paramsInterfaceName = `${pascalName}Input`
           const returnTypeName = `${pascalName}Return`
           const paramsInterface = `interface ${paramsInterfaceName} { ${inputTypes.join(
@@ -631,7 +650,11 @@ export default async function apiGen(lookup: Record<string, string>) {
           let paramsSignature = `{${inputParams
             .filter((a) => a)
             .join(', ')}}: ${paramsInterfaceName}`
-          if (inputParams.filter(Boolean).length === 1) {
+          if (
+            inputParams.filter(Boolean).length === 1 ||
+            (collectList &&
+              inputParams.every((name) => !paramRequiredMap[name]))
+          ) {
             paramsSignature += ` = {} as ${paramsInterfaceName}`
           }
           const importsModels = `import {${[
@@ -683,8 +706,14 @@ export default async function apiGen(lookup: Record<string, string>) {
               bodyTypeName,
               returnTypeName,
               importedReturnTypes: importedTypes,
+              collectList,
             }),
             noJsonResponse: has204,
+            collectList,
+            legacyListField,
+            collectItemType: legacyListField
+              ? `${returnTypeName}['${legacyListField}'][number]`
+              : `${returnTypeName}[number]`,
             pager: Boolean(pagerItemTypeName),
             pagerItemTypeName: pagerItemTypeName || 'unknown',
             pagerFnName: `${operationId}_pager`,
@@ -926,7 +955,7 @@ export default async function apiGen(lookup: Record<string, string>) {
   }
   indexFileString += `export { Client} from './client.js';\n`
   indexFileString += `export { ApiError } from './errors.js';\n`
-  indexFileString += `export { Pager, createPager } from './pagination.js';\n`
+  indexFileString += `export { Pager, createPager, collectApiList } from './pagination.js';\n`
   indexFileString += `export { WebRTC } from './webrtc.js';\n`
   await fsp.writeFile(`./src/index.ts`, indexFileString, 'utf8')
 
@@ -1061,6 +1090,7 @@ function buildOperationJsDoc(
     bodyTypeName?: string
     returnTypeName: string
     importedReturnTypes: string[]
+    collectList?: boolean
   }
 ): string {
   const lines: string[] = []
@@ -1069,11 +1099,23 @@ function buildOperationJsDoc(
   const tags = (spec.tags || []).join(', ')
   if (summary) lines.push(summary)
   if (desc) lines.push('', ...desc.split('\n'))
+  if (opts.collectList) {
+    lines.push(
+      '',
+      'Accepts legacy collections or items/next_page responses and reads all pages.',
+      'Rejects failed, malformed, or repeated pages without returning partial results.'
+    )
+  }
   if (tags) lines.push('', `Tags: ${tags}`)
 
   // Document the single params object with its properties
   lines.push('', '@param params Function parameters.')
   lines.push(`@property {Client} [client] Optional client with auth token.`)
+  if (opts.collectList) {
+    lines.push(
+      '@property {AbortSignal} [signal] Cancel the entire list request.'
+    )
+  }
   for (const p of opts.params || []) {
     const name = p.name
     const d = (p.description || '').toString().trim()

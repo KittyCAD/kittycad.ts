@@ -1,10 +1,13 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
+import { collectApiList } from '../../pagination.js'
+
 import { AnnouncementList } from '../../models.js'
 
 interface GetAnnouncementsInput {
   client?: Client
+  signal?: AbortSignal
 }
 
 type GetAnnouncementsReturn = AnnouncementList
@@ -14,16 +17,20 @@ type GetAnnouncementsReturn = AnnouncementList
  *
  * No authentication is required.
  *
+ * Accepts legacy collections or items/next_page responses and reads all pages.
+ * Rejects failed, malformed, or repeated pages without returning partial results.
+ *
  * Tags: meta
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {AbortSignal} [signal] Cancel the entire list request.
  * @returns {Promise<GetAnnouncementsReturn>} successful operation
  *
  * Possible return types: AnnouncementList
  */
 export default async function get_announcements(
-  { client }: GetAnnouncementsInput = {} as GetAnnouncementsInput
+  { client, signal }: GetAnnouncementsInput = {} as GetAnnouncementsInput
 ): Promise<GetAnnouncementsReturn> {
   const path = `/announcements`
   const qs = buildQuery({})
@@ -39,10 +46,19 @@ export default async function get_announcements(
   const fetchOptions: RequestInit = {
     method: 'GET',
     headers,
+    signal,
   }
   const _fetch = client?.fetch || fetch
-  const response = await _fetch(fullUrl, fetchOptions)
-  await throwIfNotOk(response)
-  const result = (await response.json()) as GetAnnouncementsReturn
-  return result
+  const items = await collectApiList<
+    GetAnnouncementsReturn['announcements'][number]
+  >(
+    fullUrl,
+    async (pageUrl) => {
+      const response = await _fetch(pageUrl, fetchOptions)
+      await throwIfNotOk(response)
+      return response.json()
+    },
+    'announcements'
+  )
+  return { announcements: items }
 }
