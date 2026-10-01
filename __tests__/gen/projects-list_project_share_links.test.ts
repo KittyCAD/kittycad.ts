@@ -5,9 +5,28 @@ const client = new Client()
 async function example() {
   const response = await projects.list_project_share_links({
     id: '00000000-0000-0000-0000-000000000000',
+    limit: 7,
+    page_token: 'string',
     client,
   })
   return response
+}
+
+// Pagination example (not executed in tests; for docs only)
+export async function example_pager() {
+  const pager = projects.list_project_share_links_pager({
+    id: '00000000-0000-0000-0000-000000000000',
+    limit: 7,
+    page_token: 'string',
+    client,
+  })
+  let total = 0
+  // Pull up to two pages just to illustrate usage
+  for (let i = 0; i < 2 && pager.hasNext(); i++) {
+    const items = await pager.next()
+    total += items.length
+  }
+  return total
 }
 
 describe('Testing projects.list_project_share_links', () => {

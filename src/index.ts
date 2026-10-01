@@ -48,14 +48,18 @@ import get_user_factory_job from './api/factory/get_user_factory_job.js'
 import get_user_factory_materials from './api/factory/get_user_factory_materials.js'
 import list_org_factory_jobs from './api/factory/list_org_factory_jobs.js'
 import list_user_factory_jobs from './api/factory/list_user_factory_jobs.js'
+import { get_user_factory_finishes_pager } from './api/factory/get_user_factory_finishes.js'
+import { get_user_factory_materials_pager } from './api/factory/get_user_factory_materials.js'
 import { list_org_factory_jobs_pager } from './api/factory/list_org_factory_jobs.js'
 import { list_user_factory_jobs_pager } from './api/factory/list_user_factory_jobs.js'
 export const factory = {
   create_user_factory_job,
   get_org_factory_job,
   get_user_factory_finishes,
+  get_user_factory_finishes_pager,
   get_user_factory_job,
   get_user_factory_materials,
+  get_user_factory_materials_pager,
   list_org_factory_jobs,
   list_org_factory_jobs_pager,
   list_user_factory_jobs,
@@ -221,6 +225,7 @@ import { get_org_shortlinks_pager } from './api/orgs/get_org_shortlinks.js'
 import { list_org_dataset_conversions_pager } from './api/orgs/list_org_dataset_conversions.js'
 import { list_org_datasets_pager } from './api/orgs/list_org_datasets.js'
 import { list_org_members_pager } from './api/orgs/list_org_members.js'
+import { list_org_skills_pager } from './api/orgs/list_org_skills.js'
 import { search_org_dataset_conversions_pager } from './api/orgs/search_org_dataset_conversions.js'
 export const orgs = {
   create_org,
@@ -250,6 +255,7 @@ export const orgs = {
   list_org_members,
   list_org_members_pager,
   list_org_skills,
+  list_org_skills_pager,
   org_dataset_s3_policies,
   retrigger_org_dataset,
   retrigger_org_dataset_conversion,
@@ -301,6 +307,8 @@ import validate_customer_tax_information_for_org from './api/payments/validate_c
 import validate_customer_tax_information_for_user from './api/payments/validate_customer_tax_information_for_user.js'
 import { list_invoices_for_org_pager } from './api/payments/list_invoices_for_org.js'
 import { list_invoices_for_user_pager } from './api/payments/list_invoices_for_user.js'
+import { list_payment_methods_for_org_pager } from './api/payments/list_payment_methods_for_org.js'
+import { list_payment_methods_for_user_pager } from './api/payments/list_payment_methods_for_user.js'
 export const payments = {
   create_org_subscription,
   create_payment_information_for_org,
@@ -325,7 +333,9 @@ export const payments = {
   list_invoices_for_user,
   list_invoices_for_user_pager,
   list_payment_methods_for_org,
+  list_payment_methods_for_org_pager,
   list_payment_methods_for_user,
+  list_payment_methods_for_user_pager,
   redirect_payment_method_portal_link_for_org,
   redirect_payment_method_portal_link_for_user,
   reset_org_usage_collection_threshold,
@@ -365,7 +375,9 @@ import list_public_projects from './api/projects/list_public_projects.js'
 import publish_project from './api/projects/publish_project.js'
 import update_project from './api/projects/update_project.js'
 import update_project_organization from './api/projects/update_project_organization.js'
+import { list_project_share_links_pager } from './api/projects/list_project_share_links.js'
 import { list_project_versions_pager } from './api/projects/list_project_versions.js'
+import { list_public_projects_pager } from './api/projects/list_public_projects.js'
 export const projects = {
   create_project,
   create_project_share_link,
@@ -385,10 +397,12 @@ export const projects = {
   get_public_project_thumbnail,
   list_project_categories,
   list_project_share_links,
+  list_project_share_links_pager,
   list_project_versions,
   list_project_versions_pager,
   list_projects,
   list_public_projects,
+  list_public_projects_pager,
   publish_project,
   update_project,
   update_project_organization,
@@ -685,6 +699,7 @@ export type {
   FaceGetPosition,
   FaceIsPlanar,
   FactoryCustomerCatalogOption,
+  FactoryCustomerCatalogOptionResultsPage,
   FactoryCustomerJobDetail,
   FactoryCustomerJobSummary,
   FactoryCustomerJobSummaryResultsPage,
@@ -826,6 +841,7 @@ export type {
   OrgMemberResultsPage,
   OrgRole,
   OrgSkillResponse,
+  OrgSkillResponseResultsPage,
   OrientToFace,
   OriginType,
   OutputFile,
@@ -844,6 +860,7 @@ export type {
   PaymentIntent,
   PaymentMethod,
   PaymentMethodCardChecks,
+  PaymentMethodResultsPage,
   PaymentMethodType,
   PerspectiveCameraParameters,
   PhysicalProperties,
@@ -869,6 +886,7 @@ export type {
   ProjectPublicationInfoResponse,
   ProjectResponse,
   ProjectShareLinkResponse,
+  ProjectShareLinkResponseResultsPage,
   ProjectSummaryResponse,
   ProjectVersionDetailResponse,
   ProjectVersionSummaryResponse,
@@ -877,6 +895,7 @@ export type {
   PublicMailingListMembershipRequest,
   PublicProjectOwnerResponse,
   PublicProjectResponse,
+  PublicProjectResponseResultsPage,
   PublicProjectVoteResponse,
   QueryEntityType,
   QueryEntityTypeWithPoint,
