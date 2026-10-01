@@ -1,13 +1,19 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { PublicProjectResponse } from '../../models.js'
+import {
+  PublicProjectResponseResultsPage,
+  PublicProjectResponse,
+} from '../../models.js'
 
 interface ListPublicProjectsInput {
   client?: Client
+  limit?: number
+  page_token?: string
 }
 
-type ListPublicProjectsReturn = PublicProjectResponse[]
+type ListPublicProjectsReturn = PublicProjectResponseResultsPage
 
 /**
  * List publicly visible community projects for the website/gallery.
@@ -16,15 +22,19 @@ type ListPublicProjectsReturn = PublicProjectResponse[]
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {number} limit Maximum number of items returned by a single call (query)
+ * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @returns {Promise<ListPublicProjectsReturn>} successful operation
  *
- * Possible return types: PublicProjectResponse[]
+ * Possible return types: PublicProjectResponseResultsPage
  */
-export default async function list_public_projects(
-  { client }: ListPublicProjectsInput = {} as ListPublicProjectsInput
-): Promise<ListPublicProjectsReturn> {
+export default async function list_public_projects({
+  client,
+  limit,
+  page_token,
+}: ListPublicProjectsInput): Promise<ListPublicProjectsReturn> {
   const path = `/projects/public`
-  const qs = buildQuery({})
+  const qs = buildQuery({ limit: limit, page_token: page_token })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -43,4 +53,18 @@ export default async function list_public_projects(
   await throwIfNotOk(response)
   const result = (await response.json()) as ListPublicProjectsReturn
   return result
+}
+
+export function list_public_projects_pager(
+  params: ListPublicProjectsInput
+): Pager<
+  ListPublicProjectsInput,
+  ListPublicProjectsReturn,
+  PublicProjectResponse
+> {
+  return createPager<
+    ListPublicProjectsInput,
+    ListPublicProjectsReturn,
+    PublicProjectResponse
+  >(list_public_projects, params, 'page_token')
 }

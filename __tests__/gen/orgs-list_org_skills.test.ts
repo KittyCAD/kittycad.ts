@@ -3,8 +3,28 @@ import { orgs, Client, ApiError } from '@kittycad/lib'
 const client = new Client()
 
 async function example() {
-  const response = await orgs.list_org_skills({ client })
+  const response = await orgs.list_org_skills({
+    limit: 7,
+    page_token: 'string',
+    client,
+  })
   return response
+}
+
+// Pagination example (not executed in tests; for docs only)
+export async function example_pager() {
+  const pager = orgs.list_org_skills_pager({
+    limit: 7,
+    page_token: 'string',
+    client,
+  })
+  let total = 0
+  // Pull up to two pages just to illustrate usage
+  for (let i = 0; i < 2 && pager.hasNext(); i++) {
+    const items = await pager.next()
+    total += items.length
+  }
+  return total
 }
 
 describe('Testing orgs.list_org_skills', () => {

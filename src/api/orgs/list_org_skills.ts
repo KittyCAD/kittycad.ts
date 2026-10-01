@@ -1,30 +1,37 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { OrgSkillResponse } from '../../models.js'
+import { OrgSkillResponseResultsPage, OrgSkillResponse } from '../../models.js'
 
 interface ListOrgSkillsInput {
   client?: Client
+  limit?: number
+  page_token?: string
 }
 
-type ListOrgSkillsReturn = OrgSkillResponse[]
+type ListOrgSkillsReturn = OrgSkillResponseResultsPage
 
 /**
- * List every skill that belongs to the caller's organization.
+ * List every skill that belongs to the caller's organization, ordered by name.
  *
  * Tags: orgs
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {number} limit Maximum number of items returned by a single call (query)
+ * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @returns {Promise<ListOrgSkillsReturn>} successful operation
  *
- * Possible return types: OrgSkillResponse[]
+ * Possible return types: OrgSkillResponseResultsPage
  */
-export default async function list_org_skills(
-  { client }: ListOrgSkillsInput = {} as ListOrgSkillsInput
-): Promise<ListOrgSkillsReturn> {
+export default async function list_org_skills({
+  client,
+  limit,
+  page_token,
+}: ListOrgSkillsInput): Promise<ListOrgSkillsReturn> {
   const path = `/org/skills`
-  const qs = buildQuery({})
+  const qs = buildQuery({ limit: limit, page_token: page_token })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -43,4 +50,14 @@ export default async function list_org_skills(
   await throwIfNotOk(response)
   const result = (await response.json()) as ListOrgSkillsReturn
   return result
+}
+
+export function list_org_skills_pager(
+  params: ListOrgSkillsInput
+): Pager<ListOrgSkillsInput, ListOrgSkillsReturn, OrgSkillResponse> {
+  return createPager<ListOrgSkillsInput, ListOrgSkillsReturn, OrgSkillResponse>(
+    list_org_skills,
+    params,
+    'page_token'
+  )
 }

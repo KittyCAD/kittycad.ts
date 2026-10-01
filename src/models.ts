@@ -2942,6 +2942,18 @@ export interface FactoryCustomerCatalogOption {
   name: string
 }
 
+export interface FactoryCustomerCatalogOptionResultsPage {
+  /** list of items on this page of results */
+  items: FactoryCustomerCatalogOption[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export interface FactoryCustomerJobDetail {
   /** nullable:true, description:The current version, if the job has one. */
   current_version?: FactoryCustomerJobVersion
@@ -9421,6 +9433,18 @@ export interface OrgSkillResponse {
   name: string
 }
 
+export interface OrgSkillResponseResultsPage {
+  /** list of items on this page of results */
+  items: OrgSkillResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export interface OrientToFace {
   /** Camera settings */
   settings: CameraSettings
@@ -9738,6 +9762,18 @@ export interface PaymentMethodCardChecks {
   cvc_check?: string
 }
 
+export interface PaymentMethodResultsPage {
+  /** list of items on this page of results */
+  items: PaymentMethod[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export type PaymentMethodType = 'card'
 
 export interface PerspectiveCameraParameters {
@@ -10046,6 +10082,18 @@ export interface ProjectShareLinkResponse {
   url: string
 }
 
+export interface ProjectShareLinkResponseResultsPage {
+  /** list of items on this page of results */
+  items: ProjectShareLinkResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export interface ProjectSummaryResponse {
   /** Effective project capabilities for the authenticated caller. */
   access: ProjectAccessResponse
@@ -10182,6 +10230,18 @@ export interface PublicProjectResponse {
   published_at: string
   /** Public project title. */
   title: string
+}
+
+export interface PublicProjectResponseResultsPage {
+  /** list of items on this page of results */
+  items: PublicProjectResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
 }
 
 export interface PublicProjectVoteResponse {
@@ -13067,6 +13127,7 @@ export interface Models {
   FaceGetPosition: FaceGetPosition
   FaceIsPlanar: FaceIsPlanar
   FactoryCustomerCatalogOption: FactoryCustomerCatalogOption
+  FactoryCustomerCatalogOptionResultsPage: FactoryCustomerCatalogOptionResultsPage
   FactoryCustomerJobDetail: FactoryCustomerJobDetail
   FactoryCustomerJobSummary: FactoryCustomerJobSummary
   FactoryCustomerJobSummaryResultsPage: FactoryCustomerJobSummaryResultsPage
@@ -13208,6 +13269,7 @@ export interface Models {
   OrgMemberResultsPage: OrgMemberResultsPage
   OrgRole: OrgRole
   OrgSkillResponse: OrgSkillResponse
+  OrgSkillResponseResultsPage: OrgSkillResponseResultsPage
   OrientToFace: OrientToFace
   OriginType: OriginType
   OutputFile: OutputFile
@@ -13226,6 +13288,7 @@ export interface Models {
   PaymentIntent: PaymentIntent
   PaymentMethod: PaymentMethod
   PaymentMethodCardChecks: PaymentMethodCardChecks
+  PaymentMethodResultsPage: PaymentMethodResultsPage
   PaymentMethodType: PaymentMethodType
   PerspectiveCameraParameters: PerspectiveCameraParameters
   PhysicalProperties: PhysicalProperties
@@ -13251,6 +13314,7 @@ export interface Models {
   ProjectPublicationInfoResponse: ProjectPublicationInfoResponse
   ProjectResponse: ProjectResponse
   ProjectShareLinkResponse: ProjectShareLinkResponse
+  ProjectShareLinkResponseResultsPage: ProjectShareLinkResponseResultsPage
   ProjectSummaryResponse: ProjectSummaryResponse
   ProjectVersionDetailResponse: ProjectVersionDetailResponse
   ProjectVersionSummaryResponse: ProjectVersionSummaryResponse
@@ -13259,6 +13323,7 @@ export interface Models {
   PublicMailingListMembershipRequest: PublicMailingListMembershipRequest
   PublicProjectOwnerResponse: PublicProjectOwnerResponse
   PublicProjectResponse: PublicProjectResponse
+  PublicProjectResponseResultsPage: PublicProjectResponseResultsPage
   PublicProjectVoteResponse: PublicProjectVoteResponse
   QueryEntityType: QueryEntityType
   QueryEntityTypeWithPoint: QueryEntityTypeWithPoint
