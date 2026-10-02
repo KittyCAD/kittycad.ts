@@ -66,6 +66,7 @@ export const factory = {
   list_user_factory_jobs_pager,
 }
 
+import create_file_bounding_box from './api/file/create_file_bounding_box.js'
 import create_file_center_of_mass from './api/file/create_file_center_of_mass.js'
 import create_file_conversion from './api/file/create_file_conversion.js'
 import create_file_conversion_options from './api/file/create_file_conversion_options.js'
@@ -74,6 +75,7 @@ import create_file_mass from './api/file/create_file_mass.js'
 import create_file_surface_area from './api/file/create_file_surface_area.js'
 import create_file_volume from './api/file/create_file_volume.js'
 export const file = {
+  create_file_bounding_box,
   create_file_center_of_mass,
   create_file_conversion,
   create_file_conversion_options,
@@ -708,6 +710,7 @@ export type {
   FailureWebSocketResponse,
   FbxStorage,
   Feature,
+  FileBoundingBox,
   FileCenterOfMass,
   FileConversion,
   FileDensity,

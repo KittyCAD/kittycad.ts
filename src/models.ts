@@ -1015,6 +1015,52 @@ This is the same as the API call ID. */
       /**
        * {
        *   "nullable": true,
+       *   "description": "The resulting axis-aligned bounding box in the KittyCAD coordinate system (+Z up, -Y forward)."
+       * }
+       */
+      bounding_box?: BoundingBox
+      /**
+       * {
+       *   "nullable": true,
+       *   "title": "DateTime",
+       *   "format": "date-time",
+       *   "description": "The time and date the API call was completed."
+       * }
+       */
+      completed_at?: string
+      /** title:DateTime, format:date-time, description:The time and date the API call was created. */
+      created_at: string
+      /** nullable:true, description:The error the function returned, if any. */
+      error?: string
+      /** The unique identifier of the API call.
+
+This is the same as the API call ID. */
+      id: Uuid
+      /** The output unit for the bounding box. */
+      output_unit: UnitLength
+      /** The source format of the file. */
+      src_format: FileImportFormat
+      /**
+       * {
+       *   "nullable": true,
+       *   "title": "DateTime",
+       *   "format": "date-time",
+       *   "description": "The time and date the API call was started."
+       * }
+       */
+      started_at?: string
+      /** The status of the API call. */
+      status: ApiCallStatus
+      type: 'file_bounding_box'
+      /** title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+      updated_at: string
+      /** The user ID of the user who created the API call. */
+      user_id: Uuid
+    }
+  | {
+      /**
+       * {
+       *   "nullable": true,
        *   "description": "The code for the model. This is optional but will be required in the future once we are at v1."
        * }
        */
@@ -3058,6 +3104,52 @@ export type Feature =
   | 'unsafe_allow_api_key_auth'
   | 'unsafe_allow_localhost_shortlinks'
   | 'zoo_corp_auth'
+
+export interface FileBoundingBox {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The resulting axis-aligned bounding box in the KittyCAD coordinate system (+Z up, -Y forward)."
+   * }
+   */
+  bounding_box?: BoundingBox
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The time and date the API call was completed."
+   * }
+   */
+  completed_at?: string
+  /** title:DateTime, format:date-time, description:The time and date the API call was created. */
+  created_at: string
+  /** nullable:true, description:The error the function returned, if any. */
+  error?: string
+  /** The unique identifier of the API call.
+
+This is the same as the API call ID. */
+  id: Uuid
+  /** The output unit for the bounding box. */
+  output_unit: UnitLength
+  /** The source format of the file. */
+  src_format: FileImportFormat
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "The time and date the API call was started."
+   * }
+   */
+  started_at?: string
+  /** The status of the API call. */
+  status: ApiCallStatus
+  /** title:DateTime, format:date-time, description:The time and date the API call was last updated. */
+  updated_at: string
+  /** The user ID of the user who created the API call. */
+  user_id: Uuid
+}
 
 export interface FileCenterOfMass {
   /**
@@ -13136,6 +13228,7 @@ export interface Models {
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage
   Feature: Feature
+  FileBoundingBox: FileBoundingBox
   FileCenterOfMass: FileCenterOfMass
   FileConversion: FileConversion
   FileDensity: FileDensity
