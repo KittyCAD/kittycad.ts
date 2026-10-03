@@ -129,6 +129,36 @@ describe('generated public pager fails closed', () => {
     expect(requests).toHaveLength(1)
   })
 
+  it('allows repeated items when the continuation advances', async () => {
+    const requests: Request[] = []
+    const client = clientWithResponses(
+      [response(firstPage), response({ items: [item], next_page: null })],
+      requests
+    )
+    const pager = get_user_factory_materials_pager({ client })
+    expect(await pager.next()).toEqual([item])
+    expect(await pager.next()).toEqual([item])
+    expect(pager.hasNext()).toBe(false)
+    expect(requests).toHaveLength(2)
+  })
+
+  it('rejects a multi-page cycle within one traversal', async () => {
+    const requests: Request[] = []
+    const client = clientWithResponses(
+      [
+        response(firstPage),
+        response({ items: [item], next_page: 'third-page' }),
+        response({ items: [item], next_page: 'next-page' }),
+      ],
+      requests
+    )
+    const pager = get_user_factory_materials_pager({ client })
+    expect(await pager.next()).toEqual([item])
+    expect(await pager.next()).toEqual([item])
+    await expect(pager.next()).rejects.toThrow(/page token/)
+    expect(requests).toHaveLength(3)
+  })
+
   it('does not advance after a failed request and permits retry', async () => {
     const requests: Request[] = []
     const client = clientWithResponses(

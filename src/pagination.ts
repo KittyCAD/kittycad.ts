@@ -3,9 +3,21 @@ export interface PageWithItems<Item> {
   next_page?: string | null
 }
 
+function hasPageFields<Item>(
+  page: PageWithItems<Item>
+): page is PageWithItems<Item> & { items: Item[] } {
+  return (
+    page !== null &&
+    typeof page === 'object' &&
+    Object.hasOwn(page, 'items') &&
+    Array.isArray(page.items) &&
+    Object.hasOwn(page, 'next_page')
+  )
+}
+
 export class Pager<P extends object, Page extends PageWithItems<Item>, Item> {
   private readonly fetchPage: (params: P) => Promise<Page>
-  private readonly baseParams: P
+  private readonly baseParams: P & { page_token?: unknown }
   private readonly tokenField: keyof P | 'page_token'
 
   private started = false
@@ -31,7 +43,7 @@ export class Pager<P extends object, Page extends PageWithItems<Item>, Item> {
     this.started = false
     this.nextToken = undefined
     this.seenTokens.clear()
-    const initialToken: unknown = Reflect.get(this.baseParams, this.tokenField)
+    const initialToken = this.baseParams[this.tokenField]
     if (typeof initialToken === 'string') this.seenTokens.add(initialToken)
   }
 
@@ -45,13 +57,7 @@ export class Pager<P extends object, Page extends PageWithItems<Item>, Item> {
         : { ...this.baseParams }
 
     const page = await this.fetchPage(params)
-    if (
-      page === null ||
-      typeof page !== 'object' ||
-      !Object.hasOwn(page, 'items') ||
-      !Array.isArray(page.items) ||
-      !Object.hasOwn(page, 'next_page')
-    ) {
+    if (!hasPageFields(page)) {
       throw new TypeError(
         'Invalid paginated response: expected items and next_page'
       )
@@ -63,6 +69,8 @@ export class Pager<P extends object, Page extends PageWithItems<Item>, Item> {
           'Invalid paginated response: invalid next_page token'
         )
       }
+      // A retry may request the same token again. A successful page pointing
+      // back within this traversal would cycle instead of making progress.
       if (this.seenTokens.has(nextToken)) {
         throw new Error('Paginated response repeated a page token')
       }
