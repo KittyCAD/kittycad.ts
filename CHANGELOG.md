@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## v4.5.13
+
+### Fixed
+
+- Pagination helpers now reject malformed page envelopes and missing, blank, or
+  repeated continuation tokens instead of silently returning partial results or
+  refetching the same page. Legacy arrays are not accepted. Empty pages with a
+  valid continuation still advance, and `reset()` preserves the initial cursor.
+
+### Caller guidance
+
+Collect every page before publishing a complete catalog. If `next()` rejects,
+propagate that failure rather than exposing previously collected items as a
+complete result. HTTP and authentication errors continue to propagate.
+
 ## v3.0.0
 
 ### Features
