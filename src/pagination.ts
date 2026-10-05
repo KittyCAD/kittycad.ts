@@ -10,8 +10,7 @@ function hasPageFields<Item>(
     page !== null &&
     typeof page === 'object' &&
     Object.hasOwn(page, 'items') &&
-    Array.isArray(page.items) &&
-    Object.hasOwn(page, 'next_page')
+    Array.isArray(page.items)
   )
 }
 
@@ -58,11 +57,9 @@ export class Pager<P extends object, Page extends PageWithItems<Item>, Item> {
 
     const page = await this.fetchPage(params)
     if (!hasPageFields(page)) {
-      throw new TypeError(
-        'Invalid paginated response: expected items and next_page'
-      )
+      throw new TypeError('Invalid paginated response: expected an items array')
     }
-    const nextToken = page.next_page
+    const nextToken = page.next_page ?? null
     if (nextToken !== null) {
       if (typeof nextToken !== 'string' || !nextToken.trim()) {
         throw new TypeError(
