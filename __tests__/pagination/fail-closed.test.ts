@@ -36,12 +36,64 @@ const invalidPages = [
   { name: 'missing items', body: { next_page: null } },
   { name: 'null items', body: { items: null, next_page: null } },
   { name: 'non-array items', body: { items: {}, next_page: null } },
-  { name: 'missing cursor', body: { items: [item] } },
   { name: 'empty cursor', body: { items: [item], next_page: '' } },
   { name: 'whitespace cursor', body: { items: [item], next_page: ' ' } },
   { name: 'non-string cursor', body: { items: [item], next_page: 3 } },
   { name: 'repeated cursor', body: { items: [item], next_page: 'next-page' } },
 ]
+
+const terminalPages = [
+  { name: 'empty page without a cursor', body: { items: [] }, items: [] },
+  {
+    name: 'nonempty page without a cursor',
+    body: { items: [item] },
+    items: [item],
+  },
+  {
+    name: 'empty page with a null cursor',
+    body: { items: [], next_page: null },
+    items: [],
+  },
+  {
+    name: 'nonempty page with a null cursor',
+    body: { items: [item], next_page: null },
+    items: [item],
+  },
+]
+
+describe('generated public pager accepts terminal pages', () => {
+  it.each(terminalPages)(
+    'finishes an initial $name',
+    async ({ body, items }) => {
+      const requests: Request[] = []
+      const client = clientWithResponses([response(body)], requests)
+      const pager = get_user_factory_materials_pager({ client })
+      expect(pager.hasNext()).toBe(true)
+      expect(await pager.next()).toEqual(items)
+      expect(pager.hasNext()).toBe(false)
+      expect(await pager.next()).toEqual([])
+      expect(requests).toHaveLength(1)
+    }
+  )
+
+  it.each(terminalPages)('finishes a later $name', async ({ body, items }) => {
+    const requests: Request[] = []
+    const client = clientWithResponses(
+      [response(firstPage), response(body)],
+      requests
+    )
+    const pager = get_user_factory_materials_pager({ client })
+    expect(await pager.next()).toEqual([item])
+    expect(pager.hasNext()).toBe(true)
+    expect(await pager.next()).toEqual(items)
+    expect(pager.hasNext()).toBe(false)
+    expect(await pager.next()).toEqual([])
+    expect(requests).toHaveLength(2)
+    expect(new URL(requests[1].url).searchParams.get('page_token')).toBe(
+      'next-page'
+    )
+  })
+})
 
 describe('generated public pager fails closed', () => {
   it.each(invalidPages)(
