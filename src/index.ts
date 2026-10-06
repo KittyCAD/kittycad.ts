@@ -91,9 +91,11 @@ import get_ipinfo from './api/meta/get_ipinfo.js'
 import get_pricing_subscriptions from './api/meta/get_pricing_subscriptions.js'
 import get_schema from './api/meta/get_schema.js'
 import ping from './api/meta/ping.js'
+import { get_announcements_pager } from './api/meta/get_announcements.js'
 export const meta = {
   community_sso,
   get_announcements,
+  get_announcements_pager,
   get_ipinfo,
   get_pricing_subscriptions,
   get_schema,
@@ -355,6 +357,7 @@ export const payments = {
 
 import create_project from './api/projects/create_project.js'
 import create_project_share_link from './api/projects/create_project_share_link.js'
+import create_project_version from './api/projects/create_project_version.js'
 import create_public_project_vote from './api/projects/create_public_project_vote.js'
 import delete_project from './api/projects/delete_project.js'
 import delete_project_organization from './api/projects/delete_project_organization.js'
@@ -377,12 +380,15 @@ import list_public_projects from './api/projects/list_public_projects.js'
 import publish_project from './api/projects/publish_project.js'
 import update_project from './api/projects/update_project.js'
 import update_project_organization from './api/projects/update_project_organization.js'
+import { list_project_categories_pager } from './api/projects/list_project_categories.js'
 import { list_project_share_links_pager } from './api/projects/list_project_share_links.js'
 import { list_project_versions_pager } from './api/projects/list_project_versions.js'
+import { list_projects_pager } from './api/projects/list_projects.js'
 import { list_public_projects_pager } from './api/projects/list_public_projects.js'
 export const projects = {
   create_project,
   create_project_share_link,
+  create_project_version,
   create_public_project_vote,
   delete_project,
   delete_project_organization,
@@ -398,11 +404,13 @@ export const projects = {
   get_public_project,
   get_public_project_thumbnail,
   list_project_categories,
+  list_project_categories_pager,
   list_project_share_links,
   list_project_share_links_pager,
   list_project_versions,
   list_project_versions_pager,
   list_projects,
+  list_projects_pager,
   list_public_projects,
   list_public_projects_pager,
   publish_project,
@@ -536,7 +544,7 @@ export type {
   AnnotationTextOptions,
   AnnotationType,
   Announcement,
-  AnnouncementList,
+  AnnouncementResultsPage,
   ApiCallStatus,
   ApiCallWithPrice,
   ApiCallWithPriceResultsPage,
@@ -604,6 +612,7 @@ export type {
   CreateOrgDataset,
   CreatePlanarSurface,
   CreateProjectShareLinkRequest,
+  CreateProjectVersionResponse,
   CreateRegion,
   CreateRegionFromQueryPoint,
   CreateShortlinkRequest,
@@ -883,6 +892,7 @@ export type {
   ProjectAccessScope,
   ProjectArchiveFormat,
   ProjectCategoryResponse,
+  ProjectCategoryResponseResultsPage,
   ProjectEntityToPlane,
   ProjectFileResponse,
   ProjectPointsToPlane,
@@ -891,6 +901,7 @@ export type {
   ProjectShareLinkResponse,
   ProjectShareLinkResponseResultsPage,
   ProjectSummaryResponse,
+  ProjectSummaryResponseResultsPage,
   ProjectVersionDetailResponse,
   ProjectVersionSummaryResponse,
   ProjectVersionSummaryResponseResultsPage,

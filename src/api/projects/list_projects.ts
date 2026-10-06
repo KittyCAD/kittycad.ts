@@ -1,13 +1,19 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
+import { Pager, createPager } from '../../pagination.js'
 
-import { ProjectSummaryResponse } from '../../models.js'
+import {
+  ProjectSummaryResponseResultsPage,
+  ProjectSummaryResponse,
+} from '../../models.js'
 
 interface ListProjectsInput {
   client?: Client
+  limit?: number
+  page_token?: string
 }
 
-type ListProjectsReturn = ProjectSummaryResponse[]
+type ListProjectsReturn = ProjectSummaryResponseResultsPage
 
 /**
  * List the authenticated user's projects.
@@ -16,15 +22,19 @@ type ListProjectsReturn = ProjectSummaryResponse[]
  *
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
+ * @property {number} limit Maximum number of items returned by a single call (query)
+ * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
  * @returns {Promise<ListProjectsReturn>} successful operation
  *
- * Possible return types: ProjectSummaryResponse[]
+ * Possible return types: ProjectSummaryResponseResultsPage
  */
-export default async function list_projects(
-  { client }: ListProjectsInput = {} as ListProjectsInput
-): Promise<ListProjectsReturn> {
+export default async function list_projects({
+  client,
+  limit,
+  page_token,
+}: ListProjectsInput): Promise<ListProjectsReturn> {
   const path = `/user/projects`
-  const qs = buildQuery({})
+  const qs = buildQuery({ limit: limit, page_token: page_token })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -43,4 +53,14 @@ export default async function list_projects(
   await throwIfNotOk(response)
   const result = (await response.json()) as ListProjectsReturn
   return result
+}
+
+export function list_projects_pager(
+  params: ListProjectsInput
+): Pager<ListProjectsInput, ListProjectsReturn, ProjectSummaryResponse> {
+  return createPager<
+    ListProjectsInput,
+    ListProjectsReturn,
+    ProjectSummaryResponse
+  >(list_projects, params, 'page_token')
 }
