@@ -560,9 +560,16 @@ export interface Announcement {
   updated_at: string
 }
 
-export interface AnnouncementList {
-  /** The list of active announcements. */
-  announcements: Announcement[]
+export interface AnnouncementResultsPage {
+  /** list of items on this page of results */
+  items: Announcement[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
 }
 
 export type ApiCallStatus =
@@ -1973,6 +1980,13 @@ export interface CreateProjectShareLinkRequest {
   access_mode?: KclProjectShareLinkAccessMode
 }
 
+export interface CreateProjectVersionResponse {
+  /** Project's current version when this response was prepared. */
+  current_version_id: Uuid
+  /** Version created by this save or returned by a retry. */
+  version_id: Uuid
+}
+
 export interface CreateRegion {
   region_mapping: {
     [key: string]: /**
@@ -3071,10 +3085,8 @@ export type Feature =
   | 'auth_restricted_to_employees'
   | 'big_query_telemetry'
   | 'billing'
-  | 'cpu_engine_pool'
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
-  | 'engine_manager_quarantine'
   | 'execution_jobs'
   | 'enable_z0006_lint'
   | 'factory_portal'
@@ -4234,6 +4246,13 @@ export type KclMigrationServerMessage =
        */
       operation: KclMigrationOperation
       type: 'operation'
+    }
+  | {
+      /** Existing Copilot display message. Never dispatch it as a project edit. */
+      message: MlCopilotServerMessage
+      /** The initiating request ID, used to keep progress with its migration. */
+      operation_id: Uuid
+      type: 'progress'
     }
   | { detail: string; type: 'error' }
   | { type: 'pong' }
@@ -10050,6 +10069,18 @@ export interface ProjectCategoryResponse {
   sort_order: number
 }
 
+export interface ProjectCategoryResponseResultsPage {
+  /** list of items on this page of results */
+  items: ProjectCategoryResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export interface ProjectEntityToPlane {
   /** Projected points. */
   projected_points: Point3d[]
@@ -10220,6 +10251,18 @@ export interface ProjectSummaryResponse {
   title: string
   /** title:DateTime, format:date-time, description:When the project row was last updated. */
   updated_at: string
+}
+
+export interface ProjectSummaryResponseResultsPage {
+  /** list of items on this page of results */
+  items: ProjectSummaryResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
 }
 
 export interface ProjectVersionDetailResponse {
@@ -13054,7 +13097,7 @@ export interface Models {
   AnnotationTextOptions: AnnotationTextOptions
   AnnotationType: AnnotationType
   Announcement: Announcement
-  AnnouncementList: AnnouncementList
+  AnnouncementResultsPage: AnnouncementResultsPage
   ApiCallStatus: ApiCallStatus
   ApiCallWithPrice: ApiCallWithPrice
   ApiCallWithPriceResultsPage: ApiCallWithPriceResultsPage
@@ -13122,6 +13165,7 @@ export interface Models {
   CreateOrgDataset: CreateOrgDataset
   CreatePlanarSurface: CreatePlanarSurface
   CreateProjectShareLinkRequest: CreateProjectShareLinkRequest
+  CreateProjectVersionResponse: CreateProjectVersionResponse
   CreateRegion: CreateRegion
   CreateRegionFromQueryPoint: CreateRegionFromQueryPoint
   CreateShortlinkRequest: CreateShortlinkRequest
@@ -13401,6 +13445,7 @@ export interface Models {
   ProjectAccessScope: ProjectAccessScope
   ProjectArchiveFormat: ProjectArchiveFormat
   ProjectCategoryResponse: ProjectCategoryResponse
+  ProjectCategoryResponseResultsPage: ProjectCategoryResponseResultsPage
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectFileResponse: ProjectFileResponse
   ProjectPointsToPlane: ProjectPointsToPlane
@@ -13409,6 +13454,7 @@ export interface Models {
   ProjectShareLinkResponse: ProjectShareLinkResponse
   ProjectShareLinkResponseResultsPage: ProjectShareLinkResponseResultsPage
   ProjectSummaryResponse: ProjectSummaryResponse
+  ProjectSummaryResponseResultsPage: ProjectSummaryResponseResultsPage
   ProjectVersionDetailResponse: ProjectVersionDetailResponse
   ProjectVersionSummaryResponse: ProjectVersionSummaryResponse
   ProjectVersionSummaryResponseResultsPage: ProjectVersionSummaryResponseResultsPage
