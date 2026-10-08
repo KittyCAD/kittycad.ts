@@ -91,11 +91,9 @@ import get_ipinfo from './api/meta/get_ipinfo.js'
 import get_pricing_subscriptions from './api/meta/get_pricing_subscriptions.js'
 import get_schema from './api/meta/get_schema.js'
 import ping from './api/meta/ping.js'
-import { get_announcements_pager } from './api/meta/get_announcements.js'
 export const meta = {
   community_sso,
   get_announcements,
-  get_announcements_pager,
   get_ipinfo,
   get_pricing_subscriptions,
   get_schema,
@@ -380,10 +378,8 @@ import list_public_projects from './api/projects/list_public_projects.js'
 import publish_project from './api/projects/publish_project.js'
 import update_project from './api/projects/update_project.js'
 import update_project_organization from './api/projects/update_project_organization.js'
-import { list_project_categories_pager } from './api/projects/list_project_categories.js'
 import { list_project_share_links_pager } from './api/projects/list_project_share_links.js'
 import { list_project_versions_pager } from './api/projects/list_project_versions.js'
-import { list_projects_pager } from './api/projects/list_projects.js'
 import { list_public_projects_pager } from './api/projects/list_public_projects.js'
 export const projects = {
   create_project,
@@ -404,13 +400,11 @@ export const projects = {
   get_public_project,
   get_public_project_thumbnail,
   list_project_categories,
-  list_project_categories_pager,
   list_project_share_links,
   list_project_share_links_pager,
   list_project_versions,
   list_project_versions_pager,
   list_projects,
-  list_projects_pager,
   list_public_projects,
   list_public_projects_pager,
   publish_project,
@@ -544,7 +538,7 @@ export type {
   AnnotationTextOptions,
   AnnotationType,
   Announcement,
-  AnnouncementResultsPage,
+  AnnouncementList,
   ApiCallStatus,
   ApiCallWithPrice,
   ApiCallWithPriceResultsPage,
@@ -756,7 +750,10 @@ export type {
   KclCodeCompletionParams,
   KclCodeCompletionRequest,
   KclCodeCompletionResponse,
+  KclMigrationApplication,
+  KclMigrationApplicationStatus,
   KclMigrationClientMessage,
+  KclMigrationHistoryEntry,
   KclMigrationOperation,
   KclMigrationRequest,
   KclMigrationResult,
@@ -892,7 +889,6 @@ export type {
   ProjectAccessScope,
   ProjectArchiveFormat,
   ProjectCategoryResponse,
-  ProjectCategoryResponseResultsPage,
   ProjectEntityToPlane,
   ProjectFileResponse,
   ProjectPointsToPlane,
@@ -901,7 +897,6 @@ export type {
   ProjectShareLinkResponse,
   ProjectShareLinkResponseResultsPage,
   ProjectSummaryResponse,
-  ProjectSummaryResponseResultsPage,
   ProjectVersionDetailResponse,
   ProjectVersionSummaryResponse,
   ProjectVersionSummaryResponseResultsPage,
@@ -1016,6 +1011,7 @@ export type {
   TextToCadMultiFileIterationBody,
   TextToCadResponse,
   TextToCadResponseResultsPage,
+  ToggleGraphics,
   TokenRevokeRequestForm,
   Tolerance,
   Transform,
