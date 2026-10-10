@@ -560,16 +560,9 @@ export interface Announcement {
   updated_at: string
 }
 
-export interface AnnouncementResultsPage {
-  /** list of items on this page of results */
-  items: Announcement[]
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
-   * }
-   */
-  next_page?: string
+export interface AnnouncementList {
+  /** The list of active announcements. */
+  announcements: Announcement[]
 }
 
 export type ApiCallStatus =
@@ -3091,7 +3084,6 @@ export type Feature =
   | 'enable_z0006_lint'
   | 'factory_portal'
   | 'kcl_cek_executor'
-  | 'kcl_new_lexer_parser'
   | 'redirect_to_govcloud'
   | 'require_saml_auth'
   | 'local_dev'
@@ -4129,6 +4121,21 @@ export interface KclCodeCompletionResponse {
   completions: string[]
 }
 
+export interface KclMigrationApplication {
+  /**
+   * {
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "Starts at zero. Each accepted state change increments it once."
+   * }
+   */
+  revision: number
+  /** Last reported state; not independent verification of local files. */
+  status: KclMigrationApplicationStatus
+}
+
+export type KclMigrationApplicationStatus = 'not_applied' | 'applied' | 'undone'
+
 export type KclMigrationClientMessage =
   | { headers: { [key: string]: string }; type: 'headers' }
   | {
@@ -4158,7 +4165,68 @@ export type KclMigrationClientMessage =
       operation_id: Uuid
       type: 'cancel'
     }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Uuid"
+       * }
+       */
+      conversation_id: Uuid
+      type: 'history'
+    }
+  | {
+      /**
+       * {
+       *   "format": "uint32",
+       *   "minimum": 0,
+       *   "description": "The revision read before making the local change. Retrying is idempotent."
+       * }
+       */
+      expected_revision: number
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Uuid"
+       * }
+       */
+      operation_id: Uuid
+      /**
+       * {
+       *   "$ref": "#/components/schemas/KclMigrationApplicationStatus"
+       * }
+       */
+      status: KclMigrationApplicationStatus
+      type: 'application'
+    }
   | { type: 'ping' }
+
+export interface KclMigrationHistoryEntry {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Place this entry after this ordinary prompt when replaying the conversation."
+   * }
+   */
+  after_prompt_id?: Uuid
+  /** Most recent client acknowledgement. */
+  application: KclMigrationApplication
+  /** Conversation that owns this entry. */
+  conversation_id: Uuid
+  /** format:date-time, description:Admission time, used for chronological display. */
+  created_at: string
+  /** Outcome summary for display and subsequent model context. */
+  detail: string
+  /** Migration request ID. Use the status command to retrieve a candidate explicitly. */
+  operation_id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Persisted Copilot prompt, when this migration has a conversation transcript."
+   * }
+   */
+  prompt_id?: Uuid
+  /** Conversion outcome. Success alone does not mean files were applied. */
+  status: KclMigrationStatus
+}
 
 export interface KclMigrationOperation {
   /**
@@ -4188,6 +4256,13 @@ export interface KclMigrationOperation {
 export interface KclMigrationRequest {
   /** default:false, description:Explicit consent to unstable preview semantics. */
   allow_preview?: boolean
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Existing customer conversation to link and use as background context. API verifies ownership; migration keeps its own sponsored execution record."
+   * }
+   */
+  conversation_id?: Uuid
   current_files: {
     [key: string]: /**
      * {
@@ -4254,6 +4329,31 @@ export type KclMigrationServerMessage =
       operation_id: Uuid
       type: 'progress'
     }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Uuid"
+       * }
+       */
+      conversation_id: Uuid
+      entries: KclMigrationHistoryEntry[]
+      type: 'history'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/KclMigrationApplication"
+       * }
+       */
+      application: KclMigrationApplication
+      /**
+       * {
+       *   "$ref": "#/components/schemas/Uuid"
+       * }
+       */
+      operation_id: Uuid
+      type: 'application'
+    }
   | { detail: string; type: 'error' }
   | { type: 'pong' }
 
@@ -4319,7 +4419,7 @@ export type KclProjectVersionAncestryStatus =
   | 'recorded'
   | 'legacy_unknown'
 
-export type KclVersion = '1.0' | '2.0' | '3.0-preview' | '3.0'
+export type KclVersion = '1.0' | '2.0' | '3.0-preview' | '3.0' | '4.0-preview'
 
 export type LengthUnit = number
 
@@ -7097,6 +7197,11 @@ export type ModelingCmd =
       version?: RegionVersion
     }
   | {
+      /** Should graphics be enabled? */
+      graphics_enabled: boolean
+      type: 'toggle_graphics'
+    }
+  | {
       /**
        * {
        *   "format": "uuid"
@@ -8821,6 +8926,15 @@ export type OkModelingCmdResponse =
   | {
       /**
        * {
+       *   "$ref": "#/components/schemas/ToggleGraphics"
+       * }
+       */
+      data: ToggleGraphics
+      type: 'toggle_graphics'
+    }
+  | {
+      /**
+       * {
        *   "$ref": "#/components/schemas/CreatePlanarSurface"
        * }
        */
@@ -10069,18 +10183,6 @@ export interface ProjectCategoryResponse {
   sort_order: number
 }
 
-export interface ProjectCategoryResponseResultsPage {
-  /** list of items on this page of results */
-  items: ProjectCategoryResponse[]
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
-   * }
-   */
-  next_page?: string
-}
-
 export interface ProjectEntityToPlane {
   /** Projected points. */
   projected_points: Point3d[]
@@ -10251,18 +10353,6 @@ export interface ProjectSummaryResponse {
   title: string
   /** title:DateTime, format:date-time, description:When the project row was last updated. */
   updated_at: string
-}
-
-export interface ProjectSummaryResponseResultsPage {
-  /** list of items on this page of results */
-  items: ProjectSummaryResponse[]
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
-   * }
-   */
-  next_page?: string
 }
 
 export interface ProjectVersionDetailResponse {
@@ -11407,6 +11497,8 @@ export interface TextToCadResponseResultsPage {
    */
   next_page?: string
 }
+
+export interface ToggleGraphics {} /* Empty object */
 
 export interface TokenRevokeRequestForm {
   /** format:uuid, description:The client ID. */
@@ -13097,7 +13189,7 @@ export interface Models {
   AnnotationTextOptions: AnnotationTextOptions
   AnnotationType: AnnotationType
   Announcement: Announcement
-  AnnouncementResultsPage: AnnouncementResultsPage
+  AnnouncementList: AnnouncementList
   ApiCallStatus: ApiCallStatus
   ApiCallWithPrice: ApiCallWithPrice
   ApiCallWithPriceResultsPage: ApiCallWithPriceResultsPage
@@ -13309,7 +13401,10 @@ export interface Models {
   KclCodeCompletionParams: KclCodeCompletionParams
   KclCodeCompletionRequest: KclCodeCompletionRequest
   KclCodeCompletionResponse: KclCodeCompletionResponse
+  KclMigrationApplication: KclMigrationApplication
+  KclMigrationApplicationStatus: KclMigrationApplicationStatus
   KclMigrationClientMessage: KclMigrationClientMessage
+  KclMigrationHistoryEntry: KclMigrationHistoryEntry
   KclMigrationOperation: KclMigrationOperation
   KclMigrationRequest: KclMigrationRequest
   KclMigrationResult: KclMigrationResult
@@ -13445,7 +13540,6 @@ export interface Models {
   ProjectAccessScope: ProjectAccessScope
   ProjectArchiveFormat: ProjectArchiveFormat
   ProjectCategoryResponse: ProjectCategoryResponse
-  ProjectCategoryResponseResultsPage: ProjectCategoryResponseResultsPage
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectFileResponse: ProjectFileResponse
   ProjectPointsToPlane: ProjectPointsToPlane
@@ -13454,7 +13548,6 @@ export interface Models {
   ProjectShareLinkResponse: ProjectShareLinkResponse
   ProjectShareLinkResponseResultsPage: ProjectShareLinkResponseResultsPage
   ProjectSummaryResponse: ProjectSummaryResponse
-  ProjectSummaryResponseResultsPage: ProjectSummaryResponseResultsPage
   ProjectVersionDetailResponse: ProjectVersionDetailResponse
   ProjectVersionSummaryResponse: ProjectVersionSummaryResponse
   ProjectVersionSummaryResponseResultsPage: ProjectVersionSummaryResponseResultsPage
@@ -13569,6 +13662,7 @@ export interface Models {
   TextToCadMultiFileIterationBody: TextToCadMultiFileIterationBody
   TextToCadResponse: TextToCadResponse
   TextToCadResponseResultsPage: TextToCadResponseResultsPage
+  ToggleGraphics: ToggleGraphics
   TokenRevokeRequestForm: TokenRevokeRequestForm
   Tolerance: Tolerance
   Transform: Transform
