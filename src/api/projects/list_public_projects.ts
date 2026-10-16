@@ -4,6 +4,7 @@ import { Pager, createPager } from '../../pagination.js'
 
 import {
   PublicProjectResponseResultsPage,
+  Uuid,
   PublicProjectResponse,
 } from '../../models.js'
 
@@ -11,6 +12,7 @@ interface ListPublicProjectsInput {
   client?: Client
   limit?: number
   page_token?: string
+  category_id?: Uuid
 }
 
 type ListPublicProjectsReturn = PublicProjectResponseResultsPage
@@ -24,6 +26,7 @@ type ListPublicProjectsReturn = PublicProjectResponseResultsPage
  * @property {Client} [client] Optional client with auth token.
  * @property {number} limit Maximum number of items returned by a single call (query)
  * @property {string} page_token Token returned by previous call to retrieve the subsequent page (query)
+ * @property {Uuid} category_id Return only projects assigned to this category. Omit to return all categories. (query)
  * @returns {Promise<ListPublicProjectsReturn>} successful operation
  *
  * Possible return types: PublicProjectResponseResultsPage
@@ -32,9 +35,14 @@ export default async function list_public_projects({
   client,
   limit,
   page_token,
+  category_id,
 }: ListPublicProjectsInput): Promise<ListPublicProjectsReturn> {
   const path = `/projects/public`
-  const qs = buildQuery({ limit: limit, page_token: page_token })
+  const qs = buildQuery({
+    limit: limit,
+    page_token: page_token,
+    category_id: category_id,
+  })
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
