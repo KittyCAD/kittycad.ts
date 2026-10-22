@@ -6,6 +6,7 @@ async function example() {
   const response = await projects.list_public_projects({
     limit: 7,
     page_token: 'string',
+    category_id: '00000000-0000-0000-0000-000000000000',
     client,
   })
   return response
@@ -16,6 +17,7 @@ export async function example_pager() {
   const pager = projects.list_public_projects_pager({
     limit: 7,
     page_token: 'string',
+    category_id: '00000000-0000-0000-0000-000000000000',
     client,
   })
   let total = 0
