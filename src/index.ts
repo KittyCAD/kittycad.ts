@@ -372,6 +372,7 @@ import get_project_version from './api/projects/get_project_version.js'
 import get_project_version_thumbnail from './api/projects/get_project_version_thumbnail.js'
 import get_public_project from './api/projects/get_public_project.js'
 import get_public_project_thumbnail from './api/projects/get_public_project_thumbnail.js'
+import list_library_projects from './api/projects/list_library_projects.js'
 import list_project_categories from './api/projects/list_project_categories.js'
 import list_project_libraries from './api/projects/list_project_libraries.js'
 import list_project_share_links from './api/projects/list_project_share_links.js'
@@ -382,6 +383,7 @@ import publish_project from './api/projects/publish_project.js'
 import rename_project_library from './api/projects/rename_project_library.js'
 import update_project from './api/projects/update_project.js'
 import update_project_organization from './api/projects/update_project_organization.js'
+import { list_library_projects_pager } from './api/projects/list_library_projects.js'
 import { list_project_libraries_pager } from './api/projects/list_project_libraries.js'
 import { list_project_share_links_pager } from './api/projects/list_project_share_links.js'
 import { list_project_versions_pager } from './api/projects/list_project_versions.js'
@@ -406,6 +408,8 @@ export const projects = {
   get_project_version_thumbnail,
   get_public_project,
   get_public_project_thumbnail,
+  list_library_projects,
+  list_library_projects_pager,
   list_project_categories,
   list_project_libraries,
   list_project_libraries_pager,
@@ -911,6 +915,7 @@ export type {
   ProjectShareLinkResponse,
   ProjectShareLinkResponseResultsPage,
   ProjectSummaryResponse,
+  ProjectSummaryResponseResultsPage,
   ProjectVersionDetailResponse,
   ProjectVersionSummaryResponse,
   ProjectVersionSummaryResponseResultsPage,
