@@ -3,7 +3,11 @@ import { projects, Client, ApiError } from '@kittycad/lib'
 const client = new Client()
 
 async function example() {
-  const response = await projects.list_projects({ client })
+  const response = await projects.list_projects({
+    scope: 'personal',
+    unassigned: true,
+    client,
+  })
   return response
 }
 

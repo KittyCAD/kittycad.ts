@@ -10310,6 +10310,13 @@ export interface ProjectResponse {
   files: ProjectFileResponse[]
   /** Unique project identifier. */
   id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Named library containing the project; null means unassigned."
+   * }
+   */
+  library_id?: Uuid
   /** Current preview generation state. */
   preview_status: KclProjectPreviewStatus
   /**
@@ -10371,6 +10378,13 @@ export interface ProjectSummaryResponse {
   entrypoint_path: string
   /** Unique project identifier. */
   id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Named library containing the project; null means unassigned."
+   * }
+   */
+  library_id?: Uuid
   /** Current preview generation state. */
   preview_status: KclProjectPreviewStatus
   /**
@@ -10392,6 +10406,18 @@ export interface ProjectSummaryResponse {
   title: string
   /** title:DateTime, format:date-time, description:When the project row was last updated. */
   updated_at: string
+}
+
+export interface ProjectSummaryResponseResultsPage {
+  /** list of items on this page of results */
+  items: ProjectSummaryResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
 }
 
 export interface ProjectVersionDetailResponse {
@@ -13598,6 +13624,7 @@ export interface Models {
   ProjectShareLinkResponse: ProjectShareLinkResponse
   ProjectShareLinkResponseResultsPage: ProjectShareLinkResponseResultsPage
   ProjectSummaryResponse: ProjectSummaryResponse
+  ProjectSummaryResponseResultsPage: ProjectSummaryResponseResultsPage
   ProjectVersionDetailResponse: ProjectVersionDetailResponse
   ProjectVersionSummaryResponse: ProjectVersionSummaryResponse
   ProjectVersionSummaryResponseResultsPage: ProjectVersionSummaryResponseResultsPage
