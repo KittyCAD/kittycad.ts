@@ -32,6 +32,8 @@ interface ModelingCommandsWsParams {
  *
  * **Note**: Currently it's recommended to set `webrtc=true` in the WebSocket query string, otherwise some features, such as opacity setting, will cause the engine to fail.
  *
+ * Set `geometry_only=true` to use the CPU engine pool without WebRTC. Use `geometry_only=true&pr=42` to use the CPU preview pool for that engine PR. An explicit `pool` takes precedence over both automatic routing and `pr`.
+ *
  * Due to the long-lived nature of the instances, it's possible the resources on have been used and not freed entirely, or the instance is in a bad state. Thus it's good practice to expect to have to potentially reconnect at any moment -even almost immediately after the first connection!
  *
  * Authorization happens via a pseudo HTTP header over the WebSocket: `{ type: "headers", headers: { "Authorization": "Bearer xxxxxxxxx" }}`
