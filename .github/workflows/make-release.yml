@@ -31,7 +31,8 @@ jobs:
         run: npm publish
       - name: Wait for package availability
         run: |
-          for delay in 0 2 4 8 16; do
+          # Check at minutes 3, 5, 7, 9, 11, 13, and 15 after publishing.
+          for delay in 180 120 120 120 120 120 120; do
             sleep "$delay"
             npm view "@kittycad/lib@$LIB_VERSION" version && exit 0
           done
