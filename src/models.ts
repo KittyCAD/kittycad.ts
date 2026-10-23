@@ -9781,6 +9781,13 @@ Defaults to millimeters. */
       created?: string
       /** default:pretty, description:Presentation style. */
       presentation?: StepPresentation
+      /**
+       * {
+       *   "default": "ap242",
+       *   "description": "STEP application protocol schema. Defaults to AP242."
+       * }
+       */
+      schema?: StepSchema
       type: 'step'
       /** default:m, description:Export length unit.\n\nDefaults to meters. */
       units?: UnitLength
@@ -10124,7 +10131,7 @@ export interface Pong {
 
 export type PostEffectType =
   /** Post effect type */
-  'phosphor' | 'ssao' | 'noeffect'
+  'phosphor' | 'ssao' | 'retrocad' | 'noeffect'
 
 export interface PrimitiveTopologyFallback {
   /**
@@ -11215,6 +11222,8 @@ export interface StartPath {} /* Empty object */
 export type StepImportTargetRepresentation = 'mesh' | 'brep'
 
 export type StepPresentation = 'compact' | 'pretty'
+
+export type StepSchema = 'ap203' | 'ap214' | 'ap242'
 
 export type StlStorage = 'ascii' | 'binary'
 
@@ -13718,6 +13727,7 @@ export interface Models {
   StartPath: StartPath
   StepImportTargetRepresentation: StepImportTargetRepresentation
   StepPresentation: StepPresentation
+  StepSchema: StepSchema
   StlStorage: StlStorage
   StorageProvider: StorageProvider
   SubscriptionActionType: SubscriptionActionType
