@@ -1009,6 +1009,7 @@ export type {
   StartPath,
   StepImportTargetRepresentation,
   StepPresentation,
+  StepSchema,
   StlStorage,
   StorageProvider,
   SubscriptionActionType,
