@@ -10325,6 +10325,8 @@ export interface ProjectResponse {
    * }
    */
   library_id?: Uuid
+  /** Opaque token used to detect conflicting library moves. */
+  metadata_revision: string
   /** Current preview generation state. */
   preview_status: KclProjectPreviewStatus
   /**
@@ -10344,7 +10346,13 @@ export interface ProjectResponse {
   revision: string
   /** User-facing project title. */
   title: string
-  /** title:DateTime, format:date-time, description:When the project row was last updated. */
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "When the current version was last updated, including preview updates. This is separate from the project row's update timestamp."
+   * }
+   */
   updated_at: string
 }
 
@@ -10393,6 +10401,8 @@ export interface ProjectSummaryResponse {
    * }
    */
   library_id?: Uuid
+  /** Opaque token used to detect conflicting library moves. */
+  metadata_revision: string
   /** Current preview generation state. */
   preview_status: KclProjectPreviewStatus
   /**
@@ -10412,7 +10422,13 @@ export interface ProjectSummaryResponse {
   revision: string
   /** User-facing project title. */
   title: string
-  /** title:DateTime, format:date-time, description:When the project row was last updated. */
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "When the current version was last updated, including preview updates. This is separate from the project row's update timestamp."
+   * }
+   */
   updated_at: string
 }
 
@@ -12386,6 +12402,18 @@ export interface UpdateOrgDatasetSource {
   uri?: string
 }
 
+export interface UpdateProjectLibraryRequest {
+  /** Metadata revision returned by the last project read. */
+  expected_revision: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Destination library; null leaves the project unassigned."
+   * }
+   */
+  library_id?: Uuid
+}
+
 export interface UpdateShortlinkRequest {
   /**
    * {
@@ -13791,6 +13819,7 @@ export interface Models {
   UpdateOAuth2AppRequest: UpdateOAuth2AppRequest
   UpdateOrgDataset: UpdateOrgDataset
   UpdateOrgDatasetSource: UpdateOrgDatasetSource
+  UpdateProjectLibraryRequest: UpdateProjectLibraryRequest
   UpdateShortlinkRequest: UpdateShortlinkRequest
   UpdateUser: UpdateUser
   UploadOrgDatasetFilesResponse: UploadOrgDatasetFilesResponse

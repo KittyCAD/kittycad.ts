@@ -382,6 +382,7 @@ import list_public_projects from './api/projects/list_public_projects.js'
 import publish_project from './api/projects/publish_project.js'
 import rename_project_library from './api/projects/rename_project_library.js'
 import update_project from './api/projects/update_project.js'
+import update_project_library from './api/projects/update_project_library.js'
 import update_project_organization from './api/projects/update_project_organization.js'
 import { list_library_projects_pager } from './api/projects/list_library_projects.js'
 import { list_project_libraries_pager } from './api/projects/list_project_libraries.js'
@@ -423,6 +424,7 @@ export const projects = {
   publish_project,
   rename_project_library,
   update_project,
+  update_project_library,
   update_project_organization,
 }
 
@@ -1072,6 +1074,7 @@ export type {
   UpdateOAuth2AppRequest,
   UpdateOrgDataset,
   UpdateOrgDatasetSource,
+  UpdateProjectLibraryRequest,
   UpdateShortlinkRequest,
   UpdateUser,
   UploadOrgDatasetFilesResponse,
