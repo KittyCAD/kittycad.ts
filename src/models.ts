@@ -3088,6 +3088,7 @@ export type Feature =
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
   | 'execution_jobs'
+  | 'project_file_storage_reuse'
   | 'enable_z0006_lint'
   | 'factory_portal'
   | 'kcl_cek_executor'
