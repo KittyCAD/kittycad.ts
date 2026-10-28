@@ -381,6 +381,7 @@ import list_projects from './api/projects/list_projects.js'
 import list_public_projects from './api/projects/list_public_projects.js'
 import publish_project from './api/projects/publish_project.js'
 import rename_project_library from './api/projects/rename_project_library.js'
+import search_org_projects_semantic from './api/projects/search_org_projects_semantic.js'
 import update_project from './api/projects/update_project.js'
 import update_project_library from './api/projects/update_project_library.js'
 import update_project_organization from './api/projects/update_project_organization.js'
@@ -423,6 +424,7 @@ export const projects = {
   list_public_projects_pager,
   publish_project,
   rename_project_library,
+  search_org_projects_semantic,
   update_project,
   update_project_library,
   update_project_organization,
@@ -822,6 +824,7 @@ export type {
   MouseClick,
   MouseMove,
   MovePathPen,
+  NamedView,
   NewAnnotation,
   OAuth2AppClientType,
   OAuth2AppGrantType,
@@ -914,6 +917,8 @@ export type {
   ProjectPointsToPlane,
   ProjectPublicationInfoResponse,
   ProjectResponse,
+  ProjectSemanticSearchMatch,
+  ProjectSemanticSearchRequest,
   ProjectShareLinkResponse,
   ProjectShareLinkResponseResultsPage,
   ProjectSummaryResponse,
@@ -921,6 +926,7 @@ export type {
   ProjectVersionDetailResponse,
   ProjectVersionSummaryResponse,
   ProjectVersionSummaryResponseResultsPage,
+  Projection,
   PublicEmailMarketingConsentRequest,
   PublicMailingListMembershipRequest,
   PublicProjectOwnerResponse,
@@ -1087,6 +1093,7 @@ export type {
   Uuid,
   VerificationTokenResponse,
   ViewIsometric,
+  Visibility,
   Volume,
   WebSocketRequest,
   WebSocketResponse,
