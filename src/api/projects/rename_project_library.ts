@@ -18,6 +18,12 @@ type RenameProjectLibraryReturn = ProjectLibraryResponse
 /**
  * Rename a library owned by the user or their active organization.
  *
+ * Send JSON containing `name` and `expected_revision`, using the library's `revision` from the last library list response. The personal owner or an admin of the active organization can rename the library. Names follow the same validation and uniqueness rules as library creation.
+ *
+ * HTTP 200 returns the updated library and revision. A stale revision or duplicate name returns HTTP 409; refresh the library list before deciding whether to retry. Renaming keeps the library ID, ownership, and project assignments unchanged.
+ *
+ * Renaming doesn't change the library's source.
+ *
  * Tags: projects
  *
  * @param params Function parameters.

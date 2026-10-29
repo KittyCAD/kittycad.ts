@@ -11,9 +11,11 @@ interface UpdateProjectOrganizationInput {
 type UpdateProjectOrganizationReturn = ProjectResponse
 
 /**
- * Move one of the authenticated user's projects into their active organization library.
+ * Transfer one of the authenticated user's projects to their active organization.
  *
  * This changes only the project's ownership scope. The project ID, current revision, files, and version history remain unchanged so cloud bindings stay valid across the move.
+ *
+ * An actual ownership change clears `library_id` and changes `metadata_revision`. The project becomes unassigned in the organization. To place it in a named organization library, use `PUT /user/projects/{id}/library` afterwards with the returned metadata revision. An already organization-owned project in the same organization is unchanged by this request.
  *
  * Tags: projects
  *

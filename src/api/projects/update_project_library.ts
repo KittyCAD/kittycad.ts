@@ -18,6 +18,22 @@ type UpdateProjectLibraryReturn = ProjectResponse
 /**
  * Move a project to a named library or leave it unassigned.
  *
+ * Read the project first, then send JSON using its `metadata_revision` as the required `expected_revision`. Do not use its content `revision` or a library's revision for this operation.
+ *
+ * ```json { "library_id": "<DESTINATION_LIBRARY_ID>", "expected_revision": "<METADATA_REVISION>" } ```
+ *
+ * Save the JSON as `move-project.json`, with values from actual responses:
+ *
+ * ```sh curl --fail-with-body \   --request PUT "${API_BASE_URL}/user/projects/${PROJECT_ID}/library" \   --header "Authorization: Bearer ${API_TOKEN}" \   --header 'Content-Type: application/json' \   --data-binary @move-project.json ```
+ *
+ * Use `library_id: null` to unassign the project. The destination must match the project's current ownership: the same user for a personal project, or the same organization for an organization project. Existing project write permission is required; managing the destination library does not grant it. To change ownership first, use `/user/projects/{id}/organization`.
+ *
+ * HTTP 200 returns the project with its library assignment and a new `metadata_revision`. A move preserves its ID, files, current content `revision`, version history, publication, and share links; it creates no content version. Ordinary saves preserve membership and cannot be used to move a project.
+ *
+ * A stale revision or a destination with different ownership returns HTTP 409. If another save, move, or ownership change conflicts with the move, fetch the latest project before deciding whether to retry. Missing or inaccessible projects/libraries fail their normal existence and permission checks.
+ *
+ * If the connection drops or the request times out, the API may have completed the move even though the client did not receive a response. Fetch the project to check its current library. If library_id matches the requested destination, no further move is needed. Otherwise review its latest state before retrying with its new `metadata_revision`. No idempotency key is used for this operation.
+ *
  * Tags: projects
  *
  * @param params Function parameters.

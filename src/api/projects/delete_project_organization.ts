@@ -11,9 +11,11 @@ interface DeleteProjectOrganizationInput {
 type DeleteProjectOrganizationReturn = void
 
 /**
- * Move an organization project back to its creator's personal library.
+ * Transfer an organization project back to its creator's personal ownership.
  *
  * Organization administrators may perform this move to revoke organization access. The project ID, current revision, files, and version history remain unchanged.
+ *
+ * The ownership change clears `library_id` and changes `metadata_revision`, leaving the project unassigned under its creator. Success returns HTTP 204. Fetch the project again before assigning it to a personal named library.
  *
  * Tags: projects
  *

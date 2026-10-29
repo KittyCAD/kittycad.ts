@@ -20,6 +20,14 @@ type ListLibraryProjectsReturn = ProjectSummaryResponseResultsPage
 /**
  * List projects in a cloud library, newest first.
  *
+ * Returns project summaries in `items`, with `next_page` for continuation. Pass `?page_token=<next_page>` on the same library endpoint until `next_page` is null. Keep the same authenticated user and active organization for every page. Results are ordered by creation time descending, then project ID ascending.
+ *
+ * Each summary includes `library_id`, content `revision`, `metadata_revision`, and the caller's project `access` capabilities. Access to a library does not grant additional project permissions.
+ *
+ * Projects can move or disappear while pages load. Even an empty page can have a continuation token; stop only when `next_page` is null.
+ *
+ * When loading several libraries, a project may appear in library A's results, then move to library B before B is loaded. Combining those results can show the same project twice. Use the project ID to show it once, and fetch its latest details to confirm which library it belongs to. A missing list entry may also mean the project moved; fetch its details before treating it as deleted, and preserve unsynced local edits.
+ *
  * Tags: projects
  *
  * @param params Function parameters.

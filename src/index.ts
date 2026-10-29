@@ -782,6 +782,7 @@ export type {
   KclMigrationValidation,
   KclModel,
   KclProjectFileRole,
+  KclProjectLibrarySource,
   KclProjectPreviewStatus,
   KclProjectPublicationStatus,
   KclProjectShareLinkAccessMode,

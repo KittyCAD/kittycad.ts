@@ -12,7 +12,15 @@ interface CreateProjectInput {
 type CreateProjectReturn = ProjectResponse
 
 /**
- * Create a draft project for the authenticated user.
+ * Create a project for the authenticated user.
+ *
+ * Send multipart data with a JSON `body` part and file parts whose filenames are relative project paths. Include an optional `library_id` in the JSON to create the project in a named library:
+ *
+ * ```json { "title": "Bracket", "entrypoint_path": "main.kcl", "library_id": "<LIBRARY_ID>" } ```
+ *
+ * A personal library creates a personal project. An accessible library belonging to the active organization creates an organization project with the caller as its creator; creating the project does not require library-management rights. Omitting `library_id` or passing null creates an unassigned personal project, even when the request has an active organization.
+ *
+ * The HTTP 201 response includes `id`, `library_id`, content `revision`, and `metadata_revision`. Later saves preserve membership, even if they include a library field. Use `PUT /user/projects/{id}/library` to move or unassign an existing project instead of uploading its files again.
  *
  * Tags: projects
  *
