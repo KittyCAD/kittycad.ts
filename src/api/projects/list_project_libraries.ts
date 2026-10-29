@@ -18,6 +18,14 @@ type ListProjectLibrariesReturn = ProjectLibraryResponseResultsPage
 /**
  * List personal libraries and libraries belonging to the active organization.
  *
+ * Returns an object with `items` and `next_page`, ordered by library ID. Request the next page with `?page_token=<next_page>` until `next_page` is null. Keep the same authenticated user and active organization for every page; changing that context requires starting a new list request.
+ *
+ * Each library has a stable `id`, a display `name`, either `user_id` or `org_id`, an opaque `revision`, and `can_manage`. Use the ID to track a library across renames. `can_manage` allows renaming/deleting the library, not editing all of its projects. Organization members can discover libraries; only organization admins can manage them. Project permissions remain unchanged.
+ *
+ * Projects with `library_id: null` have no named library. They do not appear as a library record here. Use `GET /user/projects?scope=personal&unassigned=true` for the default personal group, or `scope=organization&unassigned=true` for the active organization's unassigned projects.
+ *
+ * Each library includes its creation source: `zds` or `factory_portal`. Libraries created before source tracking are returned as `zds`. Clients can filter the results by source; API permissions remain unchanged.
+ *
  * Tags: projects
  *
  * @param params Function parameters.

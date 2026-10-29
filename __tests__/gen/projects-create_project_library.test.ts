@@ -4,7 +4,11 @@ const client = new Client()
 
 async function example() {
   const response = await projects.create_project_library({
-    body: { name: 'Display name for the library.', scope: 'personal' },
+    body: {
+      name: 'Display name for the library.',
+      scope: 'personal',
+      source: 'zds',
+    },
     client,
   })
   return response

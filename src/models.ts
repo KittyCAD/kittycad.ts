@@ -1973,6 +1973,13 @@ export interface CreateProjectLibraryRequest {
   name: string
   /** Whether the library belongs to the user or their active organization. */
   scope: ProjectLibraryScope
+  /**
+   * {
+   *   "default": "zds",
+   *   "description": "Application creating the library. Defaults to zds when omitted."
+   * }
+   */
+  source?: KclProjectLibrarySource
 }
 
 export interface CreateProjectShareLinkRequest {
@@ -4403,6 +4410,8 @@ export type KclProjectFileRole =
   | 'project_toml'
   | 'project_file'
   | 'preview_image'
+
+export type KclProjectLibrarySource = 'zds' | 'factory_portal'
 
 export type KclProjectPreviewStatus = 'pending' | 'ready' | 'failed'
 
@@ -10265,6 +10274,8 @@ export interface ProjectLibraryResponse {
   org_id?: Uuid
   /** Opaque revision token required when renaming or deleting the library. */
   revision: string
+  /** Application that created the library. Cannot be changed after creation. */
+  source: KclProjectLibrarySource
   /** title:DateTime, format:date-time, description:When the library was last updated. */
   updated_at: string
   /** nullable:true, description:Personal owner; null for an organization library. */
@@ -10349,7 +10360,7 @@ export interface ProjectResponse {
    * }
    */
   library_id?: Uuid
-  /** Opaque token used to detect conflicting library moves. */
+  /** Opaque token for library moves. Send as expected_revision to the library endpoint. Read a fresh value after a save, move, or ownership change; do not parse it. */
   metadata_revision: string
   /** Current preview generation state. */
   preview_status: KclProjectPreviewStatus
@@ -10366,7 +10377,7 @@ export interface ProjectResponse {
   publication: ProjectPublicationInfoResponse
   /** Current publication workflow state. */
   publication_status: KclProjectPublicationStatus
-  /** Opaque revision token for optimistic project mutations. */
+  /** Current content version's revision. Use as expected_revision for content saves. Library moves do not change this value. */
   revision: string
   /** User-facing project title. */
   title: string
@@ -10459,7 +10470,7 @@ export interface ProjectSummaryResponse {
    * }
    */
   library_id?: Uuid
-  /** Opaque token used to detect conflicting library moves. */
+  /** Opaque token for library moves. Send as expected_revision to the library endpoint. Read a fresh value after a save, move, or ownership change; do not parse it. */
   metadata_revision: string
   /** Current preview generation state. */
   preview_status: KclProjectPreviewStatus
@@ -10476,7 +10487,7 @@ export interface ProjectSummaryResponse {
   publication: ProjectPublicationInfoResponse
   /** Current publication workflow state. */
   publication_status: KclProjectPublicationStatus
-  /** Opaque revision token for optimistic project mutations. */
+  /** Current content version's revision. Use as expected_revision for content saves. Library moves do not change this value. */
   revision: string
   /** User-facing project title. */
   title: string
@@ -13587,6 +13598,7 @@ export interface Models {
   KclMigrationValidation: KclMigrationValidation
   KclModel: KclModel
   KclProjectFileRole: KclProjectFileRole
+  KclProjectLibrarySource: KclProjectLibrarySource
   KclProjectPreviewStatus: KclProjectPreviewStatus
   KclProjectPublicationStatus: KclProjectPublicationStatus
   KclProjectShareLinkAccessMode: KclProjectShareLinkAccessMode

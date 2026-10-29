@@ -15,6 +15,8 @@ type UpdateProjectReturn = ProjectResponse
 /**
  * Replace one of the authenticated user's projects.
  *
+ * Content saves use the project's content `revision` as `expected_revision` and preserve its current library assignment. Omitting `library_id`, setting it to null, or supplying another library ID here does not move the project. Use `PUT /user/projects/{id}/library` with `metadata_revision` for library changes.
+ *
  * Tags: projects
  *
  * @param params Function parameters.
