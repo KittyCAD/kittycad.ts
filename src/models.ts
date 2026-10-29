@@ -3088,7 +3088,6 @@ export type Feature =
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
   | 'execution_jobs'
-  | 'project_file_storage_reuse'
   | 'enable_z0006_lint'
   | 'factory_portal'
   | 'kcl_cek_executor'
@@ -3103,7 +3102,6 @@ export type Feature =
   | 'dfm_review'
   | 'drawings'
   | 'modeling_dialogs'
-  | 'named_views_ui'
   | 'scene_browser'
   | 'plugins'
   | 'proprietary_to_kcl_conversion_beta'
@@ -7338,6 +7336,23 @@ export interface MouseMove {} /* Empty object */
 
 export interface MovePathPen {} /* Empty object */
 
+export interface NamedView {
+  /** Baseline visibility.
+
+Determines whether entities are visible or by default. */
+  baseline: Visibility
+  /** Exceptions to the baseline visibility. */
+  except_ids: ModelingCmdId[]
+  /** Projection kind. */
+  projection: Projection
+  /** Target point. */
+  target: Point3d
+  /** Up direction. */
+  up: Point3d
+  /** Vantage point. */
+  vantage: Point3d
+}
+
 export interface NewAnnotation {} /* Empty object */
 
 export type OAuth2AppClientType = 'public' | 'confidential'
@@ -9725,11 +9740,18 @@ export type OutputFormat3d =
        * }
        */
       include_uuids?: boolean
-      /** Specifies how the JSON will be presented. */
-      presentation: GltfPresentation
-      /** Specifies which kind of glTF 2.0 will be exported. */
-      storage: GltfStorage
+      /** default:pretty, description:Specifies how the JSON will be presented. */
+      presentation?: GltfPresentation
+      /**
+       * {
+       *   "default": "embedded",
+       *   "description": "Specifies which kind of glTF 2.0 will be exported."
+       * }
+       */
+      storage?: GltfStorage
       type: 'gltf'
+      /** Named views in the scene. */
+      views?: { [key: string]: NamedView }
     }
   | {
       /** Co-ordinate system of output data.
@@ -9792,6 +9814,8 @@ Defaults to millimeters. */
       type: 'step'
       /** default:m, description:Export length unit.\n\nDefaults to meters. */
       units?: UnitLength
+      /** Named views in the scene. */
+      views?: { [key: string]: NamedView }
     }
   | {
       /** Co-ordinate system of output data.
@@ -10080,19 +10104,19 @@ export interface Point2d {
 export interface Point3d {
   /**
    * {
-   *   "format": "float"
+   *   "format": "double"
    * }
    */
   x: number
   /**
    * {
-   *   "format": "float"
+   *   "format": "double"
    * }
    */
   y: number
   /**
    * {
-   *   "format": "float"
+   *   "format": "double"
    * }
    */
   z: number
@@ -10356,6 +10380,40 @@ export interface ProjectResponse {
   updated_at: string
 }
 
+export interface ProjectSemanticSearchMatch {
+  /** Bounded project description. */
+  description: string
+  /** Project in the caller's current organization library. */
+  project_id: Uuid
+  /** format:double, description:Cosine similarity to the embedded query. */
+  similarity: number
+  /** Bounded project title. */
+  title: string
+  /** Current version represented by this match. */
+  version_id: Uuid
+}
+
+export interface ProjectSemanticSearchRequest {
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Restrict results to this library in the authenticated organization."
+   * }
+   */
+  library_id?: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uint32",
+   *   "minimum": 0,
+   *   "description": "Maximum matching projects; defaults to 10 and must be between 1 and 100."
+   * }
+   */
+  limit?: number
+  /** Search text, limited to 2,048 characters after trimming whitespace. */
+  q: string
+}
+
 export interface ProjectShareLinkResponse {
   /** Access policy for the share link. */
   access_mode: KclProjectShareLinkAccessMode
@@ -10504,6 +10562,8 @@ export interface ProjectVersionSummaryResponseResultsPage {
    */
   next_page?: string
 }
+
+export type Projection = { type: 'orthographic' } | { type: 'perspective' }
 
 export interface PublicEmailMarketingConsentRequest {
   /** format:email, description:The email */
@@ -12665,6 +12725,8 @@ export interface ViewIsometric {
   settings: CameraSettings
 }
 
+export type Visibility = 'show' | 'hide'
+
 export interface Volume {
   /** The output unit for the volume. */
   output_unit: UnitVolume
@@ -13567,6 +13629,7 @@ export interface Models {
   MouseClick: MouseClick
   MouseMove: MouseMove
   MovePathPen: MovePathPen
+  NamedView: NamedView
   NewAnnotation: NewAnnotation
   OAuth2AppClientType: OAuth2AppClientType
   OAuth2AppGrantType: OAuth2AppGrantType
@@ -13659,6 +13722,8 @@ export interface Models {
   ProjectPointsToPlane: ProjectPointsToPlane
   ProjectPublicationInfoResponse: ProjectPublicationInfoResponse
   ProjectResponse: ProjectResponse
+  ProjectSemanticSearchMatch: ProjectSemanticSearchMatch
+  ProjectSemanticSearchRequest: ProjectSemanticSearchRequest
   ProjectShareLinkResponse: ProjectShareLinkResponse
   ProjectShareLinkResponseResultsPage: ProjectShareLinkResponseResultsPage
   ProjectSummaryResponse: ProjectSummaryResponse
@@ -13666,6 +13731,7 @@ export interface Models {
   ProjectVersionDetailResponse: ProjectVersionDetailResponse
   ProjectVersionSummaryResponse: ProjectVersionSummaryResponse
   ProjectVersionSummaryResponseResultsPage: ProjectVersionSummaryResponseResultsPage
+  Projection: Projection
   PublicEmailMarketingConsentRequest: PublicEmailMarketingConsentRequest
   PublicMailingListMembershipRequest: PublicMailingListMembershipRequest
   PublicProjectOwnerResponse: PublicProjectOwnerResponse
@@ -13832,6 +13898,7 @@ export interface Models {
   Uuid: Uuid
   VerificationTokenResponse: VerificationTokenResponse
   ViewIsometric: ViewIsometric
+  Visibility: Visibility
   Volume: Volume
   WebSocketRequest: WebSocketRequest
   WebSocketResponse: WebSocketResponse
