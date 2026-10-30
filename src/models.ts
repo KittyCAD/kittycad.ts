@@ -3097,6 +3097,7 @@ export type Feature =
   | 'execution_jobs'
   | 'enable_z0006_lint'
   | 'factory_portal'
+  | 'org_dataset_cloud_projects'
   | 'kcl_cek_executor'
   | 'redirect_to_govcloud'
   | 'require_saml_auth'
@@ -4411,7 +4412,7 @@ export type KclProjectFileRole =
   | 'project_file'
   | 'preview_image'
 
-export type KclProjectLibrarySource = 'zds' | 'factory_portal'
+export type KclProjectLibrarySource = 'zds' | 'factory_portal' | 'org_dataset'
 
 export type KclProjectPreviewStatus = 'pending' | 'ready' | 'failed'
 
