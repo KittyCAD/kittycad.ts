@@ -14,7 +14,7 @@ type DeleteProjectLibraryReturn = void
 /**
  * Delete an empty cloud project library.
  *
- * Supply the library's last-read `revision` as the required `expected_revision` query parameter. URL-encode this value. Only the personal owner or an admin of the active organization can delete the library.
+ * Supply the library's last-read `revision` as the required `expected_revision` query parameter. URL-encode this value. Only the personal owner or an admin of the active organization can delete the library. Libraries managed by an organization dataset cannot be deleted independently; those requests return HTTP 409.
  *
  * Move or unassign all projects first. A nonempty library or stale revision returns HTTP 409. Success returns HTTP 204 without deleting projects or history. Library revisions are separate from project `revision` and `metadata_revision`.
  *
