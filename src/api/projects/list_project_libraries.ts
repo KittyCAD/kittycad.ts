@@ -24,7 +24,7 @@ type ListProjectLibrariesReturn = ProjectLibraryResponseResultsPage
  *
  * Projects with `library_id: null` have no named library. They do not appear as a library record here. Use `GET /user/projects?scope=personal&unassigned=true` for the default personal group, or `scope=organization&unassigned=true` for the active organization's unassigned projects.
  *
- * Each library includes its creation source: `zds` or `factory_portal`. Libraries created before source tracking are returned as `zds`. Clients can filter the results by source; API permissions remain unchanged.
+ * Each library includes its creation source: `zds`, `factory_portal`, or `org_dataset`. Libraries created before source tracking are returned as `zds`. Clients can filter the results by source; API permissions remain unchanged.
  *
  * Tags: projects
  *

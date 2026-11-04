@@ -41,27 +41,43 @@ export const executor = {
   create_file_execution,
 }
 
+import create_org_factory_job_version from './api/factory/create_org_factory_job_version.js'
 import create_user_factory_job from './api/factory/create_user_factory_job.js'
+import create_user_factory_job_version from './api/factory/create_user_factory_job_version.js'
 import get_org_factory_job from './api/factory/get_org_factory_job.js'
+import get_org_factory_job_file from './api/factory/get_org_factory_job_file.js'
 import get_user_factory_finishes from './api/factory/get_user_factory_finishes.js'
 import get_user_factory_job from './api/factory/get_user_factory_job.js'
+import get_user_factory_job_file from './api/factory/get_user_factory_job_file.js'
 import get_user_factory_materials from './api/factory/get_user_factory_materials.js'
+import list_org_factory_job_versions from './api/factory/list_org_factory_job_versions.js'
 import list_org_factory_jobs from './api/factory/list_org_factory_jobs.js'
+import list_user_factory_job_versions from './api/factory/list_user_factory_job_versions.js'
 import list_user_factory_jobs from './api/factory/list_user_factory_jobs.js'
 import { get_user_factory_finishes_pager } from './api/factory/get_user_factory_finishes.js'
 import { get_user_factory_materials_pager } from './api/factory/get_user_factory_materials.js'
+import { list_org_factory_job_versions_pager } from './api/factory/list_org_factory_job_versions.js'
 import { list_org_factory_jobs_pager } from './api/factory/list_org_factory_jobs.js'
+import { list_user_factory_job_versions_pager } from './api/factory/list_user_factory_job_versions.js'
 import { list_user_factory_jobs_pager } from './api/factory/list_user_factory_jobs.js'
 export const factory = {
+  create_org_factory_job_version,
   create_user_factory_job,
+  create_user_factory_job_version,
   get_org_factory_job,
+  get_org_factory_job_file,
   get_user_factory_finishes,
   get_user_factory_finishes_pager,
   get_user_factory_job,
+  get_user_factory_job_file,
   get_user_factory_materials,
   get_user_factory_materials_pager,
+  list_org_factory_job_versions,
+  list_org_factory_job_versions_pager,
   list_org_factory_jobs,
   list_org_factory_jobs_pager,
+  list_user_factory_job_versions,
+  list_user_factory_job_versions_pager,
   list_user_factory_jobs,
   list_user_factory_jobs_pager,
 }
@@ -725,9 +741,11 @@ export type {
   FactoryCustomerCatalogOption,
   FactoryCustomerCatalogOptionResultsPage,
   FactoryCustomerJobDetail,
+  FactoryCustomerJobFile,
   FactoryCustomerJobSummary,
   FactoryCustomerJobSummaryResultsPage,
   FactoryCustomerJobVersion,
+  FactoryCustomerJobVersionResultsPage,
   FactoryJobResponse,
   FailureWebSocketResponse,
   FbxStorage,
@@ -769,6 +787,7 @@ export type {
   KclCodeCompletionParams,
   KclCodeCompletionRequest,
   KclCodeCompletionResponse,
+  KclFile,
   KclMigrationApplication,
   KclMigrationApplicationStatus,
   KclMigrationClientMessage,
@@ -781,6 +800,7 @@ export type {
   KclMigrationTarget,
   KclMigrationValidation,
   KclModel,
+  KclProject,
   KclProjectFileRole,
   KclProjectLibrarySource,
   KclProjectPreviewStatus,
@@ -910,6 +930,7 @@ export type {
   ProjectAccessScope,
   ProjectArchiveFormat,
   ProjectCategoryResponse,
+  ProjectDownloadErrorResponse,
   ProjectEntityToPlane,
   ProjectFileResponse,
   ProjectLibraryResponse,
@@ -951,6 +972,7 @@ export type {
   RtcIceCandidateInit,
   RtcSdpType,
   RtcSessionDescription,
+  SafeFilepath,
   SalesInquiryType,
   SamlIdentityProvider,
   SamlIdentityProviderCreate,

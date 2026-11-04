@@ -3028,6 +3028,13 @@ export interface FactoryCustomerJobDetail {
   job: FactoryCustomerJobSummary
 }
 
+export interface FactoryCustomerJobFile {
+  /** Authenticated Factory download URL. */
+  download_url: string
+  /** Submitted file's display name. */
+  file_name: string
+}
+
 export interface FactoryCustomerJobSummary {
   /** title:DateTime, format:date-time, description:When the job was created. */
   created_at: string
@@ -3057,17 +3064,36 @@ export interface FactoryCustomerJobVersion {
   /** title:DateTime, format:date-time, description:When this version was created. */
   created_at: string
   file_names: string[]
-  /** Identifier of the current version. */
+  /** Submitted input names and authenticated download links. */
+  files: FactoryCustomerJobFile[]
+  /** Identifier of this Factory revision. */
   id: Uuid
   specs: string
 }
 
+export interface FactoryCustomerJobVersionResultsPage {
+  /** list of items on this page of results */
+  items: FactoryCustomerJobVersion[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export interface FactoryJobResponse {
-  /** nullable:true, description:The current (first) version id of the job. */
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The newly submitted Factory version id of the job."
+   * }
+   */
   current_version_id?: Uuid
   /** The stable, customer-facing job id. */
   id: Uuid
-  /** The initial workflow status (`new`). */
+  /** The workflow status after submission (`new` for creation, `quoting` for a revision). */
   status: string
 }
 
@@ -3097,6 +3123,8 @@ export type Feature =
   | 'execution_jobs'
   | 'enable_z0006_lint'
   | 'factory_portal'
+  | 'hosted_mcp'
+  | 'org_dataset_cloud_projects'
   | 'kcl_cek_executor'
   | 'redirect_to_govcloud'
   | 'require_saml_auth'
@@ -3108,7 +3136,6 @@ export type Feature =
   | 'validate_tax_info'
   | 'dfm_review'
   | 'drawings'
-  | 'modeling_dialogs'
   | 'scene_browser'
   | 'plugins'
   | 'proprietary_to_kcl_conversion_beta'
@@ -4133,6 +4160,18 @@ export interface KclCodeCompletionResponse {
   completions: string[]
 }
 
+export interface KclFile {
+  /**
+   * {
+   *   "format": "uint8",
+   *   "minimum": 0
+   * }
+   */
+  contents: number[]
+  /** Where is the file, relative to the project directory? */
+  path: SafeFilepath
+}
+
 export interface KclMigrationApplication {
   /**
    * {
@@ -4406,12 +4445,19 @@ export interface KclModel {
   code: string
 }
 
+export interface KclProject {
+  /** Which file is the entrypoint? This is the first KCL file to be executed, the root of the KCL module tree. */
+  entrypoint: SafeFilepath
+  /** All files in the project. */
+  files: KclFile[]
+}
+
 export type KclProjectFileRole =
   | 'project_toml'
   | 'project_file'
   | 'preview_image'
 
-export type KclProjectLibrarySource = 'zds' | 'factory_portal'
+export type KclProjectLibrarySource = 'zds' | 'factory_portal' | 'org_dataset'
 
 export type KclProjectPreviewStatus = 'pending' | 'ready' | 'failed'
 
@@ -4715,6 +4761,26 @@ export type MlCopilotClientMessage =
       type: 'user'
     }
   | {
+      /** Complete isolated input. API binds it to the active conversation; a supplied conversation ID must match that conversation. */
+      request: KclMigrationRequest
+      type: 'migrate_kcl'
+    }
+  | {
+      /**
+       * {
+       *   "format": "uint32",
+       *   "minimum": 0,
+       *   "description": "Last acknowledged revision. Retrying the same change is idempotent."
+       * }
+       */
+      expected_revision: number
+      /** Migration request ID, independent of the connection and prompt IDs. */
+      operation_id: Uuid
+      /** Client-reported project state. */
+      status: KclMigrationApplicationStatus
+      type: 'kcl_migration_application'
+    }
+  | {
       /**
        * {
        *   "format": "uint32",
@@ -4911,6 +4977,20 @@ export type MlCopilotServerMessage =
         detail: string
         /** Whether reconnecting without an external account change can help. */
         retryable: boolean
+      }
+    }
+  | {
+      kcl_migration_operation: {
+        /** Durable migration outcome and the source snapshot it was based on. */
+        operation: KclMigrationOperation
+      }
+    }
+  | {
+      kcl_migration_application: {
+        /** Accepted state and revision for subsequent acknowledgements. */
+        application: KclMigrationApplication
+        /** Migration request ID. */
+        operation_id: Uuid
       }
     }
   | {
@@ -5875,6 +5955,13 @@ export type ModelingCmd =
       entity_ids: string[]
       /** The file format to export to. */
       format: OutputFormat3d
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "KCL source to embed in formats that support source metadata."
+       * }
+       */
+      kcl_source?: KclProject
       type: 'export3d'
     }
   | {
@@ -5886,6 +5973,13 @@ export type ModelingCmd =
       entity_ids: string[]
       /** The file format to export to. */
       format: OutputFormat3d
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "KCL source to embed in formats that support source metadata."
+       * }
+       */
+      kcl_source?: KclProject
       type: 'export'
     }
   | {
@@ -10230,6 +10324,14 @@ export interface ProjectCategoryResponse {
   sort_order: number
 }
 
+export interface ProjectDownloadErrorResponse {
+  error_code?: string
+  message: string
+  /** Requested IDs absent from the resolved project version. Present for `InvalidProjectFileSelection`, with duplicate IDs listed once. */
+  missing_file_ids?: Uuid[]
+  request_id: string
+}
+
 export interface ProjectEntityToPlane {
   /** Projected points. */
   projected_points: Point3d[]
@@ -10862,6 +10964,10 @@ export interface RtcSessionDescription {
   /** SDP type. */
   type: RtcSdpType
 }
+
+export type SafeFilepath =
+  /** Filepath which is guaranteed to be relative and not contain parent directory jumps like '..' */
+  string
 
 export type SalesInquiryType =
   | 'pilot_inquiry'
@@ -13541,9 +13647,11 @@ export interface Models {
   FactoryCustomerCatalogOption: FactoryCustomerCatalogOption
   FactoryCustomerCatalogOptionResultsPage: FactoryCustomerCatalogOptionResultsPage
   FactoryCustomerJobDetail: FactoryCustomerJobDetail
+  FactoryCustomerJobFile: FactoryCustomerJobFile
   FactoryCustomerJobSummary: FactoryCustomerJobSummary
   FactoryCustomerJobSummaryResultsPage: FactoryCustomerJobSummaryResultsPage
   FactoryCustomerJobVersion: FactoryCustomerJobVersion
+  FactoryCustomerJobVersionResultsPage: FactoryCustomerJobVersionResultsPage
   FactoryJobResponse: FactoryJobResponse
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage
@@ -13585,6 +13693,7 @@ export interface Models {
   KclCodeCompletionParams: KclCodeCompletionParams
   KclCodeCompletionRequest: KclCodeCompletionRequest
   KclCodeCompletionResponse: KclCodeCompletionResponse
+  KclFile: KclFile
   KclMigrationApplication: KclMigrationApplication
   KclMigrationApplicationStatus: KclMigrationApplicationStatus
   KclMigrationClientMessage: KclMigrationClientMessage
@@ -13597,6 +13706,7 @@ export interface Models {
   KclMigrationTarget: KclMigrationTarget
   KclMigrationValidation: KclMigrationValidation
   KclModel: KclModel
+  KclProject: KclProject
   KclProjectFileRole: KclProjectFileRole
   KclProjectLibrarySource: KclProjectLibrarySource
   KclProjectPreviewStatus: KclProjectPreviewStatus
@@ -13726,6 +13836,7 @@ export interface Models {
   ProjectAccessScope: ProjectAccessScope
   ProjectArchiveFormat: ProjectArchiveFormat
   ProjectCategoryResponse: ProjectCategoryResponse
+  ProjectDownloadErrorResponse: ProjectDownloadErrorResponse
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectFileResponse: ProjectFileResponse
   ProjectLibraryResponse: ProjectLibraryResponse
@@ -13767,6 +13878,7 @@ export interface Models {
   RtcIceCandidateInit: RtcIceCandidateInit
   RtcSdpType: RtcSdpType
   RtcSessionDescription: RtcSessionDescription
+  SafeFilepath: SafeFilepath
   SalesInquiryType: SalesInquiryType
   SamlIdentityProvider: SamlIdentityProvider
   SamlIdentityProviderCreate: SamlIdentityProviderCreate
