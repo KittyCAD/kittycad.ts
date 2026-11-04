@@ -28,7 +28,7 @@ type CreateProjectLibraryReturn = ProjectLibraryResponse
  *
  * ```json { "name": "Factory designs", "scope": "personal", "source": "factory_portal" } ```
  *
- * Accepted sources are `zds` and `factory_portal`. Omitting source defaults to `zds`. Null and unsupported values return HTTP 400.
+ * Accepted sources are `zds`, `factory_portal`, and `org_dataset`. Omitting source defaults to `zds`. Null and unsupported values return HTTP 400.
  *
  * Source is returned in library responses and cannot be changed after creation. Clients use it to decide how to display libraries; it does not change API permissions. No API source filter is provided at the moment.
  *
