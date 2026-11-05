@@ -560,9 +560,16 @@ export interface Announcement {
   updated_at: string
 }
 
-export interface AnnouncementList {
-  /** The list of active announcements. */
-  announcements: Announcement[]
+export interface AnnouncementResultsPage {
+  /** list of items on this page of results */
+  items: Announcement[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
 }
 
 export type ApiCallStatus =
@@ -10324,6 +10331,18 @@ export interface ProjectCategoryResponse {
   sort_order: number
 }
 
+export interface ProjectCategoryResponseResultsPage {
+  /** list of items on this page of results */
+  items: ProjectCategoryResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
 export interface ProjectDownloadErrorResponse {
   error_code?: string
   message: string
@@ -13478,7 +13497,7 @@ export interface Models {
   AnnotationTextOptions: AnnotationTextOptions
   AnnotationType: AnnotationType
   Announcement: Announcement
-  AnnouncementList: AnnouncementList
+  AnnouncementResultsPage: AnnouncementResultsPage
   ApiCallStatus: ApiCallStatus
   ApiCallWithPrice: ApiCallWithPrice
   ApiCallWithPriceResultsPage: ApiCallWithPriceResultsPage
@@ -13836,6 +13855,7 @@ export interface Models {
   ProjectAccessScope: ProjectAccessScope
   ProjectArchiveFormat: ProjectArchiveFormat
   ProjectCategoryResponse: ProjectCategoryResponse
+  ProjectCategoryResponseResultsPage: ProjectCategoryResponseResultsPage
   ProjectDownloadErrorResponse: ProjectDownloadErrorResponse
   ProjectEntityToPlane: ProjectEntityToPlane
   ProjectFileResponse: ProjectFileResponse
