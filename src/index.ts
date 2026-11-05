@@ -107,9 +107,11 @@ import get_ipinfo from './api/meta/get_ipinfo.js'
 import get_pricing_subscriptions from './api/meta/get_pricing_subscriptions.js'
 import get_schema from './api/meta/get_schema.js'
 import ping from './api/meta/ping.js'
+import { get_announcements_pager } from './api/meta/get_announcements.js'
 export const meta = {
   community_sso,
   get_announcements,
+  get_announcements_pager,
   get_ipinfo,
   get_pricing_subscriptions,
   get_schema,
@@ -402,9 +404,11 @@ import update_project from './api/projects/update_project.js'
 import update_project_library from './api/projects/update_project_library.js'
 import update_project_organization from './api/projects/update_project_organization.js'
 import { list_library_projects_pager } from './api/projects/list_library_projects.js'
+import { list_project_categories_pager } from './api/projects/list_project_categories.js'
 import { list_project_libraries_pager } from './api/projects/list_project_libraries.js'
 import { list_project_share_links_pager } from './api/projects/list_project_share_links.js'
 import { list_project_versions_pager } from './api/projects/list_project_versions.js'
+import { list_projects_pager } from './api/projects/list_projects.js'
 import { list_public_projects_pager } from './api/projects/list_public_projects.js'
 export const projects = {
   create_project,
@@ -429,6 +433,7 @@ export const projects = {
   list_library_projects,
   list_library_projects_pager,
   list_project_categories,
+  list_project_categories_pager,
   list_project_libraries,
   list_project_libraries_pager,
   list_project_share_links,
@@ -436,6 +441,7 @@ export const projects = {
   list_project_versions,
   list_project_versions_pager,
   list_projects,
+  list_projects_pager,
   list_public_projects,
   list_public_projects_pager,
   publish_project,
@@ -572,7 +578,7 @@ export type {
   AnnotationTextOptions,
   AnnotationType,
   Announcement,
-  AnnouncementList,
+  AnnouncementResultsPage,
   ApiCallStatus,
   ApiCallWithPrice,
   ApiCallWithPriceResultsPage,
@@ -930,6 +936,7 @@ export type {
   ProjectAccessScope,
   ProjectArchiveFormat,
   ProjectCategoryResponse,
+  ProjectCategoryResponseResultsPage,
   ProjectDownloadErrorResponse,
   ProjectEntityToPlane,
   ProjectFileResponse,
