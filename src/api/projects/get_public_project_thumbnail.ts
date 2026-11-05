@@ -8,7 +8,7 @@ interface GetPublicProjectThumbnailInput {
   id: Uuid
 }
 
-type GetPublicProjectThumbnailReturn = unknown
+type GetPublicProjectThumbnailReturn = Response
 
 /**
  * Fetch the public thumbnail for a published project.
@@ -42,6 +42,5 @@ export default async function get_public_project_thumbnail({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as GetPublicProjectThumbnailReturn
-  return result
+  return response
 }
