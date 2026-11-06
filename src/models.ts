@@ -3130,6 +3130,13 @@ export interface FactoryCustomerJobDetail {
   current_version?: FactoryCustomerJobVersion
   /** The same summary returned by the customer job list. */
   job: FactoryCustomerJobSummary
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The active published quote, excluding all internal costing and worksheet notes."
+   * }
+   */
+  quote?: FactoryCustomerQuote
 }
 
 export interface FactoryCustomerJobFile {
@@ -3185,6 +3192,77 @@ export interface FactoryCustomerJobVersionResultsPage {
    * }
    */
   next_page?: string
+}
+
+export interface FactoryCustomerQuote {
+  /** Broad production and shipping guidance, not a promised arrival date. */
+  delivery_estimate: string
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Seven calendar days after the latest send. Expired offers remain readable."
+   * }
+   */
+  expires_at: string
+  /**
+   * {
+   *   "$ref": "#/components/schemas/Uuid"
+   * }
+   */
+  id: Uuid
+  is_expedited: boolean
+  /**
+   * {
+   *   "$ref": "#/components/schemas/Uuid"
+   * }
+   */
+  job_version_id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uint64",
+   *   "minimum": 0,
+   *   "description": "Positive quantity from the quoted revision; null when historical input is unusable."
+   * }
+   */
+  part_quantity?: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "int64",
+   *   "description": "Approximate USD cents per part, rounded half-up for display only. Subtotal is authoritative."
+   * }
+   */
+  price_per_part_cents?: number
+  /**
+   * {
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Most recent explicit send, including resends of this same offer."
+   * }
+   */
+  published_at: string
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Customer shipping charge in USD cents: zero for standard shipping, or the expedited upgrade."
+   * }
+   */
+  shipping_cents: number
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Part selling subtotal in USD cents, excluding shipping upgrades and tax."
+   * }
+   */
+  subtotal_cents: number
+  /**
+   * {
+   *   "format": "int64"
+   * }
+   */
+  total_before_tax_cents: number
 }
 
 export interface FactoryJobResponse {
@@ -13787,6 +13865,7 @@ export interface Models {
   FactoryCustomerJobSummaryResultsPage: FactoryCustomerJobSummaryResultsPage
   FactoryCustomerJobVersion: FactoryCustomerJobVersion
   FactoryCustomerJobVersionResultsPage: FactoryCustomerJobVersionResultsPage
+  FactoryCustomerQuote: FactoryCustomerQuote
   FactoryJobResponse: FactoryJobResponse
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage
