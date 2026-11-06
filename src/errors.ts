@@ -25,7 +25,9 @@ export async function throwIfNotOk(res: Response): Promise<void> {
   let text: string
   try {
     text = await res.text()
-  } catch {
+  } catch (cause) {
+    error.message = `Failed to read HTTP ${res.status} error response body.`
+    error.cause = cause
     throw error
   }
   try {

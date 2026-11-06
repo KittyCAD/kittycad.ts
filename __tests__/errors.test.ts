@@ -2,6 +2,25 @@ import { vi } from 'vitest'
 import { throwIfNotOk } from '../src/errors'
 
 describe('throwIfNotOk', () => {
+  it.each([
+    new TypeError('Response body is already consumed'),
+    new DOMException('Response body read was aborted', 'AbortError'),
+  ])('preserves a body-read failure as the cause: %s', async (cause) => {
+    const response = new Response('upstream error', {
+      status: 503,
+      headers: { 'Retry-After': '7' },
+    })
+    vi.spyOn(response, 'text').mockRejectedValueOnce(cause)
+
+    await expect(throwIfNotOk(response)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 503,
+      retryAfterMs: 7000,
+      message: 'Failed to read HTTP 503 error response body.',
+      cause,
+    })
+  })
+
   it('preserves a non-JSON error response body', async () => {
     const response = new Response('upstream exploded', { status: 502 })
 
