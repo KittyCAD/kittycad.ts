@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- Project archive downloads and thumbnail methods return the original `Response`
+  after checking HTTP errors, preserving binary bytes, content type, and download
+  filenames. Previously they attempted to parse image and archive bodies as JSON.
+- `ApiError.retryAfterMs` preserves `Retry-After` delays, including HTTP dates.
+
+### Migration
+
+For `download_project`, `download_public_project`, `download_project_version`,
+`get_project_thumbnail`, `get_public_project_thumbnail`, and
+`get_project_version_thumbnail`, read the returned response with
+`await response.arrayBuffer()` or `await response.blob()`. Read download filenames
+from `response.headers.get('content-disposition')`. JSON metadata methods and
+HTTP error behavior are unchanged.
+
 All notable changes to this project will be documented in this file.
 
 ## v4.5.13

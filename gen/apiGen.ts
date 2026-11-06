@@ -12,6 +12,17 @@ import {
 } from './expectedToFail.js'
 const { observe, generate } = pkg
 
+// These endpoints have untyped */* responses in the spec. Preserve the response
+// so callers can read binary bodies and download headers without JSON coercion.
+const rawResponseOperations = new Set([
+  'download_project',
+  'download_public_project',
+  'download_project_version',
+  'get_project_thumbnail',
+  'get_public_project_thumbnail',
+  'get_project_version_thumbnail',
+])
+
 function toExampleStringLiteral(value?: string): string {
   const normalized = value?.replace(/\s+/g, ' ').trim() || 'string'
   return JSON.stringify(normalized)
@@ -70,6 +81,7 @@ export default async function apiGen(lookup: Record<string, string>) {
   const writePromises = Object.entries(operations).map(
     async ([operationId, operation]) => {
       try {
+        const rawResponse = rawResponseOperations.has(operationId)
         if ('hidden' === (operation.specSection as any).tags[0]) {
           return []
         }
@@ -454,7 +466,7 @@ export default async function apiGen(lookup: Record<string, string>) {
         // If set, this takes precedence over the union of importedTypes.
         let returnTypeOverride: string | undefined
         let pagerItemTypeName: string | undefined
-        if (!isWebSocket) {
+        if (!isWebSocket && !rawResponse) {
           Object.values(operation.specSection?.responses).forEach(
             (response) => {
               const schema = (response as any)?.content?.['application/json']
@@ -617,11 +629,13 @@ export default async function apiGen(lookup: Record<string, string>) {
           const returnTyping = `type ${pascalName}Return = ${
             has204
               ? 'void'
-              : returnTypeOverride
-                ? returnTypeOverride
-                : importedTypes.length
-                  ? importedTypes.join(' | ')
-                  : 'unknown'
+              : rawResponse
+                ? 'Response'
+                : returnTypeOverride
+                  ? returnTypeOverride
+                  : importedTypes.length
+                    ? importedTypes.join(' | ')
+                    : 'unknown'
           }`
           const paramsInterfaceName = `${pascalName}Input`
           const returnTypeName = `${pascalName}Return`
@@ -685,6 +699,7 @@ export default async function apiGen(lookup: Record<string, string>) {
               importedReturnTypes: importedTypes,
             }),
             noJsonResponse: has204,
+            rawResponse,
             pager: Boolean(pagerItemTypeName),
             pagerItemTypeName: pagerItemTypeName || 'unknown',
             pagerFnName: `${operationId}_pager`,

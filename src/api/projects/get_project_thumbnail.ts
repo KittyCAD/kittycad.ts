@@ -8,7 +8,7 @@ interface GetProjectThumbnailInput {
   id: Uuid
 }
 
-type GetProjectThumbnailReturn = unknown
+type GetProjectThumbnailReturn = Response
 
 /**
  * Fetch the authenticated owner's current project thumbnail.
@@ -42,6 +42,5 @@ export default async function get_project_thumbnail({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as GetProjectThumbnailReturn
-  return result
+  return response
 }
