@@ -1,20 +1,28 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
 ## Unreleased
 
 ### Fixed
 
-- Archive, file, and thumbnail endpoints return an unread `Response` instead of
-  parsing binary bodies as JSON. HTTP errors still throw `ApiError` and are
-  excluded from successful return types. OAuth responses keep JSON decoding.
+- Project archive downloads and thumbnail methods return the original `Response`
+  after checking HTTP errors, preserving binary bytes, content type, and download
+  filenames. Previously they attempted to parse image and archive bodies as JSON.
+- Dataset downloads and Factory job files also preserve the unread response.
+- HTTP error schemas are excluded from successful return types.
+- `ApiError.retryAfterMs` preserves `Retry-After` delays, including HTTP dates.
 
 ### Migration
 
-Read download bodies with `await response.arrayBuffer()`, `response.blob()`, or
-`response.text()`. Headers remain available through `response.headers`. Remove
-any fetch overrides that replace the response's `json()` method for downloads.
+For `download_project`, `download_public_project`, `download_project_version`,
+`get_project_thumbnail`, `get_public_project_thumbnail`,
+`get_project_version_thumbnail`, `download_org_dataset_conversion_original`,
+`download_org_dataset_successful_kcl_bulk`, `get_org_factory_job_file`, and
+`get_user_factory_job_file`, read the returned response with
+`await response.arrayBuffer()` or `await response.blob()`. Read download filenames
+from `response.headers.get('content-disposition')`. JSON metadata methods and
+HTTP error behavior are unchanged.
+
+All notable changes to this project will be documented in this file.
 
 ## v4.5.13
 

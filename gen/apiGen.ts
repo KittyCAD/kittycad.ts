@@ -12,6 +12,21 @@ import {
 } from './expectedToFail.js'
 const { observe, generate } = pkg
 
+// These endpoints have untyped */* responses in the spec. Preserve the response
+// so callers can read binary bodies and download headers without JSON coercion.
+const rawResponseOperations = new Set([
+  'download_project',
+  'download_public_project',
+  'download_project_version',
+  'get_project_thumbnail',
+  'get_public_project_thumbnail',
+  'get_project_version_thumbnail',
+  'download_org_dataset_conversion_original',
+  'download_org_dataset_successful_kcl_bulk',
+  'get_org_factory_job_file',
+  'get_user_factory_job_file',
+])
+
 function toExampleStringLiteral(value?: string): string {
   const normalized = value?.replace(/\s+/g, ' ').trim() || 'string'
   return JSON.stringify(normalized)
@@ -70,6 +85,7 @@ export default async function apiGen(lookup: Record<string, string>) {
   const writePromises = Object.entries(operations).map(
     async ([operationId, operation]) => {
       try {
+        const rawResponse = rawResponseOperations.has(operationId)
         if ('hidden' === (operation.specSection as any).tags[0]) {
           return []
         }
@@ -449,25 +465,6 @@ export default async function apiGen(lookup: Record<string, string>) {
 
         // No-op: Handlebars template handles optional params signature.
         const importedTypes: string[] = []
-        const successResponses = Object.entries(
-          operation.specSection?.responses || {}
-        )
-          .filter(([status]) => status === 'default' || status.startsWith('2'))
-          .map(([, response]) => response)
-        // OAuth responses use */* in the spec despite returning JSON.
-        const rawResponse =
-          !isWebSocket &&
-          !operation.specSection?.tags?.includes('oauth2') &&
-          successResponses.some((response) => {
-            if ('$ref' in response) return false
-            const contentTypes = Object.keys(response.content || {})
-            return (
-              contentTypes.length > 0 &&
-              !contentTypes.some(
-                (type) => type === 'application/json' || type.endsWith('+json')
-              )
-            )
-          })
         // When response schemas are complex (e.g., objects with index signatures)
         // we may want to explicitly override the computed return type.
         // If set, this takes precedence over the union of importedTypes.
