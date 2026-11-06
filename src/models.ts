@@ -24,6 +24,20 @@ export interface AddOrgMember {
   role: UserOrgRole
 }
 
+export interface AddressContact {
+  /** default:, description:Company name, or an empty string when absent. */
+  company?: string
+  /**
+   * {
+   *   "default": "",
+   *   "description": "Delivery contact phone, or an empty string when absent."
+   * }
+   */
+  phone?: string
+  /** default:, description:Individual or department receiving the delivery. */
+  recipient?: string
+}
+
 export interface AddressDetails {
   /** The city component. */
   city?: string
@@ -37,6 +51,58 @@ export interface AddressDetails {
   street2?: string
   /** The zip component. */
   zip?: string
+}
+
+export interface AddressPostalResponse {
+  /** City or locality. */
+  city: string
+  /** Two-letter country code, or an uncorrected historical value. */
+  country: string
+  /** State, province, or region when applicable. */
+  state: string
+  /** First street line. */
+  street1: string
+  /** Optional second street line, represented by an empty string when absent. */
+  street2: string
+  /** Postal code when applicable. */
+  zip: string
+}
+
+export interface AddressResponse {
+  /** Whether this caller can edit/archive the card through these endpoints. */
+  can_manage: boolean
+  /** Recipient, company, and phone attached to this revision. */
+  contact: AddressContact
+  /** title:DateTime, format:date-time, description:When the card was created. */
+  created_at: string
+  /** Stable address-book identifier. Edits preserve this ID. */
+  id: Uuid
+  /** Billing edits use the existing payment endpoints to update the provider. */
+  is_billing: boolean
+  /** Whether this card is the owner's selected shipping default. */
+  is_default_shipping: boolean
+  /** False for a one-off destination omitted from address-book listings. */
+  is_saved: boolean
+  /** Customer-visible label for this address-book card. */
+  label: string
+  /** Current postal destination. */
+  postal: AddressPostalResponse
+  /** Immutable postal/contact revision. Orders must pin this ID. */
+  revision_id: Uuid
+  /** title:DateTime, format:date-time, description:When the card was most recently edited. */
+  updated_at: string
+}
+
+export interface AddressResponseResultsPage {
+  /** list of items on this page of results */
+  items: AddressResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
 }
 
 export interface AdjacencyInfo {
@@ -478,6 +544,8 @@ export type AnnotationMbdLeaderPosition =
       }
     }
   | { centroid: Record<string, unknown> }
+  | { step_from: Record<string, unknown> }
+  | { auto: Record<string, unknown> }
 
 export interface AnnotationOptions {
   /** nullable:true, description:Color to render the annotation */
@@ -1926,6 +1994,29 @@ export interface Coupon {
   percent_off?: number
 }
 
+export interface CreateAddressRequest {
+  /** Delivery contact. Recipient is required; company and phone may be empty. */
+  contact: AddressContact
+  /**
+   * {
+   *   "default": false,
+   *   "description": "Select this saved card as the shipping default without changing billing."
+   * }
+   */
+  is_default_shipping?: boolean
+  /**
+   * {
+   *   "default": true,
+   *   "description": "Defaults to true. Set false for an order-only destination."
+   * }
+   */
+  is_saved?: boolean
+  /** default:, description:Customer-visible label, such as Home or Workshop. */
+  label?: string
+  /** Postal destination. Accepts zip or postal_code. */
+  postal: AddressDetails
+}
+
 export interface CreateCustomModel {
   /** Org dataset IDs that should be linked to the model. Must contain at least one dataset owned by the org. */
   dataset_ids: Uuid[]
@@ -2596,6 +2687,11 @@ export interface EntityMirrorAcrossEdge {
 
 export type EntityReference =
   | {
+      /** format:uuid, description:Id of the annotation object being referenced. */
+      annotation_id: string
+      type: 'annotation'
+    }
+  | {
       /** format:uuid, description:Id of the plane being referenced. */
       plane_id: string
       /**
@@ -2750,6 +2846,7 @@ export type EntityType =
   | 'vertex'
   | 'region'
   | 'patterngroup'
+  | 'annotation'
 
 export interface Error {
   error_code?: string
@@ -3144,6 +3241,7 @@ export type Feature =
   | 'dfm_review'
   | 'drawings'
   | 'scene_browser'
+  | 'zds_project_shell_refactor'
   | 'plugins'
   | 'proprietary_to_kcl_conversion_beta'
   | 'sketch_experimental_features'
@@ -12529,6 +12627,19 @@ This is the same as the API call ID. */
   user_id: Uuid
 }
 
+export interface UpdateAddressRequest {
+  /** Replacement recipient, company, and phone. */
+  contact: AddressContact
+  /** revision_id returned when the card was loaded. Stale edits return 409. */
+  expected_revision: Uuid
+  /** Select or clear this card as the default shipping destination. */
+  is_default_shipping: boolean
+  /** Replacement card label. */
+  label: string
+  /** Replacement postal destination. */
+  postal: AddressDetails
+}
+
 export interface UpdateAnnotation {} /* Empty object */
 
 export interface UpdateCustomModel {
@@ -13476,7 +13587,11 @@ export interface Models {
   AccountProvider: AccountProvider
   AddHoleFromOffset: AddHoleFromOffset
   AddOrgMember: AddOrgMember
+  AddressContact: AddressContact
   AddressDetails: AddressDetails
+  AddressPostalResponse: AddressPostalResponse
+  AddressResponse: AddressResponse
+  AddressResponseResultsPage: AddressResponseResultsPage
   AdjacencyInfo: AdjacencyInfo
   AggregateUsageCollectionThresholdBounds: AggregateUsageCollectionThresholdBounds
   AggregateUsageCollectionThresholdSet: AggregateUsageCollectionThresholdSet
@@ -13560,6 +13675,7 @@ export interface Models {
   ConversionSortMode: ConversionSortMode
   CountryCode: CountryCode
   Coupon: Coupon
+  CreateAddressRequest: CreateAddressRequest
   CreateCustomModel: CreateCustomModel
   CreateOAuth2AppRequest: CreateOAuth2AppRequest
   CreateOrgDataset: CreateOrgDataset
@@ -14023,6 +14139,7 @@ export interface Models {
   UnitTorqueConversion: UnitTorqueConversion
   UnitVolume: UnitVolume
   UnitVolumeConversion: UnitVolumeConversion
+  UpdateAddressRequest: UpdateAddressRequest
   UpdateAnnotation: UpdateAnnotation
   UpdateCustomModel: UpdateCustomModel
   UpdateMemberToOrgBody: UpdateMemberToOrgBody
