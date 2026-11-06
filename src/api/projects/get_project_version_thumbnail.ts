@@ -9,7 +9,7 @@ interface GetProjectVersionThumbnailInput {
   version_id: Uuid
 }
 
-type GetProjectVersionThumbnailReturn = unknown
+type GetProjectVersionThumbnailReturn = Response
 
 /**
  * Fetch the thumbnail for a single saved project version.
@@ -45,6 +45,5 @@ export default async function get_project_version_thumbnail({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as GetProjectVersionThumbnailReturn
-  return result
+  return response
 }

@@ -449,14 +449,34 @@ export default async function apiGen(lookup: Record<string, string>) {
 
         // No-op: Handlebars template handles optional params signature.
         const importedTypes: string[] = []
+        const successResponses = Object.entries(
+          operation.specSection?.responses || {}
+        )
+          .filter(([status]) => status === 'default' || status.startsWith('2'))
+          .map(([, response]) => response)
+        // OAuth responses use */* in the spec despite returning JSON.
+        const rawResponse =
+          !isWebSocket &&
+          !operation.specSection?.tags?.includes('oauth2') &&
+          successResponses.some((response) => {
+            if ('$ref' in response) return false
+            const contentTypes = Object.keys(response.content || {})
+            return (
+              contentTypes.length > 0 &&
+              !contentTypes.some(
+                (type) => type === 'application/json' || type.endsWith('+json')
+              )
+            )
+          })
         // When response schemas are complex (e.g., objects with index signatures)
         // we may want to explicitly override the computed return type.
         // If set, this takes precedence over the union of importedTypes.
         let returnTypeOverride: string | undefined
         let pagerItemTypeName: string | undefined
-        if (!isWebSocket) {
-          Object.values(operation.specSection?.responses).forEach(
-            (response) => {
+        if (!isWebSocket && !rawResponse) {
+          Object.entries(operation.specSection?.responses).forEach(
+            ([status, response]) => {
+              if (status !== 'default' && !status.startsWith('2')) return
               const schema = (response as any)?.content?.['application/json']
                 ?.schema as OpenAPIV3.SchemaObject
               if (!schema) {
@@ -617,11 +637,13 @@ export default async function apiGen(lookup: Record<string, string>) {
           const returnTyping = `type ${pascalName}Return = ${
             has204
               ? 'void'
-              : returnTypeOverride
-                ? returnTypeOverride
-                : importedTypes.length
-                  ? importedTypes.join(' | ')
-                  : 'unknown'
+              : rawResponse
+                ? 'Response'
+                : returnTypeOverride
+                  ? returnTypeOverride
+                  : importedTypes.length
+                    ? importedTypes.join(' | ')
+                    : 'unknown'
           }`
           const paramsInterfaceName = `${pascalName}Input`
           const returnTypeName = `${pascalName}Return`
@@ -685,6 +707,7 @@ export default async function apiGen(lookup: Record<string, string>) {
               importedReturnTypes: importedTypes,
             }),
             noJsonResponse: has204,
+            rawResponse,
             pager: Boolean(pagerItemTypeName),
             pagerItemTypeName: pagerItemTypeName || 'unknown',
             pagerFnName: `${operationId}_pager`,
@@ -1115,7 +1138,9 @@ function buildOperationJsDoc(
     }
   }
   if (!retDesc) {
-    const anyResp = Object.values(responses)[0] as any
+    const anyResp = Object.entries(responses).find(
+      ([status]) => !status.startsWith('4') && !status.startsWith('5')
+    )?.[1] as OpenAPIV3.ResponseObject | undefined
     retDesc = anyResp?.description || ''
   }
   const returnsType = `Promise<${opts.returnTypeName}>`

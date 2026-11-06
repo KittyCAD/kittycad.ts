@@ -9,7 +9,7 @@ interface GetUserFactoryJobFileInput {
   file_id: Uuid
 }
 
-type GetUserFactoryJobFileReturn = unknown
+type GetUserFactoryJobFileReturn = Response
 
 /**
  * Download an exact submitted manufacturing input of a personal Factory job.
@@ -45,6 +45,5 @@ export default async function get_user_factory_job_file({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as GetUserFactoryJobFileReturn
-  return result
+  return response
 }

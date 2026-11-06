@@ -1,11 +1,7 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import {
-  ProjectDownloadErrorResponse,
-  Uuid,
-  ProjectArchiveFormat,
-} from '../../models.js'
+import { Uuid, ProjectArchiveFormat } from '../../models.js'
 
 interface DownloadProjectInput {
   client?: Client
@@ -14,7 +10,7 @@ interface DownloadProjectInput {
   file_ids?: unknown
 }
 
-type DownloadProjectReturn = ProjectDownloadErrorResponse
+type DownloadProjectReturn = Response
 
 /**
  * Download all or selected files from the current version of a project.
@@ -28,9 +24,7 @@ type DownloadProjectReturn = ProjectDownloadErrorResponse
  * @property {Uuid} id The identifier. (path)
  * @property {ProjectArchiveFormat} format Archive format to return. Defaults to `tar`. (query)
  * @property {unknown} file_ids Optional comma-separated file IDs from this download's version. Omit to download every file. An empty or malformed list returns HTTP 400 with `error_code: InvalidProjectFileIds`. Any ID outside this version returns HTTP 400 with `error_code: InvalidProjectFileSelection` and a `missing_file_ids` array listing the requested IDs absent from this version. The entire selection fails: requesting ten IDs with one missing returns HTTP 400 without an archive. Missing projects or versions still return HTTP 404. Repeated IDs are included once. Selecting one file still returns the requested archive format. (query)
- * @returns {Promise<DownloadProjectReturn>} Invalid download parameters. InvalidProjectFileSelection includes missing_file_ids.
- *
- * Possible return types: ProjectDownloadErrorResponse
+ * @returns {Promise<DownloadProjectReturn>} Response payload.
  */
 export default async function download_project({
   client,
@@ -56,6 +50,5 @@ export default async function download_project({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as DownloadProjectReturn
-  return result
+  return response
 }

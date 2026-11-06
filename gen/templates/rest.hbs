@@ -42,6 +42,8 @@ export default async function {{functionName}}(
   await throwIfNotOk(response);
   {{#if noJsonResponse}}
   return undefined as {{returnTypeName}};
+  {{else if rawResponse}}
+  return response;
   {{else}}
   const result = (await response.json()) as {{returnTypeName}};
   return result;

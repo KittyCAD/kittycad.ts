@@ -22,7 +22,7 @@ describe('application/x-www-form-urlencoded bodies', () => {
     globalThis.fetch = mock
     const client = new Client()
 
-    await oauth2.device_access_token({
+    const result = await oauth2.device_access_token({
       client,
       body: {
         client_id: '00000000-0000-0000-0000-000000000000',
@@ -31,6 +31,7 @@ describe('application/x-www-form-urlencoded bodies', () => {
       },
     })
 
+    expect(result).toEqual({ ok: true })
     expect(mock).toHaveBeenCalledTimes(1)
     const [, opts] = mock.mock.calls[0]
     expect(opts.method).toBe('POST')

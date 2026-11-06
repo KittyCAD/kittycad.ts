@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Fixed
+
+- Archive, file, and thumbnail endpoints return an unread `Response` instead of
+  parsing binary bodies as JSON. HTTP errors still throw `ApiError` and are
+  excluded from successful return types. OAuth responses keep JSON decoding.
+
+### Migration
+
+Read download bodies with `await response.arrayBuffer()`, `response.blob()`, or
+`response.text()`. Headers remain available through `response.headers`. Remove
+any fetch overrides that replace the response's `json()` method for downloads.
+
 ## v4.5.13
 
 ### Fixed

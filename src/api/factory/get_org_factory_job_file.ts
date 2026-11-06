@@ -9,7 +9,7 @@ interface GetOrgFactoryJobFileInput {
   file_id: Uuid
 }
 
-type GetOrgFactoryJobFileReturn = unknown
+type GetOrgFactoryJobFileReturn = Response
 
 /**
  * Download an exact submitted manufacturing input for a current organization member.
@@ -45,6 +45,5 @@ export default async function get_org_factory_job_file({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as GetOrgFactoryJobFileReturn
-  return result
+  return response
 }
