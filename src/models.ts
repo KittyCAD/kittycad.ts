@@ -3199,6 +3199,14 @@ export interface FactoryCustomerQuote {
   delivery_estimate: string
   /**
    * {
+   *   "nullable": true,
+   *   "format": "int64",
+   *   "description": "Production plus shipping business days from invoicing; null if either is unknown."
+   * }
+   */
+  estimated_delivery_business_days?: number
+  /**
+   * {
    *   "title": "DateTime",
    *   "format": "date-time",
    *   "description": "Seven calendar days after the latest send. Expired offers remain readable."
