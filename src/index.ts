@@ -784,6 +784,7 @@ export type {
   FactoryCustomerJobSummaryResultsPage,
   FactoryCustomerJobVersion,
   FactoryCustomerJobVersionResultsPage,
+  FactoryCustomerQuote,
   FactoryJobResponse,
   FailureWebSocketResponse,
   FbxStorage,
