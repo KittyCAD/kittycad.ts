@@ -43127,6 +43127,12 @@
             "description": "Broad production and shipping guidance, not a promised arrival date.",
             "type": "string"
           },
+          "estimated_delivery_business_days": {
+            "nullable": true,
+            "description": "Production plus shipping business days from invoicing; null if either is unknown.",
+            "type": "integer",
+            "format": "int64"
+          },
           "expires_at": {
             "title": "DateTime",
             "description": "Seven calendar days after the latest send. Expired offers remain readable.",
