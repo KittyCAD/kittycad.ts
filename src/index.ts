@@ -1,3 +1,30 @@
+import create_org_address from './api/addresses/create_org_address.js'
+import create_user_address from './api/addresses/create_user_address.js'
+import delete_org_address from './api/addresses/delete_org_address.js'
+import delete_user_address from './api/addresses/delete_user_address.js'
+import get_org_address from './api/addresses/get_org_address.js'
+import get_user_address from './api/addresses/get_user_address.js'
+import list_org_addresses from './api/addresses/list_org_addresses.js'
+import list_user_addresses from './api/addresses/list_user_addresses.js'
+import update_org_address from './api/addresses/update_org_address.js'
+import update_user_address from './api/addresses/update_user_address.js'
+import { list_org_addresses_pager } from './api/addresses/list_org_addresses.js'
+import { list_user_addresses_pager } from './api/addresses/list_user_addresses.js'
+export const addresses = {
+  create_org_address,
+  create_user_address,
+  delete_org_address,
+  delete_user_address,
+  get_org_address,
+  get_user_address,
+  list_org_addresses,
+  list_org_addresses_pager,
+  list_user_addresses,
+  list_user_addresses_pager,
+  update_org_address,
+  update_user_address,
+}
+
 import get_api_call from './api/api-calls/get_api_call.js'
 import get_api_call_for_org from './api/api-calls/get_api_call_for_org.js'
 import get_api_call_for_user from './api/api-calls/get_api_call_for_user.js'
@@ -557,7 +584,11 @@ export type {
   AccountProvider,
   AddHoleFromOffset,
   AddOrgMember,
+  AddressContact,
   AddressDetails,
+  AddressPostalResponse,
+  AddressResponse,
+  AddressResponseResultsPage,
   AdjacencyInfo,
   AggregateUsageCollectionThresholdBounds,
   AggregateUsageCollectionThresholdSet,
@@ -641,6 +672,7 @@ export type {
   ConversionSortMode,
   CountryCode,
   Coupon,
+  CreateAddressRequest,
   CreateCustomModel,
   CreateOAuth2AppRequest,
   CreateOrgDataset,
@@ -1104,6 +1136,7 @@ export type {
   UnitTorqueConversion,
   UnitVolume,
   UnitVolumeConversion,
+  UpdateAddressRequest,
   UpdateAnnotation,
   UpdateCustomModel,
   UpdateMemberToOrgBody,

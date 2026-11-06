@@ -761,6 +761,46 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1user~1addresses~1{id}/delete/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.delete_user_address({\n        id: '00000000-0000-0000-0000-000000000000',\n        expected_revision: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1addresses~1{id}/put/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.update_user_address({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            contact: {\n                company: 'Company name, or an empty string when absent.',\n                phone: 'Delivery contact phone, or an empty string when absent.',\n                recipient: 'Individual or department receiving the delivery.',\n            },\n            expected_revision: 'A UUID usually v4 or v7',\n            is_default_shipping: true,\n            label: 'Replacement card label.',\n            postal: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1addresses~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.get_user_address({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1addresses/post/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.create_user_address({\n        body: {\n            contact: {\n                company: 'Company name, or an empty string when absent.',\n                phone: 'Delivery contact phone, or an empty string when absent.',\n                recipient: 'Individual or department receiving the delivery.',\n            },\n            is_default_shipping: true,\n            is_saved: true,\n            label: 'Customer-visible label, such as Home or Workshop.',\n            postal: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1user~1addresses/get/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.list_user_addresses({\n        limit: 7,\n        page_token: 'string',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = addresses.list_user_addresses_pager({\n        limit: 7,\n        page_token: 'string',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1user/delete/x-typescript",
     "value": {
       "example": "import { users, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await users.delete_user_self({ client })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -1460,6 +1500,46 @@
     "path": "/paths/~1org~1api-calls/get/x-typescript",
     "value": {
       "example": "import { api_calls, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await api_calls.org_list_api_calls({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = api_calls.org_list_api_calls_pager({\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1addresses~1{id}/delete/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.delete_org_address({\n        id: '00000000-0000-0000-0000-000000000000',\n        expected_revision: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1addresses~1{id}/put/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.update_org_address({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            contact: {\n                company: 'Company name, or an empty string when absent.',\n                phone: 'Delivery contact phone, or an empty string when absent.',\n                recipient: 'Individual or department receiving the delivery.',\n            },\n            expected_revision: 'A UUID usually v4 or v7',\n            is_default_shipping: true,\n            label: 'Replacement card label.',\n            postal: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1addresses~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.get_org_address({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1addresses/post/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.create_org_address({\n        body: {\n            contact: {\n                company: 'Company name, or an empty string when absent.',\n                phone: 'Delivery contact phone, or an empty string when absent.',\n                recipient: 'Individual or department receiving the delivery.',\n            },\n            is_default_shipping: true,\n            is_saved: true,\n            label: 'Customer-visible label, such as Home or Workshop.',\n            postal: {\n                city: 'The city component.',\n                country: 'An ISO-3166 alpha-2 country code. Always uppercase.',\n                state: 'The state component.',\n                street1: 'The first street component.',\n                street2: 'The second street component.',\n                zip: 'The zip component.',\n            },\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1org~1addresses/get/x-typescript",
+    "value": {
+      "example": "import { addresses, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await addresses.list_org_addresses({\n        limit: 7,\n        page_token: 'string',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = addresses.list_org_addresses_pager({\n        limit: 7,\n        page_token: 'string',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
