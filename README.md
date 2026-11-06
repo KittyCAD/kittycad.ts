@@ -18,6 +18,16 @@ yarn add @kittycad/lib
 export ZOO_API_TOKEN=<your token>
 ```
 
+### Local development
+
+To get started and check that all of the tests pass locally you must `npm install` and `npm run build` otherwise the tests will not pass. 
+
+```
+npm install
+npm run build
+npm run test
+```
+
 ### Basic example
 ```typescript
 import { Client, file } from '@kittycad/lib';
