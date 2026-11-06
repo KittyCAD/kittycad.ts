@@ -6,10 +6,33 @@ import downloadProjectVersion from '../src/api/projects/download_project_version
 import getProjectThumbnail from '../src/api/projects/get_project_thumbnail'
 import getPublicProjectThumbnail from '../src/api/projects/get_public_project_thumbnail'
 import getProjectVersionThumbnail from '../src/api/projects/get_project_version_thumbnail'
+import downloadDatasetOriginal from '../src/api/orgs/download_org_dataset_conversion_original'
+import downloadDatasetKcl from '../src/api/orgs/download_org_dataset_successful_kcl_bulk'
+import getOrgFactoryJobFile from '../src/api/factory/get_org_factory_job_file'
+import getUserFactoryJobFile from '../src/api/factory/get_user_factory_job_file'
 
 const id = '00000000-0000-0000-0000-000000000001'
 const version_id = '00000000-0000-0000-0000-000000000002'
 const endpoints = [
+  {
+    name: 'dataset original',
+    call: (client: Client) =>
+      downloadDatasetOriginal({ client, id, conversion_id: version_id }),
+  },
+  {
+    name: 'dataset KCL archive',
+    call: (client: Client) => downloadDatasetKcl({ client, id }),
+  },
+  {
+    name: 'organization Factory job file',
+    call: (client: Client) =>
+      getOrgFactoryJobFile({ client, job_id: id, file_id: version_id }),
+  },
+  {
+    name: 'personal Factory job file',
+    call: (client: Client) =>
+      getUserFactoryJobFile({ client, job_id: id, file_id: version_id }),
+  },
   {
     name: 'owner archive',
     call: (client: Client) => downloadProject({ client, id, format: 'zip' }),
