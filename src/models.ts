@@ -3199,6 +3199,14 @@ export interface FactoryCustomerQuote {
   delivery_estimate: string
   /**
    * {
+   *   "nullable": true,
+   *   "format": "int64",
+   *   "description": "Production plus shipping business days from invoicing; null if either is unknown."
+   * }
+   */
+  estimated_delivery_business_days?: number
+  /**
+   * {
    *   "title": "DateTime",
    *   "format": "date-time",
    *   "description": "Seven calendar days after the latest send. Expired offers remain readable."
@@ -3277,6 +3285,13 @@ export interface FactoryJobResponse {
   id: Uuid
   /** The workflow status after submission (`new` for creation, `quoting` for a revision). */
   status: string
+}
+
+export interface FactoryQuoteAcceptance {
+  /** The ordinary paid billing invoice, including its hosted page and PDF links. */
+  invoice: Invoice
+  /** The job after confirmed payment, preserving later manufacturing states on replay. */
+  job: FactoryCustomerJobSummary
 }
 
 export interface FailureWebSocketResponse {
@@ -13867,6 +13882,7 @@ export interface Models {
   FactoryCustomerJobVersionResultsPage: FactoryCustomerJobVersionResultsPage
   FactoryCustomerQuote: FactoryCustomerQuote
   FactoryJobResponse: FactoryJobResponse
+  FactoryQuoteAcceptance: FactoryQuoteAcceptance
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage
   Feature: Feature

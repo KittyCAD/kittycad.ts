@@ -68,6 +68,8 @@ export const executor = {
   create_file_execution,
 }
 
+import accept_org_factory_quote from './api/factory/accept_org_factory_quote.js'
+import accept_user_factory_quote from './api/factory/accept_user_factory_quote.js'
 import create_org_factory_job_version from './api/factory/create_org_factory_job_version.js'
 import create_user_factory_job from './api/factory/create_user_factory_job.js'
 import create_user_factory_job_version from './api/factory/create_user_factory_job_version.js'
@@ -88,6 +90,8 @@ import { list_org_factory_jobs_pager } from './api/factory/list_org_factory_jobs
 import { list_user_factory_job_versions_pager } from './api/factory/list_user_factory_job_versions.js'
 import { list_user_factory_jobs_pager } from './api/factory/list_user_factory_jobs.js'
 export const factory = {
+  accept_org_factory_quote,
+  accept_user_factory_quote,
   create_org_factory_job_version,
   create_user_factory_job,
   create_user_factory_job_version,
@@ -786,6 +790,7 @@ export type {
   FactoryCustomerJobVersionResultsPage,
   FactoryCustomerQuote,
   FactoryJobResponse,
+  FactoryQuoteAcceptance,
   FailureWebSocketResponse,
   FbxStorage,
   Feature,
