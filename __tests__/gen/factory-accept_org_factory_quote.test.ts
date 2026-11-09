@@ -6,6 +6,8 @@ async function example() {
   const response = await factory.accept_org_factory_quote({
     job_id: '00000000-0000-0000-0000-000000000000',
     quote_id: '00000000-0000-0000-0000-000000000000',
+    use_credits: true,
+    max_amount_due_cents: 7,
     client,
   })
   return response

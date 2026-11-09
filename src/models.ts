@@ -3179,6 +3179,20 @@ export interface FactoryCustomerJobVersion {
   files: FactoryCustomerJobFile[]
   /** Identifier of this Factory revision. */
   id: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Preview state of the pinned Project snapshot, if it still exists."
+   * }
+   */
+  preview_status?: KclProjectPreviewStatus
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Authenticated Factory thumbnail URL when the pinned preview is ready."
+   * }
+   */
+  preview_url?: string
   specs: string
 }
 
@@ -3294,6 +3308,39 @@ export interface FactoryQuoteAcceptance {
   job: FactoryCustomerJobSummary
 }
 
+export interface FactoryQuotePreview {
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Signed Stripe invoice balance applied separately from Zoo usage credits."
+   * }
+   */
+  account_balance_adjustment_cents: number
+  /** format:int64, description:Cash remaining after balance adjustments. */
+  amount_due_cents: number
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Zoo usage credits currently available to the customer."
+   * }
+   */
+  available_credits_cents: number
+  /** format:int64, description:Zoo usage credits applied to this purchase. */
+  credits_applied_cents: number
+  /** Currency of all checkout amounts. */
+  currency: Currency
+  /** The published offer these amounts describe. */
+  quote_id: Uuid
+  /** format:int64, description:Delivery charge before tax. */
+  shipping_cents: number
+  /** format:int64, description:Manufacturing price before shipping and tax. */
+  subtotal_cents: number
+  /** format:int64, description:Tax calculated by Stripe. */
+  tax_cents: number
+  /** format:int64, description:Manufacturing, shipping, and tax combined. */
+  total_cents: number
+}
+
 export interface FailureWebSocketResponse {
   /** The errors that occurred. */
   errors: ApiError[]
@@ -3322,6 +3369,7 @@ export type Feature =
   | 'factory_portal'
   | 'hosted_mcp'
   | 'org_dataset_cloud_projects'
+  | 'org_dataset_reference_files'
   | 'kcl_cek_executor'
   | 'redirect_to_govcloud'
   | 'require_saml_auth'
@@ -4657,7 +4705,11 @@ export type KclProjectFileRole =
 
 export type KclProjectLibrarySource = 'zds' | 'factory_portal' | 'org_dataset'
 
-export type KclProjectPreviewStatus = 'pending' | 'ready' | 'failed'
+export type KclProjectPreviewStatus =
+  | 'pending'
+  | 'ready'
+  | 'failed'
+  | 'not_applicable'
 
 export type KclProjectPublicationStatus =
   | 'private'
@@ -9640,6 +9692,27 @@ export interface OrgDatasetFileConversionDetails {
   /**
    * {
    *   "nullable": true,
+   *   "description": "The single cloud project containing this conversion's generated versions."
+   * }
+   */
+  project_id?: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The immutable project version containing the raw KCL output."
+   * }
+   */
+  project_raw_version_id?: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The immutable project version containing the salon or manual-override KCL output."
+   * }
+   */
+  project_salon_version_id?: Uuid
+  /**
+   * {
+   *   "nullable": true,
    *   "description": "Plain-text contents of the raw KCL artifact, when available."
    * }
    */
@@ -9768,6 +9841,27 @@ export interface OrgDatasetFileConversionSummary {
   metadata: unknown
   /** Current step in the conversion pipeline. */
   phase: OrgDatasetFileConversionPhase
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The single cloud project containing this conversion's generated versions."
+   * }
+   */
+  project_id?: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The immutable project version containing the raw KCL output."
+   * }
+   */
+  project_raw_version_id?: Uuid
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The immutable project version containing the salon or manual-override KCL output."
+   * }
+   */
+  project_salon_version_id?: Uuid
   /**
    * {
    *   "nullable": true,
@@ -10832,7 +10926,7 @@ export interface ProjectVersionDetailResponse {
   created_at: string
   /** Description saved with this version. */
   description: string
-  /** Relative path to this version's KCL entrypoint. */
+  /** Relative path to this version's entrypoint file. */
   entrypoint_path: string
   /** Files stored for this version. */
   files: ProjectFileResponse[]
@@ -13883,6 +13977,7 @@ export interface Models {
   FactoryCustomerQuote: FactoryCustomerQuote
   FactoryJobResponse: FactoryJobResponse
   FactoryQuoteAcceptance: FactoryQuoteAcceptance
+  FactoryQuotePreview: FactoryQuotePreview
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage
   Feature: Feature

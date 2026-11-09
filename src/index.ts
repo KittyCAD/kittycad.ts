@@ -75,14 +75,18 @@ import create_user_factory_job from './api/factory/create_user_factory_job.js'
 import create_user_factory_job_version from './api/factory/create_user_factory_job_version.js'
 import get_org_factory_job from './api/factory/get_org_factory_job.js'
 import get_org_factory_job_file from './api/factory/get_org_factory_job_file.js'
+import get_org_factory_job_thumbnail from './api/factory/get_org_factory_job_thumbnail.js'
 import get_user_factory_finishes from './api/factory/get_user_factory_finishes.js'
 import get_user_factory_job from './api/factory/get_user_factory_job.js'
 import get_user_factory_job_file from './api/factory/get_user_factory_job_file.js'
+import get_user_factory_job_thumbnail from './api/factory/get_user_factory_job_thumbnail.js'
 import get_user_factory_materials from './api/factory/get_user_factory_materials.js'
 import list_org_factory_job_versions from './api/factory/list_org_factory_job_versions.js'
 import list_org_factory_jobs from './api/factory/list_org_factory_jobs.js'
 import list_user_factory_job_versions from './api/factory/list_user_factory_job_versions.js'
 import list_user_factory_jobs from './api/factory/list_user_factory_jobs.js'
+import preview_org_factory_quote from './api/factory/preview_org_factory_quote.js'
+import preview_user_factory_quote from './api/factory/preview_user_factory_quote.js'
 import { get_user_factory_finishes_pager } from './api/factory/get_user_factory_finishes.js'
 import { get_user_factory_materials_pager } from './api/factory/get_user_factory_materials.js'
 import { list_org_factory_job_versions_pager } from './api/factory/list_org_factory_job_versions.js'
@@ -97,10 +101,12 @@ export const factory = {
   create_user_factory_job_version,
   get_org_factory_job,
   get_org_factory_job_file,
+  get_org_factory_job_thumbnail,
   get_user_factory_finishes,
   get_user_factory_finishes_pager,
   get_user_factory_job,
   get_user_factory_job_file,
+  get_user_factory_job_thumbnail,
   get_user_factory_materials,
   get_user_factory_materials_pager,
   list_org_factory_job_versions,
@@ -111,6 +117,8 @@ export const factory = {
   list_user_factory_job_versions_pager,
   list_user_factory_jobs,
   list_user_factory_jobs_pager,
+  preview_org_factory_quote,
+  preview_user_factory_quote,
 }
 
 import create_file_bounding_box from './api/file/create_file_bounding_box.js'
@@ -791,6 +799,7 @@ export type {
   FactoryCustomerQuote,
   FactoryJobResponse,
   FactoryQuoteAcceptance,
+  FactoryQuotePreview,
   FailureWebSocketResponse,
   FbxStorage,
   Feature,
