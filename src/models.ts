@@ -3795,6 +3795,13 @@ export interface GetSketchModePlane {
 
 export type GlobalAxis = 'x' | 'y' | 'z'
 
+export type GltfExportExtra =
+  | 'sketches'
+  | 'regions'
+  | 'imported_files'
+  | 'mbd'
+  | 'geometry_uuids'
+
 export type GltfPresentation = 'compact' | 'pretty'
 
 export type GltfStorage = 'binary' | 'standard' | 'embedded'
@@ -10130,8 +10137,17 @@ export type OutputFormat3d =
   | {
       /**
        * {
+       *   "default": [],
+       *   "uniqueItems": true,
+       *   "description": "Additional data to include in the exported glTF. Defaults to an empty set."
+       * }
+       */
+      extras?: GltfExportExtra[]
+      /**
+       * {
+       *   "deprecated": true,
        *   "default": false,
-       *   "description": "Include engine UUIDs in glTF extras. Defaults to false."
+       *   "description": "Include geometry UUIDs. Setting this to true is equivalent to adding `geometry_uuids` to `extras`."
        * }
        */
       include_uuids?: boolean
@@ -13995,6 +14011,7 @@ export interface Models {
   GetNumObjects: GetNumObjects
   GetSketchModePlane: GetSketchModePlane
   GlobalAxis: GlobalAxis
+  GltfExportExtra: GltfExportExtra
   GltfPresentation: GltfPresentation
   GltfStorage: GltfStorage
   HandleMouseDragEnd: HandleMouseDragEnd

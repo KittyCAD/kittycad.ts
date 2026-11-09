@@ -15,7 +15,7 @@ type ListPaymentMethodsForOrgReturn = PaymentMethodResultsPage
 /**
  * List payment methods for your org.
  *
- * This endpoint requires authentication by an org admin. It lists payment methods for the authenticated user's org, with the valid default card first.
+ * This endpoint requires authentication by an org member. It lists payment methods for the authenticated user's org, with the valid default card first.
  *
  * Tags: payments
  *

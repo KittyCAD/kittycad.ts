@@ -14,7 +14,7 @@ interface AcceptOrgFactoryQuoteInput {
 type AcceptOrgFactoryQuoteReturn = FactoryQuoteAcceptance
 
 /**
- * Accept your organization's current Factory quote and charge its default card. Requires an organization administrator.
+ * Accept your organization's current Factory quote and charge its default card. Requires organization membership.
  *
  * Tags: factory
  *

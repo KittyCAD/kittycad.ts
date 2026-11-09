@@ -13,7 +13,7 @@ interface PreviewOrgFactoryQuoteInput {
 type PreviewOrgFactoryQuoteReturn = FactoryQuotePreview
 
 /**
- * Preview your organization's Factory quote without accepting it or charging a card. Requires an organization administrator.
+ * Preview your organization's Factory quote without accepting it or charging a card. Requires organization membership.
  *
  * Tags: factory
  *
