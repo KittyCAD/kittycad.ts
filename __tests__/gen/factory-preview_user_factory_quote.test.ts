@@ -6,6 +6,7 @@ async function example() {
   const response = await factory.preview_user_factory_quote({
     job_id: '00000000-0000-0000-0000-000000000000',
     quote_id: '00000000-0000-0000-0000-000000000000',
+    payment_attempt_id: '00000000-0000-0000-0000-000000000000',
     use_credits: true,
     client,
   })

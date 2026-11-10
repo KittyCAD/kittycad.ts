@@ -11937,6 +11937,15 @@
           },
           {
             "in": "query",
+            "name": "payment_attempt_id",
+            "description": "Generate once for an explicit acceptance and reuse for every transport retry. A new attempt after a confirmed decline requires a new UUID.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "in": "query",
             "name": "use_credits",
             "description": "Apply available Zoo usage credits to this purchase before charging the default card.",
             "schema": {
@@ -12168,6 +12177,15 @@
             "in": "path",
             "name": "quote_id",
             "description": "The exact published quote accepted by the customer.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payment_attempt_id",
+            "description": "Identity reused by the corresponding acceptance and its transport retries.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/Uuid"
@@ -25408,6 +25426,15 @@
           },
           {
             "in": "query",
+            "name": "payment_attempt_id",
+            "description": "Generate once for an explicit acceptance and reuse for every transport retry. A new attempt after a confirmed decline requires a new UUID.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "in": "query",
             "name": "use_credits",
             "description": "Apply available Zoo usage credits to this purchase before charging the default card.",
             "schema": {
@@ -25639,6 +25666,15 @@
             "in": "path",
             "name": "quote_id",
             "description": "The exact published quote accepted by the customer.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payment_attempt_id",
+            "description": "Identity reused by the corresponding acceptance and its transport retries.",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/Uuid"
@@ -37140,6 +37176,30 @@
           }
         }
       },
+      "AddressContent": {
+        "description": "Address contents. Ownership, saved-address labels, and shipping speed are separate.",
+        "type": "object",
+        "properties": {
+          "contact": {
+            "default": {
+              "company": "",
+              "phone": "",
+              "recipient": ""
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressContact"
+              }
+            ]
+          },
+          "postal": {
+            "$ref": "#/components/schemas/AddressDetails"
+          }
+        },
+        "required": [
+          "postal"
+        ]
+      },
       "AddressDetails": {
         "description": "Address details.",
         "type": "object",
@@ -44172,6 +44232,10 @@
               }
             ]
           },
+          "is_expedited": {
+            "description": "Whether the job requests expedited shipping.",
+            "type": "boolean"
+          },
           "job": {
             "description": "The same summary returned by the customer job list.",
             "allOf": [
@@ -44188,9 +44252,19 @@
                 "$ref": "#/components/schemas/FactoryCustomerQuote"
               }
             ]
+          },
+          "shipping_info": {
+            "nullable": true,
+            "description": "Pinned delivery address, if it remains available to the job's owner.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressContent"
+              }
+            ]
           }
         },
         "required": [
+          "is_expedited",
           "job"
         ]
       },

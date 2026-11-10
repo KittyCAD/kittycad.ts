@@ -597,6 +597,7 @@ export type {
   AddHoleFromOffset,
   AddOrgMember,
   AddressContact,
+  AddressContent,
   AddressDetails,
   AddressPostalResponse,
   AddressResponse,
