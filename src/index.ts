@@ -817,6 +817,7 @@ export type {
   GetNumObjects,
   GetSketchModePlane,
   GlobalAxis,
+  GltfExportExtra,
   GltfPresentation,
   GltfStorage,
   HandleMouseDragEnd,
