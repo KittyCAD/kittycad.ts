@@ -603,7 +603,7 @@
     "op": "add",
     "path": "/paths/~1user~1factory~1jobs~1{job_id}~1quotes~1{quote_id}~1preview/get/x-typescript",
     "value": {
-      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.preview_user_factory_quote({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        quote_id: '00000000-0000-0000-0000-000000000000',\n        use_credits: true,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.preview_user_factory_quote({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        quote_id: '00000000-0000-0000-0000-000000000000',\n        payment_attempt_id: '00000000-0000-0000-0000-000000000000',\n        use_credits: true,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -611,7 +611,7 @@
     "op": "add",
     "path": "/paths/~1user~1factory~1jobs~1{job_id}~1quotes~1{quote_id}~1accept/post/x-typescript",
     "value": {
-      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.accept_user_factory_quote({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        quote_id: '00000000-0000-0000-0000-000000000000',\n        use_credits: true,\n        max_amount_due_cents: 7,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.accept_user_factory_quote({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        quote_id: '00000000-0000-0000-0000-000000000000',\n        payment_attempt_id: '00000000-0000-0000-0000-000000000000',\n        use_credits: true,\n        max_amount_due_cents: 7,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1347,7 +1347,7 @@
     "op": "add",
     "path": "/paths/~1org~1factory~1jobs~1{job_id}~1quotes~1{quote_id}~1preview/get/x-typescript",
     "value": {
-      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.preview_org_factory_quote({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        quote_id: '00000000-0000-0000-0000-000000000000',\n        use_credits: true,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.preview_org_factory_quote({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        quote_id: '00000000-0000-0000-0000-000000000000',\n        payment_attempt_id: '00000000-0000-0000-0000-000000000000',\n        use_credits: true,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1355,7 +1355,7 @@
     "op": "add",
     "path": "/paths/~1org~1factory~1jobs~1{job_id}~1quotes~1{quote_id}~1accept/post/x-typescript",
     "value": {
-      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.accept_org_factory_quote({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        quote_id: '00000000-0000-0000-0000-000000000000',\n        use_credits: true,\n        max_amount_due_cents: 7,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { factory, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await factory.accept_org_factory_quote({\n        job_id: '00000000-0000-0000-0000-000000000000',\n        quote_id: '00000000-0000-0000-0000-000000000000',\n        payment_attempt_id: '00000000-0000-0000-0000-000000000000',\n        use_credits: true,\n        max_amount_due_cents: 7,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

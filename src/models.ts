@@ -38,6 +38,25 @@ export interface AddressContact {
   recipient?: string
 }
 
+export interface AddressContent {
+  /**
+   * {
+   *   "default": {
+   *     "company": "",
+   *     "phone": "",
+   *     "recipient": ""
+   *   }
+   * }
+   */
+  contact?: AddressContact
+  /**
+   * {
+   *   "$ref": "#/components/schemas/AddressDetails"
+   * }
+   */
+  postal: AddressDetails
+}
+
 export interface AddressDetails {
   /** The city component. */
   city?: string
@@ -3128,6 +3147,8 @@ export interface FactoryCustomerCatalogOptionResultsPage {
 export interface FactoryCustomerJobDetail {
   /** nullable:true, description:The current version, if the job has one. */
   current_version?: FactoryCustomerJobVersion
+  /** Whether the job requests expedited shipping. */
+  is_expedited: boolean
   /** The same summary returned by the customer job list. */
   job: FactoryCustomerJobSummary
   /**
@@ -3137,6 +3158,13 @@ export interface FactoryCustomerJobDetail {
    * }
    */
   quote?: FactoryCustomerQuote
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Pinned delivery address, if it remains available to the job's owner."
+   * }
+   */
+  shipping_info?: AddressContent
 }
 
 export interface FactoryCustomerJobFile {
@@ -13791,6 +13819,7 @@ export interface Models {
   AddHoleFromOffset: AddHoleFromOffset
   AddOrgMember: AddOrgMember
   AddressContact: AddressContact
+  AddressContent: AddressContent
   AddressDetails: AddressDetails
   AddressPostalResponse: AddressPostalResponse
   AddressResponse: AddressResponse
