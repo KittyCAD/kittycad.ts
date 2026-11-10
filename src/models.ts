@@ -3336,6 +3336,13 @@ export interface FactoryQuoteAcceptance {
   job: FactoryCustomerJobSummary
 }
 
+export interface FactoryQuoteDetail {
+  /** Shipping, tax, credits, and cash due for the selected payment attempt. */
+  pricing: FactoryQuotePreview
+  /** The customer-visible offer, excluding internal costs and worksheet notes. */
+  quote: FactoryCustomerQuote
+}
+
 export interface FactoryQuotePreview {
   /**
    * {
@@ -14022,6 +14029,7 @@ export interface Models {
   FactoryCustomerQuote: FactoryCustomerQuote
   FactoryJobResponse: FactoryJobResponse
   FactoryQuoteAcceptance: FactoryQuoteAcceptance
+  FactoryQuoteDetail: FactoryQuoteDetail
   FactoryQuotePreview: FactoryQuotePreview
   FailureWebSocketResponse: FailureWebSocketResponse
   FbxStorage: FbxStorage

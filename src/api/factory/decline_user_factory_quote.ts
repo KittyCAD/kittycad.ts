@@ -1,20 +1,18 @@
 import { Client, buildQuery } from '../../client.js'
 import { throwIfNotOk } from '../../errors.js'
 
-import { FactoryQuotePreview, Uuid } from '../../models.js'
+import { FactoryCustomerJobSummary, Uuid } from '../../models.js'
 
-interface PreviewUserFactoryQuoteInput {
+interface DeclineUserFactoryQuoteInput {
   client?: Client
   job_id: Uuid
   quote_id: Uuid
-  payment_attempt_id: Uuid
-  use_credits?: boolean
 }
 
-type PreviewUserFactoryQuoteReturn = FactoryQuotePreview
+type DeclineUserFactoryQuoteReturn = FactoryCustomerJobSummary
 
 /**
- * Preview your Factory quote's shipping, tax, credits, and total without accepting it or charging a card.
+ * Decline your current Factory quote and close the job. No payment is created.
  *
  * Tags: factory
  *
@@ -22,24 +20,17 @@ type PreviewUserFactoryQuoteReturn = FactoryQuotePreview
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} job_id The manufacturing job being purchased. (path)
  * @property {Uuid} quote_id The exact published quote accepted by the customer. (path)
- * @property {Uuid} payment_attempt_id Identity reused by the corresponding acceptance and its transport retries. (query)
- * @property {boolean} use_credits Include available Zoo usage credits in the checkout estimate. (query)
- * @returns {Promise<PreviewUserFactoryQuoteReturn>} successful operation
+ * @returns {Promise<DeclineUserFactoryQuoteReturn>} successful operation
  *
- * Possible return types: FactoryQuotePreview
+ * Possible return types: FactoryCustomerJobSummary
  */
-export default async function preview_user_factory_quote({
+export default async function decline_user_factory_quote({
   client,
   job_id,
   quote_id,
-  payment_attempt_id,
-  use_credits,
-}: PreviewUserFactoryQuoteInput): Promise<PreviewUserFactoryQuoteReturn> {
-  const path = `/user/factory/jobs/${job_id}/quotes/${quote_id}/preview`
-  const qs = buildQuery({
-    payment_attempt_id: payment_attempt_id,
-    use_credits: use_credits,
-  })
+}: DeclineUserFactoryQuoteInput): Promise<DeclineUserFactoryQuoteReturn> {
+  const path = `/user/factory/jobs/${job_id}/quotes/${quote_id}/decline`
+  const qs = buildQuery({})
   const url = path + qs
   // Backwards compatible for the BASE_URL env variable
   // That used to exist in only this lib, ZOO_HOST exists in the all the other
@@ -50,12 +41,12 @@ export default async function preview_user_factory_quote({
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
   const fetchOptions: RequestInit = {
-    method: 'GET',
+    method: 'POST',
     headers,
   }
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result = (await response.json()) as PreviewUserFactoryQuoteReturn
+  const result = (await response.json()) as DeclineUserFactoryQuoteReturn
   return result
 }

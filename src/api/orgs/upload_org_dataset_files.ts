@@ -15,7 +15,7 @@ type UploadOrgDatasetFilesReturn = UploadOrgDatasetFilesResponse
 /**
  * Upload source files into a Zoo-managed dataset.
  *
- * This endpoint accepts `multipart/form-data` where each file part becomes a source object in the dataset. Exact `<proprietary CAD filename>.json` converter dumps are also accepted and associated with their original CAD file. When both `org_dataset_cloud_projects` and `org_dataset_reference_files` are enabled for the organization, PDFs, Word/Excel documents and images are accepted as reference files. Paths are normalized and must be relative.
+ * This endpoint accepts `multipart/form-data` where each file part becomes a source object in the dataset. Exact `<proprietary CAD filename>.json` converter dumps are also accepted and associated with their original CAD file. When both `org_dataset_cloud_projects` and `org_dataset_reference_files` are enabled for the organization, PDFs, Word/Excel documents, Markdown and images are accepted as reference files. Paths are normalized and must be relative.
  *
  * Tags: orgs
  *
