@@ -73,20 +73,22 @@ import accept_user_factory_quote from './api/factory/accept_user_factory_quote.j
 import create_org_factory_job_version from './api/factory/create_org_factory_job_version.js'
 import create_user_factory_job from './api/factory/create_user_factory_job.js'
 import create_user_factory_job_version from './api/factory/create_user_factory_job_version.js'
+import decline_org_factory_quote from './api/factory/decline_org_factory_quote.js'
+import decline_user_factory_quote from './api/factory/decline_user_factory_quote.js'
 import get_org_factory_job from './api/factory/get_org_factory_job.js'
 import get_org_factory_job_file from './api/factory/get_org_factory_job_file.js'
 import get_org_factory_job_thumbnail from './api/factory/get_org_factory_job_thumbnail.js'
+import get_org_factory_quote from './api/factory/get_org_factory_quote.js'
 import get_user_factory_finishes from './api/factory/get_user_factory_finishes.js'
 import get_user_factory_job from './api/factory/get_user_factory_job.js'
 import get_user_factory_job_file from './api/factory/get_user_factory_job_file.js'
 import get_user_factory_job_thumbnail from './api/factory/get_user_factory_job_thumbnail.js'
 import get_user_factory_materials from './api/factory/get_user_factory_materials.js'
+import get_user_factory_quote from './api/factory/get_user_factory_quote.js'
 import list_org_factory_job_versions from './api/factory/list_org_factory_job_versions.js'
 import list_org_factory_jobs from './api/factory/list_org_factory_jobs.js'
 import list_user_factory_job_versions from './api/factory/list_user_factory_job_versions.js'
 import list_user_factory_jobs from './api/factory/list_user_factory_jobs.js'
-import preview_org_factory_quote from './api/factory/preview_org_factory_quote.js'
-import preview_user_factory_quote from './api/factory/preview_user_factory_quote.js'
 import { get_user_factory_finishes_pager } from './api/factory/get_user_factory_finishes.js'
 import { get_user_factory_materials_pager } from './api/factory/get_user_factory_materials.js'
 import { list_org_factory_job_versions_pager } from './api/factory/list_org_factory_job_versions.js'
@@ -99,9 +101,12 @@ export const factory = {
   create_org_factory_job_version,
   create_user_factory_job,
   create_user_factory_job_version,
+  decline_org_factory_quote,
+  decline_user_factory_quote,
   get_org_factory_job,
   get_org_factory_job_file,
   get_org_factory_job_thumbnail,
+  get_org_factory_quote,
   get_user_factory_finishes,
   get_user_factory_finishes_pager,
   get_user_factory_job,
@@ -109,6 +114,7 @@ export const factory = {
   get_user_factory_job_thumbnail,
   get_user_factory_materials,
   get_user_factory_materials_pager,
+  get_user_factory_quote,
   list_org_factory_job_versions,
   list_org_factory_job_versions_pager,
   list_org_factory_jobs,
@@ -117,8 +123,6 @@ export const factory = {
   list_user_factory_job_versions_pager,
   list_user_factory_jobs,
   list_user_factory_jobs_pager,
-  preview_org_factory_quote,
-  preview_user_factory_quote,
 }
 
 import create_file_bounding_box from './api/file/create_file_bounding_box.js'
@@ -800,6 +804,7 @@ export type {
   FactoryCustomerQuote,
   FactoryJobResponse,
   FactoryQuoteAcceptance,
+  FactoryQuoteDetail,
   FactoryQuotePreview,
   FailureWebSocketResponse,
   FbxStorage,
