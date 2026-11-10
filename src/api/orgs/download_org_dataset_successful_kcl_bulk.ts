@@ -8,7 +8,7 @@ interface DownloadOrgDatasetSuccessfulKclBulkInput {
   id: Uuid
 }
 
-type DownloadOrgDatasetSuccessfulKclBulkReturn = unknown
+type DownloadOrgDatasetSuccessfulKclBulkReturn = Response
 
 /**
  * Bulk-download KCL outputs for successful dataset conversions.
@@ -42,7 +42,5 @@ export default async function download_org_dataset_successful_kcl_bulk({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result =
-    (await response.json()) as DownloadOrgDatasetSuccessfulKclBulkReturn
-  return result
+  return response
 }

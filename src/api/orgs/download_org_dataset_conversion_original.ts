@@ -9,7 +9,7 @@ interface DownloadOrgDatasetConversionOriginalInput {
   conversion_id: Uuid
 }
 
-type DownloadOrgDatasetConversionOriginalReturn = unknown
+type DownloadOrgDatasetConversionOriginalReturn = Response
 
 /**
  * Download the original source file for a specific dataset conversion.
@@ -45,7 +45,5 @@ export default async function download_org_dataset_conversion_original({
   const _fetch = client?.fetch || fetch
   const response = await _fetch(fullUrl, fetchOptions)
   await throwIfNotOk(response)
-  const result =
-    (await response.json()) as DownloadOrgDatasetConversionOriginalReturn
-  return result
+  return response
 }
