@@ -11,7 +11,7 @@ async function example() {
       first_name: "The user's first name.",
       github: "The user's GitHub handle.",
       image:
-        "The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next.",
+        'The image URL for the user. A non-empty URL replaces the photo. An empty URL leaves it unchanged. Use DELETE /user/avatar to remove the photo and prevent provider imports.',
       is_onboarded: true,
       last_name: "The user's last name.",
       phone: "The user's phone number.",

@@ -3424,6 +3424,7 @@ export type Feature =
   | 'zookeeper_pro_mode'
   | 'zookeeper_ultra_mode'
   | 'zookeeper_client_commands'
+  | 'zookeeper_pydantic_ai'
   | 'zookeeper_kcl_migration'
   | 'unsafe_allow_api_key_auth'
   | 'unsafe_allow_localhost_shortlinks'
@@ -5160,6 +5161,13 @@ export type MlCopilotClientMessage =
       status: MlCopilotClientCommandStatus
       type: 'client_command_response'
     }
+  | {
+      /** Opaque, connection-scoped token returned by the previous page. It is not an attachment reference or a persisted message coordinate. */
+      cursor: Uuid
+      /** Client identifier echoed in the page response or error. */
+      request_id: string
+      type: 'fetch_replay_page'
+    }
 
 export interface MlCopilotFile {
   /** nullable:true, description:Reference for fetching this attachment on demand. */
@@ -5228,6 +5236,12 @@ export type MlCopilotProjectSnapshotStatus =
   | 'conflict'
 
 export type MlCopilotReplayAttachmentMode = 'full' | 'metadata_only'
+
+export type MlCopilotReplayPageErrorCode =
+  | 'unavailable'
+  | 'invalid_request'
+  | 'invalid_cursor'
+  | 'load_failed'
 
 export type MlCopilotServerMessage =
   | { pong: Record<string, unknown> }
@@ -5555,6 +5569,48 @@ export type MlCopilotServerMessage =
         prompt_id: Uuid
         /** format:int32, description:Sequence number of the persisted message row. */
         seq: number
+      }
+    }
+  | {
+      replay_page: {
+        /** Conversation whose history this page belongs to. */
+        conversation_id: Uuid
+        messages: /**
+         * {
+         *   "format": "uint8",
+         *   "minimum": 0
+         * }
+         */
+        number[][]
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Connection-scoped token for older history; absent when history is exhausted."
+         * }
+         */
+        next_cursor?: Uuid
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Absent for the initial page; otherwise echoes `FetchReplayPage.request_id`."
+         * }
+         */
+        request_id?: string
+      }
+    }
+  | {
+      replay_page_error: {
+        /** Machine-readable reason and retry behavior. */
+        code: MlCopilotReplayPageErrorCode
+        /** Client readable error detail, without persisted message contents. */
+        detail: string
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Absent for connection-query errors; otherwise echoes the failed request."
+         * }
+         */
+        request_id?: string
       }
     }
 
@@ -12991,7 +13047,7 @@ export interface UpdateUser {
    * {
    *   "title": "String",
    *   "format": "uri",
-   *   "description": "The image URL for the user. NOTE: If the user uses an OAuth2 provider, this will be overwritten by the provider's image URL when the user logs in next."
+   *   "description": "The image URL for the user. A non-empty URL replaces the photo. An empty URL leaves it unchanged. Use DELETE /user/avatar to remove the photo and prevent provider imports."
    * }
    */
   image: string
@@ -14113,6 +14169,7 @@ export interface Models {
   MlCopilotProjectSnapshotMetadata: MlCopilotProjectSnapshotMetadata
   MlCopilotProjectSnapshotStatus: MlCopilotProjectSnapshotStatus
   MlCopilotReplayAttachmentMode: MlCopilotReplayAttachmentMode
+  MlCopilotReplayPageErrorCode: MlCopilotReplayPageErrorCode
   MlCopilotServerMessage: MlCopilotServerMessage
   MlCopilotSupportedModels: MlCopilotSupportedModels
   MlCopilotSystemCommand: MlCopilotSystemCommand
