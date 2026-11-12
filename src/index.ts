@@ -70,6 +70,8 @@ export const executor = {
 
 import accept_org_factory_quote from './api/factory/accept_org_factory_quote.js'
 import accept_user_factory_quote from './api/factory/accept_user_factory_quote.js'
+import cancel_org_factory_job from './api/factory/cancel_org_factory_job.js'
+import cancel_user_factory_job from './api/factory/cancel_user_factory_job.js'
 import create_org_factory_job_version from './api/factory/create_org_factory_job_version.js'
 import create_user_factory_job from './api/factory/create_user_factory_job.js'
 import create_user_factory_job_version from './api/factory/create_user_factory_job_version.js'
@@ -98,6 +100,8 @@ import { list_user_factory_jobs_pager } from './api/factory/list_user_factory_jo
 export const factory = {
   accept_org_factory_quote,
   accept_user_factory_quote,
+  cancel_org_factory_job,
+  cancel_user_factory_job,
   create_org_factory_job_version,
   create_user_factory_job,
   create_user_factory_job_version,
@@ -555,6 +559,7 @@ import put_public_mailing_list_unsubscribe from './api/users/put_public_mailing_
 import put_public_sales_form from './api/users/put_public_sales_form.js'
 import put_public_support_form from './api/users/put_public_support_form.js'
 import put_user_cad_user_info_form from './api/users/put_user_cad_user_info_form.js'
+import remove_user_avatar from './api/users/remove_user_avatar.js'
 import report_user_client_error from './api/users/report_user_client_error.js'
 import update_user_privacy_settings from './api/users/update_user_privacy_settings.js'
 import update_user_self from './api/users/update_user_self.js'
@@ -585,6 +590,7 @@ export const users = {
   put_public_sales_form,
   put_public_support_form,
   put_user_cad_user_info_form,
+  remove_user_avatar,
   report_user_client_error,
   update_user_privacy_settings,
   update_user_self,
@@ -888,6 +894,7 @@ export type {
   MlCopilotProjectSnapshotMetadata,
   MlCopilotProjectSnapshotStatus,
   MlCopilotReplayAttachmentMode,
+  MlCopilotReplayPageErrorCode,
   MlCopilotServerMessage,
   MlCopilotSupportedModels,
   MlCopilotSystemCommand,
