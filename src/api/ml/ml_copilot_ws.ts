@@ -48,7 +48,7 @@ export default class MlCopilotWs {
    * @property {boolean} replay If `true`, emit MsgPack Replay for the specified conversation and continue. (query)
    * @property {string} conversation_id Conversation to replay (UUID). Required when `replay` is `true`. (query)
    * @property {MlCopilotReplayAttachmentMode} replay_attachment_mode Controls whether replayed attachment payloads are sent in full or replaced with metadata that can be used with `FetchAttachments`. (query)
-   * @property {boolean} replay_pagination Opt into paginated replay. Requires `replay=true`, a conversation, and `replay_attachment_mode=metadata_only`. Currently returns an explicit unavailable error; page delivery is not enabled yet. (query)
+   * @property {boolean} replay_pagination Opt into paginated replay. Requires `replay=true`, a conversation, and `replay_attachment_mode=metadata_only`. Receives a first `ReplayPage` followed by older pages requested with `FetchReplayPage`. (query)
    * @property {number} pr Optional Pull Request number to route traffic. (query)
    */
   static urlConstructFrom(functionNameParams: MlCopilotWsParams): URL {
