@@ -4571,21 +4571,17 @@ export interface KclMigrationHistoryEntry {
 export interface KclMigrationOperation {
   /**
    * {
+   *   "nullable": true,
    *   "format": "date-time",
-   *   "description": "Original deadline, including preparation and validation. Never extended."
+   *   "description": "Legacy execution deadline. Copilot migrations have no overall time limit."
    * }
    */
-  deadline: string
+  deadline?: string
   /** Same idempotency key supplied by the initiating client. */
   id: Uuid
-  /** Source revision, retained for conflict detection when applying the result. */
+  /** Original project revision captured for this attempt. */
   project_snapshot: MlCopilotProjectSnapshotMetadata
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Terminal result, if available. The review itself has no execution deadline."
-   * }
-   */
+  /** nullable:true, description:Terminal result, if available. */
   result?: KclMigrationResult
   /** Current state. */
   status: KclMigrationStatus
@@ -4614,7 +4610,7 @@ export interface KclMigrationRequest {
   }
   /** Project-relative KCL file to execute. */
   entrypoint: string
-  /** Revision against which the user will review and apply the candidate. */
+  /** Original project revision captured when the migration starts. */
   project_snapshot: MlCopilotProjectSnapshotMetadata
   /** Client-generated idempotency key. Reuse it when retrying delivery. */
   request_id: Uuid
@@ -5054,7 +5050,7 @@ export type MlCopilotClientMessage =
       type: 'user'
     }
   | {
-      /** Complete isolated input. API binds it to the active conversation; a supplied conversation ID must match that conversation. */
+      /** Complete original project. API binds it to the active conversation; a supplied conversation ID must match that conversation. */
       request: KclMigrationRequest
       type: 'migrate_kcl'
     }
