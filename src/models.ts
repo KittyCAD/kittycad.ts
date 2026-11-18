@@ -3627,6 +3627,7 @@ export type FileExportFormat =
   | 'ply'
   | 'step'
   | 'stl'
+  | 'rhino'
 
 export type FileImportFormat =
   | 'acis'
@@ -3642,6 +3643,7 @@ export type FileImportFormat =
   | 'sldprt'
   | 'step'
   | 'stl'
+  | 'rhino'
 
 export interface FileMass {
   /**
@@ -3847,6 +3849,8 @@ export interface HandleMouseDragEnd {} /* Empty object */
 export interface HandleMouseDragMove {} /* Empty object */
 
 export interface HandleMouseDragStart {} /* Empty object */
+
+export type HiddenState = 'hidden' | 'visible' | 'no_such_object'
 
 export interface HighlightSetEntities {} /* Empty object */
 
@@ -4079,6 +4083,21 @@ Defaults to the [KittyCAD co-ordinate system].
 [KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
       coords: System
       type: 'stl'
+      /** The units of the input data.
+
+This is very important for correct scaling and when calculating physics properties like mass, etc.
+
+Defaults to millimeters. */
+      units: UnitLength
+    }
+  | {
+      /** Co-ordinate system of input data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System
+      type: 'rhino'
       /** The units of the input data.
 
 This is very important for correct scaling and when calculating physics properties like mass, etc.
@@ -5376,6 +5395,7 @@ export type MlCopilotServerMessage =
        */
       reasoning: ReasoningMessage
     }
+  | { activity: unknown }
   | {
       request_attachments: {
         /**
@@ -6650,6 +6670,15 @@ export type ModelingCmd =
       /** format:uuid, description:Which object to change */
       object_id: string
       type: 'object_visible'
+    }
+  | {
+      /**
+       * {
+       *   "format": "uuid"
+       * }
+       */
+      object_ids: string[]
+      type: 'object_is_hidden'
     }
   | {
       /** format:uuid, description:Which object to change */
@@ -7933,6 +7962,11 @@ export interface OAuth2TokenRequestForm {
 
 export interface ObjectBringToFront {} /* Empty object */
 
+export interface ObjectIsHidden {
+  /** The hidden or missing-object state of each UUID, in the same order as `object_ids`. Contains one entry per requested ID, including duplicates. */
+  hidden: HiddenState[]
+}
+
 export interface ObjectSetMaterialParamsPbr {} /* Empty object */
 
 export interface ObjectSetName {} /* Empty object */
@@ -8203,6 +8237,15 @@ export type OkModelingCmdResponse =
        */
       data: ObjectVisible
       type: 'object_visible'
+    }
+  | {
+      /**
+       * {
+       *   "$ref": "#/components/schemas/ObjectIsHidden"
+       * }
+       */
+      data: ObjectIsHidden
+      type: 'object_is_hidden'
     }
   | {
       /**
@@ -10327,6 +10370,19 @@ Defaults to the [KittyCAD co-ordinate system].
       /** Export storage. */
       storage: StlStorage
       type: 'stl'
+      /** Export length unit.
+
+Defaults to millimeters. */
+      units: UnitLength
+    }
+  | {
+      /** Co-ordinate system of output data.
+
+Defaults to the [KittyCAD co-ordinate system].
+
+[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html */
+      coords: System
+      type: 'rhino'
       /** Export length unit.
 
 Defaults to millimeters. */
@@ -14106,6 +14162,7 @@ export interface Models {
   HandleMouseDragEnd: HandleMouseDragEnd
   HandleMouseDragMove: HandleMouseDragMove
   HandleMouseDragStart: HandleMouseDragStart
+  HiddenState: HiddenState
   HighlightSetEntities: HighlightSetEntities
   HighlightSetEntity: HighlightSetEntity
   IceServer: IceServer
@@ -14203,6 +14260,7 @@ export interface Models {
   OAuth2TokenGrantType: OAuth2TokenGrantType
   OAuth2TokenRequestForm: OAuth2TokenRequestForm
   ObjectBringToFront: ObjectBringToFront
+  ObjectIsHidden: ObjectIsHidden
   ObjectSetMaterialParamsPbr: ObjectSetMaterialParamsPbr
   ObjectSetName: ObjectSetName
   ObjectVisible: ObjectVisible
