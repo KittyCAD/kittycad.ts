@@ -46446,6 +46446,13 @@
             "enum": [
               "stl"
             ]
+          },
+          {
+            "description": "The 3DM file format. <https://deepwiki.com/mcneel/rhino3dm/6.1-3dm-file-format>",
+            "type": "string",
+            "enum": [
+              "rhino"
+            ]
           }
         ]
       },
@@ -46541,6 +46548,13 @@
             "type": "string",
             "enum": [
               "stl"
+            ]
+          },
+          {
+            "description": "The 3DM file format. <https://deepwiki.com/mcneel/rhino3dm/6.1-3dm-file-format>",
+            "type": "string",
+            "enum": [
+              "rhino"
             ]
           }
         ]
@@ -47071,6 +47085,32 @@
       "HandleMouseDragStart": {
         "description": "The response from the `HandleMouseDragStart` endpoint.",
         "type": "object"
+      },
+      "HiddenState": {
+        "description": "Visibility of an object, or whether the requested object does not exist.",
+        "oneOf": [
+          {
+            "description": "The object exists and is hidden.",
+            "type": "string",
+            "enum": [
+              "hidden"
+            ]
+          },
+          {
+            "description": "The object exists and is visible.",
+            "type": "string",
+            "enum": [
+              "visible"
+            ]
+          },
+          {
+            "description": "No object exists for the requested UUID.",
+            "type": "string",
+            "enum": [
+              "no_such_object"
+            ]
+          }
+        ]
       },
       "HighlightSetEntities": {
         "description": "The response from the `HighlightSetEntities` endpoint.",
@@ -47676,6 +47716,39 @@
                 "type": "string",
                 "enum": [
                   "stl"
+                ]
+              },
+              "units": {
+                "description": "The units of the input data.\n\nThis is very important for correct scaling and when calculating physics properties like mass, etc.\n\nDefaults to millimeters.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "coords",
+              "type",
+              "units"
+            ]
+          },
+          {
+            "description": "Rhino (3dm) file format",
+            "type": "object",
+            "properties": {
+              "coords": {
+                "description": "Co-ordinate system of input data.\n\nDefaults to the [KittyCAD co-ordinate system].\n\n[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/System"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "rhino"
                 ]
               },
               "units": {
@@ -50911,6 +50984,17 @@
             },
             "required": [
               "reasoning"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "description": "User-facing progress, separate from model reasoning.",
+            "type": "object",
+            "properties": {
+              "activity": {}
+            },
+            "required": [
+              "activity"
             ],
             "additionalProperties": false
           },
@@ -54301,6 +54385,30 @@
             "required": [
               "hidden",
               "object_id",
+              "type"
+            ]
+          },
+          {
+            "description": "Query whether each object is hidden, preserving input order. Missing objects are reported as `no_such_object` in the response.",
+            "type": "object",
+            "properties": {
+              "object_ids": {
+                "description": "The IDs of the objects to query. Order and duplicates are preserved. An empty list returns an empty result.",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "object_is_hidden"
+                ]
+              }
+            },
+            "required": [
+              "object_ids",
               "type"
             ]
           },
@@ -58124,6 +58232,22 @@
         "description": "The response from the `ObjectBringToFront` endpoint.",
         "type": "object"
       },
+      "ObjectIsHidden": {
+        "description": "The response from the `ObjectIsHidden` endpoint.",
+        "type": "object",
+        "properties": {
+          "hidden": {
+            "description": "The hidden or missing-object state of each UUID, in the same order as `object_ids`. Contains one entry per requested ID, including duplicates.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HiddenState"
+            }
+          }
+        },
+        "required": [
+          "hidden"
+        ]
+      },
       "ObjectSetMaterialParamsPbr": {
         "description": "The response from the `ObjectSetMaterialParamsPbr` endpoint.",
         "type": "object"
@@ -58672,6 +58796,24 @@
                 "type": "string",
                 "enum": [
                   "object_visible"
+                ]
+              }
+            },
+            "required": [
+              "data",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/ObjectIsHidden"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "object_is_hidden"
                 ]
               }
             },
@@ -63170,6 +63312,39 @@
               "coords",
               "selection",
               "storage",
+              "type",
+              "units"
+            ]
+          },
+          {
+            "description": "Rhino (3dm) file format",
+            "type": "object",
+            "properties": {
+              "coords": {
+                "description": "Co-ordinate system of output data.\n\nDefaults to the [KittyCAD co-ordinate system].\n\n[KittyCAD co-ordinate system]: ../coord/constant.KITTYCAD.html",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/System"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "rhino"
+                ]
+              },
+              "units": {
+                "description": "Export length unit.\n\nDefaults to millimeters.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UnitLength"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "coords",
               "type",
               "units"
             ]
