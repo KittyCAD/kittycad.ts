@@ -21,6 +21,10 @@ const rawResponseOperations = new Set([
   'get_project_thumbnail',
   'get_public_project_thumbnail',
   'get_project_version_thumbnail',
+  'download_org_dataset_conversion_original',
+  'download_org_dataset_successful_kcl_bulk',
+  'get_org_factory_job_file',
+  'get_user_factory_job_file',
 ])
 
 function toExampleStringLiteral(value?: string): string {
@@ -467,8 +471,9 @@ export default async function apiGen(lookup: Record<string, string>) {
         let returnTypeOverride: string | undefined
         let pagerItemTypeName: string | undefined
         if (!isWebSocket && !rawResponse) {
-          Object.values(operation.specSection?.responses).forEach(
-            (response) => {
+          Object.entries(operation.specSection?.responses).forEach(
+            ([status, response]) => {
+              if (status !== 'default' && !status.startsWith('2')) return
               const schema = (response as any)?.content?.['application/json']
                 ?.schema as OpenAPIV3.SchemaObject
               if (!schema) {
@@ -1130,7 +1135,9 @@ function buildOperationJsDoc(
     }
   }
   if (!retDesc) {
-    const anyResp = Object.values(responses)[0] as any
+    const anyResp = Object.entries(responses).find(
+      ([status]) => !status.startsWith('4') && !status.startsWith('5')
+    )?.[1] as OpenAPIV3.ResponseObject | undefined
     retDesc = anyResp?.description || ''
   }
   const returnsType = `Promise<${opts.returnTypeName}>`
