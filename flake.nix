@@ -28,19 +28,12 @@
   in {
     # Development environment output
     devShells = forAllSystems ({pkgs}: {
-      default = pkgs.mkShell {
+      default = pkgs.mkShellNoCC {
         # The Nix packages provided in the environment
-        packages =
-          (with pkgs; [
-            just
-            nodejs_22
-          ])
-          ++ pkgs.lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
-            libiconv
-            darwin.apple_sdk.frameworks.Security
-          ]);
-
-        TARGET_CC = "${pkgs.stdenv.cc}/bin/${pkgs.stdenv.cc.targetPrefix}cc";
+        packages = with pkgs; [
+          just
+          nodejs_24
+        ];
       };
     });
   };
