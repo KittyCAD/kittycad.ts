@@ -62,10 +62,30 @@ export const api_tokens = {
 }
 
 import ExecutorTerm from './api/executor/create_executor_term.js'
+import cancel_execution_job from './api/executor/cancel_execution_job.js'
+import create_execution_job from './api/executor/create_execution_job.js'
 import create_file_execution from './api/executor/create_file_execution.js'
+import download_execution_job_artifact from './api/executor/download_execution_job_artifact.js'
+import get_execution_job from './api/executor/get_execution_job.js'
+import get_execution_job_logs from './api/executor/get_execution_job_logs.js'
+import get_execution_job_specification from './api/executor/get_execution_job_specification.js'
+import list_execution_job_artifacts from './api/executor/list_execution_job_artifacts.js'
+import list_execution_jobs from './api/executor/list_execution_jobs.js'
+import upload_execution_input from './api/executor/upload_execution_input.js'
+import { list_execution_jobs_pager } from './api/executor/list_execution_jobs.js'
 export const executor = {
+  cancel_execution_job,
+  create_execution_job,
   create_executor_term: ExecutorTerm,
   create_file_execution,
+  download_execution_job_artifact,
+  get_execution_job,
+  get_execution_job_logs,
+  get_execution_job_specification,
+  list_execution_job_artifacts,
+  list_execution_jobs,
+  list_execution_jobs_pager,
+  upload_execution_input,
 }
 
 import accept_org_factory_quote from './api/factory/accept_org_factory_quote.js'
@@ -165,7 +185,6 @@ export const meta = {
   ping,
 }
 
-import KclMigrationWs from './api/ml/kcl_migration_ws.js'
 import MlCopilotWs from './api/ml/ml_copilot_ws.js'
 import MlReasoningWs from './api/ml/ml_reasoning_ws.js'
 import create_custom_model from './api/ml/create_custom_model.js'
@@ -186,7 +205,6 @@ export const ml = {
   create_text_to_cad_part_feedback,
   get_custom_model,
   get_text_to_cad_part_for_user,
-  kcl_migration_ws: KclMigrationWs,
   list_conversations_for_user,
   list_conversations_for_user_pager,
   list_text_to_cad_parts_for_user,
@@ -363,6 +381,7 @@ import redirect_payment_method_portal_link_for_org from './api/payments/redirect
 import redirect_payment_method_portal_link_for_user from './api/payments/redirect_payment_method_portal_link_for_user.js'
 import reset_org_usage_collection_threshold from './api/payments/reset_org_usage_collection_threshold.js'
 import reset_user_usage_collection_threshold from './api/payments/reset_user_usage_collection_threshold.js'
+import set_default_payment_method_for_org from './api/payments/set_default_payment_method_for_org.js'
 import set_default_payment_method_for_user from './api/payments/set_default_payment_method_for_user.js'
 import set_org_usage_collection_threshold from './api/payments/set_org_usage_collection_threshold.js'
 import set_user_usage_collection_threshold from './api/payments/set_user_usage_collection_threshold.js'
@@ -407,6 +426,7 @@ export const payments = {
   redirect_payment_method_portal_link_for_user,
   reset_org_usage_collection_threshold,
   reset_user_usage_collection_threshold,
+  set_default_payment_method_for_org,
   set_default_payment_method_for_user,
   set_org_usage_collection_threshold,
   set_user_usage_collection_threshold,
@@ -689,6 +709,7 @@ export type {
   CompanySize,
   ComplementaryEdges,
   ComponentTransform,
+  CompressionType,
   Conversation,
   ConversationResultsPage,
   ConversionParams,
@@ -701,7 +722,9 @@ export type {
   CreateOrgDataset,
   CreatePlanarSurface,
   CreateProjectLibraryRequest,
+  CreateProjectRequest,
   CreateProjectShareLinkRequest,
+  CreateProjectVersionRequest,
   CreateProjectVersionResponse,
   CreateRegion,
   CreateRegionFromQueryPoint,
@@ -781,6 +804,21 @@ export type {
   EntityType,
   Error as ApiErrorBody,
   ErrorCode,
+  ExecutionArtifact,
+  ExecutionArtifactResultsPage,
+  ExecutionArtifactsResponse,
+  ExecutionInputArtifact,
+  ExecutionInputBatch,
+  ExecutionInputUploadResponse,
+  ExecutionJobCreateRequest,
+  ExecutionJobInput,
+  ExecutionJobOutput,
+  ExecutionJobResponse,
+  ExecutionJobResponseResultsPage,
+  ExecutionJobSpecificationResponse,
+  ExecutionJobStatus,
+  ExecutionLogResponse,
+  ExecutionLogStream,
   Export,
   Export2d,
   Export3d,
@@ -839,6 +877,7 @@ export type {
   HighlightSetEntities,
   HighlightSetEntity,
   IceServer,
+  IdSortMode,
   IdpMetadataSource,
   ImageFormat,
   ImportFile,
@@ -855,14 +894,9 @@ export type {
   KclCodeCompletionRequest,
   KclCodeCompletionResponse,
   KclFile,
-  KclMigrationApplication,
-  KclMigrationApplicationStatus,
-  KclMigrationClientMessage,
-  KclMigrationHistoryEntry,
   KclMigrationOperation,
   KclMigrationRequest,
   KclMigrationResult,
-  KclMigrationServerMessage,
   KclMigrationStatus,
   KclMigrationTarget,
   KclMigrationValidation,
@@ -1175,6 +1209,7 @@ export type {
   UpdateOrgDataset,
   UpdateOrgDatasetSource,
   UpdateProjectLibraryRequest,
+  UpdateProjectRequest,
   UpdateShortlinkRequest,
   UpdateUser,
   UploadOrgDatasetFilesResponse,

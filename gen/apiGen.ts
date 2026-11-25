@@ -28,6 +28,10 @@ function toExampleStringLiteral(value?: string): string {
   return JSON.stringify(normalized)
 }
 
+function inputParameterName(name: string, location: string): string {
+  return location === 'header' ? name.toLowerCase().replaceAll('-', '_') : name
+}
+
 export default async function apiGen(lookup: Record<string, string>) {
   const spec: OpenAPIV3.Document = JSON.parse(
     await fsp.readFile('./spec.json', 'utf8')
@@ -138,7 +142,11 @@ export default async function apiGen(lookup: Record<string, string>) {
         let urlPathParams: string[] = path.split('/')
         const urlQueryParams: string[] = []
         const urlQueryParamNames: string[] = []
-        ;(params || []).forEach(({ name, in: _in, schema, required }) => {
+        const headerParams: { wireNameLiteral: string; inputName: string }[] =
+          []
+        ;(params || []).forEach((param) => {
+          const { name: wireName, in: _in, schema, required } = param
+          const name = inputParameterName(wireName, _in)
           let _type = 'unknown'
           if ('$ref' in schema) {
             const ref = schema.$ref
@@ -251,7 +259,12 @@ export default async function apiGen(lookup: Record<string, string>) {
               }
               return p
             })
-          } else {
+          } else if (_in === 'header') {
+            headerParams.push({
+              wireNameLiteral: JSON.stringify(wireName),
+              inputName: name,
+            })
+          } else if (_in === 'query') {
             urlQueryParams.push(`${name}=\${${name}}`)
             urlQueryParamNames.push(name)
           }
@@ -680,6 +693,7 @@ export default async function apiGen(lookup: Record<string, string>) {
             paramsSignature,
             urlPathExpr: templateUrlOnlyPath,
             queryObjectExpr,
+            headerParams,
             httpMethod: methodUpper,
             contentType,
             omitContentType: isMultipart || bodyLine === '',
@@ -1090,7 +1104,7 @@ function buildOperationJsDoc(
   lines.push('', '@param params Function parameters.')
   lines.push(`@property {Client} [client] Optional client with auth token.`)
   for (const p of opts.params || []) {
-    const name = p.name
+    const name = inputParameterName(p.name, p.in)
     const d = (p.description || '').toString().trim()
     const where = p.in ? ` (${p.in})` : ''
     const t = opts.paramTypeMap[name] || 'unknown'

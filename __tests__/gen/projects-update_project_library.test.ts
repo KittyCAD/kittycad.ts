@@ -7,7 +7,7 @@ async function example() {
     id: '00000000-0000-0000-0000-000000000000',
     body: {
       expected_revision: 'Metadata revision returned by the last project read.',
-      library_id: 'A UUID usually v4 or v7',
+      library_id: 'Destination library; null leaves the project unassigned.',
     },
     client,
   })

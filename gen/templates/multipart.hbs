@@ -29,6 +29,9 @@ export default async function {{functionName}}(
     : '';
   const headers: Record<string, string> = {};
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`;
+  {{#each headerParams}}
+  if ({{inputName}} !== undefined) headers[{{{wireNameLiteral}}}] = String({{inputName}});
+  {{/each}}
 
   const formData = new FormData();
   files.forEach((file) => {

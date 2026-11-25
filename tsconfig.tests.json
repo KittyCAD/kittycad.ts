@@ -2,8 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": ".",
+    "paths": {
+      "@kittycad/lib": ["./src/index.ts"]
+    }
   },
-  "include": ["__tests__/**/*"],
+  "include": ["__tests__/**/*", "src/**/*.d.ts"],
   "exclude": ["node_modules"]
 }
