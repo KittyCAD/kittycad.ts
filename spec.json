@@ -49905,6 +49905,15 @@
                   "$ref": "#/components/schemas/MlCopilotFile"
                 }
               },
+              "cloud_project": {
+                "nullable": true,
+                "description": "Opt in to a worker save against this cloud revision. Requires empty current_files.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/MlCopilotCloudProject"
+                  }
+                ]
+              },
               "content": {
                 "description": "The content of the user's message.",
                 "type": "string"
@@ -50295,6 +50304,42 @@
           }
         ]
       },
+      "MlCopilotCloudProject": {
+        "description": "A saved cloud revision selected by the editor for this user turn.",
+        "type": "object",
+        "properties": {
+          "expected_revision": {
+            "description": "Projects API content revision acknowledged by the editor.",
+            "type": "string"
+          },
+          "project_id": {
+            "description": "Namespaced cloud project identifier (`cloud:<UUID>`).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "project_id"
+        ]
+      },
+      "MlCopilotCloudSaveReceipt": {
+        "description": "Metadata acknowledged by the Projects API after a conditional save.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Cloud project UUID.",
+            "type": "string"
+          },
+          "revision": {
+            "description": "Newly saved Projects API content revision.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ]
+      },
       "MlCopilotFile": {
         "description": "A file that can be transferred between the client and server.",
         "type": "object",
@@ -50558,6 +50603,11 @@
               "conversation_id": {
                 "type": "object",
                 "properties": {
+                  "cloud_project_save": {
+                    "nullable": true,
+                    "description": "Present when this worker supports saving an explicitly selected cloud revision.",
+                    "type": "boolean"
+                  },
                   "conversation_id": {
                     "description": "The unique identifier for the conversation.",
                     "type": "string"
@@ -51805,6 +51855,45 @@
             },
             "required": [
               "status_code",
+              "type"
+            ]
+          },
+          {
+            "description": "One completed, revision-conditional cloud project save.",
+            "type": "object",
+            "properties": {
+              "call_id": {
+                "description": "Stable identity for deduplicating this save notification.",
+                "type": "string"
+              },
+              "ok": {
+                "description": "Whether the save succeeded.",
+                "type": "boolean"
+              },
+              "output": {
+                "description": "Project and revision acknowledged by the storage service.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/MlCopilotCloudSaveReceipt"
+                  }
+                ]
+              },
+              "project_id": {
+                "description": "Namespaced identifier of the saved cloud project.",
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "cloud_project_saved"
+                ]
+              }
+            },
+            "required": [
+              "call_id",
+              "ok",
+              "output",
+              "project_id",
               "type"
             ]
           },

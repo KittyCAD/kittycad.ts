@@ -5012,6 +5012,13 @@ export type MlCopilotClientMessage =
       active_file?: string
       /** The user can send additional files like images or PDFs to provide more context. */
       additional_files?: MlCopilotFile[]
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Opt in to a worker save against this cloud revision. Requires empty current_files."
+       * }
+       */
+      cloud_project?: MlCopilotCloudProject
       /** The content of the user's message. */
       content: string
       /**
@@ -5184,6 +5191,20 @@ export type MlCopilotClientMessage =
       type: 'fetch_replay_page'
     }
 
+export interface MlCopilotCloudProject {
+  /** Projects API content revision acknowledged by the editor. */
+  expected_revision: string
+  /** Namespaced cloud project identifier (`cloud:<UUID>`). */
+  project_id: string
+}
+
+export interface MlCopilotCloudSaveReceipt {
+  /** Cloud project UUID. */
+  id: string
+  /** Newly saved Projects API content revision. */
+  revision: string
+}
+
 export interface MlCopilotFile {
   /** nullable:true, description:Reference for fetching this attachment on demand. */
   attachment_ref?: AttachmentRef
@@ -5268,6 +5289,13 @@ export type MlCopilotServerMessage =
     }
   | {
       conversation_id: {
+        /**
+         * {
+         *   "nullable": true,
+         *   "description": "Present when this worker supports saving an explicitly selected cloud revision."
+         * }
+         */
+        cloud_project_save?: boolean
         /** The unique identifier for the conversation. */
         conversation_id: string
       }
@@ -5697,6 +5725,17 @@ export type MlToolResult =
        * }
        */
       zookeeper_edit_patch?: ZookeeperEditPatch
+    }
+  | {
+      /** Stable identity for deduplicating this save notification. */
+      call_id: string
+      /** Whether the save succeeded. */
+      ok: boolean
+      /** Project and revision acknowledged by the storage service. */
+      output: MlCopilotCloudSaveReceipt
+      /** Namespaced identifier of the saved cloud project. */
+      project_id: string
+      type: 'cloud_project_saved'
     }
   | {
       /** The response from the mechanical knowledge base. */
@@ -14216,6 +14255,8 @@ export interface Models {
   MlCopilotClientCommand: MlCopilotClientCommand
   MlCopilotClientCommandStatus: MlCopilotClientCommandStatus
   MlCopilotClientMessage: MlCopilotClientMessage
+  MlCopilotCloudProject: MlCopilotCloudProject
+  MlCopilotCloudSaveReceipt: MlCopilotCloudSaveReceipt
   MlCopilotFile: MlCopilotFile
   MlCopilotModeOption: MlCopilotModeOption
   MlCopilotProjectRevision: MlCopilotProjectRevision
