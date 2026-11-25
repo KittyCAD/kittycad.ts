@@ -889,6 +889,8 @@ export type {
   MlCopilotClientCommand,
   MlCopilotClientCommandStatus,
   MlCopilotClientMessage,
+  MlCopilotCloudProject,
+  MlCopilotCloudSaveReceipt,
   MlCopilotFile,
   MlCopilotModeOption,
   MlCopilotProjectRevision,
