@@ -17,14 +17,6 @@
   },
   {
     "op": "add",
-    "path": "/paths/~1ws~1ml~1kcl-migration/get/x-typescript",
-    "value": {
-      "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const client = new Client('your-token')\n    const conn = await ml.kcl_migration_ws.connect({ client })\n}\n\ndescribe('Testing ml.kcl_migration_ws', () => {\n    it('should be truthy or throw', async () => {\n        expect(true).toBeTruthy()\n    })\n})\n",
-      "libDocsLink": ""
-    }
-  },
-  {
-    "op": "add",
     "path": "/paths/~1ws~1ml~1copilot/get/x-typescript",
     "value": {
       "example": "import { ml, Client } from '@kittycad/lib'\n\nasync function example() {\n    const client = new Client('your-token')\n    const conn = await ml.ml_copilot_ws.connect({ client })\n}\n\ndescribe('Testing ml.ml_copilot_ws', () => {\n    it('should be truthy or throw', async () => {\n        expect(true).toBeTruthy()\n    })\n})\n",
@@ -203,7 +195,7 @@
     "op": "add",
     "path": "/paths/~1user~1projects~1{id}~1versions/post/x-typescript",
     "value": {
-      "example": "import { projects, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await projects.create_project_version({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { projects, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await projects.create_project_version({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        id: '00000000-0000-0000-0000-000000000000',\n        idempotency_key: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -275,7 +267,7 @@
     "op": "add",
     "path": "/paths/~1user~1projects~1{id}~1library/put/x-typescript",
     "value": {
-      "example": "import { projects, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await projects.update_project_library({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            expected_revision:\n                'Metadata revision returned by the last project read.',\n            library_id: 'A UUID usually v4 or v7',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "example": "import { projects, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await projects.update_project_library({\n        id: '00000000-0000-0000-0000-000000000000',\n        body: {\n            expected_revision:\n                'Metadata revision returned by the last project read.',\n            library_id:\n                'Destination library; null leaves the project unassigned.',\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },
@@ -1185,6 +1177,14 @@
   },
   {
     "op": "add",
+    "path": "/paths/~1org~1payment~1methods~1{id}~1default/post/x-typescript",
+    "value": {
+      "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.set_default_payment_method_for_org({\n        id: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
     "path": "/paths/~1org~1payment~1methods~1{id}/delete/x-typescript",
     "value": {
       "example": "import { payments, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await payments.delete_payment_method_for_org({\n        id: 'string',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
@@ -1892,6 +1892,78 @@
     "path": "/paths/~1file~1bounding-box/post/x-typescript",
     "value": {
       "example": "import { file, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await file.create_file_bounding_box({\n        src_format: 'obj',\n        output_unit: 'ft',\n        body: await fsp.readFile('./example.obj', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1jobs~1{id}~1specification/get/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.get_execution_job_specification({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1jobs~1{id}~1logs/get/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.get_execution_job_logs({\n        id: '00000000-0000-0000-0000-000000000000',\n        stream: 'stdout',\n        offset: 7,\n        limit: 7,\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1jobs~1{id}~1cancel/post/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.cancel_execution_job({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1jobs~1{id}~1artifacts~1{artifact_id}/get/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.download_execution_job_artifact({\n        id: '00000000-0000-0000-0000-000000000000',\n        artifact_id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1jobs~1{id}~1artifacts/get/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.list_execution_job_artifacts({\n        id: '00000000-0000-0000-0000-000000000000',\n        limit: 7,\n        page_token: 'string',\n        sort_by: 'id_ascending',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1jobs~1{id}/get/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.get_execution_job({\n        id: '00000000-0000-0000-0000-000000000000',\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1jobs/post/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.create_execution_job({\n        idempotency_key: 'string',\n        body: {\n            command: ['string'],\n            compute_profile_id: 'Pinned compute-profile catalog identifier.',\n            environment: {},\n            inputs: [],\n            outputs: [],\n            runtime_id: 'Pinned runtime catalog identifier.',\n            timeout_seconds: 7,\n        },\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1jobs/get/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.list_execution_jobs({\n        limit: 7,\n        page_token: 'string',\n        status: 'queued',\n        runtime_id: 'string',\n        created_after: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n}\n\n// Pagination example (not executed in tests; for docs only)\nexport async function example_pager() {\n    const pager = executor.list_execution_jobs_pager({\n        limit: 7,\n        page_token: 'string',\n        status: 'queued',\n        runtime_id: 'string',\n        created_after: 'string',\n        sort_by: 'created_at_ascending',\n        client,\n    })\n    let total = 0\n    // Pull up to two pages just to illustrate usage\n    for (let i = 0; i < 2 && pager.hasNext(); i++) {\n        const items = await pager.next()\n        total += items.length\n    }\n    return total\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
+      "libDocsLink": ""
+    }
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1execution~1inputs/post/x-typescript",
+    "value": {
+      "example": "import { executor, Client, ApiError } from '@kittycad/lib'\nimport fsp from 'fs/promises'\n\nconst client = new Client()\n\nasync function example() {\n    const response = await executor.upload_execution_input({\n        files: [\n            {\n                name: 'thing.kcl',\n                data: new Blob(['thing = 1'], { type: 'text/plain' }),\n            },\n        ],\n        body: await fsp.readFile('./example', 'base64'),\n        client,\n    })\n}\n\n// Error handling\ntry {\n    const res = await example()\n} catch (e) {\n    if (e instanceof ApiError) {\n        console.error('status', e.status, 'code', e.body?.error_code)\n        console.error('message', e.body?.message)\n        console.error('request_id', e.body?.request_id)\n    } else {\n        throw e\n    }\n}\n",
       "libDocsLink": ""
     }
   },

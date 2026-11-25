@@ -8,6 +8,7 @@ interface CreateProjectVersionInput {
   client?: Client
   files: File[]
   id: Uuid
+  idempotency_key?: string
 }
 
 type CreateProjectVersionReturn = CreateProjectVersionResponse
@@ -40,6 +41,7 @@ type CreateProjectVersionReturn = CreateProjectVersionResponse
  * @param params Function parameters.
  * @property {Client} [client] Optional client with auth token.
  * @property {Uuid} id The identifier. (path)
+ * @property {string} idempotency_key Reuse this key and the same save contents within 24 hours to recover the original version. Must contain 1–255 bytes with no surrounding whitespace. (header)
  * @property {File[]} files Files attached as multipart/form-data.
  * @returns {Promise<CreateProjectVersionReturn>} successful operation
  *
@@ -49,6 +51,7 @@ export default async function create_project_version({
   client,
   files,
   id,
+  idempotency_key,
 }: CreateProjectVersionInput): Promise<CreateProjectVersionReturn> {
   const path = `/user/projects/${id}/versions`
   const qs = buildQuery({})
@@ -65,6 +68,8 @@ export default async function create_project_version({
   const kittycadToken = client ? client.token || '' : ''
   const headers: Record<string, string> = {}
   if (kittycadToken) headers.Authorization = `Bearer ${kittycadToken}`
+  if (idempotency_key !== undefined)
+    headers['Idempotency-Key'] = String(idempotency_key)
 
   const formData = new FormData()
   files.forEach((file) => {

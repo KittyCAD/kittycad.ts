@@ -30,6 +30,9 @@ export default async function {{functionName}}(
   {{#unless omitContentType}}
   headers['Content-Type'] = '{{contentType}}';
   {{/unless}}
+  {{#each headerParams}}
+  if ({{inputName}} !== undefined) headers[{{{wireNameLiteral}}}] = String({{inputName}});
+  {{/each}}
   const fetchOptions: RequestInit = {
     method: '{{httpMethod}}',
     headers,

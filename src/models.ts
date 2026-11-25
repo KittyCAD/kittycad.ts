@@ -303,7 +303,7 @@ export interface AnnotationBasicDimension {
   /**
    * {
    *   "nullable": true,
-   *   "description": "Edge reference to use to measure the dimension from If both `to_entity_id` and `to_edge_reference` are provided, `to_edge_reference` takes precedence."
+   *   "description": "Edge reference to use to measure the dimension to If both `to_entity_id` and `to_edge_reference` are provided, `to_edge_reference` takes precedence. Note - If no \"to\" entity is provided, then a single leader is used to annotate the dimension."
    * }
    */
   to_edge_reference?: EdgeSpecifier
@@ -312,7 +312,7 @@ export interface AnnotationBasicDimension {
   /**
    * {
    *   "nullable": true,
-   *   "description": "Position within the entity to position the dimension leader from"
+   *   "description": "Position within the entity to position the dimension leader to"
    * }
    */
   to_entity_leader_pos?: AnnotationMbdLeaderPosition
@@ -1931,6 +1931,8 @@ export interface ComponentTransform {
   translate?: TransformByForPoint3d
 }
 
+export type CompressionType = 'zstd'
+
 export interface Conversation {
   /** title:DateTime, format:date-time, description:The date and time the conversation was created. */
   created_at: string
@@ -2099,9 +2101,78 @@ export interface CreateProjectLibraryRequest {
   source?: KclProjectLibrarySource
 }
 
+export type CreateProjectRequest = {
+  /**
+   * {
+   *   "default": [],
+   *   "description": "Selected submission categories for the project. New assignments must be active; updates may retain already assigned inactive categories."
+   * }
+   */
+  category_ids?: Uuid[]
+  /** default:, description:User-facing description for the new project. */
+  description?: string
+  /**
+   * {
+   *   "default": "main.kcl",
+   *   "minLength": 1,
+   *   "description": "Relative project path matching an uploaded filename. Must be nonblank and cannot contain `..`."
+   * }
+   */
+  entrypoint_path?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uuid",
+   *   "description": "Optional destination library for a new project. Omitted or null leaves the project unassigned."
+   * }
+   */
+  library_id?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Owner-controlled publication state.\n\nOn creation, omit or send null to start private. Replacement preserves the existing state."
+   * }
+   */
+  publication_status?: 'private' | 'draft' | 'null'
+  /**
+   * {
+   *   "minLength": 1,
+   *   "description": "User-facing title. Must contain at least one non-whitespace character."
+   * }
+   */
+  title: string
+}
+
 export interface CreateProjectShareLinkRequest {
   /** default:anyone_with_link, description:Access policy for the generated share link. */
   access_mode?: KclProjectShareLinkAccessMode
+}
+
+export interface CreateProjectVersionRequest {
+  deleted_paths?: string[]
+  /** default:, description:Description saved with the new version. */
+  description?: string
+  /**
+   * {
+   *   "default": "main.kcl",
+   *   "minLength": 1,
+   *   "description": "Relative project path matching an uploaded filename. Must be nonblank and cannot contain `..`."
+   * }
+   */
+  entrypoint_path?: string
+  /**
+   * {
+   *   "$ref": "#/components/schemas/Uuid"
+   * }
+   */
+  parent_version_id: Uuid
+  /**
+   * {
+   *   "minLength": 1,
+   *   "description": "Title saved with the new version. Must contain at least one non-whitespace character."
+   * }
+   */
+  title: string
 }
 
 export interface CreateProjectVersionResponse {
@@ -2886,6 +2957,240 @@ export type ErrorCode =
   | 'message_type_not_accepted'
   | 'message_type_not_accepted_for_web_r_t_c'
 
+export interface ExecutionArtifact {
+  /** format:uint64, minimum:0, description:Exact stored bytes. */
+  byte_length: number
+  /** Archive-scoped identifier accepted by the download endpoint. */
+  id: Uuid
+  /** Relative filename, not a storage location. */
+  path: string
+  /** Whole-object SHA-256 for client verification. */
+  sha256: string
+}
+
+export interface ExecutionArtifactResultsPage {
+  /** list of items on this page of results */
+  items: ExecutionArtifact[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
+export interface ExecutionArtifactsResponse {
+  /** A page of output metadata. Empty while pending; state distinguishes this from a complete empty archive. */
+  artifacts: ExecutionArtifactResultsPage
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Safe archival failure classification, separate from execution outcome."
+   * }
+   */
+  failure_code?: string
+  /** Pending, complete, failed, or not_created when canceled before dispatch. */
+  state: string
+}
+
+export interface ExecutionInputArtifact {
+  /**
+   * {
+   *   "format": "uint64",
+   *   "minimum": 0
+   * }
+   */
+  byte_length: number
+  /**
+   * {
+   *   "$ref": "#/components/schemas/Uuid"
+   * }
+   */
+  id: Uuid
+  /**
+   * {
+   *   "nullable": true
+   * }
+   */
+  path?: string
+  sha256: string
+}
+
+export interface ExecutionInputBatch {
+  artifacts: ExecutionInputArtifact[]
+}
+
+export type ExecutionInputUploadResponse =
+  | ExecutionInputArtifact
+  | ExecutionInputBatch
+
+export interface ExecutionJobCreateRequest {
+  command: string[]
+  /** Pinned compute-profile catalog identifier. */
+  compute_profile_id: string
+  environment?: { [key: string]: string }
+  /** default:[], description:Artifacts to stage before execution. */
+  inputs?: ExecutionJobInput[]
+  /**
+   * {
+   *   "default": [],
+   *   "description": "Relative paths or globs to collect after execution."
+   * }
+   */
+  outputs?: ExecutionJobOutput[]
+  /** Pinned runtime catalog identifier. */
+  runtime_id: string
+  /** format:int64, description:Hard execution timeout in seconds. */
+  timeout_seconds: number
+}
+
+export interface ExecutionJobInput {
+  /** Owner-scoped artifact returned by `POST /execution/inputs`. */
+  artifact_id: Uuid
+  /** Relative path inside the isolated work directory. */
+  path: string
+}
+
+export interface ExecutionJobOutput {
+  /** Relative path or glob inside the isolated work directory. */
+  path: string
+  /**
+   * {
+   *   "default": true,
+   *   "description": "Missing required output fails archival; defaults to true."
+   * }
+   */
+  required?: boolean
+}
+
+export interface ExecutionJobResponse {
+  /**
+   * {
+   *   "format": "int64",
+   *   "description": "Most recently allocated attempt number, or zero before orchestration."
+   * }
+   */
+  active_attempt: number
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Time output finalization reached a terminal state."
+   * }
+   */
+  completed_at?: string
+  /** Pinned compute-profile catalog identifier. */
+  compute_profile_id: string
+  /** title:DateTime, format:date-time, description:Creation time. */
+  created_at: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Time customer code stopped running."
+   * }
+   */
+  execution_ended_at?: string
+  /** Stable job identifier. */
+  id: Uuid
+  /** Pinned runtime catalog identifier. */
+  runtime_id: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "title": "DateTime",
+   *   "format": "date-time",
+   *   "description": "Time customer code first started."
+   * }
+   */
+  started_at?: string
+  /** format:int64, description:Monotonic lifecycle version. */
+  state_version: number
+  /** Current lifecycle state. */
+  status: ExecutionJobStatus
+  /** format:int64, description:Hard execution timeout in seconds. */
+  timeout_seconds: number
+  /** title:DateTime, format:date-time, description:Last aggregate update time. */
+  updated_at: string
+}
+
+export interface ExecutionJobResponseResultsPage {
+  /** list of items on this page of results */
+  items: ExecutionJobResponse[]
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "token used to fetch the next page of results (if any)"
+   * }
+   */
+  next_page?: string
+}
+
+export interface ExecutionJobSpecificationResponse {
+  command: string[]
+  /** Pinned compute profile identifier. */
+  compute_profile_id: string
+  /** Input manifest. */
+  inputs: ExecutionJobInput[]
+  /** Output manifest. */
+  outputs: ExecutionJobOutput[]
+  /** Pinned runtime identifier. */
+  runtime_id: string
+  /** format:int64, description:Execution timeout. */
+  timeout_seconds: number
+}
+
+export type ExecutionJobStatus =
+  | 'queued'
+  | 'provisioning'
+  | 'running'
+  | 'canceling'
+  | 'finalizing'
+  | 'canceled'
+  | 'timed_out'
+  | 'succeeded'
+  | 'failed'
+
+export interface ExecutionLogResponse {
+  /** Whether a verified log manifest exists. */
+  available: boolean
+  /** Whether capture observed the tail (independent of cursor position). */
+  complete: boolean
+  /** Base64 of the exact bytes; no lossy UTF-8 decoding. */
+  data_base64: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Safe log capture or archival failure classification."
+   * }
+   */
+  failure_code?: string
+  /** format:uint64, minimum:0, description:Offset for the next request. */
+  next_offset: number
+  /** format:uint64, minimum:0, description:Starting offset of this page. */
+  offset: number
+  /** Archival state, not execution state. */
+  state: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uint64",
+   *   "minimum": 0,
+   *   "description": "Total retained bytes, absent until a manifest exists."
+   * }
+   */
+  stored_bytes?: number
+  /** Selected stream. */
+  stream: ExecutionLogStream
+  /** Whether bytes were omitted at the configured limit. */
+  truncated: boolean
+}
+
+export type ExecutionLogStream = 'stdout' | 'stderr'
+
 export interface Export {
   /** The files that were exported. */
   files: ExportFile[]
@@ -3400,8 +3705,6 @@ export type Feature =
   | 'disallow_self_signup'
   | 'email_with_s_e_s'
   | 'execution_jobs'
-  | 'enable_z0006_lint'
-  | 'factory_portal'
   | 'hosted_mcp'
   | 'org_dataset_cloud_projects'
   | 'org_dataset_reference_files'
@@ -3875,6 +4178,8 @@ export interface IceServer {
   /** nullable:true, description:Username for a given TURN server. */
   username?: string
 }
+
+export type IdSortMode = 'id_ascending' | 'id_descending'
 
 export type IdpMetadataSource =
   | {
@@ -4480,119 +4785,12 @@ export interface KclFile {
   path: SafeFilepath
 }
 
-export interface KclMigrationApplication {
-  /**
-   * {
-   *   "format": "uint32",
-   *   "minimum": 0,
-   *   "description": "Starts at zero. Each accepted state change increments it once."
-   * }
-   */
-  revision: number
-  /** Last reported state; not independent verification of local files. */
-  status: KclMigrationApplicationStatus
-}
-
-export type KclMigrationApplicationStatus = 'not_applied' | 'applied' | 'undone'
-
-export type KclMigrationClientMessage =
-  | { headers: { [key: string]: string }; type: 'headers' }
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/KclMigrationRequest"
-       * }
-       */
-      request: KclMigrationRequest
-      type: 'start'
-    }
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/Uuid"
-       * }
-       */
-      operation_id: Uuid
-      type: 'status'
-    }
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/Uuid"
-       * }
-       */
-      operation_id: Uuid
-      type: 'cancel'
-    }
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/Uuid"
-       * }
-       */
-      conversation_id: Uuid
-      type: 'history'
-    }
-  | {
-      /**
-       * {
-       *   "format": "uint32",
-       *   "minimum": 0,
-       *   "description": "The revision read before making the local change. Retrying is idempotent."
-       * }
-       */
-      expected_revision: number
-      /**
-       * {
-       *   "$ref": "#/components/schemas/Uuid"
-       * }
-       */
-      operation_id: Uuid
-      /**
-       * {
-       *   "$ref": "#/components/schemas/KclMigrationApplicationStatus"
-       * }
-       */
-      status: KclMigrationApplicationStatus
-      type: 'application'
-    }
-  | { type: 'ping' }
-
-export interface KclMigrationHistoryEntry {
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Place this entry after this ordinary prompt when replaying the conversation."
-   * }
-   */
-  after_prompt_id?: Uuid
-  /** Most recent client acknowledgement. */
-  application: KclMigrationApplication
-  /** Conversation that owns this entry. */
-  conversation_id: Uuid
-  /** format:date-time, description:Admission time, used for chronological display. */
-  created_at: string
-  /** Outcome summary for display and subsequent model context. */
-  detail: string
-  /** Migration request ID. Use the status command to retrieve a candidate explicitly. */
-  operation_id: Uuid
-  /**
-   * {
-   *   "nullable": true,
-   *   "description": "Persisted Copilot prompt, when this migration has a conversation transcript."
-   * }
-   */
-  prompt_id?: Uuid
-  /** Conversion outcome. Success alone does not mean files were applied. */
-  status: KclMigrationStatus
-}
-
 export interface KclMigrationOperation {
   /**
    * {
    *   "nullable": true,
    *   "format": "date-time",
-   *   "description": "Legacy execution deadline. Copilot migrations have no overall time limit."
+   *   "description": "Admission setup expiry, cleared before Copilot execution begins."
    * }
    */
   deadline?: string
@@ -4666,51 +4864,6 @@ export interface KclMigrationResult {
    */
   validation?: KclMigrationValidation
 }
-
-export type KclMigrationServerMessage =
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/KclMigrationOperation"
-       * }
-       */
-      operation: KclMigrationOperation
-      type: 'operation'
-    }
-  | {
-      /** Existing Copilot display message. Never dispatch it as a project edit. */
-      message: MlCopilotServerMessage
-      /** The initiating request ID, used to keep progress with its migration. */
-      operation_id: Uuid
-      type: 'progress'
-    }
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/Uuid"
-       * }
-       */
-      conversation_id: Uuid
-      entries: KclMigrationHistoryEntry[]
-      type: 'history'
-    }
-  | {
-      /**
-       * {
-       *   "$ref": "#/components/schemas/KclMigrationApplication"
-       * }
-       */
-      application: KclMigrationApplication
-      /**
-       * {
-       *   "$ref": "#/components/schemas/Uuid"
-       * }
-       */
-      operation_id: Uuid
-      type: 'application'
-    }
-  | { detail: string; type: 'error' }
-  | { type: 'pong' }
 
 export type KclMigrationStatus =
   | 'running'
@@ -5077,21 +5230,6 @@ export type MlCopilotClientMessage =
       /**
        * {
        *   "format": "uint32",
-       *   "minimum": 0,
-       *   "description": "Last acknowledged revision. Retrying the same change is idempotent."
-       * }
-       */
-      expected_revision: number
-      /** Migration request ID, independent of the connection and prompt IDs. */
-      operation_id: Uuid
-      /** Client-reported project state. */
-      status: KclMigrationApplicationStatus
-      type: 'kcl_migration_application'
-    }
-  | {
-      /**
-       * {
-       *   "format": "uint32",
        *   "minimum": 0
        * }
        */
@@ -5304,14 +5442,6 @@ export type MlCopilotServerMessage =
       kcl_migration_operation: {
         /** Durable migration outcome and the source snapshot it was based on. */
         operation: KclMigrationOperation
-      }
-    }
-  | {
-      kcl_migration_application: {
-        /** Accepted state and revision for subsequent acknowledgements. */
-        application: KclMigrationApplication
-        /** Migration request ID. */
-        operation_id: Uuid
       }
     }
   | {
@@ -6311,6 +6441,13 @@ export type ModelingCmd =
       type: 'export2d'
     }
   | {
+      /**
+       * {
+       *   "nullable": true,
+       *   "description": "Optional compression for the binary response. Defaults to uncompressed."
+       * }
+       */
+      compression?: CompressionType
       /**
        * {
        *   "format": "uuid"
@@ -13061,10 +13198,61 @@ export interface UpdateProjectLibraryRequest {
   /**
    * {
    *   "nullable": true,
+   *   "format": "uuid",
    *   "description": "Destination library; null leaves the project unassigned."
    * }
    */
-  library_id?: Uuid
+  library_id?: string
+}
+
+export type UpdateProjectRequest = {
+  /**
+   * {
+   *   "default": [],
+   *   "description": "Selected submission categories for the project. New assignments must be active; updates may retain already assigned inactive categories."
+   * }
+   */
+  category_ids?: Uuid[]
+  deleted_paths?: string[]
+  /** default:, description:User-facing description for the new project. */
+  description?: string
+  /**
+   * {
+   *   "default": "main.kcl",
+   *   "minLength": 1,
+   *   "description": "Relative project path matching an uploaded filename. Must be nonblank and cannot contain `..`."
+   * }
+   */
+  entrypoint_path?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Optional optimistic concurrency token from the last project response."
+   * }
+   */
+  expected_revision?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "format": "uuid",
+   *   "description": "Optional destination library for a new project. Omitted or null leaves the project unassigned."
+   * }
+   */
+  library_id?: string
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "Owner-controlled publication state.\n\nOn creation, omit or send null to start private. Replacement preserves the existing state."
+   * }
+   */
+  publication_status?: 'private' | 'draft' | 'null'
+  /**
+   * {
+   *   "minLength": 1,
+   *   "description": "User-facing title. Must contain at least one non-whitespace character."
+   * }
+   */
+  title: string
 }
 
 export interface UpdateShortlinkRequest {
@@ -14016,6 +14204,7 @@ export interface Models {
   CompanySize: CompanySize
   ComplementaryEdges: ComplementaryEdges
   ComponentTransform: ComponentTransform
+  CompressionType: CompressionType
   Conversation: Conversation
   ConversationResultsPage: ConversationResultsPage
   ConversionParams: ConversionParams
@@ -14028,7 +14217,9 @@ export interface Models {
   CreateOrgDataset: CreateOrgDataset
   CreatePlanarSurface: CreatePlanarSurface
   CreateProjectLibraryRequest: CreateProjectLibraryRequest
+  CreateProjectRequest: CreateProjectRequest
   CreateProjectShareLinkRequest: CreateProjectShareLinkRequest
+  CreateProjectVersionRequest: CreateProjectVersionRequest
   CreateProjectVersionResponse: CreateProjectVersionResponse
   CreateRegion: CreateRegion
   CreateRegionFromQueryPoint: CreateRegionFromQueryPoint
@@ -14108,6 +14299,21 @@ export interface Models {
   EntityType: EntityType
   Error: Error
   ErrorCode: ErrorCode
+  ExecutionArtifact: ExecutionArtifact
+  ExecutionArtifactResultsPage: ExecutionArtifactResultsPage
+  ExecutionArtifactsResponse: ExecutionArtifactsResponse
+  ExecutionInputArtifact: ExecutionInputArtifact
+  ExecutionInputBatch: ExecutionInputBatch
+  ExecutionInputUploadResponse: ExecutionInputUploadResponse
+  ExecutionJobCreateRequest: ExecutionJobCreateRequest
+  ExecutionJobInput: ExecutionJobInput
+  ExecutionJobOutput: ExecutionJobOutput
+  ExecutionJobResponse: ExecutionJobResponse
+  ExecutionJobResponseResultsPage: ExecutionJobResponseResultsPage
+  ExecutionJobSpecificationResponse: ExecutionJobSpecificationResponse
+  ExecutionJobStatus: ExecutionJobStatus
+  ExecutionLogResponse: ExecutionLogResponse
+  ExecutionLogStream: ExecutionLogStream
   Export: Export
   Export2d: Export2d
   Export3d: Export3d
@@ -14166,6 +14372,7 @@ export interface Models {
   HighlightSetEntities: HighlightSetEntities
   HighlightSetEntity: HighlightSetEntity
   IceServer: IceServer
+  IdSortMode: IdSortMode
   IdpMetadataSource: IdpMetadataSource
   ImageFormat: ImageFormat
   ImportFile: ImportFile
@@ -14182,14 +14389,9 @@ export interface Models {
   KclCodeCompletionRequest: KclCodeCompletionRequest
   KclCodeCompletionResponse: KclCodeCompletionResponse
   KclFile: KclFile
-  KclMigrationApplication: KclMigrationApplication
-  KclMigrationApplicationStatus: KclMigrationApplicationStatus
-  KclMigrationClientMessage: KclMigrationClientMessage
-  KclMigrationHistoryEntry: KclMigrationHistoryEntry
   KclMigrationOperation: KclMigrationOperation
   KclMigrationRequest: KclMigrationRequest
   KclMigrationResult: KclMigrationResult
-  KclMigrationServerMessage: KclMigrationServerMessage
   KclMigrationStatus: KclMigrationStatus
   KclMigrationTarget: KclMigrationTarget
   KclMigrationValidation: KclMigrationValidation
@@ -14502,6 +14704,7 @@ export interface Models {
   UpdateOrgDataset: UpdateOrgDataset
   UpdateOrgDatasetSource: UpdateOrgDatasetSource
   UpdateProjectLibraryRequest: UpdateProjectLibraryRequest
+  UpdateProjectRequest: UpdateProjectRequest
   UpdateShortlinkRequest: UpdateShortlinkRequest
   UpdateUser: UpdateUser
   UploadOrgDatasetFilesResponse: UploadOrgDatasetFilesResponse
