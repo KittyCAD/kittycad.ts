@@ -17142,7 +17142,7 @@
           "payments"
         ],
         "summary": "List payment methods for your org.",
-        "description": "This endpoint requires authentication by an org member. It lists payment methods for the authenticated user's org, with the valid default card first.",
+        "description": "This endpoint requires authentication by an org member. It lists payment methods for the authenticated user's org, with the valid default card first. The response identifies the default card, or null when none is valid.",
         "operationId": "list_payment_methods_for_org",
         "parameters": [
           {
@@ -31243,7 +31243,7 @@
           "payments"
         ],
         "summary": "List payment methods for your user.",
-        "description": "This endpoint requires authentication by any Zoo user. It lists payment methods for the authenticated user, with the valid default card first.",
+        "description": "This endpoint requires authentication by any Zoo user. It lists payment methods for the authenticated user, with the valid default card first. The response identifies the default card, or null when none is valid.",
         "operationId": "list_payment_methods_for_user",
         "parameters": [
           {
@@ -65773,11 +65773,16 @@
         }
       },
       "PaymentMethodResultsPage": {
-        "description": "A single page of results",
+        "description": "A single page of payment methods and the default selected for this traversal.",
         "type": "object",
         "properties": {
+          "default_payment_method_id": {
+            "nullable": true,
+            "description": "The valid default card's ID when the first page was fetched, or null if none.",
+            "type": "string"
+          },
           "items": {
-            "description": "list of items on this page of results",
+            "description": "List of items on this page of results.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PaymentMethod"
@@ -65785,7 +65790,7 @@
           },
           "next_page": {
             "nullable": true,
-            "description": "token used to fetch the next page of results (if any)",
+            "description": "Token used to fetch the next page of results (if any).",
             "type": "string"
           }
         },
