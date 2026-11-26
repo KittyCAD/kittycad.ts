@@ -10717,12 +10717,19 @@ export interface PaymentMethodCardChecks {
 }
 
 export interface PaymentMethodResultsPage {
-  /** list of items on this page of results */
+  /**
+   * {
+   *   "nullable": true,
+   *   "description": "The valid default card's ID when the first page was fetched, or null if none."
+   * }
+   */
+  default_payment_method_id?: string
+  /** List of items on this page of results. */
   items: PaymentMethod[]
   /**
    * {
    *   "nullable": true,
-   *   "description": "token used to fetch the next page of results (if any)"
+   *   "description": "Token used to fetch the next page of results (if any)."
    * }
    */
   next_page?: string

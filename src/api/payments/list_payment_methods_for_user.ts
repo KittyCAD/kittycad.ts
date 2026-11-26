@@ -15,7 +15,7 @@ type ListPaymentMethodsForUserReturn = PaymentMethodResultsPage
 /**
  * List payment methods for your user.
  *
- * This endpoint requires authentication by any Zoo user. It lists payment methods for the authenticated user, with the valid default card first.
+ * This endpoint requires authentication by any Zoo user. It lists payment methods for the authenticated user, with the valid default card first. The response identifies the default card, or null when none is valid.
  *
  * Tags: payments
  *
